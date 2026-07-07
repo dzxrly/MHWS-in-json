@@ -1,0 +1,244 @@
+[
+  {
+    "app.user_data.EyeControlParam": {
+      "_Interpolation": {
+        "app.user_data.HeadControlParam.cInterpolationInfo": {
+          "_FadeInSpeed": 4.0,
+          "_FadeOutSpeed": 4.0,
+          "_DampingX": {
+            "ace.cDampingParam": {
+              "_Damping": 0.9999,
+              "_TimeScale": 1.0
+            }
+          },
+          "_DampingY": {
+            "ace.cDampingParam": {
+              "_Damping": 0.9999,
+              "_TimeScale": 1.0
+            }
+          },
+          "_DampingBasisAxis": {
+            "ace.cDampingParam": {
+              "_Damping": 1.0,
+              "_TimeScale": 1.0
+            }
+          },
+          "_DampingMotionBasis": {
+            "ace.cDampingParam": {
+              "_Damping": 0.95,
+              "_TimeScale": 1.0
+            }
+          },
+          "_DampingMotionBasisMode": {
+            "ace.cDampingParam": {
+              "_Damping": 0.95,
+              "_TimeScale": 1.0
+            }
+          },
+          "_MaxBasisErrorRad": 0.5236
+        }
+      },
+      "_Limit": {
+        "app.user_data.HeadControlParam.cLimitInfo": {
+          "_LeftY": 20.0,
+          "_RightY": 20.0,
+          "_UpX": 16.0,
+          "_DownX": 16.0,
+          "_UpX_MinRate": 0.2,
+          "_DownX_MinRate": 0.2,
+          "_MaxMoveSpeed": 0.0
+        }
+      },
+      "_LRChangeOffsetDeg": 20.0,
+      "_UseFacial": true,
+      "_LeftJoints": {
+        "app.user_data.EyeControlParam.cEyeJoint": {
+          "_EyeJoint": {
+            "ace.cJointHash": {
+              "_Hash": 199192137
+            }
+          },
+          "_LookUp": {
+            "ace.cJointHash": {
+              "_Hash": 2016033432
+            }
+          },
+          "_LookDown": {
+            "ace.cJointHash": {
+              "_Hash": 2657413722
+            }
+          },
+          "_LookLeft": {
+            "ace.cJointHash": {
+              "_Hash": 666983397
+            }
+          },
+          "_LookRight": {
+            "ace.cJointHash": {
+              "_Hash": 357364466
+            }
+          },
+          "_LookUpF": {
+            "ace.cJointHash": {
+              "_Hash": 3676012670
+            }
+          },
+          "_LookDownF": {
+            "ace.cJointHash": {
+              "_Hash": 1724967720
+            }
+          },
+          "_LookLeftF": {
+            "ace.cJointHash": {
+              "_Hash": 144721050
+            }
+          },
+          "_LookRightF": {
+            "ace.cJointHash": {
+              "_Hash": 4002600621
+            }
+          }
+        }
+      },
+      "_RightJoints": {
+        "app.user_data.EyeControlParam.cEyeJoint": {
+          "_EyeJoint": {
+            "ace.cJointHash": {
+              "_Hash": 41609417
+            }
+          },
+          "_LookUp": {
+            "ace.cJointHash": {
+              "_Hash": 2579733033
+            }
+          },
+          "_LookDown": {
+            "ace.cJointHash": {
+              "_Hash": 957002764
+            }
+          },
+          "_LookLeft": {
+            "ace.cJointHash": {
+              "_Hash": 576925455
+            }
+          },
+          "_LookRight": {
+            "ace.cJointHash": {
+              "_Hash": 3290844528
+            }
+          },
+          "_LookUpF": {
+            "ace.cJointHash": {
+              "_Hash": 3794889382
+            }
+          },
+          "_LookDownF": {
+            "ace.cJointHash": {
+              "_Hash": 3506587631
+            }
+          },
+          "_LookLeftF": {
+            "ace.cJointHash": {
+              "_Hash": 211718075
+            }
+          },
+          "_LookRightF": {
+            "ace.cJointHash": {
+              "_Hash": 3335245373
+            }
+          }
+        }
+      },
+      "_Detail": {
+        "app.user_data.HeadControlParam.cDetailParam": {
+          "_ParamChangeDuration": 0.5,
+          "_BlendRateMax": 1.0,
+          "_MoveDegX": 0.0,
+          "_MoveDegY": 0.0,
+          "_MotionRateX": 0.0,
+          "_MotionRateY": 0.0,
+          "_MotionRateZ": 1.0,
+          "_BlendRatePattern": 1,
+          "_EaseType": 5,
+          "_EasingSpeed": 1.0,
+          "_SpringConst": 5.5,
+          "_DampingConst": 4.75,
+          "_AnimationCurve": {
+            "via.AnimationCurve": {
+              "v0": [
+                {
+                  "raw": "00000000000000000000000000000000",
+                  "type": "Data"
+                },
+                {
+                  "raw": "00000000000000400000000000000000",
+                  "type": "Data"
+                }
+              ],
+              "v1": {
+                "raw": "00000000",
+                "type": "Data"
+              },
+              "v2": {
+                "raw": "0000803f",
+                "type": "Data"
+              },
+              "v3": {
+                "raw": "00000000",
+                "type": "Data"
+              },
+              "v4": {
+                "raw": "00000040",
+                "type": "Data"
+              },
+              "v5": {
+                "raw": "00000000",
+                "type": "Data"
+              },
+              "v6": {
+                "raw": "02000000",
+                "type": "Data"
+              }
+            }
+          }
+        }
+      },
+      "_Fixations": [
+        {
+          "app.user_data.EyeControlParam.cVisualFixation": {
+            "_Type": "[419759456] DEFAULT",
+            "_Fixation": {
+              "app.user_data.VisualFixationParam": {
+                "ref_instance_id": 31,
+                "path": "GameDesign/Player/ActionData/Common/GlobalParam/Part/Eye/VisualFixation_Default.user"
+              }
+            }
+          }
+        },
+        {
+          "app.user_data.EyeControlParam.cVisualFixation": {
+            "_Type": "[1777145856] RATTLED",
+            "_Fixation": {
+              "app.user_data.VisualFixationParam": {
+                "ref_instance_id": 34,
+                "path": "GameDesign/Player/ActionData/Common/GlobalParam/Part/Eye/VisualFixation_Rattled.user"
+              }
+            }
+          }
+        }
+      ],
+      "_LeftEyeOffset": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "_RightEyeOffset": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  }
+]

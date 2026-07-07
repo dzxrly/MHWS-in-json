@@ -1,0 +1,41 @@
+[
+  {
+    "app.user_data.NpcAITableActionData": {
+      "_ConditionParams": [
+        {
+          "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
+            "_Param": {
+              "app.NpcAITableConditions.cSetSlingerShotTarget_PickItem_Param": {
+                "STRUCT__IsInCamera__HasValue": false,
+                "STRUCT__IsInCamera__Value": false,
+                "_IsCheckCraftMaterial": true
+              }
+            },
+            "_Inverse": false,
+            "_IsContinue": false
+          }
+        }
+      ],
+      "_ActionSetting": {
+        "app.user_data.NpcAITableActionData.cActionSetting": {
+          "_ForceInterrupt": false,
+          "_TableEnd": false
+        }
+      },
+      "_Param": {
+        "app.user_data.NpcAITableActionData.cNpcAITableEffectHolder": {
+          "_Param": {
+            "app.NpcAITableEffects.cStreakAct_Param": {
+              "_StreakPlanData": {
+                "app.user_data.NpcStreakPlanData": {
+                  "ref_instance_id": 4,
+                  "path": "GameDesign/NPC/Partner/AIThinkData/Support/_Common/3_StreakPlan/SptCmn_Desire_Variety_PickupItem_StreakPlan.user"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

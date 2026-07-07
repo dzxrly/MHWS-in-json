@@ -1,0 +1,88 @@
+[
+  {
+    "app.user_data.NpcStreakActionData": {
+      "_TerminateType": 0,
+      "_ActionEffectParam": {
+        "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Action": {
+          "_Param": {
+            "app.NpcStreakEffects.cFsmLikeActionCamp_Param": {
+              "STRUCT__ActionTime__HasValue": false,
+              "STRUCT__ActionTime__Value": 0.0,
+              "_ImmediateActionSet": false,
+              "_UseVariation": true,
+              "_VariIntervalTime": {
+                "raw": "0000a0410000a041",
+                "type": "Range"
+              },
+              "_VariProbability": {
+                "raw": "0000824200000c42",
+                "type": "Range"
+              },
+              "_ActionSelector": {
+                "app.cNpcFsmLikeActionSelector": {
+                  "_Category": 3,
+                  "_ActionID": 1750031616,
+                  "_UseVariation": false,
+                  "_Variation": -663541696
+                }
+              },
+              "_VariData": [
+                {
+                  "app.NpcStreakEffects.cFsmLikeActionBaseParam.cVariData": {
+                    "_ActionSelector": {
+                      "app.cNpcFsmLikeActionSelector": {
+                        "_Category": 3,
+                        "_ActionID": 29763,
+                        "_UseVariation": false,
+                        "_Variation": -663541696
+                      }
+                    },
+                    "_RandomWeight": 50
+                  }
+                },
+                {
+                  "app.NpcStreakEffects.cFsmLikeActionBaseParam.cVariData": {
+                    "_ActionSelector": {
+                      "app.cNpcFsmLikeActionSelector": {
+                        "_Category": 3,
+                        "_ActionID": 26755,
+                        "_UseVariation": false,
+                        "_Variation": -663541696
+                      }
+                    },
+                    "_RandomWeight": 50
+                  }
+                }
+              ],
+              "_CampPointType": "[3] TENT_IN"
+            }
+          }
+        }
+      },
+      "_LStickEffectParam": {
+        "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_LStick": {
+          "_Param": {
+            "app.cNpcStreakEffectParam_None": {}
+          }
+        }
+      },
+      "_AimEffectParam": {
+        "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Aim": {
+          "_Param": {
+            "app.cNpcStreakEffectParam_None": {}
+          }
+        }
+      },
+      "_EvaluatorParams": [
+        {
+          "app.user_data.NpcStreakActionData.cNpcStreakEvaluatorHolder": {
+            "_Param": {
+              "app.NpcStreakEvaluators.cCheckInTentPlayer_Param": {}
+            },
+            "_Inverse": false
+          }
+        }
+      ]
+    }
+  }
+]

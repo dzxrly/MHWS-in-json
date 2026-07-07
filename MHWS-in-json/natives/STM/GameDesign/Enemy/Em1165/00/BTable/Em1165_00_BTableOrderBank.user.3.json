@@ -1,0 +1,132 @@
+[
+  {
+    "ace.btable.user_data.BTableOrderBank": {
+      "_OperatorWorkFactory": {
+        "ace.btable.cOperatorWorkFactory": {
+          "_WorkType": "app.btable.cEnemyBTableOperatorWork"
+        }
+      },
+      "_CommandWorkFactory": {
+        "ace.btable.cCommandWorkFactory": {
+          "_WorkType": "app.cEnemyBTableCommandWork"
+        }
+      },
+      "_OrderLists": [
+        {
+          "ace.btable.user_data.BTableOrderBank.cItem": {
+            "_OrderList": {
+              "ace.btable.user_data.BTableOrderList": {
+                "ref_instance_id": 3,
+                "path": "Ace/Data/BTable/DefaultBTableOrderList.user"
+              }
+            }
+          }
+        },
+        {
+          "ace.btable.user_data.BTableOrderBank.cItem": {
+            "_OrderList": {
+              "ace.btable.user_data.BTableOrderList": {
+                "ref_instance_id": 5,
+                "path": "GameDesign/Enemy/CommonData/Data/EmCommonBTableOrderList.user"
+              }
+            }
+          }
+        },
+        {
+          "ace.btable.user_data.BTableOrderBank.cItem": {
+            "_OrderList": {
+              "ace.btable.user_data.BTableOrderList": {
+                "ref_instance_id": 7,
+                "path": "Ace/Data/BTable/CommonBTableOrderList_VariableFull.user"
+              }
+            }
+          }
+        },
+        {
+          "ace.btable.user_data.BTableOrderBank.cItem": {
+            "_OrderList": {
+              "ace.btable.user_data.BTableOrderList": {
+                "ref_instance_id": 9,
+                "path": "GameDesign/Enemy/Em1165/00/BTable/Em1165_00_BTableOrderList.user"
+              }
+            }
+          }
+        }
+      ],
+      "_OperatorArgumentSettingList": [],
+      "_CommandArgumentSettingList": [
+        {
+          "app.btable.AppBTableUtil.cSelectActionArgSetting": {
+            "_AssetDataList": [
+              {
+                "app.btable.AppBTableUtil.cSelectActionArgSetting.cAssetData": {
+                  "_Asset": {
+                    "ace.cActionIDHolder": {
+                      "_ActionID": {
+                        "ace.user_data.ActionID": {
+                          "ref_instance_id": 11,
+                          "path": "GameDesign/Enemy/Em1165/00/Action/Em1165_00_ActionID.user"
+                        }
+                      },
+                      "_ExportGuid": "4cdd9a25-f880-0726-3666-1ab130a227da"
+                    }
+                  },
+                  "_ParamAsset": {
+                    "ace.user_data.ActionParam": {
+                      "ref_instance_id": 13,
+                      "path": "GameDesign/Enemy/Em1165/00/Action/Em1165_00_ActionParam.user"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cCheckStatusStandStateArgSetting": {}
+        },
+        {
+          "app.btable.EmCommonCommand.cArgSetting_UniqueLeveledValueCategory": {}
+        },
+        {
+          "app.btable.EmCommonCommand.cRidePartsSelectArgSetting": {}
+        },
+        {
+          "app.btable.EmCommonCommand.cCheckHeightArgSetting": {}
+        },
+        {
+          "app.btable.EmCommonCommand.cPartsArgSetting": {
+            "_ParamParts": {
+              "app.user_data.EmParamParts": {
+                "ref_instance_id": 20,
+                "path": "GameDesign/Enemy/Em1165/00/Data/Em1165_00_Param_Parts.user"
+              }
+            }
+          }
+        },
+        {
+          "ace.btable.VariableArgSetting": {
+            "_Asset": {
+              "": {}
+            },
+            "_ListAsset": {
+              "ace.btable.user_data.BTableVariableList": {
+                "ref_instance_id": 22,
+                "path": "GameDesign/Enemy/Em1165/00/BTable/Em1165_00_BTableVariableList.user"
+              }
+            }
+          }
+        }
+      ],
+      "_VariableAsset": {
+        "": {}
+      },
+      "_VariableListAsset": {
+        "ace.btable.user_data.BTableVariableList": {
+          "ref_instance_id": 22,
+          "path": "GameDesign/Enemy/Em1165/00/BTable/Em1165_00_BTableVariableList.user"
+        }
+      }
+    }
+  }
+]

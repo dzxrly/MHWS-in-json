@@ -1,0 +1,140 @@
+{
+  "groupInfos": [
+    {
+      "groupGuid": "9ae8e3ac-aebb-4e43-b6ab-ad522a051c17",
+      "nameMMHash": 2563004055,
+      "unknCount": 0,
+      "layerIndex": 0,
+      "maskBits": 0,
+      "layerGuid": "f26ddf73-ea95-4cc4-9f5e-d297b199ed89",
+      "groupShapes": [
+        {
+          "shapeGuid": "aa749cc0-38e9-48aa-a5ba-05a3436e459b",
+          "shapeNameMMHash": 2180083513,
+          "unknIndex": 0,
+          "layerIndex": 0,
+          "atteribute": -1,
+          "skipIdBits": 0,
+          "shapeType": "Capsule",
+          "shapeParam": {
+            "start": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "end": {
+              "x": 0.0,
+              "y": 1.0,
+              "z": 0.0
+            },
+            "radius": 1.0
+          },
+          "ignoreTagBits": 0,
+          "unkn": 0,
+          "primaryJointNameMMHash": 2180083513,
+          "secondaryJointNameMMHash": 2180083513,
+          "shapeName": "",
+          "primaryJointName": "",
+          "secondaryJointName": ""
+        }
+      ],
+      "maskGuids": [
+        "de74ded7-3a39-4e95-a725-af017affbd19"
+      ],
+      "groupName": ""
+    }
+  ],
+  "requestSets": [
+    {
+      "requestSetID": 0,
+      "groupIndex": 0,
+      "status": 0,
+      "requestSetIndex": 0,
+      "keyHash": 3626498396,
+      "KeyNameMMHash": 2453913037,
+      "name": "",
+      "keyName": "DripTar",
+      "nativeShapeColliders": [
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 0,
+            "_IsCylinder": true,
+            "_AdjustRate": 0.0,
+            "_EnableDynamicShape": true,
+            "_DynamicSphere": {
+              "raw": "000000000000803f0000000000004040",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              1.0,
+              0.0,
+              0.0,
+              3.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 3,
+            "_DynamicInterpolationSec": 1.5,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        }
+      ],
+      "userData": {
+        "app.col_user_data.DamageParamEmShell": {
+          "Name": "",
+          "ParentUserData": {
+            "": {}
+          },
+          "RequestSetIndex": 0,
+          "_PriorityFixed": {
+            "app.CollisionDef.PRIORITY_Serializable": {
+              "_Value": "[7]PRIO_8"
+            }
+          },
+          "_IsOnlyHitEmAttack": true
+        }
+      }
+    }
+  ],
+  "ignoreTags": []
+}

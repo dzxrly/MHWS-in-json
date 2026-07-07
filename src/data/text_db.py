@@ -1,0 +1,100 @@
+import json
+import re
+from pathlib import Path
+
+ILLEGAL_CHARS_RE = re.compile(r"[\x00-\x08\x0b-\x0c\x0e-\x1f]")
+REF_RE = re.compile(r"<[Rr][Ee][Ff] (.*?)>")
+EMID_RE = re.compile(r"<EMID (.*?)>")
+REJECTED = "<COLOR FF0000>#Rejected#</COLOR> "
+
+
+class TextDB:
+    def __init__(self, guid_text: dict[str, str], name_text: dict[str, str]):
+        self.guid_text = guid_text
+        self.name_text = name_text
+        self._resolve_all_refs()
+
+    @classmethod
+    def from_natives(cls, natives_dir: Path, lang_id: int) -> "TextDB":
+        guid_text: dict[str, str] = {}
+        name_text: dict[str, str] = {}
+        for path in Path(natives_dir).rglob("*.msg.23.json"):
+            with path.open("r", encoding="utf-8") as f:
+                data = json.load(f)
+            for entry in data.get("entries", []):
+                text = _content_at(entry.get("content"), lang_id)
+                guid = entry.get("guid")
+                name = entry.get("name")
+                if guid:
+                    guid_text[guid] = text
+                if name:
+                    name_text[name] = text
+        return cls(guid_text, name_text)
+
+    def get(self, guid: str) -> str | None:
+        return self.guid_text.get(guid)
+
+    def _resolve_all_refs(self) -> None:
+        self.guid_text = {k: self._resolve_refs(v) for k, v in self.guid_text.items()}
+        self.name_text = {k: self._resolve_refs(v) for k, v in self.name_text.items()}
+
+    def _resolve_refs(self, text: str) -> str:
+        for _ in range(8):
+            new_text = REF_RE.sub(lambda m: self.name_text.get(m.group(1), m.group(0)), text)
+            new_text = EMID_RE.sub(
+                lambda m: self.name_text.get(f"EnemyText_NAME_{m.group(1)}", m.group(0)),
+                new_text,
+            )
+            if new_text == text:
+                return new_text
+            text = new_text
+        return text
+
+
+class TextSource:
+    def __init__(self, entries: list[tuple[str | None, str | None, list | None]]):
+        self.entries = entries
+
+    @classmethod
+    def from_natives(cls, natives_dir: Path) -> "TextSource":
+        entries = []
+        for path in Path(natives_dir).rglob("*.msg.23.json"):
+            with path.open("r", encoding="utf-8") as f:
+                data = json.load(f)
+            for entry in data.get("entries", []):
+                entries.append((entry.get("guid"), entry.get("name"), entry.get("content")))
+        return cls(entries)
+
+    def build(self, lang_id: int) -> TextDB:
+        guid_text: dict[str, str] = {}
+        name_text: dict[str, str] = {}
+        for guid, name, content in self.entries:
+            text = _content_at(content, lang_id)
+            if guid:
+                guid_text[guid] = text
+            if name:
+                name_text[name] = text
+        return TextDB(guid_text, name_text)
+
+
+def discover_language_ids(natives_dir: Path) -> list[int]:
+    supported: set[int] | None = None
+    for path in Path(natives_dir).rglob("*.msg.23.json"):
+        with path.open("r", encoding="utf-8") as f:
+            data = json.load(f)
+        available = {
+            index
+            for index, lang_id in enumerate(data.get("languages", []))
+            if lang_id != -1
+        }
+        supported = available if supported is None else supported & available
+    return sorted(supported or set()) or [13]
+
+
+def _content_at(contents: list | None, lang_id: int) -> str:
+    if not contents or lang_id >= len(contents) or contents[lang_id] is None:
+        return ""
+    text = str(contents[lang_id]).replace("\n", "").replace("\r", "")
+    if text.startswith(REJECTED):
+        text = text[len(REJECTED) :]
+    return ILLEGAL_CHARS_RE.sub("", text)

@@ -1,0 +1,965 @@
+[
+  {
+    "app.user_data.PlayerStatusParam": {
+      "_BaseMaxHealth": 100,
+      "_ExtraMaxHealth": 50,
+      "_RedRecoverInterval": 1.5,
+      "_RedRecoverHealth": 1.0,
+      "_StaminaParam": {
+        "app.cPlayerStaminaParam": {
+          "_TriggerData": {
+            "app.cEnumerableParam`2<app.HunterStaminaUseTrigger.TYPE_Fixed,app.cPlayerStaminaParam.cStaminaUseValue>": {
+              "_ParamList": [
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[1] ZERO",
+                    "_Value": 0.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[2] BASIC_DODGE",
+                    "_Value": 25.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[3] STEP_DODGE",
+                    "_Value": 20.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[4] ESCAPE_DODGE",
+                    "_Value": 25.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[5] BATTLE_RIDE_MOVE",
+                    "_Value": 0.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[6] BATTLE_RIDE_ATTACK_S",
+                    "_Value": 0.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[7] BATTLE_RIDE_ATTACK_L",
+                    "_Value": 0.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[8] BATTLE_RIDE_ATTACK_WP",
+                    "_Value": 0.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[9] BATTLE_RIDE_DAMAGE",
+                    "_Value": 40.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[10] BATTLE_RIDE_DAMAGE_LOW",
+                    "_Value": 20.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[11] BATTLE_RIDE_ENDURE_DAMAGE",
+                    "_Value": 10.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[12] BATTLE_RIDE_ENDURE_DAMAGE_LOW",
+                    "_Value": 10.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[13] GUARD_S",
+                    "_Value": 10.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[14] GUARD_M",
+                    "_Value": 25.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[15] GUARD_L",
+                    "_Value": 40.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[16] GUARD_TECH",
+                    "_Value": 10.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[34] GUARD_TECH_GUARD_M",
+                    "_Value": 15.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[33] GUARD_TECH_GUARD_L",
+                    "_Value": 25.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[17] GUARD_TECH_M",
+                    "_Value": 25.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[18] WP00_TACKE",
+                    "_Value": 25.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[19] WP00_PENETRATE_SLASH",
+                    "_Value": 25.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[20] WP00_PARRY_SLASH",
+                    "_Value": 0.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[32] WP01_BACK_STEP",
+                    "_Value": 25.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[21] WP03_MIKIRI",
+                    "_Value": 50.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[22] WP06_RUSH_STEP",
+                    "_Value": 25.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[23] WP08_DEMPSY",
+                    "_Value": 10.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[24] WP10_DIVE_ATTACK",
+                    "_Value": 25.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[25] WP11_SHOT",
+                    "_Value": 10.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[26] WP11_SHOT_SMALL",
+                    "_Value": 5.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[27] WP11_GOSHA",
+                    "_Value": 25.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[28] WP11_KYOKUSHA",
+                    "_Value": 5.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[29] WP11_SPECIAL",
+                    "_Value": 50.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[30] WP11_JUMP_SHOT",
+                    "_Value": 10.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[31] WP13_SLIDE",
+                    "_Value": 25.0
+                  }
+                }
+              ]
+            }
+          },
+          "_ContinuousData": {
+            "app.cEnumerableParam`2<app.HunterStaminaUseContinuous.TYPE_Fixed,app.cPlayerStaminaParam.cStaminaUseValue>": {
+              "_ParamList": [
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[0] DASH",
+                    "_Value": 8.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[3] SLIDING",
+                    "_Value": 8.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[1949655552] BATTLE_RIDING",
+                    "_Value": 2.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[2872131968] BATTLE_RIDING_ENDURE",
+                    "_Value": 2.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[574223808] BATTLE_RIDING_SWING",
+                    "_Value": 6.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[791494272] WP00_PARRY_CHARGE",
+                    "_Value": 0.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[3653889856] WP02_KIJIN_ON",
+                    "_Value": 5.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[2802518016] WP03_KIJIN_CHARGE",
+                    "_Value": 5.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[2760552576] WP04_CHARGE",
+                    "_Value": 4.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[3818251424] WP06_RUSH",
+                    "_Value": 8.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[982411968] WP06_POWER_GUARD",
+                    "_Value": 40.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[283164832] WP07_RIDE_CHARGE",
+                    "_Value": 10.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[1022755328] WP11_CHARGE",
+                    "_Value": 4.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[1024129088] NON_COMBAT_DASH",
+                    "_Value": 1.0
+                  }
+                },
+                {
+                  "app.cPlayerStaminaParam.cStaminaUseValue": {
+                    "EnumValue": "[1696167040] NON_COMBAT_SLIDING",
+                    "_Value": 1.0
+                  }
+                }
+              ]
+            }
+          },
+          "_StaminaInit": 100.0,
+          "_StaminaLimitMax": 150.0,
+          "_StaminaLimitMin": 25.0,
+          "_StaminaRecoveryValue": 25.0,
+          "_StaminaAutoReduceTime": 900.0,
+          "_StaminaAutoReduceValue": 25.0,
+          "_FullTiredTime": 1.0
+        }
+      },
+      "_EscapeDashStaminaRate": 1.5,
+      "_StaminaReduceRateMin": 0.5,
+      "_ColdArea_StaminaMaxTimerReduceRate": 10.0,
+      "_Damage_GunnerDefenceRate": 0.7,
+      "_Damage_GunnerAttrResistAdd": 5,
+      "_DamageSmashSmall_JumpParam": {
+        "app.cGravityJumpParam": {
+          "_JumpVelocity": [
+            0.0,
+            3.0,
+            5.0,
+            0.0
+          ],
+          "_Gravity": 9.8,
+          "_GravityRate": 1.0
+        }
+      },
+      "_RideDamageSmashSmall_JumpParam": {
+        "app.cGravityJumpParam": {
+          "_JumpVelocity": [
+            0.0,
+            -1.0,
+            9.0,
+            0.0
+          ],
+          "_Gravity": 9.8,
+          "_GravityRate": 1.0
+        }
+      },
+      "_DamageSmashSmall_FallParam": {
+        "app.cGravityJumpParam": {
+          "_JumpVelocity": [
+            0.0,
+            0.5,
+            1.0,
+            0.0
+          ],
+          "_Gravity": 9.8,
+          "_GravityRate": 1.0
+        }
+      },
+      "_DamageSmashSmall_LandCurve": {
+        "app.AppAnimationCurve": {
+          "v0": [
+            {
+              "raw": "00000000050000006642805266428052",
+              "type": "Data"
+            },
+            {
+              "raw": "72fbad3f030060500000004d00000000",
+              "type": "Data"
+            }
+          ],
+          "v1": {
+            "raw": "00000000",
+            "type": "Data"
+          },
+          "v2": {
+            "raw": "00000040",
+            "type": "Data"
+          },
+          "v3": {
+            "raw": "00000000",
+            "type": "Data"
+          },
+          "v4": {
+            "raw": "00007a44",
+            "type": "Data"
+          },
+          "v5": {
+            "raw": "00000000",
+            "type": "Data"
+          },
+          "v6": {
+            "raw": "02000000",
+            "type": "Data"
+          }
+        }
+      },
+      "_DamageSmashMiddle_JumpParam": {
+        "app.cGravityJumpParam": {
+          "_JumpVelocity": [
+            0.0,
+            3.6,
+            8.0,
+            0.0
+          ],
+          "_Gravity": 9.8,
+          "_GravityRate": 1.0
+        }
+      },
+      "_DamageSmashMiddle_FallParam": {
+        "app.cGravityJumpParam": {
+          "_JumpVelocity": [
+            0.0,
+            1.0,
+            1.0,
+            0.0
+          ],
+          "_Gravity": 9.8,
+          "_GravityRate": 1.0
+        }
+      },
+      "_DamageSmashMiddle_LandCurve": {
+        "app.AppAnimationCurve": {
+          "v0": [
+            {
+              "raw": "00000000030000003c4700003c470000",
+              "type": "Data"
+            },
+            {
+              "raw": "0000b040030080530d3900000d390000",
+              "type": "Data"
+            }
+          ],
+          "v1": {
+            "raw": "00000000",
+            "type": "Data"
+          },
+          "v2": {
+            "raw": "0000b040",
+            "type": "Data"
+          },
+          "v3": {
+            "raw": "00000000",
+            "type": "Data"
+          },
+          "v4": {
+            "raw": "00007a44",
+            "type": "Data"
+          },
+          "v5": {
+            "raw": "00000000",
+            "type": "Data"
+          },
+          "v6": {
+            "raw": "02000000",
+            "type": "Data"
+          }
+        }
+      },
+      "_DamageSmashMiddle_LandToStandTime": 1.0,
+      "_DamageSmash_JumpParam": {
+        "app.cGravityJumpParam": {
+          "_JumpVelocity": [
+            0.0,
+            4.0,
+            8.0,
+            0.0
+          ],
+          "_Gravity": 9.8,
+          "_GravityRate": 1.0
+        }
+      },
+      "_DamageSmash_FallParam": {
+        "app.cGravityJumpParam": {
+          "_JumpVelocity": [
+            0.0,
+            2.0,
+            4.0,
+            0.0
+          ],
+          "_Gravity": 9.8,
+          "_GravityRate": 1.0
+        }
+      },
+      "_DamageSmash_DownTime": 3.0,
+      "_DamageSmashUpper_JumpParam": {
+        "app.cGravityJumpParam": {
+          "_JumpVelocity": [
+            0.0,
+            9.0,
+            4.0,
+            0.0
+          ],
+          "_Gravity": 9.8,
+          "_GravityRate": 1.0
+        }
+      },
+      "_DamageSmashHyper_JumpParam": {
+        "app.cGravityJumpParam": {
+          "_JumpVelocity": [
+            0.0,
+            4.5,
+            10.0,
+            0.0
+          ],
+          "_Gravity": 8.3,
+          "_GravityRate": 1.0
+        }
+      },
+      "_DamageSmashHyper_BoundJumpParam": {
+        "app.cGravityJumpParam": {
+          "_JumpVelocity": [
+            0.0,
+            5.0,
+            -6.0,
+            0.0
+          ],
+          "_Gravity": 9.8,
+          "_GravityRate": 1.0
+        }
+      },
+      "_SmashWallCrashFront_JumpParam": {
+        "app.cGravityJumpParam": {
+          "_JumpVelocity": [
+            0.0,
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "_Gravity": 6.0,
+          "_GravityRate": 1.0
+        }
+      },
+      "_SmashWallCrashBack_JumpParam": {
+        "app.cGravityJumpParam": {
+          "_JumpVelocity": [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          "_Gravity": 6.0,
+          "_GravityRate": 1.0
+        }
+      },
+      "_SmashWallCrashFrontSide_JumpParam": {
+        "app.cGravityJumpParam": {
+          "_JumpVelocity": [
+            0.0,
+            2.0,
+            -1.0,
+            0.0
+          ],
+          "_Gravity": 6.0,
+          "_GravityRate": 1.0
+        }
+      },
+      "_SmashWallCrashBackSide_JumpParam": {
+        "app.cGravityJumpParam": {
+          "_JumpVelocity": [
+            0.0,
+            2.0,
+            1.0,
+            0.0
+          ],
+          "_Gravity": 6.0,
+          "_GravityRate": 1.0
+        }
+      },
+      "_SlipFlyFront_JumpParam": {
+        "app.cGravityJumpParam": {
+          "_JumpVelocity": [
+            0.0,
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "_Gravity": 9.8,
+          "_GravityRate": 1.0
+        }
+      },
+      "_SlipFlyBack_JumpParam": {
+        "app.cGravityJumpParam": {
+          "_JumpVelocity": [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          "_Gravity": 9.8,
+          "_GravityRate": 1.0
+        }
+      },
+      "_DamageParalyseAir_JumpParam": {
+        "app.cGravityJumpParam": {
+          "_JumpVelocity": [
+            0.0,
+            3.5,
+            0.0,
+            0.0
+          ],
+          "_Gravity": 9.8,
+          "_GravityRate": 1.0
+        }
+      },
+      "_RidingDieSmall_JumpParam": {
+        "app.cGravityJumpParam": {
+          "_JumpVelocity": [
+            1.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          "_Gravity": 9.8,
+          "_GravityRate": 1.0
+        }
+      },
+      "_DamageHeight_Middle": 0.4,
+      "_DamageHeight_High": 1.5,
+      "_DieOtomoRecoveryMaxTime": 30.0,
+      "_HyperArmor_DamageRedureRate": 0.5,
+      "_SlipDamage_Thorn_IntervalTime": 1.0,
+      "_SlipDamage_Thorn_Damage": 2.0,
+      "_SlipDamage_HeatGround_IntervalTime": 0.8,
+      "_SlipDamage_HeatGround_Damage": 1.0,
+      "_SlipDamage_HighTemperature_IntervalTime": 0.4,
+      "_SlipDamage_HighTemperature_Damage": 5.0,
+      "_SlipDamage_MidTemperature_IntervalTime": 0.8,
+      "_SlipDamage_MidTemperature_Damage": 2.5,
+      "_SlipDamage_HeatingGrass_IntervalTime": 2.0,
+      "_SlipDamage_HeatingGrass_Damage": 1.0,
+      "_SlipDamage_HotArea_IntervalTime": 2.0,
+      "_SlipDamage_HotArea_Damage": 1.0,
+      "_PopGet_HealValue": 50.0,
+      "_PopGet_StaminaValue": 25.0,
+      "_PopGet_StaminaTimer": 120.0,
+      "_PopGet_StaminaRate": 0.5,
+      "_CondHealAnimal_CureConditionList": [
+        "[1357164288] POISON",
+        "[2693439744] STUN",
+        "[1181123072] SLEEP",
+        "[247564368] PARALYZE",
+        "[3258140864] FIRE",
+        "[905134464] ELEC",
+        "[2670515968] WATER",
+        "[2003041280] ICE",
+        "[1154908032] DRAGON",
+        "[1166260736] STENCH",
+        "[2042111104] BLAST",
+        "[2473450368] BLEED",
+        "[1948831104] DEFENCE_DOWN",
+        "[2618708096] STICKY",
+        "[3431430784] FROZEN",
+        "[27281] EX_00"
+      ],
+      "STRUCT__Poison_Accumerator_Param__Interval": 3.0,
+      "STRUCT__Poison_Accumerator_Param__ReduceVelue": 5.0,
+      "_Poison_DurationTime": 30.0,
+      "_Poison_DamageIntervalTime": 1.5,
+      "_Poison_Damage": 2.0,
+      "_Stink_DurationTime": 50.0,
+      "_Blast_TimeLimit": 25.0,
+      "_Blast_Damage": 30.0,
+      "_Blast_DodgeConsume": 35.0,
+      "_Blast_StepDodgeConsume": 25.0,
+      "_Bleed_CureTime": 4.0,
+      "_Bleed_CureRate_SquatMove": 0.8,
+      "_Bleed_CureRate_OtherSquatIdle": 0.25,
+      "_BleedDamage_Attack": 2.0,
+      "_BleedDamage_Guard": 3.0,
+      "_BleedDamage_Dodge": 5.0,
+      "_BleedDamage_BattleRideMove": 1.0,
+      "_BleedDamage_Dash": 1.0,
+      "_Bleedinterval_Dash": 1.5,
+      "_Bleed_RecoveryBuffTime": 30.0,
+      "_Bleed_RecoveryBuffRate": 1.3,
+      "_DefDown_DurationTime": 45.0,
+      "_DefDown_DefenceRate": 0.8,
+      "_Oil_DurationTime": 30.0,
+      "_Oil_FireDamageRate": 1.5,
+      "STRUCT__Frenzy_Accumerator_Param__Interval": 3.0,
+      "STRUCT__Frenzy_Accumerator_Param__ReduceVelue": 5.0,
+      "_Frenzy_OutBreak_Point": 120.0,
+      "_Frenzy_OutBreak_AddPerTime": 1.0,
+      "_Frenzy_OutBreak_TimeTeritoryEffectOffTime": 6.0,
+      "_Frenzy_OutBreak_AddInterval": 1.0,
+      "_Frenzy_OutBreak_UchikeshiReduceRate": 0.5,
+      "_Frenzy_Overcome_Point": 60.0,
+      "_Frenzy_Overcome_PointAdd": 10.0,
+      "_Frenzy_Overcome_PointAddMaxCount": 5,
+      "_Frenzy_Overcome_EffectMaxStateRate": 0.75,
+      "_Frenzy_Overcome_PointDodge": 0.2,
+      "_Frenzy_Overcome_PointStepDodge": 0.2,
+      "_Frenzy_Overcome_PointDashInterval": 1.0,
+      "_Frenzy_Overcome_PointDash": 0.2,
+      "_Frenzy_Overcome_PointWpAttackRate": 0.1,
+      "_Frenzy_Overcome_PointCommonAttackRate": 0.1,
+      "_Frenzy_Overcome_PointInsectAttackRate": 0.05,
+      "_Frenzy_Overcome_PointHotDrinkRate": 1.05,
+      "_Frenzy_OutBreak_Duration": 90.0,
+      "_Frenzy_OutBreak_FrenzyDamageRate": 1.1,
+      "_Frenzy_OutBreak_DamageRate": 1.05,
+      "_Frenzy_OutBreak_SlipDamageInterval": 1.0,
+      "_Frenzy_OutBreak_SlipDamage": 1.0,
+      "_Frenzy_Overcome_Duration": 60.0,
+      "_Frenzy_Overcome_CriticalRate": 15.0,
+      "_ElementCond_ImmuneResistValue": 20.0,
+      "_ElementCond_HalfResistValue": 10.0,
+      "_ElementCond_HalfResistProbability": 50,
+      "_Fire_DurationTime": 30.0,
+      "_Fire_DodgeConsumeTime": 10.0,
+      "_Fire_StepDodgeConsumeTime": 5.0,
+      "_Fire_DamageIntervalTime": 1.0,
+      "_Fire_Damage": 3.0,
+      "_Elec_DurationTime": 60.0,
+      "_Elec_DodgeConsumeTime": 3.0,
+      "_Elec_StepDodgeConsumeTime": 2.0,
+      "_Elec_StunRate": 2.0,
+      "_Water_DurationTime": 60.0,
+      "_Water_DodgeConsumeTime": 3.0,
+      "_Water_StepDodgeConsumeTime": 2.0,
+      "_Water_StaminaRecoveryRate": 0.25,
+      "_Ice_DurationTime": 60.0,
+      "_Ice_DodgeConsumeTime": 3.0,
+      "_Ice_StepDodgeConsumeTime": 2.0,
+      "_Ice_StaminaTrgRate": 2.0,
+      "_Ice_StaminaContinuousRate": 3.0,
+      "_Dragon_DurationTime": 60.0,
+      "_Dragon_DodgeConsumeTime": 1.0,
+      "_Dragon_StepDodgeConsumeTime": 0.7,
+      "_Stun_DurationTime": 7.5,
+      "_FlashStun_S_DurationTime": 3.0,
+      "_FlashStun_M_DurationTime": 5.0,
+      "_FlashStun_L_DurationTime": 10.0,
+      "_Stun_LeverMashingInfluence": 3.0,
+      "_Stun_ButtonMashingInfluence": 0.5,
+      "_Stun_AccumurateReduceLevelData": [
+        {
+          "app.HunterDef.cStunAccumurateReduceData": {
+            "_Time": 0.0,
+            "_Interval": -1.0,
+            "_ReduceValue": 0.0
+          }
+        },
+        {
+          "app.HunterDef.cStunAccumurateReduceData": {
+            "_Time": 6.0,
+            "_Interval": 0.1,
+            "_ReduceValue": 3.0
+          }
+        }
+      ],
+      "STRUCT__Paralyze_Accumerator_Param__Interval": 3.0,
+      "STRUCT__Paralyze_Accumerator_Param__ReduceVelue": 5.0,
+      "_Paralyze_DurationTime": 8.0,
+      "_Paralyze_LeverMashingInfluence": 2.6667,
+      "STRUCT__Sleep_Accumerator_Param__Interval": 3.0,
+      "STRUCT__Sleep_Accumerator_Param__ReduceVelue": 5.0,
+      "_Sleep_Pre_DurationTime": 10.0,
+      "_Sleep_DurationTime": 7.0,
+      "_Sticky_DurationTime": 7.0,
+      "_Sticky_LeverMashingInfluence": 2.0,
+      "STRUCT__Frozen_Accumerator_Param__Interval": 3.0,
+      "STRUCT__Frozen_Accumerator_Param__ReduceVelue": 5.0,
+      "_Frozen_DurationTime": 8.0,
+      "_Frozen_LeverMashingInfluence": 2.0,
+      "_DamageEarS_DurationTime": 2.0,
+      "_DamageEarL_DurationTime": 3.0,
+      "_DamageQuakeSS_DurationTime": 0.1,
+      "_DamageQuakeS_DurationTime": 3.0,
+      "_DamageQuakeL_DurationTime": 6.0,
+      "_DamageWindSS_DurationTime": 0.8,
+      "_DamageWindS_DurationTime": 1.5,
+      "_DamageWindL_DurationTime": 2.2,
+      "_DamageWindDragon_DurationTime": 3.0,
+      "_DamageWind_JumpParam": {
+        "app.cGravityJumpParam": {
+          "_JumpVelocity": [
+            0.0,
+            2.0,
+            4.0,
+            0.0
+          ],
+          "_Gravity": 9.8,
+          "_GravityRate": 1.0
+        }
+      },
+      "_Ex00L_DurationTime": 30.0,
+      "_Ex00S_DurationTime": 30.0,
+      "_Ex00TurnSpeedRate": 0.75,
+      "_Ex00MoveStartCurve": {
+        "app.AppAnimationCurve": {
+          "v0": [
+            {
+              "raw": "00000000000000000000000000000000",
+              "type": "Data"
+            },
+            {
+              "raw": "743a343f03000438933c0000933c0000",
+              "type": "Data"
+            },
+            {
+              "raw": "0000803f0000003c0000000000000000",
+              "type": "Data"
+            }
+          ],
+          "v1": {
+            "raw": "00000000",
+            "type": "Data"
+          },
+          "v2": {
+            "raw": "0000803f",
+            "type": "Data"
+          },
+          "v3": {
+            "raw": "00000000",
+            "type": "Data"
+          },
+          "v4": {
+            "raw": "00007a44",
+            "type": "Data"
+          },
+          "v5": {
+            "raw": "00000000",
+            "type": "Data"
+          },
+          "v6": {
+            "raw": "02000000",
+            "type": "Data"
+          }
+        }
+      },
+      "_Ex00MoveAddAccel": 1.5,
+      "_Ex00MoveSubAccel": 1.0,
+      "_Ex00MoveAddMax": 2.0,
+      "_Ex00MoveAddMaxRate": 1.2,
+      "_Ex00MoveAddDeg": 90.0,
+      "_Ex00DamageLSlopeSpeedRate": {
+        "app.AppAnimationCurve": {
+          "v0": [
+            {
+              "raw": "9a99193f0000a0d50000000000000000",
+              "type": "Data"
+            },
+            {
+              "raw": "9b99193f0000c2bd0000000000000000",
+              "type": "Data"
+            },
+            {
+              "raw": "e66e6c3f0100ef494d3300004d330000",
+              "type": "Data"
+            },
+            {
+              "raw": "08fd983f01004b4e0033000000330000",
+              "type": "Data"
+            },
+            {
+              "raw": "7dbbb13f0100e5503e2b00003e2b0000",
+              "type": "Data"
+            },
+            {
+              "raw": "a8e2b93f0000a0550000000000000000",
+              "type": "Data"
+            }
+          ],
+          "v1": {
+            "raw": "00000000",
+            "type": "Data"
+          },
+          "v2": {
+            "raw": "00000040",
+            "type": "Data"
+          },
+          "v3": {
+            "raw": "00000000",
+            "type": "Data"
+          },
+          "v4": {
+            "raw": "0000b442",
+            "type": "Data"
+          },
+          "v5": {
+            "raw": "00000000",
+            "type": "Data"
+          },
+          "v6": {
+            "raw": "02000000",
+            "type": "Data"
+          }
+        }
+      },
+      "_Ex00DamageLSlopeSpringConst": 2.0,
+      "_Ex00DamageLSlopeDampingConst": 0.1,
+      "_Ex00DashStopInterval": 1.5,
+      "_Ex00AdditionDamage": 10.0,
+      "_Ex00AdditionDamageL": 10.0,
+      "_Ex00GAdd": 30.0,
+      "_Ex00RAdd": 20.0,
+      "_Ex00RTime": 30.0,
+      "_Ex01Param_Normal": {
+        "app.HunterDef.cBadCondEx01Param": {
+          "_BaseDurationTime": 0.0,
+          "_StackParam": [
+            {
+              "_Lv": 1,
+              "_AddTime": 20.0,
+              "_HealthValue": 30.0
+            },
+            {
+              "_Lv": 2,
+              "_AddTime": 0.0,
+              "_HealthValue": 50.0
+            },
+            {
+              "_Lv": 3,
+              "_AddTime": 0.0,
+              "_HealthValue": 70.0
+            }
+          ]
+        }
+      },
+      "_Ex01Param_Hard": {
+        "app.HunterDef.cBadCondEx01Param": {
+          "_BaseDurationTime": 0.0,
+          "_StackParam": [
+            {
+              "_Lv": 1,
+              "_AddTime": 20.0,
+              "_HealthValue": 40.0
+            },
+            {
+              "_Lv": 2,
+              "_AddTime": 0.0,
+              "_HealthValue": 70.0
+            },
+            {
+              "_Lv": 3,
+              "_AddTime": 0.0,
+              "_HealthValue": 100.0
+            }
+          ]
+        }
+      },
+      "_CriticalAttackRate": 1.25,
+      "_NegativeAttackRate": 0.75,
+      "_PhysicalAttack_RateLimit": 4.0,
+      "_PhysicalAttack_RateLimitAll": 5.0,
+      "_PhysicalAttack_AddLimit": 400.0,
+      "_PhysicalAttack_AddLimitAll": 600.0,
+      "_ElementAttack_RateLimit": 2.3,
+      "_ElementAttack_AddLimit": 40.0,
+      "_ElementAttack_RateLimit_Gun": 2.3,
+      "_ConditionAttack_RateLimit": 1.6,
+      "_StunAttack_RateLimit": 1.5,
+      "_StaminaAttack_RateLimit": 1.5,
+      "_RideAttack_RateLimit": 1.45
+    }
+  }
+]

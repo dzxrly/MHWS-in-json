@@ -1,0 +1,64 @@
+[
+  {
+    "app.user_data.NpcAITableLayerData": {
+      "_ConditionParams": [
+        {
+          "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
+            "_Param": {
+              "app.NpcAITableConditions.cCheckWp06LancerType_Param": {
+                "_LancerType": 1
+              }
+            },
+            "_Inverse": false,
+            "_IsContinue": false
+          }
+        }
+      ],
+      "_TableHolder": {
+        "app.cNpcAITableHolder": {
+          "_Setting": {
+            "app.cNpcAITableHolder.cSetting": {
+              "_LayerType": "[0] FROM_TOP",
+              "_DisableInterrupt": true
+            }
+          },
+          "_TableList": [
+            {
+              "app.cNpcAITableHolder.cTableData": {
+                "_InstanceGuid": "5147e982-7616-46eb-a69c-99f9fadb71e7",
+                "_TableData": {
+                  "app.user_data.NpcAITableActionData": {
+                    "ref_instance_id": 4,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Combat/Wp06/2_AITableAction/CbtWp06_GuardCounter_Special_AITableAction.user"
+                  }
+                }
+              }
+            },
+            {
+              "app.cNpcAITableHolder.cTableData": {
+                "_InstanceGuid": "5a98f57b-c905-49d7-b514-38e4f2ec0e8e",
+                "_TableData": {
+                  "app.user_data.NpcAITableActionData": {
+                    "ref_instance_id": 6,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Combat/Wp06/2_AITableAction/CbtWp06_GuardPower_Special_AITableAction.user"
+                  }
+                }
+              }
+            },
+            {
+              "app.cNpcAITableHolder.cTableData": {
+                "_InstanceGuid": "5939137b-66cb-03f5-29d3-abcbf13a5afe",
+                "_TableData": {
+                  "app.user_data.NpcAITableActionData": {
+                    "ref_instance_id": 8,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Combat/Wp06/2_AITableAction/CbtWp06_GuardNormal_Special_AITableAction.user"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+]

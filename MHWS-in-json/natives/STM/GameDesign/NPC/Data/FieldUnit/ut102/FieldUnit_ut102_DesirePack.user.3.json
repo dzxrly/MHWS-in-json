@@ -1,0 +1,35 @@
+[
+  {
+    "app.user_data.NpcDesirePack": {
+      "_DataList": [
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 1,
+                "path": "GameDesign/NPC/Data/FieldUnit/ut102/FieldUnit_ut102_DesireParam_CampFire.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[5314] GROUP_AI",
+            "_RetryCount": 1,
+            "_EnumFixedID": 2117305728
+          }
+        }
+      ],
+      "_TimerParam": {
+        "app.cNpcDesireTimerHolder": {
+          "_Param": {
+            "app.NpcDesireTimers.cNone_Param": {}
+          }
+        }
+      },
+      "_DesireEnum": {
+        "ace.user_data.EnumMaker": {
+          "ref_instance_id": 6,
+          "path": "GameDesign/NPC/EnumMaker/NpcFieldUnitDesire_ut102.user"
+        }
+      }
+    }
+  }
+]

@@ -1,0 +1,59 @@
+[
+  {
+    "app.user_data.NpcMotionPack_Sub": {
+      "_PlayModeParam": {
+        "app.cNpcMotionPack.cPlayMode_RefGender": {
+          "_Male": {
+            "app.user_data.NpcMotionPack_Sub": {
+              "ref_instance_id": 1,
+              "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/AccentMotionPack/HumAdlSub_Accent_Assist_BigSuccess_M_MotionPack.user"
+            }
+          },
+          "_Female": {
+            "app.user_data.NpcMotionPack_Sub": {
+              "ref_instance_id": 2,
+              "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/AccentMotionPack/HumAdlSub_Accent_Assist_BigSuccess_F_MotionPack_2.user"
+            }
+          }
+        }
+      },
+      "_PackList": [
+        {
+          "app.user_data.NpcMotionPack_Sub.cSubPack": {
+            "_Hash": {
+              "ace.cStrHash": {
+                "_Hash": 1548858029
+              }
+            },
+            "_PlayMode": 1,
+            "_MotionGroupBankID": 2193,
+            "_MotionRefList": [
+              {
+                "app.cNpcMotionPack.cMotionRef": {
+                  "_Enabled": true,
+                  "_MotionGroupHash": 7336392887227762952,
+                  "_AddMotion": false,
+                  "_LoopCount": 1,
+                  "_LR": -1,
+                  "_RandomWeight": 50,
+                  "_PlayConditions": []
+                }
+              },
+              {
+                "app.cNpcMotionPack.cMotionRef": {
+                  "_Enabled": true,
+                  "_MotionGroupHash": 10751993109217554525,
+                  "_AddMotion": false,
+                  "_LoopCount": 1,
+                  "_LR": -1,
+                  "_RandomWeight": 50,
+                  "_PlayConditions": []
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

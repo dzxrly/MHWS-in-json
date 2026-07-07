@@ -1,0 +1,128 @@
+[
+  {
+    "app.user_data.NpcCastingPackages": {
+      "_DataList": [
+        {
+          "app.user_data.NpcCastingPackages.cOperationData": {
+            "_IsTaskAsset": true,
+            "_TaskAsset": {
+              "app.user_data.NpcTaskData": {
+                "ref_instance_id": 1,
+                "path": "GameDesign/NPC/Data/Casting/Mission/Ms512000/03/HumAdl_st203_Ms512000_03_023.user"
+              }
+            },
+            "_CombiAsset": {
+              "": {}
+            },
+            "_TargetFixed": {
+              "app.user_data.cNpcVariousTarget": {
+                "_FixedID": "[228308800] NPC112_13_023"
+              }
+            },
+            "_EnvironmentBit": {
+              "app.user_data.cNpcEnvironmentBit": {
+                "_Ruin": true,
+                "_BeforeAbnormal": true,
+                "_Abnormal": false,
+                "_AfterAbnormal": false,
+                "_Fertility": true
+              }
+            },
+            "_Schedule": "[1117828480] NONE",
+            "_RandomWeight": -1,
+            "_ActionTime": {
+              "raw": "0000000000000000",
+              "type": "Range"
+            },
+            "_IsOnceDay": false,
+            "_MediatorKey_Place": "[3771098080] INVALID"
+          }
+        },
+        {
+          "app.user_data.NpcCastingPackages.cOperationData": {
+            "_IsTaskAsset": true,
+            "_TaskAsset": {
+              "app.user_data.NpcTaskData": {
+                "ref_instance_id": 7,
+                "path": "GameDesign/NPC/Data/GroupAIEvent/st103/OilFes_CollectPhase/HumAdl_st103_Festival_Picker_Oil_2.user"
+              }
+            },
+            "_CombiAsset": {
+              "": {}
+            },
+            "_TargetFixed": {
+              "app.user_data.cNpcVariousTarget": {
+                "_FixedID": "[228308800] NPC112_13_023"
+              }
+            },
+            "_EnvironmentBit": {
+              "app.user_data.cNpcEnvironmentBit": {
+                "_Ruin": false,
+                "_BeforeAbnormal": false,
+                "_Abnormal": false,
+                "_AfterAbnormal": true,
+                "_Fertility": false
+              }
+            },
+            "_Schedule": "[1117828480] NONE",
+            "_RandomWeight": -1,
+            "_ActionTime": {
+              "raw": "0000000000000000",
+              "type": "Range"
+            },
+            "_IsOnceDay": false,
+            "_MediatorKey_Place": "[3771098080] INVALID"
+          }
+        },
+        {
+          "app.user_data.NpcCastingPackages.cOperationData": {
+            "_IsTaskAsset": false,
+            "_TaskAsset": {
+              "": {}
+            },
+            "_CombiAsset": {
+              "app.user_data.NpcCombinationPackage": {
+                "ref_instance_id": 13,
+                "path": "GameDesign/NPC/Data/Combination/3_Direct/Combi313_012/Combi313_012_pkg_L.user"
+              }
+            },
+            "_TargetFixed": {
+              "app.user_data.cNpcVariousTarget": {
+                "_FixedID": "[228308800] NPC112_13_023"
+              }
+            },
+            "_EnvironmentBit": {
+              "app.user_data.cNpcEnvironmentBit": {
+                "_Ruin": false,
+                "_BeforeAbnormal": false,
+                "_Abnormal": true,
+                "_AfterAbnormal": false,
+                "_Fertility": false
+              }
+            },
+            "_Schedule": "[1117828480] NONE",
+            "_RandomWeight": -1,
+            "_ActionTime": {
+              "raw": "0000000000000000",
+              "type": "Range"
+            },
+            "_IsOnceDay": false,
+            "_MediatorKey_Place": "[3771098080] INVALID"
+          }
+        }
+      ],
+      "_SettingData": {
+        "app.user_data.NpcCastingPackages.cSettingData": {
+          "_TargetList": [
+            {
+              "app.user_data.cNpcVariousTarget": {
+                "_FixedID": "[228308800] NPC112_13_023"
+              }
+            }
+          ],
+          "_Priority": -1
+        }
+      }
+    }
+  }
+]

@@ -1,0 +1,131 @@
+[
+  {
+    "app.user_data.NpcDesireParam": {
+      "_DefaultParam": {
+        "app.user_data.NpcDesireParam.cParam": {
+          "_CoolTime": {
+            "app.user_data.NpcDesireParam.cParam.cCoolTime": {
+              "_Complete": {
+                "raw": "0000000000000000",
+                "type": "Range"
+              },
+              "_Cancel": {
+                "raw": "0000000000000000",
+                "type": "Range"
+              },
+              "_Group": {
+                "raw": "000096430000b443",
+                "type": "Range"
+              }
+            }
+          },
+          "_StartConditionParams": [
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcDesireConditions.cCheckHaveBullet_Param": {
+                    "_ShellType": "[1038659904] SLEEP"
+                  }
+                },
+                "_Inverse": false
+              }
+            },
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcDesireConditions.cCheckTargetEmBoss_Param": {}
+                },
+                "_Inverse": false
+              }
+            },
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcDesireConditions.cActiveBadConditionCombatEnemy_Param": {
+                    "_Condition": 7
+                  }
+                },
+                "_Inverse": true
+              }
+            },
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcDesireConditions.cExistsSameAreaEnemies_Param": {}
+                },
+                "_Inverse": true
+              }
+            },
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcDesireConditions.cCheckTargetEmActiveDebuffSimulation_Param": {
+                    "_Condition": 7,
+                    "_UnitValue": 40.0,
+                    "_AssumedHitCount": 12,
+                    "_ActiveCount": 1
+                  }
+                },
+                "_Inverse": false
+              }
+            },
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcDesireConditions.cActiveBadConditionCombatEnemy_Param": {
+                    "_Condition": 5
+                  }
+                },
+                "_Inverse": true
+              }
+            },
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcDesireConditions.cMissionTargetCombatEnemy_Param": {}
+                },
+                "_Inverse": false
+              }
+            },
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcDesireConditions.cRideCombatEnemy_Param": {}
+                },
+                "_Inverse": true
+              }
+            },
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcDesireConditions.cCheckAttackChanceCombatEnemy_Param": {
+                    "_IsDown": true,
+                    "_IsPinch": true,
+                    "_IsTired": true,
+                    "_IsUniqueDown": false,
+                    "_ActionIDList": []
+                  }
+                },
+                "_Inverse": true
+              }
+            }
+          ],
+          "_EndConditionParams": [
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcDesireConditions.cActiveBadConditionCombatEnemy_Param": {
+                    "_Condition": 7
+                  }
+                },
+                "_Inverse": false
+              }
+            }
+          ],
+          "_ContinueConditionParams": []
+        }
+      },
+      "_OverwriteKindParams": []
+    }
+  }
+]

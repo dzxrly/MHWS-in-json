@@ -1,0 +1,64 @@
+[
+  {
+    "app.user_data.NpcAITableLayerData": {
+      "_ConditionParams": [
+        {
+          "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
+            "_Param": {
+              "app.NpcAITableConditions.cCheckDesireAdvisorTent_Param": {
+                "_DesireFixedID": "[4] CAMP_OPTION"
+              }
+            },
+            "_Inverse": false,
+            "_IsContinue": true
+          }
+        }
+      ],
+      "_TableHolder": {
+        "app.cNpcAITableHolder": {
+          "_Setting": {
+            "app.cNpcAITableHolder.cSetting": {
+              "_LayerType": "[1] RANDOM",
+              "_DisableInterrupt": false
+            }
+          },
+          "_TableList": [
+            {
+              "app.cNpcAITableHolder.cTableData": {
+                "_InstanceGuid": "cdc82f1b-36e0-08c3-30d7-03fc63bfcf38",
+                "_TableData": {
+                  "app.user_data.NpcAITableActionData": {
+                    "ref_instance_id": 4,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Advisor/Tent/2_AITableAction/AdvTent_TentOption00_AITableAction.user"
+                  }
+                }
+              }
+            },
+            {
+              "app.cNpcAITableHolder.cTableData": {
+                "_InstanceGuid": "fe3064a1-0b6c-4a3f-89c7-1a325ac1136d",
+                "_TableData": {
+                  "app.user_data.NpcAITableActionData": {
+                    "ref_instance_id": 6,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Advisor/Tent/2_AITableAction/AdvTent_TentOption01_AITableAction.user"
+                  }
+                }
+              }
+            },
+            {
+              "app.cNpcAITableHolder.cTableData": {
+                "_InstanceGuid": "7d8fc8ea-b317-4be7-bb7d-bac5c5a2072d",
+                "_TableData": {
+                  "app.user_data.NpcAITableActionData": {
+                    "ref_instance_id": 8,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Advisor/Tent/2_AITableAction/AdvTent_TentOption02_AITableAction.user"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+]

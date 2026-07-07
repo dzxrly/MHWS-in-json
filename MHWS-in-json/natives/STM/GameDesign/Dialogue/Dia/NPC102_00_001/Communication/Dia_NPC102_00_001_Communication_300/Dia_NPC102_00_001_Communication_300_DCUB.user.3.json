@@ -1,0 +1,152 @@
+[
+  {
+    "app.user_data.DialogueDynamicChoiceUnivarsalBase": {
+      "_RandomDisplayChoiceCountMax": 2,
+      "_RandomDisplayChoiceCountMin": 2,
+      "_DataArray": [
+        {
+          "app.user_data.DialogueDynamicChoiceUnivarsalBase.cData": {
+            "_ChoiceNumber": 0,
+            "_IsMinimumDisplay": false,
+            "_IsRandomlysDisplay": false,
+            "_Weight": -1,
+            "_Condition": {
+              "app.user_data.cDialogueConditionSelector2": {
+                "app.user_data.DCWhereIsNPC300_14_001": {
+                  "Order": 0,
+                  "RegisterRequest": false,
+                  "_AreaID": "[0] INVALID"
+                }
+              }
+            }
+          }
+        },
+        {
+          "app.user_data.DialogueDynamicChoiceUnivarsalBase.cData": {
+            "_ChoiceNumber": 1,
+            "_IsMinimumDisplay": true,
+            "_IsRandomlysDisplay": true,
+            "_Weight": 1,
+            "_Condition": {
+              "app.user_data.cDialogueConditionSelector2": {
+                "app.user_data.DCIsExistNotReadBranchDialogue": {
+                  "Order": 0,
+                  "RegisterRequest": false,
+                  "_IsReverseEval": false,
+                  "_BranchId": "[1] Com1_NPC102_00_001"
+                }
+              }
+            }
+          }
+        },
+        {
+          "app.user_data.DialogueDynamicChoiceUnivarsalBase.cData": {
+            "_ChoiceNumber": 2,
+            "_IsMinimumDisplay": true,
+            "_IsRandomlysDisplay": true,
+            "_Weight": 1,
+            "_Condition": {
+              "app.user_data.cDialogueConditionSelector2": {
+                "app.user_data.DCIsExistNotReadBranchDialogue": {
+                  "Order": 0,
+                  "RegisterRequest": false,
+                  "_IsReverseEval": false,
+                  "_BranchId": "[2] Com2_NPC102_00_001"
+                }
+              }
+            }
+          }
+        },
+        {
+          "app.user_data.DialogueDynamicChoiceUnivarsalBase.cData": {
+            "_ChoiceNumber": 3,
+            "_IsMinimumDisplay": true,
+            "_IsRandomlysDisplay": true,
+            "_Weight": 1,
+            "_Condition": {
+              "app.user_data.cDialogueConditionSelector2": {
+                "app.user_data.DCIsExistNotReadBranchDialogue": {
+                  "Order": 0,
+                  "RegisterRequest": false,
+                  "_IsReverseEval": false,
+                  "_BranchId": "[3] Com3_NPC102_00_001"
+                }
+              }
+            }
+          }
+        },
+        {
+          "app.user_data.DialogueDynamicChoiceUnivarsalBase.cData": {
+            "_ChoiceNumber": 4,
+            "_IsMinimumDisplay": true,
+            "_IsRandomlysDisplay": true,
+            "_Weight": 1,
+            "_Condition": {
+              "app.user_data.cDialogueConditionSelector2": {
+                "app.user_data.DCIsExistNotReadBranchDialogue": {
+                  "Order": 0,
+                  "RegisterRequest": false,
+                  "_IsReverseEval": false,
+                  "_BranchId": "[4] Com4_NPC102_00_001"
+                }
+              }
+            }
+          }
+        },
+        {
+          "app.user_data.DialogueDynamicChoiceUnivarsalBase.cData": {
+            "_ChoiceNumber": 5,
+            "_IsMinimumDisplay": true,
+            "_IsRandomlysDisplay": true,
+            "_Weight": 1,
+            "_Condition": {
+              "app.user_data.cDialogueConditionSelector2": {
+                "app.user_data.DCIsExistNotReadBranchDialogue": {
+                  "Order": 0,
+                  "RegisterRequest": false,
+                  "_IsReverseEval": false,
+                  "_BranchId": "[5] Com5_NPC102_00_001"
+                }
+              }
+            }
+          }
+        },
+        {
+          "app.user_data.DialogueDynamicChoiceUnivarsalBase.cData": {
+            "_ChoiceNumber": 6,
+            "_IsMinimumDisplay": true,
+            "_IsRandomlysDisplay": true,
+            "_Weight": 1,
+            "_Condition": {
+              "app.user_data.cDialogueConditionSelector2": {
+                "app.user_data.DCIsExistNotReadBranchDialogue": {
+                  "Order": 0,
+                  "RegisterRequest": false,
+                  "_IsReverseEval": false,
+                  "_BranchId": "[6] Com0_NPC102_00_001"
+                }
+              }
+            }
+          }
+        },
+        {
+          "app.user_data.DialogueDynamicChoiceUnivarsalBase.cData": {
+            "_ChoiceNumber": 7,
+            "_IsMinimumDisplay": false,
+            "_IsRandomlysDisplay": false,
+            "_Weight": -1,
+            "_Condition": {
+              "app.user_data.cDialogueConditionSelector2": {
+                "app.user_data.DCWhereIsNPC300_14_001": {
+                  "Order": 0,
+                  "RegisterRequest": false,
+                  "_AreaID": "[0] INVALID"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+]

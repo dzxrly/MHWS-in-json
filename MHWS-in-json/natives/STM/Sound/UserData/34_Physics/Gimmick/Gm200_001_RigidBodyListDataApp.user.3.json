@@ -1,0 +1,79 @@
+[
+  {
+    "app.snd_user_data.SoundRigidBodyListDataApp": {
+      "_PhysicsSettingList": [
+        {
+          "soundlib.SoundPhysicsSettings": {
+            "_BodyIdList": [
+              0
+            ],
+            "_PhysicsValueType": 1,
+            "_ContactPoint": true,
+            "_AntiRepeatTime": 0.8,
+            "_TriggerAll": false,
+            "_ThresholdTriggerList": [
+              {
+                "soundlib.ThresholdTrigger": {
+                  "_Threshold": 4.2,
+                  "_TriggerId": 1083409492
+                }
+              }
+            ]
+          }
+        },
+        {
+          "soundlib.SoundPhysicsSettings": {
+            "_BodyIdList": [
+              0
+            ],
+            "_PhysicsValueType": 3,
+            "_ContactPoint": true,
+            "_AntiRepeatTime": 0.8,
+            "_TriggerAll": false,
+            "_ThresholdTriggerList": [
+              {
+                "soundlib.ThresholdTrigger": {
+                  "_Threshold": 6000.0,
+                  "_TriggerId": 1799933893
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "_BodyMaterialParamList": [
+        {
+          "soundlib.SoundBodyMaterialParam": {
+            "_BodyId": 0,
+            "_UpdateOverlapping": true
+          }
+        }
+      ],
+      "_LimitContact": {
+        "soundlib.SoundPhysicsListBehavior.Limitation": {
+          "IsEnableLimit": false,
+          "Limit": 0
+        }
+      },
+      "_LimitOverlapping": {
+        "soundlib.SoundPhysicsListBehavior.Limitation": {
+          "IsEnableLimit": false,
+          "Limit": 0
+        }
+      },
+      "_EnabeClearLimitOverlapping": true,
+      "_LimitAntiUpdate": {
+        "soundlib.SoundPhysicsListBehavior.Limitation": {
+          "IsEnableLimit": false,
+          "Limit": 0
+        }
+      },
+      "_LimitUpdate": {
+        "soundlib.SoundPhysicsListBehavior.Limitation": {
+          "IsEnableLimit": false,
+          "Limit": 0
+        }
+      }
+    }
+  }
+]

@@ -1,0 +1,119 @@
+[
+  {
+    "app.user_data.NpcDesirePack": {
+      "_DataList": [
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 1,
+                "path": "GameDesign/NPC/Partner/CommonData/Desire/Param/Explore/Explore_Hagitori_DesireParam.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[2124896000] EXPLORE_HAGITORI",
+            "_RetryCount": 1,
+            "_EnumFixedID": 1
+          }
+        },
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 4,
+                "path": "GameDesign/NPC/Partner/CommonData/Desire/Param/Explore/Explore_Toishi_DesireParam.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[2925368320] EXPLORE_TOISHI",
+            "_RetryCount": 1,
+            "_EnumFixedID": 2
+          }
+        },
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 7,
+                "path": "GameDesign/NPC/Partner/CommonData/Desire/Param/Explore/Explore_Nikutabe_DesireParam.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[602898496] EXPLORE_NIKUTABE",
+            "_RetryCount": 1,
+            "_EnumFixedID": 3
+          }
+        },
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 10,
+                "path": "GameDesign/NPC/Partner/CommonData/Desire/Param/Explore/Explore_FastTravel_DesireParam.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[307992832] FASE_TRAVEL",
+            "_RetryCount": 1,
+            "_EnumFixedID": 4
+          }
+        },
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 13,
+                "path": "GameDesign/NPC/Partner/CommonData/Desire/Param/Explore/Explore_PickupItem_DesireParam.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[1354844160] EXPLORE_PICKUP",
+            "_RetryCount": 1,
+            "_EnumFixedID": 5
+          }
+        },
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 16,
+                "path": "GameDesign/NPC/Partner/CommonData/Desire/Param/Explore/Explore_ChangedSlinger_DesireParam.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[1819777920] SLINGER_CHANGED",
+            "_RetryCount": 1,
+            "_EnumFixedID": 7
+          }
+        },
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 19,
+                "path": "GameDesign/NPC/Partner/CommonData/Desire/Param/Explore/Explore_EventItem_01_DesireParam.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[2136822016] SET_TRAP",
+            "_RetryCount": 1,
+            "_EnumFixedID": 8
+          }
+        }
+      ],
+      "_TimerParam": {
+        "app.cNpcDesireTimerHolder": {
+          "_Param": {
+            "app.NpcDesireTimers.cQuest_Param": {}
+          }
+        }
+      },
+      "_DesireEnum": {
+        "ace.user_data.EnumMaker": {
+          "ref_instance_id": 24,
+          "path": "GameDesign/NPC/Partner/CommonData/EnumMaker/NpcDesire_Partner_Explore_Cmn.user"
+        }
+      }
+    }
+  }
+]

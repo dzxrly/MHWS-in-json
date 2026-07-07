@@ -1,0 +1,164 @@
+[
+  {
+    "app.user_data.NpcStreakPlanData": {
+      "_ActionDataList": {
+        "ace.cInstanceGuidArray`1<app.user_data.NpcStreakPlanData.cActionData>": {
+          "_DataArray": [
+            {
+              "app.user_data.NpcStreakPlanData.cActionData": {
+                "_InstanceGuid": "6079e41c-56c4-0c25-2dc2-89118586ab88",
+                "_ActionData": {
+                  "app.user_data.NpcStreakActionData": {
+                    "ref_instance_id": 1,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Hunting/Damage/4_StreakAction/HntDamage_Down_StreakAction.user"
+                  }
+                },
+                "_DerivedAction_Combo": {
+                  "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+                    "_DerivedActionParams": [
+                      {
+                        "app.user_data.NpcStreakPlanData.cDerivedActionHolder.cDerivedActionParam": {
+                          "_ActionGuid": "4a9e9041-9579-41c6-a484-24c81d59499b",
+                          "_RandomWeight": -1
+                        }
+                      },
+                      {
+                        "app.user_data.NpcStreakPlanData.cDerivedActionHolder.cDerivedActionParam": {
+                          "_ActionGuid": "000cc565-f07d-49bf-b674-cdc31020cdc3",
+                          "_RandomWeight": -1
+                        }
+                      }
+                    ]
+                  }
+                },
+                "_DerivedAction_Interrupt": {
+                  "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+                    "_DerivedActionParams": []
+                  }
+                }
+              }
+            },
+            {
+              "app.user_data.NpcStreakPlanData.cActionData": {
+                "_InstanceGuid": "cbf27b80-8b8b-4d68-918c-b7a9ca1ff8a6",
+                "_ActionData": {
+                  "app.user_data.NpcStreakActionData": {
+                    "ref_instance_id": 7,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Hunting/Damage/4_StreakAction/HntDamage_PorterRescue_StreakAction.user"
+                  }
+                },
+                "_DerivedAction_Combo": {
+                  "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+                    "_DerivedActionParams": [
+                      {
+                        "app.user_data.NpcStreakPlanData.cDerivedActionHolder.cDerivedActionParam": {
+                          "_ActionGuid": "6079e41c-56c4-0c25-2dc2-89118586ab88",
+                          "_RandomWeight": 50
+                        }
+                      }
+                    ]
+                  }
+                },
+                "_DerivedAction_Interrupt": {
+                  "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+                    "_DerivedActionParams": []
+                  }
+                }
+              }
+            },
+            {
+              "app.user_data.NpcStreakPlanData.cActionData": {
+                "_InstanceGuid": "4a9e9041-9579-41c6-a484-24c81d59499b",
+                "_ActionData": {
+                  "app.user_data.NpcStreakActionData": {
+                    "ref_instance_id": 12,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Hunting/Damage/4_StreakAction/HntDamage_PorterRescueMove_StreakAction.user"
+                  }
+                },
+                "_DerivedAction_Combo": {
+                  "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+                    "_DerivedActionParams": []
+                  }
+                },
+                "_DerivedAction_Interrupt": {
+                  "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+                    "_DerivedActionParams": []
+                  }
+                }
+              }
+            },
+            {
+              "app.user_data.NpcStreakPlanData.cActionData": {
+                "_InstanceGuid": "000cc565-f07d-49bf-b674-cdc31020cdc3",
+                "_ActionData": {
+                  "app.user_data.NpcStreakActionData": {
+                    "ref_instance_id": 16,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Hunting/Damage/4_StreakAction/HntDamage_PorterRescueCancel_StreakAction.user"
+                  }
+                },
+                "_DerivedAction_Combo": {
+                  "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+                    "_DerivedActionParams": []
+                  }
+                },
+                "_DerivedAction_Interrupt": {
+                  "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+                    "_DerivedActionParams": []
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "_DerivedAction_Activate": {
+        "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+          "_DerivedActionParams": [
+            {
+              "app.user_data.NpcStreakPlanData.cDerivedActionHolder.cDerivedActionParam": {
+                "_ActionGuid": "cbf27b80-8b8b-4d68-918c-b7a9ca1ff8a6",
+                "_RandomWeight": -1
+              }
+            },
+            {
+              "app.user_data.NpcStreakPlanData.cDerivedActionHolder.cDerivedActionParam": {
+                "_ActionGuid": "6079e41c-56c4-0c25-2dc2-89118586ab88",
+                "_RandomWeight": 50
+              }
+            }
+          ]
+        }
+      },
+      "_DerivedAction_Activate_WpOn": {
+        "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+          "_DerivedActionParams": [
+            {
+              "app.user_data.NpcStreakPlanData.cDerivedActionHolder.cDerivedActionParam": {
+                "_ActionGuid": "cbf27b80-8b8b-4d68-918c-b7a9ca1ff8a6",
+                "_RandomWeight": -1
+              }
+            },
+            {
+              "app.user_data.NpcStreakPlanData.cDerivedActionHolder.cDerivedActionParam": {
+                "_ActionGuid": "6079e41c-56c4-0c25-2dc2-89118586ab88",
+                "_RandomWeight": 50
+              }
+            }
+          ]
+        }
+      },
+      "_DerivedAction_Activate_Breaked": {
+        "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+          "_DerivedActionParams": []
+        }
+      },
+      "_DerivedAction_Always": {
+        "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+          "_DerivedActionParams": []
+        }
+      },
+      "_TargetType": "[1190479488] COMBAT_ENEMY",
+      "_TargetPartsType": "[4025074304] ROOT"
+    }
+  }
+]

@@ -1,0 +1,55 @@
+[
+  {
+    "app.user_data.NpcGesturePackage": {
+      "_Type": {
+        "app.user_data.NpcGesturePackage.cType": {
+          "_Param": {
+            "app.NpcGestureControllers.cLookAt_Param": {
+              "_LookAtTime": {
+                "raw": "0000803f00000000",
+                "type": "Range"
+              },
+              "_LookAtParamSet": {
+                "app.cNpcLookAtParamSet": {
+                  "_AdjustTypeFixed": "[84767600] ALL"
+                }
+              },
+              "_Priority": "[2494010112] GESTURE"
+            }
+          }
+        }
+      },
+      "_Common": {
+        "app.user_data.NpcGesturePackage.cCommon": {
+          "_BTable": {
+            "ace.btable.user_data.BTable": {
+              "ref_instance_id": 6,
+              "path": "GameDesign/NPC/Data/Gesture/_BTable/LookAt/NpcBTable_LookAt_MoveAheadDir.user"
+            }
+          },
+          "_CoolTime": {
+            "raw": "0000000000000000",
+            "type": "Range"
+          },
+          "_Probability": 100,
+          "_Category": "[10] LOOK_AT_AHEAD",
+          "_TagBit": {
+            "app.NpcDef.GESTURE_TAGBit_Serializable": 0
+          }
+        }
+      },
+      "_Meta": {
+        "app.user_data.NpcGesturePackage.cMeta": {
+          "STRUCT__MaxNum__HasValue": false,
+          "STRUCT__MaxNum__Value": 0,
+          "_ValidRange": 0.0,
+          "_ValidTime": {
+            "raw": "0000000000000000",
+            "type": "Range"
+          }
+        }
+      },
+      "_Hash": 1627423001
+    }
+  }
+]

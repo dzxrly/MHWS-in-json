@@ -1,0 +1,58 @@
+[
+  {
+    "app.user_data.NpcDesireGroupPackages": {
+      "_DataList": [
+        {
+          "app.user_data.NpcDesireGroupPackages.cData": {
+            "_DesirePack": {
+              "app.user_data.NpcDesirePack": {
+                "ref_instance_id": 1,
+                "path": "GameDesign/NPC/Partner/CommonData/Desire/Pack/Advisor_Life_DesirePack.user"
+              }
+            },
+            "_UpdateAiStates": [
+              0
+            ],
+            "_EnumFixedID": 1
+          }
+        },
+        {
+          "app.user_data.NpcDesireGroupPackages.cData": {
+            "_DesirePack": {
+              "app.user_data.NpcDesirePack": {
+                "ref_instance_id": 3,
+                "path": "GameDesign/NPC/Partner/CommonData/Desire/Pack/Advisor_Tent_DesirePack.user"
+              }
+            },
+            "_UpdateAiStates": [
+              4
+            ],
+            "_EnumFixedID": 2
+          }
+        },
+        {
+          "app.user_data.NpcDesireGroupPackages.cData": {
+            "_DesirePack": {
+              "app.user_data.NpcDesirePack": {
+                "ref_instance_id": 5,
+                "path": "GameDesign/NPC/Partner/CommonData/Desire/Pack/Advisor_Quest_DesirePack.user"
+              }
+            },
+            "_UpdateAiStates": [
+              1,
+              3
+            ],
+            "_EnumFixedID": 3
+          }
+        }
+      ],
+      "_DesireGroupEnum": {
+        "ace.user_data.EnumMaker": {
+          "ref_instance_id": 7,
+          "path": "GameDesign/NPC/Partner/CommonData/EnumMaker/NpcDesireGroup_Advisor.user"
+        }
+      },
+      "_OwnerType": 2
+    }
+  }
+]

@@ -1,0 +1,167 @@
+[
+  {
+    "app.user_data.NpcStreakPlanData": {
+      "_ActionDataList": {
+        "ace.cInstanceGuidArray`1<app.user_data.NpcStreakPlanData.cActionData>": {
+          "_DataArray": [
+            {
+              "app.user_data.NpcStreakPlanData.cActionData": {
+                "_InstanceGuid": "51236878-87a2-4e40-b5c8-ffe8a72a2628",
+                "_ActionData": {
+                  "app.user_data.NpcStreakActionData": {
+                    "ref_instance_id": 1,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Advisor/Reaction/4_StreakAction/AdvRac_PhotoPose_Randam_StreakAction.user"
+                  }
+                },
+                "_DerivedAction_Combo": {
+                  "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+                    "_DerivedActionParams": [
+                      {
+                        "app.user_data.NpcStreakPlanData.cDerivedActionHolder.cDerivedActionParam": {
+                          "_ActionGuid": "966c9b5d-4d51-4600-9c1b-13a6186ef685",
+                          "_RandomWeight": 50
+                        }
+                      }
+                    ]
+                  }
+                },
+                "_DerivedAction_Interrupt": {
+                  "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+                    "_DerivedActionParams": [
+                      {
+                        "app.user_data.NpcStreakPlanData.cDerivedActionHolder.cDerivedActionParam": {
+                          "_ActionGuid": "5da04009-cd25-4f86-bb57-8cb227352456",
+                          "_RandomWeight": 50
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "app.user_data.NpcStreakPlanData.cActionData": {
+                "_InstanceGuid": "966c9b5d-4d51-4600-9c1b-13a6186ef685",
+                "_ActionData": {
+                  "app.user_data.NpcStreakActionData": {
+                    "ref_instance_id": 7,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Advisor/Reaction/4_StreakAction/AdvRac_PhotoPose_ToIdle_StreakAction.user"
+                  }
+                },
+                "_DerivedAction_Combo": {
+                  "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+                    "_DerivedActionParams": [
+                      {
+                        "app.user_data.NpcStreakPlanData.cDerivedActionHolder.cDerivedActionParam": {
+                          "_ActionGuid": "20441fdb-cf94-4836-9959-b54a695a4d84",
+                          "_RandomWeight": 50
+                        }
+                      }
+                    ]
+                  }
+                },
+                "_DerivedAction_Interrupt": {
+                  "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+                    "_DerivedActionParams": [
+                      {
+                        "app.user_data.NpcStreakPlanData.cDerivedActionHolder.cDerivedActionParam": {
+                          "_ActionGuid": "5da04009-cd25-4f86-bb57-8cb227352456",
+                          "_RandomWeight": 50
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "app.user_data.NpcStreakPlanData.cActionData": {
+                "_InstanceGuid": "20441fdb-cf94-4836-9959-b54a695a4d84",
+                "_ActionData": {
+                  "app.user_data.NpcStreakActionData": {
+                    "ref_instance_id": 13,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Advisor/Reaction/4_StreakAction/AdvRac_PhotoPose_Idle_StreakAction.user"
+                  }
+                },
+                "_DerivedAction_Combo": {
+                  "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+                    "_DerivedActionParams": [
+                      {
+                        "app.user_data.NpcStreakPlanData.cDerivedActionHolder.cDerivedActionParam": {
+                          "_ActionGuid": "51236878-87a2-4e40-b5c8-ffe8a72a2628",
+                          "_RandomWeight": 50
+                        }
+                      }
+                    ]
+                  }
+                },
+                "_DerivedAction_Interrupt": {
+                  "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+                    "_DerivedActionParams": [
+                      {
+                        "app.user_data.NpcStreakPlanData.cDerivedActionHolder.cDerivedActionParam": {
+                          "_ActionGuid": "5da04009-cd25-4f86-bb57-8cb227352456",
+                          "_RandomWeight": 50
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "app.user_data.NpcStreakPlanData.cActionData": {
+                "_InstanceGuid": "5da04009-cd25-4f86-bb57-8cb227352456",
+                "_ActionData": {
+                  "app.user_data.NpcStreakActionData": {
+                    "ref_instance_id": 19,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Advisor/_Common/4_StreakAction/AdvCmn_ToTerminate_Interrupt_StreakAction.user"
+                  }
+                },
+                "_DerivedAction_Combo": {
+                  "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+                    "_DerivedActionParams": []
+                  }
+                },
+                "_DerivedAction_Interrupt": {
+                  "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+                    "_DerivedActionParams": []
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "_DerivedAction_Activate": {
+        "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+          "_DerivedActionParams": [
+            {
+              "app.user_data.NpcStreakPlanData.cDerivedActionHolder.cDerivedActionParam": {
+                "_ActionGuid": "51236878-87a2-4e40-b5c8-ffe8a72a2628",
+                "_RandomWeight": 50
+              }
+            }
+          ]
+        }
+      },
+      "_DerivedAction_Activate_WpOn": {
+        "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+          "_DerivedActionParams": []
+        }
+      },
+      "_DerivedAction_Activate_Breaked": {
+        "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+          "_DerivedActionParams": []
+        }
+      },
+      "_DerivedAction_Always": {
+        "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+          "_DerivedActionParams": []
+        }
+      },
+      "_TargetType": "[1315799808] MASTER_PLAYER",
+      "_TargetPartsType": "[4138846592] NEAR_PARTS"
+    }
+  }
+]

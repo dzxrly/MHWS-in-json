@@ -1,0 +1,102 @@
+[
+  {
+    "app.user_data.NpcCastingPackages": {
+      "_DataList": [
+        {
+          "app.user_data.NpcCastingPackages.cOperationData": {
+            "_IsTaskAsset": true,
+            "_TaskAsset": {
+              "app.user_data.NpcTaskData": {
+                "ref_instance_id": 1,
+                "path": "GameDesign/NPC/Data/Casting/Mission/Ms002170/HumAdl_st103_Ms002170_Oil_Chief.user"
+              }
+            },
+            "_CombiAsset": {
+              "": {}
+            },
+            "_TargetFixed": {
+              "app.user_data.cNpcVariousTarget": {
+                "_FixedID": "[4156487952] NPC101_13_011"
+              }
+            },
+            "_EnvironmentBit": {
+              "app.user_data.cNpcEnvironmentBit": {
+                "_Ruin": true,
+                "_BeforeAbnormal": true,
+                "_Abnormal": true,
+                "_AfterAbnormal": true,
+                "_Fertility": true
+              }
+            },
+            "_Schedule": "[1117828480] NONE",
+            "_RandomWeight": -1,
+            "_ActionTime": {
+              "raw": "0000000000000000",
+              "type": "Range"
+            },
+            "_IsOnceDay": false,
+            "_MediatorKey_Place": "[3771098080] INVALID"
+          }
+        },
+        {
+          "app.user_data.NpcCastingPackages.cOperationData": {
+            "_IsTaskAsset": false,
+            "_TaskAsset": {
+              "": {}
+            },
+            "_CombiAsset": {
+              "app.user_data.NpcCombinationPackage": {
+                "ref_instance_id": 7,
+                "path": "GameDesign/NPC/Data/Combination/6_StoryDirect/Combi611_011/NpcCombi611_011_pkg_2.user"
+              }
+            },
+            "_TargetFixed": {
+              "app.user_data.cNpcVariousTarget": {
+                "_FixedID": "[1788215552] NPC131_13_076"
+              }
+            },
+            "_EnvironmentBit": {
+              "app.user_data.cNpcEnvironmentBit": {
+                "_Ruin": false,
+                "_BeforeAbnormal": false,
+                "_Abnormal": false,
+                "_AfterAbnormal": false,
+                "_Fertility": false
+              }
+            },
+            "_Schedule": "[1117828480] NONE",
+            "_RandomWeight": -1,
+            "_ActionTime": {
+              "raw": "0000000000000000",
+              "type": "Range"
+            },
+            "_IsOnceDay": false,
+            "_MediatorKey_Place": "[3771098080] INVALID"
+          }
+        }
+      ],
+      "_SettingData": {
+        "app.user_data.NpcCastingPackages.cSettingData": {
+          "_TargetList": [
+            {
+              "app.user_data.cNpcVariousTarget": {
+                "_FixedID": "[4156487952] NPC101_13_011"
+              }
+            },
+            {
+              "app.user_data.cNpcVariousTarget": {
+                "_FixedID": "[1788215552] NPC131_13_076"
+              }
+            },
+            {
+              "app.user_data.cNpcVariousTarget": {
+                "_FixedID": "[3331396032] NPC132_13_077"
+              }
+            }
+          ],
+          "_Priority": 10
+        }
+      }
+    }
+  }
+]

@@ -1,0 +1,1840 @@
+[
+  {
+    "app.user_data.NpcSpeechDialoguePackages": {
+      "_DataList": [
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [],
+            "_Probability": 0,
+            "_EnumFixedID": 0
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7851] Dia_NPC101_00_006_Battle_0026"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7852] Dia_NPC101_00_006_Battle_0027"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7853] Dia_NPC101_00_006_Battle_0028"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [
+                    {
+                      "app.cNpcSpeechConditionHolder": {
+                        "_Param": {
+                          "app.SpeechConditions.cNpcSelectedJoin_Param": {}
+                        },
+                        "_Inverse": false
+                      }
+                    }
+                  ],
+                  "_Weight": 100,
+                  "_DialogueID": "[9958] Dia_NPC101_00_006_Battle_0096"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [
+                    {
+                      "app.cNpcSpeechConditionHolder": {
+                        "_Param": {
+                          "app.SpeechConditions.cNpcSelectedJoin_Param": {}
+                        },
+                        "_Inverse": false
+                      }
+                    }
+                  ],
+                  "_Weight": 100,
+                  "_DialogueID": "[9959] Dia_NPC101_00_006_Battle_0097"
+                }
+              }
+            ],
+            "_Probability": 70,
+            "_EnumFixedID": 1
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7854] Dia_NPC101_00_006_Battle_0029"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7855] Dia_NPC101_00_006_Battle_0030"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [
+                    {
+                      "app.cNpcSpeechConditionHolder": {
+                        "_Param": {
+                          "app.SpeechConditions.cCombatEnemyID_Param": {
+                            "_EnemyIDList": [
+                              "[3536716480] EM0071_00_0",
+                              "[25] EM0077_00_0",
+                              "[2931596800] EM0070_00_0"
+                            ]
+                          }
+                        },
+                        "_Inverse": false
+                      }
+                    },
+                    {
+                      "app.cNpcSpeechConditionHolder": {
+                        "_Param": {
+                          "app.SpeechConditions.cPlayerArmorCheck_Param": {
+                            "_SetInfo": {
+                              "app.SpeechConditions.cPlayerArmorCheck_ParamBase.cPartsSetInfo": {
+                                "_Helm": {
+                                  "app.SpeechConditions.cPlayerArmorCheck_ParamBase.cPartsInfo": {
+                                    "_Series": "[0] NONE",
+                                    "_Gender": -1
+                                  }
+                                },
+                                "_Body": {
+                                  "app.SpeechConditions.cPlayerArmorCheck_ParamBase.cPartsInfo": {
+                                    "_Series": "[8691] ID_215",
+                                    "_Gender": 0
+                                  }
+                                },
+                                "_Arm": {
+                                  "app.SpeechConditions.cPlayerArmorCheck_ParamBase.cPartsInfo": {
+                                    "_Series": "[0] NONE",
+                                    "_Gender": -1
+                                  }
+                                },
+                                "_Waist": {
+                                  "app.SpeechConditions.cPlayerArmorCheck_ParamBase.cPartsInfo": {
+                                    "_Series": "[0] NONE",
+                                    "_Gender": -1
+                                  }
+                                },
+                                "_Leg": {
+                                  "app.SpeechConditions.cPlayerArmorCheck_ParamBase.cPartsInfo": {
+                                    "_Series": "[0] NONE",
+                                    "_Gender": -1
+                                  }
+                                },
+                                "_Slinger": {
+                                  "app.SpeechConditions.cPlayerArmorCheck_ParamBase.cPartsInfo": {
+                                    "_Series": "[0] NONE",
+                                    "_Gender": -1
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "_Inverse": false
+                      }
+                    }
+                  ],
+                  "_Weight": 100,
+                  "_DialogueID": "[7850] Dia_NPC101_00_006_OnQuest_0006"
+                }
+              }
+            ],
+            "_Probability": 70,
+            "_EnumFixedID": 2
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [
+                    {
+                      "app.cNpcSpeechConditionHolder": {
+                        "_Param": {
+                          "app.SpeechConditions.cCombatEnemyCrownType_Param": {
+                            "_CrownType": "[0] NONE"
+                          }
+                        },
+                        "_Inverse": false
+                      }
+                    }
+                  ],
+                  "_Weight": 100,
+                  "_DialogueID": "[7856] Dia_NPC101_00_006_Battle_0031"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [
+                    {
+                      "app.cNpcSpeechConditionHolder": {
+                        "_Param": {
+                          "app.SpeechConditions.cCombatEnemyCrownType_Param": {
+                            "_CrownType": "[0] NONE"
+                          }
+                        },
+                        "_Inverse": false
+                      }
+                    }
+                  ],
+                  "_Weight": 100,
+                  "_DialogueID": "[7857] Dia_NPC101_00_006_Battle_0032"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [
+                    {
+                      "app.cNpcSpeechConditionHolder": {
+                        "_Param": {
+                          "app.SpeechConditions.cCombatEnemyCrownType_Param": {
+                            "_CrownType": "[0] NONE"
+                          }
+                        },
+                        "_Inverse": false
+                      }
+                    }
+                  ],
+                  "_Weight": 100,
+                  "_DialogueID": "[7858] Dia_NPC101_00_006_Battle_0033"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [
+                    {
+                      "app.cNpcSpeechConditionHolder": {
+                        "_Param": {
+                          "app.SpeechConditions.cCombatEnemyCrownType_Param": {
+                            "_CrownType": "[0] NONE"
+                          }
+                        },
+                        "_Inverse": false
+                      }
+                    }
+                  ],
+                  "_Weight": 100,
+                  "_DialogueID": "[7859] Dia_NPC101_00_006_Battle_0034"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [
+                    {
+                      "app.cNpcSpeechConditionHolder": {
+                        "_Param": {
+                          "app.SpeechConditions.cCombatEnemyCrownType_Param": {
+                            "_CrownType": "[3] KING"
+                          }
+                        },
+                        "_Inverse": false
+                      }
+                    }
+                  ],
+                  "_Weight": 100,
+                  "_DialogueID": "[9931] Dia_NPC101_00_006_Battle_0069"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [
+                    {
+                      "app.cNpcSpeechConditionHolder": {
+                        "_Param": {
+                          "app.SpeechConditions.cCombatEnemyCrownType_Param": {
+                            "_CrownType": "[3] KING"
+                          }
+                        },
+                        "_Inverse": false
+                      }
+                    }
+                  ],
+                  "_Weight": 100,
+                  "_DialogueID": "[9932] Dia_NPC101_00_006_Battle_0070"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [
+                    {
+                      "app.cNpcSpeechConditionHolder": {
+                        "_Param": {
+                          "app.SpeechConditions.cCombatEnemyCrownType_Param": {
+                            "_CrownType": "[1] SMALL"
+                          }
+                        },
+                        "_Inverse": false
+                      }
+                    }
+                  ],
+                  "_Weight": 100,
+                  "_DialogueID": "[9933] Dia_NPC101_00_006_Battle_0071"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [
+                    {
+                      "app.cNpcSpeechConditionHolder": {
+                        "_Param": {
+                          "app.SpeechConditions.cCombatEnemyCrownType_Param": {
+                            "_CrownType": "[1] SMALL"
+                          }
+                        },
+                        "_Inverse": false
+                      }
+                    }
+                  ],
+                  "_Weight": 100,
+                  "_DialogueID": "[9934] Dia_NPC101_00_006_Battle_0072"
+                }
+              }
+            ],
+            "_Probability": 70,
+            "_EnumFixedID": 3
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1452] Dia_NPC101_00_006_Battle_0004"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1453] Dia_NPC101_00_006_Battle_0005"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7879] Dia_NPC101_00_006_Battle_0054"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9938] Dia_NPC101_00_006_Battle_0076"
+                }
+              }
+            ],
+            "_Probability": 30,
+            "_EnumFixedID": 4
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1452] Dia_NPC101_00_006_Battle_0004"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1453] Dia_NPC101_00_006_Battle_0005"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7879] Dia_NPC101_00_006_Battle_0054"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9938] Dia_NPC101_00_006_Battle_0076"
+                }
+              }
+            ],
+            "_Probability": 30,
+            "_EnumFixedID": 5
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1454] Dia_NPC101_00_006_Battle_0006"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1455] Dia_NPC101_00_006_Battle_0007"
+                }
+              }
+            ],
+            "_Probability": 70,
+            "_EnumFixedID": 6
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1456] Dia_NPC101_00_006_Battle_0008"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1457] Dia_NPC101_00_006_Battle_0009"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9939] Dia_NPC101_00_006_Battle_0077"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9940] Dia_NPC101_00_006_Battle_0078"
+                }
+              }
+            ],
+            "_Probability": 30,
+            "_EnumFixedID": 7
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1458] Dia_NPC101_00_006_Battle_0010"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1459] Dia_NPC101_00_006_Battle_0011"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7880] Dia_NPC101_00_006_Battle_0055"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9941] Dia_NPC101_00_006_Battle_0079"
+                }
+              }
+            ],
+            "_Probability": 70,
+            "_EnumFixedID": 8
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9941] Dia_NPC101_00_006_Battle_0079"
+                }
+              }
+            ],
+            "_Probability": 70,
+            "_EnumFixedID": 9
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1458] Dia_NPC101_00_006_Battle_0010"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1459] Dia_NPC101_00_006_Battle_0011"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7880] Dia_NPC101_00_006_Battle_0055"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9941] Dia_NPC101_00_006_Battle_0079"
+                }
+              }
+            ],
+            "_Probability": 70,
+            "_EnumFixedID": 10
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [],
+            "_Probability": 0,
+            "_EnumFixedID": 11
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [],
+            "_Probability": 0,
+            "_EnumFixedID": 12
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9804] Dia_NPC101_00_006_OnQuest_0013"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9805] Dia_NPC101_00_006_OnQuest_0014"
+                }
+              }
+            ],
+            "_Probability": 100,
+            "_EnumFixedID": 49
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9948] Dia_NPC101_00_006_Battle_0086"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9949] Dia_NPC101_00_006_Battle_0087"
+                }
+              }
+            ],
+            "_Probability": 100,
+            "_EnumFixedID": 50
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [],
+            "_Probability": 0,
+            "_EnumFixedID": 13
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7860] Dia_NPC101_00_006_Battle_0035"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7861] Dia_NPC101_00_006_Battle_0036"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7862] Dia_NPC101_00_006_Battle_0037"
+                }
+              }
+            ],
+            "_Probability": 10,
+            "_EnumFixedID": 14
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [],
+            "_Probability": 0,
+            "_EnumFixedID": 15
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 0,
+                  "_DialogueID": "[7863] Dia_NPC101_00_006_Battle_0038"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 0,
+                  "_DialogueID": "[7864] Dia_NPC101_00_006_Battle_0039"
+                }
+              }
+            ],
+            "_Probability": 0,
+            "_EnumFixedID": 16
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7863] Dia_NPC101_00_006_Battle_0038"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7864] Dia_NPC101_00_006_Battle_0039"
+                }
+              }
+            ],
+            "_Probability": 70,
+            "_EnumFixedID": 17
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1468] Dia_NPC101_00_006_Battle_0020"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7882] Dia_NPC101_00_006_Battle_0057"
+                }
+              }
+            ],
+            "_Probability": 100,
+            "_EnumFixedID": 18
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9950] Dia_NPC101_00_006_Battle_0088"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9951] Dia_NPC101_00_006_Battle_0089"
+                }
+              }
+            ],
+            "_Probability": 70,
+            "_EnumFixedID": 67
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9800] Dia_NPC101_00_006_OnQuest_0009"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9801] Dia_NPC101_00_006_OnQuest_0010"
+                }
+              }
+            ],
+            "_Probability": 70,
+            "_EnumFixedID": 51
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9798] Dia_NPC101_00_006_OnQuest_0007"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9799] Dia_NPC101_00_006_OnQuest_0008"
+                }
+              }
+            ],
+            "_Probability": 70,
+            "_EnumFixedID": 54
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9936] Dia_NPC101_00_006_Battle_0074"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9937] Dia_NPC101_00_006_Battle_0075"
+                }
+              }
+            ],
+            "_Probability": 50,
+            "_EnumFixedID": 68
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1469] Dia_NPC101_00_006_Battle_0021"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1470] Dia_NPC101_00_006_Battle_0022"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [
+                    {
+                      "app.cNpcSpeechConditionHolder": {
+                        "_Param": {
+                          "app.SpeechConditions.cPlayerArmorCheck_Param": {
+                            "_SetInfo": {
+                              "app.SpeechConditions.cPlayerArmorCheck_ParamBase.cPartsSetInfo": {
+                                "_Helm": {
+                                  "app.SpeechConditions.cPlayerArmorCheck_ParamBase.cPartsInfo": {
+                                    "_Series": "[0] NONE",
+                                    "_Gender": -1
+                                  }
+                                },
+                                "_Body": {
+                                  "app.SpeechConditions.cPlayerArmorCheck_ParamBase.cPartsInfo": {
+                                    "_Series": "[8691] ID_215",
+                                    "_Gender": 0
+                                  }
+                                },
+                                "_Arm": {
+                                  "app.SpeechConditions.cPlayerArmorCheck_ParamBase.cPartsInfo": {
+                                    "_Series": "[0] NONE",
+                                    "_Gender": -1
+                                  }
+                                },
+                                "_Waist": {
+                                  "app.SpeechConditions.cPlayerArmorCheck_ParamBase.cPartsInfo": {
+                                    "_Series": "[0] NONE",
+                                    "_Gender": -1
+                                  }
+                                },
+                                "_Leg": {
+                                  "app.SpeechConditions.cPlayerArmorCheck_ParamBase.cPartsInfo": {
+                                    "_Series": "[0] NONE",
+                                    "_Gender": -1
+                                  }
+                                },
+                                "_Slinger": {
+                                  "app.SpeechConditions.cPlayerArmorCheck_ParamBase.cPartsInfo": {
+                                    "_Series": "[0] NONE",
+                                    "_Gender": -1
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "_Inverse": false
+                      }
+                    }
+                  ],
+                  "_Weight": 100,
+                  "_DialogueID": "[7849] Dia_NPC101_00_006_OnQuest_0005"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7883] Dia_NPC101_00_006_Battle_0058"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7884] Dia_NPC101_00_006_Battle_0059"
+                }
+              }
+            ],
+            "_Probability": 50,
+            "_EnumFixedID": 19
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1465] Dia_NPC101_00_006_Battle_0017"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1466] Dia_NPC101_00_006_Battle_0018"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9945] Dia_NPC101_00_006_Battle_0083"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [
+                    {
+                      "app.cNpcSpeechConditionHolder": {
+                        "_Param": {
+                          "app.SpeechConditions.cCombatEnemyID_Param": {
+                            "_EnemyIDList": [
+                              "[13052] EM0078_00_0"
+                            ]
+                          }
+                        },
+                        "_Inverse": true
+                      }
+                    }
+                  ],
+                  "_Weight": 100,
+                  "_DialogueID": "[9946] Dia_NPC101_00_006_Battle_0084"
+                }
+              }
+            ],
+            "_Probability": 50,
+            "_EnumFixedID": 20
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1465] Dia_NPC101_00_006_Battle_0017"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1466] Dia_NPC101_00_006_Battle_0018"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9945] Dia_NPC101_00_006_Battle_0083"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [
+                    {
+                      "app.cNpcSpeechConditionHolder": {
+                        "_Param": {
+                          "app.SpeechConditions.cCombatEnemyID_Param": {
+                            "_EnemyIDList": [
+                              "[13052] EM0078_00_0"
+                            ]
+                          }
+                        },
+                        "_Inverse": true
+                      }
+                    }
+                  ],
+                  "_Weight": 100,
+                  "_DialogueID": "[9946] Dia_NPC101_00_006_Battle_0084"
+                }
+              }
+            ],
+            "_Probability": 50,
+            "_EnumFixedID": 21
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1461] Dia_NPC101_00_006_Battle_0013"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1462] Dia_NPC101_00_006_Battle_0014"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9943] Dia_NPC101_00_006_Battle_0081"
+                }
+              }
+            ],
+            "_Probability": 50,
+            "_EnumFixedID": 22
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1461] Dia_NPC101_00_006_Battle_0013"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1462] Dia_NPC101_00_006_Battle_0014"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9943] Dia_NPC101_00_006_Battle_0081"
+                }
+              }
+            ],
+            "_Probability": 70,
+            "_EnumFixedID": 23
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [],
+            "_Probability": 100,
+            "_EnumFixedID": 64
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [],
+            "_Probability": 100,
+            "_EnumFixedID": 66
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1460] Dia_NPC101_00_006_Battle_0012"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7881] Dia_NPC101_00_006_Battle_0056"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9942] Dia_NPC101_00_006_Battle_0080"
+                }
+              }
+            ],
+            "_Probability": 70,
+            "_EnumFixedID": 24
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1464] Dia_NPC101_00_006_Battle_0016"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9952] Dia_NPC101_00_006_Battle_0090"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9953] Dia_NPC101_00_006_Battle_0091"
+                }
+              }
+            ],
+            "_Probability": 70,
+            "_EnumFixedID": 48
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7870] Dia_NPC101_00_006_Battle_0045"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9954] Dia_NPC101_00_006_Battle_0092"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9955] Dia_NPC101_00_006_Battle_0093"
+                }
+              }
+            ],
+            "_Probability": 70,
+            "_EnumFixedID": 46
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1467] Dia_NPC101_00_006_Battle_0019"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9947] Dia_NPC101_00_006_Battle_0085"
+                }
+              }
+            ],
+            "_Probability": 50,
+            "_EnumFixedID": 25
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9956] Dia_NPC101_00_006_Battle_0094"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9957] Dia_NPC101_00_006_Battle_0095"
+                }
+              }
+            ],
+            "_Probability": 50,
+            "_EnumFixedID": 61
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9907] Dia_NPC101_00_006_Tactics_0005"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9908] Dia_NPC101_00_006_Tactics_0006"
+                }
+              }
+            ],
+            "_Probability": 100,
+            "_EnumFixedID": 53
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9905] Dia_NPC101_00_006_Tactics_0003"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9906] Dia_NPC101_00_006_Tactics_0004"
+                }
+              }
+            ],
+            "_Probability": 30,
+            "_EnumFixedID": 52
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9903] Dia_NPC101_00_006_Tactics_0001"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9904] Dia_NPC101_00_006_Tactics_0002"
+                }
+              }
+            ],
+            "_Probability": 50,
+            "_EnumFixedID": 45
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9903] Dia_NPC101_00_006_Tactics_0001"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9904] Dia_NPC101_00_006_Tactics_0002"
+                }
+              }
+            ],
+            "_Probability": 100,
+            "_EnumFixedID": 26
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7867] Dia_NPC101_00_006_Battle_0042"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7868] Dia_NPC101_00_006_Battle_0043"
+                }
+              }
+            ],
+            "_Probability": 100,
+            "_EnumFixedID": 27
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1451] Dia_NPC101_00_006_Battle_0003"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7869] Dia_NPC101_00_006_Battle_0044"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 0,
+                  "_DialogueID": "[7870] Dia_NPC101_00_006_Battle_0045"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9941] Dia_NPC101_00_006_Battle_0079"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9935] Dia_NPC101_00_006_Battle_0073"
+                }
+              }
+            ],
+            "_Probability": 70,
+            "_EnumFixedID": 28
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1449] Dia_NPC101_00_006_Battle_0001"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1450] Dia_NPC101_00_006_Battle_0002"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7871] Dia_NPC101_00_006_Battle_0046"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7872] Dia_NPC101_00_006_Battle_0047"
+                }
+              }
+            ],
+            "_Probability": 50,
+            "_EnumFixedID": 29
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 0,
+                  "_DialogueID": "[1450] Dia_NPC101_00_006_Battle_0002"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7865] Dia_NPC101_00_006_Battle_0040"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7866] Dia_NPC101_00_006_Battle_0041"
+                }
+              }
+            ],
+            "_Probability": 30,
+            "_EnumFixedID": 30
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [],
+            "_Probability": 100,
+            "_EnumFixedID": 65
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7873] Dia_NPC101_00_006_Battle_0048"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7874] Dia_NPC101_00_006_Battle_0049"
+                }
+              }
+            ],
+            "_Probability": 30,
+            "_EnumFixedID": 31
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7875] Dia_NPC101_00_006_Battle_0050"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7876] Dia_NPC101_00_006_Battle_0051"
+                }
+              }
+            ],
+            "_Probability": 30,
+            "_EnumFixedID": 32
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7877] Dia_NPC101_00_006_Battle_0052"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7878] Dia_NPC101_00_006_Battle_0053"
+                }
+              }
+            ],
+            "_Probability": 30,
+            "_EnumFixedID": 44
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [
+                    {
+                      "app.cNpcSpeechConditionHolder": {
+                        "_Param": {
+                          "app.SpeechConditions.cNotSoundTiming_Param": {
+                            "Timing": 1
+                          }
+                        },
+                        "_Inverse": true
+                      }
+                    }
+                  ],
+                  "_Weight": 100,
+                  "_DialogueID": "[9929] Dia_NPC101_00_006_Tactics_0027"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [
+                    {
+                      "app.cNpcSpeechConditionHolder": {
+                        "_Param": {
+                          "app.SpeechConditions.cNotSoundTiming_Param": {
+                            "Timing": 1
+                          }
+                        },
+                        "_Inverse": false
+                      }
+                    }
+                  ],
+                  "_Weight": 100,
+                  "_DialogueID": "[9930] Dia_NPC101_00_006_Tactics_0028"
+                }
+              }
+            ],
+            "_Probability": 100,
+            "_EnumFixedID": 69
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1472] Dia_NPC101_00_006_Battle_0024"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7888] Dia_NPC101_00_006_Battle_0063"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7889] Dia_NPC101_00_006_Battle_0064"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7890] Dia_NPC101_00_006_Battle_0065"
+                }
+              }
+            ],
+            "_Probability": 50,
+            "_EnumFixedID": 33
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1471] Dia_NPC101_00_006_Battle_0023"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7885] Dia_NPC101_00_006_Battle_0060"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7886] Dia_NPC101_00_006_Battle_0061"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7887] Dia_NPC101_00_006_Battle_0062"
+                }
+              }
+            ],
+            "_Probability": 30,
+            "_EnumFixedID": 34
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1473] Dia_NPC101_00_006_Battle_0025"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7891] Dia_NPC101_00_006_Battle_0066"
+                }
+              }
+            ],
+            "_Probability": 30,
+            "_EnumFixedID": 35
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[1473] Dia_NPC101_00_006_Battle_0025"
+                }
+              }
+            ],
+            "_Probability": 30,
+            "_EnumFixedID": 36
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [
+                    {
+                      "app.cNpcSpeechConditionHolder": {
+                        "_Param": {
+                          "app.SpeechConditions.cCheckNpcPartner_Param": {
+                            "_NpcID": "[27921] NPC102_00_041",
+                            "_Range": {
+                              "raw": "0000000000002042",
+                              "type": "Range"
+                            },
+                            "_CheckExplore": true
+                          }
+                        },
+                        "_Inverse": false
+                      }
+                    }
+                  ],
+                  "_Weight": 100,
+                  "_DialogueID": "[10256] Dia_PL_Banter_0201"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [
+                    {
+                      "app.cNpcSpeechConditionHolder": {
+                        "_Param": {
+                          "app.SpeechConditions.cCheckNpcPartner_Param": {
+                            "_NpcID": "[27921] NPC102_00_041",
+                            "_Range": {
+                              "raw": "0000000000002042",
+                              "type": "Range"
+                            },
+                            "_CheckExplore": true
+                          }
+                        },
+                        "_Inverse": false
+                      }
+                    }
+                  ],
+                  "_Weight": 100,
+                  "_DialogueID": "[10257] Dia_PL_Banter_0202"
+                }
+              }
+            ],
+            "_Probability": 30,
+            "_EnumFixedID": 63
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7892] Dia_NPC101_00_006_Battle_0067"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7893] Dia_NPC101_00_006_Battle_0068"
+                }
+              }
+            ],
+            "_Probability": 100,
+            "_EnumFixedID": 37
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7845] Dia_NPC101_00_006_OnQuest_0001"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7846] Dia_NPC101_00_006_OnQuest_0002"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9802] Dia_NPC101_00_006_OnQuest_0011"
+                }
+              }
+            ],
+            "_Probability": 30,
+            "_EnumFixedID": 38
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7847] Dia_NPC101_00_006_OnQuest_0003"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[7848] Dia_NPC101_00_006_OnQuest_0004"
+                }
+              },
+              {
+                "app.user_data.NpcSpeechDialoguePackages.cData.cDialogue": {
+                  "_ConditionParams": [],
+                  "_Weight": 100,
+                  "_DialogueID": "[9803] Dia_NPC101_00_006_OnQuest_0012"
+                }
+              }
+            ],
+            "_Probability": 30,
+            "_EnumFixedID": 39
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [],
+            "_Probability": 100,
+            "_EnumFixedID": 40
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [],
+            "_Probability": 100,
+            "_EnumFixedID": 41
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [],
+            "_Probability": 100,
+            "_EnumFixedID": 42
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [],
+            "_Probability": 100,
+            "_EnumFixedID": 55
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [],
+            "_Probability": 100,
+            "_EnumFixedID": 56
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [],
+            "_Probability": 100,
+            "_EnumFixedID": 57
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [],
+            "_Probability": 100,
+            "_EnumFixedID": 58
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [],
+            "_Probability": 100,
+            "_EnumFixedID": 59
+          }
+        },
+        {
+          "app.user_data.NpcSpeechDialoguePackages.cData": {
+            "_DialogueParams": [],
+            "_Probability": 100,
+            "_EnumFixedID": 60
+          }
+        }
+      ],
+      "_SpeechSituationEnum": {
+        "ace.user_data.EnumMaker": {
+          "ref_instance_id": 275,
+          "path": "GameDesign/NPC/Partner/CommonData/EnumMaker/NpcPartnerSpeechSituation.user"
+        }
+      },
+      "_ConditionPackages": {
+        "app.user_data.NpcSpeechConditionPackages": {
+          "ref_instance_id": 276,
+          "path": "GameDesign/NPC/Partner/CommonData/SituationSpeech/NpcSpeechConditionPackages.user"
+        }
+      }
+    }
+  }
+]

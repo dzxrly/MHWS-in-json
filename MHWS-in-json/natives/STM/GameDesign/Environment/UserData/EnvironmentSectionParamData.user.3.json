@@ -1,0 +1,42 @@
+[
+  {
+    "app.user_data.EnvironmentSectionParamData": {
+      "SandGround": {
+        "app.SandGroundSectionData": {
+          "ref_instance_id": 1,
+          "path": "GameDesign/Environment/UserData/EnvironmentSectionSandGroundSetting.user"
+        }
+      },
+      "ForestGround": {
+        "app.user_data.GroundWetSectionData": {
+          "ref_instance_id": 2,
+          "path": "GameDesign/Environment/UserData/EnvironmentForestGroundSetting.user"
+        }
+      },
+      "OilGround": {
+        "app.user_data.GroundWetSectionData": {
+          "ref_instance_id": 3,
+          "path": "GameDesign/Environment/UserData/EnvironmentOilGroundWetSetting.user"
+        }
+      },
+      "SandStormWaitSeconds": 0,
+      "HeavyRainWaitSeconds": 0,
+      "HeatWaveWaitSeconds": 0,
+      "BlizzardWaitSeconds": 0,
+      "cEm5222_00EggExpandTime": 30.0,
+      "cEm5222_00EggShrinkTime": 20.0,
+      "st405LightTransiton_Middle": {
+        "app.EnvironmentUtil.cTransitionRate": {
+          "_TransitionSecRange": {
+            "raw": "0000204100000000",
+            "type": "Range"
+          },
+          "_DelaySecRange": {
+            "raw": "0000904000000000",
+            "type": "Range"
+          }
+        }
+      }
+    }
+  }
+]

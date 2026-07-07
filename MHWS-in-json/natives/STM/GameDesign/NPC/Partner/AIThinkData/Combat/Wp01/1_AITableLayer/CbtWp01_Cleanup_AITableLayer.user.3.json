@@ -1,0 +1,105 @@
+[
+  {
+    "app.user_data.NpcAITableLayerData": {
+      "_ConditionParams": [
+        {
+          "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
+            "_Param": {
+              "app.NpcAITableConditions.cCheckSign_Param": {
+                "_IsCheckIgnore": true,
+                "_IsUseMargin": false,
+                "_IsUseReactionNotify": false,
+                "_IsUseReactionNotifySelf": false,
+                "_IsUseEx00": false,
+                "_MarginTimeRange": {
+                  "raw": "0000000000000000",
+                  "type": "Range"
+                }
+              }
+            },
+            "_Inverse": true,
+            "_IsContinue": false
+          }
+        }
+      ],
+      "_TableHolder": {
+        "app.cNpcAITableHolder": {
+          "_Setting": {
+            "app.cNpcAITableHolder.cSetting": {
+              "_LayerType": "[0] FROM_TOP",
+              "_DisableInterrupt": false
+            }
+          },
+          "_TableList": [
+            {
+              "app.cNpcAITableHolder.cTableData": {
+                "_InstanceGuid": "cca51b88-4843-051f-03c1-1effc8364bca",
+                "_TableData": {
+                  "app.user_data.NpcAITableActionData": {
+                    "ref_instance_id": 4,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Combat/_Common/2_AITableAction/CbtCmn_NonCombat_AITableAction.user"
+                  }
+                }
+              }
+            },
+            {
+              "app.cNpcAITableHolder.cTableData": {
+                "_InstanceGuid": "0d8f19ff-0fde-027d-1437-97580e00baa7",
+                "_TableData": {
+                  "app.user_data.NpcAITableActionData": {
+                    "ref_instance_id": 6,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Combat/Wp01/2_AITableAction/CbtWp01_RideOffPorterWpOn_AITableAction.user"
+                  }
+                }
+              }
+            },
+            {
+              "app.cNpcAITableHolder.cTableData": {
+                "_InstanceGuid": "bbb1fbe3-f6e8-0551-0934-b05e067e8d7b",
+                "_TableData": {
+                  "app.user_data.NpcAITableActionData": {
+                    "ref_instance_id": 8,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Combat/_Common/2_AITableAction/CbtCmn_RideOffPorter_AITableAction.user"
+                  }
+                }
+              }
+            },
+            {
+              "app.cNpcAITableHolder.cTableData": {
+                "_InstanceGuid": "4d1e7b7d-2770-046c-3eb1-dec9026a9d06",
+                "_TableData": {
+                  "app.user_data.NpcAITableActionData": {
+                    "ref_instance_id": 10,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Combat/_Common/2_AITableAction/CbtCmn_RideWaitPorter_AITableAction.user"
+                  }
+                }
+              }
+            },
+            {
+              "app.cNpcAITableHolder.cTableData": {
+                "_InstanceGuid": "3cdbaa46-053e-0d76-1c14-a83924a1f034",
+                "_TableData": {
+                  "app.user_data.NpcAITableActionData": {
+                    "ref_instance_id": 12,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Combat/_Common/2_AITableAction/CbtCmn_FloorMove_AITableAction.user"
+                  }
+                }
+              }
+            },
+            {
+              "app.cNpcAITableHolder.cTableData": {
+                "_InstanceGuid": "fb53ca50-d66e-0756-27b2-c2e5be94cf68",
+                "_TableData": {
+                  "app.user_data.NpcAITableActionData": {
+                    "ref_instance_id": 14,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Combat/_Common/2_AITableAction/CbtCmn_Clear_Gm580_AITableAction.user"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+]

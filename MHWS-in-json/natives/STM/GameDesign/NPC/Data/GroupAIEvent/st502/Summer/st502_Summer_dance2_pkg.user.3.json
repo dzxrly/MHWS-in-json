@@ -1,0 +1,61 @@
+[
+  {
+    "app.user_data.NpcCastingPackages": {
+      "_DataList": [
+        {
+          "app.user_data.NpcCastingPackages.cOperationData": {
+            "_IsTaskAsset": false,
+            "_TaskAsset": {
+              "": {}
+            },
+            "_CombiAsset": {
+              "app.user_data.NpcCombinationPackage": {
+                "ref_instance_id": 1,
+                "path": "GameDesign/NPC/Data/Combination/3_Direct/Combi301_050/Combi301_050_pkg.user"
+              }
+            },
+            "_TargetFixed": {
+              "app.user_data.cNpcVariousTarget": {
+                "_FixedID": -1
+              }
+            },
+            "_EnvironmentBit": {
+              "app.user_data.cNpcEnvironmentBit": {
+                "_Ruin": true,
+                "_BeforeAbnormal": true,
+                "_Abnormal": true,
+                "_AfterAbnormal": true,
+                "_Fertility": true
+              }
+            },
+            "_Schedule": "[3194837376] NIGHT",
+            "_RandomWeight": 50,
+            "_ActionTime": {
+              "raw": "0000704200000000",
+              "type": "Range"
+            },
+            "_IsOnceDay": false,
+            "_MediatorKey_Place": "[3771098080] INVALID"
+          }
+        }
+      ],
+      "_SettingData": {
+        "app.user_data.NpcCastingPackages.cSettingData": {
+          "_TargetList": [
+            {
+              "app.user_data.cNpcVariousTarget": {
+                "_FixedID": "[13359] NPC310_01_038"
+              }
+            },
+            {
+              "app.user_data.cNpcVariousTarget": {
+                "_FixedID": "[8155] NPC310_01_036"
+              }
+            }
+          ],
+          "_Priority": 10
+        }
+      }
+    }
+  }
+]

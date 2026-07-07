@@ -1,0 +1,43 @@
+[
+  {
+    "app.user_data.NpcAITableActionData": {
+      "_ConditionParams": [
+        {
+          "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
+            "_Param": {
+              "app.NpcAITableConditions.cCheckEnvironment_Param": {
+                "_GroupType": "[1] ST101",
+                "_Env": "[3183188224] ABNORMAL",
+                "_Schedule": "[1117828480] NONE"
+              }
+            },
+            "_Inverse": false,
+            "_IsContinue": true
+          }
+        }
+      ],
+      "_ActionSetting": {
+        "app.user_data.NpcAITableActionData.cActionSetting": {
+          "_ForceInterrupt": false,
+          "_TableEnd": false
+        }
+      },
+      "_Param": {
+        "app.user_data.NpcAITableActionData.cNpcAITableEffectHolder": {
+          "_Param": {
+            "app.NpcAITableEffects.cTask_Param": {
+              "_TaskData": {
+                "app.user_data.NpcTaskData": {
+                  "ref_instance_id": 6,
+                  "path": "GameDesign/NPC/Partner/AIThinkData/Advisor/U00001/6_TaskData/AdvLifeU00001_st101_UniqueWait_TaskData.user"
+                }
+              },
+              "_TerminateTime": -1.0,
+              "_IsLifeWait": false
+            }
+          }
+        }
+      }
+    }
+  }
+]

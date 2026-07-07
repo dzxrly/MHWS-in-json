@@ -1,0 +1,69 @@
+[
+  {
+    "app.user_data.NpcStreakActionData": {
+      "_TerminateType": 0,
+      "_ActionEffectParam": {
+        "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Action": {
+          "_Param": {
+            "app.NpcStreakEffects.cUseItemRegisterd_ActionParam": {
+              "_IsItemIDReset": true,
+              "_IsCheckCancel": false,
+              "_WpOnUseItem": true
+            }
+          }
+        }
+      },
+      "_LStickEffectParam": {
+        "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_LStick": {
+          "_Param": {
+            "app.NpcStreakEffects.cSetScoringContinuePoint_LStickParam": {
+              "_Reach": 3.0,
+              "_ContinueMove": true,
+              "_StopWhenReached": true,
+              "_MoveType": "[6] COMBAT",
+              "_UseAIMoveEnd": false,
+              "_FixedSpeedLv": "[4] DASH",
+              "_IsMoveStopTurn": false,
+              "_StopTurnDir": 0,
+              "_DegRange": {
+                "raw": "0000000000003443",
+                "type": "Range"
+              },
+              "_TargetParam": {
+                "app.mcNpcTargetController.cScoringContinuePoint_Param": {
+                  "_ScoringData": {
+                    "app.user_data.NpcPQSScoringData": {
+                      "ref_instance_id": 3,
+                      "path": "GameDesign/NPC/Partner/CommonData/PointQuery/Combat/It00_GoSafe_PQSScoringData.user"
+                    }
+                  },
+                  "_VerticalData": {
+                    "": {}
+                  },
+                  "_RelayingData": {
+                    "app.user_data.NpcPQSRelayingData": {
+                      "ref_instance_id": 4,
+                      "path": "GameDesign/NPC/Partner/CommonData/PointQuery/Combat/It00_GoSafe_PQSRelayingData.user"
+                    }
+                  },
+                  "_RouteType": 1,
+                  "_JudgeLength": 5.0,
+                  "_LowerRange": 15.0,
+                  "_DecreaseRate": false
+                }
+              }
+            }
+          }
+        }
+      },
+      "_AimEffectParam": {
+        "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Aim": {
+          "_Param": {
+            "app.cNpcStreakEffectParam_None": {}
+          }
+        }
+      },
+      "_EvaluatorParams": []
+    }
+  }
+]

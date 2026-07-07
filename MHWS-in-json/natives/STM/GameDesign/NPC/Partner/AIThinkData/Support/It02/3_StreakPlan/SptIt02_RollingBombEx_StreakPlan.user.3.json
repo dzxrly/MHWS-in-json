@@ -1,0 +1,165 @@
+[
+  {
+    "app.user_data.NpcStreakPlanData": {
+      "_ActionDataList": {
+        "ace.cInstanceGuidArray`1<app.user_data.NpcStreakPlanData.cActionData>": {
+          "_DataArray": [
+            {
+              "app.user_data.NpcStreakPlanData.cActionData": {
+                "_InstanceGuid": "81d55202-0798-0a97-1b8a-7556cf114228",
+                "_ActionData": {
+                  "app.user_data.NpcStreakActionData": {
+                    "ref_instance_id": 1,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Support/_Common/4_StreakAction/SptCmn_WeaponOff_NoMove_StreakAction.user"
+                  }
+                },
+                "_DerivedAction_Combo": {
+                  "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+                    "_DerivedActionParams": [
+                      {
+                        "app.user_data.NpcStreakPlanData.cDerivedActionHolder.cDerivedActionParam": {
+                          "_ActionGuid": "65f2348a-5e99-0b99-1d1f-24903b81c737",
+                          "_RandomWeight": 50
+                        }
+                      }
+                    ]
+                  }
+                },
+                "_DerivedAction_Interrupt": {
+                  "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+                    "_DerivedActionParams": []
+                  }
+                }
+              }
+            },
+            {
+              "app.user_data.NpcStreakPlanData.cActionData": {
+                "_InstanceGuid": "15d73034-efb4-05ae-38cb-b3c60aafe38d",
+                "_ActionData": {
+                  "app.user_data.NpcStreakActionData": {
+                    "ref_instance_id": 6,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Support/_Common/4_StreakAction/SptCmn_PorterFall_StreakAction.user"
+                  }
+                },
+                "_DerivedAction_Combo": {
+                  "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+                    "_DerivedActionParams": [
+                      {
+                        "app.user_data.NpcStreakPlanData.cDerivedActionHolder.cDerivedActionParam": {
+                          "_ActionGuid": "65f2348a-5e99-0b99-1d1f-24903b81c737",
+                          "_RandomWeight": 50
+                        }
+                      }
+                    ]
+                  }
+                },
+                "_DerivedAction_Interrupt": {
+                  "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+                    "_DerivedActionParams": []
+                  }
+                }
+              }
+            },
+            {
+              "app.user_data.NpcStreakPlanData.cActionData": {
+                "_InstanceGuid": "65f2348a-5e99-0b99-1d1f-24903b81c737",
+                "_ActionData": {
+                  "app.user_data.NpcStreakActionData": {
+                    "ref_instance_id": 11,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Support/It02/4_StreakAction/SptIt02_RollingBombEx_StreakAction.user"
+                  }
+                },
+                "_DerivedAction_Combo": {
+                  "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+                    "_DerivedActionParams": [
+                      {
+                        "app.user_data.NpcStreakPlanData.cDerivedActionHolder.cDerivedActionParam": {
+                          "_ActionGuid": "57893bef-ede6-48d8-b438-781bf6dfc184",
+                          "_RandomWeight": 50
+                        }
+                      }
+                    ]
+                  }
+                },
+                "_DerivedAction_Interrupt": {
+                  "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+                    "_DerivedActionParams": []
+                  }
+                }
+              }
+            },
+            {
+              "app.user_data.NpcStreakPlanData.cActionData": {
+                "_InstanceGuid": "57893bef-ede6-48d8-b438-781bf6dfc184",
+                "_ActionData": {
+                  "app.user_data.NpcStreakActionData": {
+                    "ref_instance_id": 16,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Support/It02/4_StreakAction/SptIt02_RollingBombEx_Throw_StreakAction.user"
+                  }
+                },
+                "_DerivedAction_Combo": {
+                  "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+                    "_DerivedActionParams": []
+                  }
+                },
+                "_DerivedAction_Interrupt": {
+                  "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+                    "_DerivedActionParams": []
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "_DerivedAction_Activate": {
+        "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+          "_DerivedActionParams": [
+            {
+              "app.user_data.NpcStreakPlanData.cDerivedActionHolder.cDerivedActionParam": {
+                "_ActionGuid": "15d73034-efb4-05ae-38cb-b3c60aafe38d",
+                "_RandomWeight": -1
+              }
+            },
+            {
+              "app.user_data.NpcStreakPlanData.cDerivedActionHolder.cDerivedActionParam": {
+                "_ActionGuid": "65f2348a-5e99-0b99-1d1f-24903b81c737",
+                "_RandomWeight": 50
+              }
+            }
+          ]
+        }
+      },
+      "_DerivedAction_Activate_WpOn": {
+        "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+          "_DerivedActionParams": [
+            {
+              "app.user_data.NpcStreakPlanData.cDerivedActionHolder.cDerivedActionParam": {
+                "_ActionGuid": "81d55202-0798-0a97-1b8a-7556cf114228",
+                "_RandomWeight": -1
+              }
+            },
+            {
+              "app.user_data.NpcStreakPlanData.cDerivedActionHolder.cDerivedActionParam": {
+                "_ActionGuid": "65f2348a-5e99-0b99-1d1f-24903b81c737",
+                "_RandomWeight": 50
+              }
+            }
+          ]
+        }
+      },
+      "_DerivedAction_Activate_Breaked": {
+        "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+          "_DerivedActionParams": []
+        }
+      },
+      "_DerivedAction_Always": {
+        "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+          "_DerivedActionParams": []
+        }
+      },
+      "_TargetType": "[1190479488] COMBAT_ENEMY",
+      "_TargetPartsType": "[4138846592] NEAR_PARTS"
+    }
+  }
+]

@@ -1,0 +1,112 @@
+[
+  {
+    "ace.btable.user_data.BTable": {
+      "_Tables": {
+        "ace.cInstanceGuidArray`1<ace.btable.user_data.BTable.cTableElement>": {
+          "_DataArray": []
+        }
+      },
+      "_ImportBTableList": [],
+      "_OrderBank": {
+        "ace.btable.user_data.BTableOrderBank": {
+          "ref_instance_id": 2,
+          "path": "GameDesign/Enemy/Em0158/00/BTable/Em0158_00_BTableOrderBank.user"
+        }
+      },
+      "_ThisGuid": "a3cd9deb-5463-09c7-147c-feec8cdf7a4d",
+      "_ExportBTableType": "app.Em0158_00_BTable_Damage_Export",
+      "_CommandArgArray": [
+        {
+          "app.btable.EmCommonCommand.cActionSwitchArg": {
+            "_EditArg": {
+              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cActionSwitchArg.ACTION_TYPE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "3242d42f-2c61-4074-b55b-8630253e13ca"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cCheckSelfTypeArg": {
+            "_EditCategory": {
+              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckSelfTypeArg.CATEGORY>": 6
+            },
+            "Enemy": {
+              "app.btable.EmCommonCommand.cCheckTypeEnemyArg": {
+                "_EditArg": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.ID_Fixed>": 0
+                }
+              }
+            },
+            "RoleID": {
+              "app.btable.EmCommonCommand.cCheckTypeEnemyRoleIDArg": {
+                "_EditArg": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.ROLE_ID>": 0
+                }
+              }
+            },
+            "QuestRank": {
+              "app.btable.EmCommonCommand.cCheckTypeQuestRankArg": {
+                "_EditArg": {
+                  "app.btable.EmCommonCommand.cCheckTypeQuestRankArg.cEditFieldEnumQuest": 0
+                }
+              }
+            },
+            "LegendaryID": {
+              "app.btable.EmCommonCommand.cCheckTypeEnemyLegendaryIDArg": {
+                "_EditArg": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.LEGENDARY_ID>": 2
+                }
+              }
+            },
+            "RewardRank": {
+              "app.btable.EmCommonCommand.cCheckTypeEnemyRewardRankArg": {
+                "_EditArg": {
+                  "ace.btable.cEditFieldEnum`1<app.QuestDef.EM_REWARD_RANK>": 0
+                }
+              }
+            }
+          }
+        },
+        {
+          "ace.btable.cSetTimerValueArg": {
+            "_TargetVariableIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "851d6f6e-ae37-405d-a502-9c1b72353856"
+            },
+            "_SetType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cSetTimerValueArg.SET_TYPE>": 0
+            }
+          }
+        },
+        {
+          "ace.btable.cSetTimerValueArg": {
+            "_TargetVariableIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "e494929e-8266-4870-a308-b75ceb371112"
+            },
+            "_SetType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cSetTimerValueArg.SET_TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cRequestSelectedActionArg": {
+            "_EditArg": {
+              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cRequestSelectedActionArg.ACTION_TYPE>": 0
+            }
+          }
+        }
+      ],
+      "_UseExportArgData": true
+    }
+  }
+]

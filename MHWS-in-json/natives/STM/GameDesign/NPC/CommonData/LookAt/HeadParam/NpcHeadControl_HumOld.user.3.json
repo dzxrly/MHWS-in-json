@@ -1,0 +1,333 @@
+[
+  {
+    "app.user_data.HumanHeadControlParam": {
+      "_Interpolation": {
+        "app.user_data.HeadControlParam.cInterpolationInfo": {
+          "_FadeInSpeed": 6.0,
+          "_FadeOutSpeed": 6.0,
+          "_DampingX": {
+            "ace.cDampingParam": {
+              "_Damping": 0.8,
+              "_TimeScale": 1.25
+            }
+          },
+          "_DampingY": {
+            "ace.cDampingParam": {
+              "_Damping": 0.8,
+              "_TimeScale": 1.25
+            }
+          },
+          "_DampingBasisAxis": {
+            "ace.cDampingParam": {
+              "_Damping": 0.8,
+              "_TimeScale": 1.25
+            }
+          },
+          "_DampingMotionBasis": {
+            "ace.cDampingParam": {
+              "_Damping": 1.0,
+              "_TimeScale": 1.0
+            }
+          },
+          "_DampingMotionBasisMode": {
+            "ace.cDampingParam": {
+              "_Damping": 0.95,
+              "_TimeScale": 1.0
+            }
+          },
+          "_MaxBasisErrorRad": 0.5236
+        }
+      },
+      "_Limit": {
+        "app.user_data.HeadControlParam.cLimitInfo": {
+          "_LeftY": 60.0,
+          "_RightY": 60.0,
+          "_UpX": 40.0,
+          "_DownX": 50.0,
+          "_UpX_MinRate": 0.35,
+          "_DownX_MinRate": 0.2,
+          "_MaxMoveSpeed": 0.0
+        }
+      },
+      "_LRChangeOffsetDeg": 25.0,
+      "_EnableLimitCorrection": true,
+      "_LimitCorrectionRange": {
+        "raw": "000070c200007042",
+        "type": "Range"
+      },
+      "_LimitCorrectionMaxAmount": {
+        "app.user_data.HeadControlParam.cLimitInfo": {
+          "_LeftY": 60.0,
+          "_RightY": 60.0,
+          "_UpX": 40.0,
+          "_DownX": 40.0,
+          "_UpX_MinRate": 0.35,
+          "_DownX_MinRate": 0.12,
+          "_MaxMoveSpeed": 0.0
+        }
+      },
+      "_DetailParam": [
+        {
+          "app.user_data.HeadControlParam.cDetailParam": {
+            "_ParamChangeDuration": 0.5,
+            "_BlendRateMax": 0.75,
+            "_MoveDegX": 0.0,
+            "_MoveDegY": 0.0,
+            "_MotionRateX": 0.5,
+            "_MotionRateY": 0.0,
+            "_MotionRateZ": 1.0,
+            "_BlendRatePattern": 1,
+            "_EaseType": 0,
+            "_EasingSpeed": 1.0,
+            "_SpringConst": 5.5,
+            "_DampingConst": 4.75,
+            "_AnimationCurve": {
+              "via.AnimationCurve": {
+                "v0": [
+                  {
+                    "raw": "00000000000000000000000000000000",
+                    "type": "Data"
+                  },
+                  {
+                    "raw": "00000000000000400000000000000000",
+                    "type": "Data"
+                  }
+                ],
+                "v1": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v2": {
+                  "raw": "0000803f",
+                  "type": "Data"
+                },
+                "v3": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v4": {
+                  "raw": "00000040",
+                  "type": "Data"
+                },
+                "v5": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v6": {
+                  "raw": "02000000",
+                  "type": "Data"
+                }
+              }
+            }
+          }
+        },
+        {
+          "app.user_data.HeadControlParam.cDetailParam": {
+            "_ParamChangeDuration": 0.5,
+            "_BlendRateMax": 0.75,
+            "_MoveDegX": 0.0,
+            "_MoveDegY": 0.0,
+            "_MotionRateX": 0.5,
+            "_MotionRateY": 0.0,
+            "_MotionRateZ": 1.0,
+            "_BlendRatePattern": 1,
+            "_EaseType": 0,
+            "_EasingSpeed": 1.0,
+            "_SpringConst": 5.5,
+            "_DampingConst": 4.75,
+            "_AnimationCurve": {
+              "via.AnimationCurve": {
+                "v0": [
+                  {
+                    "raw": "00000000000000000000000000000000",
+                    "type": "Data"
+                  },
+                  {
+                    "raw": "00000000000000400000000000000000",
+                    "type": "Data"
+                  }
+                ],
+                "v1": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v2": {
+                  "raw": "0000803f",
+                  "type": "Data"
+                },
+                "v3": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v4": {
+                  "raw": "00000040",
+                  "type": "Data"
+                },
+                "v5": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v6": {
+                  "raw": "02000000",
+                  "type": "Data"
+                }
+              }
+            }
+          }
+        },
+        {
+          "app.user_data.HeadControlParam.cDetailParam": {
+            "_ParamChangeDuration": 0.5,
+            "_BlendRateMax": 0.75,
+            "_MoveDegX": 0.0,
+            "_MoveDegY": 0.0,
+            "_MotionRateX": 1.0,
+            "_MotionRateY": 0.0,
+            "_MotionRateZ": 1.0,
+            "_BlendRatePattern": 1,
+            "_EaseType": 0,
+            "_EasingSpeed": 1.0,
+            "_SpringConst": 5.5,
+            "_DampingConst": 4.75,
+            "_AnimationCurve": {
+              "via.AnimationCurve": {
+                "v0": [
+                  {
+                    "raw": "00000000000000000000000000000000",
+                    "type": "Data"
+                  },
+                  {
+                    "raw": "00000000000000400000000000000000",
+                    "type": "Data"
+                  }
+                ],
+                "v1": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v2": {
+                  "raw": "0000803f",
+                  "type": "Data"
+                },
+                "v3": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v4": {
+                  "raw": "00000040",
+                  "type": "Data"
+                },
+                "v5": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v6": {
+                  "raw": "02000000",
+                  "type": "Data"
+                }
+              }
+            }
+          }
+        },
+        {
+          "app.user_data.HeadControlParam.cDetailParam": {
+            "_ParamChangeDuration": 0.5,
+            "_BlendRateMax": 1.0,
+            "_MoveDegX": 0.0,
+            "_MoveDegY": 0.0,
+            "_MotionRateX": 1.0,
+            "_MotionRateY": 1.0,
+            "_MotionRateZ": 1.0,
+            "_BlendRatePattern": 2,
+            "_EaseType": 0,
+            "_EasingSpeed": 1.0,
+            "_SpringConst": 2.0,
+            "_DampingConst": 4.75,
+            "_AnimationCurve": {
+              "via.AnimationCurve": {
+                "v0": [
+                  {
+                    "raw": "00000000000000000000000000000000",
+                    "type": "Data"
+                  },
+                  {
+                    "raw": "00000000000000400000000000000000",
+                    "type": "Data"
+                  }
+                ],
+                "v1": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v2": {
+                  "raw": "0000803f",
+                  "type": "Data"
+                },
+                "v3": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v4": {
+                  "raw": "00000040",
+                  "type": "Data"
+                },
+                "v5": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v6": {
+                  "raw": "02000000",
+                  "type": "Data"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "_Neck0Rate": 0.6,
+      "_Neck1Rate": 0.8,
+      "_EyeGazeRate": [
+        0.25,
+        0.2,
+        0.0,
+        0.0
+      ],
+      "_EnableRefocus": false,
+      "_RefocusSpan": {
+        "raw": "0000c03f00000000",
+        "type": "Range"
+      },
+      "_StableAngularVelocity": 15.0,
+      "_RefocusEndDampingParam": {
+        "ace.cDampingParam": {
+          "_Damping": 0.95,
+          "_TimeScale": 1.0
+        }
+      },
+      "_BaseAxisRaiseRate": 0.5,
+      "_HeadYRotationOrder": 0.85,
+      "_EnableHeadYRotationOrderCorrection": true,
+      "_HeadYRotationOrderCorrectionRange": {
+        "raw": "000070c20000a042",
+        "type": "Range"
+      },
+      "_HeadYRotationOrderCorrectionMaxAmount": 0.2,
+      "_LRChangeIntervalTime": 2.5,
+      "_EyeParam": {
+        "app.user_data.EyeControlParam": {
+          "ref_instance_id": 18,
+          "path": "GameDesign/Player/ActionData/Common/GlobalParam/Part/Eye/HunterEyeControlParam.user"
+        }
+      },
+      "_PostureBasis": 1,
+      "_MotionBasisMode": 1,
+      "_RootToHeadJointMaskId": 26,
+      "_OverwriteDampingParam": {
+        "ace.cDampingParam": {
+          "_Damping": 0.95,
+          "_TimeScale": 1.0
+        }
+      }
+    }
+  }
+]

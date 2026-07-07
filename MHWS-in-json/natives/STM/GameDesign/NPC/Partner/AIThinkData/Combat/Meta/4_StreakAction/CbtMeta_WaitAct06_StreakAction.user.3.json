@@ -1,0 +1,70 @@
+[
+  {
+    "app.user_data.NpcStreakActionData": {
+      "_TerminateType": 0,
+      "_ActionEffectParam": {
+        "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Action": {
+          "_Param": {
+            "app.NpcStreakEffects.cUseItem_ActionParam": {
+              "_IsItemIDReset": true,
+              "_IsCheckCancel": false,
+              "_WpOnUseItem": false,
+              "_ItemID": "[178] ITEM_0204"
+            }
+          }
+        }
+      },
+      "_LStickEffectParam": {
+        "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_LStick": {
+          "_Param": {
+            "app.cNpcStreakEffectParam_None": {}
+          }
+        }
+      },
+      "_AimEffectParam": {
+        "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Aim": {
+          "_Param": {
+            "app.cNpcStreakEffectParam_None": {}
+          }
+        }
+      },
+      "_EvaluatorParams": [
+        {
+          "app.user_data.NpcStreakActionData.cNpcStreakEvaluatorHolder": {
+            "_Param": {
+              "app.NpcStreakEvaluators.cCheckPersonalKind_Param": {
+                "_Kind": "[3813545152] HEAL_ITEM",
+                "_KindLv": "[4134945744] LV1"
+              }
+            },
+            "_Inverse": false
+          }
+        },
+        {
+          "app.user_data.NpcStreakActionData.cNpcStreakEvaluatorHolder": {
+            "_Param": {
+              "app.NpcStreakEvaluators.cCheckCanUseItem_Param": {
+                "_ItemID": "[178] ITEM_0204"
+              }
+            },
+            "_Inverse": false
+          }
+        },
+        {
+          "app.user_data.NpcStreakActionData.cNpcStreakEvaluatorHolder": {
+            "_Param": {
+              "app.NpcStreakEvaluators.cCheckHealthLowAny_Param": {
+                "_HealthThreshold": 50,
+                "_Range": {
+                  "raw": "0000000000004842",
+                  "type": "Range"
+                }
+              }
+            },
+            "_Inverse": false
+          }
+        }
+      ]
+    }
+  }
+]

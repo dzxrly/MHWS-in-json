@@ -1,0 +1,1281 @@
+[
+  {
+    "app.user_data.OtomoGlobalParam": {
+      "_DefaultGravity": 9.8,
+      "_BaseGravitySpeedRateH": 1.0,
+      "_BaseGravitySpeedRateV": 1.0,
+      "_AttachToGroundHeight": 0.5,
+      "_MinimumFallHeight": 0.2,
+      "_FallActionHeight": 0.5,
+      "_Land_RayCastLength": 5.0,
+      "_IgnoreLandTimeByJump": 0.2,
+      "_StepUp_RayHeight": 0.45,
+      "_StepUp_UpRayDist": 8.0,
+      "_StepUp_UpRayOfsZ": 0.2,
+      "STRUCT__StepUp1_Height__Min": 0.2,
+      "STRUCT__StepUp1_Height__Max": 1.4,
+      "STRUCT__StepUp3_Height__Min": 1.4,
+      "STRUCT__StepUp3_Height__Max": 3.5,
+      "STRUCT__RunUp_Height__Min": 3.5,
+      "STRUCT__RunUp_Height__Max": 8.2,
+      "_StepUp1_RayDist_Walk": 0.75,
+      "_StepUp3_RayDist_Walk": 0.75,
+      "_StepUp1_RayDist_Run": 1.0,
+      "_StepUp3_RayDist_Run": 0.75,
+      "_StepUp1_RayDist_Dash": 1.5,
+      "_StepUp3_RayDist_Dash": 0.75,
+      "_CheckClimbWallArriveDistData": 3.0,
+      "_CheckClimbWallStartMoveDistData": 3.0,
+      "_CheckClimbWall_ArriveDiffGroundY": 1.0,
+      "_CheckDistDataOnWall_PL": 5.0,
+      "_CheckDashDistanceOnWall": 5.0,
+      "_WallDistOffset": 0.25,
+      "_ClimbWallMoveSpeed_Up": 2.0,
+      "_ClimbWallMoveSpeed_Down": 2.0,
+      "_ClimbWallDashMoveSpeed_Up": 5.0,
+      "_ClimbWallDashMoveSpeed_Down": 5.0,
+      "_CheckFollowPlayerData_Walk": {
+        "app.cCheckDistData": {
+          "_HorizontalRange": 1.5,
+          "_UpRange": 1.5,
+          "_DownRange": 1.5
+        }
+      },
+      "_CheckFollowPlayerData_Run": {
+        "app.cCheckDistData": {
+          "_HorizontalRange": 1.5,
+          "_UpRange": 1.5,
+          "_DownRange": 1.5
+        }
+      },
+      "_CheckFollowPlayerData_Dash": {
+        "app.cCheckDistData": {
+          "_HorizontalRange": 1.5,
+          "_UpRange": 1.5,
+          "_DownRange": 1.5
+        }
+      },
+      "_CheckFollowPlayerData": {
+        "app.cCheckDistData": {
+          "_HorizontalRange": 1.5,
+          "_UpRange": 1.2,
+          "_DownRange": 1.2
+        }
+      },
+      "_CheckFollowPorterData": {
+        "app.cCheckDistData": {
+          "_HorizontalRange": 2.0,
+          "_UpRange": 1.2,
+          "_DownRange": 1.2
+        }
+      },
+      "_CheckFollowEnemyData": {
+        "app.cCheckDistData": {
+          "_HorizontalRange": 1.5,
+          "_UpRange": 1.2,
+          "_DownRange": 1.2
+        }
+      },
+      "_CheckFollowEnemyRideAttackData": {
+        "app.cCheckDistData": {
+          "_HorizontalRange": 5.0,
+          "_UpRange": 1.2,
+          "_DownRange": 1.2
+        }
+      },
+      "_IsAdjustMovingOffset": 3.0,
+      "_AdjustMovingRestart": {
+        "app.cCheckDistData": {
+          "_HorizontalRange": 1.5,
+          "_UpRange": 5.0,
+          "_DownRange": 5.0
+        }
+      },
+      "_CheckFollowGatheringData": {
+        "app.cCheckDistData": {
+          "_HorizontalRange": 1.0,
+          "_UpRange": 1.0,
+          "_DownRange": 1.0
+        }
+      },
+      "_WallDeg": 60.0,
+      "_OtMoveStopPointOffsetList": {
+        "app.OtMoveStopPointOffsetList": {
+          "ref_instance_id": 10,
+          "path": "GameDesign/Otomo/DataParam/OtMoveStopPointOffsetList.user"
+        }
+      },
+      "_CheckTargetRange_Short": 2.5,
+      "_CheckTargetRange_Middle": 5.0,
+      "_CheckTargetRange_Long": 7.5,
+      "_LeadMoveAngle": 45.0,
+      "_CheckLeadMoveData": {
+        "app.cCheckDistData": {
+          "_HorizontalRange": 12.0,
+          "_UpRange": 12.0,
+          "_DownRange": 12.0
+        }
+      },
+      "_CheckMoveToPLSpeechDist": 50.0,
+      "_CheckDistData_PL": {
+        "app.cCheckDistData": {
+          "_HorizontalRange": 5.0,
+          "_UpRange": 1.5,
+          "_DownRange": 1.5
+        }
+      },
+      "_CheckDistData_Separate_Random_PL": {
+        "app.cCheckDistData_Separate_Random": {
+          "_SeparateRandData": [
+            {
+              "app.cCheckDistData_Separate_Random.cCheckDistData_Separate_Random_Base": {
+                "_SeparateData": {
+                  "app.cCheckDistData_Separate": {
+                    "_HorizontalRange": {
+                      "app.cSeparateData": {
+                        "_MaxValue": 20.0,
+                        "_MinValue": 10.0,
+                        "_SeparateValue": 0.5
+                      }
+                    },
+                    "_VerticalRange": {
+                      "app.cSeparateData": {
+                        "_MaxValue": 5.0,
+                        "_MinValue": 3.0,
+                        "_SeparateValue": 1.0
+                      }
+                    }
+                  }
+                },
+                "_Probability": 60
+              }
+            },
+            {
+              "app.cCheckDistData_Separate_Random.cCheckDistData_Separate_Random_Base": {
+                "_SeparateData": {
+                  "app.cCheckDistData_Separate": {
+                    "_HorizontalRange": {
+                      "app.cSeparateData": {
+                        "_MaxValue": 10.0,
+                        "_MinValue": 5.0,
+                        "_SeparateValue": 0.5
+                      }
+                    },
+                    "_VerticalRange": {
+                      "app.cSeparateData": {
+                        "_MaxValue": 6.0,
+                        "_MinValue": 4.0,
+                        "_SeparateValue": 1.0
+                      }
+                    }
+                  }
+                },
+                "_Probability": 30
+              }
+            },
+            {
+              "app.cCheckDistData_Separate_Random.cCheckDistData_Separate_Random_Base": {
+                "_SeparateData": {
+                  "app.cCheckDistData_Separate": {
+                    "_HorizontalRange": {
+                      "app.cSeparateData": {
+                        "_MaxValue": 5.0,
+                        "_MinValue": 3.0,
+                        "_SeparateValue": 0.5
+                      }
+                    },
+                    "_VerticalRange": {
+                      "app.cSeparateData": {
+                        "_MaxValue": 6.0,
+                        "_MinValue": 4.0,
+                        "_SeparateValue": 1.0
+                      }
+                    }
+                  }
+                },
+                "_Probability": 10
+              }
+            }
+          ]
+        }
+      },
+      "_FollowOffset_HunterRun": 3.0,
+      "_FollowOffset_HunterDash": 4.0,
+      "_FollowOffset_PorterWalk": 3.0,
+      "_FollowOffset_PorterRun": 4.0,
+      "_FollowOffset_PorterDash": 6.0,
+      "_FollowOffset_PorterTop": 8.0,
+      "_CheckTargetRangePL_Caution": 2.5,
+      "_CheckTargetRangePorterRide": 2.5,
+      "_OtomoMoveControllerParam": {
+        "app.user_data.cOtomoMoveControllerParam": {
+          "ref_instance_id": 26,
+          "path": "GameDesign/Otomo/DataParam/OtomoMoveControllerParam.user"
+        }
+      },
+      "_WarpDistance": {
+        "app.cCheckDistData": {
+          "_HorizontalRange": 100.0,
+          "_UpRange": 30.0,
+          "_DownRange": 50.0
+        }
+      },
+      "_CheckTargetRangeEm_Short": 1.0,
+      "_CheckTargetRangeEm_Middle": 5.0,
+      "_CheckTargetRangeEm_Long": 7.5,
+      "_CheckTargetRangeEmAfterAttack_Short": 2.5,
+      "_CheckTargetRangeEmAfterAttack_Middle": 5.0,
+      "_CheckTargetRangeEmAfterAttack_Long": 7.5,
+      "_TargetEnemyJointData": {
+        "app.user_data.OtomoTargetEnemyJointData": {
+          "ref_instance_id": 28,
+          "path": "GameDesign/Otomo/DataParam/OtomoTargetEnemyJointData.user"
+        }
+      },
+      "_RunDist": 6.0,
+      "_DashDist": 10.0,
+      "_CheckMoveSpeedRangeData_Walk": {
+        "app.cRangeNum": {
+          "_Min": 0.0,
+          "_Max": 6.0
+        }
+      },
+      "_CheckMoveSpeedRangeData_Run": {
+        "app.cRangeNum": {
+          "_Min": 4.0,
+          "_Max": 10.0
+        }
+      },
+      "_CheckMoveSpeedRangeData_Dash": {
+        "app.cRangeNum": {
+          "_Min": 7.0,
+          "_Max": 20.0
+        }
+      },
+      "_FreeActMoveParam": {
+        "app.user_data.OtomoGlobalParam.cFreeActMoveParam": {
+          "_WalkRangeMin": 0.0,
+          "_WalkRangeMax": 7.0,
+          "_RunRangeMin": 4.0,
+          "_RunRangeMax": 15.0,
+          "_DashRangeMin": 12.0
+        }
+      },
+      "_AvoidPorterLength": 0.75,
+      "_EmAreaAdditionalRate": 1.0,
+      "_MoveVecLength": 4.0,
+      "_VecDivNum": 5,
+      "_AvoidEnemyNearRange": 15.0,
+      "_CheckRestart": {
+        "app.cCheckDistData": {
+          "_HorizontalRange": 10.0,
+          "_UpRange": 5.0,
+          "_DownRange": 5.0
+        }
+      },
+      "_CheckDistData_Destination": {
+        "app.cCheckDistData": {
+          "_HorizontalRange": 10.0,
+          "_UpRange": 2.0,
+          "_DownRange": 2.0
+        }
+      },
+      "_SandGroundCastAroundRadius": 0.6,
+      "_SandGroundCastAroundNormalCount": 0,
+      "_MoveToDestination_StopDist": {
+        "app.cCheckDistData": {
+          "_HorizontalRange": 15.0,
+          "_UpRange": 5.0,
+          "_DownRange": 5.0
+        }
+      },
+      "_MoveToDestination_StopDistTime": {
+        "app.cSeparateData": {
+          "_MaxValue": 10.0,
+          "_MinValue": 10.0,
+          "_SeparateValue": 1.0
+        }
+      },
+      "_MoveToDestination_EndStopDist": {
+        "app.cCheckDistData": {
+          "_HorizontalRange": 5.0,
+          "_UpRange": 5.0,
+          "_DownRange": 5.0
+        }
+      },
+      "_WaitAnimalTrailTimeSelectDist": 50.0,
+      "_WaitAnimalTrailTime_Near": {
+        "app.cSeparateData": {
+          "_MaxValue": 20.0,
+          "_MinValue": 30.0,
+          "_SeparateValue": 1.0
+        }
+      },
+      "_WaitAnimalTrailTime_Fur": {
+        "app.cSeparateData": {
+          "_MaxValue": 10.0,
+          "_MinValue": 15.0,
+          "_SeparateValue": 1.0
+        }
+      },
+      "_MoveToDestination_MoveToPlDist": {
+        "app.cCheckDistData": {
+          "_HorizontalRange": 10.0,
+          "_UpRange": 5.0,
+          "_DownRange": 5.0
+        }
+      },
+      "_MoveToDestination_ActionToPlDist": {
+        "app.cCheckDistData": {
+          "_HorizontalRange": 15.0,
+          "_UpRange": 8.0,
+          "_DownRange": 8.0
+        }
+      },
+      "_GatheringProbability": 20,
+      "_MoveToDestination_MoveEndTime": {
+        "app.cSeparateData": {
+          "_MaxValue": 60.0,
+          "_MinValue": 90.0,
+          "_SeparateValue": 10.0
+        }
+      },
+      "_CheckMoveEndDist_MoveToEm": {
+        "app.cCheckDistData": {
+          "_HorizontalRange": 25.0,
+          "_UpRange": 5.0,
+          "_DownRange": 5.0
+        }
+      },
+      "_CheckMoveEndDist_Default": {
+        "app.cCheckDistData": {
+          "_HorizontalRange": 1.5,
+          "_UpRange": 2.5,
+          "_DownRange": 1.5
+        }
+      },
+      "_WaistWaterHeight": 0.6,
+      "_CancelWaistWaterHeight": 0.45,
+      "_WaistWaterHeight_Oil": 0.6,
+      "_CancelWaistWaterHeight_Oil": 0.45,
+      "_MoveSpeed_Slow": 1.5,
+      "_MoveSpeed": 3.0,
+      "_Move2ndSpeed": 3.9,
+      "_MoveMaxSpeed": 4.5,
+      "_MoveSpeedSlowDist": 3.0,
+      "_Move2ndSpeedDist": 6.0,
+      "_MoveMaxSpeedDist": 10.0,
+      "_MoveSpeedWalk_Oil": 0.25,
+      "_MoveSpeedWalk_Snow": 0.4,
+      "_OilHeightOffset": 0.55,
+      "_TarHeightOffset": 0.05,
+      "_Disable4LegIdleWaterHeight": 0.3,
+      "_CheckDistData_Separate_Random_MuddyStream_PL": {
+        "app.cCheckDistData_Separate_Random": {
+          "_SeparateRandData": [
+            {
+              "app.cCheckDistData_Separate_Random.cCheckDistData_Separate_Random_Base": {
+                "_SeparateData": {
+                  "app.cCheckDistData_Separate": {
+                    "_HorizontalRange": {
+                      "app.cSeparateData": {
+                        "_MaxValue": 8.0,
+                        "_MinValue": 6.0,
+                        "_SeparateValue": 0.5
+                      }
+                    },
+                    "_VerticalRange": {
+                      "app.cSeparateData": {
+                        "_MaxValue": 6.0,
+                        "_MinValue": 4.0,
+                        "_SeparateValue": 1.0
+                      }
+                    }
+                  }
+                },
+                "_Probability": 40
+              }
+            },
+            {
+              "app.cCheckDistData_Separate_Random.cCheckDistData_Separate_Random_Base": {
+                "_SeparateData": {
+                  "app.cCheckDistData_Separate": {
+                    "_HorizontalRange": {
+                      "app.cSeparateData": {
+                        "_MaxValue": 10.0,
+                        "_MinValue": 8.0,
+                        "_SeparateValue": 0.5
+                      }
+                    },
+                    "_VerticalRange": {
+                      "app.cSeparateData": {
+                        "_MaxValue": 6.0,
+                        "_MinValue": 4.0,
+                        "_SeparateValue": 1.0
+                      }
+                    }
+                  }
+                },
+                "_Probability": 30
+              }
+            },
+            {
+              "app.cCheckDistData_Separate_Random.cCheckDistData_Separate_Random_Base": {
+                "_SeparateData": {
+                  "app.cCheckDistData_Separate": {
+                    "_HorizontalRange": {
+                      "app.cSeparateData": {
+                        "_MaxValue": 20.0,
+                        "_MinValue": 10.0,
+                        "_SeparateValue": 0.5
+                      }
+                    },
+                    "_VerticalRange": {
+                      "app.cSeparateData": {
+                        "_MaxValue": 6.0,
+                        "_MinValue": 4.0,
+                        "_SeparateValue": 1.0
+                      }
+                    }
+                  }
+                },
+                "_Probability": 30
+              }
+            }
+          ]
+        }
+      },
+      "_CheckDistData_Random_MuddyStream_MinDistance": {
+        "app.cSeparateData": {
+          "_MaxValue": 3.0,
+          "_MinValue": 5.0,
+          "_SeparateValue": 0.5
+        }
+      },
+      "_AgainstMuddyStreamTransRate": 0.75,
+      "_MuddyStreamTransRate": 1.5,
+      "_AgainstMuddyStreamDeg": 75.0,
+      "_MuddyStreamDeg": 75.0,
+      "_MuddyStreamProgressTime": 1.75,
+      "_MuddyStreamMaxSplashEffectFlame": 15.0,
+      "_DamStreamFlowSpeed": 3.0,
+      "_WaveFlowTransRate": 0.2,
+      "_BackToPlRange_GatheringEnd": 12.0,
+      "_GatheringProbability_FollowPL": 60,
+      "_GatheringProbability_LeadMove": 30,
+      "_IgnoreGatheringTime": 20.0,
+      "_IgnoreGatheringTime_QuestClear": 5.0,
+      "_GatheringItemCoolTimeList": {
+        "app.user_data.OtomoGatheringItemCoolTimeParam": {
+          "ref_instance_id": 59,
+          "path": "GameDesign/Otomo/DataParam/OtomoGatheringItemCoolTimeParam.user"
+        }
+      },
+      "_ChangeBattleRangeToEm": 30.0,
+      "_ChangeBattleOffRangeToEm": 50.0,
+      "_ChangeBattleOffRangeToPL_Boss": 40.0,
+      "_ChangeBattleOffRangeToPL_Zako": 20.0,
+      "_SelectNearFocusPlTargetEmDistData": {
+        "app.cCheckDistData": {
+          "_HorizontalRange": 30.0,
+          "_UpRange": 15.0,
+          "_DownRange": 15.0
+        }
+      },
+      "_ChangeHideRangeToPL": 20.0,
+      "_ChangeHideRangeInPLToEm": 25.0,
+      "_ChangeHideRangeToEm": 15.0,
+      "_ChangeHideOffRangeToPL": 25.0,
+      "_ChangeHideOffRangeToEm": 15.0,
+      "_SearchNearHideBushDistance": {
+        "app.cCheckDistData": {
+          "_HorizontalRange": 10.0,
+          "_UpRange": 2.5,
+          "_DownRange": 2.5
+        }
+      },
+      "_HideToFollowPLDistance": {
+        "app.cCheckDistData": {
+          "_HorizontalRange": 15.0,
+          "_UpRange": 3.0,
+          "_DownRange": 3.0
+        }
+      },
+      "_FollowPLToHideDistance": {
+        "app.cCheckDistData": {
+          "_HorizontalRange": 10.0,
+          "_UpRange": 2.5,
+          "_DownRange": 2.5
+        }
+      },
+      "_ChangeCautionRangeToPL": 20.0,
+      "_ChangeCautionRangeToEm": 15.0,
+      "_ChangeCautionOffRangeToPL": 20.0,
+      "_ChangeCautionOffRangeToEm": 15.0,
+      "_ChangeCoutionWeaponOnTime": 10.0,
+      "_ChangeCoutionWeaponOffTime": 30.0,
+      "_ChangeCoutionNoHitAttackTime": 45.0,
+      "_SearchNearEnemyInterval": 0.5,
+      "_RelatedSituationDesireDefinition": {
+        "": {}
+      },
+      "_RelatedSituationDesireDefinition2": {
+        "app.user_data.RelatedSituationDesireDefinition2": {
+          "ref_instance_id": 64,
+          "path": "GameDesign/Otomo/DataParam/OtomoRelatedSituationDesireDefinition2.user"
+        }
+      },
+      "_PLAttackCountToBattle_Max": 3,
+      "_PLAttackCountToBattle_Min": 1,
+      "_SameAngleFromPlShotRoot": 20.0,
+      "_IgnoreNearDistanceToPl": 3.0,
+      "_NearFieldGimmickRange": 30.0,
+      "_NearFieldGimmickDistData": {
+        "app.cCheckDistData": {
+          "_HorizontalRange": 30.0,
+          "_UpRange": 10.0,
+          "_DownRange": 5.0
+        }
+      },
+      "_InduceFieldGimmickTime": 150.0,
+      "_SearchInduceFieldGimmickInterval": 5.0,
+      "_Em0078MidPhaseLeftPos_Host": [
+        1188.9038,
+        -219.5352,
+        -283.6731,
+        0.0
+      ],
+      "_Em0078MidPhaseLeftPos_Guest": [
+        1185.2036,
+        -218.729,
+        -281.5649,
+        0.0
+      ],
+      "_Em0078MidPhaseRightPos_Host": [
+        1215.0236,
+        -219.1785,
+        -281.3769,
+        0.0
+      ],
+      "_Em0078MidPhaseRightPos_Guest": [
+        1218.0275,
+        -218.7489,
+        -278.3282,
+        0.0
+      ],
+      "_DistanceThreshold_Em0078MidPhase": 5.0,
+      "_Em0078MidPhase_IdleDurationThresholdSec": 5.0,
+      "_Em0078MidPhase_LeftAttackActions": [
+        {
+          "app.cEmActionIDSelecter": {
+            "_Value": "6bc7489a-1b35-4645-9345-af4dd4560bb1",
+            "_EmID": "[13052] EM0078_00_0",
+            "_Holder": {
+              "ace.cActionIDHolder": {
+                "_ActionID": {
+                  "ace.user_data.ActionID": {
+                    "ref_instance_id": 66,
+                    "path": "GameDesign/Enemy/Em0078/00/Action/Em0078_00_ActionID.user"
+                  }
+                },
+                "_ExportGuid": "870a04fa-5e95-025e-2560-20ac84f19140"
+              }
+            }
+          }
+        },
+        {
+          "app.cEmActionIDSelecter": {
+            "_Value": "66e10e9e-7617-4b13-87d7-46151bfd5e34",
+            "_EmID": "[13052] EM0078_00_0",
+            "_Holder": {
+              "ace.cActionIDHolder": {
+                "_ActionID": {
+                  "ace.user_data.ActionID": {
+                    "ref_instance_id": 66,
+                    "path": "GameDesign/Enemy/Em0078/00/Action/Em0078_00_ActionID.user"
+                  }
+                },
+                "_ExportGuid": "870a04fa-5e95-025e-2560-20ac84f19140"
+              }
+            }
+          }
+        },
+        {
+          "app.cEmActionIDSelecter": {
+            "_Value": "3b3a411c-b26a-4917-a5fc-f61d0dc2291e",
+            "_EmID": "[13052] EM0078_00_0",
+            "_Holder": {
+              "ace.cActionIDHolder": {
+                "_ActionID": {
+                  "ace.user_data.ActionID": {
+                    "ref_instance_id": 66,
+                    "path": "GameDesign/Enemy/Em0078/00/Action/Em0078_00_ActionID.user"
+                  }
+                },
+                "_ExportGuid": "870a04fa-5e95-025e-2560-20ac84f19140"
+              }
+            }
+          }
+        }
+      ],
+      "_Em0078MidPhase_RightAttackActions": [
+        {
+          "app.cEmActionIDSelecter": {
+            "_Value": "bb801f32-6651-41c2-a6e6-59e48b5423e8",
+            "_EmID": "[13052] EM0078_00_0",
+            "_Holder": {
+              "ace.cActionIDHolder": {
+                "_ActionID": {
+                  "ace.user_data.ActionID": {
+                    "ref_instance_id": 66,
+                    "path": "GameDesign/Enemy/Em0078/00/Action/Em0078_00_ActionID.user"
+                  }
+                },
+                "_ExportGuid": "870a04fa-5e95-025e-2560-20ac84f19140"
+              }
+            }
+          }
+        },
+        {
+          "app.cEmActionIDSelecter": {
+            "_Value": "83004394-b2dd-43a4-98da-06af50784bb0",
+            "_EmID": "[13052] EM0078_00_0",
+            "_Holder": {
+              "ace.cActionIDHolder": {
+                "_ActionID": {
+                  "ace.user_data.ActionID": {
+                    "ref_instance_id": 66,
+                    "path": "GameDesign/Enemy/Em0078/00/Action/Em0078_00_ActionID.user"
+                  }
+                },
+                "_ExportGuid": "870a04fa-5e95-025e-2560-20ac84f19140"
+              }
+            }
+          }
+        },
+        {
+          "app.cEmActionIDSelecter": {
+            "_Value": "7853c1d0-8f44-4be6-bf56-ab4a50d36fec",
+            "_EmID": "[13052] EM0078_00_0",
+            "_Holder": {
+              "ace.cActionIDHolder": {
+                "_ActionID": {
+                  "ace.user_data.ActionID": {
+                    "ref_instance_id": 66,
+                    "path": "GameDesign/Enemy/Em0078/00/Action/Em0078_00_ActionID.user"
+                  }
+                },
+                "_ExportGuid": "870a04fa-5e95-025e-2560-20ac84f19140"
+              }
+            }
+          }
+        }
+      ],
+      "_Em0078SpecialAttackHighPlacePos_Host": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "_Em0078SpecialAttackHighPlacePos_Guest": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "_Em0078SpecialAttackShieldPos": [
+        [
+          1117.2898,
+          43.1304,
+          -362.9243,
+          0.0
+        ],
+        [
+          1087.8781,
+          42.1338,
+          -340.4558,
+          0.0
+        ],
+        [
+          1084.6793,
+          41.2848,
+          -326.0779,
+          0.0
+        ],
+        [
+          1089.6427,
+          40.993,
+          -314.9952,
+          0.0
+        ],
+        [
+          1155.2338,
+          41.7355,
+          -325.437,
+          0.0
+        ],
+        [
+          1156.4806,
+          42.3059,
+          -335.9358,
+          0.0
+        ],
+        [
+          1151.6305,
+          43.039,
+          -347.8198,
+          0.0
+        ],
+        [
+          1134.8851,
+          43.9465,
+          -361.1229,
+          0.0
+        ]
+      ],
+      "_Em0078SpecialAttackShieldPos_Guest": [
+        [
+          1109.9752,
+          43.1412,
+          -359.8911,
+          0.0
+        ],
+        [
+          1085.3584,
+          41.7991,
+          -334.7758,
+          0.0
+        ],
+        [
+          1086.1097,
+          40.9885,
+          -321.2487,
+          0.0
+        ],
+        [
+          1095.3228,
+          41.1749,
+          -311.8218,
+          0.0
+        ],
+        [
+          1156.3569,
+          41.9665,
+          -331.7575,
+          0.0
+        ],
+        [
+          1155.2767,
+          42.8135,
+          -342.6307,
+          0.0
+        ],
+        [
+          1143.3046,
+          44.706,
+          -355.4961,
+          0.0
+        ],
+        [
+          1125.0288,
+          43.2482,
+          -364.0943,
+          0.0
+        ]
+      ],
+      "_Em0078SpecialAttackHideBehindProbability": 70,
+      "_Em0078SpecialAttackHideBehindRange": 40.0,
+      "_ContinueAttackCount": 1,
+      "_MaxAttackSelectTime": 8.0,
+      "_AttackNearPlTime": 30.0,
+      "_PlHelpAttackCoolTime": 300.0,
+      "_PlHelpAttackCheckCoolTime": 10.0,
+      "_PlHelpAttackProbability": [
+        {
+          "app.OtomoDef.cPlHelpAttackProbability": {
+            "_Level": 1,
+            "_Probability": 60
+          }
+        },
+        {
+          "app.OtomoDef.cPlHelpAttackProbability": {
+            "_Level": 11,
+            "_Probability": 70
+          }
+        },
+        {
+          "app.OtomoDef.cPlHelpAttackProbability": {
+            "_Level": 21,
+            "_Probability": 80
+          }
+        }
+      ],
+      "_CheckJoinOtherEnemyTime": 5.0,
+      "_MoveToPLUseOtomoToolDist": {
+        "app.cCheckDistData": {
+          "_HorizontalRange": 15.0,
+          "_UpRange": 10.0,
+          "_DownRange": 10.0
+        }
+      },
+      "_CheckMoveEndDist_UseOtomoTool": {
+        "app.cCheckDistData": {
+          "_HorizontalRange": 10.0,
+          "_UpRange": 5.0,
+          "_DownRange": 5.0
+        }
+      },
+      "_MoveToPLUseInsectHealDist": {
+        "app.cCheckDistData": {
+          "_HorizontalRange": 35.0,
+          "_UpRange": 15.0,
+          "_DownRange": 15.0
+        }
+      },
+      "_CheckMoveEndDist_UseInsectHeal": {
+        "app.cCheckDistData": {
+          "_HorizontalRange": 30.0,
+          "_UpRange": 10.0,
+          "_DownRange": 10.0
+        }
+      },
+      "_BattleStartWarpDist": {
+        "app.cCheckDistData": {
+          "_HorizontalRange": 50.0,
+          "_UpRange": 10.0,
+          "_DownRange": 10.0
+        }
+      },
+      "_CheckPressTargetEmTime": 1.0,
+      "_ResearchRouteTime": 10.0,
+      "_ResearchRouteTime_DelayMode": 120.0,
+      "_ConditionParam": {
+        "app.OtomoConditionParam": {
+          "ref_instance_id": 87,
+          "path": "GameDesign/Otomo/DataParam/OtomoConditionParam.user"
+        }
+      },
+      "_AttrDamageProb": 40,
+      "_AttackDivNum": 20,
+      "_BadConditionAttackRate": 1.5,
+      "_AttributeAttackRate": 1.2,
+      "_NetActionStartInterpolationTime": 0.4,
+      "_IntervalPacketWarpLength": 5.0,
+      "_ActionPacketWarpLength": 10.0,
+      "_TailRollReduction": 0.65,
+      "_TailPitchReduction": 0.65,
+      "_RidePorterConstJointName_Back": {
+        "ace.cJointHash": {
+          "_Hash": 152489342
+        }
+      },
+      "_RidePorterConstLocalPos_Back": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "_RidePorterConstLocalRot_Back": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "_RidePorterConstLocalRot_MeshConst_Back": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "_RidePorterConstJointName_Solo": {
+        "ace.cJointHash": {
+          "_Hash": 3858046040
+        }
+      },
+      "_RidePorterConstLocalPos_Solo": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "_RidePorterConstLocalRot_Solo": [
+        0.0,
+        180.0,
+        0.0,
+        0.0
+      ],
+      "_RidePorterConstLocalRot_MeshConst_Solo": [
+        0.0,
+        180.0,
+        0.0,
+        0.0
+      ],
+      "_RidePorterDistMoveToDestination": 10.0,
+      "_SelfHealPorterRideNormalized": 0.9,
+      "_EnableWarpToAdvisorDist": {
+        "app.cCheckDistData": {
+          "_HorizontalRange": 20.0,
+          "_UpRange": 20.0,
+          "_DownRange": 20.0
+        }
+      },
+      "_RideAdvisorPorterProbability": 20,
+      "_RidePorterConstJointName_Hensannsya_Back": {
+        "ace.cJointHash": {
+          "_Hash": 3459751961
+        }
+      },
+      "_RidePorterConstLocalPos_Hensannsya_Back": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "_RidePorterConstLocalRot_Hensannsya_Back": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "_RidePorterConstLocalRot_MeshConst_Hensannsya_Back": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "_SpeedTreeSphereOffsetY": 0.3,
+      "_SpeedTreeSphereOffset_Wall": [
+        0.0,
+        0.3,
+        -0.3,
+        0.0
+      ],
+      "_SpeedTreeSphereRadius": 0.5,
+      "_SpeedTreeSpherePower": 0.75,
+      "_AvoidProbability": 50,
+      "_AvoidHitStartFrame": 15,
+      "_SmallAvoidDist": 3.0,
+      "_LargeAvoidDist": 6.0,
+      "_DetectInAttackArea_Height": 1.5,
+      "_DetectInAttackArea_Radius": 0.6,
+      "_AvoidToEmDeg": 90.0,
+      "_AvoidNearDeg": 30.0,
+      "_AvoidToPLDistance": 10.0,
+      "_AvoidToPLDeg": 45.0,
+      "_IkLookAtFadeInTime": 0.3,
+      "_IkLookAtFadeOutTime": 0.5,
+      "_OtomoToolSetOffset": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "_CollectOtomoToolRange": 80.0,
+      "_SetOtomoToolTargetDist": 10.0,
+      "_SetOtomoToolWallDist": 10.0,
+      "_SetOtomoToolOtherGimmickDist": 10.0,
+      "_OtomoToolCancelCoolTime": 30.0,
+      "_OtomoToolParam": {
+        "app.user_data.OtomoToolParam": {
+          "ref_instance_id": 92,
+          "path": "GameDesign/Otomo/DataParam/OtomoToolParam.user"
+        }
+      },
+      "_ThresholdWetBodyHalf": -1.0,
+      "_ThresholdWetBodyFull": -0.3,
+      "_ThresholdWetHead": -0.15,
+      "_WetTime": 2.0,
+      "_WetEaseType": 0,
+      "_DryTime": 25.0,
+      "_DryEaseType": 4,
+      "_HeatCheckData": {
+        "app.user_data.HeatCheckParam": {
+          "ref_instance_id": 93,
+          "path": "GameDesign/Otomo/DataParam/OtomoHeatCheckParam.user"
+        }
+      },
+      "_RareMotionProbability": 100.0,
+      "_HeatCheckCoolDownTime": 30,
+      "_NpcOtomoData": {
+        "app.user_data.NpcOtomoDataParam": {
+          "ref_instance_id": 94,
+          "path": "GameDesign/Otomo/DataParam/NpcOtomoDataParam.user"
+        }
+      },
+      "_SandSinkParam": {
+        "app.cSandSinkParam": {
+          "_MoveSpeedThreshold": 0.4,
+          "_SinkDepthMin": 0.1,
+          "_SinkDepthMax": 0.3,
+          "_SlopeMaxDeg": 60.0,
+          "_SinkSpeed": 0.1,
+          "_RiseSpeed": 0.1,
+          "_InDurationTime": 2.0,
+          "_OffDurationTime": 0.2,
+          "_DepthInterpolateSpeed": 2.0
+        }
+      },
+      "_NormalSandPitDragSpeed": {
+        "app.user_data.OtomoGlobalParam.cSandpitDragSpeed": {
+          "_DefaultSpeed": 1.5,
+          "_WalkSpeed": {
+            "app.user_data.OtomoGlobalParam.cSandpitDragSpeedParam": {
+              "_SandpitDragSpeedLookCenter": 1.5,
+              "_SandpitDragSpeedDefault": 2.0,
+              "_SandpitDragSpeedLookOutSide": 2.5
+            }
+          },
+          "_RunSpeed": {
+            "app.user_data.OtomoGlobalParam.cSandpitDragSpeedParam": {
+              "_SandpitDragSpeedLookCenter": 1.5,
+              "_SandpitDragSpeedDefault": 2.0,
+              "_SandpitDragSpeedLookOutSide": 2.5
+            }
+          },
+          "_DashSpeed": {
+            "app.user_data.OtomoGlobalParam.cSandpitDragSpeedParam": {
+              "_SandpitDragSpeedLookCenter": 1.5,
+              "_SandpitDragSpeedDefault": 2.0,
+              "_SandpitDragSpeedLookOutSide": 2.5
+            }
+          }
+        }
+      },
+      "_SmallSandPitDragSpeed": {
+        "app.user_data.OtomoGlobalParam.cSandpitDragSpeed": {
+          "_DefaultSpeed": 1.5,
+          "_WalkSpeed": {
+            "app.user_data.OtomoGlobalParam.cSandpitDragSpeedParam": {
+              "_SandpitDragSpeedLookCenter": 1.5,
+              "_SandpitDragSpeedDefault": 2.0,
+              "_SandpitDragSpeedLookOutSide": 2.5
+            }
+          },
+          "_RunSpeed": {
+            "app.user_data.OtomoGlobalParam.cSandpitDragSpeedParam": {
+              "_SandpitDragSpeedLookCenter": 1.5,
+              "_SandpitDragSpeedDefault": 2.0,
+              "_SandpitDragSpeedLookOutSide": 2.5
+            }
+          },
+          "_DashSpeed": {
+            "app.user_data.OtomoGlobalParam.cSandpitDragSpeedParam": {
+              "_SandpitDragSpeedLookCenter": 1.5,
+              "_SandpitDragSpeedDefault": 2.0,
+              "_SandpitDragSpeedLookOutSide": 2.5
+            }
+          }
+        }
+      },
+      "_LargeSandPitDragSpeed": {
+        "app.user_data.OtomoGlobalParam.cSandpitDragSpeed": {
+          "_DefaultSpeed": 1.5,
+          "_WalkSpeed": {
+            "app.user_data.OtomoGlobalParam.cSandpitDragSpeedParam": {
+              "_SandpitDragSpeedLookCenter": 1.5,
+              "_SandpitDragSpeedDefault": 2.0,
+              "_SandpitDragSpeedLookOutSide": 2.5
+            }
+          },
+          "_RunSpeed": {
+            "app.user_data.OtomoGlobalParam.cSandpitDragSpeedParam": {
+              "_SandpitDragSpeedLookCenter": 1.5,
+              "_SandpitDragSpeedDefault": 2.0,
+              "_SandpitDragSpeedLookOutSide": 2.5
+            }
+          },
+          "_DashSpeed": {
+            "app.user_data.OtomoGlobalParam.cSandpitDragSpeedParam": {
+              "_SandpitDragSpeedLookCenter": 1.5,
+              "_SandpitDragSpeedDefault": 2.0,
+              "_SandpitDragSpeedLookOutSide": 2.5
+            }
+          }
+        }
+      },
+      "_CogAdjust_SpringConst": 20.0,
+      "_CogAdjust_DampingConst": 20.0,
+      "_CogAdjust_FadeInTime": 0.15,
+      "_CogAdjust_FadeOutTime": 0.15,
+      "_NoMoveDist": 0.5,
+      "_NoMoveTime": 3.0,
+      "_MoveExceptionCount": 2,
+      "_MoveNearDist": {
+        "app.cCheckDistData": {
+          "_HorizontalRange": 4.0,
+          "_UpRange": 3.0,
+          "_DownRange": 3.0
+        }
+      },
+      "_MoveNearDistY": 1.0,
+      "_StatusTable": {
+        "app.user_data.OtomoStatusTable": {
+          "ref_instance_id": 109,
+          "path": "GameDesign/Common/Otomo/StatusTable/StatusTableData.user"
+        }
+      },
+      "_PartnerStatusData": {
+        "app.user_data.PartnerOtomoStatusDatabase": {
+          "ref_instance_id": 110,
+          "path": "GameDesign/Otomo/DataParam/PartnerOtomoStatusDatabase.user"
+        }
+      },
+      "_OtomoStoryParam": {
+        "app.OtomoStoryParam": {
+          "ref_instance_id": 111,
+          "path": "GameDesign/Otomo/DataParam/OtomoStoryParam.user"
+        }
+      },
+      "_ClimbSensorHitParam": {
+        "app.user_data.ClimbSensorHitParam": {
+          "ref_instance_id": 112,
+          "path": "GameDesign/Otomo/DataParam/OtomoClimbSensorHitParam.user"
+        }
+      },
+      "_MoveDirOffset_EscapeTent": 150.0,
+      "_GetOffHammockTime": 10.0,
+      "_ScaredWaitTime": 0.5,
+      "_FastTravelFadeSpeed": 0.1,
+      "_RidePorterWarpFadeSpeed": 1.0,
+      "_AnahoriFadeSpeed": 0.5,
+      "_FastTravelStartFadeSpeed": 1.0,
+      "_RidePorterWarpStartFadeRate": 0.3,
+      "_MoveWarpEndFadeSpeed": 1.0,
+      "_RoleRate_Boss": 1.2,
+      "_RoleRate_Franzy": 1.2,
+      "_RoleRate_Legendary": 1.5,
+      "_RoleRate_LegendaryKing": 1.6,
+      "_DifficultyRankRate_1to3": 0.1,
+      "_DifficultyRankRate_4to7": 1.0,
+      "_DifficultyRankRate_8over": 1.4,
+      "_MealSkillRate": 1.5,
+      "_NoAccompanyRate": 0.35,
+      "_TornamentQuestRate": 0.5,
+      "_DragAirShipEscapeDistData_Em": 3.0,
+      "_DragAirShipCheckTargetRangeEm": [
+        1.0,
+        3.0
+      ],
+      "_DragAirShipTurnSpeed": 180.0,
+      "_DragAirShipFollowTargetEmRange": 10.0,
+      "_HeightLimit_High": 4.0,
+      "_HeightLimit_Low": 1.0,
+      "_AdjustMoveHeight_High": 3.0,
+      "_AdjustMoveLimit_Low": 3.0,
+      "_AdjustHeightMoveSpeed_Up": 3.0,
+      "_AdjustHeightMoveSpeed_Down": 2.0,
+      "_RotPropellaSpeed_01": 360.0,
+      "_RotPropellaSpeed_02": 360.0,
+      "_DragAirShipCharacterControllerRadius": 0.4,
+      "_DragAirShipCharacterControllerHeight": 1.5,
+      "_Emote": {
+        "app.user_data.OtomoEmoteSetting": {
+          "ref_instance_id": 113,
+          "path": "GameDesign/Otomo/DataParam/OtomoEmoteSetting.user"
+        }
+      },
+      "_Grill": {
+        "app.user_data.OtomoGrillSetting": {
+          "ref_instance_id": 114,
+          "path": "GameDesign/Otomo/DataParam/OtomoGrillSetting.user"
+        }
+      },
+      "_Fishing": {
+        "app.user_data.OtomoFishingSetting": {
+          "ref_instance_id": 115,
+          "path": "GameDesign/Otomo/DataParam/OtomoFishingSetting.user"
+        }
+      },
+      "_SandPitDragDistanceLimit": 10.0,
+      "_EquipLevelData": [
+        {
+          "app.cEquipLevelData": {
+            "_Rare": 2,
+            "_HunterRank": 3
+          }
+        },
+        {
+          "app.cEquipLevelData": {
+            "_Rare": 3,
+            "_HunterRank": 5
+          }
+        },
+        {
+          "app.cEquipLevelData": {
+            "_Rare": 4,
+            "_HunterRank": 8
+          }
+        },
+        {
+          "app.cEquipLevelData": {
+            "_Rare": 5,
+            "_HunterRank": 21
+          }
+        },
+        {
+          "app.cEquipLevelData": {
+            "_Rare": 6,
+            "_HunterRank": 41
+          }
+        }
+      ],
+      "_VoiceProbabilityData": [
+        {
+          "app.OtomoDef.cVoiceProbabilityData": {
+            "_Type": 0,
+            "_ProbabilityCoef": 100.0
+          }
+        },
+        {
+          "app.OtomoDef.cVoiceProbabilityData": {
+            "_Type": 1,
+            "_ProbabilityCoef": 30.0
+          }
+        },
+        {
+          "app.OtomoDef.cVoiceProbabilityData": {
+            "_Type": 2,
+            "_ProbabilityCoef": 0.0
+          }
+        }
+      ],
+      "_CaptureVoiceHitPointRatio": 0.5,
+      "_QuestEx_BarrelBomb_Rate": 3.0,
+      "_Ex00Start_DamageWorldEularAngle": [
+        0.9952,
+        0.0,
+        -0.0975,
+        0.0
+      ],
+      "_LookAtLotteryIntervalSec": {
+        "raw": "0000a04000000041",
+        "type": "Range"
+      },
+      "_LookAtDurationSec": {
+        "raw": "0000a04000002041",
+        "type": "Range"
+      },
+      "_ProbabilityForWaterGunDamage": 50,
+      "_WaterGunFromOtCoolDownSec": 30.0,
+      "_SensorDamageRate_Em0158King": 0.3,
+      "_SensorDamageRate_Em0166": 0.3,
+      "_SensorDamageRate_Em0078_00": 0.3,
+      "_SensorDamageRate_Em0078_01": 0.3,
+      "_FireDamageRateOnTarGround": 1.5,
+      "_GuardSafetyDamageRate": 0.0,
+      "_Em0078SpecialAttackSlipDamageRate_Guard": 0.2,
+      "_DamageRate": {
+        "app.user_data.OtomoDamageRateDatabase": {
+          "ref_instance_id": 124,
+          "path": "GameDesign/Otomo/DataParam/OtomoDamageRateDatabase.user"
+        }
+      },
+      "_ProcessCullingData": {
+        "app.user_data.OtomoProcessCullingData": {
+          "ref_instance_id": 125,
+          "path": "GameDesign/Otomo/DataParam/OtomoProcessCullingData.user"
+        }
+      }
+    }
+  }
+]

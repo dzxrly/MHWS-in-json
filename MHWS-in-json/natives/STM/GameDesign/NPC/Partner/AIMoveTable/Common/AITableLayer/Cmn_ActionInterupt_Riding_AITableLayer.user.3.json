@@ -1,0 +1,51 @@
+[
+  {
+    "app.user_data.NpcAITableLayerData": {
+      "_ConditionParams": [
+        {
+          "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
+            "_Param": {
+              "app.NpcAITableConditions.cCheckPorterRiding_Param": {}
+            },
+            "_Inverse": false,
+            "_IsContinue": true
+          }
+        }
+      ],
+      "_TableHolder": {
+        "app.cNpcAITableHolder": {
+          "_Setting": {
+            "app.cNpcAITableHolder.cSetting": {
+              "_LayerType": "[0] FROM_TOP",
+              "_DisableInterrupt": false
+            }
+          },
+          "_TableList": [
+            {
+              "app.cNpcAITableHolder.cTableData": {
+                "_InstanceGuid": "fbefcf77-8302-455b-8be9-6d85d5acd40f",
+                "_TableData": {
+                  "app.user_data.NpcAITableLayerData": {
+                    "ref_instance_id": 4,
+                    "path": "GameDesign/NPC/Partner/AIMoveTable/Common/AITableLayer/Cmn_WallClimb_Riding_NpcAITableLayer.user"
+                  }
+                }
+              }
+            },
+            {
+              "app.cNpcAITableHolder.cTableData": {
+                "_InstanceGuid": "58e3f54f-1691-4245-9ea7-f02a27470729",
+                "_TableData": {
+                  "app.user_data.NpcAITableLayerData": {
+                    "ref_instance_id": 6,
+                    "path": "GameDesign/NPC/Partner/AIMoveTable/Common/AITableLayer/Cmn_LinkJump_Riding_NpcAITableLayer.user"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+]

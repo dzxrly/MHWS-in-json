@@ -1,0 +1,64 @@
+[
+  {
+    "app.user_data.NpcAITableActionData": {
+      "_ConditionParams": [
+        {
+          "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
+            "_Param": {
+              "app.NpcAITableConditions.cCheckDesireCautionCommon_Param": {
+                "_DesireFixedID": "[3] SET_BOMB_FOLLOW"
+              }
+            },
+            "_Inverse": false,
+            "_IsContinue": false
+          }
+        },
+        {
+          "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
+            "_Param": {
+              "app.NpcAITableConditions.cCheckBarrelBombTarget_Param": {}
+            },
+            "_Inverse": false,
+            "_IsContinue": true
+          }
+        },
+        {
+          "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
+            "_Param": {
+              "app.NpcAITableConditions.cCanUseBomb_Param": {
+                "_LotteryTable": {
+                  "app.user_data.NpcDesireLotteryTable_Random": {
+                    "ref_instance_id": 5,
+                    "path": "GameDesign/NPC/Partner/CommonData/Desire/LotteryTable/SetBomb_DesireLotteryTable_Random.user"
+                  }
+                }
+              }
+            },
+            "_Inverse": false,
+            "_IsContinue": false
+          }
+        }
+      ],
+      "_ActionSetting": {
+        "app.user_data.NpcAITableActionData.cActionSetting": {
+          "_ForceInterrupt": false,
+          "_TableEnd": false
+        }
+      },
+      "_Param": {
+        "app.user_data.NpcAITableActionData.cNpcAITableEffectHolder": {
+          "_Param": {
+            "app.NpcAITableEffects.cStreak_Param": {
+              "_StreakPlanData": {
+                "app.user_data.NpcStreakPlanData": {
+                  "ref_instance_id": 9,
+                  "path": "GameDesign/NPC/Partner/AIThinkData/Support/It03/3_StreakPlan/SptIt03_SetBomb_It0223_StreakPlan.user"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

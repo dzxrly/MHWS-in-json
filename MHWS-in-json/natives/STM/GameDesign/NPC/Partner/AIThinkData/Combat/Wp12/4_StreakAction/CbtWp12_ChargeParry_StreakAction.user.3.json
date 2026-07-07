@@ -1,0 +1,60 @@
+[
+  {
+    "app.user_data.NpcStreakActionData": {
+      "_TerminateType": 0,
+      "_ActionEffectParam": {
+        "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Action": {
+          "_Param": {
+            "app.NpcStreakEffects.cShootParry_ActionParam": {
+              "_ShootTargetRange": 8.0
+            }
+          }
+        }
+      },
+      "_LStickEffectParam": {
+        "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_LStick": {
+          "_Param": {
+            "app.cNpcStreakEffectParam_None": {}
+          }
+        }
+      },
+      "_AimEffectParam": {
+        "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Aim": {
+          "_Param": {
+            "app.NpcStreakEffects.cSetTargetCenter_AimParam": {
+              "_StartType": 0,
+              "_EndType": 0,
+              "_CanAimWpOff": false,
+              "_UseParabora": 0,
+              "_StartActionSelector": {
+                "app.cNpcHunterActionSelector": {
+                  "_Category": 773579456,
+                  "_Action": 0
+                }
+              },
+              "_UseAxisXZ": false,
+              "_Offset": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          }
+        }
+      },
+      "_EvaluatorParams": [
+        {
+          "app.user_data.NpcStreakActionData.cNpcStreakEvaluatorHolder": {
+            "_Param": {
+              "app.NpcStreakEvaluators.cCanDerivedAttackReaction_Param": {
+                "_ReactType_Fixed": "[20] WP12_PARRY"
+              }
+            },
+            "_Inverse": false
+          }
+        }
+      ]
+    }
+  }
+]

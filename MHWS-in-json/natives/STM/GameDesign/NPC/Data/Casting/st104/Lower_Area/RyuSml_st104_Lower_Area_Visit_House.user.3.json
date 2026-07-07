@@ -1,0 +1,125 @@
+[
+  {
+    "app.user_data.NpcTaskData": {
+      "_UpstreamActionParam": {
+        "app.user_data.NpcTaskData.cActionParamPack": {
+          "_ActionParamList": []
+        }
+      },
+      "_IsLoopMainstream": false,
+      "_MainstreamActionParam": {
+        "app.user_data.NpcTaskData.cActionParamPack": {
+          "_ActionParamList": [
+            {
+              "app.user_data.NpcTaskData.cActionParam": {
+                "_PointSelectType": 4,
+                "_PointSearcher": {
+                  "app.cNpcPointSearcher": {
+                    "_TargetType": 0,
+                    "_DestList": [
+                      {
+                        "app.cNpcDestinationData": {
+                          "_Pos": [
+                            36.7377,
+                            230.2942,
+                            758.5836,
+                            0.0
+                          ],
+                          "_DegY": 125
+                        }
+                      },
+                      {
+                        "app.cNpcDestinationData": {
+                          "_Pos": [
+                            22.0886,
+                            228.3761,
+                            786.507,
+                            0.0
+                          ],
+                          "_DegY": -150
+                        }
+                      }
+                    ],
+                    "_PointSelector": {
+                      "app.cNpcPointSelector": {
+                        "_Category": 1,
+                        "_PointType": 0
+                      }
+                    },
+                    "STRUCT__IsOnOff__HasValue": false,
+                    "STRUCT__IsOnOff__Value": false,
+                    "_Pos": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "_Range": 5.0,
+                    "_GroupAIType": "[0] INVALID",
+                    "_FieldUnitType": "[0] INVALID"
+                  }
+                },
+                "_GoalActionSelector": {
+                  "app.cNpcAIGoalActionSelector": {
+                    "_Category": 1199750144,
+                    "_MoveID": 1262233088,
+                    "_ActionID": 1843685120,
+                    "_HoldMotionPackID": 1933075712,
+                    "_Variation": -663541696
+                  }
+                },
+                "_InfiniteActionTime": false,
+                "_ActionTime": {
+                  "raw": "0000a04100002042",
+                  "type": "Range"
+                },
+                "_InterruptTime": {
+                  "raw": "0000000000000000",
+                  "type": "Range"
+                },
+                "_InterruptProbability": 100,
+                "_InterruptActionParamList": [],
+                "_TaskColliderID": "[0] INVALID",
+                "_TaskDialogueID": "[0] INVALID",
+                "_DisableStreet": false
+              }
+            }
+          ]
+        }
+      },
+      "_DownstreamActionParam": {
+        "app.user_data.NpcTaskData.cActionParamPack": {
+          "_ActionParamList": []
+        }
+      },
+      "_VariousData": {
+        "app.user_data.cNpcTaskVariousData": {
+          "_SkeletonType": "[7] RYUJIN_SML",
+          "_OnlyDefaultBodyScale": false,
+          "_Gender": -1,
+          "_VisualType": {
+            "app.cNpcVisualTypeChecker": {
+              "_Species": 3,
+              "_ModelKindFixedID": -1
+            }
+          },
+          "_NeedRunTimerByMove": false,
+          "_CanInterrupt_Rest": true,
+          "_CanInterrupt_Combi": false,
+          "_NotSkipUpstream": false,
+          "_PtJackVisualChecker": {
+            "app.cNpcJackVisualChecker_Porter": {
+              "_ScaleType": "[4062033968] NOT_SUPPORTED"
+            }
+          },
+          "_EmJackVisualChecker": {
+            "app.cNpcJackVisualChecker_Enemy": {
+              "STRUCT__IsChild__HasValue": false,
+              "STRUCT__IsChild__Value": false
+            }
+          }
+        }
+      }
+    }
+  }
+]

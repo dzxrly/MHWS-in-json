@@ -1,0 +1,54 @@
+[
+  {
+    "app.user_data.AppThermalConductorManagerSetting": {
+      "ThermalConductorParam": {
+        "ace.cVortexelThermalConductorParam": {
+          "_Active": true,
+          "_SetupConductorLink": true,
+          "_SetupVoxelSize": 10.0,
+          "_SetupResolutionX": 64,
+          "_SetupResolutionY": 16,
+          "_SetupResolutionZ": 64,
+          "_SetupMaxHeatReceiverNum": 60000,
+          "_SetupMaxHeatReceiverPairNum": 150000,
+          "_SetupMaxHeatSourceNum": 100,
+          "_SetupMaxHeatSensorNum": 2000
+        }
+      },
+      "_RecoveryNumOneTime": 100,
+      "_CreateHeatReceiverNumOneTime": 40,
+      "_CreateHeatReceiverTotalNumOneTime": 320,
+      "_HeatReceiverControllerNum": 512,
+      "_RecoveryTimeEnvironmentChange": 0.0,
+      "_BurningMapSize": {
+        "raw": "f4010000f4010000",
+        "type": "Int2"
+      },
+      "_BurningMapResetLength": [
+        100.0,
+        100.0,
+        0.0,
+        0.0
+      ],
+      "_BurningMapBuffer": "MasterMaterial/ByteAddressBuffer/BurningMap.gpbf",
+      "_ResolutionInv": 2,
+      "_RecoveryNumOneTimeOptMode": 20,
+      "_CreateHeatReceiverNumOneTimeOptMode": 10,
+      "_CreateHeatReceiverTotalNumOneTimeOptMode": 60,
+      "ThermalConductorParamOptMode": {
+        "ace.cVortexelThermalConductorParam": {
+          "_Active": true,
+          "_SetupConductorLink": true,
+          "_SetupVoxelSize": 20.0,
+          "_SetupResolutionX": 15,
+          "_SetupResolutionY": 4,
+          "_SetupResolutionZ": 15,
+          "_SetupMaxHeatReceiverNum": 60000,
+          "_SetupMaxHeatReceiverPairNum": 150000,
+          "_SetupMaxHeatSourceNum": 100,
+          "_SetupMaxHeatSensorNum": 2000
+        }
+      }
+    }
+  }
+]

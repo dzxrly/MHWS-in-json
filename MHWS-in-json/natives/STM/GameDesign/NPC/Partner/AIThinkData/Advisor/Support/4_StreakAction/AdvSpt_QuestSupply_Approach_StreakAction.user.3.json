@@ -1,0 +1,92 @@
+[
+  {
+    "app.user_data.NpcStreakActionData": {
+      "_TerminateType": 2,
+      "_ActionEffectParam": {
+        "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Action": {
+          "_Param": {
+            "app.cNpcStreakEffectParam_None": {}
+          }
+        }
+      },
+      "_LStickEffectParam": {
+        "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_LStick": {
+          "_Param": {
+            "app.NpcStreakEffects.cSetScoringPoint_AIMoveParam": {
+              "_Reach": 0.0,
+              "_ContinueMove": true,
+              "_StopWhenReached": false,
+              "_MoveType": "[4] FOLLOW",
+              "_UseAIMoveEnd": false,
+              "_FixedSpeedLv": "[0] INVALID",
+              "_IsMoveStopTurn": false,
+              "_StopTurnDir": 0,
+              "_DegRange": {
+                "raw": "0000000000003443",
+                "type": "Range"
+              },
+              "_IsOverwritePartsType": false,
+              "_OverwritePartsType": "[4138846592] NEAR_PARTS",
+              "_TargetParam": {
+                "app.mcNpcTargetController.cScoringPoint_Param": {
+                  "_ScoringData": {
+                    "app.user_data.NpcPQSScoringData": {
+                      "ref_instance_id": 4,
+                      "path": "GameDesign/NPC/Partner/CommonData/PointQuery/Advisor/AdvFlw_PL_Idle_PQSScoringData.user"
+                    }
+                  },
+                  "_VerticalData": {
+                    "": {}
+                  },
+                  "_RelayingData": {
+                    "app.user_data.NpcPQSRelayingData": {
+                      "ref_instance_id": 5,
+                      "path": "GameDesign/NPC/Partner/CommonData/PointQuery/Advisor/AdvCmn_Default_PQSRelayingData.user"
+                    }
+                  },
+                  "_RouteType": 1,
+                  "_DirectionType": "[0] INVALID",
+                  "_EnvLayer": "[1] LARGE",
+                  "_IsEnableJointTarget": false,
+                  "_JudgeLength": 3.0
+                }
+              }
+            }
+          }
+        }
+      },
+      "_AimEffectParam": {
+        "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Aim": {
+          "_Param": {
+            "app.NpcStreakEffects.cSideWaitTime_Param": {
+              "_DelayTime": 0.0,
+              "_IsAlphaZero": false,
+              "_IsDisableAlphaFade": false,
+              "_IsAlphaZero_Porter": false,
+              "_IsDisableAlphaFade_Porter": false,
+              "_WaitTime": {
+                "raw": "000000410000a040",
+                "type": "Range"
+              }
+            }
+          }
+        }
+      },
+      "_EvaluatorParams": [
+        {
+          "app.user_data.NpcStreakActionData.cNpcStreakEvaluatorHolder": {
+            "_Param": {
+              "app.NpcStreakEvaluators.cCheckRangeInTarget_Param": {
+                "_Range": {
+                  "raw": "0000000000003442",
+                  "type": "Range"
+                }
+              }
+            },
+            "_Inverse": false
+          }
+        }
+      ]
+    }
+  }
+]

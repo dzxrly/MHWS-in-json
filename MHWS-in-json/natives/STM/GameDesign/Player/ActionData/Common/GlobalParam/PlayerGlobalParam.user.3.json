@@ -1,0 +1,1563 @@
+[
+  {
+    "app.user_data.PlayerGlobalParam": {
+      "_StatusParam": {
+        "app.user_data.PlayerStatusParam": {
+          "ref_instance_id": 1,
+          "path": "GameDesign/Player/ActionData/Common/GlobalParam/Part/PlayerStatusParam.user"
+        }
+      },
+      "_SkillParam": {
+        "app.user_data.PlayerSkillParam": {
+          "ref_instance_id": 2,
+          "path": "GameDesign/Player/ActionData/Common/GlobalParam/Part/PlayerSkillParam.user"
+        }
+      },
+      "_MealSkillParam": {
+        "app.user_data.PlayerMealSkillParam": {
+          "ref_instance_id": 3,
+          "path": "GameDesign/Player/ActionData/Common/GlobalParam/Part/PlayerMealSkillParam.user"
+        }
+      },
+      "_MusicSkillParam": {
+        "app.user_data.PlayerMusicSkillParam": {
+          "ref_instance_id": 4,
+          "path": "GameDesign/Player/ActionData/Common/GlobalParam/Part/PlayerMusicSkillParam.user"
+        }
+      },
+      "_OtomoMusicSkillParam": {
+        "app.user_data.PlayerOtomoMusicSkillParam": {
+          "ref_instance_id": 5,
+          "path": "GameDesign/Player/ActionData/Common/GlobalParam/Part/PlayerOtomoMusicSkillParam.user"
+        }
+      },
+      "_ActiveSkillParam": {
+        "app.user_data.PlayerActiveSkillParam": {
+          "ref_instance_id": 6,
+          "path": "GameDesign/Player/ActionData/Common/GlobalParam/Part/PlayerActiveSkillParam.user"
+        }
+      },
+      "_NetActionStartInterpolationTime": 0.4,
+      "_NetStateFlagIntervalTime": 1.0,
+      "_ReplicaPrepareToLeaveSessionTime": 5.0,
+      "_ReplicaActionStartInterpolateMaxDist": 10.0,
+      "_ReplicaIntervalActionStartInterpolateTimeRate": 2.5,
+      "_ReplicaIntervalInterpolateWarpDist": 5.0,
+      "_ReplicaIntervalInterpolateChainResetDist": 2.0,
+      "_ReplicaIntervalInterpolateMotDeltaRate": 1.05,
+      "_ReplicaActionEndToDrawOffTime": 1.0,
+      "_Culling_DrawOffBeginDistToCamera": 300.0,
+      "_Culling_DrawOffEndDistToCamera": 295.0,
+      "_Culling_IKOffDistToCamera": 20.0,
+      "_Culling_LobbyCharaDestroyTime": 20.0,
+      "_AlphaZero_MoveSpeed": 5.0,
+      "_AlphaZeroEquipBuild_MoveSpeed": 10.0,
+      "_KeyLagTime_Attack": 0.05,
+      "_KeyLagTime_AttackSp": 0.05,
+      "_KeyLagTime_ActiveSkill": 0.1,
+      "_ButtonKeepTime_OpenMap": 0.4,
+      "_ButtonKeepTime_OpenItemSlider": 0.2,
+      "_ButtonKeepTime_BtRideCancel": 0.8,
+      "_LStickThreshold_Min": 0.3,
+      "_LStickThreshold_Walk": 0.33,
+      "_LStickThreshold_Run": 0.88,
+      "_LStickThreshold_Dash": 0.33,
+      "_LStickThreshold_MoveStop": 0.28,
+      "_LStickThreshold_ActionTurn": 0.6,
+      "_LStickThreshold_DodgeTurn": 0.33,
+      "_LStickThreshold_DashTurn": 0.88,
+      "_LStickThreshold_MoveStopTurn": 0.8,
+      "_StickTurn180": {
+        "app.STICK_TURN180_PARAM": {
+          "_AnalyzeTime": 0.15,
+          "_MagnitudeThreshold": 0.5,
+          "_SuccessDeg": 140.0,
+          "_FailuerDegWidth": 30.0
+        }
+      },
+      "_LeverMashing": {
+        "app.STICK_LEVER_MASHING_PARAM": {
+          "_MagnitudeThreshold": 0.5,
+          "_MinLeverMashingSpeed": 0.15,
+          "_MaxNoLeverMashingSpeed": 0.02,
+          "_MaxMashingSpeedDeg": 2400.0
+        }
+      },
+      "_ButtonMashingToLeverMashingInfluence": 0.5,
+      "_Turn180_RequireDiffDeg": 120.0,
+      "_Walk_SuccessInputTime": 0.1,
+      "_ToggleDash_NoStickEndTime": 0.5,
+      "_ComboBackLeverDeg": 160.0,
+      "_MoveTurn_BrakeEnabledDegMax": 35.0,
+      "_MoveTurn_BrakeEnabledDegMin": 0.5,
+      "_MoveTurn_BrakeRateMin": 0.2,
+      "_MoveTurn_BrakeCurve": 4,
+      "_MoveBankAdjustList": [
+        {
+          "app.user_data.PlayerGlobalParam.cMoveBankAdjust": {
+            "_Rate": 1.0,
+            "_InterpolationTime": 1.5,
+            "_InterpolationEaseType": 9
+          }
+        },
+        {
+          "app.user_data.PlayerGlobalParam.cMoveBankAdjust": {
+            "_Rate": 0.7,
+            "_InterpolationTime": 1.5,
+            "_InterpolationEaseType": 9
+          }
+        }
+      ],
+      "_EscapeDashCheckDist": 40.0,
+      "_EscapeDashCheckDist_L": 80.0,
+      "_EscapeDashCheckAngleDeg": 100.0,
+      "_EscapeDashCheckDist_LargeEm": 60.0,
+      "_EscapeDashCheckAngleDeg_LargeEm": 100.0,
+      "_EscapeDashAddBlendRate": 1.0,
+      "_EscapeDashAddBlendRateMoveSpeed": 1.0,
+      "_TerrainCol_ClimbWall_Radius": 0.2,
+      "_TerrainCol_ClimbWall_Height": 0.4,
+      "_TerrainCol_ClimbWall_OffsetZ": -0.5,
+      "_TerrainCol_GetOutTent_Radius": 0.05,
+      "_TerrainCol_GetOutTent_Height": 1.8,
+      "_TerrainCol_StepUp_Radius": 0.4,
+      "_TerrainCol_EggStepUp_Radius": 0.2,
+      "_Walk_Sand_DecoMot_BlendRate": 0.0,
+      "_Run_Sand_DecoMot_BlendRate": 0.0,
+      "_Dash_Sand_DecoMot_BlendRate": 0.0,
+      "_Walk_Caution_DecoMot_BlendRate": 0.5,
+      "_Run_Caution_DecoMot_BlendRate": 0.35,
+      "_Dash_Caution_DecoMot_BlendRate": 0.3,
+      "_DodgeNoHitTime_Normal": 13,
+      "_DodgeNoHitTime_Step": 10,
+      "_DodgeNoHitTime_EscapeLandAfter": 30,
+      "_DodgeNoHitTime_Wp01BackStep": 40,
+      "_DodgeNoHitTime_Wp02KijinDodge": 14,
+      "_DodgeNoHitTime_Wp02JustDodge": 14,
+      "_DodgeNoHitWp02BuffJustDodgeASkill004Data": 32,
+      "_DodgeNoHitTime_Wp03Mikiri": 45,
+      "_DodgeNoHitTime_Wp03MikiriRed": 45,
+      "_DodgeNoHitTime_Wp04ChargeDodge": 24,
+      "_DodgeNoHitTime_Wp05SpParrySoundAttack": 30,
+      "_DodgeNoHitTime_Wp10JumpBack": 24,
+      "_DodgeNoHitTime_Wp11ChargeStep": 13,
+      "_DodgeNoHitTime_Wp12Dodge": 13,
+      "_DodgeNoHitTime_Wp13Sliding": 13,
+      "_DodgeNoHitTime_ExField": 20,
+      "_SlopeStage2": 35.0,
+      "_SlopeStage1": 30.0,
+      "_Slope1": {
+        "app.cHunterSlopeMotionAngleParam": {
+          "_UpDeg": 20.0,
+          "_UpEndDeg": 15.0,
+          "_DownDeg": 20.0,
+          "_DownEndDeg": 15.0
+        }
+      },
+      "_Slope2": {
+        "app.cHunterSlopeMotionAngleParam": {
+          "_UpDeg": 30.0,
+          "_UpEndDeg": 25.0,
+          "_DownDeg": 30.0,
+          "_DownEndDeg": 25.0
+        }
+      },
+      "_SlopeSide1": {
+        "app.cHunterSlopeMotionAngleParam": {
+          "_UpDeg": 30.0,
+          "_UpEndDeg": 25.0,
+          "_DownDeg": 30.0,
+          "_DownEndDeg": 25.0
+        }
+      },
+      "_WallDeg": 60.0,
+      "_DisableSlopeMoveWallYawDeg": 50.0,
+      "_DefaultGravity": 9.8,
+      "_BaseGravitySpeedRateH": 1.32,
+      "_BaseGravitySpeedRateV": 1.32,
+      "_AttachToGroundHeight": 0.03,
+      "_MinimumFallHeight": 0.2,
+      "_FallActionHeight": 0.5,
+      "_IgnoreMaxHeight": 3.0,
+      "_Land_RayCastLength": 5.0,
+      "_Land1_Height": 2.0,
+      "_Land2_Height": 3.0,
+      "_Land3_Height": 7.0,
+      "_IgnoreLandTimeByJump": 0.2,
+      "_BeforeLandingMotionStartHeight": 100.0,
+      "_SafeFallHeight": -350.0,
+      "_SafeFallTime": 45.0,
+      "_SandGroundCastAroundRadius": 0.6,
+      "_SandGroundCastAroundNormalCount": 6,
+      "_SandPeakFallActionHeight": 1.0,
+      "_SandPeakContinueTime": 0.5,
+      "_SandPeakAttachToGroundHeight": 0.1,
+      "_BuriedCheckTime": 1.0,
+      "_BasicJump": {
+        "app.cGravityJumpParam": {
+          "_JumpVelocity": [
+            0.0,
+            3.7,
+            4.55,
+            0.0
+          ],
+          "_Gravity": 9.8,
+          "_GravityRate": 1.0
+        }
+      },
+      "_DodgeJump": {
+        "app.cGravityJumpParam": {
+          "_JumpVelocity": [
+            0.0,
+            4.0,
+            2.2,
+            0.0
+          ],
+          "_Gravity": 9.8,
+          "_GravityRate": 1.0
+        }
+      },
+      "_EscapeJump": {
+        "app.cGravityJumpParam": {
+          "_JumpVelocity": [
+            0.0,
+            3.8,
+            6.0,
+            0.0
+          ],
+          "_Gravity": 9.8,
+          "_GravityRate": 1.0
+        }
+      },
+      "_TarzanJump": {
+        "app.cGravityJumpParam": {
+          "_JumpVelocity": [
+            0.0,
+            4.7,
+            4.55,
+            0.0
+          ],
+          "_Gravity": 9.8,
+          "_GravityRate": 1.0
+        }
+      },
+      "_TarzanJustJump": {
+        "app.cGravityJumpParam": {
+          "_JumpVelocity": [
+            0.0,
+            6.5,
+            4.55,
+            0.0
+          ],
+          "_Gravity": 9.8,
+          "_GravityRate": 1.0
+        }
+      },
+      "_Porter_Dismount_Jump_Idle": {
+        "app.cGravityJumpParam": {
+          "_JumpVelocity": [
+            0.0,
+            4.0,
+            4.8,
+            0.0
+          ],
+          "_Gravity": 9.8,
+          "_GravityRate": 1.0
+        }
+      },
+      "_Porter_Dismount_Jump_Run": {
+        "app.cGravityJumpParam": {
+          "_JumpVelocity": [
+            0.0,
+            5.0,
+            7.0,
+            0.0
+          ],
+          "_Gravity": 9.8,
+          "_GravityRate": 1.0
+        }
+      },
+      "_Porter_Dismount_Jump_TopSpeed": {
+        "app.cGravityJumpParam": {
+          "_JumpVelocity": [
+            0.0,
+            6.5,
+            8.0,
+            0.0
+          ],
+          "_Gravity": 9.8,
+          "_GravityRate": 1.0
+        }
+      },
+      "_Sliding_Dodge_MinJump": {
+        "app.cGravityJumpParam": {
+          "_JumpVelocity": [
+            0.0,
+            3.2,
+            3.8,
+            0.0
+          ],
+          "_Gravity": 9.8,
+          "_GravityRate": 1.0
+        }
+      },
+      "_Sliding_Dodge_MaxJump": {
+        "app.cGravityJumpParam": {
+          "_JumpVelocity": [
+            0.0,
+            4.0,
+            7.5,
+            0.0
+          ],
+          "_Gravity": 9.8,
+          "_GravityRate": 1.0
+        }
+      },
+      "_MaxWallThroughJumpDist": 1.0,
+      "_Jump_TurnSpeed": 90.0,
+      "_Jump_TurnDisableInputDeg": 135.0,
+      "_StepUp_RayHeight": 0.45,
+      "_StepUp_RayHeight_Higher": 1.45,
+      "_StepUp_UpRayDist": 4.0,
+      "_StepUp_UpRayOfsZ": 0.2,
+      "_StepUp_GroundBehindWallMaxHeight": 1.0,
+      "_StepUp_SuccessInputDeg": 45.0,
+      "_StepUp_SuccessCharacterDeg": 45.0,
+      "_StepUpCancel_SuccessInputDeg": 130.0,
+      "_AirStepUp_SuccessInputDeg": 100.0,
+      "_AirStepUp_SuccessCharacterDeg": 45.0,
+      "STRUCT__StepUp0_Height__Min": 0.18,
+      "STRUCT__StepUp0_Height__Max": 0.5,
+      "STRUCT__StepUp1_Height__Min": 0.5,
+      "STRUCT__StepUp1_Height__Max": 0.8,
+      "STRUCT__StepUp1_2_Height__Min": 0.8,
+      "STRUCT__StepUp1_2_Height__Max": 1.4,
+      "STRUCT__StepUp2_Height__Min": 1.4,
+      "STRUCT__StepUp2_Height__Max": 2.7,
+      "STRUCT__StepUp3_Height__Min": 2.7,
+      "STRUCT__StepUp3_Height__Max": 3.5,
+      "STRUCT__AirStepUp1_Height__Min": 0.0,
+      "STRUCT__AirStepUp1_Height__Max": 0.3,
+      "STRUCT__AirStepUp1_2_Height__Min": 0.3,
+      "STRUCT__AirStepUp1_2_Height__Max": 1.55,
+      "STRUCT__AirStepUp2_Height__Min": 1.55,
+      "STRUCT__AirStepUp2_Height__Max": 2.6,
+      "STRUCT__AirStepUp3_Height__Min": 2.6,
+      "STRUCT__AirStepUp3_Height__Max": 3.5,
+      "_StepUp1_RayDist_Walk": 1.0,
+      "_StepUp2_RayDist_Walk": 1.2,
+      "_StepUp3_RayDist_Walk": 1.2,
+      "_StepUp1_RayDist_Run": 1.5,
+      "_StepUp2_RayDist_Run": 1.5,
+      "_StepUp3_RayDist_Run": 1.5,
+      "_StepUp1_RayDist_Dash": 1.5,
+      "_StepUp2_RayDist_Dash": 1.5,
+      "_StepUp3_RayDist_Dash": 1.5,
+      "_AirStepUp_RayDist": 0.9,
+      "_StepUp1_RayDist_Egg": 0.8,
+      "_StepUp2_RayDist_Egg": 1.0,
+      "_StepUp3_RayDist_Egg": 1.0,
+      "_StepUpWallDash_RayDist": 1.2,
+      "_StepUpWall_ToTopHeight": 2.2,
+      "_StepUpWall_LimitHeight": 6.1,
+      "_StepUpWall_AdjustRotSpring": 3.0,
+      "_Sliding_SignStartCheckAngle": 24.0,
+      "_Sliding_CheckAngle": 22.0,
+      "_SlidingEnd_CheckAngle": 10.0,
+      "_Sliding_SandCheckAngleSub": 5.0,
+      "_Sliding_EasilySlidingCheckAngle": 15.0,
+      "_Sliding_EasilySliding_EndAngle": 5.0,
+      "_SlidingParam": {
+        "app.cHunterSlidingParam": {
+          "_MaxTransRate": 3.7,
+          "_MinTransRate": 1.2,
+          "_Time": 3.0,
+          "_TurnSpeed": 30.0
+        }
+      },
+      "_SlidingParamFromDodge": {
+        "app.cHunterSlidingParam": {
+          "_MaxTransRate": 3.7,
+          "_MinTransRate": 1.8,
+          "_Time": 3.0,
+          "_TurnSpeed": 30.0
+        }
+      },
+      "_SlidingParamEgg": {
+        "app.cHunterSlidingParam": {
+          "_MaxTransRate": 3.7,
+          "_MinTransRate": 1.2,
+          "_Time": 3.0,
+          "_TurnSpeed": 30.0
+        }
+      },
+      "_SlidingSign_StartTime": 0.5,
+      "_SlidingSign_FailTime": 0.4,
+      "_Sliding_EndDist": 2.7,
+      "_Sliding_EndTime": 0.15,
+      "_Sliding_Start_AllowedDiffDeg": 60.0,
+      "_Sliding_Turn_RequireDiffDeg": 90.0,
+      "_Sliding_EndGestureEnableTime": 3.0,
+      "_Sliding_EndGestureEnableRand": 50.0,
+      "_AutoWpOff_Timer": 5.0,
+      "_BattleRideMoveJumpSec": 0.75,
+      "_BattleRideMoveEaseRateToLand": 0.8,
+      "_BattleRideMoveCheckDeg": 180.0,
+      "_BattleRideMoveCheckDeg_Priority": 90.0,
+      "_BattleRideStaminaDamageInterval": 10.0,
+      "_BattleRideStaminaReduceRate_WallBump": 0.0,
+      "_BattleRideConstActivateInterporateSec": 0.1,
+      "_BattleRideConstDeactivateInterporateSec": 0.5,
+      "_BattleRideConstRotateRate": [
+        0.5,
+        1.0,
+        0.5,
+        0.0
+      ],
+      "_BattleRideConstPichOffsetRate_SpringConst": 2.0,
+      "_BattleRideConstPichOffsetRate_DampingConst": 1.0,
+      "_PorterRiderSubMot": {
+        "app.user_data.PorterRiderSubMotionParam": {
+          "ref_instance_id": 27,
+          "path": "GameDesign/Player/ActionData/Common/GlobalParam/Part/PorterRiderSubMotionParam.user"
+        }
+      },
+      "_PorterRiderCondition": {
+        "app.user_data.PorterRiderConditionParam": {
+          "ref_instance_id": 28,
+          "path": "GameDesign/Player/ActionData/Common/GlobalParam/Part/PorterRiderConditionParam.user"
+        }
+      },
+      "_PorterReinParam": {
+        "app.cAttachToPorterRopesParam": {
+          "_LeftConstInfo": {
+            "app.cAttachToPorterRopesParam.ConstInfo": {
+              "_ConstJointName": [
+                "L_PinkyF2",
+                "L_Thumb2"
+              ]
+            }
+          },
+          "_RightConstInfo": {
+            "app.cAttachToPorterRopesParam.ConstInfo": {
+              "_ConstJointName": [
+                "R_PinkyF2",
+                "R_Thumb2"
+              ]
+            }
+          }
+        }
+      },
+      "_PorterStirrupParam": {
+        "app.cAttachToPorterRopesParam": {
+          "_LeftConstInfo": {
+            "app.cAttachToPorterRopesParam.ConstInfo": {
+              "_ConstJointName": [
+                "L_Instep"
+              ]
+            }
+          },
+          "_RightConstInfo": {
+            "app.cAttachToPorterRopesParam.ConstInfo": {
+              "_ConstJointName": [
+                "R_Instep"
+              ]
+            }
+          }
+        }
+      },
+      "_ButtonKeepTime_PorterSplint": 0.2,
+      "_ButtonKeepTime_PorterStop": 0.2,
+      "_ButtonReleaseTime_PorterTopSToDash": 0.2,
+      "_ButtonMinKeepTime_PorterCall": 0.2,
+      "_ButtonKeepTime_PorterCall": {
+        "app.user_data.PlayerGlobalParam.cKeepTime": {
+          "_Normal": 0.5,
+          "_Short": 0.3,
+          "_Long": 0.8
+        }
+      },
+      "_ButtonKeepTime_PorterCallAir": {
+        "app.user_data.PlayerGlobalParam.cKeepTime": {
+          "_Normal": 0.2,
+          "_Short": 0.15,
+          "_Long": 0.3
+        }
+      },
+      "_RideAttachTopSpeedBeginRate": 0.68,
+      "_RideAttachTopSpeedEndRate": 0.47,
+      "_RideAttachDashBeginRate": 0.3,
+      "_RideAttachDashEndRate": 0.2,
+      "_RideAttachTiltEndRate": 0.2,
+      "_RideLStickThreshold_Walk": 0.33,
+      "_RideLStickThreshold_Run": 0.6,
+      "_RideLStickThreshold_Dash": 0.88,
+      "_RideLStickThreshold_TopS": 0.33,
+      "_RideLStickSpeedDownTime": 0.1,
+      "_RideJumpRideOnAutoMoveTime": 0.5,
+      "_PorterRiderSecondaryHandConstParam": {
+        "app.user_data.PorterRiderSecondaryHandConstParam": {
+          "ref_instance_id": 37,
+          "path": "GameDesign/Player/ActionData/Common/GlobalParam/Part/PorterRiderSecondaryHandConstParam.user"
+        }
+      },
+      "_PorterReserveWeaponInvisibleScaleSpeed": 10.0,
+      "_PorterReserveWeaponInvisibleScale": 0.01,
+      "_JointControllerSetupParam": {
+        "ace.user_data.JointCtrlSetupParam": {
+          "ref_instance_id": 38,
+          "path": "GameDesign/Player/Animation/IkControl/PlayerJointCtrlSetup.user"
+        }
+      },
+      "_IkControllerSetupParam": {
+        "ace.user_data.IkCtrlSetupParam": {
+          "ref_instance_id": 39,
+          "path": "GameDesign/Player/Animation/IkControl/PlayerIkCtrlSetup.user"
+        }
+      },
+      "_IkLeg_WpOnOffInterpolateFrame": 10.0,
+      "_IkArmFadeDuration": 0.2,
+      "_FbikRigInfo": {
+        "app.user_data.HumanoidFbikInfo": {
+          "ref_instance_id": 40,
+          "path": "Motion/Player/Decorate/FullBodyIkRig/PlRigInfo.user"
+        }
+      },
+      "_RetargetArmSpreadRateMoveSpeed": 1.0,
+      "_RetargetArmSpreadRateMoveSpeedToZero": 20.0,
+      "_RetargetArmSwingSuppressRateMoveSpeed": 1.0,
+      "_RetargetArmSwingSuppressRateMoveSpeedToZero": 20.0,
+      "_RetargetGasagosoRateMoveSpeed": 2.0,
+      "_RetargetGasagosoRateMoveSpeedToZero": 2.8,
+      "_SpeedTreeSphereOffsetY": 0.3,
+      "_SpeedTreeSphereRadius": 0.5,
+      "_SpeedTreeSpherePower": 0.75,
+      "_SpeedTreeSphereOffsetY_Wall": 0.0,
+      "_SpeedTreeSphereOffsetZ_Wall": -0.35,
+      "_SpeedTreeSphereRadius_Wall": 0.6,
+      "_SpeedTreeSpherePower_Wall": 0.75,
+      "_CatchSlingerSpeedTreeSphereRadius": 0.5,
+      "_CatchSlingerSpeedTreeSpherePower": 0.75,
+      "_SubMotion_MovingBlendRateSpeed": 2.0,
+      "_VarietyMotionParam": {
+        "app.user_data.HunterVarietyMotionParam": {
+          "ref_instance_id": 41,
+          "path": "GameDesign/Player/ActionData/Common/GlobalParam/Part/HunterVarietyMotionParam.user"
+        }
+      },
+      "_VarietyIdleMotionParam": {
+        "app.user_data.HunterVarietyIdleMotionParam": {
+          "ref_instance_id": 42,
+          "path": "GameDesign/Player/ActionData/Common/GlobalParam/Part/HunterVarietyIdleMotionParam.user"
+        }
+      },
+      "_SubMotionBStanceAdjustParam": {
+        "app.cGunnerAimAdjustParam": {
+          "_InterpolateSpeed": 5.0,
+          "_FadeInSpeed": 3.0,
+          "_FadeOutSpeed": 1.0,
+          "_TargetFollowDamping": 0.5,
+          "_TargetFollowDampingTimeScale": 10.0,
+          "_UpperArmRate": 0.5,
+          "_ShoulderRate": 0.5,
+          "_Spine2Rate": 0.5,
+          "_Spine1Rate": 0.35,
+          "_Spine0Rate": 0.15,
+          "_CogRate": 0.0,
+          "_HipRate": 0.5,
+          "_LFootRate": 0.0,
+          "_RFootRate": 0.0,
+          "_ConstMoveDegX": 0.0,
+          "_ConstMoveDegY": -50.0,
+          "_LimitY": 45.0,
+          "_LimitUpX": 0.0,
+          "_LimitDownX": 0.0
+        }
+      },
+      "_SubMotionBStanceAdjustParam_Squat": {
+        "app.cGunnerAimAdjustParam": {
+          "_InterpolateSpeed": 5.0,
+          "_FadeInSpeed": 3.0,
+          "_FadeOutSpeed": 1.0,
+          "_TargetFollowDamping": 0.5,
+          "_TargetFollowDampingTimeScale": 10.0,
+          "_UpperArmRate": 1.0,
+          "_ShoulderRate": 1.0,
+          "_Spine2Rate": 1.0,
+          "_Spine1Rate": 0.66,
+          "_Spine0Rate": 0.33,
+          "_CogRate": 0.0,
+          "_HipRate": 0.0,
+          "_LFootRate": 0.0,
+          "_RFootRate": 0.0,
+          "_ConstMoveDegX": 0.0,
+          "_ConstMoveDegY": -5.0,
+          "_LimitY": 5.0,
+          "_LimitUpX": 0.0,
+          "_LimitDownX": 0.0
+        }
+      },
+      "_Sub0MotionWorldBlendParam": {
+        "app.cMotionWorldBlendFilterParam": {
+          "_JointData": [
+            {
+              "app.cMotionWorldBlendFilterParam.JointParamInfo": {
+                "_JointHash": {
+                  "ace.cJointHash": {
+                    "_Hash": 1913148385
+                  }
+                },
+                "_BlendRate": 1.0
+              }
+            },
+            {
+              "app.cMotionWorldBlendFilterParam.JointParamInfo": {
+                "_JointHash": {
+                  "ace.cJointHash": {
+                    "_Hash": 767461792
+                  }
+                },
+                "_BlendRate": 1.0
+              }
+            },
+            {
+              "app.cMotionWorldBlendFilterParam.JointParamInfo": {
+                "_JointHash": {
+                  "ace.cJointHash": {
+                    "_Hash": 1951860438
+                  }
+                },
+                "_BlendRate": 0.7
+              }
+            },
+            {
+              "app.cMotionWorldBlendFilterParam.JointParamInfo": {
+                "_JointHash": {
+                  "ace.cJointHash": {
+                    "_Hash": 1091167843
+                  }
+                },
+                "_BlendRate": 0.5
+              }
+            },
+            {
+              "app.cMotionWorldBlendFilterParam.JointParamInfo": {
+                "_JointHash": {
+                  "ace.cJointHash": {
+                    "_Hash": 3992101857
+                  }
+                },
+                "_BlendRate": 0.33
+              }
+            },
+            {
+              "app.cMotionWorldBlendFilterParam.JointParamInfo": {
+                "_JointHash": {
+                  "ace.cJointHash": {
+                    "_Hash": 1549972489
+                  }
+                },
+                "_BlendRate": 0.0
+              }
+            }
+          ],
+          "_FadeOutSpeed": 1.0
+        }
+      },
+      "_Sub1MotionWorldBlendParam": {
+        "app.cMotionWorldBlendFilterParam": {
+          "_JointData": [
+            {
+              "app.cMotionWorldBlendFilterParam.JointParamInfo": {
+                "_JointHash": {
+                  "ace.cJointHash": {
+                    "_Hash": 1913148385
+                  }
+                },
+                "_BlendRate": 1.0
+              }
+            },
+            {
+              "app.cMotionWorldBlendFilterParam.JointParamInfo": {
+                "_JointHash": {
+                  "ace.cJointHash": {
+                    "_Hash": 767461792
+                  }
+                },
+                "_BlendRate": 1.0
+              }
+            },
+            {
+              "app.cMotionWorldBlendFilterParam.JointParamInfo": {
+                "_JointHash": {
+                  "ace.cJointHash": {
+                    "_Hash": 1951860438
+                  }
+                },
+                "_BlendRate": 0.7
+              }
+            },
+            {
+              "app.cMotionWorldBlendFilterParam.JointParamInfo": {
+                "_JointHash": {
+                  "ace.cJointHash": {
+                    "_Hash": 1091167843
+                  }
+                },
+                "_BlendRate": 0.5
+              }
+            },
+            {
+              "app.cMotionWorldBlendFilterParam.JointParamInfo": {
+                "_JointHash": {
+                  "ace.cJointHash": {
+                    "_Hash": 3992101857
+                  }
+                },
+                "_BlendRate": 0.33
+              }
+            },
+            {
+              "app.cMotionWorldBlendFilterParam.JointParamInfo": {
+                "_JointHash": {
+                  "ace.cJointHash": {
+                    "_Hash": 1549972489
+                  }
+                },
+                "_BlendRate": 0.0
+              }
+            }
+          ],
+          "_FadeOutSpeed": 1.0
+        }
+      },
+      "_Variety0MotionWorldBlendParam": {
+        "app.cMotionWorldBlendFilterParam": {
+          "_JointData": [
+            {
+              "app.cMotionWorldBlendFilterParam.JointParamInfo": {
+                "_JointHash": {
+                  "ace.cJointHash": {
+                    "_Hash": 1951860438
+                  }
+                },
+                "_BlendRate": 1.0
+              }
+            },
+            {
+              "app.cMotionWorldBlendFilterParam.JointParamInfo": {
+                "_JointHash": {
+                  "ace.cJointHash": {
+                    "_Hash": 1091167843
+                  }
+                },
+                "_BlendRate": 0.66
+              }
+            },
+            {
+              "app.cMotionWorldBlendFilterParam.JointParamInfo": {
+                "_JointHash": {
+                  "ace.cJointHash": {
+                    "_Hash": 3992101857
+                  }
+                },
+                "_BlendRate": 0.33
+              }
+            },
+            {
+              "app.cMotionWorldBlendFilterParam.JointParamInfo": {
+                "_JointHash": {
+                  "ace.cJointHash": {
+                    "_Hash": 1549972489
+                  }
+                },
+                "_BlendRate": 0.0
+              }
+            }
+          ],
+          "_FadeOutSpeed": 1.0
+        }
+      },
+      "_SlingerAimAdjust": {
+        "app.user_data.SlingerAimAdjust": {
+          "ref_instance_id": 80,
+          "path": "GameDesign/Player/ActionData/Common/GlobalParam/Part/SlingerAimAdjust.user"
+        }
+      },
+      "_UpperBodyAdjust": {
+        "app.user_data.UpperBodyAdjust": {
+          "ref_instance_id": 81,
+          "path": "GameDesign/Player/ActionData/Common/GlobalParam/Part/UpperBodyAdjust.user"
+        }
+      },
+      "_HeadControlParam": {
+        "app.user_data.HumanHeadControlParam": {
+          "ref_instance_id": 82,
+          "path": "GameDesign/Player/ActionData/Common/GlobalParam/Part/HunterHeadControlParam.user"
+        }
+      },
+      "_LookAt_CameraTargetEnableRange": 40.0,
+      "_LookAt_BossEnableRange": 25.0,
+      "_LookAt_ZakoEnableRange": 15.0,
+      "_LookAt_EmTargetChangeInterval": 1.0,
+      "_LookAt_ReleaseTime": 5.0,
+      "_CameraLookAt_IdleLimitDeg": 90.0,
+      "_CameraLookAt_LimitDeg": 135.0,
+      "_Slinger_SightRayRange": 60.0,
+      "_Slinger_Range": 40.0,
+      "_ParabolaSlinger_Range": 15.0,
+      "_ExEmote00Slinger_Range": 40.0,
+      "_StrongStunParabolaOffsetY": -15.0,
+      "_StrongBombParabolaOffsetY": -15.0,
+      "_StrongBomb_SpreadRandomY": 5.0,
+      "_PaintActiveTimeEm": 1200.0,
+      "_PaintActiveTimeGimmick": 60.0,
+      "_MaxPaintNum_Em": 2,
+      "_MaxPaintNum_Gimmick": 1,
+      "_StrongSlinger_CameraAngleLimit": [
+        60.0,
+        30.0,
+        0.0,
+        0.0
+      ],
+      "_StrongSlinger_CameraAngleLimitStartTime": 1.0,
+      "_CatchSlinger_FindParam": {
+        "app.cCatchSlingerTargetFinder.cFindParam": {
+          "_MaxDetectionDist": 50.0,
+          "_MaxDetectionDegX": 25.0,
+          "_MaxDetectionDegY": 35.0,
+          "_MaxReachDist": 40.0,
+          "_MaxReachDegX": 8.0,
+          "_MaxReachDegY": 18.0,
+          "_DistScoreBias": 10.0,
+          "_DegScoreBiasX": 15.0,
+          "_DegScoreBiasY": 15.0,
+          "_BaseFOV": 30.0
+        }
+      },
+      "_CaptureNet_SightCapsuleDist": 9.0,
+      "_CaptureNet_SightCapsuleSize": 0.5,
+      "_HandConstToWp_BlendRateSpeed": 2.0,
+      "_HandConstToWp_PosInterpolateSpeed": 0.3,
+      "_CogAdjust_SpringConst": 3.0,
+      "_CogAdjust_DampingConst": 2.0,
+      "_CogAdjust_FadeInTime": 0.2,
+      "_CogAdjust_FadeOutTime": 0.3,
+      "_AimTurn_DampingConst": 5.0,
+      "_SandSinkParam": {
+        "app.cSandSinkParam": {
+          "_MoveSpeedThreshold": 0.8,
+          "_SinkDepthMin": 0.02,
+          "_SinkDepthMax": 0.2,
+          "_SlopeMaxDeg": 40.0,
+          "_SinkSpeed": 0.1,
+          "_RiseSpeed": 0.1,
+          "_InDurationTime": 0.2,
+          "_OffDurationTime": 0.5,
+          "_DepthInterpolateSpeed": 0.5
+        }
+      },
+      "_HeatCheckParam": {
+        "app.user_data.HeatCheckParam": {
+          "ref_instance_id": 85,
+          "path": "GameDesign/Player/ActionData/Common/GlobalParam/Part/HunterHeatCheckParam.user"
+        }
+      },
+      "_CameraBasic": {
+        "app.user_data.PlayerCameraBasicParam": {
+          "ref_instance_id": 86,
+          "path": "GameDesign/Player/ActionData/Common/GlobalParam/Part/CameraBasicParam.user"
+        }
+      },
+      "_EmCameraParamPackList": {
+        "app.user_data.EmCameraParamPackList": {
+          "ref_instance_id": 87,
+          "path": "GameDesign/Enemy/CommonData/Data/EmCameraParamPackList.user"
+        }
+      },
+      "_NPCTalk_AdjustSpeed": 500.0,
+      "_NPCTalk_AdjustDegSpeed": 360.0,
+      "_FastTravelTerrianCheck": {
+        "app.user_data.FastTravelTerrianCheck": {
+          "ref_instance_id": 88,
+          "path": "GameDesign/Player/ActionData/Common/GlobalParam/Part/FastTravelTerrianCheck.user"
+        }
+      },
+      "_FastTravelFadeTimeNormal": {
+        "app.user_data.PlayerGlobalParam.cFadeTime": {
+          "_ToOutTime": 0.3,
+          "_OutTime": 0.2,
+          "_InTime": 1.0
+        }
+      },
+      "_FastTravelFadeTimeLifeArea": {
+        "app.user_data.PlayerGlobalParam.cFadeTime": {
+          "_ToOutTime": 0.3,
+          "_OutTime": 0.2,
+          "_InTime": 0.3
+        }
+      },
+      "_FastTravel_YokuryuConstOffsetY": 2.5,
+      "_Modoridama_YokuryuStartOffset": [
+        3.27,
+        18.12,
+        -21.5,
+        0.0
+      ],
+      "_StageMoveGimmickFadeTime": {
+        "app.user_data.PlayerGlobalParam.cFadeTime": {
+          "_ToOutTime": 0.5,
+          "_OutTime": 0.5,
+          "_InTime": 0.7
+        }
+      },
+      "_SandpitBegin_DurationTime": 4.0,
+      "_NormalSandPitDragSpeed": {
+        "app.user_data.PlayerGlobalParam.cSandpitDragSpeed": {
+          "_DefaultSpeed": 2.5,
+          "_RunSpeed": 5.0,
+          "_DashSpeed": 5.5,
+          "_DodgeSpeed": 4.0
+        }
+      },
+      "_LargeSandPitDragSpeed": {
+        "app.user_data.PlayerGlobalParam.cSandpitDragSpeed": {
+          "_DefaultSpeed": 2.5,
+          "_RunSpeed": 5.0,
+          "_DashSpeed": 5.5,
+          "_DodgeSpeed": 4.0
+        }
+      },
+      "_SmallSandPitDragSpeed": {
+        "app.user_data.PlayerGlobalParam.cSandpitDragSpeed": {
+          "_DefaultSpeed": 2.5,
+          "_RunSpeed": 5.0,
+          "_DashSpeed": 5.5,
+          "_DodgeSpeed": 4.0
+        }
+      },
+      "_SandpitBeforeFadeTime": 1.0,
+      "_SandpitWarpFadeTime": {
+        "app.user_data.PlayerGlobalParam.cFadeTime": {
+          "_ToOutTime": 1.0,
+          "_OutTime": 1.15,
+          "_InTime": 2.0
+        }
+      },
+      "_AfterSandpitWarpTime": 10.0,
+      "_SwimNormalSpeed": 2.0,
+      "_SwimAimSpeed": 1.1,
+      "_SwimDashSpeed": 8.0,
+      "_SwimAcc": 6.0,
+      "_SwimStartMaxDistance": 3.0,
+      "_SwimStartMaxDeg": 90.0,
+      "_WaistWaterHeight": 0.8,
+      "_WaistOilHeight": 0.6,
+      "_WaistWaterPorterRideOffest": 0.6,
+      "_WaistWaterSpeedRate_Walk": 0.75,
+      "_WaistWaterMotSpeed_Walk": 1.0,
+      "_WaistWaterSpeedRate_Run": 0.75,
+      "_WaistWaterMotSpeed_Run": 1.0,
+      "_WaistWaterSpeedRate_Dash": 0.75,
+      "_WaistWaterMotSpeed_Dash": 1.0,
+      "_WaistWaterSpeedRate_SquatWalk": 0.8,
+      "_WaistWaterMotSpeed_SquatWalk": 1.0,
+      "_WaistWaterSpeedRate_SquatRun": 0.85,
+      "_WaistWaterMotSpeed_SquatRun": 0.85,
+      "_WaistWaterSpeedRate_Dodge": 0.85,
+      "_WaistWaterMotSpeed_Dodge": 1.0,
+      "_GrassMoveDisableRate": 0.8,
+      "_TentInFadeTime": {
+        "app.user_data.PlayerGlobalParam.cFadeTime": {
+          "_ToOutTime": 0.2,
+          "_OutTime": 0.15,
+          "_InTime": 0.1
+        }
+      },
+      "_TentOutFadeTime": {
+        "app.user_data.PlayerGlobalParam.cFadeTime": {
+          "_ToOutTime": 0.3,
+          "_OutTime": 0.2,
+          "_InTime": 0.3
+        }
+      },
+      "_TentBreakFadeTime": {
+        "app.user_data.PlayerGlobalParam.cFadeTime": {
+          "_ToOutTime": 0.25,
+          "_OutTime": 0.2,
+          "_InTime": 0.3
+        }
+      },
+      "_TentMenuFadeTime": {
+        "app.user_data.PlayerGlobalParam.cFadeTime": {
+          "_ToOutTime": 0.2,
+          "_OutTime": 0.1,
+          "_InTime": 0.2
+        }
+      },
+      "_TentChangeEquipRotateSpeed": 300.0,
+      "_TentChangeEquipRotateResetTime": 0.5,
+      "_TentEndChangeEquipBeforeSitTime": 0.5,
+      "_TeaDrinkMaxHPRate": 0.8,
+      "_KettleBoilTime": 20.0,
+      "_TentTeaIdleTime": 30.0,
+      "_TentHammockMotInterFrame": 20,
+      "_TentHammockMotInterMode": 1,
+      "_TempTentPosOffset": [
+        -0.5,
+        0.1373,
+        0.0,
+        0.0
+      ],
+      "_TempTentRotOffset": 40.0,
+      "_TempTentStatusPosOffset": [
+        -1.1,
+        0.1373,
+        1.2,
+        0.0
+      ],
+      "_TempTentOutFadeTime": {
+        "app.user_data.PlayerGlobalParam.cFadeTime": {
+          "_ToOutTime": 0.25,
+          "_OutTime": 0.2,
+          "_InTime": 0.3
+        }
+      },
+      "_TempTentStatusFadeTime": {
+        "app.user_data.PlayerGlobalParam.cFadeTime": {
+          "_ToOutTime": 0.1,
+          "_OutTime": 0.1,
+          "_InTime": 0.3
+        }
+      },
+      "_AttackDetectIgnoreAttackValue": 0.0,
+      "_StealthAttackRange": 5.0,
+      "_StealthAttackNoAimSearchRange": 20.0,
+      "_StealthAttackRangeAdd": 2.0,
+      "_StealthAttackCheckDeg": 180.0,
+      "_StealthAttackHeight": 3.0,
+      "_StealthAttackHeighStep": 1.5,
+      "_StealthAttackHeightUp": 4.0,
+      "_StealthAttackHeightAdd": 0.2,
+      "_JumpStealthAttackMaxHeight": 8.0,
+      "_JumpStealthTerrainCheckOfs": [
+        0.0,
+        1.0,
+        2.0,
+        0.0
+      ],
+      "_TarzanParams_RopeHook": {
+        "app.cTarzanParam": {
+          "_InitTarzanPoint": 60.0,
+          "_IdleTurnSpeed": 20.0,
+          "_TopTurnSpeed": 40.0,
+          "_MinSwingAngle": 3.0,
+          "_MinSwingTime": 1.5,
+          "_MaxSwingAngle": 75.0,
+          "_MaxSwingTime": 1.9
+        }
+      },
+      "_TarzanParams_Gimmick": {
+        "app.cTarzanParam": {
+          "_InitTarzanPoint": 60.0,
+          "_IdleTurnSpeed": 20.0,
+          "_TopTurnSpeed": 40.0,
+          "_MinSwingAngle": 3.0,
+          "_MinSwingTime": 1.5,
+          "_MaxSwingAngle": 50.0,
+          "_MaxSwingTime": 1.9
+        }
+      },
+      "_TarzanParams_Gimmick_Long": {
+        "app.cTarzanParam": {
+          "_InitTarzanPoint": 50.0,
+          "_IdleTurnSpeed": 20.0,
+          "_TopTurnSpeed": 40.0,
+          "_MinSwingAngle": 3.0,
+          "_MinSwingTime": 1.5,
+          "_MaxSwingAngle": 25.0,
+          "_MaxSwingTime": 1.9
+        }
+      },
+      "_TarzanParams_RopeHookBoss": {
+        "app.cTarzanParam": {
+          "_InitTarzanPoint": 60.0,
+          "_IdleTurnSpeed": 90.0,
+          "_TopTurnSpeed": 80.0,
+          "_MinSwingAngle": 3.0,
+          "_MinSwingTime": 1.5,
+          "_MaxSwingAngle": 50.0,
+          "_MaxSwingTime": 2.0
+        }
+      },
+      "_TarzanPoint": {
+        "app.user_data.PlayerGlobalParam.cTarzanPoint": {
+          "_MaxPoint": 100.0,
+          "_ReturnAdd": -10.0,
+          "_ReturnAddSmall": -5.0,
+          "_SmallBorder": 20.0,
+          "_SwingAdd": 40.0
+        }
+      },
+      "_TarzanTurn180_RequireDiffDeg": 120.0,
+      "_TarzanDashJump_StickBorder": 30.0,
+      "_TarzanJustJumpSwingRateBorder": 0.2,
+      "_BlockButtonMashingIntervalSec": 0.15,
+      "_BlockButtonMashingAddValue": 10.0,
+      "_BlockButtonMashingMotionContinueSec": 0.2,
+      "_BlockConstDampingParam": {
+        "ace.cDampingParam": {
+          "_Damping": 0.98,
+          "_TimeScale": 2.0
+        }
+      },
+      "_BlockConstDampingParam_Expect": {
+        "ace.cDampingParam": {
+          "_Damping": 0.85,
+          "_TimeScale": 1.0
+        }
+      },
+      "_BlockExpectConstRange": 2.0,
+      "_BlockConstArrivalRange": 0.05,
+      "_BlockFinishCameraResetSec": 1.5,
+      "_FishingParam": {
+        "app.cHunterFishingParam": {
+          "_AimSpeed": 15.0,
+          "_AimCameraSpeedRate": 0.6,
+          "_AimMaxDistance": 30.0,
+          "_AimMinDistance": 3.0,
+          "_AimDefDistance": 5.0,
+          "_AimGroundRayOfsUp": 3.0,
+          "_AimGroundRayOfsDown": 15.0,
+          "_CastFarDistance": 10.0,
+          "_IdleAimCameraSpeedRate": 1.0,
+          "_IdleSideMoveStickBorder": 0.4,
+          "_IdleAimAdjustParam": {
+            "app.cGunnerAimAdjustParam": {
+              "_InterpolateSpeed": 5.0,
+              "_FadeInSpeed": 1.0,
+              "_FadeOutSpeed": 1.0,
+              "_TargetFollowDamping": 0.5,
+              "_TargetFollowDampingTimeScale": 10.0,
+              "_UpperArmRate": 1.0,
+              "_ShoulderRate": 1.0,
+              "_Spine2Rate": 0.75,
+              "_Spine1Rate": 0.5,
+              "_Spine0Rate": 0.25,
+              "_CogRate": 0.0,
+              "_HipRate": 0.0,
+              "_LFootRate": 0.0,
+              "_RFootRate": 0.0,
+              "_ConstMoveDegX": 0.0,
+              "_ConstMoveDegY": 0.0,
+              "_LimitY": 45.0,
+              "_LimitUpX": 0.0,
+              "_LimitDownX": 0.0
+            }
+          },
+          "_BigBattleAimAdjustParam": {
+            "app.cGunnerAimAdjustParam": {
+              "_InterpolateSpeed": 5.0,
+              "_FadeInSpeed": 1.0,
+              "_FadeOutSpeed": 1.0,
+              "_TargetFollowDamping": 0.5,
+              "_TargetFollowDampingTimeScale": 10.0,
+              "_UpperArmRate": 1.0,
+              "_ShoulderRate": 0.8,
+              "_Spine2Rate": 0.6,
+              "_Spine1Rate": 0.4,
+              "_Spine0Rate": 0.2,
+              "_CogRate": 0.0,
+              "_HipRate": 0.0,
+              "_LFootRate": 0.0,
+              "_RFootRate": 0.0,
+              "_ConstMoveDegX": 0.0,
+              "_ConstMoveDegY": 0.0,
+              "_LimitY": 60.0,
+              "_LimitUpX": 0.0,
+              "_LimitDownX": 0.0
+            }
+          },
+          "_BigBattleTurnSpeed": 100.0,
+          "_FloatPosOffsetY": 0.1,
+          "_ForceFloatEndDist": 2.0,
+          "_FloatMoveInputBorder": 0.4,
+          "_ShakeInputTimer": 0.15,
+          "_FastPullInputSpeedBorder": 0.65,
+          "_FastToSlowPullInputSpeedBorder": 0.5,
+          "_PullEndTimer": 0.4,
+          "_ShakeSpeed": 2.0,
+          "_PullSpeed": 0.8,
+          "_FastPullSpeed": 2.0,
+          "_BigBattlePullSpeed": 1.0,
+          "_BigBattleFastPullSpeed": 1.5,
+          "_RodIk_BlendRate_WaitMoveLR": 0.3,
+          "_RodIk_BlendRate_Resist": 1.0,
+          "_RodIk_BlendRate_ResistInput": 0.7,
+          "_RodIk_BlendRate_Rest": 0.3,
+          "_RodIk_BlendRate_Reel": 0.5,
+          "_Sub0MotionWorldBlendParam": {
+            "app.cMotionWorldBlendFilterParam": {
+              "_JointData": [
+                {
+                  "app.cMotionWorldBlendFilterParam.JointParamInfo": {
+                    "_JointHash": {
+                      "ace.cJointHash": {
+                        "_Hash": 581854075
+                      }
+                    },
+                    "_BlendRate": 0.7
+                  }
+                },
+                {
+                  "app.cMotionWorldBlendFilterParam.JointParamInfo": {
+                    "_JointHash": {
+                      "ace.cJointHash": {
+                        "_Hash": 1345121450
+                      }
+                    },
+                    "_BlendRate": 0.4
+                  }
+                },
+                {
+                  "app.cMotionWorldBlendFilterParam.JointParamInfo": {
+                    "_JointHash": {
+                      "ace.cJointHash": {
+                        "_Hash": 1913148385
+                      }
+                    },
+                    "_BlendRate": 0.0
+                  }
+                },
+                {
+                  "app.cMotionWorldBlendFilterParam.JointParamInfo": {
+                    "_JointHash": {
+                      "ace.cJointHash": {
+                        "_Hash": 1951860438
+                      }
+                    },
+                    "_BlendRate": 0.3
+                  }
+                },
+                {
+                  "app.cMotionWorldBlendFilterParam.JointParamInfo": {
+                    "_JointHash": {
+                      "ace.cJointHash": {
+                        "_Hash": 1091167843
+                      }
+                    },
+                    "_BlendRate": 0.15
+                  }
+                },
+                {
+                  "app.cMotionWorldBlendFilterParam.JointParamInfo": {
+                    "_JointHash": {
+                      "ace.cJointHash": {
+                        "_Hash": 3992101857
+                      }
+                    },
+                    "_BlendRate": 0.0
+                  }
+                },
+                {
+                  "app.cMotionWorldBlendFilterParam.JointParamInfo": {
+                    "_JointHash": {
+                      "ace.cJointHash": {
+                        "_Hash": 1549972489
+                      }
+                    },
+                    "_BlendRate": 0.0
+                  }
+                }
+              ],
+              "_FadeOutSpeed": 1.0
+            }
+          }
+        }
+      },
+      "_VeilHitStop": {
+        "app.cHitStopParam": {
+          "EnumValue": 0,
+          "_Curve": {
+            "via.AnimationCurve": {
+              "v0": [
+                {
+                  "raw": "00000000000000000000000000000000",
+                  "type": "Data"
+                },
+                {
+                  "raw": "00000000000040560000000000000000",
+                  "type": "Data"
+                }
+              ],
+              "v1": {
+                "raw": "00000000",
+                "type": "Data"
+              },
+              "v2": {
+                "raw": "00004040",
+                "type": "Data"
+              },
+              "v3": {
+                "raw": "00000000",
+                "type": "Data"
+              },
+              "v4": {
+                "raw": "0000c842",
+                "type": "Data"
+              },
+              "v5": {
+                "raw": "00000000",
+                "type": "Data"
+              },
+              "v6": {
+                "raw": "02000000",
+                "type": "Data"
+              }
+            }
+          },
+          "_UseCurve": false,
+          "_BeginSpeed": 0.4,
+          "_TargetSpeed": 0.1,
+          "_ToTargetTime": 0.0,
+          "_TargetDurationTime": 0.3,
+          "_Target2Speed": 0.0,
+          "_ToTarget2Time": 0.0,
+          "_Target2DurationTime": 0.0,
+          "_EndSpeed": 1.0,
+          "_ToEndTime": 0.05,
+          "_ForceStop": false
+        }
+      },
+      "_VeilHitStop_King": {
+        "app.cHitStopParam": {
+          "EnumValue": 0,
+          "_Curve": {
+            "via.AnimationCurve": {
+              "v0": [
+                {
+                  "raw": "00000000000000000000000000000000",
+                  "type": "Data"
+                },
+                {
+                  "raw": "00000000000040560000000000000000",
+                  "type": "Data"
+                }
+              ],
+              "v1": {
+                "raw": "00000000",
+                "type": "Data"
+              },
+              "v2": {
+                "raw": "00004040",
+                "type": "Data"
+              },
+              "v3": {
+                "raw": "00000000",
+                "type": "Data"
+              },
+              "v4": {
+                "raw": "0000c842",
+                "type": "Data"
+              },
+              "v5": {
+                "raw": "00000000",
+                "type": "Data"
+              },
+              "v6": {
+                "raw": "02000000",
+                "type": "Data"
+              }
+            }
+          },
+          "_UseCurve": false,
+          "_BeginSpeed": 0.4,
+          "_TargetSpeed": 0.1,
+          "_ToTargetTime": 0.0,
+          "_TargetDurationTime": 0.1,
+          "_Target2Speed": 0.0,
+          "_ToTarget2Time": 0.0,
+          "_Target2DurationTime": 0.0,
+          "_EndSpeed": 1.0,
+          "_ToEndTime": 0.05,
+          "_ForceStop": false
+        }
+      },
+      "_VeilHitStopDurationRate": 0.25,
+      "_VeilHitStopThresholdDurationTime": 0.1,
+      "_WaveFlowTransRate": 0.2,
+      "_AgainstMuddyStreamTransRate": 0.9,
+      "_MuddyStreamTransRate": 1.1,
+      "_AgainstMuddyStreamDeg": 75.0,
+      "_MuddyStreamDeg": 75.0,
+      "_MuddyStreamProgressTime": 1.75,
+      "_MuddyStreamMaxSplashEffectFlame": 15.0,
+      "_DamFlowEndureTime": 0.0,
+      "_DamFlowSpeed": 3.0,
+      "_DamMaxFlowTime": 4.0,
+      "_DamHeight": [
+        0.5,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "_ClimbSensorHitParam": {
+        "app.user_data.ClimbSensorHitParam": {
+          "ref_instance_id": 131,
+          "path": "GameDesign/Player/ActionData/Common/GlobalParam/Part/HunterClimbSensorHitParam.user"
+        }
+      },
+      "_SlopeAdjustMinDeg": 30.0,
+      "_SlopeAdjustMaxDeg": 80.0,
+      "_SlopeAdjustMinXZ": 1.0,
+      "_SlopeAdjustMinRate": 0.4,
+      "_MoveStopAdjustRate": 0.6,
+      "_SlopeMotTypeKeepMinTime": 0.2,
+      "_DieFadeTime": {
+        "app.user_data.PlayerGlobalParam.cFadeTime": {
+          "_ToOutTime": 0.5,
+          "_OutTime": 0.2,
+          "_InTime": 0.5
+        }
+      },
+      "_HitStopParam": {
+        "app.user_data.PlayerHitStopParam": {
+          "ref_instance_id": 133,
+          "path": "GameDesign/Player/ActionData/Common/GlobalParam/Part/PlayerHitStopParam.user"
+        }
+      },
+      "_Revival_WaitTime": 60.0,
+      "_Revival_SuicideInputTime": 1.0,
+      "_Resurrection_KeepTime": {
+        "app.user_data.PlayerGlobalParam.cKeepTime": {
+          "_Normal": 5.0,
+          "_Short": 5.0,
+          "_Long": 5.0
+        }
+      },
+      "_Resurrection_HealValue": 80.0,
+      "_PopMineAdjustDist": 0.98,
+      "_PopBoneAdjustDistH": 1.0,
+      "_PopBoneAdjustDistV": 2.0,
+      "_PopAloeLAdjustDist": 0.49,
+      "_PopAloeLAdjustDeg": 20.0,
+      "_PopPickelAdjustDist": 1.35,
+      "_PopQueenAdjustDist": 1.05,
+      "_PopRelicAdjustDist": 1.2,
+      "_PopRafflesiaAdjustDist": 1.73,
+      "_PopRafflesiaAdjustDeg": -19.0,
+      "_PopOilHighAdjustDist": 1.02,
+      "_PopOilLowAdjustDist": 1.3242,
+      "_PopCordycepsAdjustDist": 0.9,
+      "_PopSkinAdjustDist": 1.2,
+      "_PopFiberAdjustDist": 0.8,
+      "_PopMilkAdjustDist": 0.9,
+      "_QuestClearActionData": {
+        "app.QuestClearActionData": {
+          "ref_instance_id": 135,
+          "path": "GameDesign/Player/ActionData/Common/GlobalParam/Part/QuestClearActionData.user"
+        }
+      },
+      "_QuestClearActionWaitTime": 2.0,
+      "_QuestRetireActionWaitTime": 2.0,
+      "_QuestFailedActionWaitTime": 2.0,
+      "_QuestReplicaLeaveActionWaitTime": 2.0,
+      "_QuestClearStampTime": 2.9,
+      "_QuestRetireStampTime": 1.0,
+      "_QuestFailedStampTime": 3.0,
+      "_PutOnMantleClothFadeSpeedTime": 1.0,
+      "_PutOffMantleClothFadeSpeedTime": 1.5,
+      "_GestureFireWorkOffsetAngleDeg": 60.0,
+      "_GestureMaxDanceSpotLight": 1,
+      "_EnableGestureSetting": {
+        "app.user_data.PlayerEnableGestureSetting": {
+          "ref_instance_id": 136,
+          "path": "GameDesign/Player/ActionData/Common/GlobalParam/Part/PlayerEnableGestureSetting.user"
+        }
+      },
+      "_GesturePorter_PlayerToPorterCheckOffsetY": 1.0,
+      "_GesturePorter_LandCheckHeight": 4.0,
+      "_GesturePorter_LandCheckDeg": 40.0,
+      "_GesturePorter_LandCheckDeg3": 40.0,
+      "_GesturePorter_LandCheckDeg4": 20.0,
+      "_GesturePorter_LandCheckDeg5": 30.0,
+      "_GesturePorter_MaxCallRange": 3.5,
+      "_GesturePorter_MaxGUIRange": 10.0,
+      "STRUCT__PorterBin_Color__GlassColor": [
+        0.0
+      ],
+      "STRUCT__PorterBin_Color__WaterColor": [
+        0.0
+      ],
+      "_ExEmote00_AimComInputFrame": 15,
+      "_ExEmote00_AimComLastInputFrame": 10,
+      "_GestureWaterGunMaxAmmo": 3,
+      "_GestureWaterGunMazzleCorrect_MaxRange": 8.0,
+      "_GestureWaterGun_Range": 40.0,
+      "_ExEmote04_02RareRand": 1,
+      "_ExEmote04_02RareRand_NearNpc": 24,
+      "_ExEmote04_02NearNpcRange": 10.0,
+      "_ExEmote03_03_DownRand": 30,
+      "_ExBaseEmote29_TurnSpeed": 50.0,
+      "_QuestEx_BarrelBombS_Rate": 1.5,
+      "_QuestEx_BarrelBombL_Rate": 1.5,
+      "_QuestEx_BarrelBombL_G_Rate": 1.5,
+      "_BarrelBombL_Damage": 40.0,
+      "_BarrelBombL_G_Damage": 75.0,
+      "_BarrelBombL_Otomo_Damage": 40.0,
+      "_CoalBomb_G_Damage": 40.0,
+      "_CoalBomb_D_Damage": 40.0,
+      "_CoalBomb_GG_Damage": 40.0,
+      "_AimRangeAdjust_Rate": 0.9,
+      "_AmuletEffect_LerpTime": 1.0,
+      "_AmuletEffect_StayTime": 1.0,
+      "_PorterRideGuideTime": 2.0,
+      "_PorterRideGuideZoneMaxDeg": 180.0,
+      "_PreviewStreamingMaxTime": 3.0,
+      "_ExFieldMoveMaxDeg": 45.0,
+      "_ExFieldCSlingerDist": 9.0,
+      "_ExFieldCSlingerUIDistDiff": 1.0,
+      "_ExFieldFinishMinDist": 10.0,
+      "_ExFieldEndEffectTime": 0.0,
+      "_ExEmote0300HP": 50.0,
+      "_ExEmote0300MaxDamage": 80.0,
+      "_ExEmote0300ItemCD": 75.0,
+      "_ExEmote0301ItemCD": 30.0,
+      "_ExEmote0300DamageRate": 1.5,
+      "_ExEmote0301DamageRate": 2.5,
+      "_ExEmote0301ScarRate": 1.5,
+      "_ExEmote0300BuffTimer": 32.0,
+      "_ExEmote0300BuffDefenseRate": 2.0,
+      "_LobbyReplicaExEmote03ShellMaxNum": 7,
+      "STRUCT__ExEmote0301HeightCheck__Min": -10.0,
+      "STRUCT__ExEmote0301HeightCheck__Max": 5.0,
+      "_ExGroundSpeedRate_Walk": 0.4,
+      "_ExGroundMotSpeed_Walk": 1.0,
+      "_ExGroundSpeedRate_Run": 0.4,
+      "_ExGroundMotSpeed_Run": 1.0,
+      "_ExGroundSpeedRate_Dash": 0.4,
+      "_ExGroundMotSpeed_Dash": 1.0,
+      "_ExGroundSpeedRate_SquatWalk": 0.4,
+      "_ExGroundMotSpeed_SquatWalk": 1.0,
+      "_ExGroundSpeedRate_SquatRun": 0.5,
+      "_ExGroundMotSpeed_SquatRun": 0.5,
+      "_ExGroundSpeedRate_Dodge": 0.75,
+      "_ExGroundMotSpeed_Dodge": 1.0,
+      "_ExGroundMotSpeedInterSpeed": 0.8,
+      "_ExGroundSpeedDownSkillRate": 0.5,
+      "_ExGroundFireDamageRate": 1.08,
+      "_ExGuardMaxDeg": 30.0,
+      "_ExGuardDamageRate": 0.5,
+      "_ExGuardSafetyDamageRate": 0.0,
+      "_ExGuardSafetyCameraImpactGuid": "086268f8-29c2-4fa3-8df2-4e1f061b388e",
+      "_ExGuardCoverSafetyCameraImpactGuid": "5409681d-32c8-4555-82a8-b6d951ee59ef",
+      "_ExStageLeverCameraImpactGuid": "85dc697b-b2bf-4a79-b6a1-4a14966af324",
+      "_ExStageLeverSlingerCameraImpactGuid": "00f72dd4-9f5a-4fa7-9998-d87139c997f0",
+      "_ExChargeSlingerMinTime": 0.2,
+      "_ExChargeSlingerTime": 1.15,
+      "_ExChargeSlingerMaxTime": 8.0,
+      "_ExChargeSlingerRate": 3.0,
+      "_ExChargeSlingerSpeedRate": 1.5
+    }
+  }
+]

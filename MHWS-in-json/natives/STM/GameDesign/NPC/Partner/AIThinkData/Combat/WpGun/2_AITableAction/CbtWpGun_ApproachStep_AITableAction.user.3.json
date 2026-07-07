@@ -1,0 +1,84 @@
+[
+  {
+    "app.user_data.NpcAITableActionData": {
+      "_ConditionParams": [
+        {
+          "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
+            "_Param": {
+              "app.NpcAITableConditions.cCheckCanStep_Param": {}
+            },
+            "_Inverse": false,
+            "_IsContinue": false
+          }
+        },
+        {
+          "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
+            "_Param": {
+              "app.NpcAITableConditions.cCheckDodge_Param": {}
+            },
+            "_Inverse": true,
+            "_IsContinue": false
+          }
+        },
+        {
+          "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
+            "_Param": {
+              "app.NpcAITableConditions.cCheckShootRange_Param": {
+                "_AimRangeType": "[1471956480] CRITICAL",
+                "_CompareType": 2,
+                "_IgnoreMeleeExBullet": true
+              }
+            },
+            "_Inverse": false,
+            "_IsContinue": false
+          }
+        },
+        {
+          "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
+            "_Param": {
+              "app.NpcAITableConditions.cDetectAttackArea_Param": {
+                "_WhereNeedAvoid": false,
+                "_ReactJumpDodge": false,
+                "_WhereNeedGuard": false,
+                "_IgnoreShell": false,
+                "_IgnoreDisabling": true,
+                "_IgnoreEffect": false
+              }
+            },
+            "_Inverse": true,
+            "_IsContinue": false
+          }
+        },
+        {
+          "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
+            "_Param": {
+              "app.NpcAITableConditions.cCheckNearApproachTrap_Param": {}
+            },
+            "_Inverse": true,
+            "_IsContinue": false
+          }
+        }
+      ],
+      "_ActionSetting": {
+        "app.user_data.NpcAITableActionData.cActionSetting": {
+          "_ForceInterrupt": true,
+          "_TableEnd": false
+        }
+      },
+      "_Param": {
+        "app.user_data.NpcAITableActionData.cNpcAITableEffectHolder": {
+          "_Param": {
+            "app.NpcAITableEffects.cStreak_Param": {
+              "_StreakPlanData": {
+                "app.user_data.NpcStreakPlanData": {
+                  "ref_instance_id": 13,
+                  "path": "GameDesign/NPC/Partner/AIThinkData/Combat/Wp12/3_StreakPlan/CbtWp12_AppraochStep_StreakPlan.user"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

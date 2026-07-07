@@ -1,0 +1,158 @@
+[
+  {
+    "app.user_data.NpcTaskData": {
+      "_UpstreamActionParam": {
+        "app.user_data.NpcTaskData.cActionParamPack": {
+          "_ActionParamList": []
+        }
+      },
+      "_IsLoopMainstream": false,
+      "_MainstreamActionParam": {
+        "app.user_data.NpcTaskData.cActionParamPack": {
+          "_ActionParamList": [
+            {
+              "app.user_data.NpcTaskData.cActionParam": {
+                "_PointSelectType": 1,
+                "_PointSearcher": {
+                  "app.cNpcPointSearcher": {
+                    "_TargetType": 0,
+                    "_DestList": [
+                      {
+                        "app.cNpcDestinationData": {
+                          "_Pos": [
+                            1190.5444,
+                            -74.7906,
+                            -171.1653,
+                            0.0
+                          ],
+                          "_DegY": -25
+                        }
+                      },
+                      {
+                        "app.cNpcDestinationData": {
+                          "_Pos": [
+                            1231.0261,
+                            -77.4894,
+                            -150.2834,
+                            0.0
+                          ],
+                          "_DegY": -10
+                        }
+                      },
+                      {
+                        "app.cNpcDestinationData": {
+                          "_Pos": [
+                            1234.905,
+                            -74.3093,
+                            -167.2687,
+                            0.0
+                          ],
+                          "_DegY": 130
+                        }
+                      },
+                      {
+                        "app.cNpcDestinationData": {
+                          "_Pos": [
+                            1211.1893,
+                            -73.7211,
+                            -176.6264,
+                            0.0
+                          ],
+                          "_DegY": 135
+                        }
+                      },
+                      {
+                        "app.cNpcDestinationData": {
+                          "_Pos": [
+                            1216.3967,
+                            -73.0592,
+                            -187.8292,
+                            0.0
+                          ],
+                          "_DegY": 80
+                        }
+                      }
+                    ],
+                    "_PointSelector": {
+                      "app.cNpcPointSelector": {
+                        "_Category": 1,
+                        "_PointType": -1255316864
+                      }
+                    },
+                    "STRUCT__IsOnOff__HasValue": false,
+                    "STRUCT__IsOnOff__Value": false,
+                    "_Pos": [
+                      930.15,
+                      14.387,
+                      70.99,
+                      0.0
+                    ],
+                    "_Range": 2.0,
+                    "_GroupAIType": "[0] INVALID",
+                    "_FieldUnitType": "[0] INVALID"
+                  }
+                },
+                "_GoalActionSelector": {
+                  "app.cNpcAIGoalActionSelector": {
+                    "_Category": 389287136,
+                    "_MoveID": -2141134336,
+                    "_ActionID": 761827904,
+                    "_HoldMotionPackID": -2109726464,
+                    "_Variation": -663541696
+                  }
+                },
+                "_InfiniteActionTime": false,
+                "_ActionTime": {
+                  "raw": "0000a04000007041",
+                  "type": "Range"
+                },
+                "_InterruptTime": {
+                  "raw": "0000f0410000f041",
+                  "type": "Range"
+                },
+                "_InterruptProbability": 25,
+                "_InterruptActionParamList": [],
+                "_TaskColliderID": "[0] INVALID",
+                "_TaskDialogueID": "[0] INVALID",
+                "_DisableStreet": false
+              }
+            }
+          ]
+        }
+      },
+      "_DownstreamActionParam": {
+        "app.user_data.NpcTaskData.cActionParamPack": {
+          "_ActionParamList": []
+        }
+      },
+      "_VariousData": {
+        "app.user_data.cNpcTaskVariousData": {
+          "_SkeletonType": "[2] HUMAN_CLD",
+          "_OnlyDefaultBodyScale": false,
+          "_Gender": -1,
+          "_VisualType": {
+            "app.cNpcVisualTypeChecker": {
+              "_Species": 0,
+              "_ModelKindFixedID": -821534912
+            }
+          },
+          "_NeedRunTimerByMove": false,
+          "_CanInterrupt_Rest": true,
+          "_CanInterrupt_Combi": true,
+          "_NotSkipUpstream": false,
+          "_PtJackVisualChecker": {
+            "app.cNpcJackVisualChecker_Porter": {
+              "_ScaleType": "[4062033968] NOT_SUPPORTED"
+            }
+          },
+          "_EmJackVisualChecker": {
+            "app.cNpcJackVisualChecker_Enemy": {
+              "STRUCT__IsChild__HasValue": false,
+              "STRUCT__IsChild__Value": false
+            }
+          }
+        }
+      }
+    }
+  }
+]

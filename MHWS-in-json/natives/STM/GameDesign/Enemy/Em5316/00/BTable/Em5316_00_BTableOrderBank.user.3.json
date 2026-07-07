@@ -1,0 +1,93 @@
+[
+  {
+    "ace.btable.user_data.BTableOrderBank": {
+      "_OperatorWorkFactory": {
+        "ace.btable.cOperatorWorkFactory": {
+          "_WorkType": "app.btable.cEnemyBTableOperatorWork"
+        }
+      },
+      "_CommandWorkFactory": {
+        "ace.btable.cCommandWorkFactory": {
+          "_WorkType": "app.cEnemyBTableCommandWork"
+        }
+      },
+      "_OrderLists": [
+        {
+          "ace.btable.user_data.BTableOrderBank.cItem": {
+            "_OrderList": {
+              "ace.btable.user_data.BTableOrderList": {
+                "ref_instance_id": 3,
+                "path": "Ace/Data/BTable/DefaultBTableOrderList.user"
+              }
+            }
+          }
+        },
+        {
+          "ace.btable.user_data.BTableOrderBank.cItem": {
+            "_OrderList": {
+              "ace.btable.user_data.BTableOrderList": {
+                "ref_instance_id": 5,
+                "path": "GameDesign/Enemy/CommonData/Data/EmCommonBTableOrderList.user"
+              }
+            }
+          }
+        }
+      ],
+      "_OperatorArgumentSettingList": [],
+      "_CommandArgumentSettingList": [
+        {
+          "app.btable.AppBTableUtil.cSelectActionArgSetting": {
+            "_AssetDataList": [
+              {
+                "app.btable.AppBTableUtil.cSelectActionArgSetting.cAssetData": {
+                  "_Asset": {
+                    "ace.cActionIDHolder": {
+                      "_ActionID": {
+                        "ace.user_data.ActionID": {
+                          "ref_instance_id": 7,
+                          "path": "GameDesign/Enemy/Em5316/00/Action/Em5316_00_ActionID.user"
+                        }
+                      },
+                      "_ExportGuid": "a4b8148e-0b36-0013-27e7-dff20aa18b82"
+                    }
+                  },
+                  "_ParamAsset": {
+                    "ace.user_data.ActionParam": {
+                      "ref_instance_id": 9,
+                      "path": "GameDesign/Enemy/Em5301/Common/Action/Em5301_Common_ActionParam.user"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cCheckStatusStandStateArgSetting": {}
+        },
+        {
+          "app.btable.EmCommonCommand.cArgSetting_UniqueLeveledValueCategory": {}
+        },
+        {
+          "app.btable.EmCommonCommand.cRidePartsSelectArgSetting": {}
+        },
+        {
+          "app.btable.EmCommonCommand.cCheckHeightArgSetting": {}
+        },
+        {
+          "app.btable.EmCommonCommand.cPartsArgSetting": {
+            "_ParamParts": {
+              "": {}
+            }
+          }
+        }
+      ],
+      "_VariableAsset": {
+        "": {}
+      },
+      "_VariableListAsset": {
+        "": {}
+      }
+    }
+  }
+]

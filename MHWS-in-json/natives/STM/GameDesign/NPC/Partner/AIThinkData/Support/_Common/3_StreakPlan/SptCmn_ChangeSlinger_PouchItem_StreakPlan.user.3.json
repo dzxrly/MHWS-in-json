@@ -1,0 +1,103 @@
+[
+  {
+    "app.user_data.NpcStreakPlanData": {
+      "_ActionDataList": {
+        "ace.cInstanceGuidArray`1<app.user_data.NpcStreakPlanData.cActionData>": {
+          "_DataArray": [
+            {
+              "app.user_data.NpcStreakPlanData.cActionData": {
+                "_InstanceGuid": "c251166d-2b53-4d01-ba98-9d4c25812f08",
+                "_ActionData": {
+                  "app.user_data.NpcStreakActionData": {
+                    "ref_instance_id": 1,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Support/_Common/4_StreakAction/SptCmn_WeaponOff_StreakAction.user"
+                  }
+                },
+                "_DerivedAction_Combo": {
+                  "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+                    "_DerivedActionParams": [
+                      {
+                        "app.user_data.NpcStreakPlanData.cDerivedActionHolder.cDerivedActionParam": {
+                          "_ActionGuid": "8e0d8247-6761-46f1-8f73-b9de2bdf6892",
+                          "_RandomWeight": -1
+                        }
+                      }
+                    ]
+                  }
+                },
+                "_DerivedAction_Interrupt": {
+                  "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+                    "_DerivedActionParams": []
+                  }
+                }
+              }
+            },
+            {
+              "app.user_data.NpcStreakPlanData.cActionData": {
+                "_InstanceGuid": "8e0d8247-6761-46f1-8f73-b9de2bdf6892",
+                "_ActionData": {
+                  "app.user_data.NpcStreakActionData": {
+                    "ref_instance_id": 6,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Support/It02/4_StreakAction/SptIt02_SlingerSet_StreakAction.user"
+                  }
+                },
+                "_DerivedAction_Combo": {
+                  "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+                    "_DerivedActionParams": []
+                  }
+                },
+                "_DerivedAction_Interrupt": {
+                  "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+                    "_DerivedActionParams": []
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "_DerivedAction_Activate": {
+        "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+          "_DerivedActionParams": [
+            {
+              "app.user_data.NpcStreakPlanData.cDerivedActionHolder.cDerivedActionParam": {
+                "_ActionGuid": "8e0d8247-6761-46f1-8f73-b9de2bdf6892",
+                "_RandomWeight": -1
+              }
+            }
+          ]
+        }
+      },
+      "_DerivedAction_Activate_WpOn": {
+        "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+          "_DerivedActionParams": [
+            {
+              "app.user_data.NpcStreakPlanData.cDerivedActionHolder.cDerivedActionParam": {
+                "_ActionGuid": "c251166d-2b53-4d01-ba98-9d4c25812f08",
+                "_RandomWeight": -1
+              }
+            },
+            {
+              "app.user_data.NpcStreakPlanData.cDerivedActionHolder.cDerivedActionParam": {
+                "_ActionGuid": "8e0d8247-6761-46f1-8f73-b9de2bdf6892",
+                "_RandomWeight": -1
+              }
+            }
+          ]
+        }
+      },
+      "_DerivedAction_Activate_Breaked": {
+        "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+          "_DerivedActionParams": []
+        }
+      },
+      "_DerivedAction_Always": {
+        "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+          "_DerivedActionParams": []
+        }
+      },
+      "_TargetType": "[21099] USE_ITEM_FOLLOW",
+      "_TargetPartsType": "[4138846592] NEAR_PARTS"
+    }
+  }
+]

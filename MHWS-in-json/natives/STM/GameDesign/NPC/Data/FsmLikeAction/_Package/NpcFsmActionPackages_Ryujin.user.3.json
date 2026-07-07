@@ -1,0 +1,2693 @@
+[
+  {
+    "app.user_data.NpcFsmLikeActionPackages": {
+      "_DataList": [
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/BasicIdle/RyuNml_BasicIdle_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 1,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/BasicIdle/RyuNml_BasicIdle_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": true,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 2
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/BasicTurn/RyuNml_BasicTurn_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 6,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/BasicTurn/RyuNml_BasicTurn_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": false,
+            "_PlayStartMotion_Of_NextMoveAction": false,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": true,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 512
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/BasicMove/RyuNml_BasicMove_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Move/Move_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 11,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/BasicMove/RyuNml_BasicMove_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": false,
+            "_PlayStartMotion_Of_NextMoveAction": false,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": true,
+            "_SelectedAccessory": true,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "app.user_data.NpcReachCurveParam": {
+                "ref_instance_id": 12,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ReachParam/RyuNml_BasicMove_ReachParam.user"
+              }
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 36
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/AvoidMove/RyuNml_AvoidMove_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/AvoidMove/AvoidMove_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 17,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/AvoidMove/RyuNml_AvoidMove_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": false,
+            "_PlayStartMotion_Of_NextMoveAction": false,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": true,
+            "_SelectedAccessory": true,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 160
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/BumpedMove/RyuNml_BumpedMove_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/AvoidMove/AvoidMove_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 22,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/BumpedMove/RyuNml_BumpedMove_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": false,
+            "_PlayStartMotion_Of_NextMoveAction": false,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": true,
+            "_SelectedAccessory": true,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 160
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/BumpedWait/RyuNml_BumpedWait_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 27,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/BumpedWait/RyuNml_BumpedWait_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": true,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 128
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/ReadBook/RyuNml_ReadBook_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/ReadBook/ReadBook_RyuNml_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 32,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/ReadBook/RyuNml_ReadBook_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              2040865536,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/SitReadBook/RyuNml_SitReadBook_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/SitReadBook/SitReadBook_RyuNml_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 37,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/SitReadBook/RyuNml_SitReadBook_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              2040865536,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 8
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/SitGround/RyuNml_SitGround_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/SitGround/SitGround_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 42,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/SitGround/RyuNml_SitGround_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": true,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 8
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/Mediation/RyuNml_Mediation_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Mediation/Mediation_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 47,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/Mediation/RyuNml_Mediation_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": true,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 16384
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/EggBasketTake/RyuNml_EggBasketTake_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 52,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/EggBasketTake/RyuNml_EggBasketTake_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              95345840,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/EggBasketPut/RyuNml_EggBasketPut_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 57,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/EggBasketPut/RyuNml_EggBasketPut_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              95345840,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/MangosteenBasketTake/RyuNml_MangosteenBasketTake_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 62,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/MangosteenBasketTake/RyuNml_MangosteenBasketTake_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              583765760,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/MangosteenBasketPut/RyuNml_MangosteenBasketPut_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 67,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/MangosteenBasketPut/RyuNml_MangosteenBasketPut_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              583765760,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/EggCollect/RyuNml_EggCollect_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 72,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/EggCollect/RyuNml_EggCollect_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              95345840,
+              308299712,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/Gatekeeper/RyuNml_Gatekeeper_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Gatekeeper/Gatekeeper_RyuNml_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 77,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/Gatekeeper/RyuNml_Gatekeeper_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": true,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              751783232,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/StickTake/RyuNml_StickTake_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 82,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/StickTake/RyuNml_StickTake_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              751783232,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/StickPut/RyuNml_StickPut_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 87,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/StickPut/RyuNml_StickPut_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              751783232,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/Bench/RyuNml_Bench_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Bench/Bench_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 92,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/Bench/RyuNml_Bench_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": true,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 8
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/LeanBack/RyuNml_LeanBack_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/LeanBack/LeanBack_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 97,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/LeanBack/RyuNml_LeanBack_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": true,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/CheckLugagge/RyuNml_CheckLugagge_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 102,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/CheckLugagge/RyuNml_CheckLugagge_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": true,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": true,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/LivelyIdle/RyuNml_LivelyIdle_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 107,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/LivelyIdle/RyuNml_LivelyIdle_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": true,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/FastTravelDeparture/RyuNml_FastTravelDeparture_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 112,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/FastTravelDeparture/RyuNml_FastTravelDeparture_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "app.user_data.NpcFsmLikeActionEffectData": {
+                "ref_instance_id": 113,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ActionEffectData/RyuNml_FastTravelDeparture.user"
+              }
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              1336747136,
+              31529,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/FastTravelReturn/RyuNml_FastTravelReturn_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 118,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/FastTravelReturn/RyuNml_FastTravelReturn_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "app.user_data.NpcFsmLikeActionEffectData": {
+                "ref_instance_id": 119,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ActionEffectData/RyuNml_FastTravelReturn.user"
+              }
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              1336747136,
+              31529,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/BoxTake/RyuNml_BoxTake_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 124,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/BoxTake/RyuNml_BoxTake_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              1305288192,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/BoxPut/RyuNml_BoxPut_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 129,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/BoxPut/RyuNml_BoxPut_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              1305288192,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/MangosteenCollect/RyuNml_MangosteenCollect_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 134,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/MangosteenCollect/RyuNml_MangosteenCollect_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              583765760,
+              1941298944,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/MangosteenPour/RyuNml_MangosteenPour_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 139,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/MangosteenPour/RyuNml_MangosteenPour_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              583765760,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/MangosteenSorting/RyuNml_MangosteenSorting_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 144,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/MangosteenSorting/RyuNml_MangosteenSorting_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": true,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              1941298944,
+              1941298944,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/MangosteenLamp/RyuNml_MangosteenLamp_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/MangosteenLamp/MangosteenLamp_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 149,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/MangosteenLamp/RyuNml_MangosteenLamp_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              1163038848,
+              -1357608448,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/Lie/RyuNml_Lie_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 154,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/Lie/RyuNml_Lie_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": true,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 2048
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/ShelterIdle/RyuNml_ShelterIdle_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 159,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/ShelterIdle/RyuNml_ShelterIdle_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/FollowIdle/RyuNml_FollowIdle_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 164,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/FollowIdle/RyuNml_FollowIdle_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": false,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": true,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3199285888] IDLE",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 2
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/StoryU14002Mangosteen/RyuNml_StoryU14002Mangosteen_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 169,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/StoryU14002Mangosteen/RyuNml_StoryU14002Mangosteen_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "app.user_data.NpcFsmLikeActionEffectData": {
+                "ref_instance_id": 170,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ActionEffectData/RyuNml_StoryU14002Mangosteen.user"
+              }
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              1941298944,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/StoryU14012SitGround/RyuNml_StoryU14012SitGround_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/SitGround/SitGround_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 175,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/StoryU14012SitGround/RyuNml_StoryU14012SitGround_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 8
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/RecitalIdle/RyuNml_RecitalIdle_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 180,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/RecitalIdle/RyuNml_RecitalIdle_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/RecitalEntry/RyuNml_RecitalEntry_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 185,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/RecitalEntry/RyuNml_RecitalEntry_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/RecitalExit/RyuNml_RecitalExit_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 190,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/RecitalExit/RyuNml_RecitalExit_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/RecitalMain/RyuNml_RecitalMain_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 195,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/RecitalMain/RyuNml_RecitalMain_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/RecitalMainVari2/RyuNml_RecitalMainVari2_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 200,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/RecitalMainVari2/RyuNml_RecitalMainVari2_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/RecitalMainVari3/RyuNml_RecitalMainVari3_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 205,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/RecitalMainVari3/RyuNml_RecitalMainVari3_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/RecitalMainVari4/RyuNml_RecitalMainVari4_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 210,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/RecitalMainVari4/RyuNml_RecitalMainVari4_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/RecitalMainVari5/RyuNml_RecitalMainVari5_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 215,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/RecitalMainVari5/RyuNml_RecitalMainVari5_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/RecitalStandby/RyuNml_RecitalStandby_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 220,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/RecitalStandby/RyuNml_RecitalStandby_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/ViewingRecital/RyuNml_ViewingRecital_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 225,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/ViewingRecital/RyuNml_ViewingRecital_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": true,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": true,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/DiningStand/RyuNml_DiningStand_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/DiningStand/DiningStand_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 230,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/DiningStand/RyuNml_DiningStand_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              31868,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/DiningBench/RyuNml_DiningBench_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/DiningBench/DiningBench_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 235,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/DiningBench/RyuNml_DiningBench_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              31868,
+              10585,
+              11689
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/JugTake/RyuNml_JugTake_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 240,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/JugTake/RyuNml_JugTake_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              31868,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/JugPut/RyuNml_JugPut_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 245,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/JugPut/RyuNml_JugPut_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              31868,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/ViewingFireworks/RyuNml_ViewingFireworks_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 250,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/ViewingFireworks/RyuNml_ViewingFireworks_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": true,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/SitGroundLobby/RyuNml_SitGroundLobby_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/SitGround/SitGround_Lobby_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 255,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/SitGroundLobby/RyuNml_SitGroundLobby_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 8
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/Viewing/RyuNml_Viewing_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 260,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/Viewing/RyuNml_Viewing_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": true,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/StareDollCombi/RyuNml_StareDollCombi_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 265,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Normal/StareDollCombi/RyuNml_StareDollCombi_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/BasicIdle/RyuSml_BasicIdle_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 270,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/BasicIdle/RyuSml_BasicIdle_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": true,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 2
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/BasicTurn/RyuSml_BasicTurn_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 275,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/BasicTurn/RyuSml_BasicTurn_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": false,
+            "_PlayStartMotion_Of_NextMoveAction": false,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": true,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/BasicMove/RyuSml_BasicMove_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Move/Move_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 280,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/BasicMove/RyuSml_BasicMove_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": false,
+            "_PlayStartMotion_Of_NextMoveAction": false,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": true,
+            "_SelectedAccessory": true,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "app.user_data.NpcReachCurveParam": {
+                "ref_instance_id": 281,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ReachParam/RyuSml_BasicMove_ReachParam.user"
+              }
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 36
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/AvoidMove/RyuSml_AvoidMove_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/AvoidMove/AvoidMove_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 286,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/AvoidMove/RyuSml_AvoidMove_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": false,
+            "_PlayStartMotion_Of_NextMoveAction": false,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": true,
+            "_SelectedAccessory": true,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 160
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/BumpedMove/RyuSml_BumpedMove_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/AvoidMove/AvoidMove_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 291,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/BumpedMove/RyuSml_BumpedMove_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": false,
+            "_PlayStartMotion_Of_NextMoveAction": false,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": true,
+            "_SelectedAccessory": true,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 160
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/BumpedWait/RyuSml_BumpedWait_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 296,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/BumpedWait/RyuSml_BumpedWait_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": true,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 128
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/SitReadBook/RyuSml_SitReadBook_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/SitReadBook/SitReadBook_RyuSml_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 301,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/SitReadBook/RyuSml_SitReadBook_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              2040865536,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 8
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/SitGround/RyuSml_SitGround_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/SitGround/SitGround_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 306,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/SitGround/RyuSml_SitGround_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": true,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 8
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/MeldingPot/RyuSml_MeldingPot_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/MeldingPot/MeldingPot_RyuSml_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 311,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/MeldingPot/RyuSml_MeldingPot_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              -2143033856,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/CheckLuggage/RyuSml_CheckLuggage_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 316,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/CheckLuggage/RyuSml_CheckLuggage_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": true,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": true,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/MangosteenSorting/RyuSml_MangosteenSorting_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 321,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/MangosteenSorting/RyuSml_MangosteenSorting_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": true,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              1941298944,
+              1941298944,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/HerbPick/RyuSml_HerbPick_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 326,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/HerbPick/RyuSml_HerbPick_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              -32502380,
+              -1971077888,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/HerbBasketTake/RyuSml_HerbBasketTake_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 331,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/HerbBasketTake/RyuSml_HerbBasketTake_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              -32502380,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/HerbBasketPut/RyuSml_HerbBasketPut_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 336,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/HerbBasketPut/RyuSml_HerbBasketPut_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              -32502380,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/Sleep/RyuSml_Sleep_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 341,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/Sleep/RyuSml_Sleep_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": true,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 2048
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/HugeBench/RyuSml_HugeBench_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Bench/Bench_RyuSml_Huge_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 346,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/HugeBench/RyuSml_HugeBench_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": true,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 8
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/ShelterIdle/RyuSml_ShelterIdle_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 351,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/ShelterIdle/RyuSml_ShelterIdle_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/FollowIdle/RyuSml_FollowIdle_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 356,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/FollowIdle/RyuSml_FollowIdle_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": false,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": true,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3199285888] IDLE",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 2
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/U01008Lobby/RyuSml_U01008Lobby_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 361,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/U01008Lobby/RyuSml_U01008Lobby_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              -99486568,
+              14838,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/U01008LobbyFacilityIdle/RyuSml_U01008LobbyFacilityIdle_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 366,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/U01008LobbyFacilityIdle/RyuSml_U01008LobbyFacilityIdle_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              -99486568,
+              14838,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/SitGroundLobby/RyuSml_SitGroundLobby_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/SitGround/SitGround_Lobby_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 371,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Ryujin_Small/SitGroundLobby/RyuSml_SitGroundLobby_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 8
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        }
+      ],
+      "_ActionEnum": {
+        "ace.user_data.EnumMaker": {
+          "ref_instance_id": 376,
+          "path": "GameDesign/NPC/EnumMaker/NpcFsmLikeAction_Ryujin.user"
+        }
+      }
+    }
+  }
+]

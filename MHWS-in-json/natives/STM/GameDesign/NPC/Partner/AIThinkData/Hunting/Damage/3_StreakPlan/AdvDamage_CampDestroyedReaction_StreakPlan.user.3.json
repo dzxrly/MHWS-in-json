@@ -1,0 +1,62 @@
+[
+  {
+    "app.user_data.NpcStreakPlanData": {
+      "_ActionDataList": {
+        "ace.cInstanceGuidArray`1<app.user_data.NpcStreakPlanData.cActionData>": {
+          "_DataArray": [
+            {
+              "app.user_data.NpcStreakPlanData.cActionData": {
+                "_InstanceGuid": "dec94422-3e6b-0dd1-16c3-e18612d2c1fc",
+                "_ActionData": {
+                  "app.user_data.NpcStreakActionData": {
+                    "ref_instance_id": 1,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Hunting/Damage/4_StreakAction/AdvDamage_CampDestroyedReaction_StreakAction.user"
+                  }
+                },
+                "_DerivedAction_Combo": {
+                  "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+                    "_DerivedActionParams": []
+                  }
+                },
+                "_DerivedAction_Interrupt": {
+                  "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+                    "_DerivedActionParams": []
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "_DerivedAction_Activate": {
+        "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+          "_DerivedActionParams": [
+            {
+              "app.user_data.NpcStreakPlanData.cDerivedActionHolder.cDerivedActionParam": {
+                "_ActionGuid": "dec94422-3e6b-0dd1-16c3-e18612d2c1fc",
+                "_RandomWeight": 50
+              }
+            }
+          ]
+        }
+      },
+      "_DerivedAction_Activate_WpOn": {
+        "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+          "_DerivedActionParams": []
+        }
+      },
+      "_DerivedAction_Activate_Breaked": {
+        "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+          "_DerivedActionParams": []
+        }
+      },
+      "_DerivedAction_Always": {
+        "app.user_data.NpcStreakPlanData.cDerivedActionHolder": {
+          "_DerivedActionParams": []
+        }
+      },
+      "_TargetType": "[1189767808] SELF",
+      "_TargetPartsType": "[4025074304] ROOT"
+    }
+  }
+]

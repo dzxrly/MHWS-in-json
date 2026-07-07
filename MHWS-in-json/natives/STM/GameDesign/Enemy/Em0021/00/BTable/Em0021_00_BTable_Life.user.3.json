@@ -1,0 +1,2893 @@
+[
+  {
+    "ace.btable.user_data.BTable": {
+      "_Tables": {
+        "ace.cInstanceGuidArray`1<ace.btable.user_data.BTable.cTableElement>": {
+          "_DataArray": []
+        }
+      },
+      "_ImportBTableList": [],
+      "_OrderBank": {
+        "ace.btable.user_data.BTableOrderBank": {
+          "ref_instance_id": 2,
+          "path": "GameDesign/Enemy/Em0021/00/BTable/Em0021_00_BTableOrderBank.user"
+        }
+      },
+      "_ThisGuid": "929c8091-9dd2-06ca-25b6-a1d883cc1a7a",
+      "_ExportBTableType": "app.Em0021_00_BTable_Life_Export",
+      "_CommandArgArray": [
+        {
+          "app.btable.EmCommonCommand.cCheckStatusArg": {
+            "_EditCategory": {
+              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusArg.CATEGORY>": 18
+            },
+            "StandState": {
+              "app.btable.EmCommonCommand.cCheckStatusStandStateArg": {
+                "_EditState": {
+                  "ace.btable.cEditFieldDropBox`1<app.btable.EmCommonCommand.cCheckStatusStandStateArg.STAND_STATE_HOLDER>": {
+                    "STRUCT__Value_Type": 0,
+                    "STRUCT__Value_Value": 0
+                  }
+                }
+              }
+            },
+            "BadConditions": {
+              "app.btable.EmCommonCommand.cCheckStatusBadConditionsArg": {
+                "_EditArg": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusBadConditionsArg.CONDITION_TYPE>": 0
+                }
+              }
+            },
+            "Status": {
+              "app.btable.EmCommonCommand.cCheckStatusStatusArg": {
+                "_EditArg": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusStatusArg.CONDITION_TYPE>": 0
+                }
+              }
+            },
+            "Health": {
+              "app.btable.EmCommonCommand.cCheckStatusHealthArg": {
+                "_EditHealthRate": {
+                  "ace.btable.cEditFieldInt": 100
+                }
+              }
+            },
+            "AIState": {
+              "app.btable.EmCommonCommand.cCheckStatusAIStateArg": {
+                "_EditArg": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusAIStateArg.AI_TYPE>": 0
+                }
+              }
+            },
+            "HolderType": {
+              "app.btable.EmCommonCommand.cCheckStatusHolderTypeArg": {
+                "_EditHolderType": {
+                  "ace.btable.cEditFieldEnum`1<app.cEmModuleHold.HOLD_ROLE>": 0
+                }
+              }
+            },
+            "DangerLevel": {
+              "app.btable.EmCommonCommand.cCheckStatusDangerLevelArg": {
+                "_EditCheckType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusDangerLevelArg.CHECK_TYPE>": 0
+                }
+              }
+            },
+            "NPCJackSituation": {
+              "app.btable.cCheckStatusNPCJackSituation": {
+                "_EditSituation": {
+                  "ace.btable.cEditFieldEnum`1<app.cEmModuleNpcJack.SITUATION>": 0
+                }
+              }
+            },
+            "DownDir": {
+              "app.btable.cCheckStatusDownDirArg": {
+                "_EditArg": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckStatusDownDirArg.TYPE>": 0
+                }
+              }
+            },
+            "GroundMaterial": {
+              "app.btable.cCheckGroundMaterialArg": {
+                "_EditArg": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckGroundMaterialArg.TYPE>": 0
+                }
+              }
+            },
+            "Stage": {
+              "app.btable.cCheckStage": {
+                "_CheckStage": {
+                  "ace.btable.cEditFieldEnum`1<app.FieldDef.STAGE>": 0
+                },
+                "_IsCheckAreaNo": {
+                  "ace.btable.cEditFieldBool": true
+                },
+                "_CheckAreaNo": {
+                  "ace.btable.cEditFieldInt": 0
+                },
+                "_IsExcludeHalfCombatArea": {
+                  "ace.btable.cEditFieldBool": false
+                }
+              }
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionDesireRecoverArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "f851f6d9-14f7-4dad-8ac5-2b9b48a6d240"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            },
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.EnemyDef.DESIRE_ID>": 0
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cCheckLifeActArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.EnemyDef.AREAMOVE_OBJECTIVE_TYPE_Fixed>": 695461056
+            },
+            "_EditIsMemberSameAction": {
+              "ace.btable.cEditFieldBool": false
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cCheckLifeActArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.EnemyDef.AREAMOVE_OBJECTIVE_TYPE_Fixed>": 740281728
+            },
+            "_EditIsMemberSameAction": {
+              "ace.btable.cEditFieldBool": false
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cCheckLifeActArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.EnemyDef.AREAMOVE_OBJECTIVE_TYPE_Fixed>": 2017211008
+            },
+            "_EditIsMemberSameAction": {
+              "ace.btable.cEditFieldBool": false
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cCheckLifeActArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.EnemyDef.AREAMOVE_OBJECTIVE_TYPE_Fixed>": 1049189184
+            },
+            "_EditIsMemberSameAction": {
+              "ace.btable.cEditFieldBool": false
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cCheckLifeActArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.EnemyDef.AREAMOVE_OBJECTIVE_TYPE_Fixed>": 1775492096
+            },
+            "_EditIsMemberSameAction": {
+              "ace.btable.cEditFieldBool": false
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cCheckLifeActArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.EnemyDef.AREAMOVE_OBJECTIVE_TYPE_Fixed>": 376250240
+            },
+            "_EditIsMemberSameAction": {
+              "ace.btable.cEditFieldBool": false
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cCheckLifeActArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.EnemyDef.AREAMOVE_OBJECTIVE_TYPE_Fixed>": -1998600832
+            },
+            "_EditIsMemberSameAction": {
+              "ace.btable.cEditFieldBool": false
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSetDestArg": {
+            "_EditCategory": {
+              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestArg.CATEGORY>": 3
+            },
+            "Escape": {
+              "app.btable.EmCommonCommand.cSetDestEscapeArg": {
+                "_EditSelectType": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyUtil.SetDest_Escape.SELECT_TYPE>": 0
+                },
+                "_MinDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MaxAngle": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_RandomProbability": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "EscapeBackVec": {
+              "app.btable.EmCommonCommand.cSetDestEscapeBackVecArg": {
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_IsOnFailSelfPos": {
+                  "ace.btable.cEditFieldBool": false
+                }
+              }
+            },
+            "EscapeStroll": {
+              "app.btable.EmCommonCommand.cSetDestEscapeStrollArg": {
+                "_MinDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_LotteryType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestEscapeStrollArg.LOTTERY_TYPE>": 0
+                }
+              }
+            },
+            "Desire": {
+              "app.btable.EmCommonCommand.cSetDestDesireArg": {
+                "_UsePointOptionType": {
+                  "ace.btable.cEditFieldEnum`1<app.point_graph_data.enemy_target_point.EnemyTargetPoint.cSearchCondition.USE_POINT_OPTION_TYPE>": 0
+                },
+                "_Option": {
+                  "ace.btable.cEditFieldInt": 0
+                },
+                "_MemberPointType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestDesireArg.MEMBER_TARGET_TYPE>": 0
+                }
+              }
+            },
+            "Offset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetArg": {
+                "_EditTarget": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetArg.TARGET>": 0
+                },
+                "_EditAngle": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditAdjust": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetArg.ADJUST>": 0
+                }
+              }
+            },
+            "TargetNearAngleOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetTargetNearAngleArg": {
+                "_EditAngle1": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditAngle2": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "HeightOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetHeightArg": {
+                "_EditTarget": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetHeightArg.TARGET>": 0
+                },
+                "_EditHeight": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "CeilingHeightOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetCeilingHeightArg": {
+                "_EditTarget": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetCeilingHeightArg.TARGET>": 0
+                },
+                "_EditCheckOffsetDist": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditTargetMaxHeight": {
+                  "ace.btable.cEditFieldFloat": 50.0
+                }
+              }
+            },
+            "RandomRangeOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetRamdomRangeArg": {
+                "_EditRange": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "TargetHeight": {
+              "app.btable.EmCommonCommand.cSetDestTargetHeightArg": {
+                "_EditHeight": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "CombatArea": {
+              "app.btable.EmCommonCommand.cSetDestCombatAreaArg": {
+                "_EditArg": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyUtil.SetDest_CombatArea.SELECT_TYPE>": 0
+                }
+              }
+            },
+            "Hate": {
+              "app.btable.EmCommonCommand.cSetTargetHateArg": {
+                "_EditArg": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyUtil.SetDest_Hate.SELECT_TYPE>": 0
+                }
+              }
+            },
+            "NearestWall": {
+              "app.btable.EmCommonCommand.cSetDestNearestWallArg": {
+                "_EditCheckDist": {
+                  "ace.btable.cEditFieldFloat": 30.0
+                },
+                "_EditFrontOffsetDist": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "Stroll": {
+              "app.btable.EmCommonCommand.cSetDestStrollArg": {
+                "_EditOptionType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestStrollArg.OPTION_TYPE>": 0
+                },
+                "_MemberPointType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestDesireArg.MEMBER_TARGET_TYPE>": 0
+                },
+                "_EditOptionTag": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyStrollOptionTag.Tag_Fixed>": 0
+                },
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MinDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_StrollRadiusSubDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "CadaverSearch": {
+              "app.btable.EmCommonCommand.cSetDestCadaverSearch": {
+                "_EditSeartchRange": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditSeraceElipse": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestCadaverSearch.SEARCH_ELIPSE_OPTION>": 0
+                },
+                "_EditCorpseOffsetRate": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "EmFromStoryArg": {
+              "app.btable.EmCommonCommand.cSetDestEmFromStoryArg": {
+                "_EnemyID": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.ID_Fixed>": 0
+                },
+                "_TargetStoryID": {
+                  "ace.btable.cEditFieldInt": 0
+                }
+              }
+            },
+            "NpcFromStoryArg": {
+              "app.btable.EmCommonCommand.cSetDestNpcFromStoryArg": {
+                "_NpcID": {
+                  "ace.btable.cEditFieldEnum`1<app.NpcDef.ID_Fixed>": 0
+                }
+              }
+            },
+            "LivesEmFromStoryArg": {
+              "app.btable.EmCommonCommand.cSetDestLivesEmFromStoryArg": {
+                "_EnemyID": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.ID_Fixed>": 0
+                },
+                "_Radius": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "LimeStonePoolArg": {
+              "app.btable.EmCommonCommand.cSetDestLimeStonePoolArg": {
+                "_MemberPointType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestLimeStonePoolArg.MEMBER_TARGET_TYPE>": 0
+                }
+              }
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "feccfa11-ee1b-49dd-8e13-44379cd04576"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionDesireRecoverArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "a0bfe7f9-c03f-4e0b-9ff2-d184707428fa"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            },
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.EnemyDef.DESIRE_ID>": 7
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "66d11d24-9ab0-419c-ae36-a41c09ebae02"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSetDestArg": {
+            "_EditCategory": {
+              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestArg.CATEGORY>": 3
+            },
+            "Escape": {
+              "app.btable.EmCommonCommand.cSetDestEscapeArg": {
+                "_EditSelectType": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyUtil.SetDest_Escape.SELECT_TYPE>": 0
+                },
+                "_MinDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MaxAngle": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_RandomProbability": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "EscapeBackVec": {
+              "app.btable.EmCommonCommand.cSetDestEscapeBackVecArg": {
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_IsOnFailSelfPos": {
+                  "ace.btable.cEditFieldBool": false
+                }
+              }
+            },
+            "EscapeStroll": {
+              "app.btable.EmCommonCommand.cSetDestEscapeStrollArg": {
+                "_MinDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_LotteryType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestEscapeStrollArg.LOTTERY_TYPE>": 0
+                }
+              }
+            },
+            "Desire": {
+              "app.btable.EmCommonCommand.cSetDestDesireArg": {
+                "_UsePointOptionType": {
+                  "ace.btable.cEditFieldEnum`1<app.point_graph_data.enemy_target_point.EnemyTargetPoint.cSearchCondition.USE_POINT_OPTION_TYPE>": 0
+                },
+                "_Option": {
+                  "ace.btable.cEditFieldInt": 0
+                },
+                "_MemberPointType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestDesireArg.MEMBER_TARGET_TYPE>": 0
+                }
+              }
+            },
+            "Offset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetArg": {
+                "_EditTarget": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetArg.TARGET>": 0
+                },
+                "_EditAngle": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditAdjust": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetArg.ADJUST>": 0
+                }
+              }
+            },
+            "TargetNearAngleOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetTargetNearAngleArg": {
+                "_EditAngle1": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditAngle2": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "HeightOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetHeightArg": {
+                "_EditTarget": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetHeightArg.TARGET>": 0
+                },
+                "_EditHeight": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "CeilingHeightOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetCeilingHeightArg": {
+                "_EditTarget": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetCeilingHeightArg.TARGET>": 0
+                },
+                "_EditCheckOffsetDist": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditTargetMaxHeight": {
+                  "ace.btable.cEditFieldFloat": 50.0
+                }
+              }
+            },
+            "RandomRangeOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetRamdomRangeArg": {
+                "_EditRange": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "TargetHeight": {
+              "app.btable.EmCommonCommand.cSetDestTargetHeightArg": {
+                "_EditHeight": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "CombatArea": {
+              "app.btable.EmCommonCommand.cSetDestCombatAreaArg": {
+                "_EditArg": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyUtil.SetDest_CombatArea.SELECT_TYPE>": 0
+                }
+              }
+            },
+            "Hate": {
+              "app.btable.EmCommonCommand.cSetTargetHateArg": {
+                "_EditArg": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyUtil.SetDest_Hate.SELECT_TYPE>": 0
+                }
+              }
+            },
+            "NearestWall": {
+              "app.btable.EmCommonCommand.cSetDestNearestWallArg": {
+                "_EditCheckDist": {
+                  "ace.btable.cEditFieldFloat": 30.0
+                },
+                "_EditFrontOffsetDist": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "Stroll": {
+              "app.btable.EmCommonCommand.cSetDestStrollArg": {
+                "_EditOptionType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestStrollArg.OPTION_TYPE>": 0
+                },
+                "_MemberPointType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestDesireArg.MEMBER_TARGET_TYPE>": 0
+                },
+                "_EditOptionTag": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyStrollOptionTag.Tag_Fixed>": 0
+                },
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MinDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_StrollRadiusSubDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "CadaverSearch": {
+              "app.btable.EmCommonCommand.cSetDestCadaverSearch": {
+                "_EditSeartchRange": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditSeraceElipse": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestCadaverSearch.SEARCH_ELIPSE_OPTION>": 0
+                },
+                "_EditCorpseOffsetRate": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "EmFromStoryArg": {
+              "app.btable.EmCommonCommand.cSetDestEmFromStoryArg": {
+                "_EnemyID": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.ID_Fixed>": 0
+                },
+                "_TargetStoryID": {
+                  "ace.btable.cEditFieldInt": 0
+                }
+              }
+            },
+            "NpcFromStoryArg": {
+              "app.btable.EmCommonCommand.cSetDestNpcFromStoryArg": {
+                "_NpcID": {
+                  "ace.btable.cEditFieldEnum`1<app.NpcDef.ID_Fixed>": 0
+                }
+              }
+            },
+            "LivesEmFromStoryArg": {
+              "app.btable.EmCommonCommand.cSetDestLivesEmFromStoryArg": {
+                "_EnemyID": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.ID_Fixed>": 0
+                },
+                "_Radius": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "LimeStonePoolArg": {
+              "app.btable.EmCommonCommand.cSetDestLimeStonePoolArg": {
+                "_MemberPointType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestLimeStonePoolArg.MEMBER_TARGET_TYPE>": 0
+                }
+              }
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionDesireRecoverArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "b78bb4d6-f4f1-466f-a4a7-ddaeb3188329"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            },
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.EnemyDef.DESIRE_ID>": 8
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "66d11d24-9ab0-419c-ae36-a41c09ebae02"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSetDestArg": {
+            "_EditCategory": {
+              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestArg.CATEGORY>": 3
+            },
+            "Escape": {
+              "app.btable.EmCommonCommand.cSetDestEscapeArg": {
+                "_EditSelectType": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyUtil.SetDest_Escape.SELECT_TYPE>": 0
+                },
+                "_MinDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MaxAngle": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_RandomProbability": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "EscapeBackVec": {
+              "app.btable.EmCommonCommand.cSetDestEscapeBackVecArg": {
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_IsOnFailSelfPos": {
+                  "ace.btable.cEditFieldBool": false
+                }
+              }
+            },
+            "EscapeStroll": {
+              "app.btable.EmCommonCommand.cSetDestEscapeStrollArg": {
+                "_MinDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_LotteryType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestEscapeStrollArg.LOTTERY_TYPE>": 0
+                }
+              }
+            },
+            "Desire": {
+              "app.btable.EmCommonCommand.cSetDestDesireArg": {
+                "_UsePointOptionType": {
+                  "ace.btable.cEditFieldEnum`1<app.point_graph_data.enemy_target_point.EnemyTargetPoint.cSearchCondition.USE_POINT_OPTION_TYPE>": 0
+                },
+                "_Option": {
+                  "ace.btable.cEditFieldInt": 0
+                },
+                "_MemberPointType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestDesireArg.MEMBER_TARGET_TYPE>": 0
+                }
+              }
+            },
+            "Offset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetArg": {
+                "_EditTarget": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetArg.TARGET>": 0
+                },
+                "_EditAngle": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditAdjust": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetArg.ADJUST>": 0
+                }
+              }
+            },
+            "TargetNearAngleOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetTargetNearAngleArg": {
+                "_EditAngle1": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditAngle2": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "HeightOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetHeightArg": {
+                "_EditTarget": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetHeightArg.TARGET>": 0
+                },
+                "_EditHeight": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "CeilingHeightOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetCeilingHeightArg": {
+                "_EditTarget": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetCeilingHeightArg.TARGET>": 0
+                },
+                "_EditCheckOffsetDist": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditTargetMaxHeight": {
+                  "ace.btable.cEditFieldFloat": 50.0
+                }
+              }
+            },
+            "RandomRangeOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetRamdomRangeArg": {
+                "_EditRange": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "TargetHeight": {
+              "app.btable.EmCommonCommand.cSetDestTargetHeightArg": {
+                "_EditHeight": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "CombatArea": {
+              "app.btable.EmCommonCommand.cSetDestCombatAreaArg": {
+                "_EditArg": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyUtil.SetDest_CombatArea.SELECT_TYPE>": 0
+                }
+              }
+            },
+            "Hate": {
+              "app.btable.EmCommonCommand.cSetTargetHateArg": {
+                "_EditArg": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyUtil.SetDest_Hate.SELECT_TYPE>": 0
+                }
+              }
+            },
+            "NearestWall": {
+              "app.btable.EmCommonCommand.cSetDestNearestWallArg": {
+                "_EditCheckDist": {
+                  "ace.btable.cEditFieldFloat": 30.0
+                },
+                "_EditFrontOffsetDist": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "Stroll": {
+              "app.btable.EmCommonCommand.cSetDestStrollArg": {
+                "_EditOptionType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestStrollArg.OPTION_TYPE>": 0
+                },
+                "_MemberPointType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestDesireArg.MEMBER_TARGET_TYPE>": 0
+                },
+                "_EditOptionTag": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyStrollOptionTag.Tag_Fixed>": 0
+                },
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MinDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_StrollRadiusSubDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "CadaverSearch": {
+              "app.btable.EmCommonCommand.cSetDestCadaverSearch": {
+                "_EditSeartchRange": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditSeraceElipse": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestCadaverSearch.SEARCH_ELIPSE_OPTION>": 0
+                },
+                "_EditCorpseOffsetRate": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "EmFromStoryArg": {
+              "app.btable.EmCommonCommand.cSetDestEmFromStoryArg": {
+                "_EnemyID": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.ID_Fixed>": 0
+                },
+                "_TargetStoryID": {
+                  "ace.btable.cEditFieldInt": 0
+                }
+              }
+            },
+            "NpcFromStoryArg": {
+              "app.btable.EmCommonCommand.cSetDestNpcFromStoryArg": {
+                "_NpcID": {
+                  "ace.btable.cEditFieldEnum`1<app.NpcDef.ID_Fixed>": 0
+                }
+              }
+            },
+            "LivesEmFromStoryArg": {
+              "app.btable.EmCommonCommand.cSetDestLivesEmFromStoryArg": {
+                "_EnemyID": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.ID_Fixed>": 0
+                },
+                "_Radius": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "LimeStonePoolArg": {
+              "app.btable.EmCommonCommand.cSetDestLimeStonePoolArg": {
+                "_MemberPointType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestLimeStonePoolArg.MEMBER_TARGET_TYPE>": 0
+                }
+              }
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionDesireRecoverArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "04f0c4b3-5ea1-48ed-99e5-6a2be69b89a9"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            },
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.EnemyDef.DESIRE_ID>": 9
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "66d11d24-9ab0-419c-ae36-a41c09ebae02"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSetDestArg": {
+            "_EditCategory": {
+              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestArg.CATEGORY>": 22
+            },
+            "Escape": {
+              "app.btable.EmCommonCommand.cSetDestEscapeArg": {
+                "_EditSelectType": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyUtil.SetDest_Escape.SELECT_TYPE>": 0
+                },
+                "_MinDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MaxAngle": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_RandomProbability": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "EscapeBackVec": {
+              "app.btable.EmCommonCommand.cSetDestEscapeBackVecArg": {
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_IsOnFailSelfPos": {
+                  "ace.btable.cEditFieldBool": false
+                }
+              }
+            },
+            "EscapeStroll": {
+              "app.btable.EmCommonCommand.cSetDestEscapeStrollArg": {
+                "_MinDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_LotteryType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestEscapeStrollArg.LOTTERY_TYPE>": 0
+                }
+              }
+            },
+            "Desire": {
+              "app.btable.EmCommonCommand.cSetDestDesireArg": {
+                "_UsePointOptionType": {
+                  "ace.btable.cEditFieldEnum`1<app.point_graph_data.enemy_target_point.EnemyTargetPoint.cSearchCondition.USE_POINT_OPTION_TYPE>": 0
+                },
+                "_Option": {
+                  "ace.btable.cEditFieldInt": 0
+                },
+                "_MemberPointType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestDesireArg.MEMBER_TARGET_TYPE>": 0
+                }
+              }
+            },
+            "Offset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetArg": {
+                "_EditTarget": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetArg.TARGET>": 0
+                },
+                "_EditAngle": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditAdjust": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetArg.ADJUST>": 0
+                }
+              }
+            },
+            "TargetNearAngleOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetTargetNearAngleArg": {
+                "_EditAngle1": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditAngle2": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "HeightOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetHeightArg": {
+                "_EditTarget": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetHeightArg.TARGET>": 0
+                },
+                "_EditHeight": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "CeilingHeightOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetCeilingHeightArg": {
+                "_EditTarget": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetCeilingHeightArg.TARGET>": 0
+                },
+                "_EditCheckOffsetDist": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditTargetMaxHeight": {
+                  "ace.btable.cEditFieldFloat": 50.0
+                }
+              }
+            },
+            "RandomRangeOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetRamdomRangeArg": {
+                "_EditRange": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "TargetHeight": {
+              "app.btable.EmCommonCommand.cSetDestTargetHeightArg": {
+                "_EditHeight": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "CombatArea": {
+              "app.btable.EmCommonCommand.cSetDestCombatAreaArg": {
+                "_EditArg": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyUtil.SetDest_CombatArea.SELECT_TYPE>": 0
+                }
+              }
+            },
+            "Hate": {
+              "app.btable.EmCommonCommand.cSetTargetHateArg": {
+                "_EditArg": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyUtil.SetDest_Hate.SELECT_TYPE>": 0
+                }
+              }
+            },
+            "NearestWall": {
+              "app.btable.EmCommonCommand.cSetDestNearestWallArg": {
+                "_EditCheckDist": {
+                  "ace.btable.cEditFieldFloat": 30.0
+                },
+                "_EditFrontOffsetDist": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "Stroll": {
+              "app.btable.EmCommonCommand.cSetDestStrollArg": {
+                "_EditOptionType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestStrollArg.OPTION_TYPE>": 0
+                },
+                "_MemberPointType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestDesireArg.MEMBER_TARGET_TYPE>": 0
+                },
+                "_EditOptionTag": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyStrollOptionTag.Tag_Fixed>": 0
+                },
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MinDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_StrollRadiusSubDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "CadaverSearch": {
+              "app.btable.EmCommonCommand.cSetDestCadaverSearch": {
+                "_EditSeartchRange": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditSeraceElipse": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestCadaverSearch.SEARCH_ELIPSE_OPTION>": 0
+                },
+                "_EditCorpseOffsetRate": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "EmFromStoryArg": {
+              "app.btable.EmCommonCommand.cSetDestEmFromStoryArg": {
+                "_EnemyID": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.ID_Fixed>": 0
+                },
+                "_TargetStoryID": {
+                  "ace.btable.cEditFieldInt": 0
+                }
+              }
+            },
+            "NpcFromStoryArg": {
+              "app.btable.EmCommonCommand.cSetDestNpcFromStoryArg": {
+                "_NpcID": {
+                  "ace.btable.cEditFieldEnum`1<app.NpcDef.ID_Fixed>": 0
+                }
+              }
+            },
+            "LivesEmFromStoryArg": {
+              "app.btable.EmCommonCommand.cSetDestLivesEmFromStoryArg": {
+                "_EnemyID": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.ID_Fixed>": 0
+                },
+                "_Radius": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "LimeStonePoolArg": {
+              "app.btable.EmCommonCommand.cSetDestLimeStonePoolArg": {
+                "_MemberPointType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestLimeStonePoolArg.MEMBER_TARGET_TYPE>": 0
+                }
+              }
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionDesireRecoverArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "253406d6-c8e4-42d0-9cc2-723baee116e3"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            },
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.EnemyDef.DESIRE_ID>": 10
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "66d11d24-9ab0-419c-ae36-a41c09ebae02"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSetDestArg": {
+            "_EditCategory": {
+              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestArg.CATEGORY>": 3
+            },
+            "Escape": {
+              "app.btable.EmCommonCommand.cSetDestEscapeArg": {
+                "_EditSelectType": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyUtil.SetDest_Escape.SELECT_TYPE>": 0
+                },
+                "_MinDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MaxAngle": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_RandomProbability": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "EscapeBackVec": {
+              "app.btable.EmCommonCommand.cSetDestEscapeBackVecArg": {
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_IsOnFailSelfPos": {
+                  "ace.btable.cEditFieldBool": false
+                }
+              }
+            },
+            "EscapeStroll": {
+              "app.btable.EmCommonCommand.cSetDestEscapeStrollArg": {
+                "_MinDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_LotteryType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestEscapeStrollArg.LOTTERY_TYPE>": 0
+                }
+              }
+            },
+            "Desire": {
+              "app.btable.EmCommonCommand.cSetDestDesireArg": {
+                "_UsePointOptionType": {
+                  "ace.btable.cEditFieldEnum`1<app.point_graph_data.enemy_target_point.EnemyTargetPoint.cSearchCondition.USE_POINT_OPTION_TYPE>": 0
+                },
+                "_Option": {
+                  "ace.btable.cEditFieldInt": 0
+                },
+                "_MemberPointType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestDesireArg.MEMBER_TARGET_TYPE>": 0
+                }
+              }
+            },
+            "Offset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetArg": {
+                "_EditTarget": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetArg.TARGET>": 0
+                },
+                "_EditAngle": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditAdjust": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetArg.ADJUST>": 0
+                }
+              }
+            },
+            "TargetNearAngleOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetTargetNearAngleArg": {
+                "_EditAngle1": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditAngle2": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "HeightOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetHeightArg": {
+                "_EditTarget": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetHeightArg.TARGET>": 0
+                },
+                "_EditHeight": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "CeilingHeightOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetCeilingHeightArg": {
+                "_EditTarget": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetCeilingHeightArg.TARGET>": 0
+                },
+                "_EditCheckOffsetDist": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditTargetMaxHeight": {
+                  "ace.btable.cEditFieldFloat": 50.0
+                }
+              }
+            },
+            "RandomRangeOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetRamdomRangeArg": {
+                "_EditRange": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "TargetHeight": {
+              "app.btable.EmCommonCommand.cSetDestTargetHeightArg": {
+                "_EditHeight": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "CombatArea": {
+              "app.btable.EmCommonCommand.cSetDestCombatAreaArg": {
+                "_EditArg": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyUtil.SetDest_CombatArea.SELECT_TYPE>": 0
+                }
+              }
+            },
+            "Hate": {
+              "app.btable.EmCommonCommand.cSetTargetHateArg": {
+                "_EditArg": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyUtil.SetDest_Hate.SELECT_TYPE>": 0
+                }
+              }
+            },
+            "NearestWall": {
+              "app.btable.EmCommonCommand.cSetDestNearestWallArg": {
+                "_EditCheckDist": {
+                  "ace.btable.cEditFieldFloat": 30.0
+                },
+                "_EditFrontOffsetDist": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "Stroll": {
+              "app.btable.EmCommonCommand.cSetDestStrollArg": {
+                "_EditOptionType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestStrollArg.OPTION_TYPE>": 0
+                },
+                "_MemberPointType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestDesireArg.MEMBER_TARGET_TYPE>": 0
+                },
+                "_EditOptionTag": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyStrollOptionTag.Tag_Fixed>": 0
+                },
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MinDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_StrollRadiusSubDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "CadaverSearch": {
+              "app.btable.EmCommonCommand.cSetDestCadaverSearch": {
+                "_EditSeartchRange": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditSeraceElipse": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestCadaverSearch.SEARCH_ELIPSE_OPTION>": 0
+                },
+                "_EditCorpseOffsetRate": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "EmFromStoryArg": {
+              "app.btable.EmCommonCommand.cSetDestEmFromStoryArg": {
+                "_EnemyID": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.ID_Fixed>": 0
+                },
+                "_TargetStoryID": {
+                  "ace.btable.cEditFieldInt": 0
+                }
+              }
+            },
+            "NpcFromStoryArg": {
+              "app.btable.EmCommonCommand.cSetDestNpcFromStoryArg": {
+                "_NpcID": {
+                  "ace.btable.cEditFieldEnum`1<app.NpcDef.ID_Fixed>": 0
+                }
+              }
+            },
+            "LivesEmFromStoryArg": {
+              "app.btable.EmCommonCommand.cSetDestLivesEmFromStoryArg": {
+                "_EnemyID": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.ID_Fixed>": 0
+                },
+                "_Radius": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "LimeStonePoolArg": {
+              "app.btable.EmCommonCommand.cSetDestLimeStonePoolArg": {
+                "_MemberPointType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestLimeStonePoolArg.MEMBER_TARGET_TYPE>": 0
+                }
+              }
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionDesireRecoverArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "dd4c1fb1-9a11-4788-bd39-ca68149f6145"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            },
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.EnemyDef.DESIRE_ID>": 0
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "66d11d24-9ab0-419c-ae36-a41c09ebae02"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSetDestArg": {
+            "_EditCategory": {
+              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestArg.CATEGORY>": 3
+            },
+            "Escape": {
+              "app.btable.EmCommonCommand.cSetDestEscapeArg": {
+                "_EditSelectType": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyUtil.SetDest_Escape.SELECT_TYPE>": 0
+                },
+                "_MinDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MaxAngle": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_RandomProbability": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "EscapeBackVec": {
+              "app.btable.EmCommonCommand.cSetDestEscapeBackVecArg": {
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_IsOnFailSelfPos": {
+                  "ace.btable.cEditFieldBool": false
+                }
+              }
+            },
+            "EscapeStroll": {
+              "app.btable.EmCommonCommand.cSetDestEscapeStrollArg": {
+                "_MinDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_LotteryType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestEscapeStrollArg.LOTTERY_TYPE>": 0
+                }
+              }
+            },
+            "Desire": {
+              "app.btable.EmCommonCommand.cSetDestDesireArg": {
+                "_UsePointOptionType": {
+                  "ace.btable.cEditFieldEnum`1<app.point_graph_data.enemy_target_point.EnemyTargetPoint.cSearchCondition.USE_POINT_OPTION_TYPE>": 0
+                },
+                "_Option": {
+                  "ace.btable.cEditFieldInt": 0
+                },
+                "_MemberPointType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestDesireArg.MEMBER_TARGET_TYPE>": 0
+                }
+              }
+            },
+            "Offset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetArg": {
+                "_EditTarget": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetArg.TARGET>": 0
+                },
+                "_EditAngle": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditAdjust": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetArg.ADJUST>": 0
+                }
+              }
+            },
+            "TargetNearAngleOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetTargetNearAngleArg": {
+                "_EditAngle1": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditAngle2": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "HeightOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetHeightArg": {
+                "_EditTarget": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetHeightArg.TARGET>": 0
+                },
+                "_EditHeight": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "CeilingHeightOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetCeilingHeightArg": {
+                "_EditTarget": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetCeilingHeightArg.TARGET>": 0
+                },
+                "_EditCheckOffsetDist": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditTargetMaxHeight": {
+                  "ace.btable.cEditFieldFloat": 50.0
+                }
+              }
+            },
+            "RandomRangeOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetRamdomRangeArg": {
+                "_EditRange": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "TargetHeight": {
+              "app.btable.EmCommonCommand.cSetDestTargetHeightArg": {
+                "_EditHeight": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "CombatArea": {
+              "app.btable.EmCommonCommand.cSetDestCombatAreaArg": {
+                "_EditArg": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyUtil.SetDest_CombatArea.SELECT_TYPE>": 0
+                }
+              }
+            },
+            "Hate": {
+              "app.btable.EmCommonCommand.cSetTargetHateArg": {
+                "_EditArg": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyUtil.SetDest_Hate.SELECT_TYPE>": 0
+                }
+              }
+            },
+            "NearestWall": {
+              "app.btable.EmCommonCommand.cSetDestNearestWallArg": {
+                "_EditCheckDist": {
+                  "ace.btable.cEditFieldFloat": 30.0
+                },
+                "_EditFrontOffsetDist": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "Stroll": {
+              "app.btable.EmCommonCommand.cSetDestStrollArg": {
+                "_EditOptionType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestStrollArg.OPTION_TYPE>": 0
+                },
+                "_MemberPointType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestDesireArg.MEMBER_TARGET_TYPE>": 0
+                },
+                "_EditOptionTag": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyStrollOptionTag.Tag_Fixed>": 0
+                },
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MinDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_StrollRadiusSubDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "CadaverSearch": {
+              "app.btable.EmCommonCommand.cSetDestCadaverSearch": {
+                "_EditSeartchRange": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditSeraceElipse": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestCadaverSearch.SEARCH_ELIPSE_OPTION>": 0
+                },
+                "_EditCorpseOffsetRate": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "EmFromStoryArg": {
+              "app.btable.EmCommonCommand.cSetDestEmFromStoryArg": {
+                "_EnemyID": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.ID_Fixed>": 0
+                },
+                "_TargetStoryID": {
+                  "ace.btable.cEditFieldInt": 0
+                }
+              }
+            },
+            "NpcFromStoryArg": {
+              "app.btable.EmCommonCommand.cSetDestNpcFromStoryArg": {
+                "_NpcID": {
+                  "ace.btable.cEditFieldEnum`1<app.NpcDef.ID_Fixed>": 0
+                }
+              }
+            },
+            "LivesEmFromStoryArg": {
+              "app.btable.EmCommonCommand.cSetDestLivesEmFromStoryArg": {
+                "_EnemyID": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.ID_Fixed>": 0
+                },
+                "_Radius": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "LimeStonePoolArg": {
+              "app.btable.EmCommonCommand.cSetDestLimeStonePoolArg": {
+                "_MemberPointType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestLimeStonePoolArg.MEMBER_TARGET_TYPE>": 0
+                }
+              }
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionDesireRecoverArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "b6298dc5-ccc0-4027-aa63-760cbec50520"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            },
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.EnemyDef.DESIRE_ID>": 1
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "66d11d24-9ab0-419c-ae36-a41c09ebae02"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSetDestArg": {
+            "_EditCategory": {
+              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestArg.CATEGORY>": 3
+            },
+            "Escape": {
+              "app.btable.EmCommonCommand.cSetDestEscapeArg": {
+                "_EditSelectType": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyUtil.SetDest_Escape.SELECT_TYPE>": 0
+                },
+                "_MinDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MaxAngle": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_RandomProbability": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "EscapeBackVec": {
+              "app.btable.EmCommonCommand.cSetDestEscapeBackVecArg": {
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_IsOnFailSelfPos": {
+                  "ace.btable.cEditFieldBool": false
+                }
+              }
+            },
+            "EscapeStroll": {
+              "app.btable.EmCommonCommand.cSetDestEscapeStrollArg": {
+                "_MinDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_LotteryType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestEscapeStrollArg.LOTTERY_TYPE>": 0
+                }
+              }
+            },
+            "Desire": {
+              "app.btable.EmCommonCommand.cSetDestDesireArg": {
+                "_UsePointOptionType": {
+                  "ace.btable.cEditFieldEnum`1<app.point_graph_data.enemy_target_point.EnemyTargetPoint.cSearchCondition.USE_POINT_OPTION_TYPE>": 0
+                },
+                "_Option": {
+                  "ace.btable.cEditFieldInt": 0
+                },
+                "_MemberPointType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestDesireArg.MEMBER_TARGET_TYPE>": 0
+                }
+              }
+            },
+            "Offset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetArg": {
+                "_EditTarget": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetArg.TARGET>": 0
+                },
+                "_EditAngle": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditAdjust": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetArg.ADJUST>": 0
+                }
+              }
+            },
+            "TargetNearAngleOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetTargetNearAngleArg": {
+                "_EditAngle1": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditAngle2": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "HeightOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetHeightArg": {
+                "_EditTarget": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetHeightArg.TARGET>": 0
+                },
+                "_EditHeight": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "CeilingHeightOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetCeilingHeightArg": {
+                "_EditTarget": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetCeilingHeightArg.TARGET>": 0
+                },
+                "_EditCheckOffsetDist": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditTargetMaxHeight": {
+                  "ace.btable.cEditFieldFloat": 50.0
+                }
+              }
+            },
+            "RandomRangeOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetRamdomRangeArg": {
+                "_EditRange": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "TargetHeight": {
+              "app.btable.EmCommonCommand.cSetDestTargetHeightArg": {
+                "_EditHeight": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "CombatArea": {
+              "app.btable.EmCommonCommand.cSetDestCombatAreaArg": {
+                "_EditArg": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyUtil.SetDest_CombatArea.SELECT_TYPE>": 0
+                }
+              }
+            },
+            "Hate": {
+              "app.btable.EmCommonCommand.cSetTargetHateArg": {
+                "_EditArg": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyUtil.SetDest_Hate.SELECT_TYPE>": 0
+                }
+              }
+            },
+            "NearestWall": {
+              "app.btable.EmCommonCommand.cSetDestNearestWallArg": {
+                "_EditCheckDist": {
+                  "ace.btable.cEditFieldFloat": 30.0
+                },
+                "_EditFrontOffsetDist": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "Stroll": {
+              "app.btable.EmCommonCommand.cSetDestStrollArg": {
+                "_EditOptionType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestStrollArg.OPTION_TYPE>": 0
+                },
+                "_MemberPointType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestDesireArg.MEMBER_TARGET_TYPE>": 0
+                },
+                "_EditOptionTag": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyStrollOptionTag.Tag_Fixed>": 0
+                },
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MinDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_StrollRadiusSubDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "CadaverSearch": {
+              "app.btable.EmCommonCommand.cSetDestCadaverSearch": {
+                "_EditSeartchRange": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditSeraceElipse": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestCadaverSearch.SEARCH_ELIPSE_OPTION>": 0
+                },
+                "_EditCorpseOffsetRate": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "EmFromStoryArg": {
+              "app.btable.EmCommonCommand.cSetDestEmFromStoryArg": {
+                "_EnemyID": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.ID_Fixed>": 0
+                },
+                "_TargetStoryID": {
+                  "ace.btable.cEditFieldInt": 0
+                }
+              }
+            },
+            "NpcFromStoryArg": {
+              "app.btable.EmCommonCommand.cSetDestNpcFromStoryArg": {
+                "_NpcID": {
+                  "ace.btable.cEditFieldEnum`1<app.NpcDef.ID_Fixed>": 0
+                }
+              }
+            },
+            "LivesEmFromStoryArg": {
+              "app.btable.EmCommonCommand.cSetDestLivesEmFromStoryArg": {
+                "_EnemyID": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.ID_Fixed>": 0
+                },
+                "_Radius": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "LimeStonePoolArg": {
+              "app.btable.EmCommonCommand.cSetDestLimeStonePoolArg": {
+                "_MemberPointType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestLimeStonePoolArg.MEMBER_TARGET_TYPE>": 0
+                }
+              }
+            }
+          }
+        },
+        {
+          "ace.btable.cCheckTimerValueArg": {
+            "_TargetVariableIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "4d6e1f4f-fe8b-407f-907f-1b53f3376409"
+            }
+          }
+        },
+        {
+          "ace.btable.cSetTimerValueArg": {
+            "_TargetVariableIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "4d6e1f4f-fe8b-407f-907f-1b53f3376409"
+            },
+            "_SetType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cSetTimerValueArg.SET_TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "59050a28-e655-4122-875a-e1c07fb9b8b2"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionDesireRecoverArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "feccfa11-ee1b-49dd-8e13-44379cd04576"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            },
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.EnemyDef.DESIRE_ID>": 3
+            }
+          }
+        },
+        {
+          "app.btable.Em0021_00BTableCommand.cCheckCatchItemTypeArg": {
+            "_EditCatchItemType": {
+              "ace.btable.cEditFieldEnum`1<app.cEm0021_00Extend.CATCH_ITEM_TYPE>": -1
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "66d11d24-9ab0-419c-ae36-a41c09ebae02"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "9c2512c6-f4e7-4742-859c-dd13deb9df5b"
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cCheckAngleArg": {
+            "_BaseType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckAngleArg.BASE_TYPE>": 3
+            },
+            "_AngleWidth": {
+              "ace.btable.cEditFieldFloat": 270.0
+            },
+            "_Option": {
+              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckAngleArg.OPTION>": 0
+            },
+            "_Option2": {
+              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckAngleArg.OPTION>": 0
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "df5af8bd-04fd-4ad9-82ff-758aca217583"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionDesireRecoverArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "5ae10f70-4d05-4d98-a0b3-feb9c7a2267e"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            },
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.EnemyDef.DESIRE_ID>": 3
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionDesireRecoverArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "1b404555-21f7-4fe0-8204-f21341ae2cc2"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            },
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.EnemyDef.DESIRE_ID>": 3
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionDesireRecoverArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "b78bb4d6-f4f1-466f-a4a7-ddaeb3188329"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            },
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.EnemyDef.DESIRE_ID>": 3
+            }
+          }
+        },
+        {
+          "app.btable.Em0021_00BTableCommand.cCheckCatchItemTypeArg": {
+            "_EditCatchItemType": {
+              "ace.btable.cEditFieldEnum`1<app.cEm0021_00Extend.CATCH_ITEM_TYPE>": 6
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "0b82dda0-6949-44e4-a055-80729aff9ae4"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "66d11d24-9ab0-419c-ae36-a41c09ebae02"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "9c2512c6-f4e7-4742-859c-dd13deb9df5b"
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cCheckAngleArg": {
+            "_BaseType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckAngleArg.BASE_TYPE>": 3
+            },
+            "_AngleWidth": {
+              "ace.btable.cEditFieldFloat": 270.0
+            },
+            "_Option": {
+              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckAngleArg.OPTION>": 0
+            },
+            "_Option2": {
+              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckAngleArg.OPTION>": 0
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "df5af8bd-04fd-4ad9-82ff-758aca217583"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionDesireRecoverArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "5ae10f70-4d05-4d98-a0b3-feb9c7a2267e"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            },
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.EnemyDef.DESIRE_ID>": 3
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionDesireRecoverArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "1b404555-21f7-4fe0-8204-f21341ae2cc2"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            },
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.EnemyDef.DESIRE_ID>": 3
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionDesireRecoverArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "b78bb4d6-f4f1-466f-a4a7-ddaeb3188329"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            },
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.EnemyDef.DESIRE_ID>": 3
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "66d11d24-9ab0-419c-ae36-a41c09ebae02"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSetDestArg": {
+            "_EditCategory": {
+              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestArg.CATEGORY>": 22
+            },
+            "Escape": {
+              "app.btable.EmCommonCommand.cSetDestEscapeArg": {
+                "_EditSelectType": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyUtil.SetDest_Escape.SELECT_TYPE>": 0
+                },
+                "_MinDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MaxAngle": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_RandomProbability": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "EscapeBackVec": {
+              "app.btable.EmCommonCommand.cSetDestEscapeBackVecArg": {
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_IsOnFailSelfPos": {
+                  "ace.btable.cEditFieldBool": false
+                }
+              }
+            },
+            "EscapeStroll": {
+              "app.btable.EmCommonCommand.cSetDestEscapeStrollArg": {
+                "_MinDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_LotteryType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestEscapeStrollArg.LOTTERY_TYPE>": 0
+                }
+              }
+            },
+            "Desire": {
+              "app.btable.EmCommonCommand.cSetDestDesireArg": {
+                "_UsePointOptionType": {
+                  "ace.btable.cEditFieldEnum`1<app.point_graph_data.enemy_target_point.EnemyTargetPoint.cSearchCondition.USE_POINT_OPTION_TYPE>": 0
+                },
+                "_Option": {
+                  "ace.btable.cEditFieldInt": 0
+                },
+                "_MemberPointType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestDesireArg.MEMBER_TARGET_TYPE>": 0
+                }
+              }
+            },
+            "Offset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetArg": {
+                "_EditTarget": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetArg.TARGET>": 0
+                },
+                "_EditAngle": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditAdjust": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetArg.ADJUST>": 0
+                }
+              }
+            },
+            "TargetNearAngleOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetTargetNearAngleArg": {
+                "_EditAngle1": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditAngle2": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "HeightOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetHeightArg": {
+                "_EditTarget": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetHeightArg.TARGET>": 0
+                },
+                "_EditHeight": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "CeilingHeightOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetCeilingHeightArg": {
+                "_EditTarget": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetCeilingHeightArg.TARGET>": 0
+                },
+                "_EditCheckOffsetDist": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditTargetMaxHeight": {
+                  "ace.btable.cEditFieldFloat": 50.0
+                }
+              }
+            },
+            "RandomRangeOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetRamdomRangeArg": {
+                "_EditRange": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "TargetHeight": {
+              "app.btable.EmCommonCommand.cSetDestTargetHeightArg": {
+                "_EditHeight": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "CombatArea": {
+              "app.btable.EmCommonCommand.cSetDestCombatAreaArg": {
+                "_EditArg": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyUtil.SetDest_CombatArea.SELECT_TYPE>": 0
+                }
+              }
+            },
+            "Hate": {
+              "app.btable.EmCommonCommand.cSetTargetHateArg": {
+                "_EditArg": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyUtil.SetDest_Hate.SELECT_TYPE>": 0
+                }
+              }
+            },
+            "NearestWall": {
+              "app.btable.EmCommonCommand.cSetDestNearestWallArg": {
+                "_EditCheckDist": {
+                  "ace.btable.cEditFieldFloat": 30.0
+                },
+                "_EditFrontOffsetDist": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "Stroll": {
+              "app.btable.EmCommonCommand.cSetDestStrollArg": {
+                "_EditOptionType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestStrollArg.OPTION_TYPE>": 0
+                },
+                "_MemberPointType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestDesireArg.MEMBER_TARGET_TYPE>": 0
+                },
+                "_EditOptionTag": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyStrollOptionTag.Tag_Fixed>": 0
+                },
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MinDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_StrollRadiusSubDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "CadaverSearch": {
+              "app.btable.EmCommonCommand.cSetDestCadaverSearch": {
+                "_EditSeartchRange": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditSeraceElipse": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestCadaverSearch.SEARCH_ELIPSE_OPTION>": 0
+                },
+                "_EditCorpseOffsetRate": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "EmFromStoryArg": {
+              "app.btable.EmCommonCommand.cSetDestEmFromStoryArg": {
+                "_EnemyID": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.ID_Fixed>": 0
+                },
+                "_TargetStoryID": {
+                  "ace.btable.cEditFieldInt": 0
+                }
+              }
+            },
+            "NpcFromStoryArg": {
+              "app.btable.EmCommonCommand.cSetDestNpcFromStoryArg": {
+                "_NpcID": {
+                  "ace.btable.cEditFieldEnum`1<app.NpcDef.ID_Fixed>": 0
+                }
+              }
+            },
+            "LivesEmFromStoryArg": {
+              "app.btable.EmCommonCommand.cSetDestLivesEmFromStoryArg": {
+                "_EnemyID": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.ID_Fixed>": 0
+                },
+                "_Radius": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "LimeStonePoolArg": {
+              "app.btable.EmCommonCommand.cSetDestLimeStonePoolArg": {
+                "_MemberPointType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestLimeStonePoolArg.MEMBER_TARGET_TYPE>": 0
+                }
+              }
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "66d11d24-9ab0-419c-ae36-a41c09ebae02"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cCheckStrollTagArg": {
+            "_EditOptionTag": {
+              "ace.btable.cEditFieldEnum`1<app.EnemyStrollOptionTag.Tag_Fixed>": -2092396288
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentRandomType": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.BTableDef.RANDOM_TYPE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "092f898f-8538-4740-9fcd-073a6109395d"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentRandomType": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.BTableDef.RANDOM_TYPE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "d5a0d312-9a81-4152-be35-62ad2cda871d"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentRandomType": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.BTableDef.RANDOM_TYPE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "f851f6d9-14f7-4dad-8ac5-2b9b48a6d240"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentRandomType": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.BTableDef.RANDOM_TYPE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "a38224c8-f4a9-4bda-9de0-d0135b2b22a4"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentRandomType": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.BTableDef.RANDOM_TYPE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "06d299cd-6ac9-4d74-ba87-40810ba7f6ab"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentRandomType": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.BTableDef.RANDOM_TYPE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "092f898f-8538-4740-9fcd-073a6109395d"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentRandomType": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.BTableDef.RANDOM_TYPE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "c93a2d8c-b4a2-41d1-8e01-d21787490495"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentRandomType": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.BTableDef.RANDOM_TYPE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "f851f6d9-14f7-4dad-8ac5-2b9b48a6d240"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentRandomType": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.BTableDef.RANDOM_TYPE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "a38224c8-f4a9-4bda-9de0-d0135b2b22a4"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentRandomType": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.BTableDef.RANDOM_TYPE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "06d299cd-6ac9-4d74-ba87-40810ba7f6ab"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSetDestArg": {
+            "_EditCategory": {
+              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestArg.CATEGORY>": 45
+            },
+            "Escape": {
+              "app.btable.EmCommonCommand.cSetDestEscapeArg": {
+                "_EditSelectType": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyUtil.SetDest_Escape.SELECT_TYPE>": 0
+                },
+                "_MinDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MaxAngle": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_RandomProbability": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "EscapeBackVec": {
+              "app.btable.EmCommonCommand.cSetDestEscapeBackVecArg": {
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_IsOnFailSelfPos": {
+                  "ace.btable.cEditFieldBool": false
+                }
+              }
+            },
+            "EscapeStroll": {
+              "app.btable.EmCommonCommand.cSetDestEscapeStrollArg": {
+                "_MinDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_LotteryType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestEscapeStrollArg.LOTTERY_TYPE>": 0
+                }
+              }
+            },
+            "Desire": {
+              "app.btable.EmCommonCommand.cSetDestDesireArg": {
+                "_UsePointOptionType": {
+                  "ace.btable.cEditFieldEnum`1<app.point_graph_data.enemy_target_point.EnemyTargetPoint.cSearchCondition.USE_POINT_OPTION_TYPE>": 0
+                },
+                "_Option": {
+                  "ace.btable.cEditFieldInt": 0
+                },
+                "_MemberPointType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestDesireArg.MEMBER_TARGET_TYPE>": 0
+                }
+              }
+            },
+            "Offset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetArg": {
+                "_EditTarget": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetArg.TARGET>": 0
+                },
+                "_EditAngle": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditAdjust": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetArg.ADJUST>": 0
+                }
+              }
+            },
+            "TargetNearAngleOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetTargetNearAngleArg": {
+                "_EditAngle1": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditAngle2": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "HeightOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetHeightArg": {
+                "_EditTarget": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetHeightArg.TARGET>": 0
+                },
+                "_EditHeight": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "CeilingHeightOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetCeilingHeightArg": {
+                "_EditTarget": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestOffsetCeilingHeightArg.TARGET>": 0
+                },
+                "_EditCheckOffsetDist": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditTargetMaxHeight": {
+                  "ace.btable.cEditFieldFloat": 50.0
+                }
+              }
+            },
+            "RandomRangeOffset": {
+              "app.btable.EmCommonCommand.cSetDestOffsetRamdomRangeArg": {
+                "_EditRange": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "TargetHeight": {
+              "app.btable.EmCommonCommand.cSetDestTargetHeightArg": {
+                "_EditHeight": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "CombatArea": {
+              "app.btable.EmCommonCommand.cSetDestCombatAreaArg": {
+                "_EditArg": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyUtil.SetDest_CombatArea.SELECT_TYPE>": 0
+                }
+              }
+            },
+            "Hate": {
+              "app.btable.EmCommonCommand.cSetTargetHateArg": {
+                "_EditArg": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyUtil.SetDest_Hate.SELECT_TYPE>": 0
+                }
+              }
+            },
+            "NearestWall": {
+              "app.btable.EmCommonCommand.cSetDestNearestWallArg": {
+                "_EditCheckDist": {
+                  "ace.btable.cEditFieldFloat": 30.0
+                },
+                "_EditFrontOffsetDist": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "Stroll": {
+              "app.btable.EmCommonCommand.cSetDestStrollArg": {
+                "_EditOptionType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestStrollArg.OPTION_TYPE>": 0
+                },
+                "_MemberPointType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestDesireArg.MEMBER_TARGET_TYPE>": 0
+                },
+                "_EditOptionTag": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyStrollOptionTag.Tag_Fixed>": 0
+                },
+                "_MaxDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_MinDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_StrollRadiusSubDistance": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "CadaverSearch": {
+              "app.btable.EmCommonCommand.cSetDestCadaverSearch": {
+                "_EditSeartchRange": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                },
+                "_EditSeraceElipse": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestCadaverSearch.SEARCH_ELIPSE_OPTION>": 0
+                },
+                "_EditCorpseOffsetRate": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "EmFromStoryArg": {
+              "app.btable.EmCommonCommand.cSetDestEmFromStoryArg": {
+                "_EnemyID": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.ID_Fixed>": 0
+                },
+                "_TargetStoryID": {
+                  "ace.btable.cEditFieldInt": 0
+                }
+              }
+            },
+            "NpcFromStoryArg": {
+              "app.btable.EmCommonCommand.cSetDestNpcFromStoryArg": {
+                "_NpcID": {
+                  "ace.btable.cEditFieldEnum`1<app.NpcDef.ID_Fixed>": 0
+                }
+              }
+            },
+            "LivesEmFromStoryArg": {
+              "app.btable.EmCommonCommand.cSetDestLivesEmFromStoryArg": {
+                "_EnemyID": {
+                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.ID_Fixed>": 0
+                },
+                "_Radius": {
+                  "ace.btable.cEditFieldFloat": 0.0
+                }
+              }
+            },
+            "LimeStonePoolArg": {
+              "app.btable.EmCommonCommand.cSetDestLimeStonePoolArg": {
+                "_MemberPointType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cSetDestLimeStonePoolArg.MEMBER_TARGET_TYPE>": 0
+                }
+              }
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "66d11d24-9ab0-419c-ae36-a41c09ebae02"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "092f898f-8538-4740-9fcd-073a6109395d"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        }
+      ],
+      "_UseExportArgData": true
+    }
+  }
+]

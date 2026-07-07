@@ -1,0 +1,66 @@
+[
+  {
+    "app.user_data.NpcStreakActionData": {
+      "_TerminateType": 3,
+      "_ActionEffectParam": {
+        "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Action": {
+          "_Param": {
+            "app.cNpcStreakEffectParam_None": {}
+          }
+        }
+      },
+      "_LStickEffectParam": {
+        "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_LStick": {
+          "_Param": {
+            "app.NpcStreakEffects.cSetTargetParts_LStickParam": {
+              "_Reach": 1.0,
+              "_ContinueMove": true,
+              "_StopWhenReached": false,
+              "_MoveType": "[6] COMBAT",
+              "_UseAIMoveEnd": false,
+              "_FixedSpeedLv": "[3] RUN",
+              "_IsMoveStopTurn": false,
+              "_StopTurnDir": 0,
+              "_DegRange": {
+                "raw": "0000000000003443",
+                "type": "Range"
+              },
+              "_TargetType": 3,
+              "_IsOverwritePartsType": false,
+              "_OverwritePartsType": "[1075205376] HEAD"
+            }
+          }
+        }
+      },
+      "_AimEffectParam": {
+        "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Aim": {
+          "_Param": {
+            "app.cNpcStreakEffectParam_None": {}
+          }
+        }
+      },
+      "_EvaluatorParams": [
+        {
+          "app.user_data.NpcStreakActionData.cNpcStreakEvaluatorHolder": {
+            "_Param": {
+              "app.NpcStreakEvaluators.cCheckWp04ChargeMoveType_Param": {
+                "_MoveType": 2
+              }
+            },
+            "_Inverse": false
+          }
+        },
+        {
+          "app.user_data.NpcStreakActionData.cNpcStreakEvaluatorHolder": {
+            "_Param": {
+              "app.NpcStreakEvaluators.cCheckTargetPartsEnable_Param": {
+                "_TargetPartsType": "[1075205376] HEAD"
+              }
+            },
+            "_Inverse": false
+          }
+        }
+      ]
+    }
+  }
+]

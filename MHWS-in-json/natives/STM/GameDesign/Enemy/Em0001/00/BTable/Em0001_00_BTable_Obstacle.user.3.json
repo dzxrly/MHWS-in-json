@@ -1,0 +1,198 @@
+[
+  {
+    "ace.btable.user_data.BTable": {
+      "_Tables": {
+        "ace.cInstanceGuidArray`1<ace.btable.user_data.BTable.cTableElement>": {
+          "_DataArray": []
+        }
+      },
+      "_ImportBTableList": [],
+      "_OrderBank": {
+        "ace.btable.user_data.BTableOrderBank": {
+          "ref_instance_id": 2,
+          "path": "GameDesign/Enemy/Em0001/00/BTable/Em0001_00_BTableOrderBank.user"
+        }
+      },
+      "_ThisGuid": "a2a37406-9722-4f7a-b308-b77113defc9e",
+      "_ExportBTableType": "app.Em0001_00_BTable_Obstacle_Export",
+      "_CommandArgArray": [
+        {
+          "app.btable.EmCommonCommand.cCheckObstacleTypeArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.EnemyDef.OBSTACLE_TYPE>": 3
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cCheckStatusArg": {
+            "_EditCategory": {
+              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusArg.CATEGORY>": 1
+            },
+            "StandState": {
+              "app.btable.EmCommonCommand.cCheckStatusStandStateArg": {
+                "_EditState": {
+                  "ace.btable.cEditFieldDropBox`1<app.btable.EmCommonCommand.cCheckStatusStandStateArg.STAND_STATE_HOLDER>": {
+                    "STRUCT__Value_Type": 0,
+                    "STRUCT__Value_Value": 0
+                  }
+                }
+              }
+            },
+            "BadConditions": {
+              "app.btable.EmCommonCommand.cCheckStatusBadConditionsArg": {
+                "_EditArg": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusBadConditionsArg.CONDITION_TYPE>": 0
+                }
+              }
+            },
+            "Status": {
+              "app.btable.EmCommonCommand.cCheckStatusStatusArg": {
+                "_EditArg": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusStatusArg.CONDITION_TYPE>": 0
+                }
+              }
+            },
+            "Health": {
+              "app.btable.EmCommonCommand.cCheckStatusHealthArg": {
+                "_EditHealthRate": {
+                  "ace.btable.cEditFieldInt": 100
+                }
+              }
+            },
+            "AIState": {
+              "app.btable.EmCommonCommand.cCheckStatusAIStateArg": {
+                "_EditArg": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusAIStateArg.AI_TYPE>": 0
+                }
+              }
+            },
+            "HolderType": {
+              "app.btable.EmCommonCommand.cCheckStatusHolderTypeArg": {
+                "_EditHolderType": {
+                  "ace.btable.cEditFieldEnum`1<app.cEmModuleHold.HOLD_ROLE>": 0
+                }
+              }
+            },
+            "DangerLevel": {
+              "app.btable.EmCommonCommand.cCheckStatusDangerLevelArg": {
+                "_EditCheckType": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusDangerLevelArg.CHECK_TYPE>": 0
+                }
+              }
+            },
+            "NPCJackSituation": {
+              "app.btable.cCheckStatusNPCJackSituation": {
+                "_EditSituation": {
+                  "ace.btable.cEditFieldEnum`1<app.cEmModuleNpcJack.SITUATION>": 0
+                }
+              }
+            },
+            "DownDir": {
+              "app.btable.cCheckStatusDownDirArg": {
+                "_EditArg": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckStatusDownDirArg.TYPE>": 0
+                }
+              }
+            },
+            "GroundMaterial": {
+              "app.btable.cCheckGroundMaterialArg": {
+                "_EditArg": {
+                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckGroundMaterialArg.TYPE>": 0
+                }
+              }
+            },
+            "Stage": {
+              "app.btable.cCheckStage": {
+                "_CheckStage": {
+                  "ace.btable.cEditFieldEnum`1<app.FieldDef.STAGE>": 0
+                },
+                "_IsCheckAreaNo": {
+                  "ace.btable.cEditFieldBool": true
+                },
+                "_CheckAreaNo": {
+                  "ace.btable.cEditFieldInt": 0
+                },
+                "_IsExcludeHalfCombatArea": {
+                  "ace.btable.cEditFieldBool": false
+                }
+              }
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "3833a4a5-3ed3-4638-ac7b-c783551bef40"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "7bf16e4e-d8bc-408a-b24b-23a1db7394ba"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "6f413314-1fad-4aee-8376-2f2322679071"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "d7b80d67-7fc8-45fd-9e3d-5be33bda6e7c"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "7250e67e-f210-4e77-b87c-8b29db2238f5"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cRequestSelectedActionArg": {
+            "_EditArg": {
+              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cRequestSelectedActionArg.ACTION_TYPE>": 2
+            }
+          }
+        }
+      ],
+      "_UseExportArgData": true
+    }
+  }
+]

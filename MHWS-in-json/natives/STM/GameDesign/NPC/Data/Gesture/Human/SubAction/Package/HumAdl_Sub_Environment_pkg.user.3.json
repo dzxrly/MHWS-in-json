@@ -1,0 +1,74 @@
+[
+  {
+    "app.user_data.NpcGesturePackage": {
+      "_Type": {
+        "app.user_data.NpcGesturePackage.cType": {
+          "_Param": {
+            "app.NpcGestureControllers.cSubAction_Param": {
+              "_UseMultiAction": true,
+              "_UseReactionPackagesAction": false,
+              "_IsTerminateByUpdateEnd": false,
+              "_SubActionSelector": {
+                "app.cNpcFsmLikeActionSubSelector": {
+                  "_Category": 0,
+                  "_ActionID": -600777472,
+                  "_UseVariation": false,
+                  "_Variation": "[0] VARI_0"
+                }
+              },
+              "_SubActionSelector_Multi": [
+                {
+                  "app.cNpcFsmLikeActionSubSelector": {
+                    "_Category": 0,
+                    "_ActionID": 1143022848,
+                    "_UseVariation": false,
+                    "_Variation": "[0] VARI_0"
+                  }
+                },
+                {
+                  "app.cNpcFsmLikeActionSubSelector": {
+                    "_Category": 0,
+                    "_ActionID": 2127045760,
+                    "_UseVariation": false,
+                    "_Variation": "[0] VARI_0"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "_Common": {
+        "app.user_data.NpcGesturePackage.cCommon": {
+          "_BTable": {
+            "ace.btable.user_data.BTable": {
+              "ref_instance_id": 6,
+              "path": "GameDesign/NPC/Data/Gesture/_BTable/SubAction/NpcBTable_Adl_Sub_Environment.user"
+            }
+          },
+          "_CoolTime": {
+            "raw": "000020410000a040",
+            "type": "Range"
+          },
+          "_Probability": 100,
+          "_Category": "[8] KILL_TIME_MOTION",
+          "_TagBit": {
+            "app.NpcDef.GESTURE_TAGBit_Serializable": 128
+          }
+        }
+      },
+      "_Meta": {
+        "app.user_data.NpcGesturePackage.cMeta": {
+          "STRUCT__MaxNum__HasValue": true,
+          "STRUCT__MaxNum__Value": 0,
+          "_ValidRange": 2.0,
+          "_ValidTime": {
+            "raw": "0000404000000000",
+            "type": "Range"
+          }
+        }
+      },
+      "_Hash": -985089444
+    }
+  }
+]

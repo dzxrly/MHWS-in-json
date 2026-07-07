@@ -1,0 +1,94 @@
+[
+  {
+    "app.user_data.NpcStreakActionData": {
+      "_TerminateType": 0,
+      "_ActionEffectParam": {
+        "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Action": {
+          "_Param": {
+            "app.NpcStreakEffects.cSetWeaponOn_ActionParam": {
+              "_Type": 0
+            }
+          }
+        }
+      },
+      "_LStickEffectParam": {
+        "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_LStick": {
+          "_Param": {
+            "app.cNpcStreakEffectParam_None": {}
+          }
+        }
+      },
+      "_AimEffectParam": {
+        "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Aim": {
+          "_Param": {
+            "app.NpcStreakEffects.cSetTarget_AimParam": {
+              "_StartType": 0,
+              "_EndType": 0,
+              "_CanAimWpOff": false,
+              "_UseParabora": 0,
+              "_StartActionSelector": {
+                "app.cNpcHunterActionSelector": {
+                  "_Category": 773579456,
+                  "_Action": 0
+                }
+              },
+              "_LogicType": 0,
+              "_AdjustType": 2,
+              "_UpdateTiming": 0,
+              "_CheckRayCast": false,
+              "_IsDirectionAim": false
+            }
+          }
+        }
+      },
+      "_EvaluatorParams": [
+        {
+          "app.user_data.NpcStreakActionData.cNpcStreakEvaluatorHolder": {
+            "_Param": {
+              "app.NpcStreakEvaluators.cCheckWpOn_Param": {}
+            },
+            "_Inverse": true
+          }
+        },
+        {
+          "app.user_data.NpcStreakActionData.cNpcStreakEvaluatorHolder": {
+            "_Param": {
+              "app.NpcStreakEvaluators.cCheckIsFly_Param": {}
+            },
+            "_Inverse": true
+          }
+        },
+        {
+          "app.user_data.NpcStreakActionData.cNpcStreakEvaluatorHolder": {
+            "_Param": {
+              "app.NpcStreakEvaluators.cHitAttackSphere_Param": {
+                "_AttackShape": {
+                  "raw": "00000000000000000000000000009040",
+                  "type": "Sphere"
+                }
+              }
+            },
+            "_Inverse": false
+          }
+        },
+        {
+          "app.user_data.NpcStreakActionData.cNpcStreakEvaluatorHolder": {
+            "_Param": {
+              "app.NpcStreakEvaluators.cCheckAnyCancelSpecified_Param": {
+                "_Immediate": false,
+                "_Strict": false,
+                "_ActionSelector": {
+                  "app.cNpcHunterActionSelector": {
+                    "_Category": -614648896,
+                    "_Action": 1
+                  }
+                }
+              }
+            },
+            "_Inverse": false
+          }
+        }
+      ]
+    }
+  }
+]

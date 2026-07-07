@@ -1,0 +1,1658 @@
+[
+  {
+    "app.user_data.NpcFieldUnitPackage": {
+      "_BasicInfo": {
+        "app.user_data.NpcFieldUnitPackage.cBasicInfo": {
+          "_Fsm": "GameDesign/NPC/Data/FieldUnit/ut103_03/NpcFieldUnit_ut103_03.fsmv2",
+          "_ScheduleData": {
+            "app.user_data.NpcFieldUnitScheduleData": {
+              "ref_instance_id": 1,
+              "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/FieldUnit_ut103_03_ScheduleData.user"
+            }
+          },
+          "_DesireGroupPackages": {
+            "": {}
+          },
+          "_EventData": {
+            "": {}
+          },
+          "_MemberList": [
+            {
+              "app.cNpcFieldUnitMemberInfo": {
+                "_MemberHash": {
+                  "ace.cStrHash": {
+                    "_Hash": 984802705
+                  }
+                },
+                "_SelectorHolder": {
+                  "app.cNpcDerivedClassHolder`1<app.cNpcFieldUnitMemberSelector>": {
+                    "app.NpcFieldUnitMemberSelectors.cNpc": {
+                      "_NpcID": "[609769344] NPC112_13_072"
+                    }
+                  }
+                },
+                "_FormationParam": {
+                  "app.cNpcFormationParam": {
+                    "_FrontOffset": 0.0,
+                    "_SideOffset": 0.1,
+                    "_ValidFinalDestination": false,
+                    "_FinalDestinationData": {
+                      "app.cNpcDestinationData": {
+                        "_Pos": [
+                          1011.0,
+                          0.0,
+                          -85.0,
+                          0.0
+                        ],
+                        "_DegY": 0
+                      }
+                    }
+                  }
+                },
+                "_IsUseStreet": true,
+                "_MemberEffectData": {
+                  "app.user_data.NpcFieldUnitMemberEffectData": {
+                    "ref_instance_id": 8,
+                    "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/MemberEffectData/HumAdl_ut103_03_AttachBasket.user"
+                  }
+                }
+              }
+            },
+            {
+              "app.cNpcFieldUnitMemberInfo": {
+                "_MemberHash": {
+                  "ace.cStrHash": {
+                    "_Hash": 3993049615
+                  }
+                },
+                "_SelectorHolder": {
+                  "app.cNpcDerivedClassHolder`1<app.cNpcFieldUnitMemberSelector>": {
+                    "app.NpcFieldUnitMemberSelectors.cNpc": {
+                      "_NpcID": "[326817888] NPC111_13_063"
+                    }
+                  }
+                },
+                "_FormationParam": {
+                  "app.cNpcFormationParam": {
+                    "_FrontOffset": 5.0,
+                    "_SideOffset": 0.4,
+                    "_ValidFinalDestination": false,
+                    "_FinalDestinationData": {
+                      "app.cNpcDestinationData": {
+                        "_Pos": [
+                          1011.0,
+                          0.0,
+                          -85.0,
+                          0.0
+                        ],
+                        "_DegY": 0
+                      }
+                    }
+                  }
+                },
+                "_IsUseStreet": true,
+                "_MemberEffectData": {
+                  "app.user_data.NpcFieldUnitMemberEffectData": {
+                    "ref_instance_id": 8,
+                    "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/MemberEffectData/HumAdl_ut103_03_AttachBasket.user"
+                  }
+                }
+              }
+            }
+          ],
+          "_Formation": {
+            "app.user_data.NpcFieldUnitPackage.cFormation": {
+              "_PresetList": []
+            }
+          },
+          "_CenterMemberHash": {
+            "ace.cStrHash": {
+              "_Hash": 0
+            }
+          },
+          "_LeaderMemberHash": {
+            "ace.cStrHash": {
+              "_Hash": 984802705
+            }
+          },
+          "_ScoutMemberHash": {
+            "ace.cStrHash": {
+              "_Hash": 0
+            }
+          },
+          "_ValidDefaultPhase": true,
+          "_DefaultPhaseSelector": {
+            "app.cNpcFieldUnitPhaseSelector": {
+              "_Category": 9,
+              "_Phase": -1277148928
+            }
+          },
+          "_DisableActivateSection": "[521] STORY_000521",
+          "_InverseDisableActivateSection": true,
+          "_DisableActivateSection_Sub": "[4294967295] INVALID",
+          "_InverseDisableActivateSection_Sub": false,
+          "_IsEnableWhileEnvironmentStop": false,
+          "_InstantiateRange": 150.0,
+          "STRUCT__InstantiateRange_NSW2__HasValue": false,
+          "STRUCT__InstantiateRange_NSW2__Value": 0.0,
+          "_NearSafeAreaCenterPos": [
+            1077.7887,
+            -91.1121,
+            -215.3127,
+            0.0
+          ],
+          "_NearSafeAreaCenterRange": 130.0
+        }
+      },
+      "_PhaseList": [
+        {
+          "app.user_data.NpcFieldUnitPackage.cPhase": {
+            "_CastingPackageList": {
+              "": {}
+            },
+            "_RouteID": "[0] INVALID",
+            "_FormationPresetHash": {
+              "ace.cStrHash": {
+                "_Hash": 0
+              }
+            },
+            "_IsCheckPoint": false,
+            "_Time": -1,
+            "_IsValidRestartPos": true,
+            "_RestartDestData": {
+              "app.cNpcDestinationData": {
+                "_Pos": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "_DegY": 0
+              }
+            },
+            "_GmTargetID": "[3162350976] INVALID",
+            "_Operations": [
+              {
+                "app.user_data.NpcFieldUnitPackage.cOperation": {
+                  "_MemberHash": {
+                    "ace.cStrHash": {
+                      "_Hash": 984802705
+                    }
+                  },
+                  "_DestType": 0,
+                  "_DestData": {
+                    "app.cNpcDestinationData": {
+                      "_Pos": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_DegY": 0
+                    }
+                  },
+                  "_GoalAsset": {
+                    "goatree.user_data.GoalDefinition": {
+                      "ref_instance_id": 30,
+                      "path": "GameDesign/NPC/Data/FieldUnit/_CommonData/GoaTree/NpcCmn_utCmn_PackageTask.user"
+                    }
+                  },
+                  "_TaskAsset": {
+                    "app.user_data.NpcTaskData": {
+                      "ref_instance_id": 31,
+                      "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/Task/HumAdl_ut103_03_Start_A.user"
+                    }
+                  },
+                  "_MemberEffectData": {
+                    "": {}
+                  }
+                }
+              },
+              {
+                "app.user_data.NpcFieldUnitPackage.cOperation": {
+                  "_MemberHash": {
+                    "ace.cStrHash": {
+                      "_Hash": 3993049615
+                    }
+                  },
+                  "_DestType": 0,
+                  "_DestData": {
+                    "app.cNpcDestinationData": {
+                      "_Pos": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_DegY": 0
+                    }
+                  },
+                  "_GoalAsset": {
+                    "goatree.user_data.GoalDefinition": {
+                      "ref_instance_id": 30,
+                      "path": "GameDesign/NPC/Data/FieldUnit/_CommonData/GoaTree/NpcCmn_utCmn_PackageTask.user"
+                    }
+                  },
+                  "_TaskAsset": {
+                    "app.user_data.NpcTaskData": {
+                      "ref_instance_id": 35,
+                      "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/Task/HumAdl_ut103_03_Start_B.user"
+                    }
+                  },
+                  "_MemberEffectData": {
+                    "": {}
+                  }
+                }
+              }
+            ],
+            "_EnumFixedID": -1277148928
+          }
+        },
+        {
+          "app.user_data.NpcFieldUnitPackage.cPhase": {
+            "_CastingPackageList": {
+              "": {}
+            },
+            "_RouteID": "[11] UT103_03_GOING",
+            "_FormationPresetHash": {
+              "ace.cStrHash": {
+                "_Hash": 0
+              }
+            },
+            "_IsCheckPoint": true,
+            "_Time": -1,
+            "_IsValidRestartPos": true,
+            "_RestartDestData": {
+              "app.cNpcDestinationData": {
+                "_Pos": [
+                  1085.7865,
+                  -90.0896,
+                  -164.4185,
+                  0.0
+                ],
+                "_DegY": 25
+              }
+            },
+            "_GmTargetID": "[3162350976] INVALID",
+            "_Operations": [
+              {
+                "app.user_data.NpcFieldUnitPackage.cOperation": {
+                  "_MemberHash": {
+                    "ace.cStrHash": {
+                      "_Hash": 984802705
+                    }
+                  },
+                  "_DestType": 2,
+                  "_DestData": {
+                    "app.cNpcDestinationData": {
+                      "_Pos": [
+                        979.9502,
+                        -88.9863,
+                        -196.1696,
+                        0.0
+                      ],
+                      "_DegY": 30
+                    }
+                  },
+                  "_GoalAsset": {
+                    "goatree.user_data.GoalDefinition": {
+                      "ref_instance_id": 43,
+                      "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/GoaTree/HumAdl_ut103_03_Route.user"
+                    }
+                  },
+                  "_TaskAsset": {
+                    "": {}
+                  },
+                  "_MemberEffectData": {
+                    "": {}
+                  }
+                }
+              },
+              {
+                "app.user_data.NpcFieldUnitPackage.cOperation": {
+                  "_MemberHash": {
+                    "ace.cStrHash": {
+                      "_Hash": 3993049615
+                    }
+                  },
+                  "_DestType": 3,
+                  "_DestData": {
+                    "app.cNpcDestinationData": {
+                      "_Pos": [
+                        980.8297,
+                        -89.2274,
+                        -197.8099,
+                        0.0
+                      ],
+                      "_DegY": 45
+                    }
+                  },
+                  "_GoalAsset": {
+                    "goatree.user_data.GoalDefinition": {
+                      "ref_instance_id": 47,
+                      "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/GoaTree/HumAdl_ut103_03_Formation.user"
+                    }
+                  },
+                  "_TaskAsset": {
+                    "": {}
+                  },
+                  "_MemberEffectData": {
+                    "": {}
+                  }
+                }
+              }
+            ],
+            "_EnumFixedID": 1807904000
+          }
+        },
+        {
+          "app.user_data.NpcFieldUnitPackage.cPhase": {
+            "_CastingPackageList": {
+              "app.user_data.NpcCastingPackageList": {
+                "ref_instance_id": 50,
+                "path": "GameDesign/NPC/Data/Casting/_PackageList/NpcCastingPackageList_ut103_03_Area1.user"
+              }
+            },
+            "_RouteID": "[0] INVALID",
+            "_FormationPresetHash": {
+              "ace.cStrHash": {
+                "_Hash": 0
+              }
+            },
+            "_IsCheckPoint": true,
+            "_Time": 60,
+            "_IsValidRestartPos": true,
+            "_RestartDestData": {
+              "app.cNpcDestinationData": {
+                "_Pos": [
+                  977.9738,
+                  -88.6321,
+                  -194.2896,
+                  0.0
+                ],
+                "_DegY": 75
+              }
+            },
+            "_GmTargetID": "[3162350976] INVALID",
+            "_Operations": [
+              {
+                "app.user_data.NpcFieldUnitPackage.cOperation": {
+                  "_MemberHash": {
+                    "ace.cStrHash": {
+                      "_Hash": 984802705
+                    }
+                  },
+                  "_DestType": 0,
+                  "_DestData": {
+                    "app.cNpcDestinationData": {
+                      "_Pos": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_DegY": 0
+                    }
+                  },
+                  "_GoalAsset": {
+                    "goatree.user_data.GoalDefinition": {
+                      "ref_instance_id": 56,
+                      "path": "GameDesign/NPC/Data/FieldUnit/_CommonData/GoaTree/NpcCmn_utCmn_UpdateCasting.user"
+                    }
+                  },
+                  "_TaskAsset": {
+                    "": {}
+                  },
+                  "_MemberEffectData": {
+                    "": {}
+                  }
+                }
+              },
+              {
+                "app.user_data.NpcFieldUnitPackage.cOperation": {
+                  "_MemberHash": {
+                    "ace.cStrHash": {
+                      "_Hash": 3993049615
+                    }
+                  },
+                  "_DestType": 0,
+                  "_DestData": {
+                    "app.cNpcDestinationData": {
+                      "_Pos": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_DegY": 0
+                    }
+                  },
+                  "_GoalAsset": {
+                    "goatree.user_data.GoalDefinition": {
+                      "ref_instance_id": 56,
+                      "path": "GameDesign/NPC/Data/FieldUnit/_CommonData/GoaTree/NpcCmn_utCmn_UpdateCasting.user"
+                    }
+                  },
+                  "_TaskAsset": {
+                    "": {}
+                  },
+                  "_MemberEffectData": {
+                    "": {}
+                  }
+                }
+              }
+            ],
+            "_EnumFixedID": 383649952
+          }
+        },
+        {
+          "app.user_data.NpcFieldUnitPackage.cPhase": {
+            "_CastingPackageList": {
+              "": {}
+            },
+            "_RouteID": "[0] INVALID",
+            "_FormationPresetHash": {
+              "ace.cStrHash": {
+                "_Hash": 0
+              }
+            },
+            "_IsCheckPoint": false,
+            "_Time": -1,
+            "_IsValidRestartPos": true,
+            "_RestartDestData": {
+              "app.cNpcDestinationData": {
+                "_Pos": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "_DegY": 0
+              }
+            },
+            "_GmTargetID": "[3162350976] INVALID",
+            "_Operations": [
+              {
+                "app.user_data.NpcFieldUnitPackage.cOperation": {
+                  "_MemberHash": {
+                    "ace.cStrHash": {
+                      "_Hash": 984802705
+                    }
+                  },
+                  "_DestType": 0,
+                  "_DestData": {
+                    "app.cNpcDestinationData": {
+                      "_Pos": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_DegY": 0
+                    }
+                  },
+                  "_GoalAsset": {
+                    "goatree.user_data.GoalDefinition": {
+                      "ref_instance_id": 30,
+                      "path": "GameDesign/NPC/Data/FieldUnit/_CommonData/GoaTree/NpcCmn_utCmn_PackageTask.user"
+                    }
+                  },
+                  "_TaskAsset": {
+                    "app.user_data.NpcTaskData": {
+                      "ref_instance_id": 67,
+                      "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/Task/HumAdl_ut103_03_WorkEnd_1_A.user"
+                    }
+                  },
+                  "_MemberEffectData": {
+                    "": {}
+                  }
+                }
+              },
+              {
+                "app.user_data.NpcFieldUnitPackage.cOperation": {
+                  "_MemberHash": {
+                    "ace.cStrHash": {
+                      "_Hash": 3993049615
+                    }
+                  },
+                  "_DestType": 0,
+                  "_DestData": {
+                    "app.cNpcDestinationData": {
+                      "_Pos": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_DegY": 0
+                    }
+                  },
+                  "_GoalAsset": {
+                    "goatree.user_data.GoalDefinition": {
+                      "ref_instance_id": 30,
+                      "path": "GameDesign/NPC/Data/FieldUnit/_CommonData/GoaTree/NpcCmn_utCmn_PackageTask.user"
+                    }
+                  },
+                  "_TaskAsset": {
+                    "app.user_data.NpcTaskData": {
+                      "ref_instance_id": 71,
+                      "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/Task/HumAdl_ut103_03_WorkEnd_1_B.user"
+                    }
+                  },
+                  "_MemberEffectData": {
+                    "": {}
+                  }
+                }
+              }
+            ],
+            "_EnumFixedID": 1464280192
+          }
+        },
+        {
+          "app.user_data.NpcFieldUnitPackage.cPhase": {
+            "_CastingPackageList": {
+              "": {}
+            },
+            "_RouteID": "[12] UT103_03_GOING_2",
+            "_FormationPresetHash": {
+              "ace.cStrHash": {
+                "_Hash": 0
+              }
+            },
+            "_IsCheckPoint": true,
+            "_Time": -1,
+            "_IsValidRestartPos": true,
+            "_RestartDestData": {
+              "app.cNpcDestinationData": {
+                "_Pos": [
+                  976.7031,
+                  -88.4151,
+                  -192.9337,
+                  0.0
+                ],
+                "_DegY": 0
+              }
+            },
+            "_GmTargetID": "[3162350976] INVALID",
+            "_Operations": [
+              {
+                "app.user_data.NpcFieldUnitPackage.cOperation": {
+                  "_MemberHash": {
+                    "ace.cStrHash": {
+                      "_Hash": 984802705
+                    }
+                  },
+                  "_DestType": 2,
+                  "_DestData": {
+                    "app.cNpcDestinationData": {
+                      "_Pos": [
+                        904.9495,
+                        -111.8482,
+                        -207.1496,
+                        0.0
+                      ],
+                      "_DegY": 155
+                    }
+                  },
+                  "_GoalAsset": {
+                    "goatree.user_data.GoalDefinition": {
+                      "ref_instance_id": 43,
+                      "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/GoaTree/HumAdl_ut103_03_Route.user"
+                    }
+                  },
+                  "_TaskAsset": {
+                    "": {}
+                  },
+                  "_MemberEffectData": {
+                    "app.user_data.NpcFieldUnitMemberEffectData": {
+                      "ref_instance_id": 79,
+                      "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/MemberEffectData/HumAdl_ut103_03_FillBasket.user"
+                    }
+                  }
+                }
+              },
+              {
+                "app.user_data.NpcFieldUnitPackage.cOperation": {
+                  "_MemberHash": {
+                    "ace.cStrHash": {
+                      "_Hash": 3993049615
+                    }
+                  },
+                  "_DestType": 3,
+                  "_DestData": {
+                    "app.cNpcDestinationData": {
+                      "_Pos": [
+                        905.7581,
+                        -112.0263,
+                        -210.7638,
+                        0.0
+                      ],
+                      "_DegY": 45
+                    }
+                  },
+                  "_GoalAsset": {
+                    "goatree.user_data.GoalDefinition": {
+                      "ref_instance_id": 47,
+                      "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/GoaTree/HumAdl_ut103_03_Formation.user"
+                    }
+                  },
+                  "_TaskAsset": {
+                    "": {}
+                  },
+                  "_MemberEffectData": {
+                    "app.user_data.NpcFieldUnitMemberEffectData": {
+                      "ref_instance_id": 79,
+                      "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/MemberEffectData/HumAdl_ut103_03_FillBasket.user"
+                    }
+                  }
+                }
+              }
+            ],
+            "_EnumFixedID": 985841472
+          }
+        },
+        {
+          "app.user_data.NpcFieldUnitPackage.cPhase": {
+            "_CastingPackageList": {
+              "app.user_data.NpcCastingPackageList": {
+                "ref_instance_id": 85,
+                "path": "GameDesign/NPC/Data/Casting/_PackageList/NpcCastingPackageList_ut103_03_Area2.user"
+              }
+            },
+            "_RouteID": "[0] INVALID",
+            "_FormationPresetHash": {
+              "ace.cStrHash": {
+                "_Hash": 0
+              }
+            },
+            "_IsCheckPoint": true,
+            "_Time": 60,
+            "_IsValidRestartPos": true,
+            "_RestartDestData": {
+              "app.cNpcDestinationData": {
+                "_Pos": [
+                  905.6058,
+                  -112.1522,
+                  -203.1454,
+                  0.0
+                ],
+                "_DegY": 75
+              }
+            },
+            "_GmTargetID": "[3162350976] INVALID",
+            "_Operations": [
+              {
+                "app.user_data.NpcFieldUnitPackage.cOperation": {
+                  "_MemberHash": {
+                    "ace.cStrHash": {
+                      "_Hash": 984802705
+                    }
+                  },
+                  "_DestType": 0,
+                  "_DestData": {
+                    "app.cNpcDestinationData": {
+                      "_Pos": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_DegY": 0
+                    }
+                  },
+                  "_GoalAsset": {
+                    "goatree.user_data.GoalDefinition": {
+                      "ref_instance_id": 56,
+                      "path": "GameDesign/NPC/Data/FieldUnit/_CommonData/GoaTree/NpcCmn_utCmn_UpdateCasting.user"
+                    }
+                  },
+                  "_TaskAsset": {
+                    "": {}
+                  },
+                  "_MemberEffectData": {
+                    "app.user_data.NpcFieldUnitMemberEffectData": {
+                      "ref_instance_id": 79,
+                      "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/MemberEffectData/HumAdl_ut103_03_FillBasket.user"
+                    }
+                  }
+                }
+              },
+              {
+                "app.user_data.NpcFieldUnitPackage.cOperation": {
+                  "_MemberHash": {
+                    "ace.cStrHash": {
+                      "_Hash": 3993049615
+                    }
+                  },
+                  "_DestType": 0,
+                  "_DestData": {
+                    "app.cNpcDestinationData": {
+                      "_Pos": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_DegY": 0
+                    }
+                  },
+                  "_GoalAsset": {
+                    "goatree.user_data.GoalDefinition": {
+                      "ref_instance_id": 56,
+                      "path": "GameDesign/NPC/Data/FieldUnit/_CommonData/GoaTree/NpcCmn_utCmn_UpdateCasting.user"
+                    }
+                  },
+                  "_TaskAsset": {
+                    "": {}
+                  },
+                  "_MemberEffectData": {
+                    "app.user_data.NpcFieldUnitMemberEffectData": {
+                      "ref_instance_id": 79,
+                      "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/MemberEffectData/HumAdl_ut103_03_FillBasket.user"
+                    }
+                  }
+                }
+              }
+            ],
+            "_EnumFixedID": 1285994496
+          }
+        },
+        {
+          "app.user_data.NpcFieldUnitPackage.cPhase": {
+            "_CastingPackageList": {
+              "": {}
+            },
+            "_RouteID": "[0] INVALID",
+            "_FormationPresetHash": {
+              "ace.cStrHash": {
+                "_Hash": 0
+              }
+            },
+            "_IsCheckPoint": false,
+            "_Time": -1,
+            "_IsValidRestartPos": true,
+            "_RestartDestData": {
+              "app.cNpcDestinationData": {
+                "_Pos": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "_DegY": 0
+              }
+            },
+            "_GmTargetID": "[3162350976] INVALID",
+            "_Operations": [
+              {
+                "app.user_data.NpcFieldUnitPackage.cOperation": {
+                  "_MemberHash": {
+                    "ace.cStrHash": {
+                      "_Hash": 984802705
+                    }
+                  },
+                  "_DestType": 0,
+                  "_DestData": {
+                    "app.cNpcDestinationData": {
+                      "_Pos": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_DegY": 0
+                    }
+                  },
+                  "_GoalAsset": {
+                    "goatree.user_data.GoalDefinition": {
+                      "ref_instance_id": 30,
+                      "path": "GameDesign/NPC/Data/FieldUnit/_CommonData/GoaTree/NpcCmn_utCmn_PackageTask.user"
+                    }
+                  },
+                  "_TaskAsset": {
+                    "app.user_data.NpcTaskData": {
+                      "ref_instance_id": 101,
+                      "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/Task/HumAdl_ut103_03_WorkEnd_2_A.user"
+                    }
+                  },
+                  "_MemberEffectData": {
+                    "": {}
+                  }
+                }
+              },
+              {
+                "app.user_data.NpcFieldUnitPackage.cOperation": {
+                  "_MemberHash": {
+                    "ace.cStrHash": {
+                      "_Hash": 3993049615
+                    }
+                  },
+                  "_DestType": 0,
+                  "_DestData": {
+                    "app.cNpcDestinationData": {
+                      "_Pos": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_DegY": 0
+                    }
+                  },
+                  "_GoalAsset": {
+                    "goatree.user_data.GoalDefinition": {
+                      "ref_instance_id": 30,
+                      "path": "GameDesign/NPC/Data/FieldUnit/_CommonData/GoaTree/NpcCmn_utCmn_PackageTask.user"
+                    }
+                  },
+                  "_TaskAsset": {
+                    "app.user_data.NpcTaskData": {
+                      "ref_instance_id": 105,
+                      "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/Task/HumAdl_ut103_03_WorkEnd_2_B.user"
+                    }
+                  },
+                  "_MemberEffectData": {
+                    "": {}
+                  }
+                }
+              }
+            ],
+            "_EnumFixedID": 502624320
+          }
+        },
+        {
+          "app.user_data.NpcFieldUnitPackage.cPhase": {
+            "_CastingPackageList": {
+              "": {}
+            },
+            "_RouteID": "[13] UT103_03_RETURN",
+            "_FormationPresetHash": {
+              "ace.cStrHash": {
+                "_Hash": 0
+              }
+            },
+            "_IsCheckPoint": true,
+            "_Time": -1,
+            "_IsValidRestartPos": true,
+            "_RestartDestData": {
+              "app.cNpcDestinationData": {
+                "_Pos": [
+                  925.895,
+                  -114.4611,
+                  -188.7613,
+                  0.0
+                ],
+                "_DegY": 0
+              }
+            },
+            "_GmTargetID": "[3162350976] INVALID",
+            "_Operations": [
+              {
+                "app.user_data.NpcFieldUnitPackage.cOperation": {
+                  "_MemberHash": {
+                    "ace.cStrHash": {
+                      "_Hash": 984802705
+                    }
+                  },
+                  "_DestType": 2,
+                  "_DestData": {
+                    "app.cNpcDestinationData": {
+                      "_Pos": [
+                        1085.5457,
+                        -90.2315,
+                        -164.8761,
+                        0.0
+                      ],
+                      "_DegY": -155
+                    }
+                  },
+                  "_GoalAsset": {
+                    "goatree.user_data.GoalDefinition": {
+                      "ref_instance_id": 43,
+                      "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/GoaTree/HumAdl_ut103_03_Route.user"
+                    }
+                  },
+                  "_TaskAsset": {
+                    "": {}
+                  },
+                  "_MemberEffectData": {
+                    "app.user_data.NpcFieldUnitMemberEffectData": {
+                      "ref_instance_id": 79,
+                      "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/MemberEffectData/HumAdl_ut103_03_FillBasket.user"
+                    }
+                  }
+                }
+              },
+              {
+                "app.user_data.NpcFieldUnitPackage.cOperation": {
+                  "_MemberHash": {
+                    "ace.cStrHash": {
+                      "_Hash": 3993049615
+                    }
+                  },
+                  "_DestType": 3,
+                  "_DestData": {
+                    "app.cNpcDestinationData": {
+                      "_Pos": [
+                        1085.9309,
+                        -90.1631,
+                        -164.0765,
+                        0.0
+                      ],
+                      "_DegY": -155
+                    }
+                  },
+                  "_GoalAsset": {
+                    "goatree.user_data.GoalDefinition": {
+                      "ref_instance_id": 47,
+                      "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/GoaTree/HumAdl_ut103_03_Formation.user"
+                    }
+                  },
+                  "_TaskAsset": {
+                    "": {}
+                  },
+                  "_MemberEffectData": {
+                    "app.user_data.NpcFieldUnitMemberEffectData": {
+                      "ref_instance_id": 79,
+                      "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/MemberEffectData/HumAdl_ut103_03_FillBasket.user"
+                    }
+                  }
+                }
+              }
+            ],
+            "_EnumFixedID": -1246186624
+          }
+        },
+        {
+          "app.user_data.NpcFieldUnitPackage.cPhase": {
+            "_CastingPackageList": {
+              "": {}
+            },
+            "_RouteID": "[0] INVALID",
+            "_FormationPresetHash": {
+              "ace.cStrHash": {
+                "_Hash": 0
+              }
+            },
+            "_IsCheckPoint": false,
+            "_Time": -1,
+            "_IsValidRestartPos": true,
+            "_RestartDestData": {
+              "app.cNpcDestinationData": {
+                "_Pos": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "_DegY": 0
+              }
+            },
+            "_GmTargetID": "[3162350976] INVALID",
+            "_Operations": [
+              {
+                "app.user_data.NpcFieldUnitPackage.cOperation": {
+                  "_MemberHash": {
+                    "ace.cStrHash": {
+                      "_Hash": 984802705
+                    }
+                  },
+                  "_DestType": 4,
+                  "_DestData": {
+                    "app.cNpcDestinationData": {
+                      "_Pos": [
+                        -768.0,
+                        0.0,
+                        896.0,
+                        0.0
+                      ],
+                      "_DegY": 0
+                    }
+                  },
+                  "_GoalAsset": {
+                    "goatree.user_data.GoalDefinition": {
+                      "ref_instance_id": 123,
+                      "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/GoaTree/HumAdl_ut103_03_Caution.user"
+                    }
+                  },
+                  "_TaskAsset": {
+                    "": {}
+                  },
+                  "_MemberEffectData": {
+                    "": {}
+                  }
+                }
+              },
+              {
+                "app.user_data.NpcFieldUnitPackage.cOperation": {
+                  "_MemberHash": {
+                    "ace.cStrHash": {
+                      "_Hash": 3993049615
+                    }
+                  },
+                  "_DestType": 4,
+                  "_DestData": {
+                    "app.cNpcDestinationData": {
+                      "_Pos": [
+                        -768.0,
+                        0.0,
+                        896.0,
+                        0.0
+                      ],
+                      "_DegY": 0
+                    }
+                  },
+                  "_GoalAsset": {
+                    "goatree.user_data.GoalDefinition": {
+                      "ref_instance_id": 123,
+                      "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/GoaTree/HumAdl_ut103_03_Caution.user"
+                    }
+                  },
+                  "_TaskAsset": {
+                    "": {}
+                  },
+                  "_MemberEffectData": {
+                    "": {}
+                  }
+                }
+              }
+            ],
+            "_EnumFixedID": 26719
+          }
+        },
+        {
+          "app.user_data.NpcFieldUnitPackage.cPhase": {
+            "_CastingPackageList": {
+              "": {}
+            },
+            "_RouteID": "[26] UT103_03_GOING_INVERSE",
+            "_FormationPresetHash": {
+              "ace.cStrHash": {
+                "_Hash": 0
+              }
+            },
+            "_IsCheckPoint": false,
+            "_Time": -1,
+            "_IsValidRestartPos": true,
+            "_RestartDestData": {
+              "app.cNpcDestinationData": {
+                "_Pos": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "_DegY": 0
+              }
+            },
+            "_GmTargetID": "[3162350976] INVALID",
+            "_Operations": [
+              {
+                "app.user_data.NpcFieldUnitPackage.cOperation": {
+                  "_MemberHash": {
+                    "ace.cStrHash": {
+                      "_Hash": 984802705
+                    }
+                  },
+                  "_DestType": 2,
+                  "_DestData": {
+                    "app.cNpcDestinationData": {
+                      "_Pos": [
+                        1085.5457,
+                        -90.2315,
+                        -164.8761,
+                        0.0
+                      ],
+                      "_DegY": 0
+                    }
+                  },
+                  "_GoalAsset": {
+                    "goatree.user_data.GoalDefinition": {
+                      "ref_instance_id": 43,
+                      "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/GoaTree/HumAdl_ut103_03_Route.user"
+                    }
+                  },
+                  "_TaskAsset": {
+                    "": {}
+                  },
+                  "_MemberEffectData": {
+                    "": {}
+                  }
+                }
+              },
+              {
+                "app.user_data.NpcFieldUnitPackage.cOperation": {
+                  "_MemberHash": {
+                    "ace.cStrHash": {
+                      "_Hash": 3993049615
+                    }
+                  },
+                  "_DestType": 3,
+                  "_DestData": {
+                    "app.cNpcDestinationData": {
+                      "_Pos": [
+                        1085.9309,
+                        -90.1631,
+                        -164.0765,
+                        0.0
+                      ],
+                      "_DegY": 0
+                    }
+                  },
+                  "_GoalAsset": {
+                    "goatree.user_data.GoalDefinition": {
+                      "ref_instance_id": 47,
+                      "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/GoaTree/HumAdl_ut103_03_Formation.user"
+                    }
+                  },
+                  "_TaskAsset": {
+                    "": {}
+                  },
+                  "_MemberEffectData": {
+                    "": {}
+                  }
+                }
+              }
+            ],
+            "_EnumFixedID": 28807
+          }
+        },
+        {
+          "app.user_data.NpcFieldUnitPackage.cPhase": {
+            "_CastingPackageList": {
+              "": {}
+            },
+            "_RouteID": "[11] UT103_03_GOING",
+            "_FormationPresetHash": {
+              "ace.cStrHash": {
+                "_Hash": 0
+              }
+            },
+            "_IsCheckPoint": false,
+            "_Time": -1,
+            "_IsValidRestartPos": true,
+            "_RestartDestData": {
+              "app.cNpcDestinationData": {
+                "_Pos": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "_DegY": 0
+              }
+            },
+            "_GmTargetID": "[3162350976] INVALID",
+            "_Operations": [
+              {
+                "app.user_data.NpcFieldUnitPackage.cOperation": {
+                  "_MemberHash": {
+                    "ace.cStrHash": {
+                      "_Hash": 984802705
+                    }
+                  },
+                  "_DestType": 2,
+                  "_DestData": {
+                    "app.cNpcDestinationData": {
+                      "_Pos": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_DegY": 55
+                    }
+                  },
+                  "_GoalAsset": {
+                    "goatree.user_data.GoalDefinition": {
+                      "ref_instance_id": 144,
+                      "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/GoaTree/HumAdl_ut103_03_Panic.user"
+                    }
+                  },
+                  "_TaskAsset": {
+                    "": {}
+                  },
+                  "_MemberEffectData": {
+                    "": {}
+                  }
+                }
+              },
+              {
+                "app.user_data.NpcFieldUnitPackage.cOperation": {
+                  "_MemberHash": {
+                    "ace.cStrHash": {
+                      "_Hash": 3993049615
+                    }
+                  },
+                  "_DestType": 2,
+                  "_DestData": {
+                    "app.cNpcDestinationData": {
+                      "_Pos": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_DegY": 38
+                    }
+                  },
+                  "_GoalAsset": {
+                    "goatree.user_data.GoalDefinition": {
+                      "ref_instance_id": 144,
+                      "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/GoaTree/HumAdl_ut103_03_Panic.user"
+                    }
+                  },
+                  "_TaskAsset": {
+                    "": {}
+                  },
+                  "_MemberEffectData": {
+                    "": {}
+                  }
+                }
+              }
+            ],
+            "_EnumFixedID": 9786
+          }
+        },
+        {
+          "app.user_data.NpcFieldUnitPackage.cPhase": {
+            "_CastingPackageList": {
+              "": {}
+            },
+            "_RouteID": "[26] UT103_03_GOING_INVERSE",
+            "_FormationPresetHash": {
+              "ace.cStrHash": {
+                "_Hash": 0
+              }
+            },
+            "_IsCheckPoint": false,
+            "_Time": -1,
+            "_IsValidRestartPos": true,
+            "_RestartDestData": {
+              "app.cNpcDestinationData": {
+                "_Pos": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "_DegY": 0
+              }
+            },
+            "_GmTargetID": "[3162350976] INVALID",
+            "_Operations": [
+              {
+                "app.user_data.NpcFieldUnitPackage.cOperation": {
+                  "_MemberHash": {
+                    "ace.cStrHash": {
+                      "_Hash": 984802705
+                    }
+                  },
+                  "_DestType": 2,
+                  "_DestData": {
+                    "app.cNpcDestinationData": {
+                      "_Pos": [
+                        1085.5457,
+                        -90.2315,
+                        -164.8761,
+                        0.0
+                      ],
+                      "_DegY": 55
+                    }
+                  },
+                  "_GoalAsset": {
+                    "goatree.user_data.GoalDefinition": {
+                      "ref_instance_id": 144,
+                      "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/GoaTree/HumAdl_ut103_03_Panic.user"
+                    }
+                  },
+                  "_TaskAsset": {
+                    "": {}
+                  },
+                  "_MemberEffectData": {
+                    "": {}
+                  }
+                }
+              },
+              {
+                "app.user_data.NpcFieldUnitPackage.cOperation": {
+                  "_MemberHash": {
+                    "ace.cStrHash": {
+                      "_Hash": 3993049615
+                    }
+                  },
+                  "_DestType": 2,
+                  "_DestData": {
+                    "app.cNpcDestinationData": {
+                      "_Pos": [
+                        1085.9309,
+                        -90.1631,
+                        -164.0765,
+                        0.0
+                      ],
+                      "_DegY": 38
+                    }
+                  },
+                  "_GoalAsset": {
+                    "goatree.user_data.GoalDefinition": {
+                      "ref_instance_id": 144,
+                      "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/GoaTree/HumAdl_ut103_03_Panic.user"
+                    }
+                  },
+                  "_TaskAsset": {
+                    "": {}
+                  },
+                  "_MemberEffectData": {
+                    "": {}
+                  }
+                }
+              }
+            ],
+            "_EnumFixedID": 11181
+          }
+        },
+        {
+          "app.user_data.NpcFieldUnitPackage.cPhase": {
+            "_CastingPackageList": {
+              "": {}
+            },
+            "_RouteID": "[12] UT103_03_GOING_2",
+            "_FormationPresetHash": {
+              "ace.cStrHash": {
+                "_Hash": 0
+              }
+            },
+            "_IsCheckPoint": false,
+            "_Time": -1,
+            "_IsValidRestartPos": true,
+            "_RestartDestData": {
+              "app.cNpcDestinationData": {
+                "_Pos": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "_DegY": 0
+              }
+            },
+            "_GmTargetID": "[3162350976] INVALID",
+            "_Operations": [
+              {
+                "app.user_data.NpcFieldUnitPackage.cOperation": {
+                  "_MemberHash": {
+                    "ace.cStrHash": {
+                      "_Hash": 984802705
+                    }
+                  },
+                  "_DestType": 2,
+                  "_DestData": {
+                    "app.cNpcDestinationData": {
+                      "_Pos": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_DegY": 55
+                    }
+                  },
+                  "_GoalAsset": {
+                    "goatree.user_data.GoalDefinition": {
+                      "ref_instance_id": 144,
+                      "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/GoaTree/HumAdl_ut103_03_Panic.user"
+                    }
+                  },
+                  "_TaskAsset": {
+                    "": {}
+                  },
+                  "_MemberEffectData": {
+                    "": {}
+                  }
+                }
+              },
+              {
+                "app.user_data.NpcFieldUnitPackage.cOperation": {
+                  "_MemberHash": {
+                    "ace.cStrHash": {
+                      "_Hash": 3993049615
+                    }
+                  },
+                  "_DestType": 2,
+                  "_DestData": {
+                    "app.cNpcDestinationData": {
+                      "_Pos": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_DegY": 38
+                    }
+                  },
+                  "_GoalAsset": {
+                    "goatree.user_data.GoalDefinition": {
+                      "ref_instance_id": 144,
+                      "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/GoaTree/HumAdl_ut103_03_Panic.user"
+                    }
+                  },
+                  "_TaskAsset": {
+                    "": {}
+                  },
+                  "_MemberEffectData": {
+                    "": {}
+                  }
+                }
+              }
+            ],
+            "_EnumFixedID": 9507
+          }
+        },
+        {
+          "app.user_data.NpcFieldUnitPackage.cPhase": {
+            "_CastingPackageList": {
+              "": {}
+            },
+            "_RouteID": "[13] UT103_03_RETURN",
+            "_FormationPresetHash": {
+              "ace.cStrHash": {
+                "_Hash": 0
+              }
+            },
+            "_IsCheckPoint": false,
+            "_Time": -1,
+            "_IsValidRestartPos": true,
+            "_RestartDestData": {
+              "app.cNpcDestinationData": {
+                "_Pos": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "_DegY": 0
+              }
+            },
+            "_GmTargetID": "[3162350976] INVALID",
+            "_Operations": [
+              {
+                "app.user_data.NpcFieldUnitPackage.cOperation": {
+                  "_MemberHash": {
+                    "ace.cStrHash": {
+                      "_Hash": 984802705
+                    }
+                  },
+                  "_DestType": 2,
+                  "_DestData": {
+                    "app.cNpcDestinationData": {
+                      "_Pos": [
+                        1085.5457,
+                        -90.2315,
+                        -164.8761,
+                        0.0
+                      ],
+                      "_DegY": 55
+                    }
+                  },
+                  "_GoalAsset": {
+                    "goatree.user_data.GoalDefinition": {
+                      "ref_instance_id": 144,
+                      "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/GoaTree/HumAdl_ut103_03_Panic.user"
+                    }
+                  },
+                  "_TaskAsset": {
+                    "": {}
+                  },
+                  "_MemberEffectData": {
+                    "": {}
+                  }
+                }
+              },
+              {
+                "app.user_data.NpcFieldUnitPackage.cOperation": {
+                  "_MemberHash": {
+                    "ace.cStrHash": {
+                      "_Hash": 3993049615
+                    }
+                  },
+                  "_DestType": 2,
+                  "_DestData": {
+                    "app.cNpcDestinationData": {
+                      "_Pos": [
+                        1085.9309,
+                        -90.1631,
+                        -164.0765,
+                        0.0
+                      ],
+                      "_DegY": 38
+                    }
+                  },
+                  "_GoalAsset": {
+                    "goatree.user_data.GoalDefinition": {
+                      "ref_instance_id": 144,
+                      "path": "GameDesign/NPC/Data/FieldUnit/ut103_03/GoaTree/HumAdl_ut103_03_Panic.user"
+                    }
+                  },
+                  "_TaskAsset": {
+                    "": {}
+                  },
+                  "_MemberEffectData": {
+                    "": {}
+                  }
+                }
+              }
+            ],
+            "_EnumFixedID": 14458
+          }
+        },
+        {
+          "app.user_data.NpcFieldUnitPackage.cPhase": {
+            "_CastingPackageList": {
+              "": {}
+            },
+            "_RouteID": "[0] INVALID",
+            "_FormationPresetHash": {
+              "ace.cStrHash": {
+                "_Hash": 0
+              }
+            },
+            "_IsCheckPoint": false,
+            "_Time": -1,
+            "_IsValidRestartPos": true,
+            "_RestartDestData": {
+              "app.cNpcDestinationData": {
+                "_Pos": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "_DegY": 0
+              }
+            },
+            "_GmTargetID": "[3162350976] INVALID",
+            "_Operations": [
+              {
+                "app.user_data.NpcFieldUnitPackage.cOperation": {
+                  "_MemberHash": {
+                    "ace.cStrHash": {
+                      "_Hash": 984802705
+                    }
+                  },
+                  "_DestType": 1,
+                  "_DestData": {
+                    "app.cNpcDestinationData": {
+                      "_Pos": [
+                        1085.5457,
+                        -90.2315,
+                        -164.8761,
+                        0.0
+                      ],
+                      "_DegY": 0
+                    }
+                  },
+                  "_GoalAsset": {
+                    "goatree.user_data.GoalDefinition": {
+                      "ref_instance_id": 185,
+                      "path": "GameDesign/NPC/Data/FieldUnit/_CommonData/GoaTree/NpcCmn_utCmn_Warp.user"
+                    }
+                  },
+                  "_TaskAsset": {
+                    "": {}
+                  },
+                  "_MemberEffectData": {
+                    "": {}
+                  }
+                }
+              },
+              {
+                "app.user_data.NpcFieldUnitPackage.cOperation": {
+                  "_MemberHash": {
+                    "ace.cStrHash": {
+                      "_Hash": 3993049615
+                    }
+                  },
+                  "_DestType": 1,
+                  "_DestData": {
+                    "app.cNpcDestinationData": {
+                      "_Pos": [
+                        1085.9309,
+                        -90.1631,
+                        -164.0765,
+                        0.0
+                      ],
+                      "_DegY": 0
+                    }
+                  },
+                  "_GoalAsset": {
+                    "goatree.user_data.GoalDefinition": {
+                      "ref_instance_id": 185,
+                      "path": "GameDesign/NPC/Data/FieldUnit/_CommonData/GoaTree/NpcCmn_utCmn_Warp.user"
+                    }
+                  },
+                  "_TaskAsset": {
+                    "": {}
+                  },
+                  "_MemberEffectData": {
+                    "": {}
+                  }
+                }
+              }
+            ],
+            "_EnumFixedID": 7737
+          }
+        }
+      ],
+      "_TriggerList": [],
+      "_PhaseEnum": {
+        "ace.user_data.EnumMaker": {
+          "ref_instance_id": 191,
+          "path": "GameDesign/NPC/EnumMaker/NpcFieldUnitPhase_ut103_03.user"
+        }
+      },
+      "_TriggerEnum": {
+        "": {}
+      }
+    }
+  }
+]

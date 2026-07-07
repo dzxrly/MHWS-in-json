@@ -1,0 +1,137 @@
+[
+  {
+    "app.user_data.NpcDesireParam": {
+      "_DefaultParam": {
+        "app.user_data.NpcDesireParam.cParam": {
+          "_CoolTime": {
+            "app.user_data.NpcDesireParam.cParam.cCoolTime": {
+              "_Complete": {
+                "raw": "0000204100000000",
+                "type": "Range"
+              },
+              "_Cancel": {
+                "raw": "0000204100000000",
+                "type": "Range"
+              },
+              "_Group": {
+                "raw": "0000204100000000",
+                "type": "Range"
+              }
+            }
+          },
+          "_StartConditionParams": [
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcDesireConditions.cAlwaysFalse_Param": {}
+                },
+                "_Inverse": false
+              }
+            }
+          ],
+          "_EndConditionParams": [],
+          "_ContinueConditionParams": []
+        }
+      },
+      "_OverwriteKindParams": [
+        {
+          "app.user_data.NpcDesireParam.cKindParam": {
+            "_Param": {
+              "app.user_data.NpcDesireParam.cParam": {
+                "_CoolTime": {
+                  "app.user_data.NpcDesireParam.cParam.cCoolTime": {
+                    "_Complete": {
+                      "raw": "0000b4430000f042",
+                      "type": "Range"
+                    },
+                    "_Cancel": {
+                      "raw": "0000a0400000a040",
+                      "type": "Range"
+                    },
+                    "_Group": {
+                      "raw": "0000f04300007042",
+                      "type": "Range"
+                    }
+                  }
+                },
+                "_StartConditionParams": [
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cCanItemUse_Param": {
+                          "_ItemID": "[127] ITEM_0153"
+                        }
+                      },
+                      "_Inverse": false
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cCheckQuestFlow_Param": {
+                          "_QuestFlow": 1
+                        }
+                      },
+                      "_Inverse": false
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cRangeInPlayer_Param": {
+                          "_Range": {
+                            "raw": "0000000000000c42",
+                            "type": "Range"
+                          }
+                        }
+                      },
+                      "_Inverse": false
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cRangeInTargetEnemy_Param": {
+                          "_Range": {
+                            "raw": "0000000000005c42",
+                            "type": "Range"
+                          }
+                        }
+                      },
+                      "_Inverse": false
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cCheckInAttackArea_Param": {
+                          "_CheckHate": true
+                        }
+                      },
+                      "_Inverse": true
+                    }
+                  }
+                ],
+                "_EndConditionParams": [
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cUsedItem_Param": {
+                          "_ItemID": "[127] ITEM_0153"
+                        }
+                      },
+                      "_Inverse": false
+                    }
+                  }
+                ],
+                "_ContinueConditionParams": []
+              }
+            },
+            "_KindType": "[3813545152] HEAL_ITEM",
+            "_KindLv": "[3515249536] LV2"
+          }
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,203 @@
+[
+  {
+    "app.user_data.NpcDesireParam": {
+      "_DefaultParam": {
+        "app.user_data.NpcDesireParam.cParam": {
+          "_CoolTime": {
+            "app.user_data.NpcDesireParam.cParam.cCoolTime": {
+              "_Complete": {
+                "raw": "0000000000000000",
+                "type": "Range"
+              },
+              "_Cancel": {
+                "raw": "0000000000000000",
+                "type": "Range"
+              },
+              "_Group": {
+                "raw": "0000000000000000",
+                "type": "Range"
+              }
+            }
+          },
+          "_StartConditionParams": [
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcDesireConditions.cAlwaysFalse_Param": {}
+                },
+                "_Inverse": false
+              }
+            }
+          ],
+          "_EndConditionParams": [],
+          "_ContinueConditionParams": []
+        }
+      },
+      "_OverwriteKindParams": [
+        {
+          "app.user_data.NpcDesireParam.cKindParam": {
+            "_Param": {
+              "app.user_data.NpcDesireParam.cParam": {
+                "_CoolTime": {
+                  "app.user_data.NpcDesireParam.cParam.cCoolTime": {
+                    "_Complete": {
+                      "raw": "0000614400009643",
+                      "type": "Range"
+                    },
+                    "_Cancel": {
+                      "raw": "0000f0410000f041",
+                      "type": "Range"
+                    },
+                    "_Group": {
+                      "raw": "0000d24300005244",
+                      "type": "Range"
+                    }
+                  }
+                },
+                "_StartConditionParams": [
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cMissionTargetCombatEnemy_Param": {}
+                      },
+                      "_Inverse": false
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cItemHasCheck_Param": {
+                          "_ItemID": "[16] ITEM_0014"
+                        }
+                      },
+                      "_Inverse": false
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cCanShotSlinger_Param": {
+                          "_AmmoType": "[3781462048] FLASH",
+                          "_CheckEnableShoot": true
+                        }
+                      },
+                      "_Inverse": false
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cCanBadConditionCombatEnemy_Param": {
+                          "_Condition": 18,
+                          "_ResistLevel": 1
+                        }
+                      },
+                      "_Inverse": false
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cActiveBadConditionCombatEnemy_Param": {
+                          "_Condition": 18
+                        }
+                      },
+                      "_Inverse": true
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cPlayerHealthLow_Param": {
+                          "_HealthThreshold": 30,
+                          "_IsIgnoreDead": true
+                        }
+                      },
+                      "_Inverse": false
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cEnableSptItem_Param": {
+                          "ItemType": 0
+                        }
+                      },
+                      "_Inverse": false
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cSetSlingerShotTarget_Param": {
+                          "_TargetType": 1,
+                          "_IsDungTarget": false,
+                          "_TargetEnemyRange": 0.0,
+                          "_SlingerTargetRange": 0.0
+                        }
+                      },
+                      "_Inverse": false
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cRangeInTargetEnemy_Param": {
+                          "_Range": {
+                            "raw": "000000000000f041",
+                            "type": "Range"
+                          }
+                        }
+                      },
+                      "_Inverse": false
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cCheckEnemyOverThanNpc_Param": {}
+                      },
+                      "_Inverse": false
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cCheckEnableFlashForSt402_Param": {}
+                      },
+                      "_Inverse": true
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cCheckGuardBlock_Param": {}
+                      },
+                      "_Inverse": true
+                    }
+                  }
+                ],
+                "_EndConditionParams": [
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cShootSlinger_Param": {
+                          "_IsWeakAmmo": false,
+                          "_AmmoType": "[3781462048] FLASH"
+                        }
+                      },
+                      "_Inverse": false
+                    }
+                  }
+                ],
+                "_ContinueConditionParams": []
+              }
+            },
+            "_KindType": "[3813545152] HEAL_ITEM",
+            "_KindLv": "[3515249536] LV2"
+          }
+        }
+      ]
+    }
+  }
+]

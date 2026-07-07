@@ -1,0 +1,956 @@
+[
+  {
+    "app.user_data.SlingerRopeParam": {
+      "_Pathes": [
+        {
+          "app.user_data.SlingerRopeParam.cPathInfo": {
+            "_PathType": "[0] DEFAULT",
+            "_MaxDistance": 40.0,
+            "_RaechTime": {
+              "app.cEaseProgressParamEachDistance": {
+                "_FindType": 2,
+                "_DataList": [
+                  {
+                    "app.cEaseProgressParamEachDistance.cData": {
+                      "_Param": {
+                        "app.cEaseProgressParam": {
+                          "_Time": 0.2,
+                          "_EaseType": 0
+                        }
+                      },
+                      "_Distance": 0.0
+                    }
+                  },
+                  {
+                    "app.cEaseProgressParamEachDistance.cData": {
+                      "_Param": {
+                        "app.cEaseProgressParam": {
+                          "_Time": 0.55,
+                          "_EaseType": 0
+                        }
+                      },
+                      "_Distance": 40.0
+                    }
+                  }
+                ]
+              }
+            },
+            "_ReturnTime": {
+              "app.cEaseProgressParamEachDistance": {
+                "_FindType": 1,
+                "_DataList": [
+                  {
+                    "app.cEaseProgressParamEachDistance.cData": {
+                      "_Param": {
+                        "app.cEaseProgressParam": {
+                          "_Time": 0.2,
+                          "_EaseType": 0
+                        }
+                      },
+                      "_Distance": 0.0
+                    }
+                  },
+                  {
+                    "app.cEaseProgressParamEachDistance.cData": {
+                      "_Param": {
+                        "app.cEaseProgressParam": {
+                          "_Time": 0.3,
+                          "_EaseType": 0
+                        }
+                      },
+                      "_Distance": 8.0
+                    }
+                  },
+                  {
+                    "app.cEaseProgressParamEachDistance.cData": {
+                      "_Param": {
+                        "app.cEaseProgressParam": {
+                          "_Time": 0.4,
+                          "_EaseType": 0
+                        }
+                      },
+                      "_Distance": 10.0
+                    }
+                  },
+                  {
+                    "app.cEaseProgressParamEachDistance.cData": {
+                      "_Param": {
+                        "app.cEaseProgressParam": {
+                          "_Time": 0.55,
+                          "_EaseType": 0
+                        }
+                      },
+                      "_Distance": 40.0
+                    }
+                  }
+                ]
+              }
+            },
+            "_ReturnRopeDelayTimeRate": 1.1,
+            "_BezierDivideNum": 50,
+            "_ShootingParam": {
+              "app.BezierWayBuilder_CenterLine.cParam": {
+                "_First": {
+                  "app.BezierWayBuilder_CenterLine.cParam.cEdge": {
+                    "_WayCtrlRate": 0.2
+                  }
+                },
+                "_Last": {
+                  "app.BezierWayBuilder_CenterLine.cParam.cEdge": {
+                    "_WayCtrlRate": 0.2
+                  }
+                },
+                "_Relays": [
+                  {
+                    "app.BezierWayBuilder_CenterLine.cParam.cRelay": {
+                      "_LineRate": 0.5,
+                      "_Distance": 0.8,
+                      "_RollDeg": 0.0,
+                      "_WayDegree": 0.0,
+                      "_WayCtrlRate": 0.4
+                    }
+                  },
+                  {
+                    "app.BezierWayBuilder_CenterLine.cParam.cRelay": {
+                      "_LineRate": 1.0,
+                      "_Distance": 0.0,
+                      "_RollDeg": 0.0,
+                      "_WayDegree": 0.0,
+                      "_WayCtrlRate": 0.4
+                    }
+                  }
+                ]
+              }
+            },
+            "_ShootingPositioningCurve": {
+              "via.AnimationCurve": {
+                "v0": [
+                  {
+                    "raw": "0000000003000000373d0000373d0000",
+                    "type": "Data"
+                  },
+                  {
+                    "raw": "0000803f0100003c003a000000000000",
+                    "type": "Data"
+                  }
+                ],
+                "v1": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v2": {
+                  "raw": "0000803f",
+                  "type": "Data"
+                },
+                "v3": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v4": {
+                  "raw": "0000c842",
+                  "type": "Data"
+                },
+                "v5": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v6": {
+                  "raw": "02000000",
+                  "type": "Data"
+                }
+              }
+            },
+            "_ShootingPositioningApplyCurve": {
+              "via.AnimationCurve": {
+                "v0": [
+                  {
+                    "raw": "00000000010000000000000000000000",
+                    "type": "Data"
+                  },
+                  {
+                    "raw": "0000803f010000510000000000000000",
+                    "type": "Data"
+                  }
+                ],
+                "v1": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v2": {
+                  "raw": "0000803f",
+                  "type": "Data"
+                },
+                "v3": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v4": {
+                  "raw": "0000c842",
+                  "type": "Data"
+                },
+                "v5": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v6": {
+                  "raw": "02000000",
+                  "type": "Data"
+                }
+              }
+            },
+            "_ReturnParam": {
+              "app.BezierWayBuilder_CenterLine.cParam": {
+                "_First": {
+                  "app.BezierWayBuilder_CenterLine.cParam.cEdge": {
+                    "_WayCtrlRate": 0.2
+                  }
+                },
+                "_Last": {
+                  "app.BezierWayBuilder_CenterLine.cParam.cEdge": {
+                    "_WayCtrlRate": 0.2
+                  }
+                },
+                "_Relays": [
+                  {
+                    "app.BezierWayBuilder_CenterLine.cParam.cRelay": {
+                      "_LineRate": 0.0,
+                      "_Distance": 0.0,
+                      "_RollDeg": 0.0,
+                      "_WayDegree": 0.0,
+                      "_WayCtrlRate": 0.4
+                    }
+                  },
+                  {
+                    "app.BezierWayBuilder_CenterLine.cParam.cRelay": {
+                      "_LineRate": 0.3,
+                      "_Distance": 1.7,
+                      "_RollDeg": 20.0,
+                      "_WayDegree": 0.0,
+                      "_WayCtrlRate": 0.4
+                    }
+                  },
+                  {
+                    "app.BezierWayBuilder_CenterLine.cParam.cRelay": {
+                      "_LineRate": 1.0,
+                      "_Distance": 0.0,
+                      "_RollDeg": 0.0,
+                      "_WayDegree": 0.0,
+                      "_WayCtrlRate": 0.4
+                    }
+                  }
+                ]
+              }
+            },
+            "_ReturnPositioningCurve": {
+              "via.AnimationCurve": {
+                "v0": [
+                  {
+                    "raw": "a0b6d03b03000000c2360000c2360000",
+                    "type": "Data"
+                  },
+                  {
+                    "raw": "5b4fa73e0300f4349c3300009c330000",
+                    "type": "Data"
+                  },
+                  {
+                    "raw": "0000803f0100003cc13dad3b00000000",
+                    "type": "Data"
+                  }
+                ],
+                "v1": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v2": {
+                  "raw": "0000803f",
+                  "type": "Data"
+                },
+                "v3": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v4": {
+                  "raw": "0000c842",
+                  "type": "Data"
+                },
+                "v5": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v6": {
+                  "raw": "02000000",
+                  "type": "Data"
+                }
+              }
+            },
+            "_ReturnPositioningApplyCurve": {
+              "via.AnimationCurve": {
+                "v0": [
+                  {
+                    "raw": "00000000010000000000000000000000",
+                    "type": "Data"
+                  },
+                  {
+                    "raw": "0000803f010000510000000000000000",
+                    "type": "Data"
+                  }
+                ],
+                "v1": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v2": {
+                  "raw": "0000803f",
+                  "type": "Data"
+                },
+                "v3": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v4": {
+                  "raw": "0000c842",
+                  "type": "Data"
+                },
+                "v5": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v6": {
+                  "raw": "02000000",
+                  "type": "Data"
+                }
+              }
+            }
+          }
+        },
+        {
+          "app.user_data.SlingerRopeParam.cPathInfo": {
+            "_PathType": "[1] EX_FIELD",
+            "_MaxDistance": 10.0,
+            "_RaechTime": {
+              "app.cEaseProgressParamEachDistance": {
+                "_FindType": 2,
+                "_DataList": [
+                  {
+                    "app.cEaseProgressParamEachDistance.cData": {
+                      "_Param": {
+                        "app.cEaseProgressParam": {
+                          "_Time": 0.02,
+                          "_EaseType": 0
+                        }
+                      },
+                      "_Distance": 0.0
+                    }
+                  },
+                  {
+                    "app.cEaseProgressParamEachDistance.cData": {
+                      "_Param": {
+                        "app.cEaseProgressParam": {
+                          "_Time": 0.25,
+                          "_EaseType": 0
+                        }
+                      },
+                      "_Distance": 10.0
+                    }
+                  }
+                ]
+              }
+            },
+            "_ReturnTime": {
+              "app.cEaseProgressParamEachDistance": {
+                "_FindType": 2,
+                "_DataList": [
+                  {
+                    "app.cEaseProgressParamEachDistance.cData": {
+                      "_Param": {
+                        "app.cEaseProgressParam": {
+                          "_Time": 0.1,
+                          "_EaseType": 0
+                        }
+                      },
+                      "_Distance": 0.0
+                    }
+                  },
+                  {
+                    "app.cEaseProgressParamEachDistance.cData": {
+                      "_Param": {
+                        "app.cEaseProgressParam": {
+                          "_Time": 0.2,
+                          "_EaseType": 0
+                        }
+                      },
+                      "_Distance": 5.0
+                    }
+                  },
+                  {
+                    "app.cEaseProgressParamEachDistance.cData": {
+                      "_Param": {
+                        "app.cEaseProgressParam": {
+                          "_Time": 0.3,
+                          "_EaseType": 0
+                        }
+                      },
+                      "_Distance": 10.0
+                    }
+                  }
+                ]
+              }
+            },
+            "_ReturnRopeDelayTimeRate": 1.1,
+            "_BezierDivideNum": 10,
+            "_ShootingParam": {
+              "app.BezierWayBuilder_CenterLine.cParam": {
+                "_First": {
+                  "app.BezierWayBuilder_CenterLine.cParam.cEdge": {
+                    "_WayCtrlRate": 0.2
+                  }
+                },
+                "_Last": {
+                  "app.BezierWayBuilder_CenterLine.cParam.cEdge": {
+                    "_WayCtrlRate": 0.2
+                  }
+                },
+                "_Relays": [
+                  {
+                    "app.BezierWayBuilder_CenterLine.cParam.cRelay": {
+                      "_LineRate": 0.5,
+                      "_Distance": 0.0,
+                      "_RollDeg": 0.0,
+                      "_WayDegree": 0.0,
+                      "_WayCtrlRate": 0.4
+                    }
+                  },
+                  {
+                    "app.BezierWayBuilder_CenterLine.cParam.cRelay": {
+                      "_LineRate": 1.0,
+                      "_Distance": 0.0,
+                      "_RollDeg": 0.0,
+                      "_WayDegree": 0.0,
+                      "_WayCtrlRate": 0.4
+                    }
+                  }
+                ]
+              }
+            },
+            "_ShootingPositioningCurve": {
+              "via.AnimationCurve": {
+                "v0": [
+                  {
+                    "raw": "0000000003000000373d0000373d0000",
+                    "type": "Data"
+                  },
+                  {
+                    "raw": "0000803f0100003c003a000000000000",
+                    "type": "Data"
+                  }
+                ],
+                "v1": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v2": {
+                  "raw": "0000803f",
+                  "type": "Data"
+                },
+                "v3": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v4": {
+                  "raw": "0000c842",
+                  "type": "Data"
+                },
+                "v5": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v6": {
+                  "raw": "02000000",
+                  "type": "Data"
+                }
+              }
+            },
+            "_ShootingPositioningApplyCurve": {
+              "via.AnimationCurve": {
+                "v0": [
+                  {
+                    "raw": "00000000010000000000000000000000",
+                    "type": "Data"
+                  },
+                  {
+                    "raw": "0000803f010000510000000000000000",
+                    "type": "Data"
+                  }
+                ],
+                "v1": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v2": {
+                  "raw": "0000803f",
+                  "type": "Data"
+                },
+                "v3": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v4": {
+                  "raw": "0000c842",
+                  "type": "Data"
+                },
+                "v5": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v6": {
+                  "raw": "02000000",
+                  "type": "Data"
+                }
+              }
+            },
+            "_ReturnParam": {
+              "app.BezierWayBuilder_CenterLine.cParam": {
+                "_First": {
+                  "app.BezierWayBuilder_CenterLine.cParam.cEdge": {
+                    "_WayCtrlRate": 0.2
+                  }
+                },
+                "_Last": {
+                  "app.BezierWayBuilder_CenterLine.cParam.cEdge": {
+                    "_WayCtrlRate": 0.2
+                  }
+                },
+                "_Relays": [
+                  {
+                    "app.BezierWayBuilder_CenterLine.cParam.cRelay": {
+                      "_LineRate": 0.0,
+                      "_Distance": 0.0,
+                      "_RollDeg": 0.0,
+                      "_WayDegree": 0.0,
+                      "_WayCtrlRate": 0.4
+                    }
+                  },
+                  {
+                    "app.BezierWayBuilder_CenterLine.cParam.cRelay": {
+                      "_LineRate": 0.3,
+                      "_Distance": 0.2,
+                      "_RollDeg": 20.0,
+                      "_WayDegree": 0.0,
+                      "_WayCtrlRate": 0.4
+                    }
+                  },
+                  {
+                    "app.BezierWayBuilder_CenterLine.cParam.cRelay": {
+                      "_LineRate": 1.0,
+                      "_Distance": 0.0,
+                      "_RollDeg": 0.0,
+                      "_WayDegree": 0.0,
+                      "_WayCtrlRate": 0.4
+                    }
+                  }
+                ]
+              }
+            },
+            "_ReturnPositioningCurve": {
+              "via.AnimationCurve": {
+                "v0": [
+                  {
+                    "raw": "a0b6d03b03000000c2360000c2360000",
+                    "type": "Data"
+                  },
+                  {
+                    "raw": "5b4fa73e0300f4349c3300009c330000",
+                    "type": "Data"
+                  },
+                  {
+                    "raw": "0000803f0100003cc13dad3b00000000",
+                    "type": "Data"
+                  }
+                ],
+                "v1": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v2": {
+                  "raw": "0000803f",
+                  "type": "Data"
+                },
+                "v3": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v4": {
+                  "raw": "0000c842",
+                  "type": "Data"
+                },
+                "v5": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v6": {
+                  "raw": "02000000",
+                  "type": "Data"
+                }
+              }
+            },
+            "_ReturnPositioningApplyCurve": {
+              "via.AnimationCurve": {
+                "v0": [
+                  {
+                    "raw": "00000000010000000000000000000000",
+                    "type": "Data"
+                  },
+                  {
+                    "raw": "0000803f010000510000000000000000",
+                    "type": "Data"
+                  }
+                ],
+                "v1": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v2": {
+                  "raw": "0000803f",
+                  "type": "Data"
+                },
+                "v3": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v4": {
+                  "raw": "0000c842",
+                  "type": "Data"
+                },
+                "v5": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v6": {
+                  "raw": "02000000",
+                  "type": "Data"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "_InfoByBehaves": [
+        {
+          "app.user_data.SlingerRopeParam.cInfoByBehave": {
+            "_BehaveType": "[4055929600] CATCHER",
+            "_PathType": "[0] DEFAULT",
+            "_OnWindForces": [
+              {
+                "app.user_data.SlingerRopeParam.cAddForce": {
+                  "_NodeIdx": 18,
+                  "_Force": [
+                    0.0,
+                    2000.0,
+                    0.0,
+                    0.0
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "app.user_data.SlingerRopeParam.cInfoByBehave": {
+            "_BehaveType": "[607556096] CATCHER_MISS",
+            "_PathType": "[0] DEFAULT",
+            "_OnWindForces": [
+              {
+                "app.user_data.SlingerRopeParam.cAddForce": {
+                  "_NodeIdx": 18,
+                  "_Force": [
+                    0.0,
+                    2000.0,
+                    0.0,
+                    0.0
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "app.user_data.SlingerRopeParam.cInfoByBehave": {
+            "_BehaveType": "[1875188736] HOOK",
+            "_PathType": "[0] DEFAULT",
+            "_OnWindForces": []
+          }
+        },
+        {
+          "app.user_data.SlingerRopeParam.cInfoByBehave": {
+            "_BehaveType": "[3343964672] CAPTURE_NET",
+            "_PathType": "[0] DEFAULT",
+            "_OnWindForces": []
+          }
+        },
+        {
+          "app.user_data.SlingerRopeParam.cInfoByBehave": {
+            "_BehaveType": "[2646042240] CAPTURE_NET_MISS",
+            "_PathType": "[0] DEFAULT",
+            "_OnWindForces": []
+          }
+        },
+        {
+          "app.user_data.SlingerRopeParam.cInfoByBehave": {
+            "_BehaveType": "[12431] EX_FIELD",
+            "_PathType": "[1] EX_FIELD",
+            "_OnWindForces": []
+          }
+        }
+      ],
+      "_ThrowSlackenCurve": {
+        "via.AnimationCurve": {
+          "v0": [
+            {
+              "raw": "20252ebe03000000b0310000b0310000",
+              "type": "Data"
+            },
+            {
+              "raw": "a1747abb0300b8340a2f00000a2f0000",
+              "type": "Data"
+            },
+            {
+              "raw": "e027db3b030068380aaf00000aaf0000",
+              "type": "Data"
+            },
+            {
+              "raw": "488ad8bd0300003c33af000033af0000",
+              "type": "Data"
+            }
+          ],
+          "v1": {
+            "raw": "9a9999be",
+            "type": "Data"
+          },
+          "v2": {
+            "raw": "9a99993e",
+            "type": "Data"
+          },
+          "v3": {
+            "raw": "00000000",
+            "type": "Data"
+          },
+          "v4": {
+            "raw": "0000803f",
+            "type": "Data"
+          },
+          "v5": {
+            "raw": "00000000",
+            "type": "Data"
+          },
+          "v6": {
+            "raw": "02000000",
+            "type": "Data"
+          }
+        }
+      },
+      "_WindSlackenCurve": {
+        "via.AnimationCurve": {
+          "v0": [
+            {
+              "raw": "1153713d010000000000000000000000",
+              "type": "Data"
+            },
+            {
+              "raw": "1b72823c0300473825b2000025b20000",
+              "type": "Data"
+            },
+            {
+              "raw": "5ffe34be0100003c77af000077af0000",
+              "type": "Data"
+            }
+          ],
+          "v1": {
+            "raw": "000080be",
+            "type": "Data"
+          },
+          "v2": {
+            "raw": "0000803e",
+            "type": "Data"
+          },
+          "v3": {
+            "raw": "00000000",
+            "type": "Data"
+          },
+          "v4": {
+            "raw": "0000803f",
+            "type": "Data"
+          },
+          "v5": {
+            "raw": "00000000",
+            "type": "Data"
+          },
+          "v6": {
+            "raw": "02000000",
+            "type": "Data"
+          }
+        }
+      },
+      "_DistanceBasedMultiplier": {
+        "via.AnimationCurve": {
+          "v0": [
+            {
+              "raw": "2246993e030000008b3a00008b3a0000",
+              "type": "Data"
+            },
+            {
+              "raw": "0000803f03000051cb300000cb300000",
+              "type": "Data"
+            }
+          ],
+          "v1": {
+            "raw": "00000000",
+            "type": "Data"
+          },
+          "v2": {
+            "raw": "00000040",
+            "type": "Data"
+          },
+          "v3": {
+            "raw": "00000000",
+            "type": "Data"
+          },
+          "v4": {
+            "raw": "00002042",
+            "type": "Data"
+          },
+          "v5": {
+            "raw": "00000000",
+            "type": "Data"
+          },
+          "v6": {
+            "raw": "02000000",
+            "type": "Data"
+          }
+        }
+      },
+      "_ThrowTipRampageCurve": {
+        "via.AnimationCurve": {
+          "v0": [
+            {
+              "raw": "ec30ca3d010000000000000000000000",
+              "type": "Data"
+            },
+            {
+              "raw": "36abc33d0000003c0000000000000000",
+              "type": "Data"
+            }
+          ],
+          "v1": {
+            "raw": "00000000",
+            "type": "Data"
+          },
+          "v2": {
+            "raw": "0000803f",
+            "type": "Data"
+          },
+          "v3": {
+            "raw": "00000000",
+            "type": "Data"
+          },
+          "v4": {
+            "raw": "0000803f",
+            "type": "Data"
+          },
+          "v5": {
+            "raw": "00000000",
+            "type": "Data"
+          },
+          "v6": {
+            "raw": "02000000",
+            "type": "Data"
+          }
+        }
+      },
+      "_WindTipRampageCurve": {
+        "via.AnimationCurve": {
+          "v0": [
+            {
+              "raw": "00000000010000000000000000000000",
+              "type": "Data"
+            },
+            {
+              "raw": "02b5053e01001c380000000000000000",
+              "type": "Data"
+            },
+            {
+              "raw": "000000000000003c0000000000000000",
+              "type": "Data"
+            }
+          ],
+          "v1": {
+            "raw": "00000000",
+            "type": "Data"
+          },
+          "v2": {
+            "raw": "0000803f",
+            "type": "Data"
+          },
+          "v3": {
+            "raw": "00000000",
+            "type": "Data"
+          },
+          "v4": {
+            "raw": "0000803f",
+            "type": "Data"
+          },
+          "v5": {
+            "raw": "00000000",
+            "type": "Data"
+          },
+          "v6": {
+            "raw": "02000000",
+            "type": "Data"
+          }
+        }
+      },
+      "_CaptureNetInfo": {
+        "app.user_data.SlingerRopeParam.cCaptureNetInfo": {
+          "_ReturnScaleCurve": {
+            "via.AnimationCurve": {
+              "v0": [
+                {
+                  "raw": "0000803f030000000000000000000000",
+                  "type": "Data"
+                },
+                {
+                  "raw": "000000000300003c0000000000000000",
+                  "type": "Data"
+                }
+              ],
+              "v1": {
+                "raw": "00000000",
+                "type": "Data"
+              },
+              "v2": {
+                "raw": "0000803f",
+                "type": "Data"
+              },
+              "v3": {
+                "raw": "00000000",
+                "type": "Data"
+              },
+              "v4": {
+                "raw": "0000803f",
+                "type": "Data"
+              },
+              "v5": {
+                "raw": "00000000",
+                "type": "Data"
+              },
+              "v6": {
+                "raw": "02000000",
+                "type": "Data"
+              }
+            }
+          },
+          "_MinScale": 0.3
+        }
+      }
+    }
+  }
+]

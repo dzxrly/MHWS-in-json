@@ -1,0 +1,144 @@
+[
+  {
+    "app.user_data.NpcCombinationPackage": {
+      "_ParamHolder": {
+        "app.user_data.NpcCombinationPackage.cParam_BaseHolder": {
+          "app.user_data.NpcCombinationPackage.cDirect_Param": {
+            "_Fsm": "GameDesign/NPC/Data/Combination/3_Direct/Combi311_006/Combi311_006_fsm.fsmv2",
+            "_DisableTalk": true,
+            "_DisableUpstreamSkip": false,
+            "_CenterData": {
+              "app.cNpcDestinationData": {
+                "_Pos": [
+                  -849.2513,
+                  9.2038,
+                  1008.825,
+                  0.0
+                ],
+                "_DegY": 95
+              }
+            },
+            "_Range": 2.0,
+            "_DestType": 1,
+            "_CombiType": "[1] TYPE_00",
+            "_ForceBind": false,
+            "_Situations": [
+              {
+                "app.cNpcCombinationSituation": {
+                  "_Character": {
+                    "app.cNpcCombinationSituation.cEnemy": {
+                      "_DestData": {
+                        "app.cNpcDestinationData": {
+                          "_Pos": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                          ],
+                          "_DegY": 0
+                        }
+                      },
+                      "_NpcEmId": "[2002] EM1151_00_1_1103",
+                      "_VisualChecker": {
+                        "app.cNpcJackVisualChecker_Enemy": {
+                          "STRUCT__IsChild__HasValue": false,
+                          "STRUCT__IsChild__Value": false
+                        }
+                      },
+                      "_IsTerminateAction": false
+                    }
+                  }
+                }
+              },
+              {
+                "app.cNpcCombinationSituation": {
+                  "_Character": {
+                    "app.cNpcCombinationSituation.cNpc": {
+                      "_DestData": {
+                        "app.cNpcDestinationData": {
+                          "_Pos": [
+                            0.98,
+                            0.0,
+                            1.14,
+                            0.0
+                          ],
+                          "_DegY": -100
+                        }
+                      },
+                      "_VisualChecker": {
+                        "app.cNpcCombinationVisualChecker": {
+                          "_SkeletonType": "[1] HUMAN_ADL",
+                          "_Gender": 1,
+                          "_VisualType": {
+                            "app.cNpcVisualTypeChecker": {
+                              "_Species": 3,
+                              "_ModelKindFixedID": 1897164032
+                            }
+                          },
+                          "_ID": "[4] INVALID"
+                        }
+                      },
+                      "_IsTerminateAction": false,
+                      "_MotionPack_Base": {
+                        "": {}
+                      },
+                      "_MotionPack_Sub": {
+                        "": {}
+                      },
+                      "_IsMotionPackFullLoad": false,
+                      "_Accessories": {
+                        "app.cNpcAccessoryIDHolder": {
+                          "_AccessoryTypes": [
+                            65535,
+                            65535,
+                            65535
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "app.cNpcCombinationSituation": {
+                  "_Character": {
+                    "app.cNpcCombinationSituation.cGimmick": {
+                      "_DestData": {
+                        "app.cNpcDestinationData": {
+                          "_Pos": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                          ],
+                          "_DegY": 0
+                        }
+                      },
+                      "_GmID": "[0] INVALID",
+                      "_GmTargetID": "[19805] GM001_002",
+                      "_IsCreate": false,
+                      "_IsSetInteractDest": false,
+                      "_InteractDestData": {
+                        "app.cNpcDestinationData": {
+                          "_Pos": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                          ],
+                          "_DegY": 0
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "_LookAtDestinations": [],
+            "_IsBind": true
+          }
+        }
+      }
+    }
+  }
+]

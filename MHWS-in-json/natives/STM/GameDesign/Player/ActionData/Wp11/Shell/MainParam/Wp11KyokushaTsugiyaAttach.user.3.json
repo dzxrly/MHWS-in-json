@@ -1,0 +1,352 @@
+[
+  {
+    "ace.user_data.ShellMainParam": {
+      "_ShellMiniParams": [
+        {
+          "ace.cShellminiParamCommon": {
+            "MiniParamName": "Common",
+            "MiniParamtype": 1,
+            "_IsDependedOn": false,
+            "UpdateOrder": 0,
+            "LateUpdateOrder": 0,
+            "_LifeSec": 60.0,
+            "_HitOnSec": 0.0
+          }
+        },
+        {
+          "app.cShellminiParamMeshAttach": {
+            "MiniParamName": "MoveMeshAttach",
+            "MiniParamtype": 2,
+            "_IsDependedOn": false,
+            "UpdateOrder": 200,
+            "LateUpdateOrder": 200,
+            "_ConstraintOption": "[1320527616] KEEP_ROT_AT_START",
+            "_OffsetPos": [
+              0.0,
+              0.0,
+              -0.5,
+              0.0
+            ],
+            "_OffsetRot": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "_IsIgnoreFur": true,
+            "_JointConstSinkRateToJoint": 0.1,
+            "_KeepParentDir": true,
+            "_IsBlastWhenEmSleed": true,
+            "_IsBlastWhenPartsBreak": true,
+            "_IsKillEmShellTimerStop": false
+          }
+        },
+        {
+          "app.cShellminiParamPlWp11Arrow": {
+            "MiniParamName": "PlWp11Arrow",
+            "MiniParamtype": 6,
+            "_IsDependedOn": false,
+            "UpdateOrder": 600,
+            "LateUpdateOrder": 600,
+            "_ArrowType": 18,
+            "_ArrowLv": 0,
+            "_Critical_Begin_Dist": -1.0,
+            "_Critical_End_Dist": -1.0,
+            "_Critical_AttackRate": 1.0,
+            "_Before_Critical_AttackRate": 1.0,
+            "_After_Critical_AttackRate": 1.0,
+            "_SpecialShot_HitSlowSpeedRate": 0.15,
+            "_SpecialShot_HitSlowTime": 0.3,
+            "_HomingSpecialShot_Speed": 150.0,
+            "_HomingStartDistRate": 0.2,
+            "_HomingMoveSpeed": 25.0,
+            "_HomingMoveAccTime": 0.1,
+            "_HomingTurnMaxSpeed": 80.0,
+            "_HomingTurnAcc": 40.0,
+            "_HomingTurnAccDistanceRate": {
+              "app.AppAnimationCurve": {
+                "v0": [
+                  {
+                    "raw": "00000000000000000000000000000000",
+                    "type": "Data"
+                  },
+                  {
+                    "raw": "00000000000080530000000000000000",
+                    "type": "Data"
+                  }
+                ],
+                "v1": {
+                  "raw": "000030c1",
+                  "type": "Data"
+                },
+                "v2": {
+                  "raw": "00003041",
+                  "type": "Data"
+                },
+                "v3": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v4": {
+                  "raw": "00007042",
+                  "type": "Data"
+                },
+                "v5": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v6": {
+                  "raw": "02000000",
+                  "type": "Data"
+                }
+              }
+            },
+            "_HomingTurnAccAngelRate": {
+              "app.AppAnimationCurve": {
+                "v0": [
+                  {
+                    "raw": "00000000000000000000000000000000",
+                    "type": "Data"
+                  },
+                  {
+                    "raw": "000000000000a0590000000000000000",
+                    "type": "Data"
+                  }
+                ],
+                "v1": {
+                  "raw": "000030c1",
+                  "type": "Data"
+                },
+                "v2": {
+                  "raw": "00003041",
+                  "type": "Data"
+                },
+                "v3": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v4": {
+                  "raw": "00003443",
+                  "type": "Data"
+                },
+                "v5": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v6": {
+                  "raw": "02000000",
+                  "type": "Data"
+                }
+              }
+            },
+            "_HomingTurnMaxDeg": 120.0,
+            "_MultiLockonAcc": 40.0,
+            "_MultiLockonScatterDistRate": 0.1,
+            "_MultiLockonTurnAccStartDistRate": {
+              "app.AppAnimationCurve": {
+                "v0": [
+                  {
+                    "raw": "00000000000000000000000000000000",
+                    "type": "Data"
+                  },
+                  {
+                    "raw": "000000000000804f0000000000000000",
+                    "type": "Data"
+                  }
+                ],
+                "v1": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v2": {
+                  "raw": "0000803f",
+                  "type": "Data"
+                },
+                "v3": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v4": {
+                  "raw": "0000f041",
+                  "type": "Data"
+                },
+                "v5": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v6": {
+                  "raw": "02000000",
+                  "type": "Data"
+                }
+              }
+            },
+            "_MultiLockonImmediatelyHomingDist": 3.0,
+            "_TsugiyaAtkRate": [
+              1.0,
+              1.1,
+              1.2,
+              1.3
+            ]
+          }
+        },
+        {
+          "app.cShellminiParamCallLifespanChildShell": {
+            "MiniParamName": "CallLifespanChildShell",
+            "MiniParamtype": 4,
+            "_IsDependedOn": false,
+            "UpdateOrder": 0,
+            "LateUpdateOrder": 0,
+            "_CreateNum": 1,
+            "_Offset": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_IsInheritChildScaleValue": false,
+            "_IsRotWorldY": false,
+            "STRUCT__StartRot__HasValue": false,
+            "STRUCT__StartRot__Value": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "STRUCT__OffsetRot__HasValue": false,
+            "STRUCT__OffsetRot__Value": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "_IsSameTimeCall": false,
+            "_IsCreateShellOwnerPos": false,
+            "_IsChainShell": false,
+            "_ChainID": 0,
+            "_LinkParentChainID": 0,
+            "_IsConstShell": false,
+            "_ChildOverrideParam": {
+              "app.cShellminiParamCallChildShell.cChildOverrideSetting": {
+                "_OffsetArray": [
+                  {
+                    "_HasValue": false,
+                    "_Value": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ]
+                  }
+                ],
+                "_StartRotArray": [
+                  {
+                    "_HasValue": false,
+                    "_Value": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ]
+                  }
+                ],
+                "_OffsetRotArray": [
+                  {
+                    "_HasValue": false,
+                    "_Value": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ]
+                  }
+                ]
+              }
+            },
+            "_LifespanShell": {
+              "ace.cChildShellGenerateParam": {
+                "_IsPassingHitID": false,
+                "_ShellNameHash": 3706041256
+              }
+            }
+          }
+        },
+        {
+          "app.cShellminiParamPLConstraintSync": {
+            "MiniParamName": "PLConstraintSync",
+            "MiniParamtype": 6,
+            "_IsDependedOn": false,
+            "UpdateOrder": 600,
+            "LateUpdateOrder": 600,
+            "_ConstType": 1,
+            "_IsWpShell": true,
+            "_IsDestroySync": true,
+            "_IsRelicaDestroySync": false
+          }
+        },
+        {
+          "app.cShellminiParamCallCustomChildShell": {
+            "MiniParamName": "CallCustomChildShell",
+            "MiniParamtype": 4,
+            "_IsDependedOn": false,
+            "UpdateOrder": 0,
+            "LateUpdateOrder": 0,
+            "_CreateNum": 1,
+            "_Offset": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_IsInheritChildScaleValue": false,
+            "_IsRotWorldY": false,
+            "STRUCT__StartRot__HasValue": false,
+            "STRUCT__StartRot__Value": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "STRUCT__OffsetRot__HasValue": false,
+            "STRUCT__OffsetRot__Value": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "_IsSameTimeCall": false,
+            "_IsCreateShellOwnerPos": false,
+            "_IsChainShell": false,
+            "_ChainID": 0,
+            "_LinkParentChainID": 0,
+            "_IsConstShell": false,
+            "_ChildOverrideParam": {
+              "app.cShellminiParamCallChildShell.cChildOverrideSetting": {
+                "_OffsetArray": [],
+                "_StartRotArray": [],
+                "_OffsetRotArray": []
+              }
+            },
+            "_ShellList": {
+              "ace.cChildShellGenerateParam": {
+                "_IsPassingHitID": false,
+                "_ShellNameHash": 3706041256
+              }
+            },
+            "_ShellIndex": 0
+          }
+        }
+      ],
+      "_CommonParam": {
+        "ace.cShellminiParamCommon": {
+          "MiniParamName": "Common",
+          "MiniParamtype": 1,
+          "_IsDependedOn": false,
+          "UpdateOrder": 0,
+          "LateUpdateOrder": 0,
+          "_LifeSec": 60.0,
+          "_HitOnSec": 0.0
+        }
+      }
+    }
+  }
+]

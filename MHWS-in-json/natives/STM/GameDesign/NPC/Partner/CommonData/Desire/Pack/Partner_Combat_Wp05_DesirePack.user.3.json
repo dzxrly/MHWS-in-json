@@ -1,0 +1,49 @@
+[
+  {
+    "app.user_data.NpcDesirePack": {
+      "_DataList": [
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 1,
+                "path": "GameDesign/NPC/Partner/CommonData/Desire/Param/Combat/Combat_Wp05_RecitalHeal_DesireParam.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[2890695680] INVALID",
+            "_RetryCount": 1,
+            "_EnumFixedID": 1
+          }
+        },
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 4,
+                "path": "GameDesign/NPC/Partner/CommonData/Desire/Param/Combat/Combat_Wp05_HibikiBall_DesireParam.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[2890695680] INVALID",
+            "_RetryCount": 1,
+            "_EnumFixedID": 2
+          }
+        }
+      ],
+      "_TimerParam": {
+        "app.cNpcDesireTimerHolder": {
+          "_Param": {
+            "app.NpcDesireTimers.cDesireAI_Param": {}
+          }
+        }
+      },
+      "_DesireEnum": {
+        "ace.user_data.EnumMaker": {
+          "ref_instance_id": 9,
+          "path": "GameDesign/NPC/Partner/CommonData/EnumMaker/NpcDesire_Partner_Combat_Wp05.user"
+        }
+      }
+    }
+  }
+]

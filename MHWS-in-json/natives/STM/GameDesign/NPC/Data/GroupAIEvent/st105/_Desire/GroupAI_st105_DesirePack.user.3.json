@@ -1,0 +1,35 @@
+[
+  {
+    "app.user_data.NpcDesirePack": {
+      "_DataList": [
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 1,
+                "path": "GameDesign/NPC/Data/GroupAIEvent/st105/_Desire/GroupAI_st105_DesireParam_AdditionalGrave.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[5314] GROUP_AI",
+            "_RetryCount": 1,
+            "_EnumFixedID": 1723940608
+          }
+        }
+      ],
+      "_TimerParam": {
+        "app.cNpcDesireTimerHolder": {
+          "_Param": {
+            "app.NpcDesireTimers.cNone_Param": {}
+          }
+        }
+      },
+      "_DesireEnum": {
+        "ace.user_data.EnumMaker": {
+          "ref_instance_id": 6,
+          "path": "GameDesign/NPC/EnumMaker/NpcGroupAIDesire_st105.user"
+        }
+      }
+    }
+  }
+]

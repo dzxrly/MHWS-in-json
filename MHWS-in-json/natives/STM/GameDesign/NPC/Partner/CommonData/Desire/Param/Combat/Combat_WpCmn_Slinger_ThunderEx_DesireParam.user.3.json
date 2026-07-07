@@ -1,0 +1,127 @@
+[
+  {
+    "app.user_data.NpcDesireParam": {
+      "_DefaultParam": {
+        "app.user_data.NpcDesireParam.cParam": {
+          "_CoolTime": {
+            "app.user_data.NpcDesireParam.cParam.cCoolTime": {
+              "_Complete": {
+                "raw": "0000204100002041",
+                "type": "Range"
+              },
+              "_Cancel": {
+                "raw": "0000a04000000000",
+                "type": "Range"
+              },
+              "_Group": {
+                "raw": "0000000000000000",
+                "type": "Range"
+              }
+            }
+          },
+          "_StartConditionParams": [
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcDesireConditions.cAlwaysFalse_Param": {}
+                },
+                "_Inverse": false
+              }
+            }
+          ],
+          "_EndConditionParams": [],
+          "_ContinueConditionParams": []
+        }
+      },
+      "_OverwriteKindParams": [
+        {
+          "app.user_data.NpcDesireParam.cKindParam": {
+            "_Param": {
+              "app.user_data.NpcDesireParam.cParam": {
+                "_CoolTime": {
+                  "app.user_data.NpcDesireParam.cParam.cCoolTime": {
+                    "_Complete": {
+                      "raw": "0000204100002041",
+                      "type": "Range"
+                    },
+                    "_Cancel": {
+                      "raw": "0000a04000000000",
+                      "type": "Range"
+                    },
+                    "_Group": {
+                      "raw": "0000000000000000",
+                      "type": "Range"
+                    }
+                  }
+                },
+                "_StartConditionParams": [
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cCanShotSlinger_Param": {
+                          "_AmmoType": "[564336768] THUNDER",
+                          "_CheckEnableShoot": true
+                        }
+                      },
+                      "_Inverse": false
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cRangeInTargetEnemy_Param": {
+                          "_Range": {
+                            "raw": "0000e0400000e041",
+                            "type": "Range"
+                          }
+                        }
+                      },
+                      "_Inverse": false
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cSetSlingerShotTarget_Param": {
+                          "_TargetType": 1,
+                          "_IsDungTarget": false,
+                          "_TargetEnemyRange": 0.0,
+                          "_SlingerTargetRange": 0.0
+                        }
+                      },
+                      "_Inverse": false
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cCheckFiringLineClear_Param": {}
+                      },
+                      "_Inverse": false
+                    }
+                  }
+                ],
+                "_EndConditionParams": [
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cCanShotSlinger_Param": {
+                          "_AmmoType": "[564336768] THUNDER",
+                          "_CheckEnableShoot": false
+                        }
+                      },
+                      "_Inverse": true
+                    }
+                  }
+                ],
+                "_ContinueConditionParams": []
+              }
+            },
+            "_KindType": "[15110] SPECIAL_HOSTILITY",
+            "_KindLv": "[3515249536] LV2"
+          }
+        }
+      ]
+    }
+  }
+]

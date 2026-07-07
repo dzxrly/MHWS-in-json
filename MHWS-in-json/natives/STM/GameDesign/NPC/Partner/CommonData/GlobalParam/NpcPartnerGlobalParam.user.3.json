@@ -1,0 +1,1699 @@
+[
+  {
+    "app.user_data.NpcPartnerGlobalParam": {
+      "_CommonData": {
+        "app.user_data.NpcPartnerData": {
+          "ref_instance_id": 1,
+          "path": "GameDesign/NPC/Partner/Character/_Common/Common_PartnerData.user"
+        }
+      },
+      "_StatusParam": {
+        "app.cNpcPartnerStatusData": {
+          "_StatusParam": {
+            "app.user_data.NpcPartnerStatusParam": {
+              "ref_instance_id": 2,
+              "path": "GameDesign/NPC/Partner/Character/_Common/Common_PartnerStatusParam.user"
+            }
+          },
+          "_WeaponParam": {
+            "app.user_data.NpcPartnerWeaponParam": {
+              "ref_instance_id": 3,
+              "path": "GameDesign/NPC/Partner/Character/_Common/Common_PartnerWeaponParam.user"
+            }
+          },
+          "_SkillParam": {
+            "app.user_data.NpcPartnerSkillParam": {
+              "ref_instance_id": 4,
+              "path": "GameDesign/NPC/Partner/Character/_Common/Common_PartnerSkillParam.user"
+            }
+          },
+          "_EquipParam": {
+            "app.user_data.NpcPartnerEquipParam": {
+              "ref_instance_id": 5,
+              "path": "GameDesign/NPC/Partner/Character/_Common/Common_PartnerEquipParam.user"
+            }
+          }
+        }
+      },
+      "_RescureParam": {
+        "app.user_data.NpcPartnerGlobalParam.cRescureParam": {
+          "_QuestElaspedSec": 0.0,
+          "_ResucureElaspedSec": 30.0,
+          "_NextJoinElaspedSec": 60.0,
+          "_LeavedElaspedSec": 90.0,
+          "_LeavedPlayerElaspedSec": 30.0
+        }
+      },
+      "_RescureParam_PartnerOnly": {
+        "app.user_data.NpcPartnerGlobalParam.cRescureParam": {
+          "_QuestElaspedSec": 0.0,
+          "_ResucureElaspedSec": 0.0,
+          "_NextJoinElaspedSec": 0.5,
+          "_LeavedElaspedSec": 90.0,
+          "_LeavedPlayerElaspedSec": 8.0
+        }
+      },
+      "_RescureParam_Story": {
+        "app.user_data.NpcPartnerGlobalParam.cRescureParam": {
+          "_QuestElaspedSec": 0.0,
+          "_ResucureElaspedSec": 0.0,
+          "_NextJoinElaspedSec": 10.0,
+          "_LeavedElaspedSec": 45.0,
+          "_LeavedPlayerElaspedSec": 15.0
+        }
+      },
+      "_GuestParam": {
+        "app.user_data.NpcPartnerGlobalParam.cGuestParam": {
+          "_HealthLowerLimit": 20
+        }
+      },
+      "_CombatRange": {
+        "app.user_data.NpcPartnerGlobalParam.cCombatRange": {
+          "_BaseSize": 5,
+          "_OffsetRate": 0.0
+        }
+      },
+      "_FloorEvaluation": {
+        "app.user_data.NpcPartnerGlobalParam.cFloorEvaluation": {
+          "_SearchRange": 60.0,
+          "_PathResolution": 3.0,
+          "_DifferenceUpper": 5.0,
+          "_DifferenceLower": 5.0,
+          "_EnableCheckUpper": true,
+          "_EnableCheckLower": true,
+          "_IsBowgunOnly": true
+        }
+      },
+      "_LineOfFire": {
+        "app.user_data.NpcPartnerGlobalParam.cLineOfFire": {
+          "_UseRayCount": 10,
+          "_CheckRayLength": 30.0,
+          "_RayOffsetY": 1.1,
+          "_RayStartDegree": 45.0,
+          "_CheckUnitDegree": 15.0,
+          "_CheckUnitLength": 3.5,
+          "_CheckWallYHigh": 2.0,
+          "_CheckWallYLow": -2.0,
+          "_CheckGradient": 3.0,
+          "_EnemyJointHashPrimary": {
+            "ace.cStrHash": {
+              "_Hash": 3471977595
+            }
+          },
+          "_EnemyJointHashSecondary": {
+            "ace.cStrHash": {
+              "_Hash": 1549972489
+            }
+          }
+        }
+      },
+      "_DesireParam": {
+        "app.user_data.NpcPartnerGlobalParam.cDesireParam": {
+          "_DesireCategoryPackages": {
+            "app.user_data.NpcDesireCategoryPackages": {
+              "ref_instance_id": 16,
+              "path": "GameDesign/NPC/Partner/CommonData/Desire/DesireCategoryPackages.user"
+            }
+          },
+          "_HagitoriMaxCountEnemy": 3,
+          "_HagitoriMaxCountLostParts": 1
+        }
+      },
+      "_InputParam": {
+        "app.user_data.NpcPartnerGlobalParam.cInputParam": {
+          "_CameraParam": {
+            "app.cNpcInputController.cNpcCamera.cParam": {
+              "_Damping": 0.9,
+              "_TimeScale": 2.0,
+              "_AimInRange": 0.75
+            }
+          },
+          "_LStickParam": {
+            "app.cNpcInputController.cNpcStick.cParam": {
+              "_Damping": 0.9,
+              "_TimeScale": 2.0
+            }
+          },
+          "_MashingIntervalSec_Damage": 0.04
+        }
+      },
+      "_AimAdjust": {
+        "app.user_data.NpcPartnerGlobalParam.cAimAdjust": {
+          "_CenterAdjust": 0.65
+        }
+      },
+      "_CombatPreConditionParam": {
+        "app.user_data.NpcPartnerGlobalParam.cCombatPreConditionParam": {
+          "_StartCombatRange": {
+            "raw": "0000000000007042",
+            "type": "Range"
+          },
+          "_StartCoutionRange": {
+            "raw": "0000000000000c42",
+            "type": "Range"
+          },
+          "_LastAttackBackTimeSec": 120.0,
+          "_LastDamageBackTimeSec": 120.0,
+          "_ConditionParams": [
+            {
+              "app.user_data.NpcPartnerGlobalParam.cCombatPreConditionParam.ConditionParam": {
+                "Type": 0,
+                "Transition": 0
+              }
+            },
+            {
+              "app.user_data.NpcPartnerGlobalParam.cCombatPreConditionParam.ConditionParam": {
+                "Type": 5,
+                "Transition": 2
+              }
+            },
+            {
+              "app.user_data.NpcPartnerGlobalParam.cCombatPreConditionParam.ConditionParam": {
+                "Type": 2,
+                "Transition": 0
+              }
+            },
+            {
+              "app.user_data.NpcPartnerGlobalParam.cCombatPreConditionParam.ConditionParam": {
+                "Type": 6,
+                "Transition": 0
+              }
+            },
+            {
+              "app.user_data.NpcPartnerGlobalParam.cCombatPreConditionParam.ConditionParam": {
+                "Type": 19,
+                "Transition": 2
+              }
+            },
+            {
+              "app.user_data.NpcPartnerGlobalParam.cCombatPreConditionParam.ConditionParam": {
+                "Type": 8,
+                "Transition": 0
+              }
+            },
+            {
+              "app.user_data.NpcPartnerGlobalParam.cCombatPreConditionParam.ConditionParam": {
+                "Type": 18,
+                "Transition": 0
+              }
+            },
+            {
+              "app.user_data.NpcPartnerGlobalParam.cCombatPreConditionParam.ConditionParam": {
+                "Type": 21,
+                "Transition": 1
+              }
+            },
+            {
+              "app.user_data.NpcPartnerGlobalParam.cCombatPreConditionParam.ConditionParam": {
+                "Type": 14,
+                "Transition": 0
+              }
+            },
+            {
+              "app.user_data.NpcPartnerGlobalParam.cCombatPreConditionParam.ConditionParam": {
+                "Type": 24,
+                "Transition": 2
+              }
+            },
+            {
+              "app.user_data.NpcPartnerGlobalParam.cCombatPreConditionParam.ConditionParam": {
+                "Type": 3,
+                "Transition": 1
+              }
+            },
+            {
+              "app.user_data.NpcPartnerGlobalParam.cCombatPreConditionParam.ConditionParam": {
+                "Type": 4,
+                "Transition": 2
+              }
+            },
+            {
+              "app.user_data.NpcPartnerGlobalParam.cCombatPreConditionParam.ConditionParam": {
+                "Type": 7,
+                "Transition": 2
+              }
+            },
+            {
+              "app.user_data.NpcPartnerGlobalParam.cCombatPreConditionParam.ConditionParam": {
+                "Type": 20,
+                "Transition": 2
+              }
+            },
+            {
+              "app.user_data.NpcPartnerGlobalParam.cCombatPreConditionParam.ConditionParam": {
+                "Type": 9,
+                "Transition": 2
+              }
+            },
+            {
+              "app.user_data.NpcPartnerGlobalParam.cCombatPreConditionParam.ConditionParam": {
+                "Type": 0,
+                "Transition": 1
+              }
+            },
+            {
+              "app.user_data.NpcPartnerGlobalParam.cCombatPreConditionParam.ConditionParam": {
+                "Type": 0,
+                "Transition": 2
+              }
+            },
+            {
+              "app.user_data.NpcPartnerGlobalParam.cCombatPreConditionParam.ConditionParam": {
+                "Type": 16,
+                "Transition": 1
+              }
+            },
+            {
+              "app.user_data.NpcPartnerGlobalParam.cCombatPreConditionParam.ConditionParam": {
+                "Type": 17,
+                "Transition": 2
+              }
+            },
+            {
+              "app.user_data.NpcPartnerGlobalParam.cCombatPreConditionParam.ConditionParam": {
+                "Type": 22,
+                "Transition": 1
+              }
+            },
+            {
+              "app.user_data.NpcPartnerGlobalParam.cCombatPreConditionParam.ConditionParam": {
+                "Type": 23,
+                "Transition": 1
+              }
+            },
+            {
+              "app.user_data.NpcPartnerGlobalParam.cCombatPreConditionParam.ConditionParam": {
+                "Type": 10,
+                "Transition": 1
+              }
+            },
+            {
+              "app.user_data.NpcPartnerGlobalParam.cCombatPreConditionParam.ConditionParam": {
+                "Type": 12,
+                "Transition": 1
+              }
+            },
+            {
+              "app.user_data.NpcPartnerGlobalParam.cCombatPreConditionParam.ConditionParam": {
+                "Type": 13,
+                "Transition": 2
+              }
+            },
+            {
+              "app.user_data.NpcPartnerGlobalParam.cCombatPreConditionParam.ConditionParam": {
+                "Type": 25,
+                "Transition": 2
+              }
+            },
+            {
+              "app.user_data.NpcPartnerGlobalParam.cCombatPreConditionParam.ConditionParam": {
+                "Type": 1,
+                "Transition": 2
+              }
+            }
+          ],
+          "_UseTarget_PlDist": 0,
+          "_UseTarget_LastHit": 1,
+          "_UseTarget_SameAreaPl": 1,
+          "_PrioryLockOnActiveTimeSec": 3.0,
+          "_PrioryLockOnOverwriteCoolTimeSec": 12.0,
+          "_DiedActTimeSec": 3.0,
+          "_LeadingDamagePercentage": 0.7
+        }
+      },
+      "_Neglect": {
+        "app.user_data.NpcPartnerGlobalParam.cNeglect": {
+          "STRUCT__DpsCheckLv1Start_DamagePercentage": 0.125,
+          "STRUCT__DpsCheckLv1End_DamagePercentage": 0.15,
+          "_DpsCheckRate_Pl2": 75,
+          "_DpsCheckRate_Pl3": 66,
+          "_DpsCheckRate_Pl4": 50,
+          "_DpsCheckRate_Pl5": 40,
+          "_DpsCheckRate_Pl6": 34,
+          "_DpsCheckRate_Pl7": 28,
+          "_DpsCheckRate_Pl8": 26,
+          "_WeakeningDPM_Pl2": 50,
+          "_WeakeningDPM_Pl3": 33,
+          "_WeakeningDPM_Pl4": 25,
+          "_WeakeningDPM_Pl5": 20,
+          "_WeakeningDPM_Pl6": 17,
+          "_WeakeningDPM_Pl7": 14,
+          "_WeakeningDPM_Pl8": 13
+        }
+      },
+      "_DodgeParam": {
+        "app.user_data.NpcPartnerGlobalParam.cDodgeParam": {
+          "_NormalDodge": {
+            "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame": {
+              "_FrameData": [
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 13.0,
+                    "_FrameKindLv1": 13.0,
+                    "_FrameKindLv2": 13.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 15.0,
+                    "_FrameKindLv1": 15.0,
+                    "_FrameKindLv2": 15.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 17.0,
+                    "_FrameKindLv1": 17.0,
+                    "_FrameKindLv2": 17.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 19.0,
+                    "_FrameKindLv1": 19.0,
+                    "_FrameKindLv2": 19.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 22.0,
+                    "_FrameKindLv1": 22.0,
+                    "_FrameKindLv2": 22.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 25.0,
+                    "_FrameKindLv1": 40.0,
+                    "_FrameKindLv2": 25.0
+                  }
+                }
+              ]
+            }
+          },
+          "_NormalStep": {
+            "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame": {
+              "_FrameData": [
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 10.0,
+                    "_FrameKindLv1": 10.0,
+                    "_FrameKindLv2": 10.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 12.0,
+                    "_FrameKindLv1": 12.0,
+                    "_FrameKindLv2": 12.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 14.0,
+                    "_FrameKindLv1": 14.0,
+                    "_FrameKindLv2": 14.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 16.0,
+                    "_FrameKindLv1": 16.0,
+                    "_FrameKindLv2": 16.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 19.0,
+                    "_FrameKindLv1": 19.0,
+                    "_FrameKindLv2": 19.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 22.0,
+                    "_FrameKindLv1": 30.0,
+                    "_FrameKindLv2": 22.0
+                  }
+                }
+              ]
+            }
+          },
+          "_Wp01BackStep": {
+            "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame": {
+              "_FrameData": [
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 40.0,
+                    "_FrameKindLv1": 40.0,
+                    "_FrameKindLv2": 40.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 42.0,
+                    "_FrameKindLv1": 42.0,
+                    "_FrameKindLv2": 42.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 44.0,
+                    "_FrameKindLv1": 44.0,
+                    "_FrameKindLv2": 44.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 46.0,
+                    "_FrameKindLv1": 46.0,
+                    "_FrameKindLv2": 46.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 48.0,
+                    "_FrameKindLv1": 48.0,
+                    "_FrameKindLv2": 48.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 50.0,
+                    "_FrameKindLv1": 50.0,
+                    "_FrameKindLv2": 50.0
+                  }
+                }
+              ]
+            }
+          },
+          "_Wp04ChargeDodge": {
+            "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame": {
+              "_FrameData": [
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 24.0,
+                    "_FrameKindLv1": 24.0,
+                    "_FrameKindLv2": 24.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 26.0,
+                    "_FrameKindLv1": 26.0,
+                    "_FrameKindLv2": 26.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 28.0,
+                    "_FrameKindLv1": 28.0,
+                    "_FrameKindLv2": 28.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 30.0,
+                    "_FrameKindLv1": 30.0,
+                    "_FrameKindLv2": 30.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 32.0,
+                    "_FrameKindLv1": 32.0,
+                    "_FrameKindLv2": 32.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 34.0,
+                    "_FrameKindLv1": 34.0,
+                    "_FrameKindLv2": 34.0
+                  }
+                }
+              ]
+            }
+          },
+          "_Wp05SpParrySoundAttack": {
+            "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame": {
+              "_FrameData": [
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 30.0,
+                    "_FrameKindLv1": 30.0,
+                    "_FrameKindLv2": 30.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 32.0,
+                    "_FrameKindLv1": 32.0,
+                    "_FrameKindLv2": 32.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 34.0,
+                    "_FrameKindLv1": 34.0,
+                    "_FrameKindLv2": 34.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 36.0,
+                    "_FrameKindLv1": 36.0,
+                    "_FrameKindLv2": 36.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 38.0,
+                    "_FrameKindLv1": 38.0,
+                    "_FrameKindLv2": 38.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 40.0,
+                    "_FrameKindLv1": 40.0,
+                    "_FrameKindLv2": 40.0
+                  }
+                }
+              ]
+            }
+          },
+          "_Wp12Dodge": {
+            "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame": {
+              "_FrameData": [
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 13.0,
+                    "_FrameKindLv1": 13.0,
+                    "_FrameKindLv2": 13.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 15.0,
+                    "_FrameKindLv1": 15.0,
+                    "_FrameKindLv2": 15.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 17.0,
+                    "_FrameKindLv1": 17.0,
+                    "_FrameKindLv2": 17.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 19.0,
+                    "_FrameKindLv1": 19.0,
+                    "_FrameKindLv2": 19.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 22.0,
+                    "_FrameKindLv1": 22.0,
+                    "_FrameKindLv2": 22.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 25.0,
+                    "_FrameKindLv1": 25.0,
+                    "_FrameKindLv2": 25.0
+                  }
+                }
+              ]
+            }
+          },
+          "_Wp13Sliding": {
+            "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame": {
+              "_FrameData": [
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 13.0,
+                    "_FrameKindLv1": 13.0,
+                    "_FrameKindLv2": 13.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 15.0,
+                    "_FrameKindLv1": 15.0,
+                    "_FrameKindLv2": 15.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 17.0,
+                    "_FrameKindLv1": 17.0,
+                    "_FrameKindLv2": 17.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 19.0,
+                    "_FrameKindLv1": 19.0,
+                    "_FrameKindLv2": 19.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 22.0,
+                    "_FrameKindLv1": 22.0,
+                    "_FrameKindLv2": 22.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 25.0,
+                    "_FrameKindLv1": 50.0,
+                    "_FrameKindLv2": 25.0
+                  }
+                }
+              ]
+            }
+          },
+          "_ExField": {
+            "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame": {
+              "_FrameData": [
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 20.0,
+                    "_FrameKindLv1": 20.0,
+                    "_FrameKindLv2": 20.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 22.0,
+                    "_FrameKindLv1": 22.0,
+                    "_FrameKindLv2": 22.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 24.0,
+                    "_FrameKindLv1": 24.0,
+                    "_FrameKindLv2": 24.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 26.0,
+                    "_FrameKindLv1": 26.0,
+                    "_FrameKindLv2": 26.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 28.0,
+                    "_FrameKindLv1": 28.0,
+                    "_FrameKindLv2": 28.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cDodgeParam.cNoHitFrame.cFrameData": {
+                    "_FrameKindLv0": 30.0,
+                    "_FrameKindLv1": 30.0,
+                    "_FrameKindLv2": 30.0
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "_BlockParam": {
+        "app.user_data.NpcPartnerGlobalParam.cBlockParam": {
+          "_MashingIntervalSec": 0.1,
+          "_Data": {
+            "app.cEnumerableParam`2<app.NpcPartnerDef.PERSONAL_KIND_LEVEL_Fixed,app.user_data.NpcPartnerGlobalParam.cBlockParam.cData>": {
+              "_ParamList": [
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cBlockParam.cData": {
+                    "EnumValue": "[1844144896] NOUSE",
+                    "_EnemyHealthPercentage_0": 0,
+                    "_EnemyHealthPercentage_1": 0,
+                    "_EnemyHealthPercentage_2": 0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cBlockParam.cData": {
+                    "EnumValue": "[3035413760] LV0",
+                    "_EnemyHealthPercentage_0": 55,
+                    "_EnemyHealthPercentage_1": 35,
+                    "_EnemyHealthPercentage_2": 15
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cBlockParam.cData": {
+                    "EnumValue": "[4134945744] LV1",
+                    "_EnemyHealthPercentage_0": 70,
+                    "_EnemyHealthPercentage_1": 50,
+                    "_EnemyHealthPercentage_2": 30
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cBlockParam.cData": {
+                    "EnumValue": "[3515249536] LV2",
+                    "_EnemyHealthPercentage_0": 100,
+                    "_EnemyHealthPercentage_1": 80,
+                    "_EnemyHealthPercentage_2": 60
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "_ParryParam": {
+        "app.user_data.NpcPartnerGlobalParam.cParryParam": {
+          "_Data": {
+            "app.cEnumerableParam`2<app.NpcPartnerDef.PERSONAL_KIND_LEVEL_Fixed,app.user_data.NpcPartnerGlobalParam.cParryParam.cData>": {
+              "_ParamList": [
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cParryParam.cData": {
+                    "EnumValue": "[1844144896] NOUSE",
+                    "_EnemyHealthPercentage_0": 0,
+                    "_EnemyHealthPercentage_1": 0,
+                    "_EnemyHealthPercentage_2": 0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cParryParam.cData": {
+                    "EnumValue": "[3035413760] LV0",
+                    "_EnemyHealthPercentage_0": 50,
+                    "_EnemyHealthPercentage_1": 50,
+                    "_EnemyHealthPercentage_2": 50
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cParryParam.cData": {
+                    "EnumValue": "[4134945744] LV1",
+                    "_EnemyHealthPercentage_0": 75,
+                    "_EnemyHealthPercentage_1": 75,
+                    "_EnemyHealthPercentage_2": 75
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cParryParam.cData": {
+                    "EnumValue": "[3515249536] LV2",
+                    "_EnemyHealthPercentage_0": 100,
+                    "_EnemyHealthPercentage_1": 100,
+                    "_EnemyHealthPercentage_2": 100
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "_RideParam": {
+        "app.user_data.NpcPartnerGlobalParam.cRideParam": {
+          "_MakeRawCount": 2,
+          "_Data": {
+            "app.cEnumerableParam`2<app.NpcPartnerDef.PERSONAL_KIND_LEVEL_Fixed,app.user_data.NpcPartnerGlobalParam.cRideParam.cData>": {
+              "_ParamList": [
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cRideParam.cData": {
+                    "EnumValue": "[1844144896] NOUSE",
+                    "_EnemyHealthPercentage_0": 0,
+                    "_EnemyHealthPercentage_1": 0,
+                    "_EnemyHealthPercentage_2": 0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cRideParam.cData": {
+                    "EnumValue": "[3035413760] LV0",
+                    "_EnemyHealthPercentage_0": 60,
+                    "_EnemyHealthPercentage_1": 40,
+                    "_EnemyHealthPercentage_2": 0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cRideParam.cData": {
+                    "EnumValue": "[4134945744] LV1",
+                    "_EnemyHealthPercentage_0": 80,
+                    "_EnemyHealthPercentage_1": 60,
+                    "_EnemyHealthPercentage_2": 10
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cRideParam.cData": {
+                    "EnumValue": "[3515249536] LV2",
+                    "_EnemyHealthPercentage_0": 97,
+                    "_EnemyHealthPercentage_1": 75,
+                    "_EnemyHealthPercentage_2": 20
+                  }
+                }
+              ]
+            }
+          },
+          "_PtJumpAttackData": {
+            "app.cEnumerableParam`2<app.NpcPartnerDef.PERSONAL_KIND_LEVEL_Fixed,app.user_data.NpcPartnerGlobalParam.cRideParam.cPtJumpAttack>": {
+              "_ParamList": [
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cRideParam.cPtJumpAttack": {
+                    "EnumValue": "[1844144896] NOUSE",
+                    "_PorterJumpAttackActivePercentage": 0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cRideParam.cPtJumpAttack": {
+                    "EnumValue": "[3035413760] LV0",
+                    "_PorterJumpAttackActivePercentage": 70
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cRideParam.cPtJumpAttack": {
+                    "EnumValue": "[4134945744] LV1",
+                    "_PorterJumpAttackActivePercentage": 70
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cRideParam.cPtJumpAttack": {
+                    "EnumValue": "[3515249536] LV2",
+                    "_PorterJumpAttackActivePercentage": 100
+                  }
+                }
+              ]
+            }
+          },
+          "_WpOnData": {
+            "app.cEnumerableParam`2<app.WeaponDef.TYPE,app.user_data.NpcPartnerGlobalParam.cRideParam.cWpOnAction>": {
+              "_ParamList": [
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cRideParam.cWpOnAction": {
+                    "EnumValue": 0,
+                    "_Type": 0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cRideParam.cWpOnAction": {
+                    "EnumValue": 1,
+                    "_Type": 0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cRideParam.cWpOnAction": {
+                    "EnumValue": 2,
+                    "_Type": 0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cRideParam.cWpOnAction": {
+                    "EnumValue": 3,
+                    "_Type": 0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cRideParam.cWpOnAction": {
+                    "EnumValue": 4,
+                    "_Type": 1
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cRideParam.cWpOnAction": {
+                    "EnumValue": 5,
+                    "_Type": 0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cRideParam.cWpOnAction": {
+                    "EnumValue": 6,
+                    "_Type": 0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cRideParam.cWpOnAction": {
+                    "EnumValue": 7,
+                    "_Type": 0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cRideParam.cWpOnAction": {
+                    "EnumValue": 8,
+                    "_Type": 0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cRideParam.cWpOnAction": {
+                    "EnumValue": 9,
+                    "_Type": 0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cRideParam.cWpOnAction": {
+                    "EnumValue": 10,
+                    "_Type": 0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cRideParam.cWpOnAction": {
+                    "EnumValue": 11,
+                    "_Type": 0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cRideParam.cWpOnAction": {
+                    "EnumValue": 12,
+                    "_Type": 0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cRideParam.cWpOnAction": {
+                    "EnumValue": 13,
+                    "_Type": 0
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "_ScarParam": {
+        "app.user_data.NpcPartnerGlobalParam.cScarParam": {
+          "_IsLimitRawBreak": true,
+          "_Data": {
+            "app.cEnumerableParam`2<app.NpcPartnerDef.PERSONAL_KIND_LEVEL_Fixed,app.user_data.NpcPartnerGlobalParam.cScarParam.cData>": {
+              "_ParamList": [
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cScarParam.cData": {
+                    "EnumValue": "[1844144896] NOUSE",
+                    "_AttackableRawScarLifeTime": 0.0,
+                    "_AttackableRawScarNum": 0.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cScarParam.cData": {
+                    "EnumValue": "[3035413760] LV0",
+                    "_AttackableRawScarLifeTime": 60.0,
+                    "_AttackableRawScarNum": 1.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cScarParam.cData": {
+                    "EnumValue": "[4134945744] LV1",
+                    "_AttackableRawScarLifeTime": 55.0,
+                    "_AttackableRawScarNum": 1.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cScarParam.cData": {
+                    "EnumValue": "[3515249536] LV2",
+                    "_AttackableRawScarLifeTime": 50.0,
+                    "_AttackableRawScarNum": 1.0
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "_PorterRescue": {
+        "app.user_data.NpcPartnerGlobalParam.cPorterRescue": {
+          "_CantRequestDistance": 20.0,
+          "_WhiteList": [
+            {
+              "app.user_data.NpcPartnerGlobalParam.cPorterRescue.cData": {
+                "_DamageType": "[4] SMASH",
+                "_Percentage": 70
+              }
+            },
+            {
+              "app.user_data.NpcPartnerGlobalParam.cPorterRescue.cData": {
+                "_DamageType": "[5] SMASH_MIDDLE",
+                "_Percentage": 70
+              }
+            },
+            {
+              "app.user_data.NpcPartnerGlobalParam.cPorterRescue.cData": {
+                "_DamageType": "[11] SMASH_UPPER",
+                "_Percentage": 70
+              }
+            }
+          ]
+        }
+      },
+      "_ReactEnemyAttack": {
+        "app.user_data.NpcPartnerGlobalParam.cReactEnemyAttack": {
+          "_DataList": {
+            "app.cEnumerableParam`2<app.NpcPartnerDef.REACT_TYPE_Fixed,app.user_data.NpcPartnerGlobalParam.cReactEnemyAttack.cData>": {
+              "_ParamList": [
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cReactEnemyAttack.cData": {
+                    "EnumValue": "[1] COMMON_DODGE",
+                    "_StartupFrame": 0.0,
+                    "_ActiveFrame": 12.0,
+                    "_IsParry": false,
+                    "_DodgeDist": 4.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cReactEnemyAttack.cData": {
+                    "EnumValue": "[2] JUMP_DODGE",
+                    "_StartupFrame": 0.0,
+                    "_ActiveFrame": 150.0,
+                    "_IsParry": false,
+                    "_DodgeDist": 5.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cReactEnemyAttack.cData": {
+                    "EnumValue": "[3] ASKILL004_DODGE_WPON",
+                    "_StartupFrame": 0.0,
+                    "_ActiveFrame": 40.0,
+                    "_IsParry": false,
+                    "_DodgeDist": 4.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cReactEnemyAttack.cData": {
+                    "EnumValue": "[4] ASKILL004_DODGE_WPOFF",
+                    "_StartupFrame": 0.0,
+                    "_ActiveFrame": 130.0,
+                    "_IsParry": false,
+                    "_DodgeDist": 4.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cReactEnemyAttack.cData": {
+                    "EnumValue": "[5] COMMON_GUARD",
+                    "_StartupFrame": 0.0,
+                    "_ActiveFrame": -1.0,
+                    "_IsParry": false,
+                    "_DodgeDist": -1.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cReactEnemyAttack.cData": {
+                    "EnumValue": "[6] WP00_PASSIVE_TACKLE",
+                    "_StartupFrame": 0.0,
+                    "_ActiveFrame": 73.0,
+                    "_IsParry": false,
+                    "_DodgeDist": 2.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cReactEnemyAttack.cData": {
+                    "EnumValue": "[7] WP00_PASSIVE_STRONG_TACKLE",
+                    "_StartupFrame": 0.0,
+                    "_ActiveFrame": 73.0,
+                    "_IsParry": false,
+                    "_DodgeDist": 2.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cReactEnemyAttack.cData": {
+                    "EnumValue": "[8] WP00_PARRY_SLASH",
+                    "_StartupFrame": 45.0,
+                    "_ActiveFrame": 33.0,
+                    "_IsParry": true,
+                    "_DodgeDist": -1.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cReactEnemyAttack.cData": {
+                    "EnumValue": 9,
+                    "_StartupFrame": 0.0,
+                    "_ActiveFrame": 12.0,
+                    "_IsParry": false,
+                    "_DodgeDist": -1.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cReactEnemyAttack.cData": {
+                    "EnumValue": "[10] WP04_FULL_SWING_CHARGE",
+                    "_StartupFrame": 2.0,
+                    "_ActiveFrame": 14.0,
+                    "_IsParry": true,
+                    "_DodgeDist": -1.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cReactEnemyAttack.cData": {
+                    "EnumValue": "[11] WP04_CHARGE_SWING_2",
+                    "_StartupFrame": 13.0,
+                    "_ActiveFrame": 14.0,
+                    "_IsParry": true,
+                    "_DodgeDist": -1.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cReactEnemyAttack.cData": {
+                    "EnumValue": "[12] WP05_SHORT_ATK",
+                    "_StartupFrame": 1.0,
+                    "_ActiveFrame": 9.0,
+                    "_IsParry": true,
+                    "_DodgeDist": 1.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cReactEnemyAttack.cData": {
+                    "EnumValue": "[23] WP05_SP_PARRY",
+                    "_StartupFrame": 30.0,
+                    "_ActiveFrame": 23.0,
+                    "_IsParry": true,
+                    "_DodgeDist": -1.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cReactEnemyAttack.cData": {
+                    "EnumValue": "[13] WP06_NORMAL_GUARD_WPOFF",
+                    "_StartupFrame": 18.0,
+                    "_ActiveFrame": 99.0,
+                    "_IsParry": false,
+                    "_DodgeDist": -1.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cReactEnemyAttack.cData": {
+                    "EnumValue": "[14] WP06_NORMAL_GUARD_WPON",
+                    "_StartupFrame": 8.0,
+                    "_ActiveFrame": 99.0,
+                    "_IsParry": false,
+                    "_DodgeDist": -1.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cReactEnemyAttack.cData": {
+                    "EnumValue": "[15] WP06_POWER_GUARD_WPOFF",
+                    "_StartupFrame": 55.0,
+                    "_ActiveFrame": 99.0,
+                    "_IsParry": false,
+                    "_DodgeDist": -1.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cReactEnemyAttack.cData": {
+                    "EnumValue": "[16] WP06_POWER_GUARD_WPON",
+                    "_StartupFrame": 38.0,
+                    "_ActiveFrame": 99.0,
+                    "_IsParry": false,
+                    "_DodgeDist": -1.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cReactEnemyAttack.cData": {
+                    "EnumValue": "[17] WP06_GUARD_COUNTER_WPOFF",
+                    "_StartupFrame": 110.0,
+                    "_ActiveFrame": 999.0,
+                    "_IsParry": false,
+                    "_DodgeDist": -1.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cReactEnemyAttack.cData": {
+                    "EnumValue": "[18] WP06_GUARD_COUNTER_WPON",
+                    "_StartupFrame": 70.0,
+                    "_ActiveFrame": 999.0,
+                    "_IsParry": false,
+                    "_DodgeDist": -1.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cReactEnemyAttack.cData": {
+                    "EnumValue": "[19] WP12_MANUAL_GUARD",
+                    "_StartupFrame": 10.0,
+                    "_ActiveFrame": 8.0,
+                    "_IsParry": true,
+                    "_DodgeDist": -1.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cReactEnemyAttack.cData": {
+                    "EnumValue": "[20] WP12_PARRY",
+                    "_StartupFrame": 85.0,
+                    "_ActiveFrame": 17.0,
+                    "_IsParry": true,
+                    "_DodgeDist": -1.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cReactEnemyAttack.cData": {
+                    "EnumValue": "[21] WP13_STEP",
+                    "_StartupFrame": 0.0,
+                    "_ActiveFrame": 12.0,
+                    "_IsParry": false,
+                    "_DodgeDist": 3.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cReactEnemyAttack.cData": {
+                    "EnumValue": "[22] WP13_STEP_RM",
+                    "_StartupFrame": 0.0,
+                    "_ActiveFrame": 12.0,
+                    "_IsParry": false,
+                    "_DodgeDist": 5.0
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "_AIMoveSet": {
+        "app.user_data.NpcAIMoveSet": {
+          "ref_instance_id": 183,
+          "path": "GameDesign/NPC/Partner/AIMoveTable/_Package/AIMoveSet.user"
+        }
+      },
+      "_AIMoveParam": {
+        "app.user_data.NpcPartnerGlobalParam.cAIMoveParam": {
+          "_Reach_Turn": 0.7,
+          "_Reach_HunterWalk": {
+            "app.user_data.NpcReachCurveParam": {
+              "ref_instance_id": 184,
+              "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ReachParam/HumUnq_AdvisorMove_ReachParam.user"
+            }
+          },
+          "_Reach_HunterRun": {
+            "app.user_data.NpcReachCurveParam": {
+              "ref_instance_id": 185,
+              "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ReachParam/HumUnq_AdvisorRun_ReachParam.user"
+            }
+          },
+          "_Reach_HunterDash": {
+            "app.user_data.NpcReachCurveParam": {
+              "ref_instance_id": 185,
+              "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ReachParam/HumUnq_AdvisorRun_ReachParam.user"
+            }
+          },
+          "_Reach_PorterWalk": 5.0,
+          "_Reach_PorterRun": 6.0,
+          "_Reach_PorterDash": 8.0,
+          "_Reach_PorterTop": 12.0
+        }
+      },
+      "_PartnerJamParam": {
+        "app.cNpcCheckMoveJamParam": {
+          "_CheckJamDist": 0.3,
+          "_CheckJamTime": 1.0,
+          "_DeactivatePressTime": 1.0,
+          "_WarpTryTime": 2.0,
+          "_CheckWarpDist": 0.1,
+          "_WarpDistLimit": 2.0
+        }
+      },
+      "_InfiniteFallParam": {
+        "app.user_data.NpcPartnerGlobalParam.cCheckInfiniteFallParam": {
+          "_SafeFallTime": 40.0
+        }
+      },
+      "_PQSParam": {
+        "app.user_data.NpcPartnerGlobalParam.cPQSParam": {
+          "_RecalcBorder": 0.2,
+          "_RecalcInterval": 0.5,
+          "_DampingMoveSpeedLimit": 10.0,
+          "_DampingTimeScaleRate": 1.0,
+          "_PlayerNearRange": 5.0,
+          "_EmModelSizeDataList": {
+            "app.cEnumerableParam`2<app.EnemyDef.MODEL_SIZE,app.user_data.NpcPartnerGlobalParam.cPQSParam.cEmAttrData>": {
+              "_ParamList": [
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cPQSParam.cEmAttrData": {
+                    "EnumValue": 0,
+                    "_NearRange": 3.5,
+                    "_FarRange": 8.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cPQSParam.cEmAttrData": {
+                    "EnumValue": 1,
+                    "_NearRange": 3.5,
+                    "_FarRange": 8.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cPQSParam.cEmAttrData": {
+                    "EnumValue": 2,
+                    "_NearRange": 4.0,
+                    "_FarRange": 9.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cPQSParam.cEmAttrData": {
+                    "EnumValue": 3,
+                    "_NearRange": 4.0,
+                    "_FarRange": 9.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cPQSParam.cEmAttrData": {
+                    "EnumValue": 4,
+                    "_NearRange": 4.2,
+                    "_FarRange": 9.5
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cPQSParam.cEmAttrData": {
+                    "EnumValue": 5,
+                    "_NearRange": 4.5,
+                    "_FarRange": 10.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cPQSParam.cEmAttrData": {
+                    "EnumValue": 6,
+                    "_NearRange": 5.5,
+                    "_FarRange": 12.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cPQSParam.cEmAttrData": {
+                    "EnumValue": 7,
+                    "_NearRange": 8.0,
+                    "_FarRange": 14.5
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cPQSParam.cEmAttrData": {
+                    "EnumValue": 8,
+                    "_NearRange": 10.0,
+                    "_FarRange": 16.5
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "_TentParam": {
+        "app.user_data.NpcPartnerGlobalParam.cTentParam": {
+          "_InsideRange_XZ": {
+            "raw": "000070410000a040",
+            "type": "Range"
+          },
+          "_InsideRange_Y": {
+            "raw": "0000e04000004040",
+            "type": "Range"
+          }
+        }
+      },
+      "_InteractParam": {
+        "app.user_data.NpcPartnerGlobalParam.cInteractParam": {
+          "_GimmickCategoryDataList": {
+            "app.cEnumerableParam`2<app.GimmickDef.CATEGORY_FOR_NPC_Fixed,app.user_data.NpcPartnerGlobalParam.cInteractParam.cGimmickCategoryData>": {
+              "_ParamList": [
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cInteractParam.cGimmickCategoryData": {
+                    "EnumValue": "[1] MATERIAL00",
+                    "_Priority": 0,
+                    "_WaitTime": 10.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cInteractParam.cGimmickCategoryData": {
+                    "EnumValue": "[2] MATERIAL01",
+                    "_Priority": 0,
+                    "_WaitTime": 10.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cInteractParam.cGimmickCategoryData": {
+                    "EnumValue": "[3] ITEM",
+                    "_Priority": 0,
+                    "_WaitTime": 10.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cInteractParam.cGimmickCategoryData": {
+                    "EnumValue": "[4] BULLET",
+                    "_Priority": 0,
+                    "_WaitTime": 10.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cInteractParam.cGimmickCategoryData": {
+                    "EnumValue": "[5] ORE",
+                    "_Priority": 0,
+                    "_WaitTime": 10.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cInteractParam.cGimmickCategoryData": {
+                    "EnumValue": "[6] BONE",
+                    "_Priority": 0,
+                    "_WaitTime": 10.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cInteractParam.cGimmickCategoryData": {
+                    "EnumValue": "[7] SPECIALTY",
+                    "_Priority": 0,
+                    "_WaitTime": 10.0
+                  }
+                },
+                {
+                  "app.user_data.NpcPartnerGlobalParam.cInteractParam.cGimmickCategoryData": {
+                    "EnumValue": "[8] CARRY",
+                    "_Priority": 0,
+                    "_WaitTime": 10.0
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "_GestureParam": {
+        "app.user_data.NpcPartnerGlobalParam.cGestureParam": {
+          "_CanHagitoriTime": {
+            "raw": "0000404000006442",
+            "type": "Range"
+          },
+          "_DelayGestureTime": {
+            "raw": "cdcccc3d3333333f",
+            "type": "Range"
+          },
+          "_StartTimeMargin": 0.3,
+          "_EndTimeMargin": 60.0,
+          "_ExEmote01TargetLimit_Pl": 2,
+          "_ExEmote01TargetLimit_Npc": 2
+        }
+      },
+      "_St402GuidPositionData": {
+        "app.user_data.NpcPartnerGlobalParam.cSt402GuidPositionData": {
+          "_Phase1AreaCenter": [
+            -530.2033,
+            85.9249,
+            704.7509,
+            0.0
+          ],
+          "_Phase2AreaCenter": [
+            -371.6382,
+            131.2731,
+            760.7488,
+            0.0
+          ],
+          "_Phase2Em0161Around": [
+            -382.9181,
+            131.0823,
+            787.6546,
+            0.0
+          ],
+          "_Phase3AreaCenter": [
+            -293.5253,
+            150.1813,
+            816.7353,
+            0.0
+          ],
+          "_Phase3FallGimmickAround": [
+            -325.4748,
+            150.1852,
+            834.7199,
+            0.0
+          ],
+          "_Phase4AreaCenter": [
+            -258.5865,
+            75.3082,
+            833.2159,
+            0.0
+          ]
+        }
+      },
+      "_AttackChanceEnemyConditionParam": {
+        "app.user_data.NpcPartnerGlobalParam.cAttackChanceEnemyConditionParam": {
+          "_IsDown": true,
+          "_IsPinch": true,
+          "_IsTired": false,
+          "_IsUniqueDown": true,
+          "_ActionIDList": [
+            123,
+            124,
+            125,
+            126,
+            131,
+            132,
+            134,
+            148,
+            149,
+            165,
+            170,
+            174
+          ]
+        }
+      },
+      "_SupportActCommonParam": {
+        "app.user_data.NpcPartnerGlobalParam.cSupportActCommonParam": {
+          "_NearApproachTrapRange": 15.0
+        }
+      },
+      "_SignResponse": {
+        "app.user_data.NpcPartnerGlobalParam.cSignResponse": {
+          "_ContinueTime": 30.0,
+          "_ContinueTime_Ex00": 20.0
+        }
+      },
+      "_SituationVoice": {
+        "app.user_data.NpcPartnerGlobalParam.cSituationVoice": {
+          "_RemoveDelayFrame": 3,
+          "_UniqueMissionID_01": [
+            "[2547790848] MISSION_002150",
+            "[4024161408] MISSION_003250",
+            "[2514475392] MISSION_004320",
+            "[2247655808] MISSION_007035",
+            "[3760861312] MISSION_010115",
+            "[1339655296] MISSION_005360",
+            "[857671872] MISSION_005390",
+            "[9340] MISSION_730015",
+            "[29336] MISSION_730025",
+            "[22363] MISSION_740025"
+          ]
+        }
+      },
+      "_Role": {
+        "app.user_data.NpcPartnerGlobalParam.cRole": {
+          "_Em0166_Hostility_BadConditionEx01StackCount": 2,
+          "_Em0166_Hostility_Time": 30.0,
+          "_Em0078_Cable01_DelayTime": {
+            "raw": "0000204100000000",
+            "type": "Range"
+          },
+          "_Em0078_Cable02_DelayTime": {
+            "raw": "000034430000f041",
+            "type": "Range"
+          },
+          "_Em0078_Cable01_CancelTime": {
+            "raw": "0000000000000000",
+            "type": "Range"
+          },
+          "_Em0078_Cable02_CancelTime": {
+            "raw": "0000000000000000",
+            "type": "Range"
+          },
+          "_Em0078_Cable01_CompleteTime": {
+            "raw": "0000b4420000f041",
+            "type": "Range"
+          },
+          "_Em0078_Cable02_CompleteTime": {
+            "raw": "0000b4420000f041",
+            "type": "Range"
+          },
+          "_Em0078_CableFollowStartDist": 10.0,
+          "_Em0078_CableFollow_CoolTime": {
+            "raw": "0000f04100000000",
+            "type": "Range"
+          }
+        }
+      },
+      "_Damage": {
+        "app.user_data.NpcPartnerGlobalParam.cDamage": {
+          "_RandomDamageRateBias": 0.5,
+          "_SlipDamageRate_Combat_Em0166Heat": 0.5,
+          "_SlipDamageRate_NoCombat_Em0166Heat": 0.5
+        }
+      },
+      "_Wp13ExBulletParam": {
+        "app.user_data.NpcPartnerGlobalParam.cWp13ExBulletParam": {
+          "_HitSlowTime": 0.1,
+          "_HitSlowSpeedRate": 0.4
+        }
+      },
+      "_RouteNaviData": {
+        "app.NpcPartnerRouteNavigationData": {
+          "ref_instance_id": 220,
+          "path": "GameDesign/NPC/Partner/CommonData/Param/Route/Common_RouteNavigationData.user"
+        }
+      },
+      "_PositionOverlap": {
+        "app.user_data.PositionOverlapParam": {
+          "ref_instance_id": 221,
+          "path": "GameDesign/NPC/Partner/CommonData/Param/PositionOverlap/PositionOverlapParam.user"
+        }
+      },
+      "_LocationLink": {
+        "app.user_data.LocationLinkData": {
+          "ref_instance_id": 222,
+          "path": "GameDesign/NPC/Partner/CommonData/Param/PositionOverlap/LocationLinkData.user"
+        }
+      },
+      "_BadConditionReleaseParam": {
+        "app.user_data.NpcBadConditionReleaseDesireParam": {
+          "ref_instance_id": 223,
+          "path": "GameDesign/NPC/Partner/CommonData/Desire/BadConditionRelease/NpcBadConditionReleaseDesireParam.user"
+        }
+      },
+      "_SlingerTable": {
+        "app.user_data.NpcPartnerSlingerTable": {
+          "ref_instance_id": 224,
+          "path": "GameDesign/NPC/Partner/CommonData/Param/Slinger/NpcPartnerSlingerTable.user"
+        }
+      },
+      "_SlingerTable_EX00": {
+        "app.user_data.NpcPartnerSlingerTable": {
+          "ref_instance_id": 225,
+          "path": "GameDesign/NPC/Partner/CommonData/Param/Slinger/NpcPartnerSlingerTableEx00.user"
+        }
+      },
+      "_NpcLandMarkPointData": {
+        "app.user_data.NpcLandMarkPointData": {
+          "ref_instance_id": 226,
+          "path": "GameDesign/NPC/Partner/CommonData/SituationSpeech/NpcLandMarkPointData.user"
+        }
+      },
+      "_LifeAreaPointData": {
+        "app.user_data.NpcLifeAreaPointData": {
+          "ref_instance_id": 227,
+          "path": "GameDesign/NPC/Partner/CommonData/Param/LifeAreaPointData/NpcLifeAreaPointData.user"
+        }
+      },
+      "_LifeAreaRidePointData": {
+        "app.user_data.NpcLifeAreaPointData": {
+          "ref_instance_id": 228,
+          "path": "GameDesign/NPC/Partner/CommonData/Param/LifeAreaPointData/NpcLifeAreaRidePointData.user"
+        }
+      },
+      "_NpcDifficultyRankTable": {
+        "app.NpcPartnerDifficultyRankTable": {
+          "ref_instance_id": 229,
+          "path": "GameDesign/NPC/Partner/CommonData/Param/Rank/NpcPartnerDifficultyRankTable.user"
+        }
+      },
+      "_DetectedGimmickListData": {
+        "app.user_data.NpcCmnGimmickListData": {
+          "ref_instance_id": 230,
+          "path": "GameDesign/NPC/Partner/CommonData/Param/GimmickList/NpcPartner_Detect_GmList.user"
+        }
+      },
+      "_AvoidGimmickListData": {
+        "app.user_data.NpcCmnGimmickListData": {
+          "ref_instance_id": 231,
+          "path": "GameDesign/NPC/Partner/CommonData/Param/GimmickList/NpcPartner_Avoid_GmList.user"
+        }
+      },
+      "_PartnerLotteryTable": {
+        "app.user_data.NpcPartnerLotteryTable": {
+          "ref_instance_id": 232,
+          "path": "GameDesign/NPC/Partner/CommonData/LotteryTable/Common_PartnerLotteryTable.user"
+        }
+      }
+    }
+  }
+]

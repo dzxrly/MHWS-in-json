@@ -1,0 +1,2188 @@
+[
+  {
+    "app.user_data.ExFieldParam_EnemyData": {
+      "_IntervalMin": 2.5,
+      "_StayBufferMinute": 1.6,
+      "_StayMinute": 30,
+      "_BattlefieldBelongingStageStayMinute": 20,
+      "_AddQuestMinute": 20,
+      "_AddSpOfferQuestMinute": 25,
+      "_QuestTimeFraction": 5,
+      "_NotAllowQuestRemain": 0,
+      "_DisableQuestTargetGuaranteedMinute": 10,
+      "_BattlefieldQuestMinute": 50,
+      "_BattlefieldQuestAcceptableMinute": 30,
+      "_YummyInterval": 90,
+      "_YummyLotNum": 1,
+      "_SuitableEm_Min": 1,
+      "_EmBossDifficultyRange": 2,
+      "_EvaluationPoint_Rank": 5,
+      "_EvaluationPoint_VillageBoost": 10,
+      "_EvaluationPoint_SideMisison": 10,
+      "_EvaluationPoint_WishList": 10,
+      "_EvaluationBorder": 0,
+      "_ViewSummaryMin": 0,
+      "_ViewSummaryMax": 10,
+      "_NotifyRemainMinute": 3,
+      "_FirstScheduleEmRemovalRemainMinute": 10,
+      "_PopTypePriorityTbl": [
+        {
+          "app.user_data.ExFieldParam_EnemyData.cPopTypePriority": {
+            "_PopEmType": "[9] OVERRIDE_SWARM",
+            "_Priority": 255,
+            "_EnvBits": {
+              "app.EnvironmentType.ENVIRONMENTBit_Serializable": 7
+            }
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cPopTypePriority": {
+            "_PopEmType": "[8] OVERRIDE",
+            "_Priority": 255,
+            "_EnvBits": {
+              "app.EnvironmentType.ENVIRONMENTBit_Serializable": 7
+            }
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cPopTypePriority": {
+            "_PopEmType": "[13] ASSUME_POPPED",
+            "_Priority": 255,
+            "_EnvBits": {
+              "app.EnvironmentType.ENVIRONMENTBit_Serializable": 7
+            }
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cPopTypePriority": {
+            "_PopEmType": "[2] NUSHI",
+            "_Priority": 150,
+            "_EnvBits": {
+              "app.EnvironmentType.ENVIRONMENTBit_Serializable": 2
+            }
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cPopTypePriority": {
+            "_PopEmType": "[12] COCOON",
+            "_Priority": 140,
+            "_EnvBits": {
+              "app.EnvironmentType.ENVIRONMENTBit_Serializable": 7
+            }
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cPopTypePriority": {
+            "_PopEmType": "[10] BATTLEFIELD",
+            "_Priority": 125,
+            "_EnvBits": {
+              "app.EnvironmentType.ENVIRONMENTBit_Serializable": 7
+            }
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cPopTypePriority": {
+            "_PopEmType": "[11] BF_POP_BELONGING",
+            "_Priority": 120,
+            "_EnvBits": {
+              "app.EnvironmentType.ENVIRONMENTBit_Serializable": 7
+            }
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cPopTypePriority": {
+            "_PopEmType": "[5] POP_MANY_2",
+            "_Priority": 100,
+            "_EnvBits": {
+              "app.EnvironmentType.ENVIRONMENTBit_Serializable": 7
+            }
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cPopTypePriority": {
+            "_PopEmType": "[4] POP_MANY",
+            "_Priority": 90,
+            "_EnvBits": {
+              "app.EnvironmentType.ENVIRONMENTBit_Serializable": 7
+            }
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cPopTypePriority": {
+            "_PopEmType": "[3] SWARM",
+            "_Priority": 80,
+            "_EnvBits": {
+              "app.EnvironmentType.ENVIRONMENTBit_Serializable": 7
+            }
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cPopTypePriority": {
+            "_PopEmType": "[6] FRENZY",
+            "_Priority": 60,
+            "_EnvBits": {
+              "app.EnvironmentType.ENVIRONMENTBit_Serializable": 7
+            }
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cPopTypePriority": {
+            "_PopEmType": "[7] LEGENDARY",
+            "_Priority": 50,
+            "_EnvBits": {
+              "app.EnvironmentType.ENVIRONMENTBit_Serializable": 7
+            }
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cPopTypePriority": {
+            "_PopEmType": "[2] NUSHI",
+            "_Priority": 40,
+            "_EnvBits": {
+              "app.EnvironmentType.ENVIRONMENTBit_Serializable": 5
+            }
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cPopTypePriority": {
+            "_PopEmType": "[1] NORMAL",
+            "_Priority": 0,
+            "_EnvBits": {
+              "app.EnvironmentType.ENVIRONMENTBit_Serializable": 7
+            }
+          }
+        }
+      ],
+      "_ExEnemies": [
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[33] EM0152_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 402,
+            "_AcceptableHR": 9,
+            "_SuitableHR": {
+              "raw": "0000104100003041",
+              "type": "Range"
+            },
+            "_PremiseMission": "[0] INVALID",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[33] EM0152_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 420,
+            "_AcceptableHR": 21,
+            "_SuitableHR": {
+              "raw": "0000a84100009841",
+              "type": "Range"
+            },
+            "_PremiseMission": "[0] INVALID",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[15] EM0150_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 501,
+            "_AcceptableHR": 9,
+            "_SuitableHR": {
+              "raw": "0000a84100009841",
+              "type": "Range"
+            },
+            "_PremiseMission": "[0] INVALID",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[15] EM0150_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 520,
+            "_AcceptableHR": 31,
+            "_SuitableHR": {
+              "raw": "0000f8410000e841",
+              "type": "Range"
+            },
+            "_PremiseMission": "[4012840000] MISSION_007030",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[15] EM0150_00_0",
+            "_RoleID": 1,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 501,
+            "_AcceptableHR": 9,
+            "_SuitableHR": {
+              "raw": "0000a84100009841",
+              "type": "Range"
+            },
+            "_PremiseMission": "[0] INVALID",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[15] EM0150_00_0",
+            "_RoleID": 1,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 520,
+            "_AcceptableHR": 31,
+            "_SuitableHR": {
+              "raw": "0000f8410000e841",
+              "type": "Range"
+            },
+            "_PremiseMission": "[4012840000] MISSION_007030",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[26] EM0001_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 406,
+            "_AcceptableHR": 9,
+            "_SuitableHR": {
+              "raw": "0000804100006041",
+              "type": "Range"
+            },
+            "_PremiseMission": "[0] INVALID",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[26] EM0001_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 420,
+            "_AcceptableHR": 21,
+            "_SuitableHR": {
+              "raw": "0000a84100009841",
+              "type": "Range"
+            },
+            "_PremiseMission": "[0] INVALID",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[16] EM0151_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 409,
+            "_AcceptableHR": 9,
+            "_SuitableHR": {
+              "raw": "0000804100006041",
+              "type": "Range"
+            },
+            "_PremiseMission": "[0] INVALID",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[16] EM0151_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 420,
+            "_AcceptableHR": 21,
+            "_SuitableHR": {
+              "raw": "0000a84100009841",
+              "type": "Range"
+            },
+            "_PremiseMission": "[0] INVALID",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[4260029776] EM0153_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 401,
+            "_AcceptableHR": 9,
+            "_SuitableHR": {
+              "raw": "0000104100003041",
+              "type": "Range"
+            },
+            "_PremiseMission": -1,
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[4260029776] EM0153_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 420,
+            "_AcceptableHR": 21,
+            "_SuitableHR": {
+              "raw": "0000a84100009841",
+              "type": "Range"
+            },
+            "_PremiseMission": -1,
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[2747602688] EM0156_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 601,
+            "_AcceptableHR": 30,
+            "_SuitableHR": {
+              "raw": "0000f84100007244",
+              "type": "Range"
+            },
+            "_PremiseMission": "[987710144] MISSION_008060",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[2747602688] EM0156_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 620,
+            "_AcceptableHR": 41,
+            "_SuitableHR": {
+              "raw": "0000244200806f44",
+              "type": "Range"
+            },
+            "_PremiseMission": "[1396136064] MISSION_011125",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[2766005120] EM0154_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 403,
+            "_AcceptableHR": 9,
+            "_SuitableHR": {
+              "raw": "0000104100003041",
+              "type": "Range"
+            },
+            "_PremiseMission": -1,
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[2766005120] EM0154_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 420,
+            "_AcceptableHR": 21,
+            "_SuitableHR": {
+              "raw": "0000a84100009841",
+              "type": "Range"
+            },
+            "_PremiseMission": -1,
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[1467998976] EM0157_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 603,
+            "_AcceptableHR": 30,
+            "_SuitableHR": {
+              "raw": "0000f84100007244",
+              "type": "Range"
+            },
+            "_PremiseMission": "[987710144] MISSION_008060",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[1467998976] EM0157_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 620,
+            "_AcceptableHR": 41,
+            "_SuitableHR": {
+              "raw": "0000244200806f44",
+              "type": "Range"
+            },
+            "_PremiseMission": "[1396136064] MISSION_011125",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[2854766208] EM0021_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 402,
+            "_AcceptableHR": 9,
+            "_SuitableHR": {
+              "raw": "0000104100003041",
+              "type": "Range"
+            },
+            "_PremiseMission": -1,
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[2854766208] EM0021_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 420,
+            "_AcceptableHR": 21,
+            "_SuitableHR": {
+              "raw": "0000a84100009841",
+              "type": "Range"
+            },
+            "_PremiseMission": -1,
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[1049705664] EM0009_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 405,
+            "_AcceptableHR": 9,
+            "_SuitableHR": {
+              "raw": "0000104100003041",
+              "type": "Range"
+            },
+            "_PremiseMission": -1,
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[1049705664] EM0009_00_0",
+            "_RoleID": 3,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 400,
+            "_AcceptableHR": 16,
+            "_SuitableHR": {
+              "raw": "0000104100003041",
+              "type": "Range"
+            },
+            "_PremiseMission": -1,
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[1049705664] EM0009_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 420,
+            "_AcceptableHR": 21,
+            "_SuitableHR": {
+              "raw": "0000a84100009841",
+              "type": "Range"
+            },
+            "_PremiseMission": -1,
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[402056736] EM0008_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 406,
+            "_AcceptableHR": 9,
+            "_SuitableHR": {
+              "raw": "0000104100003041",
+              "type": "Range"
+            },
+            "_PremiseMission": -1,
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[402056736] EM0008_00_0",
+            "_RoleID": 3,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 400,
+            "_AcceptableHR": 16,
+            "_SuitableHR": {
+              "raw": "0000104100003041",
+              "type": "Range"
+            },
+            "_PremiseMission": -1,
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[402056736] EM0008_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 420,
+            "_AcceptableHR": 21,
+            "_SuitableHR": {
+              "raw": "0000a84100009841",
+              "type": "Range"
+            },
+            "_PremiseMission": -1,
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[746996864] EM0160_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 601,
+            "_AcceptableHR": 41,
+            "_SuitableHR": {
+              "raw": "0000244200806f44",
+              "type": "Range"
+            },
+            "_PremiseMission": "[1396136064] MISSION_011125",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[746996864] EM0160_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 630,
+            "_AcceptableHR": 41,
+            "_SuitableHR": {
+              "raw": "0000244200806f44",
+              "type": "Range"
+            },
+            "_PremiseMission": "[1396136064] MISSION_011125",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[33] EM0152_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[1] STORY",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 101,
+            "_AcceptableHR": 1,
+            "_SuitableHR": {
+              "raw": "0000803f0000e040",
+              "type": "Range"
+            },
+            "_PremiseMission": "[3844272480] MISSION_001040",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[15] EM0150_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[1] STORY",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 101,
+            "_AcceptableHR": 2,
+            "_SuitableHR": {
+              "raw": "0000803f0000e040",
+              "type": "Range"
+            },
+            "_PremiseMission": "[3772516928] MISSION_001135",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[15] EM0150_00_0",
+            "_RoleID": 1,
+            "_LegendaryID": 0,
+            "_Rank": "[1] STORY",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 101,
+            "_AcceptableHR": 2,
+            "_SuitableHR": {
+              "raw": "0000803f0000e040",
+              "type": "Range"
+            },
+            "_PremiseMission": "[3772516928] MISSION_001135",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[16] EM0151_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[1] STORY",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 101,
+            "_AcceptableHR": 2,
+            "_SuitableHR": {
+              "raw": "0000803f0000e040",
+              "type": "Range"
+            },
+            "_PremiseMission": "[3455402816] MISSION_001130",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[4260029776] EM0153_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[1] STORY",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 101,
+            "_AcceptableHR": 1,
+            "_SuitableHR": {
+              "raw": "0000803f0000e040",
+              "type": "Range"
+            },
+            "_PremiseMission": "[1905630464] MISSION_001050",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[2747602688] EM0156_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[1] STORY",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 201,
+            "_AcceptableHR": 3,
+            "_SuitableHR": {
+              "raw": "0000803f0000e040",
+              "type": "Range"
+            },
+            "_PremiseMission": "[2209607424] MISSION_003210",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[2766005120] EM0154_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[1] STORY",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 101,
+            "_AcceptableHR": 2,
+            "_SuitableHR": {
+              "raw": "0000803f0000e040",
+              "type": "Range"
+            },
+            "_PremiseMission": "[551616896] MISSION_001080",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[1467998976] EM0157_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[1] STORY",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 201,
+            "_AcceptableHR": 3,
+            "_SuitableHR": {
+              "raw": "0000803f0000e040",
+              "type": "Range"
+            },
+            "_PremiseMission": "[2547790848] MISSION_002150",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[2854766208] EM0021_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[1] STORY",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 101,
+            "_AcceptableHR": 2,
+            "_SuitableHR": {
+              "raw": "0000803f0000e040",
+              "type": "Range"
+            },
+            "_PremiseMission": "[719854400] MISSION_001110",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[1965232896] EM0002_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 503,
+            "_AcceptableHR": 9,
+            "_SuitableHR": {
+              "raw": "0000a84100009841",
+              "type": "Range"
+            },
+            "_PremiseMission": -1,
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[1965232896] EM0002_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 520,
+            "_AcceptableHR": 31,
+            "_SuitableHR": {
+              "raw": "0000f8410000e841",
+              "type": "Range"
+            },
+            "_PremiseMission": "[4012840000] MISSION_007030",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[567628288] EM0155_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[1] STORY",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 201,
+            "_AcceptableHR": 3,
+            "_SuitableHR": {
+              "raw": "0000803f0000e040",
+              "type": "Range"
+            },
+            "_PremiseMission": "[1854088320] MISSION_002190",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[567628288] EM0155_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 404,
+            "_AcceptableHR": 9,
+            "_SuitableHR": {
+              "raw": "0000104100003041",
+              "type": "Range"
+            },
+            "_PremiseMission": -1,
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[567628288] EM0155_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 420,
+            "_AcceptableHR": 21,
+            "_SuitableHR": {
+              "raw": "0000a84100009841",
+              "type": "Range"
+            },
+            "_PremiseMission": -1,
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[777460864] EM0159_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[1] STORY",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 201,
+            "_AcceptableHR": 4,
+            "_SuitableHR": {
+              "raw": "0000803f0000e040",
+              "type": "Range"
+            },
+            "_PremiseMission": "[4024161408] MISSION_003250",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[777460864] EM0159_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 501,
+            "_AcceptableHR": 9,
+            "_SuitableHR": {
+              "raw": "0000a84100009841",
+              "type": "Range"
+            },
+            "_PremiseMission": -1,
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[777460864] EM0159_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 520,
+            "_AcceptableHR": 31,
+            "_SuitableHR": {
+              "raw": "0000f8410000e841",
+              "type": "Range"
+            },
+            "_PremiseMission": "[4012840000] MISSION_007030",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[1657778432] EM0158_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[1] STORY",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 301,
+            "_AcceptableHR": 4,
+            "_SuitableHR": {
+              "raw": "0000803f0000e040",
+              "type": "Range"
+            },
+            "_PremiseMission": "[335987328] MISSION_003260",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[1657778432] EM0158_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 602,
+            "_AcceptableHR": 30,
+            "_SuitableHR": {
+              "raw": "0000f84100007244",
+              "type": "Range"
+            },
+            "_PremiseMission": "[987710144] MISSION_008060",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[1657778432] EM0158_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 620,
+            "_AcceptableHR": 41,
+            "_SuitableHR": {
+              "raw": "0000244200806f44",
+              "type": "Range"
+            },
+            "_PremiseMission": "[1396136064] MISSION_011125",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[3759888896] EM0005_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 504,
+            "_AcceptableHR": 9,
+            "_SuitableHR": {
+              "raw": "0000a84100009841",
+              "type": "Range"
+            },
+            "_PremiseMission": -1,
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[3759888896] EM0005_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 520,
+            "_AcceptableHR": 31,
+            "_SuitableHR": {
+              "raw": "0000f8410000e841",
+              "type": "Range"
+            },
+            "_PremiseMission": "[4012840000] MISSION_007030",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[2931596800] EM0070_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[1] STORY",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 201,
+            "_AcceptableHR": 4,
+            "_SuitableHR": {
+              "raw": "0000803f0000e040",
+              "type": "Range"
+            },
+            "_PremiseMission": "[3969657280] MISSION_003230",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[2931596800] EM0070_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 408,
+            "_AcceptableHR": 9,
+            "_SuitableHR": {
+              "raw": "0000804100006041",
+              "type": "Range"
+            },
+            "_PremiseMission": -1,
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[2931596800] EM0070_00_0",
+            "_RoleID": 3,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 400,
+            "_AcceptableHR": 16,
+            "_SuitableHR": {
+              "raw": "0000804100006041",
+              "type": "Range"
+            },
+            "_PremiseMission": -1,
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[2931596800] EM0070_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 420,
+            "_AcceptableHR": 21,
+            "_SuitableHR": {
+              "raw": "0000a84100009841",
+              "type": "Range"
+            },
+            "_PremiseMission": -1,
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[222933952] EM0161_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[1] STORY",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 201,
+            "_AcceptableHR": 4,
+            "_SuitableHR": {
+              "raw": "0000803f0000e040",
+              "type": "Range"
+            },
+            "_PremiseMission": "[268897600] MISSION_003240",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[222933952] EM0161_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 407,
+            "_AcceptableHR": 9,
+            "_SuitableHR": {
+              "raw": "0000804100006041",
+              "type": "Range"
+            },
+            "_PremiseMission": -1,
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": [
+              {
+                "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam.cOptionTagInfo": {
+                  "_OptionTag": {
+                    "app.EnemyDef.OptionTagHolder": {
+                      "Value": 0
+                    }
+                  },
+                  "_RandomWeight": 10,
+                  "_IsCheckStage": false,
+                  "_Stage": "[1044114240] INVALID",
+                  "_IsCheckEnv": false,
+                  "_EnvType": "[1961958400] RUIN"
+                }
+              },
+              {
+                "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam.cOptionTagInfo": {
+                  "_OptionTag": {
+                    "app.EnemyDef.OptionTagHolder": {
+                      "Value": 1
+                    }
+                  },
+                  "_RandomWeight": 10,
+                  "_IsCheckStage": true,
+                  "_Stage": "[544388992] ST402",
+                  "_IsCheckEnv": false,
+                  "_EnvType": "[1961958400] RUIN"
+                }
+              },
+              {
+                "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam.cOptionTagInfo": {
+                  "_OptionTag": {
+                    "app.EnemyDef.OptionTagHolder": {
+                      "Value": 2
+                    }
+                  },
+                  "_RandomWeight": 10,
+                  "_IsCheckStage": true,
+                  "_Stage": "[544388992] ST402",
+                  "_IsCheckEnv": false,
+                  "_EnvType": "[1961958400] RUIN"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[222933952] EM0161_00_0",
+            "_RoleID": 3,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 400,
+            "_AcceptableHR": 16,
+            "_SuitableHR": {
+              "raw": "0000804100006041",
+              "type": "Range"
+            },
+            "_PremiseMission": -1,
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[222933952] EM0161_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 420,
+            "_AcceptableHR": 21,
+            "_SuitableHR": {
+              "raw": "0000a84100009841",
+              "type": "Range"
+            },
+            "_PremiseMission": -1,
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[2129596800] EM0022_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 501,
+            "_AcceptableHR": 9,
+            "_SuitableHR": {
+              "raw": "0000a84100009841",
+              "type": "Range"
+            },
+            "_PremiseMission": -1,
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[2129596800] EM0022_00_0",
+            "_RoleID": 3,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 500,
+            "_AcceptableHR": 16,
+            "_SuitableHR": {
+              "raw": "000080410000c041",
+              "type": "Range"
+            },
+            "_PremiseMission": -1,
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": [
+              {
+                "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam.cOptionTagInfo": {
+                  "_OptionTag": {
+                    "app.EnemyDef.OptionTagHolder": {
+                      "Value": 1
+                    }
+                  },
+                  "_RandomWeight": 10,
+                  "_IsCheckStage": false,
+                  "_Stage": "[1044114240] INVALID",
+                  "_IsCheckEnv": false,
+                  "_EnvType": "[1961958400] RUIN"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[2129596800] EM0022_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 520,
+            "_AcceptableHR": 31,
+            "_SuitableHR": {
+              "raw": "0000f8410000e841",
+              "type": "Range"
+            },
+            "_PremiseMission": "[4012840000] MISSION_007030",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[1553456768] EM0162_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 604,
+            "_AcceptableHR": 31,
+            "_SuitableHR": {
+              "raw": "0000f84100007244",
+              "type": "Range"
+            },
+            "_PremiseMission": "[2009542528] MISSION_008050",
+            "_QuestClearCondition": "[2] EM_BOSS_KILL",
+            "_OptionTagArray": [
+              {
+                "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam.cOptionTagInfo": {
+                  "_OptionTag": {
+                    "app.EnemyDef.OptionTagHolder": {
+                      "Value": 0
+                    }
+                  },
+                  "_RandomWeight": 10,
+                  "_IsCheckStage": false,
+                  "_Stage": "[1044114240] INVALID",
+                  "_IsCheckEnv": false,
+                  "_EnvType": "[1961958400] RUIN"
+                }
+              },
+              {
+                "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam.cOptionTagInfo": {
+                  "_OptionTag": {
+                    "app.EnemyDef.OptionTagHolder": {
+                      "Value": 2
+                    }
+                  },
+                  "_RandomWeight": 10,
+                  "_IsCheckStage": false,
+                  "_Stage": "[1044114240] INVALID",
+                  "_IsCheckEnv": false,
+                  "_EnvType": "[1961958400] RUIN"
+                }
+              },
+              {
+                "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam.cOptionTagInfo": {
+                  "_OptionTag": {
+                    "app.EnemyDef.OptionTagHolder": {
+                      "Value": 8
+                    }
+                  },
+                  "_RandomWeight": 10,
+                  "_IsCheckStage": false,
+                  "_Stage": "[1044114240] INVALID",
+                  "_IsCheckEnv": false,
+                  "_EnvType": "[1961958400] RUIN"
+                }
+              },
+              {
+                "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam.cOptionTagInfo": {
+                  "_OptionTag": {
+                    "app.EnemyDef.OptionTagHolder": {
+                      "Value": 16
+                    }
+                  },
+                  "_RandomWeight": 10,
+                  "_IsCheckStage": false,
+                  "_Stage": "[1044114240] INVALID",
+                  "_IsCheckEnv": false,
+                  "_EnvType": "[1961958400] RUIN"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[1553456768] EM0162_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 621,
+            "_AcceptableHR": 41,
+            "_SuitableHR": {
+              "raw": "0000244200806f44",
+              "type": "Range"
+            },
+            "_PremiseMission": "[1396136064] MISSION_011125",
+            "_QuestClearCondition": "[2] EM_BOSS_KILL",
+            "_OptionTagArray": [
+              {
+                "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam.cOptionTagInfo": {
+                  "_OptionTag": {
+                    "app.EnemyDef.OptionTagHolder": {
+                      "Value": 0
+                    }
+                  },
+                  "_RandomWeight": 10,
+                  "_IsCheckStage": false,
+                  "_Stage": "[1044114240] INVALID",
+                  "_IsCheckEnv": false,
+                  "_EnvType": "[1961958400] RUIN"
+                }
+              },
+              {
+                "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam.cOptionTagInfo": {
+                  "_OptionTag": {
+                    "app.EnemyDef.OptionTagHolder": {
+                      "Value": 2
+                    }
+                  },
+                  "_RandomWeight": 10,
+                  "_IsCheckStage": false,
+                  "_Stage": "[1044114240] INVALID",
+                  "_IsCheckEnv": false,
+                  "_EnvType": "[1961958400] RUIN"
+                }
+              },
+              {
+                "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam.cOptionTagInfo": {
+                  "_OptionTag": {
+                    "app.EnemyDef.OptionTagHolder": {
+                      "Value": 8
+                    }
+                  },
+                  "_RandomWeight": 10,
+                  "_IsCheckStage": false,
+                  "_Stage": "[1044114240] INVALID",
+                  "_IsCheckEnv": false,
+                  "_EnvType": "[1961958400] RUIN"
+                }
+              },
+              {
+                "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam.cOptionTagInfo": {
+                  "_OptionTag": {
+                    "app.EnemyDef.OptionTagHolder": {
+                      "Value": 16
+                    }
+                  },
+                  "_RandomWeight": 10,
+                  "_IsCheckStage": false,
+                  "_Stage": "[1044114240] INVALID",
+                  "_IsCheckEnv": false,
+                  "_EnvType": "[1961958400] RUIN"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[3536716480] EM0071_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 600,
+            "_AcceptableHR": 31,
+            "_SuitableHR": {
+              "raw": "0000f84100007244",
+              "type": "Range"
+            },
+            "_PremiseMission": "[3225658496] MISSION_010110",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[3536716480] EM0071_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 620,
+            "_AcceptableHR": 41,
+            "_SuitableHR": {
+              "raw": "0000244200806f44",
+              "type": "Range"
+            },
+            "_PremiseMission": -1,
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[2378537600] EM0150_50_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[1] STORY",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 302,
+            "_AcceptableHR": 5,
+            "_SuitableHR": {
+              "raw": "0000803f0000e040",
+              "type": "Range"
+            },
+            "_PremiseMission": "[3097372416] MISSION_004270",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[2378537600] EM0150_50_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 505,
+            "_AcceptableHR": 21,
+            "_SuitableHR": {
+              "raw": "0000a84100009841",
+              "type": "Range"
+            },
+            "_PremiseMission": -1,
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[2378537600] EM0150_50_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 520,
+            "_AcceptableHR": 31,
+            "_SuitableHR": {
+              "raw": "0000f8410000e841",
+              "type": "Range"
+            },
+            "_PremiseMission": "[4012840000] MISSION_007030",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[1411933184] EM0002_50_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[1] STORY",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 303,
+            "_AcceptableHR": 5,
+            "_SuitableHR": {
+              "raw": "0000803f0000e040",
+              "type": "Range"
+            },
+            "_PremiseMission": "[2715322752] MISSION_004290",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[1411933184] EM0002_50_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 508,
+            "_AcceptableHR": 21,
+            "_SuitableHR": {
+              "raw": "0000a84100009841",
+              "type": "Range"
+            },
+            "_PremiseMission": -1,
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[1411933184] EM0002_50_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 520,
+            "_AcceptableHR": 31,
+            "_SuitableHR": {
+              "raw": "0000f8410000e841",
+              "type": "Range"
+            },
+            "_PremiseMission": "[4012840000] MISSION_007030",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[1663995904] EM0113_51_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[1] STORY",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 303,
+            "_AcceptableHR": 6,
+            "_SuitableHR": {
+              "raw": "0000803f0000e040",
+              "type": "Range"
+            },
+            "_PremiseMission": "[3242986496] MISSION_005340",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[1663995904] EM0113_51_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 507,
+            "_AcceptableHR": 21,
+            "_SuitableHR": {
+              "raw": "0000a84100009841",
+              "type": "Range"
+            },
+            "_PremiseMission": -1,
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[1663995904] EM0113_51_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 520,
+            "_AcceptableHR": 31,
+            "_SuitableHR": {
+              "raw": "0000f8410000e841",
+              "type": "Range"
+            },
+            "_PremiseMission": "[4012840000] MISSION_007030",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[107194928] EM0100_51_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 506,
+            "_AcceptableHR": 21,
+            "_SuitableHR": {
+              "raw": "0000a84100009841",
+              "type": "Range"
+            },
+            "_PremiseMission": -1,
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[107194928] EM0100_51_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 520,
+            "_AcceptableHR": 31,
+            "_SuitableHR": {
+              "raw": "0000f8410000e841",
+              "type": "Range"
+            },
+            "_PremiseMission": "[4012840000] MISSION_007030",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[32634] EM0082_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 509,
+            "_AcceptableHR": 21,
+            "_SuitableHR": {
+              "raw": "0000a84100009841",
+              "type": "Range"
+            },
+            "_PremiseMission": "[21091] MISSION_700010",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[1401863296] EM0163_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[1] STORY",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 301,
+            "_AcceptableHR": 6,
+            "_SuitableHR": {
+              "raw": "0000803f0000e040",
+              "type": "Range"
+            },
+            "_PremiseMission": "[3541866432] MISSION_005350",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[1401863296] EM0163_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 502,
+            "_AcceptableHR": 21,
+            "_SuitableHR": {
+              "raw": "0000a84100009841",
+              "type": "Range"
+            },
+            "_PremiseMission": -1,
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[1401863296] EM0163_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 520,
+            "_AcceptableHR": 31,
+            "_SuitableHR": {
+              "raw": "0000f8410000e841",
+              "type": "Range"
+            },
+            "_PremiseMission": "[4012840000] MISSION_007030",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[32634] EM0082_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 630,
+            "_AcceptableHR": 41,
+            "_SuitableHR": {
+              "raw": "0000244200806f44",
+              "type": "Range"
+            },
+            "_PremiseMission": "[21091] MISSION_700010",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[2291498624] EM0164_50_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 631,
+            "_AcceptableHR": 50,
+            "_SuitableHR": {
+              "raw": "0000484200406d44",
+              "type": "Range"
+            },
+            "_PremiseMission": "[22650] MISSION_700020",
+            "_QuestClearCondition": "[2] EM_BOSS_KILL",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[3211124352] EM0046_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 601,
+            "_AcceptableHR": 31,
+            "_SuitableHR": {
+              "raw": "0000f84100007244",
+              "type": "Range"
+            },
+            "_PremiseMission": "[19179] MISSION_720010",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[3211124352] EM0046_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 632,
+            "_AcceptableHR": 41,
+            "_SuitableHR": {
+              "raw": "0000244200806f44",
+              "type": "Range"
+            },
+            "_PremiseMission": "[19179] MISSION_720010",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[25] EM0077_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 0,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 601,
+            "_AcceptableHR": 31,
+            "_SuitableHR": {
+              "raw": "0000f84100007244",
+              "type": "Range"
+            },
+            "_PremiseMission": "[31315] MISSION_720020",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[25] EM0077_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[1638640000] INVALID",
+            "_GeneralRewardTblID": 633,
+            "_AcceptableHR": 41,
+            "_SuitableHR": {
+              "raw": "0000244200806f44",
+              "type": "Range"
+            },
+            "_PremiseMission": "[31315] MISSION_720020",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[2747602688] EM0156_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[2010001152] REWARD_RANK_09",
+            "_GeneralRewardTblID": 109,
+            "_AcceptableHR": 100,
+            "_SuitableHR": {
+              "raw": "0000c84200c06044",
+              "type": "Range"
+            },
+            "_PremiseMission": "[0] INVALID",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[1467998976] EM0157_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[2010001152] REWARD_RANK_09",
+            "_GeneralRewardTblID": 109,
+            "_AcceptableHR": 100,
+            "_SuitableHR": {
+              "raw": "0000c84200c06044",
+              "type": "Range"
+            },
+            "_PremiseMission": "[0] INVALID",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[1657778432] EM0158_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[2010001152] REWARD_RANK_09",
+            "_GeneralRewardTblID": 109,
+            "_AcceptableHR": 100,
+            "_SuitableHR": {
+              "raw": "0000c84200c06044",
+              "type": "Range"
+            },
+            "_PremiseMission": "[0] INVALID",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[1553456768] EM0162_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[2010001152] REWARD_RANK_09",
+            "_GeneralRewardTblID": 120,
+            "_AcceptableHR": 100,
+            "_SuitableHR": {
+              "raw": "0000c84200c06044",
+              "type": "Range"
+            },
+            "_PremiseMission": "[0] INVALID",
+            "_QuestClearCondition": "[2] EM_BOSS_KILL",
+            "_OptionTagArray": [
+              {
+                "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam.cOptionTagInfo": {
+                  "_OptionTag": {
+                    "app.EnemyDef.OptionTagHolder": {
+                      "Value": 0
+                    }
+                  },
+                  "_RandomWeight": 10,
+                  "_IsCheckStage": false,
+                  "_Stage": "[1044114240] INVALID",
+                  "_IsCheckEnv": false,
+                  "_EnvType": "[1961958400] RUIN"
+                }
+              },
+              {
+                "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam.cOptionTagInfo": {
+                  "_OptionTag": {
+                    "app.EnemyDef.OptionTagHolder": {
+                      "Value": 2
+                    }
+                  },
+                  "_RandomWeight": 10,
+                  "_IsCheckStage": false,
+                  "_Stage": "[1044114240] INVALID",
+                  "_IsCheckEnv": false,
+                  "_EnvType": "[1961958400] RUIN"
+                }
+              },
+              {
+                "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam.cOptionTagInfo": {
+                  "_OptionTag": {
+                    "app.EnemyDef.OptionTagHolder": {
+                      "Value": 8
+                    }
+                  },
+                  "_RandomWeight": 10,
+                  "_IsCheckStage": false,
+                  "_Stage": "[1044114240] INVALID",
+                  "_IsCheckEnv": false,
+                  "_EnvType": "[1961958400] RUIN"
+                }
+              },
+              {
+                "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam.cOptionTagInfo": {
+                  "_OptionTag": {
+                    "app.EnemyDef.OptionTagHolder": {
+                      "Value": 16
+                    }
+                  },
+                  "_RandomWeight": 10,
+                  "_IsCheckStage": false,
+                  "_Stage": "[1044114240] INVALID",
+                  "_IsCheckEnv": false,
+                  "_EnvType": "[1961958400] RUIN"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[3536716480] EM0071_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[2010001152] REWARD_RANK_09",
+            "_GeneralRewardTblID": 120,
+            "_AcceptableHR": 100,
+            "_SuitableHR": {
+              "raw": "0000c84200c06044",
+              "type": "Range"
+            },
+            "_PremiseMission": "[0] INVALID",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[746996864] EM0160_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[2010001152] REWARD_RANK_09",
+            "_GeneralRewardTblID": 119,
+            "_AcceptableHR": 100,
+            "_SuitableHR": {
+              "raw": "0000c84200c06044",
+              "type": "Range"
+            },
+            "_PremiseMission": "[0] INVALID",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[3211124352] EM0046_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[2010001152] REWARD_RANK_09",
+            "_GeneralRewardTblID": 119,
+            "_AcceptableHR": 100,
+            "_SuitableHR": {
+              "raw": "0000c84200c06044",
+              "type": "Range"
+            },
+            "_PremiseMission": "[19179] MISSION_720010",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[25] EM0077_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[2010001152] REWARD_RANK_09",
+            "_GeneralRewardTblID": 119,
+            "_AcceptableHR": 100,
+            "_SuitableHR": {
+              "raw": "0000c84200c06044",
+              "type": "Range"
+            },
+            "_PremiseMission": "[31315] MISSION_720020",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[32634] EM0082_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[2010001152] REWARD_RANK_09",
+            "_GeneralRewardTblID": 109,
+            "_AcceptableHR": 100,
+            "_SuitableHR": {
+              "raw": "0000c84200c06044",
+              "type": "Range"
+            },
+            "_PremiseMission": "[21091] MISSION_700010",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cExEmGlobalParam": {
+            "_EmID": "[1965232896] EM0002_00_0",
+            "_RoleID": 0,
+            "_LegendaryID": 1,
+            "_Rank": "[2] EX",
+            "_DifficultyRank": "[2010001152] REWARD_RANK_09",
+            "_GeneralRewardTblID": 109,
+            "_AcceptableHR": 100,
+            "_SuitableHR": {
+              "raw": "0000c84200c06044",
+              "type": "Range"
+            },
+            "_PremiseMission": "[0] INVALID",
+            "_QuestClearCondition": "[1] EM_BOSS_HUNTING",
+            "_OptionTagArray": []
+          }
+        }
+      ],
+      "_ExclusiveEmArray": [
+        "[3211124352] EM0046_00_0",
+        "[3536716480] EM0071_00_0"
+      ],
+      "_ZakoPopConditions": [
+        {
+          "app.user_data.ExFieldParam_EnemyData.cZakoPopCondition": {
+            "_EmID": "[3651759616] EM1164_50_0",
+            "_Rank": "[1] STORY",
+            "_PopableHR": 0,
+            "_PremiseMission": "[0] INVALID",
+            "_PremiseQuest": "[3653362880] MISSION_004310"
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cZakoPopCondition": {
+            "_EmID": "[2603298048] EM1023_00_0",
+            "_Rank": "[2] EX",
+            "_PopableHR": 0,
+            "_PremiseMission": "[0] INVALID",
+            "_PremiseQuest": "[0] INVALID"
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EnemyData.cZakoPopCondition": {
+            "_EmID": "[20326] EM1165_00_0",
+            "_Rank": "[2] EX",
+            "_PopableHR": 0,
+            "_PremiseMission": "[0] INVALID",
+            "_PremiseQuest": "[29336] MISSION_730025"
+          }
+        }
+      ],
+      "_EmAreaMove": [
+        {
+          "app.user_data.ExFieldParam_EmAreaMove": {
+            "ref_instance_id": 294,
+            "path": "GameDesign/Environment/UserData/ExFieldPattern/ExFieldPattern_Default/ExFieldParam_EmAreaMove_00.user"
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EmAreaMove": {
+            "ref_instance_id": 295,
+            "path": "GameDesign/Environment/UserData/ExFieldPattern/ExFieldPattern_Default/ExFieldParam_EmAreaMove_10.user"
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EmAreaMove": {
+            "ref_instance_id": 296,
+            "path": "GameDesign/Environment/UserData/ExFieldPattern/ExFieldPattern_Default/ExFieldParam_EmAreaMove_15.user"
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EmAreaMove": {
+            "ref_instance_id": 297,
+            "path": "GameDesign/Environment/UserData/ExFieldPattern/ExFieldPattern_Default/ExFieldParam_EmAreaMove_20.user"
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EmAreaMove": {
+            "ref_instance_id": 298,
+            "path": "GameDesign/Environment/UserData/ExFieldPattern/ExFieldPattern_Default/ExFieldParam_EmAreaMove_30.user"
+          }
+        },
+        {
+          "app.user_data.ExFieldParam_EmAreaMove": {
+            "ref_instance_id": 299,
+            "path": "GameDesign/Environment/UserData/ExFieldPattern/ExFieldPattern_Default/ExFieldParam_EmAreaMove_40.user"
+          }
+        }
+      ]
+    }
+  }
+]

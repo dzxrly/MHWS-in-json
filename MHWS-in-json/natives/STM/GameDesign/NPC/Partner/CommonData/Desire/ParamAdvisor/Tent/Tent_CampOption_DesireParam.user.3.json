@@ -1,0 +1,86 @@
+[
+  {
+    "app.user_data.NpcDesireParam": {
+      "_DefaultParam": {
+        "app.user_data.NpcDesireParam.cParam": {
+          "_CoolTime": {
+            "app.user_data.NpcDesireParam.cParam.cCoolTime": {
+              "_Complete": {
+                "raw": "0000c8420000c842",
+                "type": "Range"
+              },
+              "_Cancel": {
+                "raw": "0000c8420000c842",
+                "type": "Range"
+              },
+              "_Group": {
+                "raw": "0000a04100002042",
+                "type": "Range"
+              }
+            }
+          },
+          "_StartConditionParams": [
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcDesireConditions.cCheckCampStatus_Param": {
+                    "STRUCT__IsBrokenTent__HasValue": true,
+                    "STRUCT__IsBrokenTent__Value": false,
+                    "STRUCT__IsFindEnemy__HasValue": true,
+                    "STRUCT__IsFindEnemy__Value": false,
+                    "STRUCT__IsNearEnemy__HasValue": true,
+                    "STRUCT__IsNearEnemy__Value": false
+                  }
+                },
+                "_Inverse": false
+              }
+            },
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcDesireConditions.cCheckCampOption_Param": {}
+                },
+                "_Inverse": false
+              }
+            },
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcDesireConditions.cCheckCampAbnormal_Param": {}
+                },
+                "_Inverse": true
+              }
+            }
+          ],
+          "_EndConditionParams": [],
+          "_ContinueConditionParams": [
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcDesireConditions.cCheckCampStatus_Param": {
+                    "STRUCT__IsBrokenTent__HasValue": true,
+                    "STRUCT__IsBrokenTent__Value": false,
+                    "STRUCT__IsFindEnemy__HasValue": true,
+                    "STRUCT__IsFindEnemy__Value": false,
+                    "STRUCT__IsNearEnemy__HasValue": true,
+                    "STRUCT__IsNearEnemy__Value": false
+                  }
+                },
+                "_Inverse": false
+              }
+            },
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcDesireConditions.cCheckCampAbnormal_Param": {}
+                },
+                "_Inverse": true
+              }
+            }
+          ]
+        }
+      },
+      "_OverwriteKindParams": []
+    }
+  }
+]

@@ -1,0 +1,60 @@
+[
+  {
+    "ace.btable.user_data.BTable": {
+      "_Tables": {
+        "ace.cInstanceGuidArray`1<ace.btable.user_data.BTable.cTableElement>": {
+          "_DataArray": []
+        }
+      },
+      "_ImportBTableList": [],
+      "_OrderBank": {
+        "ace.btable.user_data.BTableOrderBank": {
+          "ref_instance_id": 2,
+          "path": "GameDesign/Enemy/Em0113/51/BTable/Em0113_51_BTableOrderBank.user"
+        }
+      },
+      "_ThisGuid": "3391ccce-61fd-0e58-1de6-65c1d0924f43",
+      "_ExportBTableType": "app.Em0113_51_BTable_Damage_Export",
+      "_CommandArgArray": [
+        {
+          "app.btable.EmCommonCommand.cActionSwitchArg": {
+            "_EditArg": {
+              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cActionSwitchArg.ACTION_TYPE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "c5797916-75b8-4231-8ca4-b92ddd5b603d"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "ace.btable.cSetTimerValueArg": {
+            "_TargetVariableIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "07ae08ea-1c81-4558-a4c7-e6f33a6a8d1d"
+            },
+            "_SetType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cSetTimerValueArg.SET_TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cRequestSelectedActionArg": {
+            "_EditArg": {
+              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cRequestSelectedActionArg.ACTION_TYPE>": 0
+            }
+          }
+        }
+      ],
+      "_UseExportArgData": true
+    }
+  }
+]

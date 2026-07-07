@@ -1,0 +1,54 @@
+[
+  {
+    "app.user_data.NpcStreakActionData": {
+      "_TerminateType": 0,
+      "_ActionEffectParam": {
+        "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Action": {
+          "_Param": {
+            "app.NpcStreakEffects.cFsmLikeActionCampOption_Param": {
+              "STRUCT__ActionTime__HasValue": true,
+              "STRUCT__ActionTime__Value": 250.0,
+              "_ImmediateActionSet": false,
+              "_UseVariation": false,
+              "_VariIntervalTime": {
+                "raw": "0000a0410000a041",
+                "type": "Range"
+              },
+              "_VariProbability": {
+                "raw": "0000484200000000",
+                "type": "Range"
+              },
+              "_ActionSelector": {
+                "app.cNpcFsmLikeActionSelector": {
+                  "_Category": 3,
+                  "_ActionID": 24903,
+                  "_UseVariation": false,
+                  "_Variation": -663541696
+                }
+              },
+              "_VariData": [],
+              "_CampPointType": "[8] OPTION_02"
+            }
+          }
+        }
+      },
+      "_LStickEffectParam": {
+        "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_LStick": {
+          "_Param": {
+            "app.cNpcStreakEffectParam_None": {}
+          }
+        }
+      },
+      "_AimEffectParam": {
+        "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Aim": {
+          "_Param": {
+            "app.NpcStreakEffects.cNotifyFlagOn_Param": {
+              "_NotifyType": 36
+            }
+          }
+        }
+      },
+      "_EvaluatorParams": []
+    }
+  }
+]

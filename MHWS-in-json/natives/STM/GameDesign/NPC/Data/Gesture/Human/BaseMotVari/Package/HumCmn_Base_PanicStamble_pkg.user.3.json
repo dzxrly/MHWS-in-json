@@ -1,0 +1,65 @@
+[
+  {
+    "app.user_data.NpcGesturePackage": {
+      "_Type": {
+        "app.user_data.NpcGesturePackage.cType": {
+          "_Param": {
+            "app.NpcGestureControllers.cBaseMotion_Param": {
+              "_MotionPackHashHolder": {
+                "app.NpcMotionPackHashHolder.cSingle": {
+                  "_Hash": {
+                    "ace.cStrHash": {
+                      "_Hash": 2579539571
+                    }
+                  }
+                }
+              },
+              "_DisableFormation": true,
+              "_UseLookAt": false,
+              "_LookAtTime": {
+                "raw": "0000803f00000000",
+                "type": "Range"
+              },
+              "_LookAtParamSet": {
+                "app.cNpcLookAtParamSet": {
+                  "_AdjustTypeFixed": "[84767600] ALL"
+                }
+              }
+            }
+          }
+        }
+      },
+      "_Common": {
+        "app.user_data.NpcGesturePackage.cCommon": {
+          "_BTable": {
+            "ace.btable.user_data.BTable": {
+              "ref_instance_id": 7,
+              "path": "GameDesign/NPC/Data/Gesture/_BTable/Common/NpcBTable_AlwaysDecide.user"
+            }
+          },
+          "_CoolTime": {
+            "raw": "0000803f0000003f",
+            "type": "Range"
+          },
+          "_Probability": 100,
+          "_Category": "[8] KILL_TIME_MOTION",
+          "_TagBit": {
+            "app.NpcDef.GESTURE_TAGBit_Serializable": 32
+          }
+        }
+      },
+      "_Meta": {
+        "app.user_data.NpcGesturePackage.cMeta": {
+          "STRUCT__MaxNum__HasValue": false,
+          "STRUCT__MaxNum__Value": 1,
+          "_ValidRange": 10.0,
+          "_ValidTime": {
+            "raw": "0000004000004040",
+            "type": "Range"
+          }
+        }
+      },
+      "_Hash": -1702035014
+    }
+  }
+]

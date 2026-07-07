@@ -1,0 +1,343 @@
+[
+  {
+    "app.user_data.cOtomoMoveControllerParam": {
+      "_ScoringData": {
+        "app.user_data.NpcPQSScoringData": {
+          "ref_instance_id": 1,
+          "path": "GameDesign/Otomo/DataParam/PointQuery/Normal/OtomoPQSScoringData_Normal_FollowPL.user"
+        }
+      },
+      "_RelayingData": {
+        "app.user_data.NpcPQSRelayingData": {
+          "ref_instance_id": 2,
+          "path": "GameDesign/Otomo/DataParam/PointQuery/Normal/OtomoPQSRelayingData_Normal_FollowPL.user"
+        }
+      },
+      "_MoveSpeedWalk": {
+        "app.cCheckMoveSpeedRangeData": {
+          "_Min": 0.0122,
+          "_Max": 0.0463,
+          "_BaseSpd": 0.0244
+        }
+      },
+      "_MoveSpeedRun": {
+        "app.cCheckMoveSpeedRangeData": {
+          "_Min": 0.0337,
+          "_Max": 0.1264,
+          "_BaseSpd": 0.0843
+        }
+      },
+      "_MoveSpeedDash": {
+        "app.cCheckMoveSpeedRangeData": {
+          "_Min": 0.1125,
+          "_Max": 0.1849,
+          "_BaseSpd": 0.1608
+        }
+      },
+      "_MoveSpeedRaft": {
+        "app.cCheckMoveSpeedRangeData": {
+          "_Min": 0.025,
+          "_Max": 0.15,
+          "_BaseSpd": 0.05
+        }
+      },
+      "_TargetPointListData": {
+        "app.user_data.cTargetPointListData": {
+          "_TargetPointDataList": [
+            {
+              "app.user_data.cTargetPointListData.cTargetPointData": {
+                "_Point": [
+                  2.0,
+                  8.0,
+                  0.0,
+                  0.0
+                ],
+                "_Weight": 2
+              }
+            },
+            {
+              "app.user_data.cTargetPointListData.cTargetPointData": {
+                "_Point": [
+                  5.0,
+                  8.0,
+                  0.0,
+                  0.0
+                ],
+                "_Weight": 2
+              }
+            },
+            {
+              "app.user_data.cTargetPointListData.cTargetPointData": {
+                "_Point": [
+                  -2.0,
+                  8.0,
+                  0.0,
+                  0.0
+                ],
+                "_Weight": 2
+              }
+            },
+            {
+              "app.user_data.cTargetPointListData.cTargetPointData": {
+                "_Point": [
+                  -5.0,
+                  8.0,
+                  0.0,
+                  0.0
+                ],
+                "_Weight": 2
+              }
+            },
+            {
+              "app.user_data.cTargetPointListData.cTargetPointData": {
+                "_Point": [
+                  3.0,
+                  4.0,
+                  0.0,
+                  0.0
+                ],
+                "_Weight": 2
+              }
+            },
+            {
+              "app.user_data.cTargetPointListData.cTargetPointData": {
+                "_Point": [
+                  6.0,
+                  4.0,
+                  0.0,
+                  0.0
+                ],
+                "_Weight": 2
+              }
+            },
+            {
+              "app.user_data.cTargetPointListData.cTargetPointData": {
+                "_Point": [
+                  -3.0,
+                  4.0,
+                  0.0,
+                  0.0
+                ],
+                "_Weight": 2
+              }
+            },
+            {
+              "app.user_data.cTargetPointListData.cTargetPointData": {
+                "_Point": [
+                  -6.0,
+                  4.0,
+                  0.0,
+                  0.0
+                ],
+                "_Weight": 2
+              }
+            },
+            {
+              "app.user_data.cTargetPointListData.cTargetPointData": {
+                "_Point": [
+                  3.0,
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "_Weight": 1
+              }
+            },
+            {
+              "app.user_data.cTargetPointListData.cTargetPointData": {
+                "_Point": [
+                  6.0,
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "_Weight": 1
+              }
+            },
+            {
+              "app.user_data.cTargetPointListData.cTargetPointData": {
+                "_Point": [
+                  -3.0,
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "_Weight": 1
+              }
+            },
+            {
+              "app.user_data.cTargetPointListData.cTargetPointData": {
+                "_Point": [
+                  -6.0,
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "_Weight": 1
+              }
+            },
+            {
+              "app.user_data.cTargetPointListData.cTargetPointData": {
+                "_Point": [
+                  2.0,
+                  -2.0,
+                  0.0,
+                  0.0
+                ],
+                "_Weight": 2
+              }
+            },
+            {
+              "app.user_data.cTargetPointListData.cTargetPointData": {
+                "_Point": [
+                  4.0,
+                  -2.0,
+                  0.0,
+                  0.0
+                ],
+                "_Weight": 2
+              }
+            },
+            {
+              "app.user_data.cTargetPointListData.cTargetPointData": {
+                "_Point": [
+                  -2.0,
+                  -2.0,
+                  0.0,
+                  0.0
+                ],
+                "_Weight": 2
+              }
+            },
+            {
+              "app.user_data.cTargetPointListData.cTargetPointData": {
+                "_Point": [
+                  -4.0,
+                  -2.0,
+                  0.0,
+                  0.0
+                ],
+                "_Weight": 2
+              }
+            }
+          ],
+          "_IgnoreSelectPointDistance": 3.0,
+          "_IgnoreSelectPointDistanceSq": 9.0,
+          "_DirectMoveAngle": 45.0,
+          "_TargetOffsetZ_Max": 15.0,
+          "selectPointList": [
+            {
+              "app.user_data.cTargetPointListData.cTargetPointData": {
+                "_Point": [
+                  2.0,
+                  8.0,
+                  0.0,
+                  0.0
+                ],
+                "_Weight": 2
+              }
+            },
+            {
+              "app.user_data.cTargetPointListData.cTargetPointData": {
+                "_Point": [
+                  5.0,
+                  8.0,
+                  0.0,
+                  0.0
+                ],
+                "_Weight": 2
+              }
+            },
+            {
+              "app.user_data.cTargetPointListData.cTargetPointData": {
+                "_Point": [
+                  3.0,
+                  4.0,
+                  0.0,
+                  0.0
+                ],
+                "_Weight": 2
+              }
+            },
+            {
+              "app.user_data.cTargetPointListData.cTargetPointData": {
+                "_Point": [
+                  6.0,
+                  4.0,
+                  0.0,
+                  0.0
+                ],
+                "_Weight": 2
+              }
+            },
+            {
+              "app.user_data.cTargetPointListData.cTargetPointData": {
+                "_Point": [
+                  3.0,
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "_Weight": 1
+              }
+            },
+            {
+              "app.user_data.cTargetPointListData.cTargetPointData": {
+                "_Point": [
+                  2.0,
+                  -2.0,
+                  0.0,
+                  0.0
+                ],
+                "_Weight": 2
+              }
+            },
+            {
+              "app.user_data.cTargetPointListData.cTargetPointData": {
+                "_Point": [
+                  4.0,
+                  -2.0,
+                  0.0,
+                  0.0
+                ],
+                "_Weight": 2
+              }
+            }
+          ]
+        }
+      },
+      "_RunAfterDist": {
+        "app.cCheckDistData2": {
+          "_HorizontalRange": 10.0,
+          "_VerticalRange": 5.0
+        }
+      },
+      "_RunAfterDist_Side": {
+        "app.cCheckDistData2": {
+          "_HorizontalRange": 10.0,
+          "_VerticalRange": 5.0
+        }
+      },
+      "_MaxMoveTypeLockTime": 2.0,
+      "_MinMoveTypeLockTime": 1.0,
+      "_AddSpeedOffset": 0.15,
+      "_SubSpeedOffset": 0.1,
+      "_AddRaftSpeedOffset": 0.2,
+      "_SubRaftSpeedOffset": 0.1,
+      "_DivNum": 10,
+      "_MaxMoveSpeedOffsetTime": 15.0,
+      "_MinMoveSpeedOffsetTime": 5.0,
+      "_PositionAdjustTime": 3.0,
+      "_EqualizationNaviDirectionCount": 30,
+      "_MoveStopTimeData": {
+        "app.cSeparateData": {
+          "_MaxValue": 5.0,
+          "_MinValue": 2.0,
+          "_SeparateValue": 0.1
+        }
+      },
+      "_PlayerMoveSpeedListAverageNum": 50,
+      "_PlayerRotListAverageNum": 60
+    }
+  }
+]

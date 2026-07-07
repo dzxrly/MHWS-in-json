@@ -1,0 +1,77 @@
+[
+  {
+    "app.user_data.NpcDesirePack": {
+      "_DataList": [
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 1,
+                "path": "GameDesign/NPC/Data/GroupAIEvent/st103/_Desire/GroupAI_st103_DesireParam_FesGM558_CanCrush.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[5314] GROUP_AI",
+            "_RetryCount": 1,
+            "_EnumFixedID": 2125553280
+          }
+        },
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 4,
+                "path": "GameDesign/NPC/Data/GroupAIEvent/st103/_Desire/GroupAI_st103_DesireParam_FesGM558_CanCollectSuccess.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[5314] GROUP_AI",
+            "_RetryCount": 1,
+            "_EnumFixedID": 155108416
+          }
+        },
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 7,
+                "path": "GameDesign/NPC/Data/GroupAIEvent/st103/_Desire/GroupAI_st103_DesireParam_FesGM558_CanCollectFailure.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[5314] GROUP_AI",
+            "_RetryCount": 1,
+            "_EnumFixedID": -1233639296
+          }
+        },
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 10,
+                "path": "GameDesign/NPC/Data/GroupAIEvent/st103/_Desire/GroupAI_st103_DesireParam_CaravanVisit.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[5314] GROUP_AI",
+            "_RetryCount": 1,
+            "_EnumFixedID": -2081456128
+          }
+        }
+      ],
+      "_TimerParam": {
+        "app.cNpcDesireTimerHolder": {
+          "_Param": {
+            "app.NpcDesireTimers.cNone_Param": {}
+          }
+        }
+      },
+      "_DesireEnum": {
+        "ace.user_data.EnumMaker": {
+          "ref_instance_id": 15,
+          "path": "GameDesign/NPC/EnumMaker/NpcGroupAIDesire_st103.user"
+        }
+      }
+    }
+  }
+]

@@ -1,0 +1,65 @@
+[
+  {
+    "app.user_data.NpcAITableLayerData": {
+      "_ConditionParams": [
+        {
+          "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
+            "_Param": {
+              "app.NpcAITableConditions.cCheckTargetEnemySleep_Param": {}
+            },
+            "_Inverse": false,
+            "_IsContinue": true
+          }
+        },
+        {
+          "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
+            "_Param": {
+              "app.NpcAITableConditions.cCheckRangeInCombatEnemy_Param": {
+                "_Range": {
+                  "raw": "0000000000002042",
+                  "type": "Range"
+                }
+              }
+            },
+            "_Inverse": false,
+            "_IsContinue": false
+          }
+        }
+      ],
+      "_TableHolder": {
+        "app.cNpcAITableHolder": {
+          "_Setting": {
+            "app.cNpcAITableHolder.cSetting": {
+              "_LayerType": "[0] FROM_TOP",
+              "_DisableInterrupt": false
+            }
+          },
+          "_TableList": [
+            {
+              "app.cNpcAITableHolder.cTableData": {
+                "_InstanceGuid": "ba017d86-b027-4370-a403-6d32492b0535",
+                "_TableData": {
+                  "app.user_data.NpcAITableActionData": {
+                    "ref_instance_id": 6,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Support/It03/2_AITableAction/SptIt03_SetBomb_Follow_AITableAction.user"
+                  }
+                }
+              }
+            },
+            {
+              "app.cNpcAITableHolder.cTableData": {
+                "_InstanceGuid": "078bd1a6-4774-44bb-b81d-ca7c9181665c",
+                "_TableData": {
+                  "app.user_data.NpcAITableActionData": {
+                    "ref_instance_id": 8,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Support/It03/2_AITableAction/SptIt03_SetBomb_MoveSafeArea_AITableAction.user"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+]

@@ -1,0 +1,85 @@
+[
+  {
+    "app.user_data.NpcAITableLayerData": {
+      "_ConditionParams": [
+        {
+          "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
+            "_Param": {
+              "app.NpcAITableConditions.cCheckDesireCombatCommon_Param": {
+                "_DesireFixedID": "[5] SET_TRAP"
+              }
+            },
+            "_Inverse": false,
+            "_IsContinue": false
+          }
+        },
+        {
+          "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
+            "_Param": {
+              "app.NpcAITableConditions.cCheckTotalItemUseCount_Param": {
+                "_ItemFixedIDList": [
+                  "[19] ITEM_0017",
+                  "[20] ITEM_0018"
+                ],
+                "_UseCount": 3,
+                "_CompareType": 3
+              }
+            },
+            "_Inverse": false,
+            "_IsContinue": false
+          }
+        },
+        {
+          "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
+            "_Param": {
+              "app.NpcAITableConditions.cSetTrapItem_Param": {
+                "_LotteryTable": {
+                  "app.user_data.NpcDesireLotteryTable_Random": {
+                    "ref_instance_id": 5,
+                    "path": "GameDesign/NPC/Partner/CommonData/Desire/LotteryTable/SetTrap_DesireLotteryTable_Random.user"
+                  }
+                }
+              }
+            },
+            "_Inverse": false,
+            "_IsContinue": false
+          }
+        }
+      ],
+      "_TableHolder": {
+        "app.cNpcAITableHolder": {
+          "_Setting": {
+            "app.cNpcAITableHolder.cSetting": {
+              "_LayerType": "[0] FROM_TOP",
+              "_DisableInterrupt": true
+            }
+          },
+          "_TableList": [
+            {
+              "app.cNpcAITableHolder.cTableData": {
+                "_InstanceGuid": "210a3dbb-8277-04ac-1b3c-1cf6780db879",
+                "_TableData": {
+                  "app.user_data.NpcAITableActionData": {
+                    "ref_instance_id": 9,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Support/It03/2_AITableAction/SptIt03_SetTrap_It0017_AITableAction.user"
+                  }
+                }
+              }
+            },
+            {
+              "app.cNpcAITableHolder.cTableData": {
+                "_InstanceGuid": "6a2b4626-c9d5-4395-aed9-5d4ff29b7edb",
+                "_TableData": {
+                  "app.user_data.NpcAITableActionData": {
+                    "ref_instance_id": 11,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Support/It03/2_AITableAction/SptIt03_SetTrap_It0018_AITableAction.user"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+]

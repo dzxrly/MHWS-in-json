@@ -1,0 +1,82 @@
+[
+  {
+    "app.user_data.NpcStreakActionData": {
+      "_TerminateType": 0,
+      "_ActionEffectParam": {
+        "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Action": {
+          "_Param": {
+            "app.NpcStreakEffects.cHammerVSwing2_Param": {}
+          }
+        }
+      },
+      "_LStickEffectParam": {
+        "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_LStick": {
+          "_Param": {
+            "app.cNpcStreakEffectParam_None": {}
+          }
+        }
+      },
+      "_AimEffectParam": {
+        "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Aim": {
+          "_Param": {
+            "app.NpcStreakEffects.cSetTarget_AimParam": {
+              "_StartType": 1,
+              "_EndType": 0,
+              "_CanAimWpOff": false,
+              "_UseParabora": 0,
+              "_StartActionSelector": {
+                "app.cNpcHunterActionSelector": {
+                  "_Category": -1974898176,
+                  "_Action": 8
+                }
+              },
+              "_LogicType": 0,
+              "_AdjustType": 2,
+              "_UpdateTiming": 0,
+              "_CheckRayCast": false,
+              "_IsDirectionAim": true
+            }
+          }
+        }
+      },
+      "_EvaluatorParams": [
+        {
+          "app.user_data.NpcStreakActionData.cNpcStreakEvaluatorHolder": {
+            "_Param": {
+              "app.NpcStreakEvaluators.cCheckAnyCancelSpecified_Param": {
+                "_Immediate": false,
+                "_Strict": true,
+                "_ActionSelector": {
+                  "app.cNpcHunterActionSelector": {
+                    "_Category": -1974898176,
+                    "_Action": 8
+                  }
+                }
+              }
+            },
+            "_Inverse": false
+          }
+        },
+        {
+          "app.user_data.NpcStreakActionData.cNpcStreakEvaluatorHolder": {
+            "_Param": {
+              "app.NpcStreakEvaluators.cHitAttack_Param": {
+                "_AttackAABB": [
+                  -0.5,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.5,
+                  3.0,
+                  3.0,
+                  0.0
+                ]
+              }
+            },
+            "_Inverse": false
+          }
+        }
+      ]
+    }
+  }
+]

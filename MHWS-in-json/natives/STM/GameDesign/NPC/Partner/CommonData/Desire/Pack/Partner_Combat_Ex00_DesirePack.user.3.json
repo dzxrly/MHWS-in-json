@@ -1,0 +1,119 @@
+[
+  {
+    "app.user_data.NpcDesirePack": {
+      "_DataList": [
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 1,
+                "path": "GameDesign/NPC/Partner/CommonData/Desire/Param/Combat/Combat_WpCmn_HealSelf_DesireParam.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[2918700288] USED_HEAL_ITEM",
+            "_RetryCount": 1,
+            "_EnumFixedID": 0
+          }
+        },
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 4,
+                "path": "GameDesign/NPC/Partner/CommonData/Desire/Param/Combat/Combat_WpCmn_BadConditionRelease_DesireParam.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[2373118080] BADCONDITION_RELEASE",
+            "_RetryCount": 1,
+            "_EnumFixedID": 1
+          }
+        },
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 7,
+                "path": "GameDesign/NPC/Partner/CommonData/Desire/Param/Combat/CombatEx00_WpCmn_ChangeSlinger_DesireParam.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[1819777920] SLINGER_CHANGED",
+            "_RetryCount": 1,
+            "_EnumFixedID": 2
+          }
+        },
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 10,
+                "path": "GameDesign/NPC/Partner/CommonData/Desire/Param/Combat/CombatEx00_WpCmn_Slinger_DesireParam.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[26250] SLINGER_SHOOT_EX_EMOTE02",
+            "_RetryCount": 1,
+            "_EnumFixedID": 3
+          }
+        },
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 13,
+                "path": "GameDesign/NPC/Partner/CommonData/Desire/Param/Combat/CombatEx00_WpCmn_ClutchClaw_DesireParam.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[12319] EX00_UNIQUE_ACTION",
+            "_RetryCount": 1,
+            "_EnumFixedID": 4
+          }
+        },
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 16,
+                "path": "GameDesign/NPC/Partner/CommonData/Desire/Param/Combat/CombatEx00_WpCmn_WeakeningSlinger_DesireParam.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[26250] SLINGER_SHOOT_EX_EMOTE02",
+            "_RetryCount": 1,
+            "_EnumFixedID": 6
+          }
+        },
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 19,
+                "path": "GameDesign/NPC/Partner/CommonData/Desire/Param/Combat/CombatEx00_WpCmn_WeakeningClutchClaw_DesireParam.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[12319] EX00_UNIQUE_ACTION",
+            "_RetryCount": 1,
+            "_EnumFixedID": 7
+          }
+        }
+      ],
+      "_TimerParam": {
+        "app.cNpcDesireTimerHolder": {
+          "_Param": {
+            "app.NpcDesireTimers.cDesireAI_Param": {}
+          }
+        }
+      },
+      "_DesireEnum": {
+        "ace.user_data.EnumMaker": {
+          "ref_instance_id": 24,
+          "path": "GameDesign/NPC/Partner/CommonData/EnumMaker/NpcDesire_Partner_Combat_Ex00.user"
+        }
+      }
+    }
+  }
+]

@@ -1,0 +1,2403 @@
+[
+  {
+    "ace.btable.user_data.BTable": {
+      "_Tables": {
+        "ace.cInstanceGuidArray`1<ace.btable.user_data.BTable.cTableElement>": {
+          "_DataArray": []
+        }
+      },
+      "_ImportBTableList": [
+        {
+          "ace.btable.user_data.BTable": {
+            "ref_instance_id": 2,
+            "path": "GameDesign/Porter/BTable/PtCommonBTable_ActionSwitch.user"
+          }
+        },
+        {
+          "ace.btable.user_data.BTable": {
+            "ref_instance_id": 3,
+            "path": "GameDesign/Porter/BTable/PtCommonBtable_Auto.user"
+          }
+        }
+      ],
+      "_OrderBank": {
+        "ace.btable.user_data.BTableOrderBank": {
+          "ref_instance_id": 4,
+          "path": "GameDesign/Porter/BTable/PtCommonBTableOrderBank.user"
+        }
+      },
+      "_ThisGuid": "e97dc028-eeba-4f54-94c1-a55df09999f8",
+      "_ExportBTableType": "app.PtCommonBTable_Alone_Export",
+      "_CommandArgArray": [
+        {
+          "app.btable.PorterCommonCommand.cIsPtContinueFlagArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPtContinueFlagArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsOwnerStateArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsOwnerStateArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cFollowStateNoCombatArg": {
+            "_FollowState": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.FOLLOW_STATE_NO_COMBAT>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsOwnerStateArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsOwnerStateArg.TYPE>": 10
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cEmoteCallStateArg": {
+            "_EmoteCallState": {
+              "ace.btable.cEditFieldEnum`1<app.cPorterEmoteInfo.cCallInfo.STATE>": 3
+            }
+          }
+        },
+        {
+          "ace.btable.ConditionCommandArg": {
+            "argumentCommands": [
+              {
+                "ace.btable.ConditionCommandArg.ArgumentCommand": {
+                  "_ArgumentCommandHash": 2976246089272625702,
+                  "_ArgumentCommandArgument": {
+                    "ace.btable.cCommandArgumentNone": {}
+                  }
+                }
+              },
+              {
+                "ace.btable.ConditionCommandArg.ArgumentCommand": {
+                  "_ArgumentCommandHash": 15384388147692623220,
+                  "_ArgumentCommandArgument": {
+                    "ace.btable.cCommandArgumentNone": {}
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPorterStateArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPorterStateArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 4
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPorterStateArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 3
+            }
+          }
+        },
+        {
+          "ace.btable.ConditionCommandArg": {
+            "argumentCommands": [
+              {
+                "ace.btable.ConditionCommandArg.ArgumentCommand": {
+                  "_ArgumentCommandHash": 10098130650607645431,
+                  "_ArgumentCommandArgument": {
+                    "ace.btable.cCommandArgumentNone": {}
+                  }
+                }
+              },
+              {
+                "ace.btable.ConditionCommandArg.ArgumentCommand": {
+                  "_ArgumentCommandHash": 6564480851822265942,
+                  "_ArgumentCommandArgument": {
+                    "ace.btable.cCommandArgumentNone": {}
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "ace.btable.ConditionCommandArg": {
+            "argumentCommands": [
+              {
+                "ace.btable.ConditionCommandArg.ArgumentCommand": {
+                  "_ArgumentCommandHash": 2309091659993981943,
+                  "_ArgumentCommandArgument": {
+                    "ace.btable.cCommandArgumentNone": {}
+                  }
+                }
+              },
+              {
+                "ace.btable.ConditionCommandArg.ArgumentCommand": {
+                  "_ArgumentCommandHash": 10875953221202771472,
+                  "_ArgumentCommandArgument": {
+                    "ace.btable.cCommandArgumentCheckDistance": {
+                      "_Distance": {
+                        "ace.btable.cEditFieldFloat": 25.0
+                      },
+                      "_CheckType": {
+                        "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+                      },
+                      "_AxisType": {
+                        "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "ace.btable.ConditionCommandArg": {
+            "argumentCommands": [
+              {
+                "ace.btable.ConditionCommandArg.ArgumentCommand": {
+                  "_ArgumentCommandHash": 5476376721535901171,
+                  "_ArgumentCommandArgument": {
+                    "ace.btable.cCommandArgumentNone": {}
+                  }
+                }
+              },
+              {
+                "ace.btable.ConditionCommandArg.ArgumentCommand": {
+                  "_ArgumentCommandHash": 13339333480611276659,
+                  "_ArgumentCommandArgument": {
+                    "ace.btable.cCommandArgumentNone": {}
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "ace.btable.ConditionCommandArg": {
+            "argumentCommands": [
+              {
+                "ace.btable.ConditionCommandArg.ArgumentCommand": {
+                  "_ArgumentCommandHash": 11760860211091842218,
+                  "_ArgumentCommandArgument": {
+                    "ace.btable.cCommandArgumentNone": {}
+                  }
+                }
+              },
+              {
+                "ace.btable.ConditionCommandArg.ArgumentCommand": {
+                  "_ArgumentCommandHash": 10875953221202771472,
+                  "_ArgumentCommandArgument": {
+                    "ace.btable.cCommandArgumentCheckDistance": {
+                      "_Distance": {
+                        "ace.btable.cEditFieldFloat": 30.0
+                      },
+                      "_CheckType": {
+                        "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+                      },
+                      "_AxisType": {
+                        "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPorterStateArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 6
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsOwnerStateArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsOwnerStateArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "ace.btable.ConditionCommandArg": {
+            "argumentCommands": [
+              {
+                "ace.btable.ConditionCommandArg.ArgumentCommand": {
+                  "_ArgumentCommandHash": 5870363613210426345,
+                  "_ArgumentCommandArgument": {
+                    "app.btable.PorterCommonCommand.cIsPorterStateArg": {
+                      "_EditType": {
+                        "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 1
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "ace.btable.ConditionCommandArg.ArgumentCommand": {
+                  "_ArgumentCommandHash": 5870363613210426345,
+                  "_ArgumentCommandArgument": {
+                    "app.btable.PorterCommonCommand.cIsPorterStateArg": {
+                      "_EditType": {
+                        "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 2
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cFollowStateNoCombatArg": {
+            "_FollowState": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.FOLLOW_STATE_NO_COMBAT>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPorterStateArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPtContinueFlagArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPtContinueFlagArg.TYPE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPtStandStateArg": {
+            "_StandState": {
+              "ace.btable.cEditFieldEnum`1<app.CharacterDef.STAND_STATE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPtStandStateArg": {
+            "_StandState": {
+              "ace.btable.cEditFieldEnum`1<app.CharacterDef.STAND_STATE>": 2
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cOwnerStandStateArg": {
+            "_StandState": {
+              "ace.btable.cEditFieldEnum`1<app.CharacterDef.STAND_STATE>": 2
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentCheckDistance": {
+            "_Distance": {
+              "ace.btable.cEditFieldFloat": 30.0
+            },
+            "_CheckType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+            },
+            "_AxisType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentCheckDistance": {
+            "_Distance": {
+              "ace.btable.cEditFieldFloat": 40.0
+            },
+            "_CheckType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+            },
+            "_AxisType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 10
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentCheckDistance": {
+            "_Distance": {
+              "ace.btable.cEditFieldFloat": 50.0
+            },
+            "_CheckType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+            },
+            "_AxisType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 10
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 20
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentCheckDistance": {
+            "_Distance": {
+              "ace.btable.cEditFieldFloat": 20.0
+            },
+            "_CheckType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+            },
+            "_AxisType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 10
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentCheckDistance": {
+            "_Distance": {
+              "ace.btable.cEditFieldFloat": 25.0
+            },
+            "_CheckType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+            },
+            "_AxisType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 10
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 20
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentCheckDistance": {
+            "_Distance": {
+              "ace.btable.cEditFieldFloat": 20.0
+            },
+            "_CheckType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+            },
+            "_AxisType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentCheckDistance": {
+            "_Distance": {
+              "ace.btable.cEditFieldFloat": 25.0
+            },
+            "_CheckType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+            },
+            "_AxisType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 10
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentCheckDistance": {
+            "_Distance": {
+              "ace.btable.cEditFieldFloat": 30.0
+            },
+            "_CheckType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+            },
+            "_AxisType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 10
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 20
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPtStandStateArg": {
+            "_StandState": {
+              "ace.btable.cEditFieldEnum`1<app.CharacterDef.STAND_STATE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPtStandStateArg": {
+            "_StandState": {
+              "ace.btable.cEditFieldEnum`1<app.CharacterDef.STAND_STATE>": 2
+            }
+          }
+        },
+        {
+          "ace.btable.ConditionCommandArg": {
+            "argumentCommands": [
+              {
+                "ace.btable.ConditionCommandArg.ArgumentCommand": {
+                  "_ArgumentCommandHash": 11978931739888643826,
+                  "_ArgumentCommandArgument": {
+                    "ace.btable.cCommandArgumentCheckDistance": {
+                      "_Distance": {
+                        "ace.btable.cEditFieldFloat": 10.0
+                      },
+                      "_CheckType": {
+                        "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+                      },
+                      "_AxisType": {
+                        "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "ace.btable.ConditionCommandArg.ArgumentCommand": {
+                  "_ArgumentCommandHash": 4620336213854129237,
+                  "_ArgumentCommandArgument": {
+                    "ace.btable.cCommandArgumentCheckHeight": {
+                      "_TargetType": {
+                        "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckHeight.TARGET_TYPE>": 0
+                      },
+                      "_Height": {
+                        "ace.btable.cEditFieldFloat": 5.0
+                      },
+                      "_CheckType": {
+                        "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckHeight.CHECK_TYPE>": 2
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentCheckDistance": {
+            "_Distance": {
+              "ace.btable.cEditFieldFloat": 15.0
+            },
+            "_CheckType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+            },
+            "_AxisType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 20
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentCheckDistance": {
+            "_Distance": {
+              "ace.btable.cEditFieldFloat": 20.0
+            },
+            "_CheckType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+            },
+            "_AxisType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 20
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 30
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cFollowStateNoCombatArg": {
+            "_FollowState": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.FOLLOW_STATE_NO_COMBAT>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsOwnerStateArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsOwnerStateArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPorterStateArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPtContinueFlagArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPtContinueFlagArg.TYPE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 2
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentCheckDistance": {
+            "_Distance": {
+              "ace.btable.cEditFieldFloat": 5.0
+            },
+            "_CheckType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+            },
+            "_AxisType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsOwnerStateArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsOwnerStateArg.TYPE>": 20
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 30
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cFollowStateNoCombatArg": {
+            "_FollowState": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.FOLLOW_STATE_NO_COMBAT>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPorterStateArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsOwnerStateArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsOwnerStateArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPtContinueFlagArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPtContinueFlagArg.TYPE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 8
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentCheckDistance": {
+            "_Distance": {
+              "ace.btable.cEditFieldFloat": 5.0
+            },
+            "_CheckType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+            },
+            "_AxisType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 20
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPorterStateArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsOwnerStateArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsOwnerStateArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPtContinueFlagArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPtContinueFlagArg.TYPE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 10
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 11
+            }
+          }
+        },
+        {
+          "ace.btable.ConditionCommandArg": {
+            "argumentCommands": [
+              {
+                "ace.btable.ConditionCommandArg.ArgumentCommand": {
+                  "_ArgumentCommandHash": 11978931739888643826,
+                  "_ArgumentCommandArgument": {
+                    "ace.btable.cCommandArgumentCheckDistance": {
+                      "_Distance": {
+                        "ace.btable.cEditFieldFloat": 10.0
+                      },
+                      "_CheckType": {
+                        "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+                      },
+                      "_AxisType": {
+                        "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "ace.btable.ConditionCommandArg.ArgumentCommand": {
+                  "_ArgumentCommandHash": 4620336213854129237,
+                  "_ArgumentCommandArgument": {
+                    "ace.btable.cCommandArgumentCheckHeight": {
+                      "_TargetType": {
+                        "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckHeight.TARGET_TYPE>": 0
+                      },
+                      "_Height": {
+                        "ace.btable.cEditFieldFloat": 5.0
+                      },
+                      "_CheckType": {
+                        "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckHeight.CHECK_TYPE>": 2
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentCheckDistance": {
+            "_Distance": {
+              "ace.btable.cEditFieldFloat": 18.0
+            },
+            "_CheckType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+            },
+            "_AxisType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 10
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentCheckDistance": {
+            "_Distance": {
+              "ace.btable.cEditFieldFloat": 25.0
+            },
+            "_CheckType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+            },
+            "_AxisType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 20
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 30
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cFollowStateNoCombatArg": {
+            "_FollowState": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.FOLLOW_STATE_NO_COMBAT>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPorterStateArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPtContinueFlagArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPtContinueFlagArg.TYPE>": 1
+            }
+          }
+        },
+        {
+          "ace.btable.ConditionCommandArg": {
+            "argumentCommands": [
+              {
+                "ace.btable.ConditionCommandArg.ArgumentCommand": {
+                  "_ArgumentCommandHash": 16140414956323502296,
+                  "_ArgumentCommandArgument": {
+                    "ace.btable.cCommandArgumentNone": {}
+                  }
+                }
+              },
+              {
+                "ace.btable.ConditionCommandArg.ArgumentCommand": {
+                  "_ArgumentCommandHash": 11924426236099024976,
+                  "_ArgumentCommandArgument": {
+                    "ace.btable.cCommandArgumentNone": {}
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "678332ce-97a8-4adb-879e-fa31239699a4"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentCheckDistance": {
+            "_Distance": {
+              "ace.btable.cEditFieldFloat": 3.5
+            },
+            "_CheckType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+            },
+            "_AxisType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cEmoteCallStateArg": {
+            "_EmoteCallState": {
+              "ace.btable.cEditFieldEnum`1<app.cPorterEmoteInfo.cCallInfo.STATE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cEmoteCallStateArg": {
+            "_EmoteCallState": {
+              "ace.btable.cEditFieldEnum`1<app.cPorterEmoteInfo.cCallInfo.STATE>": 2
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 30
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 12
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 30
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 13
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 30
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 13
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 30
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 13
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 30
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 30
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 30
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cFollowStateNoCombatArg": {
+            "_FollowState": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.FOLLOW_STATE_NO_COMBAT>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsOwnerStateArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsOwnerStateArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPorterStateArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPtContinueFlagArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPtContinueFlagArg.TYPE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 14
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentCheckDistance": {
+            "_Distance": {
+              "ace.btable.cEditFieldFloat": 3.0
+            },
+            "_CheckType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+            },
+            "_AxisType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 10
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cFollowStateNoCombatArg": {
+            "_FollowState": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.FOLLOW_STATE_NO_COMBAT>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsOwnerStateArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsOwnerStateArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPorterStateArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPtContinueFlagArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPtContinueFlagArg.TYPE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 15
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentCheckDistance": {
+            "_Distance": {
+              "ace.btable.cEditFieldFloat": 3.0
+            },
+            "_CheckType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+            },
+            "_AxisType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 10
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cFollowStateNoCombatArg": {
+            "_FollowState": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.FOLLOW_STATE_NO_COMBAT>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsOwnerStateArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsOwnerStateArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPorterStateArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPtContinueFlagArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPtContinueFlagArg.TYPE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 18
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentCheckDistance": {
+            "_Distance": {
+              "ace.btable.cEditFieldFloat": 6.0
+            },
+            "_CheckType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+            },
+            "_AxisType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 20
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentCheckDistance": {
+            "_Distance": {
+              "ace.btable.cEditFieldFloat": 4.0
+            },
+            "_CheckType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+            },
+            "_AxisType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 20
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 17
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPtStandStateArg": {
+            "_StandState": {
+              "ace.btable.cEditFieldEnum`1<app.CharacterDef.STAND_STATE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPtStandStateArg": {
+            "_StandState": {
+              "ace.btable.cEditFieldEnum`1<app.CharacterDef.STAND_STATE>": 2
+            }
+          }
+        },
+        {
+          "ace.btable.ConditionCommandArg": {
+            "argumentCommands": [
+              {
+                "ace.btable.ConditionCommandArg.ArgumentCommand": {
+                  "_ArgumentCommandHash": 11978931739888643826,
+                  "_ArgumentCommandArgument": {
+                    "ace.btable.cCommandArgumentCheckDistance": {
+                      "_Distance": {
+                        "ace.btable.cEditFieldFloat": 10.0
+                      },
+                      "_CheckType": {
+                        "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+                      },
+                      "_AxisType": {
+                        "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "ace.btable.ConditionCommandArg.ArgumentCommand": {
+                  "_ArgumentCommandHash": 4620336213854129237,
+                  "_ArgumentCommandArgument": {
+                    "ace.btable.cCommandArgumentCheckHeight": {
+                      "_TargetType": {
+                        "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckHeight.TARGET_TYPE>": 0
+                      },
+                      "_Height": {
+                        "ace.btable.cEditFieldFloat": 5.0
+                      },
+                      "_CheckType": {
+                        "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckHeight.CHECK_TYPE>": 2
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentCheckDistance": {
+            "_Distance": {
+              "ace.btable.cEditFieldFloat": 15.0
+            },
+            "_CheckType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+            },
+            "_AxisType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 30
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentCheckDistance": {
+            "_Distance": {
+              "ace.btable.cEditFieldFloat": 20.0
+            },
+            "_CheckType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+            },
+            "_AxisType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 30
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 30
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 19
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPtStandStateArg": {
+            "_StandState": {
+              "ace.btable.cEditFieldEnum`1<app.CharacterDef.STAND_STATE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPtStandStateArg": {
+            "_StandState": {
+              "ace.btable.cEditFieldEnum`1<app.CharacterDef.STAND_STATE>": 2
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPorterStateArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 2
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 30
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cFollowStateNoCombatArg": {
+            "_FollowState": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.FOLLOW_STATE_NO_COMBAT>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsOwnerStateArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsOwnerStateArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPorterStateArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPtContinueFlagArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPtContinueFlagArg.TYPE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 20
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentCheckDistance": {
+            "_Distance": {
+              "ace.btable.cEditFieldFloat": 5.0
+            },
+            "_CheckType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+            },
+            "_AxisType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 30
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 21
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPtStandStateArg": {
+            "_StandState": {
+              "ace.btable.cEditFieldEnum`1<app.CharacterDef.STAND_STATE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPtStandStateArg": {
+            "_StandState": {
+              "ace.btable.cEditFieldEnum`1<app.CharacterDef.STAND_STATE>": 2
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cIsPorterStateArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 5
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 30
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cFollowStateNoCombatArg": {
+            "_FollowState": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.FOLLOW_STATE_NO_COMBAT>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -1528799616
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 22853
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 22853
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 16
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentCheckDistance": {
+            "_Distance": {
+              "ace.btable.cEditFieldFloat": 15.0
+            },
+            "_CheckType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+            },
+            "_AxisType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 9
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 10
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -688619200
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -688619200
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -688619200
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -1054624448
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 118899960
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -691672640
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 22853
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 701629248
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -715556224
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 12432
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -1087547776
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -408941632
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 19374
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 767810944
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 3
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 4
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentCheckDistance": {
+            "_Distance": {
+              "ace.btable.cEditFieldFloat": 3.3
+            },
+            "_CheckType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+            },
+            "_AxisType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -1054624448
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 10
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 118899960
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 118899960
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 6
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 9
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -691672640
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -691672640
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 7
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 9
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 22853
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 22853
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 16
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 9
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 3
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 4
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentCheckDistance": {
+            "_Distance": {
+              "ace.btable.cEditFieldFloat": 10.0
+            },
+            "_CheckType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+            },
+            "_AxisType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -688619200
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 118899960
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 6
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -691672640
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 7
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 22853
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 16
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 9
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentCheckDistance": {
+            "_Distance": {
+              "ace.btable.cEditFieldFloat": 12.0
+            },
+            "_CheckType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+            },
+            "_AxisType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 9
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentCheckDistance": {
+            "_Distance": {
+              "ace.btable.cEditFieldFloat": 2.0
+            },
+            "_CheckType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+            },
+            "_AxisType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 118899960
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 701629248
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -691672640
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -715556224
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 22853
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 12432
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -1087547776
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -1087547776
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "3a717ee8-557f-492a-a74f-47f9fbd972a5"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -1087547776
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 767810944
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -408941632
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -408941632
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "21900119-ae68-4853-bd5c-c6bf25fd5897"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -408941632
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 767810944
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 19374
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 19374
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "edc6a5c8-d29a-49bb-b12a-90620ed07d5c"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 19374
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 767810944
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 767810944
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 767810944
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 767810944
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 22853
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 22853
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 16
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 9
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 767810944
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 22853
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 22853
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 16
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentCheckDistance": {
+            "_Distance": {
+              "ace.btable.cEditFieldFloat": 15.0
+            },
+            "_CheckType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+            },
+            "_AxisType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 9
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 10
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 3
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 4
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentCheckDistance": {
+            "_Distance": {
+              "ace.btable.cEditFieldFloat": 3.3
+            },
+            "_CheckType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+            },
+            "_AxisType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
+            "_TargetPhase": {
+              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -1054624448
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 9
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 9
+            }
+          }
+        },
+        {
+          "ace.btable.cCommandArgumentCheckDistance": {
+            "_Distance": {
+              "ace.btable.cEditFieldFloat": 5.0
+            },
+            "_CheckType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
+            },
+            "_AxisType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 10
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 20
+            }
+          }
+        },
+        {
+          "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
+            "_EditType": {
+              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
+            }
+          }
+        }
+      ],
+      "_UseExportArgData": true
+    }
+  }
+]

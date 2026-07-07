@@ -1,0 +1,80 @@
+[
+  {
+    "app.user_data.NpcAITableLayerData": {
+      "_ConditionParams": [
+        {
+          "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
+            "_Param": {
+              "app.NpcAITableConditions.cTargetEnemyMetaActionDetected_Param": {
+                "_ActionType": "[53] EX02_37"
+              }
+            },
+            "_Inverse": false,
+            "_IsContinue": true
+          }
+        },
+        {
+          "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
+            "_Param": {
+              "app.NpcAITableConditions.cCheckTargetActionTimer_Param": {
+                "_ElapsedTimeSec": 7.1,
+                "_CompareType": 5
+              }
+            },
+            "_Inverse": false,
+            "_IsContinue": true
+          }
+        },
+        {
+          "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
+            "_Param": {
+              "app.NpcAITableConditions.cCheckDestinationDirCombatEnemy_Param": {
+                "_Range": {
+                  "raw": "0000204100002042",
+                  "type": "Range"
+                },
+                "_Deg": 90.0
+              }
+            },
+            "_Inverse": false,
+            "_IsContinue": false
+          }
+        }
+      ],
+      "_TableHolder": {
+        "app.cNpcAITableHolder": {
+          "_Setting": {
+            "app.cNpcAITableHolder.cSetting": {
+              "_LayerType": "[0] FROM_TOP",
+              "_DisableInterrupt": false
+            }
+          },
+          "_TableList": [
+            {
+              "app.cNpcAITableHolder.cTableData": {
+                "_InstanceGuid": "73d6ce3b-6206-4ea2-948d-1c94d701bacf",
+                "_TableData": {
+                  "app.user_data.NpcAITableActionData": {
+                    "ref_instance_id": 8,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Combat/Meta/2_AITableAction/CbtMeta_Ex02_37_Guard_AITableAction.user"
+                  }
+                }
+              }
+            },
+            {
+              "app.cNpcAITableHolder.cTableData": {
+                "_InstanceGuid": "3f48f760-c820-4510-8358-d2b7ada87ad8",
+                "_TableData": {
+                  "app.user_data.NpcAITableActionData": {
+                    "ref_instance_id": 10,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Combat/Meta/2_AITableAction/CbtMeta_Ex02_37_Escape_AITableAction.user"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+]

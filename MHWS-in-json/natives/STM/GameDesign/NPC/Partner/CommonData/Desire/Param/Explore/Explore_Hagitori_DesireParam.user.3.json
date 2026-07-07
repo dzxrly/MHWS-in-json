@@ -1,0 +1,92 @@
+[
+  {
+    "app.user_data.NpcDesireParam": {
+      "_DefaultParam": {
+        "app.user_data.NpcDesireParam.cParam": {
+          "_CoolTime": {
+            "app.user_data.NpcDesireParam.cParam.cCoolTime": {
+              "_Complete": {
+                "raw": "0000a04000000000",
+                "type": "Range"
+              },
+              "_Cancel": {
+                "raw": "0000a04000000000",
+                "type": "Range"
+              },
+              "_Group": {
+                "raw": "0000000000000000",
+                "type": "Range"
+              }
+            }
+          },
+          "_StartConditionParams": [
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcDesireConditions.cCameraPlayingHunt_Param": {}
+                },
+                "_Inverse": true
+              }
+            },
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcDesireConditions.cCheckPorterCalling_Param": {}
+                },
+                "_Inverse": true
+              }
+            },
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcDesireConditions.cCheckHagitoriEnemySameArea_Param": {
+                    "_IsEnableBoss": true,
+                    "_IsEnableLostParts": true,
+                    "_IsEnableCaptureBoss": false,
+                    "_IsEnableZako": false,
+                    "_IsEnablePopComplete": false,
+                    "_IsOnlyQuestTarget": true
+                  }
+                },
+                "_Inverse": false
+              }
+            },
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcDesireConditions.cRangeInTargetEnemyHagitoriHinder_Param": {
+                    "_Range": {
+                      "raw": "000000000000b041",
+                      "type": "Range"
+                    }
+                  }
+                },
+                "_Inverse": true
+              }
+            },
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcDesireConditions.cCheckMovingPorterRoot_Param": {}
+                },
+                "_Inverse": true
+              }
+            }
+          ],
+          "_EndConditionParams": [
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcDesireConditions.cCheckHagitoriCount_Param": {}
+                },
+                "_Inverse": false
+              }
+            }
+          ],
+          "_ContinueConditionParams": []
+        }
+      },
+      "_OverwriteKindParams": []
+    }
+  }
+]

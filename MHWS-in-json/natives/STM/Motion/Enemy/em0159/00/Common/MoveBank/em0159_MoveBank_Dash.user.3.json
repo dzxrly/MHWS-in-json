@@ -1,0 +1,305 @@
+[
+  {
+    "ace.user_data.CharacterMoveBank": {
+      "_EnabledCogOffsetForLean": true,
+      "_HeightForCogOffset": 1.8,
+      "_TotalBias": 1.0,
+      "_OffsetParamGroups": [
+        {
+          "ace.user_data.CharacterMoveBank.cOffsetParamGroupSet": {
+            "_Lean": {
+              "ace.user_data.CharacterMoveBank.cAngleOffsetParamSingle": {
+                "_Enabled": true,
+                "_DampingSpring": 4.0,
+                "_DampingDamp": 0.2,
+                "_IsBankDegToAbs": false,
+                "_Params": [
+                  {
+                    "ace.user_data.CharacterMoveBank.cAngleParamSingle": {
+                      "_Angles": [
+                        {
+                          "ace.user_data.CharacterMoveBank.cAngle": {
+                            "_AngleBias": -3.0,
+                            "_Limit": 20.0
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "_FootRotZ": {
+              "ace.user_data.CharacterMoveBank.cAngleOffsetParamSingle": {
+                "_Enabled": true,
+                "_DampingSpring": 4.0,
+                "_DampingDamp": 0.2,
+                "_IsBankDegToAbs": false,
+                "_Params": [
+                  {
+                    "ace.user_data.CharacterMoveBank.cAngleParamSingle": {
+                      "_Angles": [
+                        {
+                          "ace.user_data.CharacterMoveBank.cAngle": {
+                            "_AngleBias": -10.0,
+                            "_Limit": 20.0
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "_CogPosX": {
+              "ace.user_data.CharacterMoveBank.cAngleOffsetParamSingle": {
+                "_Enabled": true,
+                "_DampingSpring": 1.0,
+                "_DampingDamp": 1.0,
+                "_IsBankDegToAbs": false,
+                "_Params": [
+                  {
+                    "ace.user_data.CharacterMoveBank.cAngleParamSingle": {
+                      "_Angles": [
+                        {
+                          "ace.user_data.CharacterMoveBank.cAngle": {
+                            "_AngleBias": 0.1,
+                            "_Limit": 0.3
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "_CogPosY": {
+              "ace.user_data.CharacterMoveBank.cAngleOffsetParamSingle": {
+                "_Enabled": true,
+                "_DampingSpring": 5.0,
+                "_DampingDamp": 0.2,
+                "_IsBankDegToAbs": true,
+                "_Params": [
+                  {
+                    "ace.user_data.CharacterMoveBank.cAngleParamSingle": {
+                      "_Angles": [
+                        {
+                          "ace.user_data.CharacterMoveBank.cAngle": {
+                            "_AngleBias": -0.1,
+                            "_Limit": -0.2
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "_CogRotZ": {
+              "ace.user_data.CharacterMoveBank.cAngleOffsetParamSingle": {
+                "_Enabled": true,
+                "_DampingSpring": 1.0,
+                "_DampingDamp": 1.0,
+                "_IsBankDegToAbs": false,
+                "_Params": [
+                  {
+                    "ace.user_data.CharacterMoveBank.cAngleParamSingle": {
+                      "_Angles": [
+                        {
+                          "ace.user_data.CharacterMoveBank.cAngle": {
+                            "_AngleBias": 1.0,
+                            "_Limit": 10.0
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "_FootPos": {
+              "ace.user_data.CharacterMoveBank.cPositionOffsetParamGroup": {
+                "_Enabled": true,
+                "_DampingSpring": 1.0,
+                "_DampingDamp": 1.0,
+                "_IsBankDegToAbs": false,
+                "_Params": [
+                  {
+                    "ace.user_data.CharacterMoveBank.cPosition": {
+                      "_AngleBias": 3.0,
+                      "_Limit": 5.0,
+                      "_OffsetMax": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_OffsetMin": [
+                        0.0,
+                        0.0,
+                        -0.5,
+                        0.0
+                      ]
+                    }
+                  },
+                  {
+                    "ace.user_data.CharacterMoveBank.cPosition": {
+                      "_AngleBias": 2.0,
+                      "_Limit": 5.0,
+                      "_OffsetMax": [
+                        0.0,
+                        0.0,
+                        -0.3,
+                        0.0
+                      ],
+                      "_OffsetMin": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ]
+                    }
+                  },
+                  {
+                    "ace.user_data.CharacterMoveBank.cPosition": {
+                      "_AngleBias": 2.0,
+                      "_Limit": 5.0,
+                      "_OffsetMax": [
+                        -1.5,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_OffsetMin": [
+                        1.5,
+                        0.0,
+                        -0.3,
+                        0.0
+                      ]
+                    }
+                  },
+                  {
+                    "ace.user_data.CharacterMoveBank.cPosition": {
+                      "_AngleBias": 2.0,
+                      "_Limit": 5.0,
+                      "_OffsetMax": [
+                        -1.5,
+                        0.0,
+                        -0.2,
+                        0.0
+                      ],
+                      "_OffsetMin": [
+                        1.5,
+                        0.0,
+                        0.0,
+                        0.0
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "_AngleOffsetParamGroups": [
+              {
+                "ace.user_data.CharacterMoveBank.cAngleOffsetParamGroup": {
+                  "_Enabled": true,
+                  "_DampingSpring": 2.0,
+                  "_DampingDamp": 0.2,
+                  "_IsBankDegToAbs": true,
+                  "_Params": [
+                    {
+                      "ace.user_data.CharacterMoveBank.cAngleParamTri": {
+                        "_Angles": [
+                          {
+                            "ace.user_data.CharacterMoveBank.cAngle": {
+                              "_AngleBias": 0.0,
+                              "_Limit": 0.0
+                            }
+                          },
+                          {
+                            "ace.user_data.CharacterMoveBank.cAngle": {
+                              "_AngleBias": 0.0,
+                              "_Limit": 0.0
+                            }
+                          },
+                          {
+                            "ace.user_data.CharacterMoveBank.cAngle": {
+                              "_AngleBias": 0.0,
+                              "_Limit": 5.0
+                            }
+                          }
+                        ],
+                        "_TargetGuid": "1cf26d01-5499-42c3-b5c9-ae6a1f54eb00"
+                      }
+                    },
+                    {
+                      "ace.user_data.CharacterMoveBank.cAngleParamTri": {
+                        "_Angles": [
+                          {
+                            "ace.user_data.CharacterMoveBank.cAngle": {
+                              "_AngleBias": 0.0,
+                              "_Limit": 0.0
+                            }
+                          },
+                          {
+                            "ace.user_data.CharacterMoveBank.cAngle": {
+                              "_AngleBias": 0.0,
+                              "_Limit": 0.0
+                            }
+                          },
+                          {
+                            "ace.user_data.CharacterMoveBank.cAngle": {
+                              "_AngleBias": 0.0,
+                              "_Limit": 10.0
+                            }
+                          }
+                        ],
+                        "_TargetGuid": "0604bd15-3628-47c8-a59e-bf8a0f85d39f"
+                      }
+                    },
+                    {
+                      "ace.user_data.CharacterMoveBank.cAngleParamTri": {
+                        "_Angles": [
+                          {
+                            "ace.user_data.CharacterMoveBank.cAngle": {
+                              "_AngleBias": 0.0,
+                              "_Limit": 0.0
+                            }
+                          },
+                          {
+                            "ace.user_data.CharacterMoveBank.cAngle": {
+                              "_AngleBias": 0.0,
+                              "_Limit": 0.0
+                            }
+                          },
+                          {
+                            "ace.user_data.CharacterMoveBank.cAngle": {
+                              "_AngleBias": 2.0,
+                              "_Limit": 20.0
+                            }
+                          }
+                        ],
+                        "_TargetGuid": "15c68656-08b2-4c7b-93a0-142bb1fc5331"
+                      }
+                    }
+                  ],
+                  "_TargetGuid": "3dade22b-d7a0-4007-9fdc-aeddac0bbac3"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "_Setting": {
+        "ace.user_data.CharacterMoveBankSetting": {
+          "ref_instance_id": 35,
+          "path": "Motion/Enemy/em0159/00/Common/MoveBank/em0159_MoveBankSetting.user"
+        }
+      },
+      "_TriAxisBankDegToAbsType": 1,
+      "_IsAsymmetry": false,
+      "_IsOverwriteLegNum": false,
+      "_OverwriteLegNumType": 2
+    }
+  }
+]

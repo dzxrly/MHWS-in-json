@@ -1,0 +1,62 @@
+[
+  {
+    "app.user_data.NpcDesireParam": {
+      "_DefaultParam": {
+        "app.user_data.NpcDesireParam.cParam": {
+          "_CoolTime": {
+            "app.user_data.NpcDesireParam.cParam.cCoolTime": {
+              "_Complete": {
+                "raw": "0000204100000000",
+                "type": "Range"
+              },
+              "_Cancel": {
+                "raw": "0000204100000000",
+                "type": "Range"
+              },
+              "_Group": {
+                "raw": "0000000000000000",
+                "type": "Range"
+              }
+            }
+          },
+          "_StartConditionParams": [
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcDesireConditions.cUsingActiveSkill_Param": {
+                    "_ActiveSkillType": "[5] A_SKILL_005"
+                  }
+                },
+                "_Inverse": false
+              }
+            },
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcDesireConditions.cActiveSkillInEffect_Param": {
+                    "_ActiveSkillType": "[5] A_SKILL_005"
+                  }
+                },
+                "_Inverse": true
+              }
+            }
+          ],
+          "_EndConditionParams": [
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcDesireConditions.cUsingActiveSkill_Param": {
+                    "_ActiveSkillType": "[5] A_SKILL_005"
+                  }
+                },
+                "_Inverse": true
+              }
+            }
+          ],
+          "_ContinueConditionParams": []
+        }
+      },
+      "_OverwriteKindParams": []
+    }
+  }
+]

@@ -1,0 +1,2252 @@
+[
+  {
+    "app.user_data.NpcFsmLikeActionPackages": {
+      "_DataList": [
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/BasicIdle/HumUnq_Advisor_BasicIdle_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 1,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/BasicIdle/HumUnq_Advisor_BasicIdle_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": false,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": true,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3199285888] IDLE",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 2
+            },
+            "_LookAtAdjustType": "[449679360] CHEST"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/BasicTurn/HumUnq_Advisor_BasicTurn_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 6,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/BasicTurn/HumUnq_Advisor_BasicTurn_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": false,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": false,
+            "_PlayStartMotion_Of_NextMoveAction": false,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": true,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[682452480] MOVE",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 512
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/BasicMove/HumUnq_Advisor_BasicMove_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Move/Move_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 11,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/BasicMove/HumUnq_Advisor_BasicMove_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": false,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": false,
+            "_PlayStartMotion_Of_NextMoveAction": false,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": true,
+            "_SelectedAccessory": true,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "app.user_data.NpcReachCurveParam": {
+                "ref_instance_id": 12,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ReachParam/HumUnq_AdvisorMove_ReachParam.user"
+              }
+            },
+            "_RetargetApplyType": "[682452480] MOVE",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 36
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/BasicRun/HumUnq_Advisor_BasicRun_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Move/Move_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 17,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/BasicRun/HumUnq_Advisor_BasicRun_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": false,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": false,
+            "_PlayStartMotion_Of_NextMoveAction": false,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": true,
+            "_SelectedAccessory": true,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "app.user_data.NpcReachCurveParam": {
+                "ref_instance_id": 18,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ReachParam/HumUnq_AdvisorRun_ReachParam.user"
+              }
+            },
+            "_RetargetApplyType": "[682452480] MOVE",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 68
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/BasicDash/HumUnq_Advisor_BasicDash_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Move/Move_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 23,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/BasicDash/HumUnq_Advisor_BasicDash_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": false,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": false,
+            "_PlayStartMotion_Of_NextMoveAction": false,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": true,
+            "_SelectedAccessory": true,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "app.user_data.NpcReachCurveParam": {
+                "ref_instance_id": 18,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ReachParam/HumUnq_AdvisorRun_ReachParam.user"
+              }
+            },
+            "_RetargetApplyType": "[682452480] MOVE",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 68
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/AvoidMove/HumUnq_Advisor_AvoidMove_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/AvoidMove/AvoidMove_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 28,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/AvoidMove/HumUnq_Advisor_AvoidMove_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": false,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": false,
+            "_PlayStartMotion_Of_NextMoveAction": false,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": true,
+            "_SelectedAccessory": true,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[682452480] MOVE",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 160
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/BumpedMove/HumUnq_Advisor_BumpedMove_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/AvoidMove/AvoidMove_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 33,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/BumpedMove/HumUnq_Advisor_BumpedMove_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": false,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": false,
+            "_PlayStartMotion_Of_NextMoveAction": false,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": true,
+            "_SelectedAccessory": true,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[682452480] MOVE",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 160
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/BackMove/HumUnq_Advisor_BackMove_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 38,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/BackMove/HumUnq_Advisor_BackMove_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "app.user_data.NpcFsmLikeActionEffectData": {
+                "ref_instance_id": 39,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ActionEffectData/HumUnq_Advisor_BenchU00001.user"
+              }
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": false,
+            "_PlayStartMotion_Of_NextMoveAction": false,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": true,
+            "_SelectedAccessory": true,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "app.user_data.NpcReachCurveParam": {
+                "ref_instance_id": 12,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ReachParam/HumUnq_AdvisorMove_ReachParam.user"
+              }
+            },
+            "_RetargetApplyType": "[682452480] MOVE",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/Bench/HumUnq_Advisor_Bench_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Bench/Bench_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 44,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/Bench/HumUnq_Advisor_Bench_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "app.user_data.NpcFsmLikeActionEffectData": {
+                "ref_instance_id": 39,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ActionEffectData/HumUnq_Advisor_BenchU00001.user"
+              }
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": true,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              467594112,
+              -1772770304,
+              926435584
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 8
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/BenchBonfire/HumUnq_Advisor_BenchBonfire_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Bench/Bench_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 49,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/BenchBonfire/HumUnq_Advisor_BenchBonfire_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "app.user_data.NpcFsmLikeActionEffectData": {
+                "ref_instance_id": 39,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ActionEffectData/HumUnq_Advisor_BenchU00001.user"
+              }
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              467594112,
+              -1772770304,
+              926435584
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 8
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/BenchReadBook/HumUnq_Advisor_BenchReadBook_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Bench/Bench_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 54,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/BenchReadBook/HumUnq_Advisor_BenchReadBook_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "app.user_data.NpcFsmLikeActionEffectData": {
+                "ref_instance_id": 39,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ActionEffectData/HumUnq_Advisor_BenchU00001.user"
+              }
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              -1268448896,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 8
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/BenchReadNotes/HumUnq_Advisor_BenchReadNotes_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Bench/Bench_UnqAdv_MemoTo_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 59,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/BenchReadNotes/HumUnq_Advisor_BenchReadNotes_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "app.user_data.NpcFsmLikeActionEffectData": {
+                "ref_instance_id": 39,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ActionEffectData/HumUnq_Advisor_BenchU00001.user"
+              }
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              -2048929024,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 8
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/BenchDogu/HumUnq_Advisor_BenchDogu_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Bench/Bench_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 64,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/BenchDogu/HumUnq_Advisor_BenchDogu_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "app.user_data.NpcFsmLikeActionEffectData": {
+                "ref_instance_id": 39,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ActionEffectData/HumUnq_Advisor_BenchU00001.user"
+              }
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              1197228288,
+              467594112,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 8
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/BenchDrinkChai/HumUnq_Advisor_BenchDrinkChai_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Bench/Bench_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 69,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/BenchDrinkChai/HumUnq_Advisor_BenchDrinkChai_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "app.user_data.NpcFsmLikeActionEffectData": {
+                "ref_instance_id": 39,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ActionEffectData/HumUnq_Advisor_BenchU00001.user"
+              }
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              963935232,
+              -1699571328,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 8
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/BenchU00002/HumUnq_Advisor_BenchU00002_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Bench/Bench_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 74,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/BenchU00002/HumUnq_Advisor_BenchU00002_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "app.user_data.NpcFsmLikeActionEffectData": {
+                "ref_instance_id": 75,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ActionEffectData/HumUnq_Advisor_BenchU00002.user"
+              }
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": true,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 8
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/BenchU00002Bonefire/HumUnq_Advisor_BenchU00002Bonefire_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Bench/Bench_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 80,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/BenchU00002Bonefire/HumUnq_Advisor_BenchU00002Bonefire_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "app.user_data.NpcFsmLikeActionEffectData": {
+                "ref_instance_id": 75,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ActionEffectData/HumUnq_Advisor_BenchU00002.user"
+              }
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 8
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/BenchU00002ReadNotes/HumUnq_Advisor_BenchU00002ReadNotes_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Bench/Bench_UnqAdv_MemoTo_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 85,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/BenchU00002ReadNotes/HumUnq_Advisor_BenchU00002ReadNotes_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "app.user_data.NpcFsmLikeActionEffectData": {
+                "ref_instance_id": 75,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ActionEffectData/HumUnq_Advisor_BenchU00002.user"
+              }
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 8
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/BenchU00002Kohaku/HumUnq_Advisor_BenchU00002Kohaku_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Bench/Bench_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 90,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/BenchU00002Kohaku/HumUnq_Advisor_BenchU00002Kohaku_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "app.user_data.NpcFsmLikeActionEffectData": {
+                "ref_instance_id": 75,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ActionEffectData/HumUnq_Advisor_BenchU00002.user"
+              }
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              -1227006464,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 8
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TentIn/HumUnq_Advisor_TentIn_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 95,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TentIn/HumUnq_Advisor_TentIn_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "app.user_data.NpcFsmLikeActionEffectData": {
+                "ref_instance_id": 39,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ActionEffectData/HumUnq_Advisor_BenchU00001.user"
+              }
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 256
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TentInPlIn/HumUnq_Advisor_TentInPlIn_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 100,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TentInPlIn/HumUnq_Advisor_TentInPlIn_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "app.user_data.NpcFsmLikeActionEffectData": {
+                "ref_instance_id": 39,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ActionEffectData/HumUnq_Advisor_BenchU00001.user"
+              }
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 256
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TentOut/HumUnq_Advisor_TentOut_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 105,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TentOut/HumUnq_Advisor_TentOut_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "app.user_data.NpcFsmLikeActionEffectData": {
+                "ref_instance_id": 39,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ActionEffectData/HumUnq_Advisor_BenchU00001.user"
+              }
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 256
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TentOutPlIn/HumUnq_Advisor_TentOutPlIn_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 110,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TentOutPlIn/HumUnq_Advisor_TentOutPlIn_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "app.user_data.NpcFsmLikeActionEffectData": {
+                "ref_instance_id": 39,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ActionEffectData/HumUnq_Advisor_BenchU00001.user"
+              }
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 256
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TentSit/HumUnq_Advisor_TentSit_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 115,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TentSit/HumUnq_Advisor_TentSit_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "app.user_data.NpcFsmLikeActionEffectData": {
+                "ref_instance_id": 39,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ActionEffectData/HumUnq_Advisor_BenchU00001.user"
+              }
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              467594112,
+              -1772770304,
+              926435584
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 256
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TentQuestBoard/HumUnq_Advisor_TentQuestBoard_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 120,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TentQuestBoard/HumUnq_Advisor_TentQuestBoard_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "app.user_data.NpcFsmLikeActionEffectData": {
+                "ref_instance_id": 39,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ActionEffectData/HumUnq_Advisor_BenchU00001.user"
+              }
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              -2048929024,
+              2103977344,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 256
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TentDrinkChai/HumUnq_Advisor_TentDrinkChai_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 125,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TentDrinkChai/HumUnq_Advisor_TentDrinkChai_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "app.user_data.NpcFsmLikeActionEffectData": {
+                "ref_instance_id": 39,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ActionEffectData/HumUnq_Advisor_BenchU00001.user"
+              }
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              963935232,
+              -1699571328,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 256
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TentReadNotes/HumUnq_Advisor_TentReadNotes_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 130,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TentReadNotes/HumUnq_Advisor_TentReadNotes_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "app.user_data.NpcFsmLikeActionEffectData": {
+                "ref_instance_id": 39,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ActionEffectData/HumUnq_Advisor_BenchU00001.user"
+              }
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 256
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TentContact/HumUnq_Advisor_TentContact_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 135,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TentContact/HumUnq_Advisor_TentContact_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "app.user_data.NpcFsmLikeActionEffectData": {
+                "ref_instance_id": 39,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ActionEffectData/HumUnq_Advisor_BenchU00001.user"
+              }
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 256
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TentCaution/HumUnq_Advisor_TentCaution_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 140,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TentCaution/HumUnq_Advisor_TentCaution_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "app.user_data.NpcFsmLikeActionEffectData": {
+                "ref_instance_id": 39,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ActionEffectData/HumUnq_Advisor_BenchU00001.user"
+              }
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 256
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TentU00002Sit/HumUnq_Advisor_TentU00002Sit_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 145,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TentU00002Sit/HumUnq_Advisor_TentU00002Sit_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 256
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TentU00002QuestBoard/HumUnq_Advisor_TentU00002QuestBoard_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 150,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TentU00002QuestBoard/HumUnq_Advisor_TentU00002QuestBoard_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              2103977344,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 256
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TentU00002Kohaku/HumUnq_Advisor_TentU00002Kohaku_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 155,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TentU00002Kohaku/HumUnq_Advisor_TentU00002Kohaku_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              -1227006464,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 256
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TentOption01/HumUnq_Advisor_TentOption01_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 160,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TentOption01/HumUnq_Advisor_TentOption01_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": true,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TentOption02/HumUnq_Advisor_TentOption02_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/TentOption/TentOption02_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 165,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TentOption02/HumUnq_Advisor_TentOption02_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "app.user_data.NpcFsmLikeActionEffectData": {
+                "ref_instance_id": 166,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/_VariousData/ActionEffectData/HumUnq_Advisor_TentOption02.user"
+              }
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": true,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              12970,
+              12970,
+              12970
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TentOption03/HumUnq_Advisor_TentOption03_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 171,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TentOption03/HumUnq_Advisor_TentOption03_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": true,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              20177,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/IdleLookAround/HumUnq_Advisor_IdleLookAround_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 176,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/IdleLookAround/HumUnq_Advisor_IdleLookAround_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": true,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/Viewing/HumUnq_Advisor_Viewing_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 181,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/Viewing/HumUnq_Advisor_Viewing_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": true,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/GroundSit/HumUnq_Advisor_GroundSit_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/SitGround/SitGround_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 186,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/GroundSit/HumUnq_Advisor_GroundSit_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": true,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/GroundSitSingleLeg/HumUnq_Advisor_GroundSitSingleLeg_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/SitGroundSingleLeg/SitGroundSingleLeg_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 191,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/GroundSitSingleLeg/HumUnq_Advisor_GroundSitSingleLeg_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": true,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/CheckLuggage/HumUnq_Advisor_CheckLuggage_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 196,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/CheckLuggage/HumUnq_Advisor_CheckLuggage_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": true,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": true,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/CheckLuggageSquat/HumUnq_Advisor_CheckLuggageSquat_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 201,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/CheckLuggageSquat/HumUnq_Advisor_CheckLuggageSquat_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": true,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": true,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/QuestIdle/HumUnq_Advisor_QuestIdle_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 206,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/QuestIdle/HumUnq_Advisor_QuestIdle_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": true,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TakeNotes/HumUnq_Advisor_TakeNotes_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 211,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/TakeNotes/HumUnq_Advisor_TakeNotes_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": true,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              -2048929024,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/Report/HumUnq_Advisor_Report_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 216,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/Report/HumUnq_Advisor_Report_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": true,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              -2048929024,
+              2103977344,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/Backpack/HumUnq_Advisor_Backpack_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 221,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/Backpack/HumUnq_Advisor_Backpack_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": true,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              -1772770304,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/SupplyCheck/HumUnq_Advisor_SupplyCheck_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 226,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/SupplyCheck/HumUnq_Advisor_SupplyCheck_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": true,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/WipeGlasses/HumUnq_Advisor_WipeGlasses_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 231,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/WipeGlasses/HumUnq_Advisor_WipeGlasses_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              467594112,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/Survey/HumUnq_Advisor_Survey_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 236,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/Survey/HumUnq_Advisor_Survey_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": true,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/SurveyEnemy/HumUnq_Advisor_SurveyEnemy_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 241,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/SurveyEnemy/HumUnq_Advisor_SurveyEnemy_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": true,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              -2048929024,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/CollectStone/HumUnq_Advisor_CollectStone_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 246,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/CollectStone/HumUnq_Advisor_CollectStone_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": true,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/SmellCheese/HumUnq_Advisor_SmellCheese_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 251,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/SmellCheese/HumUnq_Advisor_SmellCheese_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/Bonfire/HumUnq_Advisor_Bonfire_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 256,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/Bonfire/HumUnq_Advisor_Bonfire_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/Naruko/HumUnq_Advisor_Naruko_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 261,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/Naruko/HumUnq_Advisor_Naruko_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/Grave/HumUnq_Advisor_Grave_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 266,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/Grave/HumUnq_Advisor_Grave_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": true,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/ReactionSit/HumUnq_Advisor_ReactionSit_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 271,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/ReactionSit/HumUnq_Advisor_ReactionSit_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/GuideIdle/HumUnq_Advisor_GuideIdle_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 276,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/GuideIdle/HumUnq_Advisor_GuideIdle_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/StoryIdle/HumUnq_Advisor_StoryIdle_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Idle/Idle_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 281,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/StoryIdle/HumUnq_Advisor_StoryIdle_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 2
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/StoryBench/HumUnq_Advisor_StoryBench_Action.fsmv2",
+            "_TalkFsm": "GameDesign/NPC/Data/FsmLikeAction/_TalkFSM/Bench/Bench_UnqAdv_Talk.fsmv2",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 286,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/StoryBench/HumUnq_Advisor_StoryBench_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 8
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/StoryTurn/HumUnq_Advisor_StoryTurn_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 291,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/StoryTurn/HumUnq_Advisor_StoryTurn_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": false,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": false,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[682452480] MOVE",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 512
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/StoryU00002WorkShop/HumUnq_Advisor_StoryU00002WorkShop_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 296,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/StoryU00002WorkShop/HumUnq_Advisor_StoryU00002WorkShop_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": false,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        },
+        {
+          "app.user_data.NpcFsmLikeActionPackages.cData": {
+            "_Action": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/StareDollCombi/HumUnq_Advisor_StareDollCombi_Action.fsmv2",
+            "_TalkFsm": "",
+            "_MotionPack": {
+              "app.user_data.NpcMotionPack_Base": {
+                "ref_instance_id": 301,
+                "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Unique_Advisor/StareDollCombi/HumUnq_Advisor_StareDollCombi_MotionPack.user"
+              }
+            },
+            "_ActionEffectData": {
+              "": {}
+            },
+            "_IsMotionPackFullLoad": true,
+            "_IsFacialAlwaysEnable": true,
+            "_IsDiffTalkStance": false,
+            "_PlayStopMotion_Of_PrevMoveAction": true,
+            "_PlayStartMotion_Of_NextMoveAction": true,
+            "_SkipUpstream_FirstAction": false,
+            "_IsPressed": false,
+            "_SelectedAccessory": false,
+            "_AccessoryTypes": [
+              65535,
+              65535,
+              65535
+            ],
+            "_ReachParam": {
+              "": {}
+            },
+            "_RetargetApplyType": "[3279852160] INVALID",
+            "_ActionAttr": {
+              "app.NpcDef.ACTION_ATTRBit_Serializable": 0
+            },
+            "_LookAtAdjustType": "[3149706112] HEAD"
+          }
+        }
+      ],
+      "_ActionEnum": {
+        "ace.user_data.EnumMaker": {
+          "ref_instance_id": 306,
+          "path": "GameDesign/NPC/EnumMaker/NpcFsmLikeAction_Human_Advisor.user"
+        }
+      }
+    }
+  }
+]

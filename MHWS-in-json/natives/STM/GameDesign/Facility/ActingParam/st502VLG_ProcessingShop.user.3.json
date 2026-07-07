@@ -1,0 +1,78 @@
+[
+  {
+    "app.user_data.FacilityActingParam": {
+      "_FacilityID": "[276593312] PROCESSING_SHOP",
+      "_FacilityCloseDist": 5.0,
+      "_FacilityCloseTime": 15.0,
+      "_FacilityOpenAngle": 160.0,
+      "_FacilityCloseAngle": 0.0,
+      "_IsWaitLeavePlayer": false,
+      "_IsNaviMovePlayer": false,
+      "_DisableSkipNaviMovePlayer": false,
+      "_UseFadeInOut": true,
+      "_TurnToPlayerInFade": false,
+      "_ColliderPrefab": {
+        "via.Prefab": {
+          "v0": {
+            "raw": "01",
+            "type": "Data"
+          },
+          "v1": "GameDesign/Facility/ActingParam/st502VLG_ProcessingShop_Collider.pfb"
+        }
+      },
+      "_ActingData": [
+        {
+          "app.user_data.FacilityActingParam.cActingData": {
+            "_Position": [
+              80.3953,
+              0.7969,
+              -161.106,
+              0.0
+            ],
+            "_AngleY": 144.0145,
+            "_Camera": {
+              "app.cCameraParamArgument_AttachObjectFollowRot": {
+                "FOV": 35.0,
+                "RollDegree": 0.0,
+                "AttachJoint": {
+                  "ace.cJointHash": {
+                    "_Hash": 0
+                  }
+                },
+                "IsAttachYNull": true,
+                "ControlOffset": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "AttachOffset": [
+                  0.4771,
+                  1.2991,
+                  2.4715,
+                  0.0
+                ],
+                "RotationDegree": [
+                  -3.5873,
+                  203.5694,
+                  0.0,
+                  0.0
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "_Detail": {
+        "app.user_data.FacilityActingParam.cActingDetail_ProcessingShop": {
+          "_CommonData": {
+            "app.user_data.FacilityActingParam_ProcessingShop": {
+              "ref_instance_id": 6,
+              "path": "GameDesign/Facility/ActingParam/Common_ProcessingShop_st502.user"
+            }
+          }
+        }
+      }
+    }
+  }
+]

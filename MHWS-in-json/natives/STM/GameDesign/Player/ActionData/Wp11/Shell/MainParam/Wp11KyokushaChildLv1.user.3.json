@@ -1,0 +1,356 @@
+[
+  {
+    "ace.user_data.ShellMainParam": {
+      "_ShellMiniParams": [
+        {
+          "ace.cShellminiParamCommon": {
+            "MiniParamName": "Common",
+            "MiniParamtype": 1,
+            "_IsDependedOn": false,
+            "UpdateOrder": 0,
+            "LateUpdateOrder": 0,
+            "_LifeSec": 1.5,
+            "_HitOnSec": 0.0
+          }
+        },
+        {
+          "app.cShellminiParamPlWp11Arrow": {
+            "MiniParamName": "PlWp11Arrow",
+            "MiniParamtype": 6,
+            "_IsDependedOn": false,
+            "UpdateOrder": 500,
+            "LateUpdateOrder": 500,
+            "_ArrowType": 4,
+            "_ArrowLv": 1,
+            "_Critical_Begin_Dist": -1.0,
+            "_Critical_End_Dist": -1.0,
+            "_Critical_AttackRate": 1.0,
+            "_Before_Critical_AttackRate": 1.0,
+            "_After_Critical_AttackRate": 1.0,
+            "_SpecialShot_HitSlowSpeedRate": 0.15,
+            "_SpecialShot_HitSlowTime": 0.3,
+            "_HomingSpecialShot_Speed": 150.0,
+            "_HomingStartDistRate": 0.2,
+            "_HomingMoveSpeed": 25.0,
+            "_HomingMoveAccTime": 0.1,
+            "_HomingTurnMaxSpeed": 80.0,
+            "_HomingTurnAcc": 40.0,
+            "_HomingTurnAccDistanceRate": {
+              "app.AppAnimationCurve": {
+                "v0": [
+                  {
+                    "raw": "00000000000000000000000000000000",
+                    "type": "Data"
+                  },
+                  {
+                    "raw": "00000000000080530000000000000000",
+                    "type": "Data"
+                  }
+                ],
+                "v1": {
+                  "raw": "000030c1",
+                  "type": "Data"
+                },
+                "v2": {
+                  "raw": "00003041",
+                  "type": "Data"
+                },
+                "v3": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v4": {
+                  "raw": "00007042",
+                  "type": "Data"
+                },
+                "v5": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v6": {
+                  "raw": "02000000",
+                  "type": "Data"
+                }
+              }
+            },
+            "_HomingTurnAccAngelRate": {
+              "app.AppAnimationCurve": {
+                "v0": [
+                  {
+                    "raw": "00000000000000000000000000000000",
+                    "type": "Data"
+                  },
+                  {
+                    "raw": "000000000000a0590000000000000000",
+                    "type": "Data"
+                  }
+                ],
+                "v1": {
+                  "raw": "000030c1",
+                  "type": "Data"
+                },
+                "v2": {
+                  "raw": "00003041",
+                  "type": "Data"
+                },
+                "v3": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v4": {
+                  "raw": "00003443",
+                  "type": "Data"
+                },
+                "v5": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v6": {
+                  "raw": "02000000",
+                  "type": "Data"
+                }
+              }
+            },
+            "_HomingTurnMaxDeg": 120.0,
+            "_MultiLockonAcc": 40.0,
+            "_MultiLockonScatterDistRate": 0.1,
+            "_MultiLockonTurnAccStartDistRate": {
+              "app.AppAnimationCurve": {
+                "v0": [
+                  {
+                    "raw": "00000000000000000000000000000000",
+                    "type": "Data"
+                  },
+                  {
+                    "raw": "000000000000804f0000000000000000",
+                    "type": "Data"
+                  }
+                ],
+                "v1": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v2": {
+                  "raw": "0000803f",
+                  "type": "Data"
+                },
+                "v3": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v4": {
+                  "raw": "0000f041",
+                  "type": "Data"
+                },
+                "v5": {
+                  "raw": "00000000",
+                  "type": "Data"
+                },
+                "v6": {
+                  "raw": "02000000",
+                  "type": "Data"
+                }
+              }
+            },
+            "_MultiLockonImmediatelyHomingDist": 3.0,
+            "_TsugiyaAtkRate": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        {
+          "app.cShellminiParamColHit": {
+            "MiniParamName": "AppColHit",
+            "MiniParamtype": 3,
+            "_IsDependedOn": false,
+            "UpdateOrder": 100,
+            "LateUpdateOrder": 100,
+            "_ColHitFlag": 3,
+            "_SubCollisionIDList": [],
+            "_IsHitOwner": false,
+            "_IsHitOwnerOhterShell": false,
+            "_IsHitAnimalCollision": false,
+            "_IsDisableNearestHit": false,
+            "_IsNoHitAttackerShell": false,
+            "_IsDamageShellNoSort": false,
+            "_IsDamageDestory": false,
+            "_IsNotDestroyOnZeroDamage": false,
+            "_IsEnableDynamicShape": false,
+            "_IsCreateShellOnDestory": false,
+            "_IsCheckRequestDestroy_OnDamage": false,
+            "_IsCheckBarrierHit": false,
+            "_IsAttackBarrierHitDestroy": false,
+            "_CheckBarrierHitOffsetY": 0.0,
+            "_IsCallHitEffectNoDestroy": false,
+            "_IsUseLifeTimerRateHitOn": false,
+            "_AppHitTerrainSetting": {
+              "app.cShellminiParamColHit.HitTerrainSetting": {
+                "_FirstTerrainHitType": 0,
+                "_ShellHitWaterBehavior": 2,
+                "_ShellHitGroundBehavior": 0,
+                "STRUCT__ShellHitWallBehavior__HasValue": false,
+                "STRUCT__ShellHitWallBehavior__Value": 0,
+                "STRUCT__ShellHitCeilingBehavior__HasValue": false,
+                "STRUCT__ShellHitCeilingBehavior__Value": 0,
+                "_IsFirstTerrainCheck": true,
+                "_FirstTerrainCheckJoint": {
+                  "ace.cJointHash": {
+                    "_Hash": 0
+                  }
+                },
+                "STRUCT__FirstTerrainCheckOffset__HasValue": false,
+                "STRUCT__FirstTerrainCheckOffset__Value": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "_FirstTerrainCheckGoalJoint": {
+                  "ace.cJointHash": {
+                    "_Hash": 0
+                  }
+                },
+                "STRUCT__FirstTerrainCheckGoalOffset__HasValue": false,
+                "STRUCT__FirstTerrainCheckGoalOffset__Value": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "_TimeNotHitInTerrain": 0.0,
+                "_IsShellHitTerrainCorrect": true,
+                "_IsShellHitTerrainWaterCorrect": true,
+                "STRUCT__HitTerrainLimitDeg__HasValue": false,
+                "STRUCT__HitTerrainLimitDeg__Value": 0.0,
+                "_ShellAttackColLifeSec": -1.0
+              }
+            }
+          }
+        },
+        {
+          "app.cShellminiParamCallCustomChildShell": {
+            "MiniParamName": "CallCustomChildShell",
+            "MiniParamtype": 4,
+            "_IsDependedOn": false,
+            "UpdateOrder": 0,
+            "LateUpdateOrder": 0,
+            "_CreateNum": 2,
+            "_Offset": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_IsInheritChildScaleValue": false,
+            "_IsRotWorldY": false,
+            "STRUCT__StartRot__HasValue": false,
+            "STRUCT__StartRot__Value": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "STRUCT__OffsetRot__HasValue": false,
+            "STRUCT__OffsetRot__Value": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "_IsSameTimeCall": false,
+            "_IsCreateShellOwnerPos": false,
+            "_IsChainShell": false,
+            "_ChainID": 0,
+            "_LinkParentChainID": 0,
+            "_IsConstShell": false,
+            "_ChildOverrideParam": {
+              "app.cShellminiParamCallChildShell.cChildOverrideSetting": {
+                "_OffsetArray": [
+                  {
+                    "_HasValue": false,
+                    "_Value": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ]
+                  },
+                  {
+                    "_HasValue": false,
+                    "_Value": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ]
+                  }
+                ],
+                "_StartRotArray": [
+                  {
+                    "_HasValue": false,
+                    "_Value": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ]
+                  },
+                  {
+                    "_HasValue": false,
+                    "_Value": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ]
+                  }
+                ],
+                "_OffsetRotArray": [
+                  {
+                    "_HasValue": false,
+                    "_Value": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ]
+                  },
+                  {
+                    "_HasValue": false,
+                    "_Value": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ]
+                  }
+                ]
+              }
+            },
+            "_ShellList": {
+              "ace.cChildShellGenerateParam": {
+                "_IsPassingHitID": false,
+                "_ShellNameHash": 1599944114
+              }
+            },
+            "_ShellIndex": 0
+          }
+        }
+      ],
+      "_CommonParam": {
+        "ace.cShellminiParamCommon": {
+          "MiniParamName": "Common",
+          "MiniParamtype": 1,
+          "_IsDependedOn": false,
+          "UpdateOrder": 0,
+          "LateUpdateOrder": 0,
+          "_LifeSec": 1.5,
+          "_HitOnSec": 0.0
+        }
+      }
+    }
+  }
+]

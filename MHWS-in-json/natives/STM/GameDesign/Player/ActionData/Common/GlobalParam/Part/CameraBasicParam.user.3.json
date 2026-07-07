@@ -1,0 +1,1826 @@
+[
+  {
+    "app.user_data.PlayerCameraBasicParam": {
+      "_BasePosSmooth": {
+        "app.cCameraBasePosSmoothingParam": {
+          "_ExpDampingConst": 0.6,
+          "_ExpDamplingScale": 15.0,
+          "_ExtendLimitY": 0.5,
+          "_ExtendLimitXZ": 1.5
+        }
+      },
+      "_SmoothSpeedScaleInterpolation": {
+        "app.cValueInterpolationTime": {
+          "_InTime": 0.5,
+          "_OutTime": 1.0,
+          "_InCurve": 5,
+          "_OutCurve": 5
+        }
+      },
+      "_OperateParam": {
+        "app.cPlayerCameraOperator.cSetting": {
+          "_NeautralLowRange": 0.2,
+          "_NeautralMouse": 1.0,
+          "_NeautralGyro": 0.3,
+          "_NeautralMouseDistance": 3.0,
+          "_NeautralGyroDistance": 0.1,
+          "_AimEnemyRate": 0.6
+        }
+      },
+      "_AutoRotateParam": {
+        "app.cPlayerCameraAutoRotator.cSetting": {
+          "_DefaultEaseTime": 0.4,
+          "_DefaultEaseType": 11,
+          "_DefaultBreakableRate": 0.6,
+          "_StickThreshold": 0.2,
+          "_SlopeMeasure": {
+            "app.cCameraSlopeMeasure.cSetting": {
+              "_SampleCount": 5,
+              "_SampleInterval": 3.0,
+              "_DetectionDegree": 50.0,
+              "_DetectionInterval": 0.0,
+              "_FarWeight": 1.0,
+              "_SmoothRate": 0.0
+            }
+          },
+          "_TargetEaseTime": 0.2,
+          "_TargetEaseType": 5,
+          "_TargetPitchLimit": {
+            "raw": "000020c20000be42",
+            "type": "Range"
+          }
+        }
+      },
+      "_CommandParam": {
+        "app.cPlayerCameraCommandOperator.cSetting": {
+          "_ResetDoubleReceptionTime": 0.09
+        }
+      },
+      "_CameraOperate": {
+        "app.cCameraOperateOptionBuildParam": {
+          "_BaseFOV": 40.0,
+          "_AimFov": 30.0,
+          "_PadAxisThreshold": 0.0,
+          "_PadThreshold": [
+            0.0,
+            0.4
+          ],
+          "_IsFlexibleSpeedByFOV": true,
+          "_ResponseExp": [
+            1.0,
+            1.25,
+            1.5,
+            1.75,
+            2.0,
+            2.4,
+            2.9,
+            3.6,
+            4.5,
+            5.5
+          ],
+          "_ResponseLower": [
+            0.0,
+            0.4
+          ],
+          "_ResponseUpper": [
+            0.6,
+            1.0
+          ],
+          "_LandControlRate": [
+            0.3,
+            0.5,
+            0.8,
+            1.0,
+            1.2,
+            1.4,
+            1.7,
+            2.0,
+            2.5,
+            3.0
+          ],
+          "_PadSmoothRate": [
+            0.0,
+            10.3,
+            8.0,
+            6.0,
+            4.0
+          ],
+          "_PadBasicSpeedYaw": [
+            80.0,
+            100.0,
+            120.0,
+            140.0,
+            160.0,
+            180.0,
+            210.0,
+            240.0,
+            270.0,
+            300.0,
+            350.0,
+            410.0,
+            480.0,
+            560.0,
+            650.0,
+            750.0,
+            850.0,
+            1000.0,
+            1150.0,
+            1300.0
+          ],
+          "_PadBasicSpeedPitch": [
+            48.0,
+            60.0,
+            72.0,
+            84.0,
+            96.0,
+            108.0,
+            126.0,
+            144.0,
+            162.0,
+            180.0,
+            210.0,
+            246.0,
+            288.0,
+            336.0,
+            390.0,
+            450.0,
+            510.0,
+            600.0,
+            690.0,
+            780.0
+          ],
+          "_PadAimSpeedYaw": [
+            50.0,
+            65.0,
+            80.0,
+            90.0,
+            100.0,
+            115.0,
+            130.0,
+            150.0,
+            175.0,
+            200.0,
+            225.0,
+            250.0,
+            275.0,
+            300.0,
+            350.0,
+            400.0,
+            450.0,
+            500.0,
+            550.0,
+            600.0
+          ],
+          "_PadAimSpeedPitch": [
+            30.0,
+            40.0,
+            48.0,
+            54.0,
+            60.0,
+            70.0,
+            80.0,
+            90.0,
+            105.0,
+            120.0,
+            135.0,
+            150.0,
+            165.0,
+            180.0,
+            210.0,
+            240.0,
+            270.0,
+            300.0,
+            330.0,
+            360.0
+          ],
+          "_PadLandControlSpeed": 1.3,
+          "_PadLStickRate": [
+            0.0,
+            0.3,
+            0.6,
+            0.8,
+            1.0
+          ],
+          "_PadLStickPitchRate": 0.4,
+          "_MouseBasicSpeedYaw": {
+            "app.cCameraMouseSencitivityParam": {
+              "_Point": [
+                {
+                  "app.cCameraMouseSencitivityParam.cPoint": {
+                    "_Key": 0.01,
+                    "_Value": 0.0007
+                  }
+                },
+                {
+                  "app.cCameraMouseSencitivityParam.cPoint": {
+                    "_Key": 15.0,
+                    "_Value": 0.099
+                  }
+                },
+                {
+                  "app.cCameraMouseSencitivityParam.cPoint": {
+                    "_Key": 100.0,
+                    "_Value": 0.66
+                  }
+                }
+              ]
+            }
+          },
+          "_MouseBasicSpeedPitch": {
+            "app.cCameraMouseSencitivityParam": {
+              "_Point": [
+                {
+                  "app.cCameraMouseSencitivityParam.cPoint": {
+                    "_Key": 0.01,
+                    "_Value": 0.0007
+                  }
+                },
+                {
+                  "app.cCameraMouseSencitivityParam.cPoint": {
+                    "_Key": 15.0,
+                    "_Value": 0.099
+                  }
+                },
+                {
+                  "app.cCameraMouseSencitivityParam.cPoint": {
+                    "_Key": 100.0,
+                    "_Value": 0.66
+                  }
+                }
+              ]
+            }
+          },
+          "_MouseAimSpeedYaw": {
+            "app.cCameraMouseSencitivityParam": {
+              "_Point": [
+                {
+                  "app.cCameraMouseSencitivityParam.cPoint": {
+                    "_Key": 0.01,
+                    "_Value": 0.0007
+                  }
+                },
+                {
+                  "app.cCameraMouseSencitivityParam.cPoint": {
+                    "_Key": 15.0,
+                    "_Value": 0.099
+                  }
+                },
+                {
+                  "app.cCameraMouseSencitivityParam.cPoint": {
+                    "_Key": 100.0,
+                    "_Value": 0.66
+                  }
+                }
+              ]
+            }
+          },
+          "_MouseAimSpeedPitch": {
+            "app.cCameraMouseSencitivityParam": {
+              "_Point": [
+                {
+                  "app.cCameraMouseSencitivityParam.cPoint": {
+                    "_Key": 0.01,
+                    "_Value": 0.0007
+                  }
+                },
+                {
+                  "app.cCameraMouseSencitivityParam.cPoint": {
+                    "_Key": 15.0,
+                    "_Value": 0.099
+                  }
+                },
+                {
+                  "app.cCameraMouseSencitivityParam.cPoint": {
+                    "_Key": 100.0,
+                    "_Value": 0.66
+                  }
+                }
+              ]
+            }
+          },
+          "_MouseSpeedCollect": [
+            0.1,
+            0.2,
+            0.3,
+            0.4,
+            0.5,
+            0.6,
+            0.7,
+            0.8,
+            0.9,
+            1.0,
+            1.1,
+            1.2,
+            1.3,
+            1.4,
+            1.5,
+            1.6,
+            1.7,
+            1.8,
+            1.9,
+            2.0
+          ],
+          "_MouseLandControlSpeed": 0.0015,
+          "_GyroBasicSpeedYaw": [
+            0.0,
+            23.4,
+            31.2,
+            39.0,
+            46.8,
+            54.6,
+            62.4,
+            70.2,
+            78.0,
+            89.7,
+            101.4,
+            113.1,
+            124.8,
+            140.4,
+            156.0,
+            175.5,
+            195.0,
+            214.5,
+            234.0,
+            253.5
+          ],
+          "_GyroBasicSpeedPitch": [
+            0.0,
+            14.04,
+            18.72,
+            23.4,
+            28.08,
+            32.76,
+            37.44,
+            42.12,
+            46.8,
+            53.82,
+            60.84,
+            67.86,
+            74.88,
+            84.24,
+            93.6,
+            105.3,
+            117.0,
+            128.7,
+            140.4,
+            152.1
+          ],
+          "_GyroAimSpeedYaw": [
+            0.0,
+            18.0,
+            24.0,
+            30.0,
+            36.0,
+            42.0,
+            48.0,
+            54.0,
+            60.0,
+            69.0,
+            78.0,
+            87.0,
+            96.0,
+            108.0,
+            120.0,
+            135.0,
+            150.0,
+            165.0,
+            180.0,
+            195.0
+          ],
+          "_GyroAimSpeedPitch": [
+            0.0,
+            10.8,
+            14.4,
+            18.0,
+            21.6,
+            25.2,
+            28.8,
+            32.4,
+            36.0,
+            41.4,
+            46.8,
+            52.2,
+            57.6,
+            64.8,
+            72.0,
+            81.0,
+            90.0,
+            99.0,
+            108.0,
+            117.0
+          ],
+          "_GyroLandControlSpeed": 1.0
+        }
+      },
+      "_DistanceParam": {
+        "app.mcCam_OfsDistance.cSetting": {
+          "_NearOffset": [
+            0.65,
+            -0.05,
+            -1.25,
+            0.0
+          ],
+          "_FarOffset": [
+            0.0,
+            0.3,
+            1.1,
+            0.0
+          ],
+          "_MasterRate": 0.5
+        }
+      },
+      "_AdjustHorizontalMoveParam": {
+        "app.mcCam_OfsHorizontalMove.cSetting": {
+          "Damping": 0.6,
+          "AdjustWeight": 0.2,
+          "MaxAdjustRate": 1.0
+        }
+      },
+      "_AdjustHorizonParam": {
+        "ace.mcCam_OfsHorizon.cSetting": {
+          "_ScanningOffset": [
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          "_ScanningSize": 8.0,
+          "_ScanningDiv": 8,
+          "_ScanningInterval": 0.05,
+          "_OffsetWeight": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "OffsetWeightSmooth": 0.05
+        }
+      },
+      "_AdjustTerrainWaterParam": {
+        "app.mcCam_OfsTerrainWater.cSetting": {
+          "AboveWaterDistance": 0.7,
+          "SmoothSpeedScale": 2.0
+        }
+      },
+      "_AdjustCollisionParam": {
+        "app.mcCam_ThirdPersonCollision.cSetting": {
+          "CollisionRadiusFirst": 0.24,
+          "CollisionRadiusSecond": 0.2,
+          "Damping": 0.95,
+          "MinimumHeight": 1.5,
+          "OverNear_CollisionDistance": 2.8,
+          "OverNear_New_CollisionLength": 3.0,
+          "OverNear_NearestDistance": 4.2,
+          "OverNear_NearestHeight": 1.4,
+          "OverNear_Radius": 0.15,
+          "OverNear_Alpha_Near": 0.2,
+          "OverNear_Alpha_Far": 0.95,
+          "OverNear_Alpha_InTime": 0.0,
+          "OverNear_Alpha_OutTime": 0.1,
+          "OverFar_DampingNear": {
+            "ace.cDampingParam": {
+              "_Damping": 0.6,
+              "_TimeScale": 1.0
+            }
+          },
+          "OverFar_DampingFar": {
+            "ace.cDampingParam": {
+              "_Damping": 0.9,
+              "_TimeScale": 1.0
+            }
+          },
+          "OverFar_FarDistance": 10.0,
+          "OverFar_Offset": 3.0
+        }
+      },
+      "_ActionCameraParam": {
+        "app.cPlayerActionCameraParam": {
+          "_Tent": {
+            "app.cPlayerActionCameraParam.cTent": {
+              "_Fade": {
+                "app.cPlayerActionCameraParam.cMotFade": {
+                  "_InTime": 1.0,
+                  "_InEase": 6,
+                  "_OutTime": 0.0,
+                  "_OutEase": 6,
+                  "_InFrame": 0.0,
+                  "_OutFrame": -1.0,
+                  "_FadeType": "[1] FRONT",
+                  "_IsOutBindRot": true,
+                  "_IsOutFadeRot": false,
+                  "_ConstJoint": {
+                    "ace.cJointHash": {
+                      "_Hash": 0
+                    }
+                  }
+                }
+              },
+              "_BackStartAngle": 50.0,
+              "_SideStartAngle": 130.0
+            }
+          },
+          "_FastTravelGo": {
+            "app.cPlayerActionCameraParam.cMotFade": {
+              "_InTime": 1.0,
+              "_InEase": 6,
+              "_OutTime": 0.0,
+              "_OutEase": 6,
+              "_InFrame": 0.0,
+              "_OutFrame": -1.0,
+              "_FadeType": "[0] BLEND",
+              "_IsOutBindRot": true,
+              "_IsOutFadeRot": false,
+              "_ConstJoint": {
+                "ace.cJointHash": {
+                  "_Hash": 3425867754
+                }
+              }
+            }
+          },
+          "_FastTravelPorterNoRideGo": {
+            "app.cPlayerActionCameraParam.cMotFade": {
+              "_InTime": 0.0,
+              "_InEase": 6,
+              "_OutTime": 0.0,
+              "_OutEase": 6,
+              "_InFrame": 0.0,
+              "_OutFrame": -1.0,
+              "_FadeType": "[1] FRONT",
+              "_IsOutBindRot": true,
+              "_IsOutFadeRot": false,
+              "_ConstJoint": {
+                "ace.cJointHash": {
+                  "_Hash": 3425867754
+                }
+              }
+            }
+          },
+          "_FastTravelPorterGo": {
+            "app.cPlayerActionCameraParam.cMotFade": {
+              "_InTime": 1.0,
+              "_InEase": 6,
+              "_OutTime": 0.0,
+              "_OutEase": 6,
+              "_InFrame": 0.0,
+              "_OutFrame": -1.0,
+              "_FadeType": "[1] FRONT",
+              "_IsOutBindRot": true,
+              "_IsOutFadeRot": false,
+              "_ConstJoint": {
+                "ace.cJointHash": {
+                  "_Hash": 1549972489
+                }
+              }
+            }
+          },
+          "_MapOpen": {
+            "app.cPlayerActionCameraParam.cMapOpen": {
+              "_Fade": {
+                "app.cPlayerActionCameraParam.cMotFade": {
+                  "_InTime": 0.0,
+                  "_InEase": 6,
+                  "_OutTime": 0.0,
+                  "_OutEase": 6,
+                  "_InFrame": 0.0,
+                  "_OutFrame": -1.0,
+                  "_FadeType": "[1] FRONT",
+                  "_IsOutBindRot": true,
+                  "_IsOutFadeRot": false,
+                  "_ConstJoint": {
+                    "ace.cJointHash": {
+                      "_Hash": 0
+                    }
+                  }
+                }
+              },
+              "_UIMapWaitTime": 0.2
+            }
+          },
+          "_Grill": {
+            "app.cPlayerActionCameraParam.cGrill": {
+              "_FadeStart": {
+                "app.cPlayerActionCameraParam.cMotFade": {
+                  "_InTime": 0.0,
+                  "_InEase": 6,
+                  "_OutTime": 0.0,
+                  "_OutEase": 6,
+                  "_InFrame": 0.0,
+                  "_OutFrame": -1.0,
+                  "_FadeType": "[1] FRONT",
+                  "_IsOutBindRot": true,
+                  "_IsOutFadeRot": false,
+                  "_ConstJoint": {
+                    "ace.cJointHash": {
+                      "_Hash": 3425867754
+                    }
+                  }
+                }
+              },
+              "_FadeFailed": {
+                "app.cPlayerActionCameraParam.cMotFade": {
+                  "_InTime": 1.0,
+                  "_InEase": 6,
+                  "_OutTime": 2.0,
+                  "_OutEase": 6,
+                  "_InFrame": 0.0,
+                  "_OutFrame": 170.0,
+                  "_FadeType": "[0] BLEND",
+                  "_IsOutBindRot": false,
+                  "_IsOutFadeRot": true,
+                  "_ConstJoint": {
+                    "ace.cJointHash": {
+                      "_Hash": 3425867754
+                    }
+                  }
+                }
+              },
+              "_FadeSuccessContinue": {
+                "app.cPlayerActionCameraParam.cMotFade": {
+                  "_InTime": 0.3,
+                  "_InEase": 5,
+                  "_OutTime": 1.0,
+                  "_OutEase": 6,
+                  "_InFrame": 0.0,
+                  "_OutFrame": -1.0,
+                  "_FadeType": "[1] FRONT",
+                  "_IsOutBindRot": true,
+                  "_IsOutFadeRot": false,
+                  "_ConstJoint": {
+                    "ace.cJointHash": {
+                      "_Hash": 3425867754
+                    }
+                  }
+                }
+              },
+              "_FadeSuccessFinish": {
+                "app.cPlayerActionCameraParam.cMotFade": {
+                  "_InTime": 0.5,
+                  "_InEase": 5,
+                  "_OutTime": 3.0,
+                  "_OutEase": 6,
+                  "_InFrame": 0.0,
+                  "_OutFrame": 70.0,
+                  "_FadeType": "[0] BLEND",
+                  "_IsOutBindRot": false,
+                  "_IsOutFadeRot": true,
+                  "_ConstJoint": {
+                    "ace.cJointHash": {
+                      "_Hash": 3425867754
+                    }
+                  }
+                }
+              },
+              "_FadeSuperSuccessFinish": {
+                "app.cPlayerActionCameraParam.cMotFade": {
+                  "_InTime": 0.5,
+                  "_InEase": 5,
+                  "_OutTime": 3.0,
+                  "_OutEase": 6,
+                  "_InFrame": 0.0,
+                  "_OutFrame": 150.0,
+                  "_FadeType": "[0] BLEND",
+                  "_IsOutBindRot": false,
+                  "_IsOutFadeRot": true,
+                  "_ConstJoint": {
+                    "ace.cJointHash": {
+                      "_Hash": 3425867754
+                    }
+                  }
+                }
+              },
+              "_EndRotOffset": [
+                -5.0,
+                135.0,
+                0.0,
+                0.0
+              ],
+              "_PitchRange": 40.0
+            }
+          },
+          "_FishBigGet": {
+            "app.cPlayerActionCameraParam.cMotFade": {
+              "_InTime": 0.0,
+              "_InEase": 6,
+              "_OutTime": 1.5,
+              "_OutEase": 6,
+              "_InFrame": 0.0,
+              "_OutFrame": 580.0,
+              "_FadeType": "[0] BLEND",
+              "_IsOutBindRot": true,
+              "_IsOutFadeRot": false,
+              "_ConstJoint": {
+                "ace.cJointHash": {
+                  "_Hash": 3425867754
+                }
+              }
+            }
+          },
+          "_RespawnPorter": {
+            "app.cPlayerActionCameraParam.cRespawnPorter": {
+              "_FadeStart": {
+                "app.cPlayerActionCameraParam.cMotFade": {
+                  "_InTime": 0.0,
+                  "_InEase": 0,
+                  "_OutTime": 0.0,
+                  "_OutEase": 0,
+                  "_InFrame": 0.0,
+                  "_OutFrame": -1.0,
+                  "_FadeType": "[1] FRONT",
+                  "_IsOutBindRot": true,
+                  "_IsOutFadeRot": false,
+                  "_ConstJoint": {
+                    "ace.cJointHash": {
+                      "_Hash": 0
+                    }
+                  }
+                }
+              },
+              "_FadeFly": {
+                "app.cPlayerActionCameraParam.cMotFade": {
+                  "_InTime": 0.0,
+                  "_InEase": 6,
+                  "_OutTime": 0.0,
+                  "_OutEase": 0,
+                  "_InFrame": 0.0,
+                  "_OutFrame": -1.0,
+                  "_FadeType": "[1] FRONT",
+                  "_IsOutBindRot": true,
+                  "_IsOutFadeRot": false,
+                  "_ConstJoint": {
+                    "ace.cJointHash": {
+                      "_Hash": 0
+                    }
+                  }
+                }
+              },
+              "_FadeLoop": {
+                "app.cPlayerActionCameraParam.cMotFade": {
+                  "_InTime": 0.2,
+                  "_InEase": 11,
+                  "_OutTime": 0.0,
+                  "_OutEase": 5,
+                  "_InFrame": 0.0,
+                  "_OutFrame": -1.0,
+                  "_FadeType": "[2] FRONT_NOATTACH",
+                  "_IsOutBindRot": true,
+                  "_IsOutFadeRot": false,
+                  "_ConstJoint": {
+                    "ace.cJointHash": {
+                      "_Hash": 0
+                    }
+                  }
+                }
+              },
+              "_FadeEnd": {
+                "app.cPlayerActionCameraParam.cMotFade": {
+                  "_InTime": 0.5,
+                  "_InEase": 5,
+                  "_OutTime": 2.0,
+                  "_OutEase": 6,
+                  "_InFrame": 0.0,
+                  "_OutFrame": 260.0,
+                  "_FadeType": "[0] BLEND",
+                  "_IsOutBindRot": true,
+                  "_IsOutFadeRot": false,
+                  "_ConstJoint": {
+                    "ace.cJointHash": {
+                      "_Hash": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "_RespawnNiguruma": {
+            "app.cPlayerActionCameraParam.cMotFade": {
+              "_InTime": 1.0,
+              "_InEase": 5,
+              "_OutTime": 2.0,
+              "_OutEase": 6,
+              "_InFrame": 0.0,
+              "_OutFrame": 240.0,
+              "_FadeType": "[0] BLEND",
+              "_IsOutBindRot": true,
+              "_IsOutFadeRot": false,
+              "_ConstJoint": {
+                "ace.cJointHash": {
+                  "_Hash": 0
+                }
+              }
+            }
+          },
+          "_SpecialGasagoso": {
+            "app.cPlayerActionCameraParam.cMotFade": {
+              "_InTime": 2.0,
+              "_InEase": 6,
+              "_OutTime": 2.0,
+              "_OutEase": 6,
+              "_InFrame": 0.0,
+              "_OutFrame": -1.0,
+              "_FadeType": "[1] FRONT",
+              "_IsOutBindRot": true,
+              "_IsOutFadeRot": false,
+              "_ConstJoint": {
+                "ace.cJointHash": {
+                  "_Hash": 3425867754
+                }
+              }
+            }
+          },
+          "_BindStart": {
+            "app.cPlayerActionCameraParam.cMotFade": {
+              "_InTime": 1.0,
+              "_InEase": 5,
+              "_OutTime": 1.0,
+              "_OutEase": 5,
+              "_InFrame": 0.0,
+              "_OutFrame": -1.0,
+              "_FadeType": "[1] FRONT",
+              "_IsOutBindRot": true,
+              "_IsOutFadeRot": false,
+              "_ConstJoint": {
+                "ace.cJointHash": {
+                  "_Hash": 1549972489
+                }
+              }
+            }
+          },
+          "_Binding": {
+            "app.cPlayerActionCameraParam.cMotFade": {
+              "_InTime": 0.0,
+              "_InEase": 6,
+              "_OutTime": 0.0,
+              "_OutEase": 6,
+              "_InFrame": 0.0,
+              "_OutFrame": -1.0,
+              "_FadeType": "[1] FRONT",
+              "_IsOutBindRot": true,
+              "_IsOutFadeRot": false,
+              "_ConstJoint": {
+                "ace.cJointHash": {
+                  "_Hash": 0
+                }
+              }
+            }
+          },
+          "_BindFinish": {
+            "app.cPlayerActionCameraParam.cMotFade": {
+              "_InTime": 0.0,
+              "_InEase": 5,
+              "_OutTime": 1.0,
+              "_OutEase": 5,
+              "_InFrame": 0.0,
+              "_OutFrame": 211.0,
+              "_FadeType": "[1] FRONT",
+              "_IsOutBindRot": true,
+              "_IsOutFadeRot": false,
+              "_ConstJoint": {
+                "ace.cJointHash": {
+                  "_Hash": 1549972489
+                }
+              }
+            }
+          },
+          "_ExFieldFinish": {
+            "app.cPlayerActionCameraParam.cMotFade": {
+              "_InTime": 1.5,
+              "_InEase": 5,
+              "_OutTime": 0.6,
+              "_OutEase": 5,
+              "_InFrame": 0.0,
+              "_OutFrame": 515.0,
+              "_FadeType": "[0] BLEND",
+              "_IsOutBindRot": false,
+              "_IsOutFadeRot": true,
+              "_ConstJoint": {
+                "ace.cJointHash": {
+                  "_Hash": 0
+                }
+              }
+            }
+          }
+        }
+      },
+      "_LookatParam": {
+        "app.mcCam_Lookat.cSetting": {
+          "HandNoise": {
+            "app.cCameraHandNoiseParam_Perlin": {
+              "_InstanceGuid": "8d092fa0-50a6-431a-a953-ba33694cb122",
+              "Freq": 0.35,
+              "AmpPos": [
+                0.001,
+                0.001,
+                0.0,
+                0.0
+              ],
+              "AmpRot": [
+                0.04,
+                0.03,
+                0.0,
+                0.0
+              ],
+              "Octaves": 2,
+              "Persistent": 0.4,
+              "WaveCurve": 3
+            }
+          },
+          "PitchRange": {
+            "raw": "0000f0c100007042",
+            "type": "Range"
+          }
+        }
+      },
+      "_OperationPanParam2": {
+        "app.cCameraAdditionalOperator.cSetting": {
+          "_RotationDamping": 3.0,
+          "_MaxSpeed": 160.0,
+          "_ResetTime": 1.5,
+          "_ResetDamping": 15.0,
+          "_ZoomTime": 0.7,
+          "_ZoomEase": 14
+        }
+      },
+      "_LockonCameraParam": {
+        "app.mcCam_Lockon.cSetting": {
+          "_SmoothTimeScale": 4.0,
+          "_PitchRange": {
+            "raw": "00000cc200008c42",
+            "type": "Range"
+          },
+          "_AimAddRange": [
+            18.0,
+            18.0,
+            0.0,
+            0.0
+          ],
+          "_AccelerateLimit": 1000.0,
+          "_BreakLimit": 0.65,
+          "_BreakPadThreshold": 0.75,
+          "_BreakAreaMoveTime": 5.0,
+          "_CoreTrackRange": 0.7,
+          "_RangeOutThreshold": 25.0,
+          "_TerrainCheckDeg": 50.0,
+          "_TerrainCheckSmoothRate": 1.0
+        }
+      },
+      "_CenteringHunterCameraParam": {
+        "app.mcCam_Centering.cParam": {
+          "SlopeSetting": {
+            "app.cCameraSlopeMeasure.cSetting": {
+              "_SampleCount": 4,
+              "_SampleInterval": 6.0,
+              "_DetectionDegree": 50.0,
+              "_DetectionInterval": 0.0,
+              "_FarWeight": 2.0,
+              "_SmoothRate": 4.0
+            }
+          },
+          "StartDelaySecond": 1.5,
+          "SmoothingRate": 1.15,
+          "ManualYawRange": 90.0,
+          "AutoYawRange": 200.0,
+          "CenterYawRange": 0.0,
+          "AllowYawRange": 10.0,
+          "MaxRotateYawPerSec": 70.0,
+          "CenterPitchRange": 5.0,
+          "AllowPitchRange": 2.0,
+          "MaxRotatePitchPerSec": 10.0,
+          "PitchRange": {
+            "raw": "0000a0c100002042",
+            "type": "Range"
+          }
+        }
+      },
+      "_CenteringCameraParam": {
+        "app.mcCam_Centering.cParam": {
+          "SlopeSetting": {
+            "app.cCameraSlopeMeasure.cSetting": {
+              "_SampleCount": 4,
+              "_SampleInterval": 6.0,
+              "_DetectionDegree": 50.0,
+              "_DetectionInterval": 0.0,
+              "_FarWeight": 2.0,
+              "_SmoothRate": 4.0
+            }
+          },
+          "StartDelaySecond": 1.5,
+          "SmoothingRate": 1.4,
+          "ManualYawRange": 90.0,
+          "AutoYawRange": 240.0,
+          "CenterYawRange": 0.0,
+          "AllowYawRange": 10.0,
+          "MaxRotateYawPerSec": 75.0,
+          "CenterPitchRange": 5.0,
+          "AllowPitchRange": 2.0,
+          "MaxRotatePitchPerSec": 10.0,
+          "PitchRange": {
+            "raw": "0000a0c100002042",
+            "type": "Range"
+          }
+        }
+      },
+      "_HuntCompleteParam": {
+        "app.mcCam_HuntComplete.cCutSetting": {
+          "_Cuts": [
+            {
+              "app.mcCam_HuntComplete.cCut": {
+                "_ConstLookatJoint": {
+                  "ace.cJointHash": {
+                    "_Hash": 1549972489
+                  }
+                },
+                "_ConstLookatYNull": false,
+                "_ConstLookatOffset": [
+                  0.0,
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                "_ConstJoint": {
+                  "ace.cJointHash": {
+                    "_Hash": 2180083513
+                  }
+                },
+                "_ConstYNull": true,
+                "_FOV": 40.0,
+                "_Patterns": [
+                  {
+                    "app.mcCam_HuntComplete.cCut.cPattern": {
+                      "_ViewOffset": [
+                        0.0,
+                        2.0,
+                        13.0,
+                        0.0
+                      ],
+                      "_RotationOffset": [
+                        6.0,
+                        -20.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_IsUseAnimation": true,
+                      "_ViewOffsetAdd": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_RotationOffsetAdd": [
+                        0.0,
+                        5.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_Curve": 0
+                    }
+                  },
+                  {
+                    "app.mcCam_HuntComplete.cCut.cPattern": {
+                      "_ViewOffset": [
+                        0.0,
+                        2.0,
+                        13.0,
+                        0.0
+                      ],
+                      "_RotationOffset": [
+                        6.0,
+                        45.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_IsUseAnimation": true,
+                      "_ViewOffsetAdd": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_RotationOffsetAdd": [
+                        0.0,
+                        5.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_Curve": 0
+                    }
+                  },
+                  {
+                    "app.mcCam_HuntComplete.cCut.cPattern": {
+                      "_ViewOffset": [
+                        0.0,
+                        1.0,
+                        15.0,
+                        0.0
+                      ],
+                      "_RotationOffset": [
+                        -12.0,
+                        15.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_IsUseAnimation": true,
+                      "_ViewOffsetAdd": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_RotationOffsetAdd": [
+                        0.0,
+                        5.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_Curve": 0
+                    }
+                  },
+                  {
+                    "app.mcCam_HuntComplete.cCut.cPattern": {
+                      "_ViewOffset": [
+                        0.0,
+                        1.0,
+                        15.0,
+                        0.0
+                      ],
+                      "_RotationOffset": [
+                        -12.0,
+                        60.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_IsUseAnimation": true,
+                      "_ViewOffsetAdd": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_RotationOffsetAdd": [
+                        0.0,
+                        5.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_Curve": 0
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "app.mcCam_HuntComplete.cCut": {
+                "_ConstLookatJoint": {
+                  "ace.cJointHash": {
+                    "_Hash": 3471977595
+                  }
+                },
+                "_ConstLookatYNull": false,
+                "_ConstLookatOffset": [
+                  0.0,
+                  -0.4,
+                  0.0,
+                  0.0
+                ],
+                "_ConstJoint": {
+                  "ace.cJointHash": {
+                    "_Hash": 2180083513
+                  }
+                },
+                "_ConstYNull": true,
+                "_FOV": 40.0,
+                "_Patterns": [
+                  {
+                    "app.mcCam_HuntComplete.cCut.cPattern": {
+                      "_ViewOffset": [
+                        0.0,
+                        1.0,
+                        12.0,
+                        0.0
+                      ],
+                      "_RotationOffset": [
+                        -12.0,
+                        40.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_IsUseAnimation": true,
+                      "_ViewOffsetAdd": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_RotationOffsetAdd": [
+                        0.0,
+                        10.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_Curve": 0
+                    }
+                  },
+                  {
+                    "app.mcCam_HuntComplete.cCut.cPattern": {
+                      "_ViewOffset": [
+                        0.0,
+                        1.5,
+                        11.0,
+                        0.0
+                      ],
+                      "_RotationOffset": [
+                        -40.0,
+                        100.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_IsUseAnimation": true,
+                      "_ViewOffsetAdd": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_RotationOffsetAdd": [
+                        0.0,
+                        10.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_Curve": 0
+                    }
+                  },
+                  {
+                    "app.mcCam_HuntComplete.cCut.cPattern": {
+                      "_ViewOffset": [
+                        0.0,
+                        1.5,
+                        11.0,
+                        0.0
+                      ],
+                      "_RotationOffset": [
+                        -40.0,
+                        160.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_IsUseAnimation": true,
+                      "_ViewOffsetAdd": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_RotationOffsetAdd": [
+                        0.0,
+                        10.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_Curve": 0
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "app.mcCam_HuntComplete.cCut": {
+                "_ConstLookatJoint": {
+                  "ace.cJointHash": {
+                    "_Hash": 3471977595
+                  }
+                },
+                "_ConstLookatYNull": false,
+                "_ConstLookatOffset": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "_ConstJoint": {
+                  "ace.cJointHash": {
+                    "_Hash": 2180083513
+                  }
+                },
+                "_ConstYNull": true,
+                "_FOV": 40.0,
+                "_Patterns": [
+                  {
+                    "app.mcCam_HuntComplete.cCut.cPattern": {
+                      "_ViewOffset": [
+                        0.0,
+                        1.0,
+                        9.0,
+                        0.0
+                      ],
+                      "_RotationOffset": [
+                        -10.0,
+                        140.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_IsUseAnimation": true,
+                      "_ViewOffsetAdd": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_RotationOffsetAdd": [
+                        -6.0,
+                        10.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_Curve": 0
+                    }
+                  },
+                  {
+                    "app.mcCam_HuntComplete.cCut.cPattern": {
+                      "_ViewOffset": [
+                        0.0,
+                        1.0,
+                        12.0,
+                        0.0
+                      ],
+                      "_RotationOffset": [
+                        -10.0,
+                        50.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_IsUseAnimation": true,
+                      "_ViewOffsetAdd": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_RotationOffsetAdd": [
+                        -10.0,
+                        4.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_Curve": 0
+                    }
+                  },
+                  {
+                    "app.mcCam_HuntComplete.cCut.cPattern": {
+                      "_ViewOffset": [
+                        0.0,
+                        1.0,
+                        7.0,
+                        0.0
+                      ],
+                      "_RotationOffset": [
+                        -30.0,
+                        -100.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_IsUseAnimation": true,
+                      "_ViewOffsetAdd": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_RotationOffsetAdd": [
+                        -10.0,
+                        4.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_Curve": 0
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "_OneCutDuration": 3.5,
+          "_PlayDistanceRange": 100.0,
+          "_LookatDampingValue": {
+            "ace.cDampingParam": {
+              "_Damping": 0.9,
+              "_TimeScale": 1.0
+            }
+          }
+        }
+      },
+      "_RepelParam": {
+        "app.mcCam_HuntComplete.cCutSetting": {
+          "_Cuts": [
+            {
+              "app.mcCam_HuntComplete.cCut": {
+                "_ConstLookatJoint": {
+                  "ace.cJointHash": {
+                    "_Hash": 3471977595
+                  }
+                },
+                "_ConstLookatYNull": false,
+                "_ConstLookatOffset": [
+                  0.0,
+                  0.5,
+                  0.0,
+                  0.0
+                ],
+                "_ConstJoint": {
+                  "ace.cJointHash": {
+                    "_Hash": 1549972489
+                  }
+                },
+                "_ConstYNull": true,
+                "_FOV": 40.0,
+                "_Patterns": [
+                  {
+                    "app.mcCam_HuntComplete.cCut.cPattern": {
+                      "_ViewOffset": [
+                        0.0,
+                        1.0,
+                        7.5,
+                        0.0
+                      ],
+                      "_RotationOffset": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_IsUseAnimation": true,
+                      "_ViewOffsetAdd": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_RotationOffsetAdd": [
+                        0.0,
+                        10.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_Curve": 0
+                    }
+                  },
+                  {
+                    "app.mcCam_HuntComplete.cCut.cPattern": {
+                      "_ViewOffset": [
+                        0.0,
+                        1.0,
+                        7.0,
+                        0.0
+                      ],
+                      "_RotationOffset": [
+                        0.0,
+                        45.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_IsUseAnimation": true,
+                      "_ViewOffsetAdd": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_RotationOffsetAdd": [
+                        0.0,
+                        10.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_Curve": 0
+                    }
+                  },
+                  {
+                    "app.mcCam_HuntComplete.cCut.cPattern": {
+                      "_ViewOffset": [
+                        0.0,
+                        3.0,
+                        7.5,
+                        0.0
+                      ],
+                      "_RotationOffset": [
+                        0.0,
+                        5.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_IsUseAnimation": true,
+                      "_ViewOffsetAdd": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_RotationOffsetAdd": [
+                        0.0,
+                        10.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_Curve": 0
+                    }
+                  },
+                  {
+                    "app.mcCam_HuntComplete.cCut.cPattern": {
+                      "_ViewOffset": [
+                        0.0,
+                        3.0,
+                        7.5,
+                        0.0
+                      ],
+                      "_RotationOffset": [
+                        0.0,
+                        45.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_IsUseAnimation": true,
+                      "_ViewOffsetAdd": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_RotationOffsetAdd": [
+                        0.0,
+                        10.0,
+                        0.0,
+                        0.0
+                      ],
+                      "_Curve": 0
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "_OneCutDuration": 3.5,
+          "_PlayDistanceRange": 50.0,
+          "_LookatDampingValue": {
+            "ace.cDampingParam": {
+              "_Damping": 0.9,
+              "_TimeScale": 1.0
+            }
+          }
+        }
+      },
+      "_HillParam": {
+        "app.mcCam_OfsHill.cSetting": {
+          "_AdjustSpeedToSteep": 10.0,
+          "_AdjustSpeedToFlat": 3.0,
+          "_MinAdjustSlopeDegree": 15.0,
+          "_MaxAdjustSlopeDegree": 45.0,
+          "_MaxOffset": [
+            0.0,
+            0.3,
+            0.8,
+            0.0
+          ],
+          "_MaxFov": 0.0,
+          "_HoldTime": 0.0
+        }
+      },
+      "_SlopeParam": {
+        "app.mcCam_Slope.cSetting": {
+          "_SlopeMeasureSetting": {
+            "app.cCameraSlopeMeasure.cSetting": {
+              "_SampleCount": 5,
+              "_SampleInterval": 4.0,
+              "_DetectionDegree": 50.0,
+              "_DetectionInterval": 0.0,
+              "_FarWeight": 2.0,
+              "_SmoothRate": 2.0
+            }
+          },
+          "_PitchSmooth": 0.4,
+          "_PitchRange": {
+            "raw": "0000f0c100004842",
+            "type": "Range"
+          },
+          "_MoveIntervalTime": 0.5,
+          "_MoveFrontDeg": 60.0,
+          "_RotIntervalTime": 2.0,
+          "_RotInputRequire": 3.0,
+          "_RotIntervalRequireTime": 0.16,
+          "_SlopeThresholdDeg": 5.0,
+          "_DiffLimitDeg": 55.0,
+          "_StartTime": 1.0,
+          "_BreakTime": 1.0
+        }
+      },
+      "_LockTargetCondition": {
+        "app.cCameraLockTargetSelector.cSetting": {
+          "_PreviewUpdateInterval": 1.0,
+          "_SearchRange": 50.0,
+          "_SearchDegree": 45.0,
+          "_MaxScoreDistance": 0.0,
+          "_MinScoreDistance": 50.0,
+          "_DistanceScoreWeight": 0.7,
+          "_MaxScoreDegree": 10.0,
+          "_MinScoreDegree": 45.0,
+          "_OutScreenScore": 0.7,
+          "_PaintBallValidDegree": 5.0,
+          "_EnemyTargetRange": 50.0,
+          "_EnemyTargetAreaRange": 75.0,
+          "_EnemyCullingLockonRange": 30.0,
+          "_EnemyCullingLockonAreaRange": 40.0,
+          "_EnemyCullingDuration": 3.0
+        }
+      },
+      "_LimitRotation": {
+        "app.mcCam_LimitRotation.cSetting": {
+          "_TargetTrackingSpeed": 1.0,
+          "_DampingBufferSpeed": 2.5,
+          "_DampingBufferDeg": 10.0,
+          "_InterpolationEase": 6
+        }
+      },
+      "_CombatParam": {
+        "app.mcCam_OfsCombat.cGlobalSetting": {
+          "_LinearDampingRate": 0.85,
+          "_InterpolationTime": 1.6,
+          "_InterpolationType": 6,
+          "_ZakoParam": {
+            "app.mcCam_OfsCombat.cSetting": {
+              "_Patterns": [
+                {
+                  "app.mcCam_OfsCombat.cSetting.cPattern": {
+                    "OffsetMin": [
+                      0.0,
+                      0.2,
+                      1.0,
+                      0.0
+                    ],
+                    "OffsetMax": [
+                      0.0,
+                      0.35,
+                      1.5,
+                      0.0
+                    ],
+                    "OffsetScaleMax": [
+                      0.0,
+                      0.35,
+                      1.5,
+                      0.0
+                    ],
+                    "LinearRange": [
+                      12.0,
+                      6.0
+                    ]
+                  }
+                }
+              ],
+              "StartDistance": 12.0,
+              "FinishDistance": 15.0,
+              "_Insides": [],
+              "InsideOffset": [
+                0.0,
+                0.0,
+                1.5,
+                0.0
+              ],
+              "_InsidePatterns": []
+            }
+          },
+          "_DiedRate": 0.5,
+          "_NotCombatRate": 0.5,
+          "_InsideInterpolationTime": 1.0,
+          "_InsideInterpolationType": 6,
+          "_InsideContinueTime": 1.5,
+          "_InsideDistanceMargin": 1.5
+        }
+      },
+      "_Damage": {
+        "app.mcCam_Damage.cSetting": {
+          "_DamageSmallGuid": "ebbdf6a8-2680-4790-a4bb-53ec0f323b64",
+          "_DamageGuid": "60b66fc0-cb47-4226-a348-7d74bc0cd52a",
+          "_DamageOffset": [
+            0.0,
+            1.0,
+            4.0,
+            0.0
+          ],
+          "_WallDegree": 35.0
+        }
+      },
+      "_DiscoveryParam": {
+        "app.mcCam_Discovery.cSetting": {
+          "_Presets": [
+            {
+              "app.mcCam_Discovery.cSetting.cPreset": {
+                "_Type": "[1229130624] S",
+                "_WorkDataAsset": {
+                  "ace.user_data.CameraWorkData": {
+                    "ref_instance_id": 126,
+                    "path": "GameDesign/Camera/CameraWorkData/DiscoveryCameraTest.user"
+                  }
+                },
+                "_CameraWorkStart": "00aa909f-cffb-4b28-bd58-5aa2e2902205",
+                "_CameraWorkFront": "9e99c0fb-8377-46c1-9e84-f9e033a8626f",
+                "_CameraWorkBack": "847967f5-8acc-458f-b419-5f24c03f3ad0",
+                "_CameraWorkFinish": "fb22e6ef-b10f-481e-9a30-82f75aea7b55"
+              }
+            },
+            {
+              "app.mcCam_Discovery.cSetting.cPreset": {
+                "_Type": "[1646393856] M",
+                "_WorkDataAsset": {
+                  "ace.user_data.CameraWorkData": {
+                    "ref_instance_id": 126,
+                    "path": "GameDesign/Camera/CameraWorkData/DiscoveryCameraTest.user"
+                  }
+                },
+                "_CameraWorkStart": "35980508-e6eb-4ac2-954f-dc794226b0f2",
+                "_CameraWorkFront": "9e289269-350a-4f1f-abb8-ce3f9a40c144",
+                "_CameraWorkBack": "16bd36be-1bde-4da4-a66c-d581d2c54acb",
+                "_CameraWorkFinish": "10f9f544-da32-4b97-b60a-5f85b5900211"
+              }
+            },
+            {
+              "app.mcCam_Discovery.cSetting.cPreset": {
+                "_Type": "[2518129024] L",
+                "_WorkDataAsset": {
+                  "ace.user_data.CameraWorkData": {
+                    "ref_instance_id": 126,
+                    "path": "GameDesign/Camera/CameraWorkData/DiscoveryCameraTest.user"
+                  }
+                },
+                "_CameraWorkStart": "32086707-3071-4bbf-aeab-32b1ff45f373",
+                "_CameraWorkFront": "5ff9c7a0-8185-4515-8a68-54d180a4daf6",
+                "_CameraWorkBack": "cece8388-79b9-4530-b00c-057e275ebd92",
+                "_CameraWorkFinish": "7edded12-b06a-4ffb-9529-fea8ed3d4b2c"
+              }
+            }
+          ],
+          "_SmoothBase": 3.0,
+          "_SmoothAdd": 2.0,
+          "_PassThroughRange": 3.0
+        }
+      },
+      "_ExFieldParam": {
+        "app.cCameraExFieldParam": {
+          "_PostGuid": "857e603c-10dc-4f7b-81dd-6d3f70f0194f",
+          "_IsOriginalSmooth": true,
+          "_SmoothWeight": 2.5,
+          "_SmoothMarginXZ": 0.7,
+          "_SmoothMarginY": 0.3,
+          "_SmoothLimitXZ": 0.5,
+          "_SmoothLimitY": 0.5,
+          "_BaseFOV": 50.0,
+          "_AimFOV": 40.0
+        }
+      },
+      "_DefaultPitchDegree": -10.0,
+      "_PitchDegreeRange": {
+        "raw": "000096c200001643",
+        "type": "Range"
+      },
+      "_HandNoiseGuid": "9dbb4e55-cde0-4dcd-9e30-650f47304f6f",
+      "_MainActionDataSet": {
+        "app.user_data.ActionDataSet": {
+          "_Param": {
+            "ace.user_data.ActionParam": {
+              "ref_instance_id": 134,
+              "path": "GameDesign/Player/ActionData/Common/Camera/Action/CameraMain_ActionParam.user"
+            }
+          },
+          "_ID": {
+            "ace.cActionIDHolder": {
+              "_ActionID": {
+                "ace.user_data.ActionID": {
+                  "ref_instance_id": 135,
+                  "path": "GameDesign/Player/ActionData/Common/Camera/Action/CameraMain_ActionID.user"
+                }
+              },
+              "_ExportGuid": "dc2cefb9-45dd-4340-b6fc-9f6952e997ff"
+            }
+          }
+        }
+      },
+      "_SubActionDataSet": {
+        "app.user_data.ActionDataSet": {
+          "_Param": {
+            "ace.user_data.ActionParam": {
+              "ref_instance_id": 138,
+              "path": "GameDesign/Player/ActionData/Common/Camera/Action/CameraSub_ActionParam.user"
+            }
+          },
+          "_ID": {
+            "ace.cActionIDHolder": {
+              "_ActionID": {
+                "ace.user_data.ActionID": {
+                  "ref_instance_id": 139,
+                  "path": "GameDesign/Player/ActionData/Common/Camera/Action/CameraSub_ActionID.user"
+                }
+              },
+              "_ExportGuid": "8dcec698-1a75-49ef-8692-1ed4ac0cb1c0"
+            }
+          }
+        }
+      }
+    }
+  }
+]

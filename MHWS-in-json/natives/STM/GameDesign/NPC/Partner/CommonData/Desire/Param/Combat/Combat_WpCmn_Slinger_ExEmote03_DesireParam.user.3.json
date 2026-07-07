@@ -1,0 +1,62 @@
+[
+  {
+    "app.user_data.NpcDesireParam": {
+      "_DefaultParam": {
+        "app.user_data.NpcDesireParam.cParam": {
+          "_CoolTime": {
+            "app.user_data.NpcDesireParam.cParam.cCoolTime": {
+              "_Complete": {
+                "raw": "0000204100000000",
+                "type": "Range"
+              },
+              "_Cancel": {
+                "raw": "0000a04000000000",
+                "type": "Range"
+              },
+              "_Group": {
+                "raw": "0000000000000000",
+                "type": "Range"
+              }
+            }
+          },
+          "_StartConditionParams": [
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcDesireConditions.cCanShotSlinger_Param": {
+                    "_AmmoType": "[24177] EX_EMOTE_03",
+                    "_CheckEnableShoot": true
+                  }
+                },
+                "_Inverse": false
+              }
+            },
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcDesireConditions.cSetSlingerShotTargetHateHunter_Param": {}
+                },
+                "_Inverse": false
+              }
+            }
+          ],
+          "_EndConditionParams": [
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcDesireConditions.cShootSlinger_Param": {
+                    "_IsWeakAmmo": false,
+                    "_AmmoType": "[24177] EX_EMOTE_03"
+                  }
+                },
+                "_Inverse": false
+              }
+            }
+          ],
+          "_ContinueConditionParams": []
+        }
+      },
+      "_OverwriteKindParams": []
+    }
+  }
+]

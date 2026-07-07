@@ -1,0 +1,197 @@
+[
+  {
+    "app.herdclusteraction.HerdClusterActionParams_Tackle": {
+      "actionType": "app.herdclusteraction.HerdClusterAction_Tackle",
+      "bodyTackleSettings": {
+        "app.herdclusteraction.HerdClusterActionParams_Tackle.TackleSettings": {
+          "frontPressScale0": 0.5,
+          "backPressScale0": 10.0,
+          "hipOffset0": 1.5,
+          "hipRoll0": -0.5,
+          "hipYaw0": 1.0,
+          "frontPressScale1": -1.0,
+          "backPressScale1": -3.0,
+          "hipOffset1": -2.5,
+          "hipRoll1": 0.5,
+          "hipYaw1": -0.3,
+          "curve": {
+            "via.AnimationCurve": {
+              "v0": [
+                {
+                  "raw": "00000000000000000000000000000000",
+                  "type": "Data"
+                },
+                {
+                  "raw": "8ba2743e040042343d38000017390000",
+                  "type": "Data"
+                },
+                {
+                  "raw": "08354e3f0400023892380000a2390000",
+                  "type": "Data"
+                },
+                {
+                  "raw": "0000803f0300003c94a7000094a70000",
+                  "type": "Data"
+                }
+              ],
+              "v1": {
+                "raw": "00000000",
+                "type": "Data"
+              },
+              "v2": {
+                "raw": "0000803f",
+                "type": "Data"
+              },
+              "v3": {
+                "raw": "00000000",
+                "type": "Data"
+              },
+              "v4": {
+                "raw": "0000803f",
+                "type": "Data"
+              },
+              "v5": {
+                "raw": "00000000",
+                "type": "Data"
+              },
+              "v6": {
+                "raw": "02000000",
+                "type": "Data"
+              }
+            }
+          },
+          "playFrames": 30.0,
+          "animationHalflife": 20.0,
+          "chainSettings": 2
+        }
+      },
+      "bodyHitSettings": {
+        "app.herdclusteraction.HerdClusterActionParams_Tackle.HitSettings": {
+          "frontPressScale": 1.0,
+          "backPressScale": 1.0,
+          "hipOffset": -0.5,
+          "hipRoll": 0.2,
+          "hipYaw": 0.2,
+          "hitFrame": 30.0,
+          "playFrames": 50.0,
+          "animationHalflife": 4.0,
+          "chainSettings": 3
+        }
+      },
+      "tailTackleSettings": {
+        "app.herdclusteraction.HerdClusterActionParams_Tackle.TackleSettings": {
+          "frontPressScale0": 0.0,
+          "backPressScale0": 5.0,
+          "hipOffset0": 1.5,
+          "hipRoll0": -1.0,
+          "hipYaw0": -1.0,
+          "frontPressScale1": 0.0,
+          "backPressScale1": -3.0,
+          "hipOffset1": -2.0,
+          "hipRoll1": 0.3,
+          "hipYaw1": 0.6,
+          "curve": {
+            "via.AnimationCurve": {
+              "v0": [
+                {
+                  "raw": "00000000000000000000000000000000",
+                  "type": "Data"
+                },
+                {
+                  "raw": "8ba2743e040042343d38000017390000",
+                  "type": "Data"
+                },
+                {
+                  "raw": "08354e3f0400023892380000a2390000",
+                  "type": "Data"
+                },
+                {
+                  "raw": "0000803f0300003c94a7000094a70000",
+                  "type": "Data"
+                }
+              ],
+              "v1": {
+                "raw": "00000000",
+                "type": "Data"
+              },
+              "v2": {
+                "raw": "0000803f",
+                "type": "Data"
+              },
+              "v3": {
+                "raw": "00000000",
+                "type": "Data"
+              },
+              "v4": {
+                "raw": "0000803f",
+                "type": "Data"
+              },
+              "v5": {
+                "raw": "00000000",
+                "type": "Data"
+              },
+              "v6": {
+                "raw": "02000000",
+                "type": "Data"
+              }
+            }
+          },
+          "playFrames": 30.0,
+          "animationHalflife": 20.0,
+          "chainSettings": 2
+        }
+      },
+      "tailHitSettings": {
+        "app.herdclusteraction.HerdClusterActionParams_Tackle.HitSettings": {
+          "frontPressScale": -1.0,
+          "backPressScale": 0.0,
+          "hipOffset": -0.7,
+          "hipRoll": -0.2,
+          "hipYaw": 0.2,
+          "hitFrame": 30.0,
+          "playFrames": 50.0,
+          "animationHalflife": 4.0,
+          "chainSettings": 3
+        }
+      },
+      "ActionSubjectGroupParams": [
+        {
+          "app.herdclusteraction.HerdClusterActionParams_Tackle.ActionSubjectGroupParam": {
+            "Comment": "High",
+            "AnimationMultiplier": 1.0
+          }
+        },
+        {
+          "app.herdclusteraction.HerdClusterActionParams_Tackle.ActionSubjectGroupParam": {
+            "Comment": "Default",
+            "AnimationMultiplier": 1.0
+          }
+        },
+        {
+          "app.herdclusteraction.HerdClusterActionParams_Tackle.ActionSubjectGroupParam": {
+            "Comment": "Child",
+            "AnimationMultiplier": 1.0
+          }
+        },
+        {
+          "app.herdclusteraction.HerdClusterActionParams_Tackle.ActionSubjectGroupParam": {
+            "Comment": "Custom1",
+            "AnimationMultiplier": 1.0
+          }
+        },
+        {
+          "app.herdclusteraction.HerdClusterActionParams_Tackle.ActionSubjectGroupParam": {
+            "Comment": "Custom2",
+            "AnimationMultiplier": 1.0
+          }
+        },
+        {
+          "app.herdclusteraction.HerdClusterActionParams_Tackle.ActionSubjectGroupParam": {
+            "Comment": "Custom3",
+            "AnimationMultiplier": 1.0
+          }
+        }
+      ]
+    }
+  }
+]

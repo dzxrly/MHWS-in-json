@@ -1,0 +1,97 @@
+[
+  {
+    "app.user_data.NpcCastingPackages": {
+      "_DataList": [
+        {
+          "app.user_data.NpcCastingPackages.cOperationData": {
+            "_IsTaskAsset": true,
+            "_TaskAsset": {
+              "app.user_data.NpcTaskData": {
+                "ref_instance_id": 1,
+                "path": "GameDesign/NPC/Data/Casting/st202/PL_Tent_Area/HumAdl_st202_PL_Tent_Area_Engineer_01.user"
+              }
+            },
+            "_CombiAsset": {
+              "": {}
+            },
+            "_TargetFixed": {
+              "app.user_data.cNpcVariousTarget": {
+                "_FixedID": "[2850224512] NPC102_00_010"
+              }
+            },
+            "_EnvironmentBit": {
+              "app.user_data.cNpcEnvironmentBit": {
+                "_Ruin": true,
+                "_BeforeAbnormal": true,
+                "_Abnormal": true,
+                "_AfterAbnormal": true,
+                "_Fertility": true
+              }
+            },
+            "_Schedule": "[31910020] MAX",
+            "_RandomWeight": -1,
+            "_ActionTime": {
+              "raw": "0000000000000000",
+              "type": "Range"
+            },
+            "_IsOnceDay": false,
+            "_MediatorKey_Place": "[3771098080] INVALID"
+          }
+        },
+        {
+          "app.user_data.NpcCastingPackages.cOperationData": {
+            "_IsTaskAsset": true,
+            "_TaskAsset": {
+              "app.user_data.NpcTaskData": {
+                "ref_instance_id": 7,
+                "path": "GameDesign/NPC/Data/Casting/st202/PL_Tent_Area/HumAdl_st202_Whole_Area_Grave_Boy.user"
+              }
+            },
+            "_CombiAsset": {
+              "": {}
+            },
+            "_TargetFixed": {
+              "app.user_data.cNpcVariousTarget": {
+                "_FixedID": "[2197203584] NPC101_00_004"
+              }
+            },
+            "_EnvironmentBit": {
+              "app.user_data.cNpcEnvironmentBit": {
+                "_Ruin": true,
+                "_BeforeAbnormal": true,
+                "_Abnormal": true,
+                "_AfterAbnormal": true,
+                "_Fertility": true
+              }
+            },
+            "_Schedule": "[31910020] MAX",
+            "_RandomWeight": 100,
+            "_ActionTime": {
+              "raw": "0000000000000000",
+              "type": "Range"
+            },
+            "_IsOnceDay": false,
+            "_MediatorKey_Place": "[3771098080] INVALID"
+          }
+        }
+      ],
+      "_SettingData": {
+        "app.user_data.NpcCastingPackages.cSettingData": {
+          "_TargetList": [
+            {
+              "app.user_data.cNpcVariousTarget": {
+                "_FixedID": "[2850224512] NPC102_00_010"
+              }
+            },
+            {
+              "app.user_data.cNpcVariousTarget": {
+                "_FixedID": "[2197203584] NPC101_00_004"
+              }
+            }
+          ],
+          "_Priority": 5
+        }
+      }
+    }
+  }
+]

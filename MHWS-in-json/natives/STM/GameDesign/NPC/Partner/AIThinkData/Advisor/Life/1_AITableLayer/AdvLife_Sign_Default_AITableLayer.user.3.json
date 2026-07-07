@@ -1,0 +1,83 @@
+[
+  {
+    "app.user_data.NpcAITableLayerData": {
+      "_ConditionParams": [
+        {
+          "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
+            "_Param": {
+              "app.NpcAITableConditions.cCheckSign_Param": {
+                "_IsCheckIgnore": false,
+                "_IsUseMargin": false,
+                "_IsUseReactionNotify": false,
+                "_IsUseReactionNotifySelf": false,
+                "_IsUseEx00": false,
+                "_MarginTimeRange": {
+                  "raw": "0000000000000000",
+                  "type": "Range"
+                }
+              }
+            },
+            "_Inverse": false,
+            "_IsContinue": true
+          }
+        }
+      ],
+      "_TableHolder": {
+        "app.cNpcAITableHolder": {
+          "_Setting": {
+            "app.cNpcAITableHolder.cSetting": {
+              "_LayerType": "[0] FROM_TOP",
+              "_DisableInterrupt": false
+            }
+          },
+          "_TableList": [
+            {
+              "app.cNpcAITableHolder.cTableData": {
+                "_InstanceGuid": "c9b9cd58-eeeb-43ef-840b-4c88891a0c3a",
+                "_TableData": {
+                  "app.user_data.NpcAITableActionData": {
+                    "ref_instance_id": 4,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Advisor/Life/2_AITableAction/AdvLife_SignMove_Immidiate_AITableAction.user"
+                  }
+                }
+              }
+            },
+            {
+              "app.cNpcAITableHolder.cTableData": {
+                "_InstanceGuid": "152e0eda-5adf-41f5-a749-6f5f740812c3",
+                "_TableData": {
+                  "app.user_data.NpcAITableActionData": {
+                    "ref_instance_id": 6,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Advisor/Life/2_AITableAction/AdvLife_SignMove_First_AITableAction.user"
+                  }
+                }
+              }
+            },
+            {
+              "app.cNpcAITableHolder.cTableData": {
+                "_InstanceGuid": "c7184c60-aa39-42fa-9018-9be4f2b766a3",
+                "_TableData": {
+                  "app.user_data.NpcAITableActionData": {
+                    "ref_instance_id": 8,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Advisor/Life/2_AITableAction/AdvLife_SignMove_Range_AITableAction.user"
+                  }
+                }
+              }
+            },
+            {
+              "app.cNpcAITableHolder.cTableData": {
+                "_InstanceGuid": "265d97d1-17b1-4014-a201-5a5b43e5633f",
+                "_TableData": {
+                  "app.user_data.NpcAITableActionData": {
+                    "ref_instance_id": 10,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Advisor/Life/2_AITableAction/AdvLife_Sign_AITableAction.user"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+]

@@ -1,0 +1,63 @@
+[
+  {
+    "app.user_data.NpcAITableActionData": {
+      "_ConditionParams": [
+        {
+          "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
+            "_Param": {
+              "app.NpcAITableConditions.cCheckItem_Param": {
+                "_ItemID": "[3] ITEM_0001"
+              }
+            },
+            "_Inverse": false,
+            "_IsContinue": false
+          }
+        }
+      ],
+      "_ActionSetting": {
+        "app.user_data.NpcAITableActionData.cActionSetting": {
+          "_ForceInterrupt": false,
+          "_TableEnd": false
+        }
+      },
+      "_Param": {
+        "app.user_data.NpcAITableActionData.cNpcAITableEffectHolder": {
+          "_Param": {
+            "app.NpcAITableEffects.cStreakActWpType_Param": {
+              "_CommonData": {
+                "app.user_data.NpcStreakPlanData": {
+                  "ref_instance_id": 5,
+                  "path": "GameDesign/NPC/Partner/AIThinkData/Support/It00/3_StreakPlan/SptIt00_UseItem_StreakPlan.user"
+                }
+              },
+              "_Wp00Data": {
+                "": {}
+              },
+              "_Wp01Data": {
+                "app.user_data.NpcStreakPlanData": {
+                  "ref_instance_id": 6,
+                  "path": "GameDesign/NPC/Partner/AIThinkData/Support/It00/3_StreakPlan/SptIt00_Wp01_UseItem_StreakPlan.user"
+                }
+              },
+              "_Wp04Data": {
+                "": {}
+              },
+              "_Wp05Data": {
+                "": {}
+              },
+              "_Wp06Data": {
+                "": {}
+              },
+              "_Wp12Data": {
+                "": {}
+              },
+              "_Wp13Data": {
+                "": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

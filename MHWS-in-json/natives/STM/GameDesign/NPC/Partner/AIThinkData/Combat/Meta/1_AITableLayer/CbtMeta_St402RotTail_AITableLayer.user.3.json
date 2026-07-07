@@ -1,0 +1,85 @@
+[
+  {
+    "app.user_data.NpcAITableLayerData": {
+      "_ConditionParams": [
+        {
+          "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
+            "_Param": {
+              "app.NpcAITableConditions.cTargetEnemyMetaActionsDetected_Param": {
+                "_ActionTypes": [
+                  "[50] ST402_ROT_TAIL_LEFT",
+                  "[51] ST402_ROT_TAIL_RIGHT"
+                ],
+                "_CompareArray": 0
+              }
+            },
+            "_Inverse": false,
+            "_IsContinue": true
+          }
+        },
+        {
+          "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
+            "_Param": {
+              "app.NpcAITableConditions.cCheckTargetActionTimer_Param": {
+                "_ElapsedTimeSec": 1.0,
+                "_CompareType": 4
+              }
+            },
+            "_Inverse": false,
+            "_IsContinue": false
+          }
+        },
+        {
+          "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
+            "_Param": {
+              "app.NpcAITableConditions.cCheckRangeInTargetJoint_Param": {
+                "_TargetPartsType": "[4025074304] ROOT",
+                "_Range": {
+                  "raw": "000000000000c841",
+                  "type": "Range"
+                },
+                "_IsOnlyXZ": false
+              }
+            },
+            "_Inverse": false,
+            "_IsContinue": false
+          }
+        }
+      ],
+      "_TableHolder": {
+        "app.cNpcAITableHolder": {
+          "_Setting": {
+            "app.cNpcAITableHolder.cSetting": {
+              "_LayerType": "[0] FROM_TOP",
+              "_DisableInterrupt": false
+            }
+          },
+          "_TableList": [
+            {
+              "app.cNpcAITableHolder.cTableData": {
+                "_InstanceGuid": "9c47780c-e7fd-4cbb-a5fa-613f87a3c403",
+                "_TableData": {
+                  "app.user_data.NpcAITableActionData": {
+                    "ref_instance_id": 9,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Combat/Meta/2_AITableAction/CbtMeta_St402_RotTail_Guard_AITableAction.user"
+                  }
+                }
+              }
+            },
+            {
+              "app.cNpcAITableHolder.cTableData": {
+                "_InstanceGuid": "cfe888e7-8beb-405f-83a8-dec2999e077c",
+                "_TableData": {
+                  "app.user_data.NpcAITableActionData": {
+                    "ref_instance_id": 11,
+                    "path": "GameDesign/NPC/Partner/AIThinkData/Combat/Meta/2_AITableAction/CbtMeta_St402_RotTail_Escape_AITableAction.user"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+]

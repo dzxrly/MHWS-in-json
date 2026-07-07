@@ -1,0 +1,63 @@
+[
+  {
+    "app.user_data.NpcDesirePack": {
+      "_DataList": [
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 1,
+                "path": "GameDesign/NPC/Data/GroupAIEvent/st101/_Desire/GroupAI_st101_DesireParam_FacilityPorter.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[5314] GROUP_AI",
+            "_RetryCount": 1,
+            "_EnumFixedID": 514361440
+          }
+        },
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 4,
+                "path": "GameDesign/NPC/Data/GroupAIEvent/st101/_Desire/GroupAI_st101_DesireParam_FacilityPorterCreate.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[5314] GROUP_AI",
+            "_RetryCount": 1,
+            "_EnumFixedID": 29414
+          }
+        },
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 7,
+                "path": "GameDesign/NPC/Data/GroupAIEvent/st101/_Desire/GroupAI_st101_DesireParam_MainStory.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[5314] GROUP_AI",
+            "_RetryCount": 1,
+            "_EnumFixedID": 420692960
+          }
+        }
+      ],
+      "_TimerParam": {
+        "app.cNpcDesireTimerHolder": {
+          "_Param": {
+            "app.NpcDesireTimers.cNone_Param": {}
+          }
+        }
+      },
+      "_DesireEnum": {
+        "ace.user_data.EnumMaker": {
+          "ref_instance_id": 12,
+          "path": "GameDesign/NPC/EnumMaker/NpcGroupAIDesire_st101.user"
+        }
+      }
+    }
+  }
+]

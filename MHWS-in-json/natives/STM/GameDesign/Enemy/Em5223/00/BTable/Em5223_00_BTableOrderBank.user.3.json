@@ -1,0 +1,113 @@
+[
+  {
+    "ace.btable.user_data.BTableOrderBank": {
+      "_OperatorWorkFactory": {
+        "ace.btable.cOperatorWorkFactory": {
+          "_WorkType": "app.btable.cEnemyBTableOperatorWork"
+        }
+      },
+      "_CommandWorkFactory": {
+        "ace.btable.cCommandWorkFactory": {
+          "_WorkType": "app.cEnemyBTableCommandWork"
+        }
+      },
+      "_OrderLists": [
+        {
+          "ace.btable.user_data.BTableOrderBank.cItem": {
+            "_OrderList": {
+              "ace.btable.user_data.BTableOrderList": {
+                "ref_instance_id": 3,
+                "path": "Ace/Data/BTable/DefaultBTableOrderList.user"
+              }
+            }
+          }
+        },
+        {
+          "ace.btable.user_data.BTableOrderBank.cItem": {
+            "_OrderList": {
+              "ace.btable.user_data.BTableOrderList": {
+                "ref_instance_id": 5,
+                "path": "GameDesign/Enemy/CommonData/Data/EmCommonBTableOrderList.user"
+              }
+            }
+          }
+        },
+        {
+          "ace.btable.user_data.BTableOrderBank.cItem": {
+            "_OrderList": {
+              "ace.btable.user_data.BTableOrderList": {
+                "ref_instance_id": 7,
+                "path": "GameDesign/Enemy/Em5223/00/BTable/Em5223_00_BTableOrderList.user"
+              }
+            }
+          }
+        },
+        {
+          "ace.btable.user_data.BTableOrderBank.cItem": {
+            "_OrderList": {
+              "ace.btable.user_data.BTableOrderList": {
+                "ref_instance_id": 9,
+                "path": "GameDesign/Enemy/CommonData/Data/EmAnimalBTableOrderList.user"
+              }
+            }
+          }
+        }
+      ],
+      "_OperatorArgumentSettingList": [],
+      "_CommandArgumentSettingList": [
+        {
+          "app.btable.AppBTableUtil.cSelectActionArgSetting": {
+            "_AssetDataList": [
+              {
+                "app.btable.AppBTableUtil.cSelectActionArgSetting.cAssetData": {
+                  "_Asset": {
+                    "ace.cActionIDHolder": {
+                      "_ActionID": {
+                        "ace.user_data.ActionID": {
+                          "ref_instance_id": 11,
+                          "path": "GameDesign/Enemy/Em5223/00/Action/Em5223_00_ActionID.user"
+                        }
+                      },
+                      "_ExportGuid": "67197f40-3674-0954-3533-1986a8b57282"
+                    }
+                  },
+                  "_ParamAsset": {
+                    "ace.user_data.ActionParam": {
+                      "ref_instance_id": 13,
+                      "path": "GameDesign/Enemy/Em5223/00/Action/Em5223_00_ActionParam.user"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cCheckStatusStandStateArgSetting": {}
+        },
+        {
+          "app.btable.EmCommonCommand.cArgSetting_UniqueLeveledValueCategory": {}
+        },
+        {
+          "app.btable.EmCommonCommand.cRidePartsSelectArgSetting": {}
+        },
+        {
+          "app.btable.EmCommonCommand.cCheckHeightArgSetting": {}
+        },
+        {
+          "app.btable.EmCommonCommand.cPartsArgSetting": {
+            "_ParamParts": {
+              "": {}
+            }
+          }
+        }
+      ],
+      "_VariableAsset": {
+        "": {}
+      },
+      "_VariableListAsset": {
+        "": {}
+      }
+    }
+  }
+]

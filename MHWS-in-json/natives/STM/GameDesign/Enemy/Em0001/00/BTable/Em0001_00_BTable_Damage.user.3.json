@@ -1,0 +1,86 @@
+[
+  {
+    "ace.btable.user_data.BTable": {
+      "_Tables": {
+        "ace.cInstanceGuidArray`1<ace.btable.user_data.BTable.cTableElement>": {
+          "_DataArray": []
+        }
+      },
+      "_ImportBTableList": [],
+      "_OrderBank": {
+        "ace.btable.user_data.BTableOrderBank": {
+          "ref_instance_id": 2,
+          "path": "GameDesign/Enemy/Em0001/00/BTable/Em0001_00_BTableOrderBank.user"
+        }
+      },
+      "_ThisGuid": "8091ff5a-8803-40bf-9afc-fae2b8ea5040",
+      "_ExportBTableType": "app.Em0001_00_BTable_Damage_Export",
+      "_CommandArgArray": [
+        {
+          "app.btable.EmCommonCommand.cActionSwitchArg": {
+            "_EditArg": {
+              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cActionSwitchArg.ACTION_TYPE>": 1
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cSelectActionArg": {
+            "_EditAssetIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Int32>": 0
+            },
+            "_EditActionGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "067bb394-27ab-4ada-8158-239a84686a04"
+            },
+            "_EditBranchedParamGuid": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        },
+        {
+          "ace.btable.cCompareFloatValueArg": {
+            "_SourceValue": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "f8baef3a-39e9-45c5-a8a6-b67e9fdfcabb"
+            },
+            "_CompareType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.BTableUtil.COMPARE_TYPE>": 4
+            },
+            "_TargetValue": {
+              "ace.btable.cEditFieldFloat": 1.0
+            }
+          }
+        },
+        {
+          "ace.btable.cSetTimerValueArg": {
+            "_TargetVariableIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "a76a1178-86fa-48c5-be91-513666365680"
+            },
+            "_SetType": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cSetTimerValueArg.SET_TYPE>": 0
+            }
+          }
+        },
+        {
+          "ace.btable.cSetFloatValueArg": {
+            "_TargetVariableIndex": {
+              "ace.btable.cEditFieldDropBox`1<System.Guid>": "f8baef3a-39e9-45c5-a8a6-b67e9fdfcabb"
+            },
+            "_Method": {
+              "ace.btable.cEditFieldEnum`1<ace.btable.cVariableStorage.VARIABLE_METHOD>": 0
+            },
+            "_Value": {
+              "ace.btable.cEditFieldFloat": 0.0
+            }
+          }
+        },
+        {
+          "app.btable.EmCommonCommand.cRequestSelectedActionArg": {
+            "_EditArg": {
+              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cRequestSelectedActionArg.ACTION_TYPE>": 0
+            }
+          }
+        }
+      ],
+      "_UseExportArgData": true
+    }
+  }
+]

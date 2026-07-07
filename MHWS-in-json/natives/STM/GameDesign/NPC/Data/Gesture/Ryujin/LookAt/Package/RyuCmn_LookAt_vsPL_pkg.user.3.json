@@ -1,0 +1,55 @@
+[
+  {
+    "app.user_data.NpcGesturePackage": {
+      "_Type": {
+        "app.user_data.NpcGesturePackage.cType": {
+          "_Param": {
+            "app.NpcGestureControllers.cLookAt_Param": {
+              "_LookAtTime": {
+                "raw": "0000004000000040",
+                "type": "Range"
+              },
+              "_LookAtParamSet": {
+                "app.cNpcLookAtParamSet": {
+                  "_AdjustTypeFixed": "[449679360] CHEST"
+                }
+              },
+              "_Priority": "[2494010112] GESTURE"
+            }
+          }
+        }
+      },
+      "_Common": {
+        "app.user_data.NpcGesturePackage.cCommon": {
+          "_BTable": {
+            "ace.btable.user_data.BTable": {
+              "ref_instance_id": 6,
+              "path": "GameDesign/NPC/Data/Gesture/_BTable/SubAction/NpcBTable_Cmn_Sub_Look_PL.user"
+            }
+          },
+          "_CoolTime": {
+            "raw": "0000004000000040",
+            "type": "Range"
+          },
+          "_Probability": 100,
+          "_Category": "[7] ATTENTION",
+          "_TagBit": {
+            "app.NpcDef.GESTURE_TAGBit_Serializable": 16
+          }
+        }
+      },
+      "_Meta": {
+        "app.user_data.NpcGesturePackage.cMeta": {
+          "STRUCT__MaxNum__HasValue": true,
+          "STRUCT__MaxNum__Value": 1,
+          "_ValidRange": 5.0,
+          "_ValidTime": {
+            "raw": "cdcc4c3e9a99993e",
+            "type": "Range"
+          }
+        }
+      },
+      "_Hash": -460793986
+    }
+  }
+]

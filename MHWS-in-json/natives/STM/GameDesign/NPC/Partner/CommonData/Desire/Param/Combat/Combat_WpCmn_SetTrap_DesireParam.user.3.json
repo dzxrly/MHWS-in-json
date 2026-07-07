@@ -1,0 +1,426 @@
+[
+  {
+    "app.user_data.NpcDesireParam": {
+      "_DefaultParam": {
+        "app.user_data.NpcDesireParam.cParam": {
+          "_CoolTime": {
+            "app.user_data.NpcDesireParam.cParam.cCoolTime": {
+              "_Complete": {
+                "raw": "0000000000000000",
+                "type": "Range"
+              },
+              "_Cancel": {
+                "raw": "0000000000000000",
+                "type": "Range"
+              },
+              "_Group": {
+                "raw": "0000000000000000",
+                "type": "Range"
+              }
+            }
+          },
+          "_StartConditionParams": [
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcDesireConditions.cAlwaysFalse_Param": {}
+                },
+                "_Inverse": false
+              }
+            }
+          ],
+          "_EndConditionParams": [],
+          "_ContinueConditionParams": []
+        }
+      },
+      "_OverwriteKindParams": [
+        {
+          "app.user_data.NpcDesireParam.cKindParam": {
+            "_Param": {
+              "app.user_data.NpcDesireParam.cParam": {
+                "_CoolTime": {
+                  "app.user_data.NpcDesireParam.cParam.cCoolTime": {
+                    "_Complete": {
+                      "raw": "0000f0430000b442",
+                      "type": "Range"
+                    },
+                    "_Cancel": {
+                      "raw": "0000f0410000f041",
+                      "type": "Range"
+                    },
+                    "_Group": {
+                      "raw": "0000e14300007042",
+                      "type": "Range"
+                    }
+                  }
+                },
+                "_StartConditionParams": [
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cNpcWpOn_Param": {}
+                      },
+                      "_Inverse": true
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cMissionTargetCombatEnemy_Param": {}
+                      },
+                      "_Inverse": false
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cRideCombatEnemy_Param": {}
+                      },
+                      "_Inverse": true
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cCheckPorterRiding_Param": {}
+                      },
+                      "_Inverse": true
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cCheckPorterCalling_Param": {}
+                      },
+                      "_Inverse": true
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cRangeInTargetEnemy_Param": {
+                          "_Range": {
+                            "raw": "000040400000d841",
+                            "type": "Range"
+                          }
+                        }
+                      },
+                      "_Inverse": false
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cFrontToCombatEnemy_Param": {
+                          "_Range": {
+                            "raw": "0000a0410000f042",
+                            "type": "Range"
+                          }
+                        }
+                      },
+                      "_Inverse": false
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cFrontToCamera_Param": {
+                          "_Range": {
+                            "raw": "0000000000008c42",
+                            "type": "Range"
+                          }
+                        }
+                      },
+                      "_Inverse": false
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cRangeInCombatEnemies_Param": {
+                          "_Range": {
+                            "raw": "0000000000004842",
+                            "type": "Range"
+                          }
+                        }
+                      },
+                      "_Inverse": true
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cTargetEnemyStaySameArea_Param": {
+                          "_CheckStaySec": 50.0
+                        }
+                      },
+                      "_Inverse": false
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cCheckAttackChanceCombatEnemy_Param": {
+                          "_IsDown": true,
+                          "_IsPinch": false,
+                          "_IsTired": false,
+                          "_IsUniqueDown": false,
+                          "_ActionIDList": []
+                        }
+                      },
+                      "_Inverse": true
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cActiveBadConditionsCombatEnemy_Param": {
+                          "_Condition": [
+                            5,
+                            6,
+                            7,
+                            8,
+                            15,
+                            16
+                          ]
+                        }
+                      },
+                      "_Inverse": true
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cCheckWallSide_Param": {
+                          "_WallNearRange": 5.0,
+                          "_SetpNearRange": 3.0
+                        }
+                      },
+                      "_Inverse": true
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cCheckGuardBlock_Param": {}
+                      },
+                      "_Inverse": true
+                    }
+                  }
+                ],
+                "_EndConditionParams": [
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cUsedItemCategory_Param": {
+                          "_ItemCategory": "[3] SET_TRAP"
+                        }
+                      },
+                      "_Inverse": false
+                    }
+                  }
+                ],
+                "_ContinueConditionParams": []
+              }
+            },
+            "_KindType": "[3228241920] UTILITY_ITEM",
+            "_KindLv": "[4134945744] LV1"
+          }
+        },
+        {
+          "app.user_data.NpcDesireParam.cKindParam": {
+            "_Param": {
+              "app.user_data.NpcDesireParam.cParam": {
+                "_CoolTime": {
+                  "app.user_data.NpcDesireParam.cParam.cCoolTime": {
+                    "_Complete": {
+                      "raw": "0000c3430000f041",
+                      "type": "Range"
+                    },
+                    "_Cancel": {
+                      "raw": "0000f04100000000",
+                      "type": "Range"
+                    },
+                    "_Group": {
+                      "raw": "0000704300007042",
+                      "type": "Range"
+                    }
+                  }
+                },
+                "_StartConditionParams": [
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cNpcWpOn_Param": {}
+                      },
+                      "_Inverse": true
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cRideCombatEnemy_Param": {}
+                      },
+                      "_Inverse": true
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cCheckPorterRiding_Param": {}
+                      },
+                      "_Inverse": true
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cCheckPorterCalling_Param": {}
+                      },
+                      "_Inverse": true
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cRangeInTargetEnemy_Param": {
+                          "_Range": {
+                            "raw": "000040400000d841",
+                            "type": "Range"
+                          }
+                        }
+                      },
+                      "_Inverse": false
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cFrontToCombatEnemy_Param": {
+                          "_Range": {
+                            "raw": "0000a04100000c43",
+                            "type": "Range"
+                          }
+                        }
+                      },
+                      "_Inverse": false
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cFrontToCamera_Param": {
+                          "_Range": {
+                            "raw": "0000000000008c42",
+                            "type": "Range"
+                          }
+                        }
+                      },
+                      "_Inverse": false
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cRangeInCombatEnemies_Param": {
+                          "_Range": {
+                            "raw": "0000000000004842",
+                            "type": "Range"
+                          }
+                        }
+                      },
+                      "_Inverse": true
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cTargetEnemyStaySameArea_Param": {
+                          "_CheckStaySec": 50.0
+                        }
+                      },
+                      "_Inverse": false
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cMissionTargetCombatEnemy_Param": {}
+                      },
+                      "_Inverse": false
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cCheckAttackChanceCombatEnemy_Param": {
+                          "_IsDown": true,
+                          "_IsPinch": false,
+                          "_IsTired": false,
+                          "_IsUniqueDown": false,
+                          "_ActionIDList": []
+                        }
+                      },
+                      "_Inverse": true
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cActiveBadConditionsCombatEnemy_Param": {
+                          "_Condition": [
+                            5,
+                            6,
+                            7,
+                            8,
+                            15,
+                            16
+                          ]
+                        }
+                      },
+                      "_Inverse": true
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cCheckWallSide_Param": {
+                          "_WallNearRange": 5.0,
+                          "_SetpNearRange": 3.0
+                        }
+                      },
+                      "_Inverse": true
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cCheckGuardBlock_Param": {}
+                      },
+                      "_Inverse": true
+                    }
+                  }
+                ],
+                "_EndConditionParams": [
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cUsedItemCategory_Param": {
+                          "_ItemCategory": "[3] SET_TRAP"
+                        }
+                      },
+                      "_Inverse": false
+                    }
+                  }
+                ],
+                "_ContinueConditionParams": []
+              }
+            },
+            "_KindType": "[3228241920] UTILITY_ITEM",
+            "_KindLv": "[3515249536] LV2"
+          }
+        }
+      ]
+    }
+  }
+]

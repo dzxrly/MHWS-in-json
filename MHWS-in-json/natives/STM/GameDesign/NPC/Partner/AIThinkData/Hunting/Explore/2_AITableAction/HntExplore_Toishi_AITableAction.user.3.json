@@ -1,0 +1,74 @@
+[
+  {
+    "app.user_data.NpcAITableActionData": {
+      "_ConditionParams": [
+        {
+          "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
+            "_Param": {
+              "app.NpcAITableConditions.cCheckDesireExploreCommon_Param": {
+                "_DesireFixedID": "[2] TOISHI"
+              }
+            },
+            "_Inverse": false,
+            "_IsContinue": false
+          }
+        },
+        {
+          "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
+            "_Param": {
+              "app.NpcAITableConditions.cCheckStreakTargetType_Param": {
+                "_TargetType": "[1190479488] COMBAT_ENEMY"
+              }
+            },
+            "_Inverse": false,
+            "_IsContinue": false
+          }
+        },
+        {
+          "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
+            "_Param": {
+              "app.NpcAITableConditions.cCheckPorterRiding_Param": {}
+            },
+            "_Inverse": false,
+            "_IsContinue": false
+          }
+        },
+        {
+          "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
+            "_Param": {
+              "app.NpcAITableConditions.cCheckWeaponType_Param": {
+                "_WeaponTypeArray": [
+                  "[3] BOW",
+                  "[2] HEAVY_BOWGUN",
+                  "[1] LIGHT_BOWGUN"
+                ]
+              }
+            },
+            "_Inverse": true,
+            "_IsContinue": false
+          }
+        }
+      ],
+      "_ActionSetting": {
+        "app.user_data.NpcAITableActionData.cActionSetting": {
+          "_ForceInterrupt": false,
+          "_TableEnd": false
+        }
+      },
+      "_Param": {
+        "app.user_data.NpcAITableActionData.cNpcAITableEffectHolder": {
+          "_Param": {
+            "app.NpcAITableEffects.cStreak_Param": {
+              "_StreakPlanData": {
+                "app.user_data.NpcStreakPlanData": {
+                  "ref_instance_id": 13,
+                  "path": "GameDesign/NPC/Partner/AIThinkData/Hunting/_Common/3_StreakPlan/HntCmn_Desire_Variety_Toishi_StreakPlan.user"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

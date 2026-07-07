@@ -1,0 +1,84 @@
+[
+  {
+    "app.user_data.NpcMotionPack_Sub": {
+      "_PlayModeParam": {
+        "app.cNpcMotionPack.cPlayMode_RefHuman": {
+          "_AdultMale": {
+            "app.user_data.NpcMotionPack_Sub": {
+              "ref_instance_id": 1,
+              "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Sub/NoticeAvoidLv2/HumCmnSub_st101_NoticeAvoidLv2_MotionPack_M.user"
+            }
+          },
+          "_AdultFemale": {
+            "app.user_data.NpcMotionPack_Sub": {
+              "ref_instance_id": 1,
+              "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Sub/NoticeAvoidLv2/HumCmnSub_st101_NoticeAvoidLv2_MotionPack_M.user"
+            }
+          },
+          "_Child": {
+            "app.user_data.NpcMotionPack_Sub": {
+              "ref_instance_id": 2,
+              "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Sub/NoticeAvoidLv2/HumCmnSub_st101_NoticeAvoidLv2_MotionPack_C.user"
+            }
+          },
+          "_Old": {
+            "app.user_data.NpcMotionPack_Sub": {
+              "ref_instance_id": 3,
+              "path": "GameDesign/NPC/Data/FsmLikeAction/Human_Sub/NoticeAvoidLv2/HumCmnSub_st101_NoticeAvoidLv2_MotionPack_O.user"
+            }
+          }
+        }
+      },
+      "_PackList": [
+        {
+          "app.user_data.NpcMotionPack_Sub.cSubPack": {
+            "_Hash": {
+              "ace.cStrHash": {
+                "_Hash": 1637051141
+              }
+            },
+            "_PlayMode": 1,
+            "_MotionGroupBankID": 1003,
+            "_MotionRefList": [
+              {
+                "app.cNpcMotionPack.cMotionRef": {
+                  "_Enabled": true,
+                  "_MotionGroupHash": 10793724221914849928,
+                  "_AddMotion": false,
+                  "_LoopCount": 1,
+                  "_LR": -1,
+                  "_RandomWeight": 50,
+                  "_PlayConditions": []
+                }
+              }
+            ]
+          }
+        },
+        {
+          "app.user_data.NpcMotionPack_Sub.cSubPack": {
+            "_Hash": {
+              "ace.cStrHash": {
+                "_Hash": 258757286
+              }
+            },
+            "_PlayMode": 1,
+            "_MotionGroupBankID": 1003,
+            "_MotionRefList": [
+              {
+                "app.cNpcMotionPack.cMotionRef": {
+                  "_Enabled": true,
+                  "_MotionGroupHash": 4722538965653548908,
+                  "_AddMotion": false,
+                  "_LoopCount": 1,
+                  "_LR": -1,
+                  "_RandomWeight": 50,
+                  "_PlayConditions": []
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

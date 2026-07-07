@@ -1,0 +1,53 @@
+[
+  {
+    "ace.btable.user_data.BTable": {
+      "_Tables": {
+        "ace.cInstanceGuidArray`1<ace.btable.user_data.BTable.cTableElement>": {
+          "_DataArray": []
+        }
+      },
+      "_ImportBTableList": [],
+      "_OrderBank": {
+        "ace.btable.user_data.BTableOrderBank": {
+          "ref_instance_id": 2,
+          "path": "GameDesign/NPC/Data/Gesture/_BTable/_Setting/NpcBTableOrderBank_Gesture.user"
+        }
+      },
+      "_ThisGuid": "7b0cb183-3cf2-4c5c-9dc2-bfff9ea85ee1",
+      "_ExportBTableType": "app.NpcBTable_RandomDir_Export",
+      "_CommandArgArray": [
+        {
+          "app.btable.NpcCommand.cTargetVecArg": {
+            "_EditTargetVec": {
+              "ace.btable.cEditFieldEnum`1<app.btable.NpcCommand.cTargetVecArg.VEC_TYPE>": 0
+            }
+          }
+        },
+        {
+          "app.btable.NpcCommand.cRangeArg": {
+            "_EditDistance": {
+              "ace.btable.cEditFieldFloat": 20.0
+            },
+            "_EditForward": {
+              "ace.btable.cEditFieldEnum`1<app.btable.NpcCommand.cRangeArg.FORWARD_DIR>": 1
+            },
+            "_EditAngle": {
+              "ace.btable.cEditFieldFloat": 120.0
+            },
+            "_EditDistanceMin": {
+              "ace.btable.cEditFieldFloat": 2.0
+            }
+          }
+        },
+        {
+          "app.btable.NpcCommand.cDecideTargetArg": {
+            "_EditCond": {
+              "ace.btable.cEditFieldEnum`1<app.btable.NpcCommand.cDecideTargetArg.DECIDE_CONDITION>": 0
+            }
+          }
+        }
+      ],
+      "_UseExportArgData": true
+    }
+  }
+]

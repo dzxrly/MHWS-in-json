@@ -1,0 +1,149 @@
+[
+  {
+    "app.user_data.MotionPartsStabilizerParam": {
+      "_PartIdDefinition": {
+        "ace.user_data.EnumMaker": {
+          "ref_instance_id": 1,
+          "path": "Motion/Porter/Decorate/MotionFilter/PtPartsReductionPartId.user"
+        }
+      },
+      "_GroupIdDefinition": {
+        "ace.user_data.EnumMaker": {
+          "ref_instance_id": 2,
+          "path": "Motion/Porter/Decorate/MotionFilter/PtMotionPartsStabilizerGroupId.user"
+        }
+      },
+      "_Groups": [
+        {
+          "app.user_data.MotionPartsStabilizerParam.cGroup": {
+            "_GroupIdFixed": 118875496,
+            "_DampingParam": {
+              "ace.cDampingParam": {
+                "_Damping": 0.7,
+                "_TimeScale": 1.0
+              }
+            },
+            "_Reductions": [
+              {
+                "app.user_data.MotionPartsStabilizerParam.cReductionData": {
+                  "_PartIdFixed": 1479241216,
+                  "_MaxReductionRate": 0.1
+                }
+              }
+            ],
+            "_Overwrites": [
+              {
+                "app.user_data.MotionPartsStabilizerParam.cJointCtrlData": {
+                  "_JointHash": {
+                    "ace.cJointHash": {
+                      "_Hash": 2139424314
+                    }
+                  },
+                  "_Coord": 0,
+                  "_Criteria": 0,
+                  "_Rotation": [
+                    0.0872,
+                    0.0,
+                    0.0,
+                    0.9962
+                  ],
+                  "_BlendRate": 0.2
+                }
+              },
+              {
+                "app.user_data.MotionPartsStabilizerParam.cJointCtrlData": {
+                  "_JointHash": {
+                    "ace.cJointHash": {
+                      "_Hash": 2890959283
+                    }
+                  },
+                  "_Coord": 0,
+                  "_Criteria": 0,
+                  "_Rotation": [
+                    -0.0872,
+                    0.0,
+                    0.0,
+                    0.9962
+                  ],
+                  "_BlendRate": 0.29
+                }
+              },
+              {
+                "app.user_data.MotionPartsStabilizerParam.cJointCtrlData": {
+                  "_JointHash": {
+                    "ace.cJointHash": {
+                      "_Hash": 3156905843
+                    }
+                  },
+                  "_Coord": 0,
+                  "_Criteria": 0,
+                  "_Rotation": [
+                    -0.1045,
+                    0.0,
+                    0.0,
+                    0.9945
+                  ],
+                  "_BlendRate": 0.37
+                }
+              },
+              {
+                "app.user_data.MotionPartsStabilizerParam.cJointCtrlData": {
+                  "_JointHash": {
+                    "ace.cJointHash": {
+                      "_Hash": 152489342
+                    }
+                  },
+                  "_Coord": 0,
+                  "_Criteria": 0,
+                  "_Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                  ],
+                  "_BlendRate": 0.4
+                }
+              },
+              {
+                "app.user_data.MotionPartsStabilizerParam.cJointCtrlData": {
+                  "_JointHash": {
+                    "ace.cJointHash": {
+                      "_Hash": 1936325518
+                    }
+                  },
+                  "_Coord": 0,
+                  "_Criteria": 0,
+                  "_Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                  ],
+                  "_BlendRate": 0.39
+                }
+              },
+              {
+                "app.user_data.MotionPartsStabilizerParam.cJointCtrlData": {
+                  "_JointHash": {
+                    "ace.cJointHash": {
+                      "_Hash": 2536768673
+                    }
+                  },
+                  "_Coord": 0,
+                  "_Criteria": 0,
+                  "_Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                  ],
+                  "_BlendRate": 0.4
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,91 @@
+[
+  {
+    "app.user_data.NpcDesirePack": {
+      "_DataList": [
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 1,
+                "path": "GameDesign/NPC/Partner/CommonData/Desire/ParamAdvisor/Tent/Tent_TentIn_DesireParam.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[24989] TENT_DESIRE",
+            "_RetryCount": 1,
+            "_EnumFixedID": 1
+          }
+        },
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 4,
+                "path": "GameDesign/NPC/Partner/CommonData/Desire/ParamAdvisor/Tent/Tent_TentInAbnormal_DesireParam.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[24989] TENT_DESIRE",
+            "_RetryCount": 1,
+            "_EnumFixedID": 5
+          }
+        },
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 7,
+                "path": "GameDesign/NPC/Partner/CommonData/Desire/ParamAdvisor/Tent/Tent_TentInPlIn_DesireParam.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[24989] TENT_DESIRE",
+            "_RetryCount": 1,
+            "_EnumFixedID": 6
+          }
+        },
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 10,
+                "path": "GameDesign/NPC/Partner/CommonData/Desire/ParamAdvisor/Tent/Tent_FreeAct_DesireParam.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[24989] TENT_DESIRE",
+            "_RetryCount": 1,
+            "_EnumFixedID": 3
+          }
+        },
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 13,
+                "path": "GameDesign/NPC/Partner/CommonData/Desire/ParamAdvisor/Tent/Tent_CampOption_DesireParam.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[24989] TENT_DESIRE",
+            "_RetryCount": 1,
+            "_EnumFixedID": 4
+          }
+        }
+      ],
+      "_TimerParam": {
+        "app.cNpcDesireTimerHolder": {
+          "_Param": {
+            "app.NpcDesireTimers.cAdvisorTentDesire_Param": {}
+          }
+        }
+      },
+      "_DesireEnum": {
+        "ace.user_data.EnumMaker": {
+          "ref_instance_id": 18,
+          "path": "GameDesign/NPC/Partner/CommonData/EnumMaker/NpcDesire_Advisor_Tent.user"
+        }
+      }
+    }
+  }
+]

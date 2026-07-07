@@ -1,0 +1,77 @@
+[
+  {
+    "app.user_data.NpcDesirePack": {
+      "_DataList": [
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 1,
+                "path": "GameDesign/NPC/Partner/CommonData/Desire/Param/Caution/Caution_Squat_DesireParam.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[2890695680] INVALID",
+            "_RetryCount": 1,
+            "_EnumFixedID": 1
+          }
+        },
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 4,
+                "path": "GameDesign/NPC/Partner/CommonData/Desire/Param/Caution/Caution_SetBombSelf_DesireParam.user"
+              }
+            },
+            "_IsEnable": false,
+            "_Category": "[2136822016] SET_TRAP",
+            "_RetryCount": 1,
+            "_EnumFixedID": 2
+          }
+        },
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 7,
+                "path": "GameDesign/NPC/Partner/CommonData/Desire/Param/Caution/Caution_SetBombFollow_DesireParam.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[2136822016] SET_TRAP",
+            "_RetryCount": 1,
+            "_EnumFixedID": 3
+          }
+        },
+        {
+          "app.user_data.NpcDesirePack.cData": {
+            "_DesireParam": {
+              "app.user_data.NpcDesireParam": {
+                "ref_instance_id": 10,
+                "path": "GameDesign/NPC/Partner/CommonData/Desire/Param/Caution/Caution_ActiveSkill_001_DesireParam.user"
+              }
+            },
+            "_IsEnable": true,
+            "_Category": "[2337011584] ACTIVE_SKILL",
+            "_RetryCount": 1,
+            "_EnumFixedID": 4
+          }
+        }
+      ],
+      "_TimerParam": {
+        "app.cNpcDesireTimerHolder": {
+          "_Param": {
+            "app.NpcDesireTimers.cDesireAI_Param": {}
+          }
+        }
+      },
+      "_DesireEnum": {
+        "ace.user_data.EnumMaker": {
+          "ref_instance_id": 15,
+          "path": "GameDesign/NPC/Partner/CommonData/EnumMaker/NpcDesire_Partner_Caution_Cmn.user"
+        }
+      }
+    }
+  }
+]

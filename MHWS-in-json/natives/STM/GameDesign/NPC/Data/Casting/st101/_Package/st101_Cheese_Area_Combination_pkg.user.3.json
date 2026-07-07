@@ -1,0 +1,117 @@
+[
+  {
+    "app.user_data.NpcCastingPackages": {
+      "_DataList": [
+        {
+          "app.user_data.NpcCastingPackages.cOperationData": {
+            "_IsTaskAsset": false,
+            "_TaskAsset": {
+              "": {}
+            },
+            "_CombiAsset": {
+              "app.user_data.NpcCombinationPackage": {
+                "ref_instance_id": 1,
+                "path": "GameDesign/NPC/Data/Combination/3_Direct/Combi311_003/NpcCombi311_003_pkg_Cheese_Area.user"
+              }
+            },
+            "_TargetFixed": {
+              "app.user_data.cNpcVariousTarget": {
+                "_FixedID": -1
+              }
+            },
+            "_EnvironmentBit": {
+              "app.user_data.cNpcEnvironmentBit": {
+                "_Ruin": false,
+                "_BeforeAbnormal": false,
+                "_Abnormal": false,
+                "_AfterAbnormal": true,
+                "_Fertility": true
+              }
+            },
+            "_Schedule": "[3695636864] EVENING",
+            "_RandomWeight": 50,
+            "_ActionTime": {
+              "raw": "0000c84200004843",
+              "type": "Range"
+            },
+            "_IsOnceDay": true,
+            "_MediatorKey_Place": "[3771098080] INVALID"
+          }
+        },
+        {
+          "app.user_data.NpcCastingPackages.cOperationData": {
+            "_IsTaskAsset": false,
+            "_TaskAsset": {
+              "": {}
+            },
+            "_CombiAsset": {
+              "app.user_data.NpcCombinationPackage": {
+                "ref_instance_id": 7,
+                "path": "GameDesign/NPC/Data/Combination/3_Direct/Combi311_019/NpcCombi311_019_pkg.user"
+              }
+            },
+            "_TargetFixed": {
+              "app.user_data.cNpcVariousTarget": {
+                "_FixedID": -1
+              }
+            },
+            "_EnvironmentBit": {
+              "app.user_data.cNpcEnvironmentBit": {
+                "_Ruin": true,
+                "_BeforeAbnormal": false,
+                "_Abnormal": false,
+                "_AfterAbnormal": false,
+                "_Fertility": false
+              }
+            },
+            "_Schedule": "[380605408] DAYTIME",
+            "_RandomWeight": 4,
+            "_ActionTime": {
+              "raw": "0000c8420000c842",
+              "type": "Range"
+            },
+            "_IsOnceDay": true,
+            "_MediatorKey_Place": "[1295762432] TYPE_23"
+          }
+        }
+      ],
+      "_SettingData": {
+        "app.user_data.NpcCastingPackages.cSettingData": {
+          "_TargetList": [
+            {
+              "app.user_data.cNpcVariousTarget": {
+                "_FixedID": "[56] NPC112_11_042"
+              }
+            },
+            {
+              "app.user_data.cNpcVariousTarget": {
+                "_FixedID": "[32] NPC112_11_033"
+              }
+            },
+            {
+              "app.user_data.cNpcVariousTarget": {
+                "_FixedID": "[46] NPC111_11_022"
+              }
+            },
+            {
+              "app.user_data.cNpcVariousTarget": {
+                "_FixedID": "[1222785920] NPC132_11_053"
+              }
+            },
+            {
+              "app.user_data.cNpcVariousTarget": {
+                "_FixedID": "[2374880000] NPC132_11_057"
+              }
+            },
+            {
+              "app.user_data.cNpcVariousTarget": {
+                "_FixedID": "[920138880] NPC102_11_068"
+              }
+            }
+          ],
+          "_Priority": -1
+        }
+      }
+    }
+  }
+]

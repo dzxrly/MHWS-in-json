@@ -1,0 +1,54 @@
+[
+  {
+    "app.user_data.NpcDesireParam": {
+      "_DefaultParam": {
+        "app.user_data.NpcDesireParam.cParam": {
+          "_CoolTime": {
+            "app.user_data.NpcDesireParam.cParam.cCoolTime": {
+              "_Complete": {
+                "raw": "0000000000000000",
+                "type": "Range"
+              },
+              "_Cancel": {
+                "raw": "0000000000000000",
+                "type": "Range"
+              },
+              "_Group": {
+                "raw": "0000000000000000",
+                "type": "Range"
+              }
+            }
+          },
+          "_StartConditionParams": [
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcGroupAIDesireConditions.cGm558_CanCollect_Param": {
+                    "STRUCT__IsSuccess__HasValue": true,
+                    "STRUCT__IsSuccess__Value": false
+                  }
+                },
+                "_Inverse": false
+              }
+            }
+          ],
+          "_EndConditionParams": [
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcGroupAIDesireConditions.cGm558_CanCollect_Param": {
+                    "STRUCT__IsSuccess__HasValue": true,
+                    "STRUCT__IsSuccess__Value": false
+                  }
+                },
+                "_Inverse": true
+              }
+            }
+          ],
+          "_ContinueConditionParams": []
+        }
+      },
+      "_OverwriteKindParams": []
+    }
+  }
+]

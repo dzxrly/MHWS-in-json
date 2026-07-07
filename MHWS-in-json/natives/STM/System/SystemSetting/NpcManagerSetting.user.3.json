@@ -1,0 +1,102 @@
+[
+  {
+    "app.user_data.NpcManagerSetting": {
+      "_GroupAIManagerPackages": {
+        "app.user_data.NpcGroupAIManagerPackages": {
+          "ref_instance_id": 1,
+          "path": "GameDesign/NPC/Data/GroupAIEvent/_Setting/_NpcGroupAIManagerPackages.user"
+        }
+      },
+      "_FieldUnitManagerPackages": {
+        "app.user_data.NpcFieldUnitManagerPackages": {
+          "ref_instance_id": 2,
+          "path": "GameDesign/NPC/Data/FieldUnit/_Package/_NpcFieldUnitManagerPackages.user"
+        }
+      },
+      "_CombiMgrPrefab": {
+        "via.Prefab": {
+          "v0": {
+            "raw": "01",
+            "type": "Data"
+          },
+          "v1": "GameDesign/NPC/_Prefab/Global/NpcCombinationManager.pfb"
+        }
+      },
+      "_FormationManagerPrefab": {
+        "via.Prefab": {
+          "v0": {
+            "raw": "01",
+            "type": "Data"
+          },
+          "v1": "GameDesign/NPC/_Prefab/Global/NpcFormationManager.pfb"
+        }
+      },
+      "_RoutePointDataPrefab": {
+        "via.Prefab": {
+          "v0": {
+            "raw": "01",
+            "type": "Data"
+          },
+          "v1": "GameDesign/NPC/_Prefab/PointGraph/NpcRoutePointData.pfb"
+        }
+      },
+      "_LinearActPrefab": {
+        "via.Prefab": {
+          "v0": {
+            "raw": "01",
+            "type": "Data"
+          },
+          "v1": "GameDesign/NPC/_Prefab/PointGraph/NpcLinearActData.pfb"
+        }
+      },
+      "_WorldAnalyzerPrefab": {
+        "via.Prefab": {
+          "v0": {
+            "raw": "01",
+            "type": "Data"
+          },
+          "v1": "GameDesign/NPC/_Prefab/Global/NpcWorldAnalyzer.pfb"
+        }
+      },
+      "_AIThinkPackages": {
+        "app.user_data.NpcAIThinkPackages": {
+          "ref_instance_id": 8,
+          "path": "GameDesign/NPC/Data/AIGoaTree/_Package/AIGoaTreePackages.user"
+        }
+      },
+      "_AIThinkPackages_Alone": {
+        "app.user_data.NpcAIThinkPackages": {
+          "ref_instance_id": 9,
+          "path": "GameDesign/NPC/Data/AIGoaTree/_Package/AIGoaTreePackages_Alone.user"
+        }
+      },
+      "_ProcessCullingData": {
+        "app.user_data.NpcProcessCullingData": {
+          "ref_instance_id": 10,
+          "path": "@GameDesign/NPC/CommonData/Culling/NpcProcessCullingData.user"
+        }
+      },
+      "_TalkCollsionPrefab": {
+        "via.Prefab": {
+          "v0": {
+            "raw": "01",
+            "type": "Data"
+          },
+          "v1": "GameDesign/NPC/CommonData/Collision/NpcTalkCollider.pfb"
+        }
+      },
+      "_DesireCategoryPackages": {
+        "app.user_data.NpcDesireCategoryPackages": {
+          "ref_instance_id": 12,
+          "path": "GameDesign/NPC/Partner/CommonData/Desire/DesireCategoryPackages.user"
+        }
+      },
+      "_SpeechSubCategoryPackages": {
+        "app.user_data.NpcSpeechSubCategoryPackages": {
+          "ref_instance_id": 13,
+          "path": "GameDesign/NPC/Partner/CommonData/SituationSpeech/NpcSpeechSubCategoryPackages.user"
+        }
+      }
+    }
+  }
+]

@@ -1,0 +1,53 @@
+[
+  {
+    "app.user_data.NpcGm402Data": {
+      "_AloneThinkParam": {
+        "app.NpcAloneThinkParams.cMoriver_Fishing": {
+          "_ParamList": [
+            {
+              "app.NpcAloneThinkParams.cMoriver_Task.cTaskParam": {
+                "_ActionTime": {
+                  "raw": "0000964300004842",
+                  "type": "Range"
+                },
+                "_EnvironmentBit": {
+                  "app.user_data.cNpcEnvironmentBit": {
+                    "_Ruin": true,
+                    "_BeforeAbnormal": true,
+                    "_Abnormal": false,
+                    "_AfterAbnormal": true,
+                    "_Fertility": true
+                  }
+                },
+                "_Schedule": "[1117828480] NONE",
+                "_TaskData": {
+                  "app.user_data.NpcTaskData": {
+                    "ref_instance_id": 3,
+                    "path": "GameDesign/NPC/Data/Casting/ut102_05/FishingMaster/JyuMrv_ut102_05_FishingMaster_BC_02.user"
+                  }
+                },
+                "_CanTransitionThreat": false
+              }
+            }
+          ],
+          "_IsOverwriteSearchPos": false,
+          "_OverwriteSearchPos": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "_LotteryTableBit": {
+        "app.NpcDef.LOTTERY_TABLE_ID_JYU_MRVBit_Serializable": 131072
+      },
+      "_PopRange": 100.0,
+      "_PopCoolTime": {
+        "raw": "0000f04200003443",
+        "type": "Range"
+      },
+      "_Probability": 100
+    }
+  }
+]

@@ -1,0 +1,149 @@
+[
+  {
+    "app.user_data.NpcCombinationPackage": {
+      "_ParamHolder": {
+        "app.user_data.NpcCombinationPackage.cParam_BaseHolder": {
+          "app.user_data.NpcCombinationPackage.cGossip_Param": {
+            "_Fsm": "GameDesign/NPC/Data/Combination/3_Direct/Combi321_011/Combi321_011_fsm.fsmv2",
+            "_DisableTalk": true,
+            "_DisableUpstreamSkip": false,
+            "_CenterData": {
+              "app.cNpcDestinationData": {
+                "_Pos": [
+                  -764.2323,
+                  56.867,
+                  759.5743,
+                  0.0
+                ],
+                "_DegY": -140
+              }
+            },
+            "_Range": 1.0,
+            "_DestType": 0,
+            "_CombiType": "[0] INVALID",
+            "_ForceBind": false,
+            "_Situations": [
+              {
+                "app.cNpcCombinationSituation": {
+                  "_Character": {
+                    "app.cNpcCombinationSituation.cNpc": {
+                      "_DestData": {
+                        "app.cNpcDestinationData": {
+                          "_Pos": [
+                            -763.8673,
+                            56.905,
+                            759.2805,
+                            0.0
+                          ],
+                          "_DegY": -125
+                        }
+                      },
+                      "_VisualChecker": {
+                        "app.cNpcCombinationVisualChecker": {
+                          "_SkeletonType": "[1] HUMAN_ADL",
+                          "_Gender": 0,
+                          "_VisualType": {
+                            "app.cNpcVisualTypeChecker": {
+                              "_Species": 3,
+                              "_ModelKindFixedID": -1
+                            }
+                          },
+                          "_ID": "[284567264] NPC111_21_043"
+                        }
+                      },
+                      "_IsTerminateAction": false,
+                      "_MotionPack_Base": {
+                        "app.user_data.NpcMotionPack_Base": {
+                          "ref_instance_id": 6,
+                          "path": "GameDesign/NPC/Data/Combination/_MotionPack/Combi_HumAdlMale_Stand_MotionPack.user"
+                        }
+                      },
+                      "_MotionPack_Sub": {
+                        "app.user_data.NpcMotionPack_Sub": {
+                          "ref_instance_id": 7,
+                          "path": "GameDesign/NPC/Data/Combination/_MotionPack/Combi_HumAdlMale_Stand_MotionPack_Sub.user"
+                        }
+                      },
+                      "_IsMotionPackFullLoad": false,
+                      "_Accessories": {
+                        "app.cNpcAccessoryIDHolder": {
+                          "_AccessoryTypes": [
+                            65535,
+                            65535,
+                            65535
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "app.cNpcCombinationSituation": {
+                  "_Character": {
+                    "app.cNpcCombinationSituation.cNpc": {
+                      "_DestData": {
+                        "app.cNpcDestinationData": {
+                          "_Pos": [
+                            -764.5452,
+                            56.8525,
+                            759.8441,
+                            0.0
+                          ],
+                          "_DegY": -150
+                        }
+                      },
+                      "_VisualChecker": {
+                        "app.cNpcCombinationVisualChecker": {
+                          "_SkeletonType": "[1] HUMAN_ADL",
+                          "_Gender": 0,
+                          "_VisualType": {
+                            "app.cNpcVisualTypeChecker": {
+                              "_Species": 3,
+                              "_ModelKindFixedID": -1
+                            }
+                          },
+                          "_ID": "[4001294304] NPC112_21_049"
+                        }
+                      },
+                      "_IsTerminateAction": false,
+                      "_MotionPack_Base": {
+                        "app.user_data.NpcMotionPack_Base": {
+                          "ref_instance_id": 15,
+                          "path": "GameDesign/NPC/Data/Combination/_MotionPack/Combi_HumAdlFemale_Stand_MotionPack.user"
+                        }
+                      },
+                      "_MotionPack_Sub": {
+                        "app.user_data.NpcMotionPack_Sub": {
+                          "ref_instance_id": 16,
+                          "path": "GameDesign/NPC/Data/Combination/_MotionPack/Combi_HumAdlFemale_Stand_MotionPack_Sub.user"
+                        }
+                      },
+                      "_IsMotionPackFullLoad": false,
+                      "_Accessories": {
+                        "app.cNpcAccessoryIDHolder": {
+                          "_AccessoryTypes": [
+                            65535,
+                            65535,
+                            65535
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "_LookAtDestinations": [],
+            "_IsBind": true,
+            "_DialogueID": "[6928] Dia_NpcGossip_Common_001_01",
+            "_DialogueID_Sub": "[0] INVALID",
+            "_StartDist": -1.0,
+            "_CoolTime": -1.0,
+            "_CheckRayCast": true
+          }
+        }
+      }
+    }
+  }
+]

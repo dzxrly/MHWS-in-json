@@ -1,0 +1,148 @@
+[
+  {
+    "app.user_data.NpcDesireParam": {
+      "_DefaultParam": {
+        "app.user_data.NpcDesireParam.cParam": {
+          "_CoolTime": {
+            "app.user_data.NpcDesireParam.cParam.cCoolTime": {
+              "_Complete": {
+                "raw": "0000000000000000",
+                "type": "Range"
+              },
+              "_Cancel": {
+                "raw": "0000000000000000",
+                "type": "Range"
+              },
+              "_Group": {
+                "raw": "0000000000000000",
+                "type": "Range"
+              }
+            }
+          },
+          "_StartConditionParams": [
+            {
+              "app.cNpcDesireConditionHolder": {
+                "_Param": {
+                  "app.NpcDesireConditions.cAlwaysFalse_Param": {}
+                },
+                "_Inverse": false
+              }
+            }
+          ],
+          "_EndConditionParams": [],
+          "_ContinueConditionParams": []
+        }
+      },
+      "_OverwriteKindParams": [
+        {
+          "app.user_data.NpcDesireParam.cKindParam": {
+            "_Param": {
+              "app.user_data.NpcDesireParam.cParam": {
+                "_CoolTime": {
+                  "app.user_data.NpcDesireParam.cParam.cCoolTime": {
+                    "_Complete": {
+                      "raw": "0000704100007041",
+                      "type": "Range"
+                    },
+                    "_Cancel": {
+                      "raw": "0000a0400000a040",
+                      "type": "Range"
+                    },
+                    "_Group": {
+                      "raw": "0000000000000000",
+                      "type": "Range"
+                    }
+                  }
+                },
+                "_StartConditionParams": [
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cActiveBadConditionCombatEnemy_Param": {
+                          "_Condition": 7
+                        }
+                      },
+                      "_Inverse": false
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cCaptureQuestAndDying_Param": {}
+                      },
+                      "_Inverse": true
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cCheckBomb_Param": {
+                          "_IsSelfSet": true,
+                          "_EmToBombRange": 3.0,
+                          "_ToBombRange": 15.0
+                        }
+                      },
+                      "_Inverse": false
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cItemHasCheck_Param": {
+                          "_ItemID": "[197] ITEM_0223"
+                        }
+                      },
+                      "_Inverse": false
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cCheckBombEnemyInRange_Param": {
+                          "_Range": {
+                            "raw": "000000000000a042",
+                            "type": "Range"
+                          },
+                          "_IgnoreEmListData": {
+                            "app.user_data.NpcCmnEnemyListData": {
+                              "ref_instance_id": 15,
+                              "path": "GameDesign/NPC/Partner/CommonData/Param/EnemyList/NpcPartner_UseBombIgnore_EmList.user"
+                            }
+                          }
+                        }
+                      },
+                      "_Inverse": true
+                    }
+                  }
+                ],
+                "_EndConditionParams": [
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cCanItemUse_Param": {
+                          "_ItemID": "[197] ITEM_0223"
+                        }
+                      },
+                      "_Inverse": true
+                    }
+                  },
+                  {
+                    "app.cNpcDesireConditionHolder": {
+                      "_Param": {
+                        "app.NpcDesireConditions.cEndSetBomb_Param": {}
+                      },
+                      "_Inverse": false
+                    }
+                  }
+                ],
+                "_ContinueConditionParams": []
+              }
+            },
+            "_KindType": "[3228241920] UTILITY_ITEM",
+            "_KindLv": "[3515249536] LV2"
+          }
+        }
+      ]
+    }
+  }
+]

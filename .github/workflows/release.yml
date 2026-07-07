@@ -1,0 +1,47 @@
+name: Build database release
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Set release version
+        shell: pwsh
+        run: |
+          $version = "$(Get-Date -AsUTC -Format 'yyyyMMdd')-$($env:GITHUB_SHA.Substring(0, 7))"
+          "RELEASE_VERSION=$version" >> $env:GITHUB_ENV
+
+      - name: Export database
+        run: python main.py
+
+      - name: Publish release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = "database-$env:RELEASE_VERSION"
+          $assets = Get-ChildItem -Path output -Filter "*.zip" | ForEach-Object { $_.FullName }
+          gh release view $tag *> $null
+          if ($LASTEXITCODE -eq 0) {
+            gh release upload $tag $assets --clobber
+          } else {
+            gh release create $tag $assets --title "Database $env:RELEASE_VERSION" --notes "Automated export for $env:GITHUB_SHA"
+          }

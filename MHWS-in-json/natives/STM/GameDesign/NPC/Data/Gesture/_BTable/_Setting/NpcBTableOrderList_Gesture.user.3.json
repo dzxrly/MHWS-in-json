@@ -1,0 +1,284 @@
+[
+  {
+    "ace.btable.user_data.BTableOrderList": {
+      "_OperatorFactories": [],
+      "_CommandFactories": [
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cHeader_Do",
+            "_ArgumentType": "ace.btable.cCommandArgumentNone",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cAddTargetCharacter",
+            "_ArgumentType": "app.btable.NpcCommand.cTargetCharacterArg",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cAddTargetNpc",
+            "_ArgumentType": "app.btable.NpcCommand.cTargetNpcArg",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cAddTargetFacilityNpc",
+            "_ArgumentType": "app.btable.NpcCommand.cTargetFacilityNpcArg",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cAddTargetPointGraphInteract",
+            "_ArgumentType": "app.btable.NpcCommand.cTargetPointGraphInteractArg",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cAddTargetVec",
+            "_ArgumentType": "app.btable.NpcCommand.cTargetVecArg",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cAddTargetComm_Send",
+            "_ArgumentType": "app.btable.NpcCommand.cCaptureArg",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cAddTargetComm_Receive",
+            "_ArgumentType": "app.btable.NpcCommand.cCaptureArg",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cAddTargetAttackCollider",
+            "_ArgumentType": "app.btable.NpcCommand.cTargetAttackColliderArg",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cAddTargetAttackColliderDetector",
+            "_ArgumentType": "app.btable.NpcCommand.cTargetAttackColliderArg",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cCaptureCandidateToContext",
+            "_ArgumentType": "app.btable.NpcCommand.cCaptureArg",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cRemoveTarget",
+            "_ArgumentType": "app.btable.NpcCommand.cRemoveTargetArg",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cClearTarget",
+            "_ArgumentType": "ace.btable.cCommandArgumentNone",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cDecide",
+            "_ArgumentType": "ace.btable.cCommandArgumentNone",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cDecide_Level",
+            "_ArgumentType": "app.btable.NpcCommand.cDecide_LevelArg",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cHeader_If",
+            "_ArgumentType": "ace.btable.cCommandArgumentNone",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cDecideTarget",
+            "_ArgumentType": "app.btable.NpcCommand.cDecideTargetArg",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cCheckRangeIn",
+            "_ArgumentType": "app.btable.NpcCommand.cRangeArg",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cCheckRangeOut",
+            "_ArgumentType": "app.btable.NpcCommand.cRangeArg",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cCheckHeightAngle",
+            "_ArgumentType": "app.btable.NpcCommand.cCheckHeightAngleArg",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cCheckCombination",
+            "_ArgumentType": "app.btable.NpcCommand.cCombinationArg",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cCheckFootTilt",
+            "_ArgumentType": "app.btable.NpcCommand.cFootTiltArg",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cCheckRunningActionTime",
+            "_ArgumentType": "app.btable.NpcCommand.cRunningActionArg",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cCheckCollideForcast",
+            "_ArgumentType": "app.btable.NpcCommand.cCollideForcastArg",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cCheckCollideForcastTest",
+            "_ArgumentType": "ace.btable.cCommandArgumentNone",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cCheckBumped",
+            "_ArgumentType": "app.btable.NpcCommand.cCollideForcastArg",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cCheckWindGust",
+            "_ArgumentType": "app.btable.NpcCommand.cWindGustArg",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cCheckImpending",
+            "_ArgumentType": "ace.btable.cCommandArgumentNone",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cCheckPlayerReaction",
+            "_ArgumentType": "app.btable.NpcCommand.cCheckPlayerReactionArg",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cCheckActionAttr",
+            "_ArgumentType": "app.btable.NpcCommand.cCheckActionAttrArg",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cCheckActionAttrSub",
+            "_ArgumentType": "app.btable.NpcCommand.cCheckActionAttrSubArg",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cCheckRecital",
+            "_ArgumentType": "app.btable.NpcCommand.cCheckRecitalArg",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cCheckPlExGesture",
+            "_ArgumentType": "app.btable.NpcCommand.cCheckPlExGestureArg",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        },
+        {
+          "ace.btable.cCommandFactory": {
+            "_OrderType": "app.btable.NpcCommand.cCheckPlExGesture_02",
+            "_ArgumentType": "app.btable.NpcCommand.cCheckPlExGesture_02Arg",
+            "_ArgumentSettingType": "ace.btable.cArgumentSettingNone"
+          }
+        }
+      ],
+      "_OperatorHashList": [],
+      "_CommandHashList": [
+        3841651981681460053,
+        5788578038353541986,
+        14311604170518102386,
+        13495532410981334978,
+        3562432593921585858,
+        16552543457422847623,
+        14359887865256367883,
+        14586623843260290170,
+        3587955952713682529,
+        7468603336992718375,
+        15549478965327465705,
+        3536082995667257367,
+        18012740378295536463,
+        9466536498389864805,
+        7464281930393128209,
+        2298156412981909616,
+        13059538459009967930,
+        4545893547491413113,
+        13139537907245337261,
+        12960953366900820668,
+        8657195419658704331,
+        18288852641993626246,
+        11983447582540157601,
+        13672968169327110093,
+        12696178060076244568,
+        13145312062093648314,
+        16882739502780502877,
+        15587072275052015225,
+        15829794962886198049,
+        8105286630693641425,
+        14960576972551834750,
+        7249335889735970321,
+        929220074791324389,
+        14730513275407765074
+      ]
+    }
+  }
+]

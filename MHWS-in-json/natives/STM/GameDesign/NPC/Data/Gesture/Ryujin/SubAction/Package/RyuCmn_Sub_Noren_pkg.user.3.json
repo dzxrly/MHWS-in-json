@@ -1,0 +1,66 @@
+[
+  {
+    "app.user_data.NpcGesturePackage": {
+      "_Type": {
+        "app.user_data.NpcGesturePackage.cType": {
+          "_Param": {
+            "app.NpcGestureControllers.cSubAction_Param": {
+              "_UseMultiAction": false,
+              "_UseReactionPackagesAction": false,
+              "_IsTerminateByUpdateEnd": false,
+              "_SubActionSelector": {
+                "app.cNpcFsmLikeActionSubSelector": {
+                  "_Category": 1,
+                  "_ActionID": -1998132096,
+                  "_UseVariation": false,
+                  "_Variation": -565011136
+                }
+              },
+              "_SubActionSelector_Multi": [
+                {
+                  "app.cNpcFsmLikeActionSubSelector": {
+                    "_Category": 0,
+                    "_ActionID": 956644096,
+                    "_UseVariation": false,
+                    "_Variation": -565011136
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "_Common": {
+        "app.user_data.NpcGesturePackage.cCommon": {
+          "_BTable": {
+            "ace.btable.user_data.BTable": {
+              "ref_instance_id": 5,
+              "path": "GameDesign/NPC/Data/Gesture/_BTable/SubAction/NpcBTable_Cmn_Sub_Noren.user"
+            }
+          },
+          "_CoolTime": {
+            "raw": "000000400000803f",
+            "type": "Range"
+          },
+          "_Probability": 100,
+          "_Category": "[3] NOREN",
+          "_TagBit": {
+            "app.NpcDef.GESTURE_TAGBit_Serializable": 0
+          }
+        }
+      },
+      "_Meta": {
+        "app.user_data.NpcGesturePackage.cMeta": {
+          "STRUCT__MaxNum__HasValue": false,
+          "STRUCT__MaxNum__Value": 0,
+          "_ValidRange": 0.0,
+          "_ValidTime": {
+            "raw": "0000000000000000",
+            "type": "Range"
+          }
+        }
+      },
+      "_Hash": 1382683989
+    }
+  }
+]

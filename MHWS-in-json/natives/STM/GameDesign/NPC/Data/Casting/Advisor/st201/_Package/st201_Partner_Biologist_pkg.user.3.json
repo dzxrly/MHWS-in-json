@@ -1,0 +1,92 @@
+[
+  {
+    "app.user_data.NpcCastingPackages": {
+      "_DataList": [
+        {
+          "app.user_data.NpcCastingPackages.cOperationData": {
+            "_IsTaskAsset": true,
+            "_TaskAsset": {
+              "app.user_data.NpcTaskData": {
+                "ref_instance_id": 1,
+                "path": "GameDesign/NPC/Data/Casting/Advisor/st201/Partner_Biologist/HumAdl_st201_Partner_Biologist_Daytime.user"
+              }
+            },
+            "_CombiAsset": {
+              "": {}
+            },
+            "_TargetFixed": {
+              "app.user_data.cNpcVariousTarget": {
+                "_FixedID": "[4204866272] NPC101_00_002"
+              }
+            },
+            "_EnvironmentBit": {
+              "app.user_data.cNpcEnvironmentBit": {
+                "_Ruin": true,
+                "_BeforeAbnormal": true,
+                "_Abnormal": true,
+                "_AfterAbnormal": true,
+                "_Fertility": true
+              }
+            },
+            "_Schedule": "[380605408] DAYTIME",
+            "_RandomWeight": 50,
+            "_ActionTime": {
+              "raw": "0000c84200004843",
+              "type": "Range"
+            },
+            "_IsOnceDay": false,
+            "_MediatorKey_Place": "[3771098080] INVALID"
+          }
+        },
+        {
+          "app.user_data.NpcCastingPackages.cOperationData": {
+            "_IsTaskAsset": true,
+            "_TaskAsset": {
+              "app.user_data.NpcTaskData": {
+                "ref_instance_id": 7,
+                "path": "GameDesign/NPC/Data/Casting/Advisor/st201/Partner_Biologist/HumAdl_st201_Partner_Biologist_Nighttime.user"
+              }
+            },
+            "_CombiAsset": {
+              "": {}
+            },
+            "_TargetFixed": {
+              "app.user_data.cNpcVariousTarget": {
+                "_FixedID": "[4204866272] NPC101_00_002"
+              }
+            },
+            "_EnvironmentBit": {
+              "app.user_data.cNpcEnvironmentBit": {
+                "_Ruin": true,
+                "_BeforeAbnormal": true,
+                "_Abnormal": true,
+                "_AfterAbnormal": true,
+                "_Fertility": true
+              }
+            },
+            "_Schedule": "[3194837376] NIGHT",
+            "_RandomWeight": 50,
+            "_ActionTime": {
+              "raw": "0000c84200004843",
+              "type": "Range"
+            },
+            "_IsOnceDay": false,
+            "_MediatorKey_Place": "[3771098080] INVALID"
+          }
+        }
+      ],
+      "_SettingData": {
+        "app.user_data.NpcCastingPackages.cSettingData": {
+          "_TargetList": [
+            {
+              "app.user_data.cNpcVariousTarget": {
+                "_FixedID": "[4204866272] NPC101_00_002"
+              }
+            }
+          ],
+          "_Priority": -1
+        }
+      }
+    }
+  }
+]
