@@ -41,7 +41,7 @@ No command-line arguments are used. Edit [config.py](config.py) to change paths,
 
 ## GitHub Release
 
-[.github/workflows/release.yml](.github/workflows/release.yml) runs on every push and can also be started manually. The release version is `yyyyMMdd-<short_hash>`, and all generated zip files under `output/` are uploaded as release assets.
+[.github/workflows/release.yml](.github/workflows/release.yml) runs on every push and can also be started manually. The release version is `yyyyMMdd-HHmmss-<short_hash>` in UTC, and all generated zip files under `output/` are uploaded as release assets.
 
 Large Stage VoxelData and Enemy Constraint JSON files are ignored by [.gitignore](.gitignore). If those files were already committed before the ignore rules were added, remove them from Git history before pushing to GitHub.
 

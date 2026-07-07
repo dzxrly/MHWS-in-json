@@ -144,6 +144,6 @@ def _version() -> str:
     env_version = os.environ.get(VERSION_ENV_VAR)
     if env_version:
         return env_version
-    date = datetime.now(timezone.utc).strftime("%Y%m%d")
+    date = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S")
     sha = os.environ.get("GITHUB_SHA", "local")[:7]
     return f"{date}-{sha}"

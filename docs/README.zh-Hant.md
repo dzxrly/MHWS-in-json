@@ -28,7 +28,7 @@ python main.py
 
 ## GitHub Release
 
-[.github/workflows/release.yml](../.github/workflows/release.yml) 會在每次 push 時執行，也支援手動觸發。版本號格式為 `yyyyMMdd-<短 hash>`，並會把 `output/` 下產生的所有 zip 上傳到 Release。
+[.github/workflows/release.yml](../.github/workflows/release.yml) 會在每次 push 時執行，也支援手動觸發。版本號格式為 UTC 時間 `yyyyMMdd-HHmmss-<短 hash>`，並會把 `output/` 下產生的所有 zip 上傳到 Release。
 
 `.gitignore` 已忽略 Stage VoxelData 和 Enemy Constraint 這類超大型 JSON。如果這些檔案在加入忽略規則前已經進入提交歷史，推送到 GitHub 前仍需要另外清理歷史。
 
