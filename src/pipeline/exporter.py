@@ -4,14 +4,15 @@ import os
 import shutil
 
 from config import (
+    JSON_ROOT,
     LANGUAGE_IDS,
     LANGUAGE_NAMES,
     MAX_COLUMN_WIDTH,
     NATIVES_DIR,
     OUTPUT_DIR,
-    JSON_ROOT,
     PROCESSED_DIR_NAME,
     PROCESSED_ZIP_PREFIX,
+    SOURCE_ZIP_PREFIX,
     VERSION,
     VERSION_ENV_VAR,
     WORKBOOKS,
@@ -22,43 +23,52 @@ from src.converters.graphics import export_graphic_preset
 from src.data.text_db import TextDB, TextSource, discover_language_ids
 from src.data.user3 import load_user3_table
 from src.excel.writer import write_workbook
-from src.pipeline.package import zip_language_output, zip_processed_output
+from src.pipeline.package import zip_language_output, zip_processed_output, zip_source_output
 from src.pipeline.transforms import transform_workbook
+from src.utils.log import file_size, info
 
 
 def export_all() -> list[Path]:
+    info("Starting MHWS JSON to XLSX export")
+    info(f"JSON root: {JSON_ROOT}")
+    info(f"Natives directory: {NATIVES_DIR}")
+    info(f"Output directory: {OUTPUT_DIR}")
     if not NATIVES_DIR.exists():
         raise FileNotFoundError(f"Natives directory not found: {NATIVES_DIR}")
 
     if OUTPUT_DIR.exists():
+        info(f"Cleaning output directory: {OUTPUT_DIR}")
         shutil.rmtree(OUTPUT_DIR)
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
     version = _version()
+    info(f"Release version: {version}")
+    info("Discovering supported languages")
     language_ids = LANGUAGE_IDS or discover_language_ids(NATIVES_DIR)
-    print(f"Loading text database: {NATIVES_DIR}")
+    info(f"Languages to export ({len(language_ids)}): {_language_list(language_ids)}")
+    info(f"Loading text database: {NATIVES_DIR}")
     text_source = TextSource.from_natives(NATIVES_DIR)
+    info(f"Loaded text database: {text_source.file_count} message file(s), {len(text_source.entries)} entries")
 
     archives: list[Path] = []
-    for lang_id in language_ids:
+    for index, lang_id in enumerate(language_ids, start=1):
         language = _language_name(lang_id)
         language_dir = OUTPUT_DIR / language
+        info(f"[{index}/{len(language_ids)}] Building language database: {language} ({lang_id})")
         text_db = text_source.build(lang_id)
-        print(f"Exporting {language} ({lang_id})")
-        _export_language(language_dir, text_db)
+        outputs = _export_language(language_dir, text_db)
+        info(f"Generated {len(outputs)} workbook(s) for {language}")
         archive = zip_language_output(
             language_dir,
             OUTPUT_DIR,
             language,
             version,
             ZIP_PREFIX,
-            JSON_ROOT,
         )
         archives.append(archive)
-        print(f"Saved archive: {archive}")
 
     processed_dir = OUTPUT_DIR / PROCESSED_DIR_NAME
-    print("Exporting processed data")
+    info("Exporting processed data")
     _export_processed(processed_dir, text_source, language_ids)
     processed_archive = zip_processed_output(
         processed_dir,
@@ -67,7 +77,15 @@ def export_all() -> list[Path]:
         PROCESSED_ZIP_PREFIX,
     )
     archives.append(processed_archive)
-    print(f"Saved archive: {processed_archive}")
+
+    source_archive = zip_source_output(
+        JSON_ROOT,
+        OUTPUT_DIR,
+        version,
+        SOURCE_ZIP_PREFIX,
+    )
+    archives.append(source_archive)
+    info(f"Export complete: {len(archives)} archive(s)")
 
     return archives
 
@@ -75,41 +93,59 @@ def export_all() -> list[Path]:
 def _export_language(output_dir: Path, text_db: TextDB) -> list[Path]:
     outputs: list[Path] = []
     for workbook_name, specs in WORKBOOKS.items():
+        info(f"  Workbook: {workbook_name}")
         sheets = {}
         for sheet_name, relative_path in specs:
-            frame = _load_relative(relative_path, text_db)
+            frame = _load_relative(relative_path, text_db, f"{workbook_name}/{sheet_name}")
             if frame is not None:
                 sheets[sheet_name] = frame
         if sheets:
-            sheets = transform_workbook(workbook_name, sheets, lambda p: _load_relative(p, text_db))
-            outputs.append(write_workbook(output_dir / workbook_name, sheets, MAX_COLUMN_WIDTH))
+            info(f"  Transforming workbook: {workbook_name}")
+            sheets = transform_workbook(
+                workbook_name,
+                sheets,
+                lambda p: _load_relative(p, text_db, f"{workbook_name}/support"),
+            )
+            path = write_workbook(output_dir / workbook_name, sheets, MAX_COLUMN_WIDTH)
+            outputs.append(path)
+            info(f"  Saved workbook: {path} ({file_size(path)})")
+        else:
+            info(f"  Skipped workbook without available sheets: {workbook_name}")
 
     return outputs
 
 
 def _export_processed(output_dir: Path, text_source: TextSource, language_ids: list[int]) -> None:
+    info("  Exporting amulet and skill pools")
     export_amulet_pools(
         output_dir,
         _load_raw_relative,
         _name_resolver(text_source, language_ids),
     )
+    info("  Exporting graphic preset workbook")
     export_graphic_preset(output_dir, NATIVES_DIR)
 
 
-def _load_relative(relative_path: str, text_db: TextDB):
+def _load_relative(relative_path: str, text_db: TextDB, label: str | None = None):
     source = NATIVES_DIR / relative_path
     if not source.exists():
-        print(f"Skip missing: {source}")
+        info(f"    Skip missing: {source}")
         return None
-    return load_user3_table(source, text_db)
+    info(f"    Loading {label or relative_path}: {relative_path}")
+    frame = load_user3_table(source, text_db)
+    info(f"    Loaded {label or relative_path}: {_table_shape(frame)}")
+    return frame
 
 
 def _load_raw_relative(relative_path: str):
     source = NATIVES_DIR / relative_path
     if not source.exists():
-        print(f"Skip missing: {source}")
+        info(f"    Skip missing: {source}")
         return None
-    return load_user3_table(source)
+    info(f"    Loading raw table: {relative_path}")
+    frame = load_user3_table(source)
+    info(f"    Loaded raw table: {_table_shape(frame)}")
+    return frame
 
 
 def _name_resolver(text_source: TextSource, language_ids: list[int]):
@@ -136,6 +172,15 @@ def _name_resolver(text_source: TextSource, language_ids: list[int]):
 
 def _language_name(lang_id: int) -> str:
     return LANGUAGE_NAMES.get(lang_id, f"lang-{lang_id:02d}")
+
+
+def _language_list(language_ids: list[int]) -> str:
+    return ", ".join(f"{_language_name(lang_id)}({lang_id})" for lang_id in language_ids)
+
+
+def _table_shape(rows: list[dict]) -> str:
+    columns = {key for row in rows for key in row}
+    return f"{len(rows)} row(s), {len(columns)} column(s)"
 
 
 def _version() -> str:

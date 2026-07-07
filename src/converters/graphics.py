@@ -7,6 +7,7 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
 
 from src.data.user3 import load_user3_table, normalize
+from src.utils.log import file_size, info
 
 GRAPHICS_PATH = "STM/System/SystemSetting/GraphicsPreset.user.3.json"
 NAMES_PATH = Path(__file__).resolve().parent / "data" / "graphics_names_zh_hans.json"
@@ -34,17 +35,21 @@ USAGE = {
 
 
 def export_graphic_preset(output_dir: Path, natives_dir: Path) -> None:
+    info(f"    Loading graphic preset: {GRAPHICS_PATH}")
     root = _root(natives_dir / GRAPHICS_PATH)
     rows = load_user3_table(natives_dir / GRAPHICS_PATH)
     presets = [_flatten(_expand(row, root)) for row in rows]
     names = _names()
     attrs = sorted({key for row in presets for key in row} - {"Platform", "Usage", "MaxFPS"})
+    info(f"    Graphic presets: {len(presets)} preset(s), {len(attrs)} setting column(s)")
 
     wb = Workbook()
     wb.remove(wb.active)
     _create_sheet(wb, "基础设置", presets, attrs, names, filtered=True)
     _create_sheet(wb, "未经过Usage筛选", presets, attrs, names, filtered=False)
-    wb.save(output_dir / "graphic_preset.xlsx")
+    path = output_dir / "graphic_preset.xlsx"
+    wb.save(path)
+    info(f"    Saved workbook: {path} ({file_size(path)})")
 
 
 def _create_sheet(

@@ -15,19 +15,19 @@ MHWS game data export libraries similar to [eigeen/mhws-data-dump-scripts](https
 
 </div>
 
-This project also exports Monster Hunter Wilds JSON database dumps into Excel workbooks and release-ready zip packages.
-
 ## Outputs
 
 Running `python main.py` writes everything to `output/`.
 
 - `output/<language>/*.xlsx`: localized database workbooks.
-- `output/DATABASE_<language>_<version>.zip`: one package per language. Each zip contains that language's xlsx files and the `MHWS-in-json/` source directory.
+- `output/DATABASE_<language>_<version>.zip`: one release asset per language. Each zip contains only that language's xlsx files and does not include `MHWS-in-json/`.
 - `output/processed_data/`: language-independent processed files from the extra converter flow.
-- `output/PROCESSED_DATA_<version>.zip`: contains `skill_pool.json`, `amulet_pool.json`, and `graphic_preset.xlsx`.
+- `output/PROCESSED_DATA_<version>.zip`: one language-independent release asset containing `skill_pool.json`, `amulet_pool.json`, and `graphic_preset.xlsx`.
+- `output/MHWS-in-json_<version>.zip`: one shared source JSON release asset containing the `MHWS-in-json/` directory.
 
-Zip files are written with the maximum deflate compression level.
+Zip files are written with the maximum deflate compression level. The source JSON dump has no multilingual semantics, so it is packaged once instead of being repeated in every language package.
 Languages whose text index is `-1` in any message file are skipped.
+The script prints detailed loading, conversion, saving, and packaging logs in the terminal.
 
 ## Usage
 
@@ -38,11 +38,3 @@ python main.py
 ```
 
 No command-line arguments are used. Edit [config.py](config.py) to change paths, selected languages, output names, and version settings.
-
-## GitHub Release
-
-[.github/workflows/release.yml](.github/workflows/release.yml) runs on every push and can also be started manually. The release version is `yyyyMMdd-HHmmss-<short_hash>` in UTC, and all generated zip files under `output/` are uploaded as release assets.
-
-Large Stage VoxelData and Enemy Constraint JSON files are ignored by [.gitignore](.gitignore). If those files were already committed before the ignore rules were added, remove them from Git history before pushing to GitHub.
-
-See [Git Large File Cleanup](docs/GIT_LARGE_FILE_CLEANUP.md) for the required cleanup boundary.

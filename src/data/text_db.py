@@ -52,18 +52,21 @@ class TextDB:
 
 
 class TextSource:
-    def __init__(self, entries: list[tuple[str | None, str | None, list | None]]):
+    def __init__(self, entries: list[tuple[str | None, str | None, list | None]], file_count: int = 0):
         self.entries = entries
+        self.file_count = file_count
 
     @classmethod
     def from_natives(cls, natives_dir: Path) -> "TextSource":
         entries = []
+        file_count = 0
         for path in Path(natives_dir).rglob("*.msg.23.json"):
+            file_count += 1
             with path.open("r", encoding="utf-8") as f:
                 data = json.load(f)
             for entry in data.get("entries", []):
                 entries.append((entry.get("guid"), entry.get("name"), entry.get("content")))
-        return cls(entries)
+        return cls(entries, file_count)
 
     def build(self, lang_id: int) -> TextDB:
         guid_text: dict[str, str] = {}

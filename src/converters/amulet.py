@@ -2,6 +2,8 @@ import json
 from pathlib import Path
 from typing import Callable
 
+from src.utils.log import file_size, info
+
 Table = list[dict]
 Loader = Callable[[str], Table | None]
 NameResolver = Callable[[str | None], list[dict] | str]
@@ -20,11 +22,17 @@ def export_amulet_pools(
     load: Loader,
     name_for_guid: NameResolver | None = None,
 ) -> None:
+    info("    Loading amulet source tables")
     skill_lot = load(PATHS["skill_lot"]) or []
     pt_table = load(PATHS["pt"]) or []
     slot_table = load(PATHS["slot"]) or []
     skill_data = load(PATHS["skill"]) or []
     amulet_data = load(PATHS["amulet"]) or []
+    info(
+        "    Loaded amulet tables: "
+        f"skill_lot={len(skill_lot)}, pt={len(pt_table)}, slot={len(slot_table)}, "
+        f"skill={len(skill_data)}, amulet={len(amulet_data)}"
+    )
 
     skill_map = {
         row.get("skillId"): _name(row.get("skillName"), name_for_guid)
@@ -112,3 +120,4 @@ def _write_json(path: Path, data) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, separators=(",", ":"))
+    info(f"    Saved JSON: {path} ({file_size(path)})")
