@@ -158,7 +158,7 @@ def export_bowgun_workbooks(output_dir: Path, natives_dir: Path, text_source: Te
 
     info("    Loading bowgun customize tables")
     customize_rows = _customize_rows(natives_dir, text_db)
-    customize_path = output_dir / "弩枪客制零件信息.xlsx"
+    customize_path = output_dir / "Bowgun_Custom.xlsx"
     _write_table(customize_path, "弩枪客制零件信息", CUSTOMIZE_HEADERS, customize_rows)
     info(f"    Saved workbook: {customize_path} ({file_size(customize_path)})")
 

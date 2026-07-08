@@ -22,7 +22,7 @@ MHWS 遊戲資料匯出工具，輸出形式與 [eigeen/mhws-data-dump-scripts](
 - `output/<語言>/*.xlsx`：對應語言的資料庫活頁簿。
 - `output/DATABASE_<語言名稱>_<版本號>.zip`：每種語言一個發布資源包，僅包含該語言的 xlsx 檔案，不包含 `MHWS-in-json/`。
 - `output/processed_data/`：額外轉換器產生的語言無關處理結果。
-- `output/PROCESSED_DATA_<版本號>.zip`：語言無關的發布資源包，包含 `skill_pool.json`、`amulet_pool.json`、`graphic_preset.xlsx`、`弩枪客制零件信息.xlsx`、`HeavyBowgun.xlsx` 和 `LightBowgun.xlsx`。
+- `output/PROCESSED_DATA_<版本號>.zip`：語言無關的發布資源包，包含 `skill_pool.json`、`amulet_pool.json`、`graphic_preset.xlsx`、`Bowgun_Custom.xlsx`、`HeavyBowgun.xlsx` 和 `LightBowgun.xlsx`。
 - `output/MHWS-in-json_<版本號>.zip`：共享來源資料庫 JSON 發布資源包，包含 `MHWS-in-json/` 目錄。
 
 壓縮包統一使用 deflate 最大壓縮率。來源資料庫 JSON 沒有多語言語義，因此只單獨打包一次，不再重複放入每個語言包。

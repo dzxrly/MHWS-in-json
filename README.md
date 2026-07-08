@@ -22,7 +22,7 @@ Running `python main.py` writes everything to `output/`.
 - `output/<language>/*.xlsx`: localized database workbooks.
 - `output/DATABASE_<language>_<version>.zip`: one release asset per language. Each zip contains only that language's xlsx files and does not include `MHWS-in-json/`.
 - `output/processed_data/`: language-independent processed files from the extra converter flow.
-- `output/PROCESSED_DATA_<version>.zip`: one language-independent release asset containing `skill_pool.json`, `amulet_pool.json`, `graphic_preset.xlsx`, `弩枪客制零件信息.xlsx`, `HeavyBowgun.xlsx`, and `LightBowgun.xlsx`.
+- `output/PROCESSED_DATA_<version>.zip`: one language-independent release asset containing `skill_pool.json`, `amulet_pool.json`, `graphic_preset.xlsx`, `Bowgun_Custom.xlsx`, `HeavyBowgun.xlsx`, and `LightBowgun.xlsx`.
 - `output/MHWS-in-json_<version>.zip`: one shared source JSON release asset containing the `MHWS-in-json/` directory.
 
 Zip files are written with the maximum deflate compression level. The source JSON dump has no multilingual semantics, so it is packaged once instead of being repeated in every language package.
