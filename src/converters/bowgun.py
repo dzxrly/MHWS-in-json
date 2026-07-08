@@ -378,10 +378,16 @@ def _style_table(sheet, headers: list[str], colored_columns: list[str]) -> None:
     for row in sheet.iter_rows():
         for cell in row:
             cell.border = border
-            cell.alignment = Alignment(vertical="top", wrap_text=cell.column not in colored_indexes)
             if cell.row == 1:
+                cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
                 cell.font = Font(bold=True)
                 cell.fill = header_fill
+            else:
+                cell.alignment = Alignment(
+                    horizontal="left",
+                    vertical="center",
+                    wrap_text=cell.column not in colored_indexes,
+                )
 
     for column_index in colored_indexes:
         color = SHELL_COLORS.get(sheet.cell(1, column_index).value)
