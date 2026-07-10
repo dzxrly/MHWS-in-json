@@ -30,6 +30,8 @@ from src.pipeline.package import zip_language_output, zip_processed_output, zip_
 from src.pipeline.transforms import transform_workbook
 from src.utils.log import file_size, info
 
+REJECTED_TEXT_PREFIX = "[#Rejected#]"
+
 
 def export_all() -> list[Path]:
     info("Starting MHWS JSON to XLSX export")
@@ -135,13 +137,13 @@ def _full_text_rows(text_db: TextDB) -> list[dict[str, str]]:
     rejected = []
     empty = []
     for guid, text in text_db.guid_text.items():
-        row = {"guid": guid, "text": text}
         if text_db.is_rejected(guid):
-            rejected.append(row)
+            display_text = f"{REJECTED_TEXT_PREFIX} {text}" if text.strip() else REJECTED_TEXT_PREFIX
+            rejected.append({"guid": guid, "text": display_text})
         elif not text.strip():
-            empty.append(row)
+            empty.append({"guid": guid, "text": text})
         else:
-            available.append(row)
+            available.append({"guid": guid, "text": text})
     return available + rejected + empty
 
 
