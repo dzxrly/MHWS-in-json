@@ -43,6 +43,9 @@ jobs:
       - name: Export database
         run: python main.py
 
+      - name: Generate release notes
+        run: python -m src.release_notes --output output/release-notes.md
+
       - name: Publish release
         shell: pwsh
         env:
@@ -53,6 +56,7 @@ jobs:
           gh release view $tag *> $null
           if ($LASTEXITCODE -eq 0) {
             gh release upload $tag $assets --clobber
+            gh release edit $tag --title "Database $env:RELEASE_VERSION" --notes-file output/release-notes.md
           } else {
-            gh release create $tag $assets --title "Database $env:RELEASE_VERSION" --notes "Automated export for $env:GITHUB_SHA"
+            gh release create $tag $assets --title "Database $env:RELEASE_VERSION" --notes-file output/release-notes.md
           }
