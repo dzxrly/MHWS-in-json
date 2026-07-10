@@ -1,6 +1,10 @@
+<div align="center">
+
 # MHWS-in-json
 
 English | [简体中文](docs/README.zh-Hans.md) | [繁體中文](docs/README.zh-Hant.md)
+
+</div>
 
 MHWS game data export libraries similar to [eigeen/mhws-data-dump-scripts](https://github.com/eigeen/mhws-data-dump-scripts) and [dtlnor/MHWs-in-json](https://github.com/dtlnor/MHWs-in-json).
 

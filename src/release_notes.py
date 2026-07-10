@@ -4,12 +4,16 @@ from pathlib import Path
 from urllib.parse import quote
 
 from config import (
-    LANGUAGE_NAMES,
-    LANGUAGE_NATIVE_NAMES,
+    LANGUAGES,
     PROCESSED_ZIP_PREFIX,
     SOURCE_ZIP_PREFIX,
     ZIP_PREFIX,
 )
+
+_LANGUAGES_BY_CODE = {
+    language.code: (lang_id, language)
+    for lang_id, language in LANGUAGES.items()
+}
 
 
 def build_release_notes(
@@ -47,7 +51,7 @@ def build_release_notes(
         ]
     )
     for language_code, asset in language_assets:
-        language_name = LANGUAGE_NATIVE_NAMES[language_code]
+        language_name = _LANGUAGES_BY_CODE[language_code][1].native_name
         asset_url = _repository_url(server_url, repository, "releases", "download", tag, asset)
         lines.append(f"| {language_name} | [Download ZIP]({asset_url}) |")
 
@@ -85,13 +89,12 @@ def _language_assets(assets: set[str], version: str) -> list[tuple[str, str]]:
     if not found:
         raise ValueError(f"No {ZIP_PREFIX} language archives found in the output directory")
 
-    missing_names = sorted(set(found) - set(LANGUAGE_NATIVE_NAMES))
+    missing_names = sorted(set(found) - set(_LANGUAGES_BY_CODE))
     if missing_names:
         joined = ", ".join(missing_names)
         raise ValueError(f"Missing native language name(s): {joined}")
 
-    language_order = {code: index for index, code in LANGUAGE_NAMES.items()}
-    return sorted(found.items(), key=lambda item: language_order.get(item[0], len(language_order)))
+    return sorted(found.items(), key=lambda item: _LANGUAGES_BY_CODE[item[0]][0])
 
 
 def _require_assets(assets: set[str], *required: str) -> None:

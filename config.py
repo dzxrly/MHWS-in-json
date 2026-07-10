@@ -1,4 +1,12 @@
+from dataclasses import dataclass
 from pathlib import Path
+
+
+@dataclass(frozen=True, slots=True)
+class Language:
+    code: str
+    native_name: str
+
 
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -18,76 +26,40 @@ FULL_TEXT_WORKBOOK = "FullText.xlsx"
 MAX_COLUMN_WIDTH = 80.0
 FULL_TEXT_MAX_COLUMN_WIDTH = 300.0
 
-LANGUAGE_NAMES = {
-    0: "ja-JP",
-    1: "en-US",
-    2: "fr-FR",
-    3: "it-IT",
-    4: "de-DE",
-    5: "es-ES",
-    6: "ru-RU",
-    7: "pl-PL",
-    8: "nl-NL",
-    9: "pt-PT",
-    10: "pt-BR",
-    11: "ko-KR",
-    12: "zh-Hant",
-    13: "zh-Hans",
-    14: "fi-FI",
-    15: "sv-SE",
-    16: "da-DK",
-    17: "no-NO",
-    18: "cs-CZ",
-    19: "hu-HU",
-    20: "sk-SK",
-    21: "ar-SA",
-    22: "tr-TR",
-    23: "bg-BG",
-    24: "el-GR",
-    25: "ro-RO",
-    26: "es-419",
-    27: "vi-VN",
-    28: "id-ID",
-    29: "uk-UA",
-    30: "hi-IN",
-    31: "ms-MY",
-    32: "th-TH",
-}
-
-LANGUAGE_NATIVE_NAMES = {
-    "ja-JP": "日本語",
-    "en-US": "English",
-    "fr-FR": "Français",
-    "it-IT": "Italiano",
-    "de-DE": "Deutsch",
-    "es-ES": "Español",
-    "ru-RU": "Русский",
-    "pl-PL": "Polski",
-    "nl-NL": "Nederlands",
-    "pt-PT": "Português (Portugal)",
-    "pt-BR": "Português (Brasil)",
-    "ko-KR": "한국어",
-    "zh-Hant": "繁體中文",
-    "zh-Hans": "简体中文",
-    "fi-FI": "Suomi",
-    "sv-SE": "Svenska",
-    "da-DK": "Dansk",
-    "no-NO": "Norsk",
-    "cs-CZ": "Čeština",
-    "hu-HU": "Magyar",
-    "sk-SK": "Slovenčina",
-    "ar-SA": "العربية",
-    "tr-TR": "Türkçe",
-    "bg-BG": "Български",
-    "el-GR": "Ελληνικά",
-    "ro-RO": "Română",
-    "es-419": "Español (Latinoamérica)",
-    "vi-VN": "Tiếng Việt",
-    "id-ID": "Bahasa Indonesia",
-    "uk-UA": "Українська",
-    "hi-IN": "हिन्दी",
-    "ms-MY": "Bahasa Melayu",
-    "th-TH": "ไทย",
+LANGUAGES: dict[int, Language] = {
+    0: Language("ja-JP", "日本語"),
+    1: Language("en-US", "English"),
+    2: Language("fr-FR", "Français"),
+    3: Language("it-IT", "Italiano"),
+    4: Language("de-DE", "Deutsch"),
+    5: Language("es-ES", "Español"),
+    6: Language("ru-RU", "Русский"),
+    7: Language("pl-PL", "Polski"),
+    8: Language("nl-NL", "Nederlands"),
+    9: Language("pt-PT", "Português (Portugal)"),
+    10: Language("pt-BR", "Português (Brasil)"),
+    11: Language("ko-KR", "한국어"),
+    12: Language("zh-Hant", "繁體中文"),
+    13: Language("zh-Hans", "简体中文"),
+    14: Language("fi-FI", "Suomi"),
+    15: Language("sv-SE", "Svenska"),
+    16: Language("da-DK", "Dansk"),
+    17: Language("no-NO", "Norsk"),
+    18: Language("cs-CZ", "Čeština"),
+    19: Language("hu-HU", "Magyar"),
+    20: Language("sk-SK", "Slovenčina"),
+    21: Language("ar-SA", "العربية"),
+    22: Language("tr-TR", "Türkçe"),
+    23: Language("bg-BG", "Български"),
+    24: Language("el-GR", "Ελληνικά"),
+    25: Language("ro-RO", "Română"),
+    26: Language("es-419", "Español (Latinoamérica)"),
+    27: Language("vi-VN", "Tiếng Việt"),
+    28: Language("id-ID", "Bahasa Indonesia"),
+    29: Language("uk-UA", "Українська"),
+    30: Language("hi-IN", "हिन्दी"),
+    31: Language("ms-MY", "Bahasa Melayu"),
+    32: Language("th-TH", "ไทย"),
 }
 
 SUPPORT_FILES = {

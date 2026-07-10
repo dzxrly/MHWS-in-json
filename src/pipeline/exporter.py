@@ -8,7 +8,7 @@ from config import (
     FULL_TEXT_WORKBOOK,
     JSON_ROOT,
     LANGUAGE_IDS,
-    LANGUAGE_NAMES,
+    LANGUAGES,
     MAX_COLUMN_WIDTH,
     NATIVES_DIR,
     OUTPUT_DIR,
@@ -55,16 +55,16 @@ def export_all() -> list[Path]:
 
     archives: list[Path] = []
     for index, lang_id in enumerate(language_ids, start=1):
-        language = _language_name(lang_id)
-        language_dir = OUTPUT_DIR / language
-        info(f"[{index}/{len(language_ids)}] Building language database: {language} ({lang_id})")
+        language_code = _language_code(lang_id)
+        language_dir = OUTPUT_DIR / language_code
+        info(f"[{index}/{len(language_ids)}] Building language database: {language_code} ({lang_id})")
         text_db = text_source.build(lang_id)
         outputs = _export_language(language_dir, text_db)
-        info(f"Generated {len(outputs)} workbook(s) for {language}")
+        info(f"Generated {len(outputs)} workbook(s) for {language_code}")
         archive = zip_language_output(
             language_dir,
             OUTPUT_DIR,
-            language,
+            language_code,
             version,
             ZIP_PREFIX,
         )
@@ -192,7 +192,7 @@ def _name_resolver(text_source: TextSource, language_ids: list[int]):
                 cache[lang_id] = text_source.build(lang_id)
             names.append(
                 {
-                    "languageCode": _language_name(lang_id),
+                    "languageCode": _language_code(lang_id),
                     "languageIndexInGame": str(lang_id),
                     "name": cache[lang_id].get(guid) or "",
                 }
@@ -202,12 +202,13 @@ def _name_resolver(text_source: TextSource, language_ids: list[int]):
     return resolve
 
 
-def _language_name(lang_id: int) -> str:
-    return LANGUAGE_NAMES.get(lang_id, f"lang-{lang_id:02d}")
+def _language_code(lang_id: int) -> str:
+    language = LANGUAGES.get(lang_id)
+    return language.code if language else f"lang-{lang_id:02d}"
 
 
 def _language_list(language_ids: list[int]) -> str:
-    return ", ".join(f"{_language_name(lang_id)}({lang_id})" for lang_id in language_ids)
+    return ", ".join(f"{_language_code(lang_id)}({lang_id})" for lang_id in language_ids)
 
 
 def _table_shape(rows: list[dict]) -> str:

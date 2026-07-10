@@ -1,6 +1,10 @@
+<div align="center">
+
 # MHWS-in-json
 
 [English](../README.md) | 简体中文 | [繁體中文](README.zh-Hant.md)
+
+</div>
 
 MHWS 游戏数据导出工具，输出形式与 [eigeen/mhws-data-dump-scripts](https://github.com/eigeen/mhws-data-dump-scripts) 和 [dtlnor/MHWs-in-json](https://github.com/dtlnor/MHWs-in-json) 相近。
 
