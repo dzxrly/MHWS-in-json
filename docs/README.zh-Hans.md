@@ -19,7 +19,7 @@ MHWS 游戏数据导出工具，输出形式与 [eigeen/mhws-data-dump-scripts](
 
 执行 `python main.py` 后，所有文件都会写入 `output/`。
 
-- `output/<语言>/*.xlsx`：对应语言的数据库工作簿。
+- `output/<语言>/*.xlsx`：对应语言的数据库工作簿，其中 `FullText.xlsx` 使用单个工作表记录全部消息 GUID 及其本地化文本，并按实际内容、已拒绝文本、空文本分组，各组内保留源文件读取顺序。
 - `output/DATABASE_<语言名称>_<版本号>.zip`：每种语言一个发布资源包，仅包含该语言的 xlsx 文件，不包含 `MHWS-in-json/`。
 - `output/processed_data/`：额外转换器生成的语言无关处理结果。
 - `output/PROCESSED_DATA_<版本号>.zip`：语言无关的发布资源包，包含 `skill_pool.json`、`amulet_pool.json`、`graphic_preset.xlsx`、`Bowgun_Custom.xlsx`、`HeavyBowgun.xlsx` 和 `LightBowgun.xlsx`。

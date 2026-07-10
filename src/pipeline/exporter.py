@@ -4,6 +4,8 @@ import os
 import shutil
 
 from config import (
+    FULL_TEXT_MAX_COLUMN_WIDTH,
+    FULL_TEXT_WORKBOOK,
     JSON_ROOT,
     LANGUAGE_IDS,
     LANGUAGE_NAMES,
@@ -92,7 +94,7 @@ def export_all() -> list[Path]:
 
 
 def _export_language(output_dir: Path, text_db: TextDB) -> list[Path]:
-    outputs: list[Path] = []
+    outputs = [_export_full_text(output_dir, text_db)]
     for workbook_name, specs in WORKBOOKS.items():
         info(f"  Workbook: {workbook_name}")
         sheets = {}
@@ -114,6 +116,33 @@ def _export_language(output_dir: Path, text_db: TextDB) -> list[Path]:
             info(f"  Skipped workbook without available sheets: {workbook_name}")
 
     return outputs
+
+
+def _export_full_text(output_dir: Path, text_db: TextDB) -> Path:
+    info(f"  Workbook: {FULL_TEXT_WORKBOOK}")
+    rows = _full_text_rows(text_db)
+    path = write_workbook(
+        output_dir / FULL_TEXT_WORKBOOK,
+        {"FullText": rows},
+        FULL_TEXT_MAX_COLUMN_WIDTH,
+    )
+    info(f"  Saved workbook: {path} ({file_size(path)}, {len(rows)} text row(s))")
+    return path
+
+
+def _full_text_rows(text_db: TextDB) -> list[dict[str, str]]:
+    available = []
+    rejected = []
+    empty = []
+    for guid, text in text_db.guid_text.items():
+        row = {"guid": guid, "text": text}
+        if text_db.is_rejected(guid):
+            rejected.append(row)
+        elif not text.strip():
+            empty.append(row)
+        else:
+            available.append(row)
+    return available + rejected + empty
 
 
 def _export_processed(output_dir: Path, text_source: TextSource, language_ids: list[int]) -> None:

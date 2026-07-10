@@ -25,6 +25,7 @@ RARE_COLORS = {
 def style_workbook(workbook, max_width: float = 80.0) -> None:
     for sheet in workbook.worksheets:
         _style_header(sheet)
+        _align_cells(sheet)
         _fit_columns(sheet, max_width)
         _wrap_text_columns(sheet, {"Explain", "RawExplain"})
         _apply_rare_colors(sheet)
@@ -33,6 +34,13 @@ def style_workbook(workbook, max_width: float = 80.0) -> None:
 def _style_header(sheet) -> None:
     for cell in sheet[1]:
         cell.font = Font(bold=True)
+
+
+def _align_cells(sheet) -> None:
+    alignment = Alignment(horizontal="left", vertical="center")
+    for row in sheet.iter_rows():
+        for cell in row:
+            cell.alignment = alignment
 
 
 def _fit_columns(sheet, max_width: float) -> None:
@@ -44,7 +52,7 @@ def _fit_columns(sheet, max_width: float) -> None:
 
 
 def _wrap_text_columns(sheet, names: set[str]) -> None:
-    wrap = Alignment(wrap_text=True)
+    wrap = Alignment(horizontal="left", vertical="center", wrap_text=True)
     for col in range(1, sheet.max_column + 1):
         if sheet.cell(1, col).value in names:
             for row in range(2, sheet.max_row + 1):

@@ -19,7 +19,7 @@ MHWS game data export libraries similar to [eigeen/mhws-data-dump-scripts](https
 
 Running `python main.py` writes everything to `output/`.
 
-- `output/<language>/*.xlsx`: localized database workbooks.
+- `output/<language>/*.xlsx`: localized database workbooks, including `FullText.xlsx`, a single-sheet table containing every message GUID and its localized text. Rows are grouped as available text, rejected text, then empty text while preserving source order within each group.
 - `output/DATABASE_<language>_<version>.zip`: one release asset per language. Each zip contains only that language's xlsx files and does not include `MHWS-in-json/`.
 - `output/processed_data/`: language-independent processed files from the extra converter flow.
 - `output/PROCESSED_DATA_<version>.zip`: one language-independent release asset containing `skill_pool.json`, `amulet_pool.json`, `graphic_preset.xlsx`, `Bowgun_Custom.xlsx`, `HeavyBowgun.xlsx`, and `LightBowgun.xlsx`.
