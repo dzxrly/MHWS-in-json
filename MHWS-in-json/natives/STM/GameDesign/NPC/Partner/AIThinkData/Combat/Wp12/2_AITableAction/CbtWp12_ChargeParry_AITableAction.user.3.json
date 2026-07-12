@@ -27,7 +27,7 @@
           "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
             "_Param": {
               "app.NpcAITableConditions.cCheckBulletTypeApplied_Param": {
-                "_BulletType": 2
+                "_BulletType": "[2] ESP_000"
               }
             },
             "_Inverse": false,
@@ -38,7 +38,7 @@
           "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
             "_Param": {
               "app.NpcAITableConditions.cCheckEnoughEnergy_Param": {
-                "_EnergyBulletType": 1,
+                "_EnergyBulletType": "[1] POWER",
                 "_CheckMaxCharge": true,
                 "_CheckEnergyRate": false,
                 "_CompareEnergyRate": 50
@@ -113,7 +113,7 @@
             "_Param": {
               "app.NpcAITableConditions.cCheckHealthRate_Param": {
                 "_HealthThreshold": 75.0,
-                "_CompareType": 4
+                "_CompareType": "[4] GREATER_OR_EQUAL"
               }
             },
             "_Inverse": false,

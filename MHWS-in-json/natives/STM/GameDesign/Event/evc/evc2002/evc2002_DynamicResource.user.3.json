@@ -790,26 +790,29 @@
           "_OverrideSkipFrame": -1.0,
           "_OverrideFadeFrame": -1.0,
           "_OtherCharaDispAttribute": {
-            "ace.Bitset`1<app.TimelineEventDefine.EVENT_OTHERCHARA_DISP_ATTRIBUTE>": {
-              "_Value": [
-                126
-              ],
-              "_MaxElement": 32
-            }
+            "app.TimelineEventDefine.EVENT_OTHERCHARA_DISP_ATTRIBUTE": [
+              "[1] NOT_SELECT_NPC",
+              "[2] ALL_OTOMO",
+              "[3] ALL_PORTER",
+              "[4] ALL_ANIMAL",
+              "[5] ALL_ENEMY",
+              "[6] ALL_CUT"
+            ],
+            "_MaxElement": 32,
+            "_WordCount": 1
           },
           "_OtherCharaDispCutList": [],
           "_OtherCharaDispNpcIDList": [],
           "_OtherCharaDispEmIDList": [],
           "_UniqueEventFlag": {
-            "ace.Bitset`1<app.user_data.TimelineEventDynamicResourceData.EventItem.UNIQUE_EVENT_FLAG>": {
-              "_Value": [
-                128
-              ],
-              "_MaxElement": 32
-            }
+            "app.user_data.TimelineEventDynamicResourceData.EventItem.UNIQUE_EVENT_FLAG": [
+              "[7] CHECK_DAMAGE_MOTION"
+            ],
+            "_MaxElement": 32,
+            "_WordCount": 1
           },
           "_UseShadowQualityLevel": false,
-          "_ShadowQualityLevel": 4,
+          "_ShadowQualityLevel": "[4] HIGHEST",
           "_EventAllControlStartFrame": -1.0,
           "_IsMovie": false,
           "_IsRepeatable": true,
@@ -842,18 +845,15 @@
                 "_NpcAttachment": "[2] INVALID",
                 "_NpcDisableAttachment": "[2] INVALID",
                 "_UniqueActorEventFlag": {
-                  "ace.Bitset`1<app.user_data.TimelineEventDynamicResourceData.EventActorItem.UNIQUE_EVENT_ACTOR_FLAG>": {
-                    "_Value": [
-                      0
-                    ],
-                    "_MaxElement": 32
-                  }
+                  "app.user_data.TimelineEventDynamicResourceData.EventActorItem.UNIQUE_EVENT_ACTOR_FLAG": [],
+                  "_MaxElement": 32,
+                  "_WordCount": 1
                 },
                 "_EvObjMaterialSettingList": [],
                 "_IsOtomoNPC": false,
                 "_IsPartnerNpc": false,
                 "_IsExtraNpc": false,
-                "_ActorType": 6,
+                "_ActorType": "[6] Otomo",
                 "_ActorID": 0,
                 "_BindTargetID_Serializable": "[3654010880] INVALID",
                 "_StoryTargetID": -1,
@@ -904,18 +904,22 @@
                 "_NpcAttachment": "[2] INVALID",
                 "_NpcDisableAttachment": "[2] INVALID",
                 "_UniqueActorEventFlag": {
-                  "ace.Bitset`1<app.user_data.TimelineEventDynamicResourceData.EventActorItem.UNIQUE_EVENT_ACTOR_FLAG>": {
-                    "_Value": [
-                      123
-                    ],
-                    "_MaxElement": 32
-                  }
+                  "app.user_data.TimelineEventDynamicResourceData.EventActorItem.UNIQUE_EVENT_ACTOR_FLAG": [
+                    "[0] DAMAGE_ENABLE",
+                    "[1] ACTION_CONTINUE",
+                    "[3] CONTINUE_DEBUFF",
+                    "[4] CONTINUE_PLACC",
+                    "[5] DISABLE_PLACC",
+                    "[6] DISABLE_END_FREE_ROTATE"
+                  ],
+                  "_MaxElement": 32,
+                  "_WordCount": 1
                 },
                 "_EvObjMaterialSettingList": [],
                 "_IsOtomoNPC": false,
                 "_IsPartnerNpc": false,
                 "_IsExtraNpc": false,
-                "_ActorType": 1,
+                "_ActorType": "[1] Player",
                 "_ActorID": 0,
                 "_BindTargetID_Serializable": "[3654010880] INVALID",
                 "_StoryTargetID": -1,
@@ -966,18 +970,15 @@
                 "_NpcAttachment": "[2] INVALID",
                 "_NpcDisableAttachment": "[2] INVALID",
                 "_UniqueActorEventFlag": {
-                  "ace.Bitset`1<app.user_data.TimelineEventDynamicResourceData.EventActorItem.UNIQUE_EVENT_ACTOR_FLAG>": {
-                    "_Value": [
-                      0
-                    ],
-                    "_MaxElement": 32
-                  }
+                  "app.user_data.TimelineEventDynamicResourceData.EventActorItem.UNIQUE_EVENT_ACTOR_FLAG": [],
+                  "_MaxElement": 32,
+                  "_WordCount": 1
                 },
                 "_EvObjMaterialSettingList": [],
                 "_IsOtomoNPC": false,
                 "_IsPartnerNpc": false,
                 "_IsExtraNpc": false,
-                "_ActorType": 8,
+                "_ActorType": "[8] Evm",
                 "_ActorID": 0,
                 "_BindTargetID_Serializable": "[3654010880] INVALID",
                 "_StoryTargetID": -1,
@@ -1028,18 +1029,15 @@
                 "_NpcAttachment": "[2] INVALID",
                 "_NpcDisableAttachment": "[2] INVALID",
                 "_UniqueActorEventFlag": {
-                  "ace.Bitset`1<app.user_data.TimelineEventDynamicResourceData.EventActorItem.UNIQUE_EVENT_ACTOR_FLAG>": {
-                    "_Value": [
-                      0
-                    ],
-                    "_MaxElement": 32
-                  }
+                  "app.user_data.TimelineEventDynamicResourceData.EventActorItem.UNIQUE_EVENT_ACTOR_FLAG": [],
+                  "_MaxElement": 32,
+                  "_WordCount": 1
                 },
                 "_EvObjMaterialSettingList": [],
                 "_IsOtomoNPC": false,
                 "_IsPartnerNpc": false,
                 "_IsExtraNpc": false,
-                "_ActorType": 8,
+                "_ActorType": "[8] Evm",
                 "_ActorID": 0,
                 "_BindTargetID_Serializable": "[3654010880] INVALID",
                 "_StoryTargetID": -1,
@@ -1090,18 +1088,15 @@
                 "_NpcAttachment": "[2] INVALID",
                 "_NpcDisableAttachment": "[2] INVALID",
                 "_UniqueActorEventFlag": {
-                  "ace.Bitset`1<app.user_data.TimelineEventDynamicResourceData.EventActorItem.UNIQUE_EVENT_ACTOR_FLAG>": {
-                    "_Value": [
-                      0
-                    ],
-                    "_MaxElement": 32
-                  }
+                  "app.user_data.TimelineEventDynamicResourceData.EventActorItem.UNIQUE_EVENT_ACTOR_FLAG": [],
+                  "_MaxElement": 32,
+                  "_WordCount": 1
                 },
                 "_EvObjMaterialSettingList": [],
                 "_IsOtomoNPC": false,
                 "_IsPartnerNpc": false,
                 "_IsExtraNpc": false,
-                "_ActorType": 8,
+                "_ActorType": "[8] Evm",
                 "_ActorID": 0,
                 "_BindTargetID_Serializable": "[3654010880] INVALID",
                 "_StoryTargetID": -1,
@@ -1152,18 +1147,15 @@
                 "_NpcAttachment": "[2] INVALID",
                 "_NpcDisableAttachment": "[2] INVALID",
                 "_UniqueActorEventFlag": {
-                  "ace.Bitset`1<app.user_data.TimelineEventDynamicResourceData.EventActorItem.UNIQUE_EVENT_ACTOR_FLAG>": {
-                    "_Value": [
-                      0
-                    ],
-                    "_MaxElement": 32
-                  }
+                  "app.user_data.TimelineEventDynamicResourceData.EventActorItem.UNIQUE_EVENT_ACTOR_FLAG": [],
+                  "_MaxElement": 32,
+                  "_WordCount": 1
                 },
                 "_EvObjMaterialSettingList": [],
                 "_IsOtomoNPC": false,
                 "_IsPartnerNpc": false,
                 "_IsExtraNpc": false,
-                "_ActorType": 8,
+                "_ActorType": "[8] Evm",
                 "_ActorID": 0,
                 "_BindTargetID_Serializable": "[3654010880] INVALID",
                 "_StoryTargetID": -1,
@@ -1214,18 +1206,15 @@
                 "_NpcAttachment": "[2] INVALID",
                 "_NpcDisableAttachment": "[2] INVALID",
                 "_UniqueActorEventFlag": {
-                  "ace.Bitset`1<app.user_data.TimelineEventDynamicResourceData.EventActorItem.UNIQUE_EVENT_ACTOR_FLAG>": {
-                    "_Value": [
-                      0
-                    ],
-                    "_MaxElement": 32
-                  }
+                  "app.user_data.TimelineEventDynamicResourceData.EventActorItem.UNIQUE_EVENT_ACTOR_FLAG": [],
+                  "_MaxElement": 32,
+                  "_WordCount": 1
                 },
                 "_EvObjMaterialSettingList": [],
                 "_IsOtomoNPC": false,
                 "_IsPartnerNpc": false,
                 "_IsExtraNpc": false,
-                "_ActorType": 8,
+                "_ActorType": "[8] Evm",
                 "_ActorID": 0,
                 "_BindTargetID_Serializable": 0,
                 "_StoryTargetID": -1,
@@ -1276,18 +1265,15 @@
                 "_NpcAttachment": "[2] INVALID",
                 "_NpcDisableAttachment": "[2] INVALID",
                 "_UniqueActorEventFlag": {
-                  "ace.Bitset`1<app.user_data.TimelineEventDynamicResourceData.EventActorItem.UNIQUE_EVENT_ACTOR_FLAG>": {
-                    "_Value": [
-                      0
-                    ],
-                    "_MaxElement": 32
-                  }
+                  "app.user_data.TimelineEventDynamicResourceData.EventActorItem.UNIQUE_EVENT_ACTOR_FLAG": [],
+                  "_MaxElement": 32,
+                  "_WordCount": 1
                 },
                 "_EvObjMaterialSettingList": [],
                 "_IsOtomoNPC": false,
                 "_IsPartnerNpc": false,
                 "_IsExtraNpc": false,
-                "_ActorType": 8,
+                "_ActorType": "[8] Evm",
                 "_ActorID": 0,
                 "_BindTargetID_Serializable": "[3654010880] INVALID",
                 "_StoryTargetID": -1,
@@ -1338,18 +1324,15 @@
                 "_NpcAttachment": "[2] INVALID",
                 "_NpcDisableAttachment": "[2] INVALID",
                 "_UniqueActorEventFlag": {
-                  "ace.Bitset`1<app.user_data.TimelineEventDynamicResourceData.EventActorItem.UNIQUE_EVENT_ACTOR_FLAG>": {
-                    "_Value": [
-                      0
-                    ],
-                    "_MaxElement": 32
-                  }
+                  "app.user_data.TimelineEventDynamicResourceData.EventActorItem.UNIQUE_EVENT_ACTOR_FLAG": [],
+                  "_MaxElement": 32,
+                  "_WordCount": 1
                 },
                 "_EvObjMaterialSettingList": [],
                 "_IsOtomoNPC": false,
                 "_IsPartnerNpc": false,
                 "_IsExtraNpc": false,
-                "_ActorType": 8,
+                "_ActorType": "[8] Evm",
                 "_ActorID": 0,
                 "_BindTargetID_Serializable": "[3654010880] INVALID",
                 "_StoryTargetID": -1,
@@ -1400,18 +1383,15 @@
                 "_NpcAttachment": "[2] INVALID",
                 "_NpcDisableAttachment": "[2] INVALID",
                 "_UniqueActorEventFlag": {
-                  "ace.Bitset`1<app.user_data.TimelineEventDynamicResourceData.EventActorItem.UNIQUE_EVENT_ACTOR_FLAG>": {
-                    "_Value": [
-                      0
-                    ],
-                    "_MaxElement": 32
-                  }
+                  "app.user_data.TimelineEventDynamicResourceData.EventActorItem.UNIQUE_EVENT_ACTOR_FLAG": [],
+                  "_MaxElement": 32,
+                  "_WordCount": 1
                 },
                 "_EvObjMaterialSettingList": [],
                 "_IsOtomoNPC": false,
                 "_IsPartnerNpc": false,
                 "_IsExtraNpc": false,
-                "_ActorType": 8,
+                "_ActorType": "[8] Evm",
                 "_ActorID": 0,
                 "_BindTargetID_Serializable": "[3654010880] INVALID",
                 "_StoryTargetID": -1,
@@ -1462,18 +1442,15 @@
                 "_NpcAttachment": "[2] INVALID",
                 "_NpcDisableAttachment": "[2] INVALID",
                 "_UniqueActorEventFlag": {
-                  "ace.Bitset`1<app.user_data.TimelineEventDynamicResourceData.EventActorItem.UNIQUE_EVENT_ACTOR_FLAG>": {
-                    "_Value": [
-                      0
-                    ],
-                    "_MaxElement": 32
-                  }
+                  "app.user_data.TimelineEventDynamicResourceData.EventActorItem.UNIQUE_EVENT_ACTOR_FLAG": [],
+                  "_MaxElement": 32,
+                  "_WordCount": 1
                 },
                 "_EvObjMaterialSettingList": [],
                 "_IsOtomoNPC": false,
                 "_IsPartnerNpc": false,
                 "_IsExtraNpc": false,
-                "_ActorType": 8,
+                "_ActorType": "[8] Evm",
                 "_ActorID": 0,
                 "_BindTargetID_Serializable": 0,
                 "_StoryTargetID": -1,
@@ -1524,18 +1501,15 @@
                 "_NpcAttachment": "[2] INVALID",
                 "_NpcDisableAttachment": "[2] INVALID",
                 "_UniqueActorEventFlag": {
-                  "ace.Bitset`1<app.user_data.TimelineEventDynamicResourceData.EventActorItem.UNIQUE_EVENT_ACTOR_FLAG>": {
-                    "_Value": [
-                      0
-                    ],
-                    "_MaxElement": 32
-                  }
+                  "app.user_data.TimelineEventDynamicResourceData.EventActorItem.UNIQUE_EVENT_ACTOR_FLAG": [],
+                  "_MaxElement": 32,
+                  "_WordCount": 1
                 },
                 "_EvObjMaterialSettingList": [],
                 "_IsOtomoNPC": false,
                 "_IsPartnerNpc": false,
                 "_IsExtraNpc": false,
-                "_ActorType": 8,
+                "_ActorType": "[8] Evm",
                 "_ActorID": 0,
                 "_BindTargetID_Serializable": 0,
                 "_StoryTargetID": -1,
@@ -1586,18 +1560,15 @@
                 "_NpcAttachment": "[2] INVALID",
                 "_NpcDisableAttachment": "[2] INVALID",
                 "_UniqueActorEventFlag": {
-                  "ace.Bitset`1<app.user_data.TimelineEventDynamicResourceData.EventActorItem.UNIQUE_EVENT_ACTOR_FLAG>": {
-                    "_Value": [
-                      0
-                    ],
-                    "_MaxElement": 32
-                  }
+                  "app.user_data.TimelineEventDynamicResourceData.EventActorItem.UNIQUE_EVENT_ACTOR_FLAG": [],
+                  "_MaxElement": 32,
+                  "_WordCount": 1
                 },
                 "_EvObjMaterialSettingList": [],
                 "_IsOtomoNPC": false,
                 "_IsPartnerNpc": false,
                 "_IsExtraNpc": false,
-                "_ActorType": 8,
+                "_ActorType": "[8] Evm",
                 "_ActorID": 0,
                 "_BindTargetID_Serializable": 0,
                 "_StoryTargetID": -1,
@@ -1648,18 +1619,15 @@
                 "_NpcAttachment": "[2] INVALID",
                 "_NpcDisableAttachment": "[2] INVALID",
                 "_UniqueActorEventFlag": {
-                  "ace.Bitset`1<app.user_data.TimelineEventDynamicResourceData.EventActorItem.UNIQUE_EVENT_ACTOR_FLAG>": {
-                    "_Value": [
-                      0
-                    ],
-                    "_MaxElement": 32
-                  }
+                  "app.user_data.TimelineEventDynamicResourceData.EventActorItem.UNIQUE_EVENT_ACTOR_FLAG": [],
+                  "_MaxElement": 32,
+                  "_WordCount": 1
                 },
                 "_EvObjMaterialSettingList": [],
                 "_IsOtomoNPC": false,
                 "_IsPartnerNpc": false,
                 "_IsExtraNpc": false,
-                "_ActorType": 8,
+                "_ActorType": "[8] Evm",
                 "_ActorID": 0,
                 "_BindTargetID_Serializable": 0,
                 "_StoryTargetID": -1,
@@ -1710,18 +1678,15 @@
                 "_NpcAttachment": "[2] INVALID",
                 "_NpcDisableAttachment": "[2] INVALID",
                 "_UniqueActorEventFlag": {
-                  "ace.Bitset`1<app.user_data.TimelineEventDynamicResourceData.EventActorItem.UNIQUE_EVENT_ACTOR_FLAG>": {
-                    "_Value": [
-                      0
-                    ],
-                    "_MaxElement": 32
-                  }
+                  "app.user_data.TimelineEventDynamicResourceData.EventActorItem.UNIQUE_EVENT_ACTOR_FLAG": [],
+                  "_MaxElement": 32,
+                  "_WordCount": 1
                 },
                 "_EvObjMaterialSettingList": [],
                 "_IsOtomoNPC": false,
                 "_IsPartnerNpc": false,
                 "_IsExtraNpc": false,
-                "_ActorType": 8,
+                "_ActorType": "[8] Evm",
                 "_ActorID": 0,
                 "_BindTargetID_Serializable": 0,
                 "_StoryTargetID": -1,
@@ -1762,12 +1727,12 @@
               ],
               "_MotionList": "",
               "_MotionID": -1,
-              "_EndType": 0,
-              "_MoveType": 0,
+              "_EndType": "[0] STAND",
+              "_MoveType": "[0] WALK",
               "_IsRotationFree": true,
               "_IsEndPosAdjust": true,
               "_EndPosAdjustTime": 0.0,
-              "_EndPosAdjustEaseType": 0,
+              "_EndPosAdjustEaseType": "[0] Linear",
               "_MotionConnectBank": {
                 "": {}
               },
@@ -1837,7 +1802,7 @@
           ],
           "_StageType_Serializable": "[3068809728] ST101",
           "_IsDispStageBG": false,
-          "_EnvironmentType": 3,
+          "_EnvironmentType": "[3] MAX",
           "_EnvironmentRate": 99.0,
           "_StartTime": {
             "raw": "ffffffff0000000000000000",
@@ -1874,12 +1839,9 @@
             }
           },
           "_UniqueParam": {
-            "ace.Bitset`1<app.user_data.TimelineEventDynamicResourceData.PreviewItem.UNIQUE_PARAM>": {
-              "_Value": [
-                0
-              ],
-              "_MaxElement": 32
-            }
+            "app.user_data.TimelineEventDynamicResourceData.PreviewItem.UNIQUE_PARAM": [],
+            "_MaxElement": 32,
+            "_WordCount": 1
           },
           "_DispOffFolderList": [],
           "_PtEquip": [],

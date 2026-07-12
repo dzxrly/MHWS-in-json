@@ -5,7 +5,7 @@
         {
           "ace.cShellminiParamCommon": {
             "MiniParamName": "Common",
-            "MiniParamtype": 1,
+            "MiniParamtype": "[1] COMMON",
             "_IsDependedOn": false,
             "UpdateOrder": 0,
             "LateUpdateOrder": 0,
@@ -16,7 +16,7 @@
         {
           "app.cShellminiParamCallCustomChildShell": {
             "MiniParamName": "CallCustomChildShell",
-            "MiniParamtype": 4,
+            "MiniParamtype": "[4] CALL_CHILD",
             "_IsDependedOn": false,
             "UpdateOrder": 0,
             "LateUpdateOrder": 0,
@@ -62,13 +62,13 @@
                 "_ShellNameHash": 1806823540
               }
             },
-            "_ShellIndex": 0
+            "_ShellIndex": "[0] INDEX_1"
           }
         },
         {
           "app.cShellMiniParamEm0164_50GroundSign_WingArmSweep": {
             "MiniParamName": "Em0164_50_GroundSign_WingArmSweep",
-            "MiniParamtype": 7,
+            "MiniParamtype": "[7] OTHER",
             "_IsDependedOn": false,
             "UpdateOrder": 400,
             "LateUpdateOrder": 400,
@@ -78,22 +78,22 @@
         {
           "app.cShellminiParamGroundContact": {
             "MiniParamName": "GroundContact",
-            "MiniParamtype": 2,
+            "MiniParamtype": "[2] MOVE",
             "_IsDependedOn": false,
             "UpdateOrder": 200,
             "LateUpdateOrder": 200,
             "_IsApplyGroundPos": true,
             "_IsApplyGroundNormal": true,
-            "_AxisType": 0,
+            "_AxisType": "[0] WORLD_Y",
             "_CheckUpDistance": 10.0,
             "_CheckDownDistance": 5.0,
             "_IsUpdateContact": false,
             "_IsShellDeleteInGroundCheck": false,
             "_IgnoreContactSlopeDeg": -1,
-            "_WaterContactOption": 0,
+            "_WaterContactOption": "[0] NONE",
             "_IsGroundRun": false,
-            "_GroundRunMoveType": 0,
-            "_GroundRunRayType": 0,
+            "_GroundRunMoveType": "[0] NONE",
+            "_GroundRunRayType": "[0] SHELL_VEC",
             "_IsShellDeleteIsHitTerrain": false,
             "_CheckTerrainOffset": 1.0,
             "_DisableContactWall": false,
@@ -104,7 +104,7 @@
       "_CommonParam": {
         "ace.cShellminiParamCommon": {
           "MiniParamName": "Common",
-          "MiniParamtype": 1,
+          "MiniParamtype": "[1] COMMON",
           "_IsDependedOn": false,
           "UpdateOrder": 0,
           "LateUpdateOrder": 0,

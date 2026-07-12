@@ -194,13 +194,13 @@
       "_WaterModelMoveParam_Up": {
         "app.cEaseProgressParam": {
           "_Time": 10.0,
-          "_EaseType": 0
+          "_EaseType": "[0] Linear"
         }
       },
       "_WaterModelMoveParam_Down": {
         "app.cEaseProgressParam": {
           "_Time": 30.0,
-          "_EaseType": 0
+          "_EaseType": "[0] Linear"
         }
       },
       "_NpcReactionTiming": 0.4,
@@ -213,7 +213,7 @@
       "_Discharge_AbnormalElapsedRate": 80.0,
       "_ForceMoveRadius": 7.5,
       "_ForceMoveArriveDist": 1.0,
-      "_ForceMoveType": 1,
+      "_ForceMoveType": "[1] RUN",
       "_ForceMoveParams": [
         {
           "app.user_data.Gm558_AaaUniqueParam.cPlForceMoveParam": {
@@ -267,7 +267,7 @@
           ],
           "_Duration": 2.5,
           "_InterpolationTime": 0.8,
-          "_InterpolationEase": 5
+          "_InterpolationEase": "[5] OutQuad"
         }
       }
     }

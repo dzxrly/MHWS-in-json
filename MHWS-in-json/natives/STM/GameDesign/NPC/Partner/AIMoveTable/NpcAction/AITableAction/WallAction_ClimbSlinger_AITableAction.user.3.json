@@ -6,7 +6,7 @@
           "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
             "_Param": {
               "app.NpcAITableConditions.cEnableWallAction_Param": {
-                "WallAction": 2
+                "WallAction": "[2] SLINGER"
               }
             },
             "_Inverse": false,
@@ -17,7 +17,7 @@
           "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
             "_Param": {
               "app.NpcAITableConditions.cCheckVerNaviLink_Param": {
-                "_CheckVertical": 1,
+                "_CheckVertical": "[1] UP",
                 "_Dist": 5.0,
                 "_EnableLinkRange": 5.0
               }
@@ -43,9 +43,9 @@
                     "app.NpcAIMoveEffects.cClimbMove_Param": {
                       "_SpeedLv": "[3] RUN",
                       "_UseExternalSpeed": false,
-                      "_StickDir": 0,
-                      "MoveDir": 1,
-                      "ClimbAction": 1,
+                      "_StickDir": "[0] NAVI",
+                      "MoveDir": "[1] UP",
+                      "ClimbAction": "[1] SLINGER",
                       "DelayTime": 0.0
                     }
                   }

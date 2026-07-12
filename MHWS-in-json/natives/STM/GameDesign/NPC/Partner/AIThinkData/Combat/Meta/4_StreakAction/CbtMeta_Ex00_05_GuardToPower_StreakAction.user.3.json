@@ -1,13 +1,13 @@
 [
   {
     "app.user_data.NpcStreakActionData": {
-      "_TerminateType": 0,
+      "_TerminateType": "[0] ACTION_EXECUTED",
       "_ActionEffectParam": {
         "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Action": {
           "_Param": {
             "app.NpcStreakEffects.cLanceAttack_FinishStingerCharge_Param": {
-              "_InputType": 1,
-              "_ChargeType": 2,
+              "_InputType": "[1] CHARGE_SP_01",
+              "_ChargeType": "[2] CHARGE_ATTACK_DETECT",
               "_CounterFrameRange": {
                 "raw": "0000000000000041",
                 "type": "Range"
@@ -27,19 +27,19 @@
         "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Aim": {
           "_Param": {
             "app.NpcStreakEffects.cSetTarget_AimParam": {
-              "_StartType": 0,
-              "_EndType": 0,
+              "_StartType": "[0] NONE",
+              "_EndType": "[0] NONE",
               "_CanAimWpOff": false,
-              "_UseParabora": 0,
+              "_UseParabora": "[0] NONE",
               "_StartActionSelector": {
                 "app.cNpcHunterActionSelector": {
                   "_Category": 773579456,
                   "_Action": 0
                 }
               },
-              "_LogicType": 0,
-              "_AdjustType": 1,
-              "_UpdateTiming": 0,
+              "_LogicType": "[0] NEAR_COLLIDER",
+              "_AdjustType": "[1] TO_CENTER",
+              "_UpdateTiming": "[0] ALWAYS",
               "_CheckRayCast": false,
               "_IsDirectionAim": false
             }

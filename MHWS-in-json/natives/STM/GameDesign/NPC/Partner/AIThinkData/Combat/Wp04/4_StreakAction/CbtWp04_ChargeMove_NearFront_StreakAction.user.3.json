@@ -1,7 +1,7 @@
 [
   {
     "app.user_data.NpcStreakActionData": {
-      "_TerminateType": 0,
+      "_TerminateType": "[0] ACTION_EXECUTED",
       "_ActionEffectParam": {
         "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Action": {
           "_Param": {
@@ -22,12 +22,12 @@
               "_UseAIMoveEnd": false,
               "_FixedSpeedLv": "[3] RUN",
               "_IsMoveStopTurn": false,
-              "_StopTurnDir": 0,
+              "_StopTurnDir": "[0] PL_AXIS_Z",
               "_DegRange": {
                 "raw": "0000000000003443",
                 "type": "Range"
               },
-              "_TargetType": 3,
+              "_TargetType": "[3] PRIORITY_BLOW",
               "_IsOverwritePartsType": false,
               "_OverwritePartsType": "[1075205376] HEAD"
             }
@@ -46,7 +46,7 @@
           "app.user_data.NpcStreakActionData.cNpcStreakEvaluatorHolder": {
             "_Param": {
               "app.NpcStreakEvaluators.cCheckWp04ChargeMoveType_Param": {
-                "_MoveType": 2
+                "_MoveType": "[2] NEAR"
               }
             },
             "_Inverse": false

@@ -5,7 +5,7 @@
         {
           "ace.cShellminiParamCommon": {
             "MiniParamName": "Common",
-            "MiniParamtype": 1,
+            "MiniParamtype": "[1] COMMON",
             "_IsDependedOn": false,
             "UpdateOrder": 0,
             "LateUpdateOrder": 0,
@@ -16,7 +16,7 @@
         {
           "app.cShellminiParamColHit": {
             "MiniParamName": "AppColHit",
-            "MiniParamtype": 3,
+            "MiniParamtype": "[3] COLLISION",
             "_IsDependedOn": false,
             "UpdateOrder": 100,
             "LateUpdateOrder": 100,
@@ -42,13 +42,13 @@
             "_IsUseLifeTimerRateHitOn": false,
             "_AppHitTerrainSetting": {
               "app.cShellminiParamColHit.HitTerrainSetting": {
-                "_FirstTerrainHitType": 0,
-                "_ShellHitWaterBehavior": 3,
-                "_ShellHitGroundBehavior": 3,
+                "_FirstTerrainHitType": "[0] FINISH",
+                "_ShellHitWaterBehavior": "[3] CONTINUE",
+                "_ShellHitGroundBehavior": "[3] CONTINUE",
                 "STRUCT__ShellHitWallBehavior__HasValue": false,
-                "STRUCT__ShellHitWallBehavior__Value": 0,
+                "STRUCT__ShellHitWallBehavior__Value": "[0] FINISH",
                 "STRUCT__ShellHitCeilingBehavior__HasValue": false,
-                "STRUCT__ShellHitCeilingBehavior__Value": 0,
+                "STRUCT__ShellHitCeilingBehavior__Value": "[0] FINISH",
                 "_IsFirstTerrainCheck": true,
                 "_FirstTerrainCheckJoint": {
                   "ace.cJointHash": {
@@ -87,7 +87,7 @@
         {
           "app.cShellMoveScale": {
             "MiniParamName": "MoveScale",
-            "MiniParamtype": 2,
+            "MiniParamtype": "[2] MOVE",
             "_IsDependedOn": false,
             "UpdateOrder": 200,
             "LateUpdateOrder": 200,
@@ -100,7 +100,7 @@
         {
           "app.cShellMiniParamEm0162_00IceNovaSafetySpaceDelete": {
             "MiniParamName": "Em0162_00IceNovaSafetySpaceDelete",
-            "MiniParamtype": 7,
+            "MiniParamtype": "[7] OTHER",
             "_IsDependedOn": false,
             "UpdateOrder": 0,
             "LateUpdateOrder": 0
@@ -109,7 +109,7 @@
         {
           "app.cShellMiniParamShellCanceller": {
             "MiniParamName": "ShellCanceller",
-            "MiniParamtype": 6,
+            "MiniParamtype": "[6] DATA",
             "_IsDependedOn": false,
             "UpdateOrder": 1,
             "LateUpdateOrder": 0
@@ -119,7 +119,7 @@
       "_CommonParam": {
         "ace.cShellminiParamCommon": {
           "MiniParamName": "Common",
-          "MiniParamtype": 1,
+          "MiniParamtype": "[1] COMMON",
           "_IsDependedOn": false,
           "UpdateOrder": 0,
           "LateUpdateOrder": 0,

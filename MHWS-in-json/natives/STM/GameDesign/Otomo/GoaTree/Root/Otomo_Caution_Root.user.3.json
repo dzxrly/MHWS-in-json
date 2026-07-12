@@ -108,7 +108,7 @@
                 "_Hash": 4175418299
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[2] DESIRE_FROM_TOP",
             "_EndlessLoop": true,
             "_ParallelWhenInterrupted": false,
@@ -151,7 +151,7 @@
                 "_Hash": 536233842
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -178,8 +178,8 @@
                               "_IsWaitActionEnd": false,
                               "_IsCheckStench": false,
                               "_IsCheckReserveAIState": false,
-                              "_Type": 3,
-                              "_CheckDistType": 0,
+                              "_Type": "[3] OutRangeOver",
+                              "_CheckDistType": "[0] DEFAULT",
                               "_IsDisableFollowMove": false,
                               "_IsUseRandomTarget": false,
                               "_IsStory": false,
@@ -344,7 +344,7 @@
                               "_IsWaitActionEnd": true,
                               "_IsCheckStench": false,
                               "_IsCheckReserveAIState": true,
-                              "_Type": 0,
+                              "_Type": "[0] InRange",
                               "_CheckDistanceToPL": 15.0,
                               "_HealthNormalizedCheck": 0.0
                             }
@@ -366,7 +366,7 @@
                 "_Hash": 2018534892
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[2] DESIRE_FROM_TOP",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -404,7 +404,7 @@
                 "goatree.cGoalPackage.cGoalEffectHolder": {
                   "_Param": {
                     "app.OtomoGoaTreeGoalEffects.cSetTarget_Param": {
-                      "_Type": 0
+                      "_Type": "[0] PLAYER"
                     }
                   }
                 }
@@ -419,7 +419,7 @@
                 "_Hash": 3389212796
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[2] DESIRE_FROM_TOP",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -446,7 +446,7 @@
                               "_IsWaitActionEnd": false,
                               "_IsCheckStench": false,
                               "_IsCheckReserveAIState": false,
-                              "_OtStandState": 2
+                              "_OtStandState": "[2] WALL"
                             }
                           }
                         }
@@ -480,7 +480,7 @@
                 "_IsEnableCancel": false,
                 "_IsIgnoreInterruptGoalEnd": false,
                 "_IsPressByTargetEm": false,
-                "_CheckDistType": 0,
+                "_CheckDistType": "[0] DEFAULT",
                 "_IsUseWaitTimer": true,
                 "_IsDisableFollowMove": false,
                 "_IsUseRandomTarget": false,
@@ -510,7 +510,7 @@
                 "_Hash": 1504722133
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -541,7 +541,7 @@
                   "_Param": {
                     "app.OtomoGoaTreeGoalEffects.cRequestChangeAction_Param": {
                       "_ActionID": "6f830d64-def3-4733-b6d3-a3f4bd831421",
-                      "_AppendDataType": 0
+                      "_AppendDataType": "[0] DEFAULT"
                     }
                   }
                 }
@@ -556,7 +556,7 @@
                 "_Hash": 1627436393
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -582,7 +582,7 @@
                 "_Hash": 3733275888
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -634,8 +634,8 @@
                 "goatree.cGoalPackage.cGoalEffectHolder": {
                   "_Param": {
                     "app.OtomoGoaTreeGoalEffects.cMoveStart_Param": {
-                      "_OffsetType": 17,
-                      "_CalcType": 0,
+                      "_OffsetType": "[17] FOLLOW_PL_CAUTION",
+                      "_CalcType": "[0] TARGET_ROTATE_BASE",
                       "_MoveInfo": {
                         "app.mcOtomoMoveController.cRequestMoveInfo": {
                           "_SkipEndMotion": true,
@@ -645,13 +645,13 @@
                           "_IsRotAdjust": false,
                           "_IsUseRandomTarget": false,
                           "_IsSelectMoveStopPoint": false,
-                          "_ArriveTargetType": 12,
-                          "_OptionType": 2,
-                          "_ExMoveType": -1
+                          "_ArriveTargetType": "[12] NONE",
+                          "_OptionType": "[2] DASH_ONLY",
+                          "_ExMoveType": "[4294967295] NONE"
                         }
                       },
                       "_IsNavigationUpdateInterval": true,
-                      "_UsePQSType": 0,
+                      "_UsePQSType": "[0] NONE",
                       "_IsFixTargetPos": true
                     }
                   }

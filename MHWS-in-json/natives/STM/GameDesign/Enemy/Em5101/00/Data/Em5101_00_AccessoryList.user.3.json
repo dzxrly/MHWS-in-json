@@ -16,7 +16,7 @@
             "_Offset": {
               "app.accessory.Def.cOffset": {
                 "UseOffset": false,
-                "OffsetOrder": 1,
+                "OffsetOrder": "[1] ROT_POS",
                 "STRUCT_Coord_Position": [
                   0.0,
                   0.0,
@@ -29,8 +29,8 @@
                   0.0,
                   1.0
                 ],
-                "PositionOffsetCtrl": 0,
-                "RotationOffsetCtrl": 0
+                "PositionOffsetCtrl": "[0] LOCAL",
+                "RotationOffsetCtrl": "[0] LOCAL"
               }
             },
             "_AllowDisableMotionByAnimationLOD": false,
@@ -43,14 +43,14 @@
                   "_Actions": [
                     {
                       "app.accessory.ActObjectVisibility": {
-                        "_Visibility": 0
+                        "_Visibility": "[0] VISIBLE"
                       }
                     },
                     {
                       "app.accessory.ActPartsVisibility": {
                         "_Visibilities": [
-                          0,
-                          1
+                          "[0] VISIBLE",
+                          "[1] HIDDEN"
                         ]
                       }
                     },
@@ -61,9 +61,9 @@
                         "_LayerIndex": 0,
                         "_ImmediateSetup": false,
                         "_InterpolationFrame": 0.0,
-                        "_InterpolationMode": 0,
-                        "_InterpolationCurve": 0,
-                        "_StartFrameMode": 0,
+                        "_InterpolationMode": "[0] None",
+                        "_InterpolationCurve": "[0] Linear",
+                        "_StartFrameMode": "[0] SPECIFIED",
                         "_StartFrame": 0.0
                       }
                     },
@@ -83,7 +83,7 @@
                   "_Actions": [
                     {
                       "app.accessory.ActObjectVisibility": {
-                        "_Visibility": 1
+                        "_Visibility": "[1] HIDDEN"
                       }
                     }
                   ],
@@ -120,7 +120,7 @@
                               "_MotionType": "[1189606656] DEFAULT",
                               "_BankId": 0,
                               "_MotionId": 5,
-                              "_StartFrameMode": 0,
+                              "_StartFrameMode": "[0] SPECIFIED",
                               "_StartFrame": 0.0
                             }
                           },
@@ -129,7 +129,7 @@
                               "_MotionType": "[1433678976] MIRROR",
                               "_BankId": 0,
                               "_MotionId": 6,
-                              "_StartFrameMode": 0,
+                              "_StartFrameMode": "[0] SPECIFIED",
                               "_StartFrame": 0.0
                             }
                           }
@@ -140,8 +140,8 @@
                     {
                       "app.accessory.ActPartsVisibility": {
                         "_Visibilities": [
-                          0,
-                          0
+                          "[0] VISIBLE",
+                          "[0] VISIBLE"
                         ]
                       }
                     }
@@ -154,7 +154,7 @@
                     },
                     {
                       "app.accessory.saActRotateTransform": {
-                        "_Pivot": 32,
+                        "_Pivot": "[32] OWNER_BASED",
                         "_TargetRotation": [
                           0.0,
                           0.0,
@@ -162,7 +162,7 @@
                           1.0
                         ],
                         "_Duration": 0.0,
-                        "_EaseType": 0
+                        "_EaseType": "[0] Linear"
                       }
                     }
                   ]
@@ -181,7 +181,7 @@
                               "_MotionType": "[1189606656] DEFAULT",
                               "_BankId": 0,
                               "_MotionId": 5,
-                              "_StartFrameMode": 0,
+                              "_StartFrameMode": "[0] SPECIFIED",
                               "_StartFrame": 0.0
                             }
                           },
@@ -190,7 +190,7 @@
                               "_MotionType": "[1433678976] MIRROR",
                               "_BankId": 0,
                               "_MotionId": 6,
-                              "_StartFrameMode": 0,
+                              "_StartFrameMode": "[0] SPECIFIED",
                               "_StartFrame": 0.0
                             }
                           }
@@ -201,8 +201,8 @@
                     {
                       "app.accessory.ActPartsVisibility": {
                         "_Visibilities": [
-                          0,
-                          0
+                          "[0] VISIBLE",
+                          "[0] VISIBLE"
                         ]
                       }
                     }
@@ -215,7 +215,7 @@
                     },
                     {
                       "app.accessory.saActRotateTransform": {
-                        "_Pivot": 32,
+                        "_Pivot": "[32] OWNER_BASED",
                         "_TargetRotation": [
                           0.0,
                           0.0,
@@ -223,7 +223,7 @@
                           1.0
                         ],
                         "_Duration": 0.0,
-                        "_EaseType": 0
+                        "_EaseType": "[0] Linear"
                       }
                     }
                   ]

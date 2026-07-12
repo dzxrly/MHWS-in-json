@@ -5,7 +5,7 @@
         {
           "ace.cShellminiParamCommon": {
             "MiniParamName": "Common",
-            "MiniParamtype": 1,
+            "MiniParamtype": "[1] COMMON",
             "_IsDependedOn": false,
             "UpdateOrder": 0,
             "LateUpdateOrder": 0,
@@ -16,7 +16,7 @@
         {
           "app.cShellminiParamColHit": {
             "MiniParamName": "AppColHit",
-            "MiniParamtype": 3,
+            "MiniParamtype": "[3] COLLISION",
             "_IsDependedOn": false,
             "UpdateOrder": 100,
             "LateUpdateOrder": 100,
@@ -40,13 +40,13 @@
             "_IsUseLifeTimerRateHitOn": false,
             "_AppHitTerrainSetting": {
               "app.cShellminiParamColHit.HitTerrainSetting": {
-                "_FirstTerrainHitType": 0,
-                "_ShellHitWaterBehavior": 3,
-                "_ShellHitGroundBehavior": 0,
+                "_FirstTerrainHitType": "[0] FINISH",
+                "_ShellHitWaterBehavior": "[3] CONTINUE",
+                "_ShellHitGroundBehavior": "[0] FINISH",
                 "STRUCT__ShellHitWallBehavior__HasValue": false,
-                "STRUCT__ShellHitWallBehavior__Value": 0,
+                "STRUCT__ShellHitWallBehavior__Value": "[0] FINISH",
                 "STRUCT__ShellHitCeilingBehavior__HasValue": false,
-                "STRUCT__ShellHitCeilingBehavior__Value": 0,
+                "STRUCT__ShellHitCeilingBehavior__Value": "[0] FINISH",
                 "_IsFirstTerrainCheck": true,
                 "_FirstTerrainCheckJoint": {
                   "ace.cJointHash": {
@@ -85,7 +85,7 @@
         {
           "app.cShellminiParamMoveParabola": {
             "MiniParamName": "MoveParabola",
-            "MiniParamtype": 2,
+            "MiniParamtype": "[2] MOVE",
             "_IsDependedOn": false,
             "UpdateOrder": 200,
             "LateUpdateOrder": 200,
@@ -97,9 +97,9 @@
               0.0
             ],
             "_IsOwnerRootToTargetOffset": false,
-            "_RotationType": 1,
+            "_RotationType": "[1] TURN_TO_MOVE_DIR_AT_START",
             "STRUCT__OverwriteTurnToMoveDirCalcType__HasValue": false,
-            "STRUCT__OverwriteTurnToMoveDirCalcType__Value": 0,
+            "STRUCT__OverwriteTurnToMoveDirCalcType__Value": "[0] USE_WORLD_AXISY",
             "_IsUseTargetRotOffset": false,
             "_TargetRotOffset": [
               0.0,
@@ -122,7 +122,7 @@
             "_NoTargetAdjustYaw_Deg": 90.0,
             "_IsUseStraightLineDistance": false,
             "_Range_Distance": -1.0,
-            "_ParabolaType": 2,
+            "_ParabolaType": "[2] HIGHT",
             "_Gravity": 0.0,
             "_TargetDistMax": 20.0,
             "_TargetDistMin": 2.0,
@@ -140,7 +140,7 @@
       "_CommonParam": {
         "ace.cShellminiParamCommon": {
           "MiniParamName": "Common",
-          "MiniParamtype": 1,
+          "MiniParamtype": "[1] COMMON",
           "_IsDependedOn": false,
           "UpdateOrder": 0,
           "LateUpdateOrder": 0,

@@ -5,7 +5,7 @@
         {
           "ace.cShellminiParamCommon": {
             "MiniParamName": "Common",
-            "MiniParamtype": 1,
+            "MiniParamtype": "[1] COMMON",
             "_IsDependedOn": false,
             "UpdateOrder": 0,
             "LateUpdateOrder": 0,
@@ -16,12 +16,12 @@
         {
           "app.cShellMiniParamEm0164_50CreateEnergyCrystal": {
             "MiniParamName": "Em0164_50_CreateEnergyCrystal",
-            "MiniParamtype": 6,
+            "MiniParamtype": "[6] DATA",
             "_IsDependedOn": false,
             "UpdateOrder": 600,
             "LateUpdateOrder": 600,
-            "_CreatePosType": 0,
-            "_CrystalType": 0,
+            "_CreatePosType": "[0] SHELL",
+            "_CrystalType": "[0] S",
             "_CrystalInfoArray": [
               {
                 "app.cShellMiniParamEm0164_50CreateEnergyCrystal.CrystalInfo": {
@@ -42,22 +42,22 @@
         {
           "app.cShellminiParamGroundContact": {
             "MiniParamName": "GroundContact",
-            "MiniParamtype": 2,
+            "MiniParamtype": "[2] MOVE",
             "_IsDependedOn": false,
             "UpdateOrder": 200,
             "LateUpdateOrder": 200,
             "_IsApplyGroundPos": true,
             "_IsApplyGroundNormal": true,
-            "_AxisType": 0,
+            "_AxisType": "[0] WORLD_Y",
             "_CheckUpDistance": 8.0,
             "_CheckDownDistance": 5.0,
             "_IsUpdateContact": false,
             "_IsShellDeleteInGroundCheck": true,
             "_IgnoreContactSlopeDeg": -1,
-            "_WaterContactOption": 0,
+            "_WaterContactOption": "[0] NONE",
             "_IsGroundRun": false,
-            "_GroundRunMoveType": 0,
-            "_GroundRunRayType": 0,
+            "_GroundRunMoveType": "[0] NONE",
+            "_GroundRunRayType": "[0] SHELL_VEC",
             "_IsShellDeleteIsHitTerrain": false,
             "_CheckTerrainOffset": 1.0,
             "_DisableContactWall": true,
@@ -68,7 +68,7 @@
       "_CommonParam": {
         "ace.cShellminiParamCommon": {
           "MiniParamName": "Common",
-          "MiniParamtype": 1,
+          "MiniParamtype": "[1] COMMON",
           "_IsDependedOn": false,
           "UpdateOrder": 0,
           "LateUpdateOrder": 0,

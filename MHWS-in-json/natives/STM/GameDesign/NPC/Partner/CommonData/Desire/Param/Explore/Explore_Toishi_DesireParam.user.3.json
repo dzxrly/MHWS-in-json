@@ -74,7 +74,7 @@
               "app.cNpcDesireConditionHolder": {
                 "_Param": {
                   "app.NpcDesireConditions.cCheckNpcAIState_Param": {
-                    "AI_STATE": 1
+                    "AI_STATE": "[1] EXPLORE"
                   }
                 },
                 "_Inverse": false
@@ -85,7 +85,7 @@
                 "_Param": {
                   "app.NpcDesireConditions.cCheckApplyDamage_Param": {
                     "AttackCount": 3,
-                    "CheckType": 1
+                    "CheckType": "[1] OVER"
                   }
                 },
                 "_Inverse": false
@@ -111,7 +111,7 @@
                 "_Param": {
                   "app.NpcDesireConditions.cCheckApplyDamage_Param": {
                     "AttackCount": 0,
-                    "CheckType": 0
+                    "CheckType": "[0] EQUAL"
                   }
                 },
                 "_Inverse": false

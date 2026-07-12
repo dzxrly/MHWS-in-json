@@ -96,8 +96,8 @@
                     "app.cNpcDesireConditionHolder": {
                       "_Param": {
                         "app.NpcDesireConditions.cCanBadConditionCombatEnemy_Param": {
-                          "_Condition": 20,
-                          "_ResistLevel": 0
+                          "_Condition": "[20] EAR",
+                          "_ResistLevel": "[0] ZERO"
                         }
                       },
                       "_Inverse": false
@@ -107,7 +107,7 @@
                     "app.cNpcDesireConditionHolder": {
                       "_Param": {
                         "app.NpcDesireConditions.cActiveBadConditionCombatEnemy_Param": {
-                          "_Condition": 20
+                          "_Condition": "[20] EAR"
                         }
                       },
                       "_Inverse": true
@@ -125,7 +125,7 @@
                     "app.cNpcDesireConditionHolder": {
                       "_Param": {
                         "app.NpcDesireConditions.cEnableSptItem_Param": {
-                          "ItemType": 3
+                          "ItemType": "[3] SONIC"
                         }
                       },
                       "_Inverse": false
@@ -148,7 +148,7 @@
                     "app.cNpcDesireConditionHolder": {
                       "_Param": {
                         "app.NpcDesireConditions.cSetSlingerShotTarget_Param": {
-                          "_TargetType": 1,
+                          "_TargetType": "[1] TARGET_EM",
                           "_IsDungTarget": false,
                           "_TargetEnemyRange": 0.0,
                           "_SlingerTargetRange": 0.0

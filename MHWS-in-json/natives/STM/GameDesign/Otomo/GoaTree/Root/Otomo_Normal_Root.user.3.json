@@ -118,7 +118,7 @@
                 "_Hash": 4175418299
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": true,
             "_ParallelWhenInterrupted": false,
@@ -161,7 +161,7 @@
                 "_Hash": 3008855996
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -208,7 +208,7 @@
                               "_IsWaitActionEnd": false,
                               "_IsCheckStench": false,
                               "_IsCheckReserveAIState": false,
-                              "_MoveActionType": 1
+                              "_MoveActionType": "[1] RIDE_PORTER"
                             }
                           }
                         }
@@ -229,7 +229,7 @@
                               "_IsWaitActionEnd": false,
                               "_IsCheckStench": false,
                               "_IsCheckReserveAIState": false,
-                              "_MoveActionType": 0
+                              "_MoveActionType": "[0] GATHERING"
                             }
                           }
                         }
@@ -250,7 +250,7 @@
                               "_IsWaitActionEnd": false,
                               "_IsCheckStench": false,
                               "_IsCheckReserveAIState": false,
-                              "_MoveActionType": 2
+                              "_MoveActionType": "[2] MOVE_TO_DESTINATION"
                             }
                           }
                         }
@@ -271,7 +271,7 @@
                               "_IsWaitActionEnd": false,
                               "_IsCheckStench": false,
                               "_IsCheckReserveAIState": false,
-                              "_MoveActionType": 3
+                              "_MoveActionType": "[3] LEAD_PLAYER"
                             }
                           }
                         }
@@ -351,12 +351,13 @@
                               "_IsCheckStench": false,
                               "_IsCheckReserveAIState": false,
                               "_EnableCollectOtomoToolType": {
-                                "ace.Bitset`1<app.OtomoDef.USE_OTOMO_TOOL_TYPE>": {
-                                  "_Value": [
-                                    1600
-                                  ],
-                                  "_MaxElement": 15
-                                }
+                                "app.OtomoDef.USE_OTOMO_TOOL_TYPE": [
+                                  "[6] DRAG_AIR_SHIP",
+                                  "[9] SET_INSECT_HEAL",
+                                  "[10] STEAL_BOOMERANG"
+                                ],
+                                "_MaxElement": 15,
+                                "_WordCount": 1
                               }
                             }
                           }
@@ -417,7 +418,7 @@
                 "_Hash": 809796176
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -443,7 +444,7 @@
                 "_Hash": 2860676600
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -483,7 +484,7 @@
                 "_IsEnableCancel": false,
                 "_IsIgnoreInterruptGoalEnd": false,
                 "_IsPressByTargetEm": false,
-                "_MoveActionType": 1
+                "_MoveActionType": "[1] RIDE_PORTER"
               }
             },
             "_GoalEffectParams": [
@@ -491,7 +492,7 @@
                 "goatree.cGoalPackage.cGoalEffectHolder": {
                   "_Param": {
                     "app.OtomoGoaTreeGoalEffects.cSetTargetEnd_Param": {
-                      "_Type": 0
+                      "_Type": "[0] PLAYER"
                     }
                   }
                 }
@@ -506,7 +507,7 @@
                 "_Hash": 1369814334
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[1] SEQUENTIAL",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -546,7 +547,7 @@
                 "_IsEnableCancel": false,
                 "_IsIgnoreInterruptGoalEnd": false,
                 "_IsPressByTargetEm": false,
-                "_MoveActionType": 1
+                "_MoveActionType": "[1] RIDE_PORTER"
               }
             },
             "_GoalEffectParams": [
@@ -554,7 +555,7 @@
                 "goatree.cGoalPackage.cGoalEffectHolder": {
                   "_Param": {
                     "app.OtomoGoaTreeGoalEffects.cSetTarget_Param": {
-                      "_Type": 1
+                      "_Type": "[1] PORTER"
                     }
                   }
                 }
@@ -563,7 +564,7 @@
                 "goatree.cGoalPackage.cGoalEffectHolder": {
                   "_Param": {
                     "app.OtomoGoaTreeGoalEffects.cSetTargetEnd_Param": {
-                      "_Type": 0
+                      "_Type": "[0] PLAYER"
                     }
                   }
                 }
@@ -578,7 +579,7 @@
                 "_Hash": 3709996546
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[1] SEQUENTIAL",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -618,7 +619,7 @@
                 "_IsEnableCancel": false,
                 "_IsIgnoreInterruptGoalEnd": false,
                 "_IsPressByTargetEm": false,
-                "_MoveActionType": 3
+                "_MoveActionType": "[3] LEAD_PLAYER"
               }
             },
             "_GoalEffectParams": []
@@ -631,7 +632,7 @@
                 "_Hash": 4067419752
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -671,7 +672,7 @@
                 "_IsEnableCancel": false,
                 "_IsIgnoreInterruptGoalEnd": false,
                 "_IsPressByTargetEm": false,
-                "_MoveActionType": 2
+                "_MoveActionType": "[2] MOVE_TO_DESTINATION"
               }
             },
             "_GoalEffectParams": []
@@ -684,7 +685,7 @@
                 "_Hash": 3238180261
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -724,7 +725,7 @@
                 "_IsEnableCancel": false,
                 "_IsIgnoreInterruptGoalEnd": false,
                 "_IsPressByTargetEm": false,
-                "_MoveActionType": 0
+                "_MoveActionType": "[0] GATHERING"
               }
             },
             "_GoalEffectParams": [
@@ -752,7 +753,7 @@
                 "_Hash": 462990091
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -821,7 +822,7 @@
                               "_IsWaitActionEnd": false,
                               "_IsCheckStench": false,
                               "_IsCheckReserveAIState": false,
-                              "_Type": 0,
+                              "_Type": "[0] InRange",
                               "_CheckDistanceToPL": 15.0,
                               "_HealthNormalizedCheck": 0.0
                             }
@@ -857,7 +858,7 @@
                 "_IsEnableCancel": false,
                 "_IsIgnoreInterruptGoalEnd": false,
                 "_IsPressByTargetEm": false,
-                "_MoveActionType": 4
+                "_MoveActionType": "[4] NORMAL"
               }
             },
             "_GoalEffectParams": []
@@ -870,7 +871,7 @@
                 "_Hash": 3757988867
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -896,7 +897,7 @@
                 "_Hash": 2576635853
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[2] DESIRE_FROM_TOP",
             "_EndlessLoop": true,
             "_ParallelWhenInterrupted": false,
@@ -923,8 +924,8 @@
                               "_IsWaitActionEnd": false,
                               "_IsCheckStench": false,
                               "_IsCheckReserveAIState": false,
-                              "_Type": 3,
-                              "_CheckDistType": 0,
+                              "_Type": "[3] OutRangeOver",
+                              "_CheckDistType": "[0] DEFAULT",
                               "_IsDisableFollowMove": true,
                               "_IsUseRandomTarget": true,
                               "_IsStory": true,
@@ -987,7 +988,7 @@
                               "_IsWaitActionEnd": true,
                               "_IsCheckStench": false,
                               "_IsCheckReserveAIState": false,
-                              "_PlSituation": 2,
+                              "_PlSituation": "[2] PL_SMASH",
                               "_Dist": 5.0,
                               "_IsCheckDist": false
                             }
@@ -1010,7 +1011,7 @@
                               "_IsWaitActionEnd": true,
                               "_IsCheckStench": false,
                               "_IsCheckReserveAIState": false,
-                              "_PlSituation": 3,
+                              "_PlSituation": "[3] PL_RAISE",
                               "_Dist": 5.0,
                               "_IsCheckDist": false
                             }
@@ -1136,7 +1137,7 @@
                               "_IsWaitActionEnd": true,
                               "_IsCheckStench": false,
                               "_IsCheckReserveAIState": true,
-                              "_Type": 0,
+                              "_Type": "[0] InRange",
                               "_CheckDistanceToPL": 15.0,
                               "_HealthNormalizedCheck": 0.0
                             }
@@ -1158,7 +1159,7 @@
                 "_Hash": 2018534892
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -1185,7 +1186,7 @@
                               "_IsWaitActionEnd": false,
                               "_IsCheckStench": false,
                               "_IsCheckReserveAIState": false,
-                              "_DipType": 2
+                              "_DipType": "[2] USE_PQS_HIGHSCORE"
                             }
                           }
                         }
@@ -1206,7 +1207,7 @@
                               "_IsWaitActionEnd": false,
                               "_IsCheckStench": false,
                               "_IsCheckReserveAIState": false,
-                              "_DipType": 3
+                              "_DipType": "[3] USE_PQS_RELAYING"
                             }
                           }
                         }
@@ -1243,7 +1244,7 @@
                 "_Hash": 4179475159
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[2] DESIRE_FROM_TOP",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -1270,7 +1271,7 @@
                               "_IsWaitActionEnd": false,
                               "_IsCheckStench": false,
                               "_IsCheckReserveAIState": false,
-                              "_DipType": 1
+                              "_DipType": "[1] PLAYER_FOLLOW_OLDTYPE"
                             }
                           }
                         }
@@ -1302,7 +1303,7 @@
                 "goatree.cGoalPackage.cGoalEffectHolder": {
                   "_Param": {
                     "app.OtomoGoaTreeGoalEffects.cSetTarget_Param": {
-                      "_Type": 0
+                      "_Type": "[0] PLAYER"
                     }
                   }
                 }
@@ -1317,7 +1318,7 @@
                 "_Hash": 1961984573
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -1355,7 +1356,7 @@
                 "goatree.cGoalPackage.cGoalEffectHolder": {
                   "_Param": {
                     "app.OtomoGoaTreeGoalEffects.cSetPQSTarget_Param": {
-                      "_TargetType": 0,
+                      "_TargetType": "[0] PLAYER",
                       "_ScoringData": {
                         "app.user_data.NpcPQSScoringData": {
                           "ref_instance_id": 218,
@@ -1379,7 +1380,7 @@
                 "_Hash": 1649959970
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -1417,7 +1418,7 @@
                 "goatree.cGoalPackage.cGoalEffectHolder": {
                   "_Param": {
                     "app.OtomoGoaTreeGoalEffects.cSetPQSTarget_Param": {
-                      "_TargetType": 0,
+                      "_TargetType": "[0] PLAYER",
                       "_ScoringData": {
                         "app.user_data.NpcPQSScoringData": {
                           "ref_instance_id": 218,
@@ -1444,7 +1445,7 @@
                 "_Hash": 1504722133
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -1475,7 +1476,7 @@
                   "_Param": {
                     "app.OtomoGoaTreeGoalEffects.cRequestChangeAction_Param": {
                       "_ActionID": "6f830d64-def3-4733-b6d3-a3f4bd831421",
-                      "_AppendDataType": 0
+                      "_AppendDataType": "[0] DEFAULT"
                     }
                   }
                 }
@@ -1490,7 +1491,7 @@
                 "_Hash": 210762985
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -1516,7 +1517,7 @@
                 "_Hash": 1197433793
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -1556,7 +1557,7 @@
                 "_IsEnableCancel": false,
                 "_IsIgnoreInterruptGoalEnd": false,
                 "_IsPressByTargetEm": false,
-                "_CheckDistType": 0,
+                "_CheckDistType": "[0] DEFAULT",
                 "_IsUseWaitTimer": false,
                 "_IsDisableFollowMove": true,
                 "_IsUseRandomTarget": true,
@@ -1575,7 +1576,7 @@
                 "_Hash": 2083150080
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[2] DESIRE_FROM_TOP",
             "_EndlessLoop": true,
             "_ParallelWhenInterrupted": false,
@@ -1602,7 +1603,7 @@
                               "_IsWaitActionEnd": false,
                               "_IsCheckStench": false,
                               "_IsCheckReserveAIState": false,
-                              "_OtStandState": 2
+                              "_OtStandState": "[2] WALL"
                             }
                           }
                         }
@@ -1659,7 +1660,7 @@
                 "_Hash": 3525439881
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -1685,7 +1686,7 @@
                 "_Hash": 548942906
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -1736,7 +1737,7 @@
                 "_Hash": 94396832
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -1787,7 +1788,7 @@
                 "_Hash": 4248269175
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -1813,7 +1814,7 @@
                 "_Hash": 3092937765
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -1856,7 +1857,7 @@
                 "_Hash": 603729864
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -1882,7 +1883,7 @@
                 "_Hash": 1382200798
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": true,
             "_ParallelWhenInterrupted": false,
@@ -1909,7 +1910,7 @@
                               "_IsWaitActionEnd": false,
                               "_IsCheckStench": false,
                               "_IsCheckReserveAIState": false,
-                              "_RangeType": 1,
+                              "_RangeType": "[1] OutRange",
                               "_CheckDistData": {
                                 "app.cCheckDistData": {
                                   "_HorizontalRange": 2.0,
@@ -1975,7 +1976,7 @@
                 "_Hash": 3739993780
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -2014,9 +2015,9 @@
                           "_IsRotAdjust": false,
                           "_IsUseRandomTarget": false,
                           "_IsSelectMoveStopPoint": false,
-                          "_ArriveTargetType": 0,
-                          "_OptionType": 2,
-                          "_ExMoveType": -1
+                          "_ArriveTargetType": "[0] PLAYER",
+                          "_OptionType": "[2] DASH_ONLY",
+                          "_ExMoveType": "[4294967295] NONE"
                         }
                       },
                       "_IsNavigationUpdateInterval": true
@@ -2041,7 +2042,7 @@
                 "_Hash": 1223734738
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -2086,7 +2087,7 @@
                   "_Param": {
                     "app.OtomoGoaTreeGoalEffects.cRequestChangeAction_Param": {
                       "_ActionID": "87be708f-2469-4928-97f7-f9962a0460f7",
-                      "_AppendDataType": 0
+                      "_AppendDataType": "[0] DEFAULT"
                     }
                   }
                 }
@@ -2101,7 +2102,7 @@
                 "_Hash": 2273125334
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -2127,7 +2128,7 @@
                 "_Hash": 3499268020
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[1] SEQUENTIAL",
             "_EndlessLoop": true,
             "_ParallelWhenInterrupted": false,
@@ -2181,7 +2182,7 @@
                 "goatree.cGoalPackage.cGoalEffectHolder": {
                   "_Param": {
                     "app.OtomoGoaTreeGoalEffects.cResetDesire_Param": {
-                      "_DesireType": 10
+                      "_DesireType": "[10] Gathring"
                     }
                   }
                 }
@@ -2196,7 +2197,7 @@
                 "_Hash": 2864226262
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -2226,7 +2227,7 @@
                 "goatree.cGoalPackage.cGoalEffectHolder": {
                   "_Param": {
                     "app.OtomoGoaTreeGoalEffects.cSetTarget_Param": {
-                      "_Type": 5
+                      "_Type": "[5] ITEM_POP"
                     }
                   }
                 }
@@ -2235,8 +2236,8 @@
                 "goatree.cGoalPackage.cGoalEffectHolder": {
                   "_Param": {
                     "app.OtomoGoaTreeGoalEffects.cMoveStart_Param": {
-                      "_OffsetType": 0,
-                      "_CalcType": 0,
+                      "_OffsetType": "[0] NONE",
+                      "_CalcType": "[0] TARGET_ROTATE_BASE",
                       "_MoveInfo": {
                         "app.mcOtomoMoveController.cRequestMoveInfo": {
                           "_SkipEndMotion": false,
@@ -2246,13 +2247,13 @@
                           "_IsRotAdjust": false,
                           "_IsUseRandomTarget": false,
                           "_IsSelectMoveStopPoint": false,
-                          "_ArriveTargetType": 4,
-                          "_OptionType": 2,
-                          "_ExMoveType": -1
+                          "_ArriveTargetType": "[4] GATHERING",
+                          "_OptionType": "[2] DASH_ONLY",
+                          "_ExMoveType": "[4294967295] NONE"
                         }
                       },
                       "_IsNavigationUpdateInterval": true,
-                      "_UsePQSType": 0,
+                      "_UsePQSType": "[0] NONE",
                       "_IsFixTargetPos": true
                     }
                   }
@@ -2275,7 +2276,7 @@
                 "_Hash": 3615912322
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[2] DESIRE_FROM_TOP",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -2338,7 +2339,7 @@
                 "_Hash": 641081020
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -2369,7 +2370,7 @@
                   "_Param": {
                     "app.OtomoGoaTreeGoalEffects.cRequestChangeAction_Param": {
                       "_ActionID": "8007db0b-d2c7-4397-a245-bd9dff3522fe",
-                      "_AppendDataType": 0
+                      "_AppendDataType": "[0] DEFAULT"
                     }
                   }
                 }
@@ -2391,7 +2392,7 @@
                 "_Hash": 2350937041
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -2422,7 +2423,7 @@
                   "_Param": {
                     "app.OtomoGoaTreeGoalEffects.cRequestChangeAction_Param": {
                       "_ActionID": "c9f0e9c3-67b1-4cd2-87e3-f1eb09e93138",
-                      "_AppendDataType": 0
+                      "_AppendDataType": "[0] DEFAULT"
                     }
                   }
                 }
@@ -2444,7 +2445,7 @@
                 "_Hash": 2167311364
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -2470,7 +2471,7 @@
                 "_Hash": 434509852
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[1] SEQUENTIAL",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -2529,7 +2530,7 @@
                 "_Hash": 1955765293
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -2559,8 +2560,8 @@
                 "goatree.cGoalPackage.cGoalEffectHolder": {
                   "_Param": {
                     "app.OtomoGoaTreeGoalEffects.cMoveStart_Param": {
-                      "_OffsetType": 0,
-                      "_CalcType": 0,
+                      "_OffsetType": "[0] NONE",
+                      "_CalcType": "[0] TARGET_ROTATE_BASE",
                       "_MoveInfo": {
                         "app.mcOtomoMoveController.cRequestMoveInfo": {
                           "_SkipEndMotion": false,
@@ -2570,13 +2571,13 @@
                           "_IsRotAdjust": true,
                           "_IsUseRandomTarget": false,
                           "_IsSelectMoveStopPoint": false,
-                          "_ArriveTargetType": 12,
-                          "_OptionType": 0,
-                          "_ExMoveType": -1
+                          "_ArriveTargetType": "[12] NONE",
+                          "_OptionType": "[0] NONE",
+                          "_ExMoveType": "[4294967295] NONE"
                         }
                       },
                       "_IsNavigationUpdateInterval": true,
-                      "_UsePQSType": 0,
+                      "_UsePQSType": "[0] NONE",
                       "_IsFixTargetPos": true
                     }
                   }
@@ -2592,7 +2593,7 @@
                 "_Hash": 2261644195
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -2623,7 +2624,7 @@
                   "_Param": {
                     "app.OtomoGoaTreeGoalEffects.cRequestChangeAction_Param": {
                       "_ActionID": "48f511c8-de7a-415e-93a6-4096fe45e41d",
-                      "_AppendDataType": 0
+                      "_AppendDataType": "[0] DEFAULT"
                     }
                   }
                 }

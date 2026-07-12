@@ -25,49 +25,35 @@
       "_CommandArgArray": [
         {
           "app.btable.EmCommonCommand.cCheckDestinationRelationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDestinationRelationArg.RELATION_CHECK_TYPE>": 0
-            }
+            "_EditType": "[0] HIGH"
           }
         },
         {
           "app.btable.EmCommonCommand.cCheckTargetTypeArg": {
-            "_EditCategory": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckTargetTypeArg.CATEGORY>": 1
-            },
+            "_EditCategory": "[1] ENEMY",
             "Enemy": {
               "app.btable.EmCommonCommand.cCheckTypeEnemyArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.ID_Fixed>": 1663995904
-                }
+                "_EditArg": "[1663995904] EM0113_51_0"
               }
             },
             "Gimmick": {
               "app.btable.EmCommonCommand.cCheckTypeGimmickArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.GimmickDef.ID_Fixed>": 0
-                }
+                "_EditArg": "[0] INVALID"
               }
             },
             "Event": {
               "app.btable.EmCommonCommand.cCheckTypeEventArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleEvent.cRequestEventPlayArg.PLAY_TARGET>": 0
-                }
+                "_EditArg": "[0] NONE"
               }
             },
             "OptionID": {
               "app.btable.EmCommonCommand.cCheckTypeEnemyRoleIDArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.ROLE_ID>": 0
-                }
+                "_EditArg": "[0] NORMAL"
               }
             },
             "NpcJack": {
               "app.btable.EmCommonCommand.cCheckTypeNpcJackArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.NpcDef.EM_JACK_ACTION_Fixed>": 0
-                }
+                "_EditArg": 0
               }
             },
             "CombatEm": {
@@ -85,14 +71,12 @@
         },
         {
           "app.btable.EmCommonCommand.cCheckStatusArg": {
-            "_EditCategory": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusArg.CATEGORY>": 7
-            },
+            "_EditCategory": "[7] DANGER_LEVEL",
             "StandState": {
               "app.btable.EmCommonCommand.cCheckStatusStandStateArg": {
                 "_EditState": {
                   "ace.btable.cEditFieldDropBox`1<app.btable.EmCommonCommand.cCheckStatusStandStateArg.STAND_STATE_HOLDER>": {
-                    "STRUCT__Value_Type": 0,
+                    "STRUCT__Value_Type": "[0] COMMON",
                     "STRUCT__Value_Value": 0
                   }
                 }
@@ -100,16 +84,12 @@
             },
             "BadConditions": {
               "app.btable.EmCommonCommand.cCheckStatusBadConditionsArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusBadConditionsArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] POISON"
               }
             },
             "Status": {
               "app.btable.EmCommonCommand.cCheckStatusStatusArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusStatusArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] ANGRY"
               }
             },
             "Health": {
@@ -121,51 +101,37 @@
             },
             "AIState": {
               "app.btable.EmCommonCommand.cCheckStatusAIStateArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusAIStateArg.AI_TYPE>": 0
-                }
+                "_EditArg": "[0] LIFE"
               }
             },
             "HolderType": {
               "app.btable.EmCommonCommand.cCheckStatusHolderTypeArg": {
-                "_EditHolderType": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleHold.HOLD_ROLE>": 0
-                }
+                "_EditHolderType": "[0] NONE"
               }
             },
             "DangerLevel": {
               "app.btable.EmCommonCommand.cCheckStatusDangerLevelArg": {
-                "_EditCheckType": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusDangerLevelArg.CHECK_TYPE>": 3
-                }
+                "_EditCheckType": "[3] OR_LOW"
               }
             },
             "NPCJackSituation": {
               "app.btable.cCheckStatusNPCJackSituation": {
-                "_EditSituation": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleNpcJack.SITUATION>": 0
-                }
+                "_EditSituation": "[0] NONE"
               }
             },
             "DownDir": {
               "app.btable.cCheckStatusDownDirArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckStatusDownDirArg.TYPE>": 0
-                }
+                "_EditArg": "[0] LEFT"
               }
             },
             "GroundMaterial": {
               "app.btable.cCheckGroundMaterialArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckGroundMaterialArg.TYPE>": 0
-                }
+                "_EditArg": "[0] SNOW"
               }
             },
             "Stage": {
               "app.btable.cCheckStage": {
-                "_CheckStage": {
-                  "ace.btable.cEditFieldEnum`1<app.FieldDef.STAGE>": 0
-                },
+                "_CheckStage": "[0] ST101",
                 "_IsCheckAreaNo": {
                   "ace.btable.cEditFieldBool": true
                 },
@@ -181,42 +147,30 @@
         },
         {
           "app.btable.EmCommonCommand.cCheckTargetTypeArg": {
-            "_EditCategory": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckTargetTypeArg.CATEGORY>": 1
-            },
+            "_EditCategory": "[1] ENEMY",
             "Enemy": {
               "app.btable.EmCommonCommand.cCheckTypeEnemyArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.ID_Fixed>": 1411933184
-                }
+                "_EditArg": "[1411933184] EM0002_50_0"
               }
             },
             "Gimmick": {
               "app.btable.EmCommonCommand.cCheckTypeGimmickArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.GimmickDef.ID_Fixed>": 0
-                }
+                "_EditArg": "[0] INVALID"
               }
             },
             "Event": {
               "app.btable.EmCommonCommand.cCheckTypeEventArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleEvent.cRequestEventPlayArg.PLAY_TARGET>": 0
-                }
+                "_EditArg": "[0] NONE"
               }
             },
             "OptionID": {
               "app.btable.EmCommonCommand.cCheckTypeEnemyRoleIDArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.ROLE_ID>": 0
-                }
+                "_EditArg": "[0] NORMAL"
               }
             },
             "NpcJack": {
               "app.btable.EmCommonCommand.cCheckTypeNpcJackArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.NpcDef.EM_JACK_ACTION_Fixed>": 0
-                }
+                "_EditArg": 0
               }
             },
             "CombatEm": {
@@ -234,14 +188,12 @@
         },
         {
           "app.btable.EmCommonCommand.cCheckStatusArg": {
-            "_EditCategory": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusArg.CATEGORY>": 7
-            },
+            "_EditCategory": "[7] DANGER_LEVEL",
             "StandState": {
               "app.btable.EmCommonCommand.cCheckStatusStandStateArg": {
                 "_EditState": {
                   "ace.btable.cEditFieldDropBox`1<app.btable.EmCommonCommand.cCheckStatusStandStateArg.STAND_STATE_HOLDER>": {
-                    "STRUCT__Value_Type": 0,
+                    "STRUCT__Value_Type": "[0] COMMON",
                     "STRUCT__Value_Value": 0
                   }
                 }
@@ -249,16 +201,12 @@
             },
             "BadConditions": {
               "app.btable.EmCommonCommand.cCheckStatusBadConditionsArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusBadConditionsArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] POISON"
               }
             },
             "Status": {
               "app.btable.EmCommonCommand.cCheckStatusStatusArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusStatusArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] ANGRY"
               }
             },
             "Health": {
@@ -270,51 +218,37 @@
             },
             "AIState": {
               "app.btable.EmCommonCommand.cCheckStatusAIStateArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusAIStateArg.AI_TYPE>": 0
-                }
+                "_EditArg": "[0] LIFE"
               }
             },
             "HolderType": {
               "app.btable.EmCommonCommand.cCheckStatusHolderTypeArg": {
-                "_EditHolderType": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleHold.HOLD_ROLE>": 0
-                }
+                "_EditHolderType": "[0] NONE"
               }
             },
             "DangerLevel": {
               "app.btable.EmCommonCommand.cCheckStatusDangerLevelArg": {
-                "_EditCheckType": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusDangerLevelArg.CHECK_TYPE>": 3
-                }
+                "_EditCheckType": "[3] OR_LOW"
               }
             },
             "NPCJackSituation": {
               "app.btable.cCheckStatusNPCJackSituation": {
-                "_EditSituation": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleNpcJack.SITUATION>": 0
-                }
+                "_EditSituation": "[0] NONE"
               }
             },
             "DownDir": {
               "app.btable.cCheckStatusDownDirArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckStatusDownDirArg.TYPE>": 0
-                }
+                "_EditArg": "[0] LEFT"
               }
             },
             "GroundMaterial": {
               "app.btable.cCheckGroundMaterialArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckGroundMaterialArg.TYPE>": 0
-                }
+                "_EditArg": "[0] SNOW"
               }
             },
             "Stage": {
               "app.btable.cCheckStage": {
-                "_CheckStage": {
-                  "ace.btable.cEditFieldEnum`1<app.FieldDef.STAGE>": 0
-                },
+                "_CheckStage": "[0] ST101",
                 "_IsCheckAreaNo": {
                   "ace.btable.cEditFieldBool": true
                 },
@@ -330,42 +264,30 @@
         },
         {
           "app.btable.EmCommonCommand.cCheckTargetTypeArg": {
-            "_EditCategory": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckTargetTypeArg.CATEGORY>": 1
-            },
+            "_EditCategory": "[1] ENEMY",
             "Enemy": {
               "app.btable.EmCommonCommand.cCheckTypeEnemyArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.ID_Fixed>": 107194928
-                }
+                "_EditArg": "[107194928] EM0100_51_0"
               }
             },
             "Gimmick": {
               "app.btable.EmCommonCommand.cCheckTypeGimmickArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.GimmickDef.ID_Fixed>": 0
-                }
+                "_EditArg": "[0] INVALID"
               }
             },
             "Event": {
               "app.btable.EmCommonCommand.cCheckTypeEventArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleEvent.cRequestEventPlayArg.PLAY_TARGET>": 0
-                }
+                "_EditArg": "[0] NONE"
               }
             },
             "OptionID": {
               "app.btable.EmCommonCommand.cCheckTypeEnemyRoleIDArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.ROLE_ID>": 0
-                }
+                "_EditArg": "[0] NORMAL"
               }
             },
             "NpcJack": {
               "app.btable.EmCommonCommand.cCheckTypeNpcJackArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.NpcDef.EM_JACK_ACTION_Fixed>": 0
-                }
+                "_EditArg": 0
               }
             },
             "CombatEm": {
@@ -383,14 +305,12 @@
         },
         {
           "app.btable.EmCommonCommand.cCheckStatusArg": {
-            "_EditCategory": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusArg.CATEGORY>": 7
-            },
+            "_EditCategory": "[7] DANGER_LEVEL",
             "StandState": {
               "app.btable.EmCommonCommand.cCheckStatusStandStateArg": {
                 "_EditState": {
                   "ace.btable.cEditFieldDropBox`1<app.btable.EmCommonCommand.cCheckStatusStandStateArg.STAND_STATE_HOLDER>": {
-                    "STRUCT__Value_Type": 0,
+                    "STRUCT__Value_Type": "[0] COMMON",
                     "STRUCT__Value_Value": 0
                   }
                 }
@@ -398,16 +318,12 @@
             },
             "BadConditions": {
               "app.btable.EmCommonCommand.cCheckStatusBadConditionsArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusBadConditionsArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] POISON"
               }
             },
             "Status": {
               "app.btable.EmCommonCommand.cCheckStatusStatusArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusStatusArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] ANGRY"
               }
             },
             "Health": {
@@ -419,51 +335,37 @@
             },
             "AIState": {
               "app.btable.EmCommonCommand.cCheckStatusAIStateArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusAIStateArg.AI_TYPE>": 0
-                }
+                "_EditArg": "[0] LIFE"
               }
             },
             "HolderType": {
               "app.btable.EmCommonCommand.cCheckStatusHolderTypeArg": {
-                "_EditHolderType": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleHold.HOLD_ROLE>": 0
-                }
+                "_EditHolderType": "[0] NONE"
               }
             },
             "DangerLevel": {
               "app.btable.EmCommonCommand.cCheckStatusDangerLevelArg": {
-                "_EditCheckType": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusDangerLevelArg.CHECK_TYPE>": 3
-                }
+                "_EditCheckType": "[3] OR_LOW"
               }
             },
             "NPCJackSituation": {
               "app.btable.cCheckStatusNPCJackSituation": {
-                "_EditSituation": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleNpcJack.SITUATION>": 0
-                }
+                "_EditSituation": "[0] NONE"
               }
             },
             "DownDir": {
               "app.btable.cCheckStatusDownDirArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckStatusDownDirArg.TYPE>": 0
-                }
+                "_EditArg": "[0] LEFT"
               }
             },
             "GroundMaterial": {
               "app.btable.cCheckGroundMaterialArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckGroundMaterialArg.TYPE>": 0
-                }
+                "_EditArg": "[0] SNOW"
               }
             },
             "Stage": {
               "app.btable.cCheckStage": {
-                "_CheckStage": {
-                  "ace.btable.cEditFieldEnum`1<app.FieldDef.STAGE>": 0
-                },
+                "_CheckStage": "[0] ST101",
                 "_IsCheckAreaNo": {
                   "ace.btable.cEditFieldBool": true
                 },
@@ -479,42 +381,30 @@
         },
         {
           "app.btable.EmCommonCommand.cCheckTargetTypeArg": {
-            "_EditCategory": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckTargetTypeArg.CATEGORY>": 1
-            },
+            "_EditCategory": "[1] ENEMY",
             "Enemy": {
               "app.btable.EmCommonCommand.cCheckTypeEnemyArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.ID_Fixed>": -1916429696
-                }
+                "_EditArg": "[2378537600] EM0150_50_0"
               }
             },
             "Gimmick": {
               "app.btable.EmCommonCommand.cCheckTypeGimmickArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.GimmickDef.ID_Fixed>": 0
-                }
+                "_EditArg": "[0] INVALID"
               }
             },
             "Event": {
               "app.btable.EmCommonCommand.cCheckTypeEventArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleEvent.cRequestEventPlayArg.PLAY_TARGET>": 0
-                }
+                "_EditArg": "[0] NONE"
               }
             },
             "OptionID": {
               "app.btable.EmCommonCommand.cCheckTypeEnemyRoleIDArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.ROLE_ID>": 0
-                }
+                "_EditArg": "[0] NORMAL"
               }
             },
             "NpcJack": {
               "app.btable.EmCommonCommand.cCheckTypeNpcJackArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.NpcDef.EM_JACK_ACTION_Fixed>": 0
-                }
+                "_EditArg": 0
               }
             },
             "CombatEm": {
@@ -532,14 +422,12 @@
         },
         {
           "app.btable.EmCommonCommand.cCheckStatusArg": {
-            "_EditCategory": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusArg.CATEGORY>": 7
-            },
+            "_EditCategory": "[7] DANGER_LEVEL",
             "StandState": {
               "app.btable.EmCommonCommand.cCheckStatusStandStateArg": {
                 "_EditState": {
                   "ace.btable.cEditFieldDropBox`1<app.btable.EmCommonCommand.cCheckStatusStandStateArg.STAND_STATE_HOLDER>": {
-                    "STRUCT__Value_Type": 0,
+                    "STRUCT__Value_Type": "[0] COMMON",
                     "STRUCT__Value_Value": 0
                   }
                 }
@@ -547,16 +435,12 @@
             },
             "BadConditions": {
               "app.btable.EmCommonCommand.cCheckStatusBadConditionsArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusBadConditionsArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] POISON"
               }
             },
             "Status": {
               "app.btable.EmCommonCommand.cCheckStatusStatusArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusStatusArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] ANGRY"
               }
             },
             "Health": {
@@ -568,51 +452,37 @@
             },
             "AIState": {
               "app.btable.EmCommonCommand.cCheckStatusAIStateArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusAIStateArg.AI_TYPE>": 0
-                }
+                "_EditArg": "[0] LIFE"
               }
             },
             "HolderType": {
               "app.btable.EmCommonCommand.cCheckStatusHolderTypeArg": {
-                "_EditHolderType": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleHold.HOLD_ROLE>": 0
-                }
+                "_EditHolderType": "[0] NONE"
               }
             },
             "DangerLevel": {
               "app.btable.EmCommonCommand.cCheckStatusDangerLevelArg": {
-                "_EditCheckType": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusDangerLevelArg.CHECK_TYPE>": 3
-                }
+                "_EditCheckType": "[3] OR_LOW"
               }
             },
             "NPCJackSituation": {
               "app.btable.cCheckStatusNPCJackSituation": {
-                "_EditSituation": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleNpcJack.SITUATION>": 0
-                }
+                "_EditSituation": "[0] NONE"
               }
             },
             "DownDir": {
               "app.btable.cCheckStatusDownDirArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckStatusDownDirArg.TYPE>": 0
-                }
+                "_EditArg": "[0] LEFT"
               }
             },
             "GroundMaterial": {
               "app.btable.cCheckGroundMaterialArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckGroundMaterialArg.TYPE>": 0
-                }
+                "_EditArg": "[0] SNOW"
               }
             },
             "Stage": {
               "app.btable.cCheckStage": {
-                "_CheckStage": {
-                  "ace.btable.cEditFieldEnum`1<app.FieldDef.STAGE>": 0
-                },
+                "_CheckStage": "[0] ST101",
                 "_IsCheckAreaNo": {
                   "ace.btable.cEditFieldBool": true
                 },
@@ -628,14 +498,12 @@
         },
         {
           "app.btable.EmCommonCommand.cCheckStatusArg": {
-            "_EditCategory": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusArg.CATEGORY>": 7
-            },
+            "_EditCategory": "[7] DANGER_LEVEL",
             "StandState": {
               "app.btable.EmCommonCommand.cCheckStatusStandStateArg": {
                 "_EditState": {
                   "ace.btable.cEditFieldDropBox`1<app.btable.EmCommonCommand.cCheckStatusStandStateArg.STAND_STATE_HOLDER>": {
-                    "STRUCT__Value_Type": 0,
+                    "STRUCT__Value_Type": "[0] COMMON",
                     "STRUCT__Value_Value": 0
                   }
                 }
@@ -643,16 +511,12 @@
             },
             "BadConditions": {
               "app.btable.EmCommonCommand.cCheckStatusBadConditionsArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusBadConditionsArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] POISON"
               }
             },
             "Status": {
               "app.btable.EmCommonCommand.cCheckStatusStatusArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusStatusArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] ANGRY"
               }
             },
             "Health": {
@@ -664,51 +528,37 @@
             },
             "AIState": {
               "app.btable.EmCommonCommand.cCheckStatusAIStateArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusAIStateArg.AI_TYPE>": 0
-                }
+                "_EditArg": "[0] LIFE"
               }
             },
             "HolderType": {
               "app.btable.EmCommonCommand.cCheckStatusHolderTypeArg": {
-                "_EditHolderType": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleHold.HOLD_ROLE>": 0
-                }
+                "_EditHolderType": "[0] NONE"
               }
             },
             "DangerLevel": {
               "app.btable.EmCommonCommand.cCheckStatusDangerLevelArg": {
-                "_EditCheckType": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusDangerLevelArg.CHECK_TYPE>": 3
-                }
+                "_EditCheckType": "[3] OR_LOW"
               }
             },
             "NPCJackSituation": {
               "app.btable.cCheckStatusNPCJackSituation": {
-                "_EditSituation": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleNpcJack.SITUATION>": 0
-                }
+                "_EditSituation": "[0] NONE"
               }
             },
             "DownDir": {
               "app.btable.cCheckStatusDownDirArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckStatusDownDirArg.TYPE>": 0
-                }
+                "_EditArg": "[0] LEFT"
               }
             },
             "GroundMaterial": {
               "app.btable.cCheckGroundMaterialArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckGroundMaterialArg.TYPE>": 0
-                }
+                "_EditArg": "[0] SNOW"
               }
             },
             "Stage": {
               "app.btable.cCheckStage": {
-                "_CheckStage": {
-                  "ace.btable.cEditFieldEnum`1<app.FieldDef.STAGE>": 0
-                },
+                "_CheckStage": "[0] ST101",
                 "_IsCheckAreaNo": {
                   "ace.btable.cEditFieldBool": true
                 },
@@ -727,18 +577,10 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 8.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDistanceArg.CHECK_TYPE>": 0
-            },
-            "_CheckHeightType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDistanceArg.CHECK_HEIGHT_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDistanceArg.AXIS_TYPE>": 0
-            },
-            "_BaseType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDistanceArg.BASE_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_CheckHeightType": "[0] HIGH",
+            "_AxisType": "[0] XZ",
+            "_BaseType": "[0] SELF"
           }
         },
         {
@@ -746,18 +588,10 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 12.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDistanceArg.CHECK_TYPE>": 0
-            },
-            "_CheckHeightType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDistanceArg.CHECK_HEIGHT_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDistanceArg.AXIS_TYPE>": 0
-            },
-            "_BaseType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDistanceArg.BASE_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_CheckHeightType": "[0] HIGH",
+            "_AxisType": "[0] XZ",
+            "_BaseType": "[0] SELF"
           }
         },
         {
@@ -765,18 +599,10 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 18.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDistanceArg.CHECK_TYPE>": 0
-            },
-            "_CheckHeightType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDistanceArg.CHECK_HEIGHT_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDistanceArg.AXIS_TYPE>": 0
-            },
-            "_BaseType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDistanceArg.BASE_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_CheckHeightType": "[0] HIGH",
+            "_AxisType": "[0] XZ",
+            "_BaseType": "[0] SELF"
           }
         },
         {
@@ -784,30 +610,20 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 25.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDistanceArg.CHECK_TYPE>": 0
-            },
-            "_CheckHeightType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDistanceArg.CHECK_HEIGHT_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDistanceArg.AXIS_TYPE>": 0
-            },
-            "_BaseType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDistanceArg.BASE_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_CheckHeightType": "[0] HIGH",
+            "_AxisType": "[0] XZ",
+            "_BaseType": "[0] SELF"
           }
         },
         {
           "app.btable.EmCommonCommand.cCheckStatusArg": {
-            "_EditCategory": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusArg.CATEGORY>": 3
-            },
+            "_EditCategory": "[3] STATUS",
             "StandState": {
               "app.btable.EmCommonCommand.cCheckStatusStandStateArg": {
                 "_EditState": {
                   "ace.btable.cEditFieldDropBox`1<app.btable.EmCommonCommand.cCheckStatusStandStateArg.STAND_STATE_HOLDER>": {
-                    "STRUCT__Value_Type": 0,
+                    "STRUCT__Value_Type": "[0] COMMON",
                     "STRUCT__Value_Value": 0
                   }
                 }
@@ -815,16 +631,12 @@
             },
             "BadConditions": {
               "app.btable.EmCommonCommand.cCheckStatusBadConditionsArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusBadConditionsArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] POISON"
               }
             },
             "Status": {
               "app.btable.EmCommonCommand.cCheckStatusStatusArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusStatusArg.CONDITION_TYPE>": 1
-                }
+                "_EditArg": "[1] TIRED"
               }
             },
             "Health": {
@@ -836,51 +648,37 @@
             },
             "AIState": {
               "app.btable.EmCommonCommand.cCheckStatusAIStateArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusAIStateArg.AI_TYPE>": 0
-                }
+                "_EditArg": "[0] LIFE"
               }
             },
             "HolderType": {
               "app.btable.EmCommonCommand.cCheckStatusHolderTypeArg": {
-                "_EditHolderType": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleHold.HOLD_ROLE>": 0
-                }
+                "_EditHolderType": "[0] NONE"
               }
             },
             "DangerLevel": {
               "app.btable.EmCommonCommand.cCheckStatusDangerLevelArg": {
-                "_EditCheckType": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusDangerLevelArg.CHECK_TYPE>": 0
-                }
+                "_EditCheckType": "[0] HIGH"
               }
             },
             "NPCJackSituation": {
               "app.btable.cCheckStatusNPCJackSituation": {
-                "_EditSituation": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleNpcJack.SITUATION>": 0
-                }
+                "_EditSituation": "[0] NONE"
               }
             },
             "DownDir": {
               "app.btable.cCheckStatusDownDirArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckStatusDownDirArg.TYPE>": 0
-                }
+                "_EditArg": "[0] LEFT"
               }
             },
             "GroundMaterial": {
               "app.btable.cCheckGroundMaterialArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckGroundMaterialArg.TYPE>": 0
-                }
+                "_EditArg": "[0] SNOW"
               }
             },
             "Stage": {
               "app.btable.cCheckStage": {
-                "_CheckStage": {
-                  "ace.btable.cEditFieldEnum`1<app.FieldDef.STAGE>": 0
-                },
+                "_CheckStage": "[0] ST101",
                 "_IsCheckAreaNo": {
                   "ace.btable.cEditFieldBool": true
                 },
@@ -896,14 +694,12 @@
         },
         {
           "app.btable.EmCommonCommand.cCheckStatusArg": {
-            "_EditCategory": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusArg.CATEGORY>": 3
-            },
+            "_EditCategory": "[3] STATUS",
             "StandState": {
               "app.btable.EmCommonCommand.cCheckStatusStandStateArg": {
                 "_EditState": {
                   "ace.btable.cEditFieldDropBox`1<app.btable.EmCommonCommand.cCheckStatusStandStateArg.STAND_STATE_HOLDER>": {
-                    "STRUCT__Value_Type": 0,
+                    "STRUCT__Value_Type": "[0] COMMON",
                     "STRUCT__Value_Value": 0
                   }
                 }
@@ -911,16 +707,12 @@
             },
             "BadConditions": {
               "app.btable.EmCommonCommand.cCheckStatusBadConditionsArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusBadConditionsArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] POISON"
               }
             },
             "Status": {
               "app.btable.EmCommonCommand.cCheckStatusStatusArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusStatusArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] ANGRY"
               }
             },
             "Health": {
@@ -932,51 +724,37 @@
             },
             "AIState": {
               "app.btable.EmCommonCommand.cCheckStatusAIStateArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusAIStateArg.AI_TYPE>": 0
-                }
+                "_EditArg": "[0] LIFE"
               }
             },
             "HolderType": {
               "app.btable.EmCommonCommand.cCheckStatusHolderTypeArg": {
-                "_EditHolderType": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleHold.HOLD_ROLE>": 0
-                }
+                "_EditHolderType": "[0] NONE"
               }
             },
             "DangerLevel": {
               "app.btable.EmCommonCommand.cCheckStatusDangerLevelArg": {
-                "_EditCheckType": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusDangerLevelArg.CHECK_TYPE>": 0
-                }
+                "_EditCheckType": "[0] HIGH"
               }
             },
             "NPCJackSituation": {
               "app.btable.cCheckStatusNPCJackSituation": {
-                "_EditSituation": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleNpcJack.SITUATION>": 0
-                }
+                "_EditSituation": "[0] NONE"
               }
             },
             "DownDir": {
               "app.btable.cCheckStatusDownDirArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckStatusDownDirArg.TYPE>": 0
-                }
+                "_EditArg": "[0] LEFT"
               }
             },
             "GroundMaterial": {
               "app.btable.cCheckGroundMaterialArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckGroundMaterialArg.TYPE>": 0
-                }
+                "_EditArg": "[0] SNOW"
               }
             },
             "Stage": {
               "app.btable.cCheckStage": {
-                "_CheckStage": {
-                  "ace.btable.cEditFieldEnum`1<app.FieldDef.STAGE>": 0
-                },
+                "_CheckStage": "[0] ST101",
                 "_IsCheckAreaNo": {
                   "ace.btable.cEditFieldBool": true
                 },
@@ -992,14 +770,12 @@
         },
         {
           "app.btable.EmCommonCommand.cCheckStatusArg": {
-            "_EditCategory": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusArg.CATEGORY>": 3
-            },
+            "_EditCategory": "[3] STATUS",
             "StandState": {
               "app.btable.EmCommonCommand.cCheckStatusStandStateArg": {
                 "_EditState": {
                   "ace.btable.cEditFieldDropBox`1<app.btable.EmCommonCommand.cCheckStatusStandStateArg.STAND_STATE_HOLDER>": {
-                    "STRUCT__Value_Type": 0,
+                    "STRUCT__Value_Type": "[0] COMMON",
                     "STRUCT__Value_Value": 0
                   }
                 }
@@ -1007,16 +783,12 @@
             },
             "BadConditions": {
               "app.btable.EmCommonCommand.cCheckStatusBadConditionsArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusBadConditionsArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] POISON"
               }
             },
             "Status": {
               "app.btable.EmCommonCommand.cCheckStatusStatusArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusStatusArg.CONDITION_TYPE>": 1
-                }
+                "_EditArg": "[1] TIRED"
               }
             },
             "Health": {
@@ -1028,51 +800,37 @@
             },
             "AIState": {
               "app.btable.EmCommonCommand.cCheckStatusAIStateArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusAIStateArg.AI_TYPE>": 0
-                }
+                "_EditArg": "[0] LIFE"
               }
             },
             "HolderType": {
               "app.btable.EmCommonCommand.cCheckStatusHolderTypeArg": {
-                "_EditHolderType": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleHold.HOLD_ROLE>": 0
-                }
+                "_EditHolderType": "[0] NONE"
               }
             },
             "DangerLevel": {
               "app.btable.EmCommonCommand.cCheckStatusDangerLevelArg": {
-                "_EditCheckType": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusDangerLevelArg.CHECK_TYPE>": 0
-                }
+                "_EditCheckType": "[0] HIGH"
               }
             },
             "NPCJackSituation": {
               "app.btable.cCheckStatusNPCJackSituation": {
-                "_EditSituation": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleNpcJack.SITUATION>": 0
-                }
+                "_EditSituation": "[0] NONE"
               }
             },
             "DownDir": {
               "app.btable.cCheckStatusDownDirArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckStatusDownDirArg.TYPE>": 0
-                }
+                "_EditArg": "[0] LEFT"
               }
             },
             "GroundMaterial": {
               "app.btable.cCheckGroundMaterialArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckGroundMaterialArg.TYPE>": 0
-                }
+                "_EditArg": "[0] SNOW"
               }
             },
             "Stage": {
               "app.btable.cCheckStage": {
-                "_CheckStage": {
-                  "ace.btable.cEditFieldEnum`1<app.FieldDef.STAGE>": 0
-                },
+                "_CheckStage": "[0] ST101",
                 "_IsCheckAreaNo": {
                   "ace.btable.cEditFieldBool": true
                 },
@@ -1088,14 +846,12 @@
         },
         {
           "app.btable.EmCommonCommand.cCheckStatusArg": {
-            "_EditCategory": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusArg.CATEGORY>": 3
-            },
+            "_EditCategory": "[3] STATUS",
             "StandState": {
               "app.btable.EmCommonCommand.cCheckStatusStandStateArg": {
                 "_EditState": {
                   "ace.btable.cEditFieldDropBox`1<app.btable.EmCommonCommand.cCheckStatusStandStateArg.STAND_STATE_HOLDER>": {
-                    "STRUCT__Value_Type": 0,
+                    "STRUCT__Value_Type": "[0] COMMON",
                     "STRUCT__Value_Value": 0
                   }
                 }
@@ -1103,16 +859,12 @@
             },
             "BadConditions": {
               "app.btable.EmCommonCommand.cCheckStatusBadConditionsArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusBadConditionsArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] POISON"
               }
             },
             "Status": {
               "app.btable.EmCommonCommand.cCheckStatusStatusArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusStatusArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] ANGRY"
               }
             },
             "Health": {
@@ -1124,51 +876,37 @@
             },
             "AIState": {
               "app.btable.EmCommonCommand.cCheckStatusAIStateArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusAIStateArg.AI_TYPE>": 0
-                }
+                "_EditArg": "[0] LIFE"
               }
             },
             "HolderType": {
               "app.btable.EmCommonCommand.cCheckStatusHolderTypeArg": {
-                "_EditHolderType": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleHold.HOLD_ROLE>": 0
-                }
+                "_EditHolderType": "[0] NONE"
               }
             },
             "DangerLevel": {
               "app.btable.EmCommonCommand.cCheckStatusDangerLevelArg": {
-                "_EditCheckType": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusDangerLevelArg.CHECK_TYPE>": 0
-                }
+                "_EditCheckType": "[0] HIGH"
               }
             },
             "NPCJackSituation": {
               "app.btable.cCheckStatusNPCJackSituation": {
-                "_EditSituation": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleNpcJack.SITUATION>": 0
-                }
+                "_EditSituation": "[0] NONE"
               }
             },
             "DownDir": {
               "app.btable.cCheckStatusDownDirArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckStatusDownDirArg.TYPE>": 0
-                }
+                "_EditArg": "[0] LEFT"
               }
             },
             "GroundMaterial": {
               "app.btable.cCheckGroundMaterialArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckGroundMaterialArg.TYPE>": 0
-                }
+                "_EditArg": "[0] SNOW"
               }
             },
             "Stage": {
               "app.btable.cCheckStage": {
-                "_CheckStage": {
-                  "ace.btable.cEditFieldEnum`1<app.FieldDef.STAGE>": 0
-                },
+                "_CheckStage": "[0] ST101",
                 "_IsCheckAreaNo": {
                   "ace.btable.cEditFieldBool": true
                 },
@@ -1184,14 +922,12 @@
         },
         {
           "app.btable.EmCommonCommand.cCheckStatusArg": {
-            "_EditCategory": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusArg.CATEGORY>": 3
-            },
+            "_EditCategory": "[3] STATUS",
             "StandState": {
               "app.btable.EmCommonCommand.cCheckStatusStandStateArg": {
                 "_EditState": {
                   "ace.btable.cEditFieldDropBox`1<app.btable.EmCommonCommand.cCheckStatusStandStateArg.STAND_STATE_HOLDER>": {
-                    "STRUCT__Value_Type": 0,
+                    "STRUCT__Value_Type": "[0] COMMON",
                     "STRUCT__Value_Value": 0
                   }
                 }
@@ -1199,16 +935,12 @@
             },
             "BadConditions": {
               "app.btable.EmCommonCommand.cCheckStatusBadConditionsArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusBadConditionsArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] POISON"
               }
             },
             "Status": {
               "app.btable.EmCommonCommand.cCheckStatusStatusArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusStatusArg.CONDITION_TYPE>": 1
-                }
+                "_EditArg": "[1] TIRED"
               }
             },
             "Health": {
@@ -1220,51 +952,37 @@
             },
             "AIState": {
               "app.btable.EmCommonCommand.cCheckStatusAIStateArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusAIStateArg.AI_TYPE>": 0
-                }
+                "_EditArg": "[0] LIFE"
               }
             },
             "HolderType": {
               "app.btable.EmCommonCommand.cCheckStatusHolderTypeArg": {
-                "_EditHolderType": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleHold.HOLD_ROLE>": 0
-                }
+                "_EditHolderType": "[0] NONE"
               }
             },
             "DangerLevel": {
               "app.btable.EmCommonCommand.cCheckStatusDangerLevelArg": {
-                "_EditCheckType": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusDangerLevelArg.CHECK_TYPE>": 0
-                }
+                "_EditCheckType": "[0] HIGH"
               }
             },
             "NPCJackSituation": {
               "app.btable.cCheckStatusNPCJackSituation": {
-                "_EditSituation": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleNpcJack.SITUATION>": 0
-                }
+                "_EditSituation": "[0] NONE"
               }
             },
             "DownDir": {
               "app.btable.cCheckStatusDownDirArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckStatusDownDirArg.TYPE>": 0
-                }
+                "_EditArg": "[0] LEFT"
               }
             },
             "GroundMaterial": {
               "app.btable.cCheckGroundMaterialArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckGroundMaterialArg.TYPE>": 0
-                }
+                "_EditArg": "[0] SNOW"
               }
             },
             "Stage": {
               "app.btable.cCheckStage": {
-                "_CheckStage": {
-                  "ace.btable.cEditFieldEnum`1<app.FieldDef.STAGE>": 0
-                },
+                "_CheckStage": "[0] ST101",
                 "_IsCheckAreaNo": {
                   "ace.btable.cEditFieldBool": true
                 },
@@ -1280,14 +998,12 @@
         },
         {
           "app.btable.EmCommonCommand.cCheckStatusArg": {
-            "_EditCategory": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusArg.CATEGORY>": 3
-            },
+            "_EditCategory": "[3] STATUS",
             "StandState": {
               "app.btable.EmCommonCommand.cCheckStatusStandStateArg": {
                 "_EditState": {
                   "ace.btable.cEditFieldDropBox`1<app.btable.EmCommonCommand.cCheckStatusStandStateArg.STAND_STATE_HOLDER>": {
-                    "STRUCT__Value_Type": 0,
+                    "STRUCT__Value_Type": "[0] COMMON",
                     "STRUCT__Value_Value": 0
                   }
                 }
@@ -1295,16 +1011,12 @@
             },
             "BadConditions": {
               "app.btable.EmCommonCommand.cCheckStatusBadConditionsArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusBadConditionsArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] POISON"
               }
             },
             "Status": {
               "app.btable.EmCommonCommand.cCheckStatusStatusArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusStatusArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] ANGRY"
               }
             },
             "Health": {
@@ -1316,51 +1028,37 @@
             },
             "AIState": {
               "app.btable.EmCommonCommand.cCheckStatusAIStateArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusAIStateArg.AI_TYPE>": 0
-                }
+                "_EditArg": "[0] LIFE"
               }
             },
             "HolderType": {
               "app.btable.EmCommonCommand.cCheckStatusHolderTypeArg": {
-                "_EditHolderType": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleHold.HOLD_ROLE>": 0
-                }
+                "_EditHolderType": "[0] NONE"
               }
             },
             "DangerLevel": {
               "app.btable.EmCommonCommand.cCheckStatusDangerLevelArg": {
-                "_EditCheckType": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusDangerLevelArg.CHECK_TYPE>": 0
-                }
+                "_EditCheckType": "[0] HIGH"
               }
             },
             "NPCJackSituation": {
               "app.btable.cCheckStatusNPCJackSituation": {
-                "_EditSituation": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleNpcJack.SITUATION>": 0
-                }
+                "_EditSituation": "[0] NONE"
               }
             },
             "DownDir": {
               "app.btable.cCheckStatusDownDirArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckStatusDownDirArg.TYPE>": 0
-                }
+                "_EditArg": "[0] LEFT"
               }
             },
             "GroundMaterial": {
               "app.btable.cCheckGroundMaterialArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckGroundMaterialArg.TYPE>": 0
-                }
+                "_EditArg": "[0] SNOW"
               }
             },
             "Stage": {
               "app.btable.cCheckStage": {
-                "_CheckStage": {
-                  "ace.btable.cEditFieldEnum`1<app.FieldDef.STAGE>": 0
-                },
+                "_CheckStage": "[0] ST101",
                 "_IsCheckAreaNo": {
                   "ace.btable.cEditFieldBool": true
                 },
@@ -1376,14 +1074,12 @@
         },
         {
           "app.btable.EmCommonCommand.cCheckStatusArg": {
-            "_EditCategory": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusArg.CATEGORY>": 3
-            },
+            "_EditCategory": "[3] STATUS",
             "StandState": {
               "app.btable.EmCommonCommand.cCheckStatusStandStateArg": {
                 "_EditState": {
                   "ace.btable.cEditFieldDropBox`1<app.btable.EmCommonCommand.cCheckStatusStandStateArg.STAND_STATE_HOLDER>": {
-                    "STRUCT__Value_Type": 0,
+                    "STRUCT__Value_Type": "[0] COMMON",
                     "STRUCT__Value_Value": 0
                   }
                 }
@@ -1391,16 +1087,12 @@
             },
             "BadConditions": {
               "app.btable.EmCommonCommand.cCheckStatusBadConditionsArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusBadConditionsArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] POISON"
               }
             },
             "Status": {
               "app.btable.EmCommonCommand.cCheckStatusStatusArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusStatusArg.CONDITION_TYPE>": 1
-                }
+                "_EditArg": "[1] TIRED"
               }
             },
             "Health": {
@@ -1412,51 +1104,37 @@
             },
             "AIState": {
               "app.btable.EmCommonCommand.cCheckStatusAIStateArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusAIStateArg.AI_TYPE>": 0
-                }
+                "_EditArg": "[0] LIFE"
               }
             },
             "HolderType": {
               "app.btable.EmCommonCommand.cCheckStatusHolderTypeArg": {
-                "_EditHolderType": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleHold.HOLD_ROLE>": 0
-                }
+                "_EditHolderType": "[0] NONE"
               }
             },
             "DangerLevel": {
               "app.btable.EmCommonCommand.cCheckStatusDangerLevelArg": {
-                "_EditCheckType": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusDangerLevelArg.CHECK_TYPE>": 0
-                }
+                "_EditCheckType": "[0] HIGH"
               }
             },
             "NPCJackSituation": {
               "app.btable.cCheckStatusNPCJackSituation": {
-                "_EditSituation": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleNpcJack.SITUATION>": 0
-                }
+                "_EditSituation": "[0] NONE"
               }
             },
             "DownDir": {
               "app.btable.cCheckStatusDownDirArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckStatusDownDirArg.TYPE>": 0
-                }
+                "_EditArg": "[0] LEFT"
               }
             },
             "GroundMaterial": {
               "app.btable.cCheckGroundMaterialArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckGroundMaterialArg.TYPE>": 0
-                }
+                "_EditArg": "[0] SNOW"
               }
             },
             "Stage": {
               "app.btable.cCheckStage": {
-                "_CheckStage": {
-                  "ace.btable.cEditFieldEnum`1<app.FieldDef.STAGE>": 0
-                },
+                "_CheckStage": "[0] ST101",
                 "_IsCheckAreaNo": {
                   "ace.btable.cEditFieldBool": true
                 },
@@ -1472,14 +1150,12 @@
         },
         {
           "app.btable.EmCommonCommand.cCheckStatusArg": {
-            "_EditCategory": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusArg.CATEGORY>": 3
-            },
+            "_EditCategory": "[3] STATUS",
             "StandState": {
               "app.btable.EmCommonCommand.cCheckStatusStandStateArg": {
                 "_EditState": {
                   "ace.btable.cEditFieldDropBox`1<app.btable.EmCommonCommand.cCheckStatusStandStateArg.STAND_STATE_HOLDER>": {
-                    "STRUCT__Value_Type": 0,
+                    "STRUCT__Value_Type": "[0] COMMON",
                     "STRUCT__Value_Value": 0
                   }
                 }
@@ -1487,16 +1163,12 @@
             },
             "BadConditions": {
               "app.btable.EmCommonCommand.cCheckStatusBadConditionsArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusBadConditionsArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] POISON"
               }
             },
             "Status": {
               "app.btable.EmCommonCommand.cCheckStatusStatusArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusStatusArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] ANGRY"
               }
             },
             "Health": {
@@ -1508,51 +1180,37 @@
             },
             "AIState": {
               "app.btable.EmCommonCommand.cCheckStatusAIStateArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusAIStateArg.AI_TYPE>": 0
-                }
+                "_EditArg": "[0] LIFE"
               }
             },
             "HolderType": {
               "app.btable.EmCommonCommand.cCheckStatusHolderTypeArg": {
-                "_EditHolderType": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleHold.HOLD_ROLE>": 0
-                }
+                "_EditHolderType": "[0] NONE"
               }
             },
             "DangerLevel": {
               "app.btable.EmCommonCommand.cCheckStatusDangerLevelArg": {
-                "_EditCheckType": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusDangerLevelArg.CHECK_TYPE>": 0
-                }
+                "_EditCheckType": "[0] HIGH"
               }
             },
             "NPCJackSituation": {
               "app.btable.cCheckStatusNPCJackSituation": {
-                "_EditSituation": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleNpcJack.SITUATION>": 0
-                }
+                "_EditSituation": "[0] NONE"
               }
             },
             "DownDir": {
               "app.btable.cCheckStatusDownDirArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckStatusDownDirArg.TYPE>": 0
-                }
+                "_EditArg": "[0] LEFT"
               }
             },
             "GroundMaterial": {
               "app.btable.cCheckGroundMaterialArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckGroundMaterialArg.TYPE>": 0
-                }
+                "_EditArg": "[0] SNOW"
               }
             },
             "Stage": {
               "app.btable.cCheckStage": {
-                "_CheckStage": {
-                  "ace.btable.cEditFieldEnum`1<app.FieldDef.STAGE>": 0
-                },
+                "_CheckStage": "[0] ST101",
                 "_IsCheckAreaNo": {
                   "ace.btable.cEditFieldBool": true
                 },
@@ -1568,14 +1226,12 @@
         },
         {
           "app.btable.EmCommonCommand.cCheckStatusArg": {
-            "_EditCategory": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusArg.CATEGORY>": 3
-            },
+            "_EditCategory": "[3] STATUS",
             "StandState": {
               "app.btable.EmCommonCommand.cCheckStatusStandStateArg": {
                 "_EditState": {
                   "ace.btable.cEditFieldDropBox`1<app.btable.EmCommonCommand.cCheckStatusStandStateArg.STAND_STATE_HOLDER>": {
-                    "STRUCT__Value_Type": 0,
+                    "STRUCT__Value_Type": "[0] COMMON",
                     "STRUCT__Value_Value": 0
                   }
                 }
@@ -1583,16 +1239,12 @@
             },
             "BadConditions": {
               "app.btable.EmCommonCommand.cCheckStatusBadConditionsArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusBadConditionsArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] POISON"
               }
             },
             "Status": {
               "app.btable.EmCommonCommand.cCheckStatusStatusArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusStatusArg.CONDITION_TYPE>": 1
-                }
+                "_EditArg": "[1] TIRED"
               }
             },
             "Health": {
@@ -1604,51 +1256,37 @@
             },
             "AIState": {
               "app.btable.EmCommonCommand.cCheckStatusAIStateArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusAIStateArg.AI_TYPE>": 0
-                }
+                "_EditArg": "[0] LIFE"
               }
             },
             "HolderType": {
               "app.btable.EmCommonCommand.cCheckStatusHolderTypeArg": {
-                "_EditHolderType": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleHold.HOLD_ROLE>": 0
-                }
+                "_EditHolderType": "[0] NONE"
               }
             },
             "DangerLevel": {
               "app.btable.EmCommonCommand.cCheckStatusDangerLevelArg": {
-                "_EditCheckType": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusDangerLevelArg.CHECK_TYPE>": 0
-                }
+                "_EditCheckType": "[0] HIGH"
               }
             },
             "NPCJackSituation": {
               "app.btable.cCheckStatusNPCJackSituation": {
-                "_EditSituation": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleNpcJack.SITUATION>": 0
-                }
+                "_EditSituation": "[0] NONE"
               }
             },
             "DownDir": {
               "app.btable.cCheckStatusDownDirArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckStatusDownDirArg.TYPE>": 0
-                }
+                "_EditArg": "[0] LEFT"
               }
             },
             "GroundMaterial": {
               "app.btable.cCheckGroundMaterialArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckGroundMaterialArg.TYPE>": 0
-                }
+                "_EditArg": "[0] SNOW"
               }
             },
             "Stage": {
               "app.btable.cCheckStage": {
-                "_CheckStage": {
-                  "ace.btable.cEditFieldEnum`1<app.FieldDef.STAGE>": 0
-                },
+                "_CheckStage": "[0] ST101",
                 "_IsCheckAreaNo": {
                   "ace.btable.cEditFieldBool": true
                 },
@@ -1664,14 +1302,12 @@
         },
         {
           "app.btable.EmCommonCommand.cCheckStatusArg": {
-            "_EditCategory": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusArg.CATEGORY>": 3
-            },
+            "_EditCategory": "[3] STATUS",
             "StandState": {
               "app.btable.EmCommonCommand.cCheckStatusStandStateArg": {
                 "_EditState": {
                   "ace.btable.cEditFieldDropBox`1<app.btable.EmCommonCommand.cCheckStatusStandStateArg.STAND_STATE_HOLDER>": {
-                    "STRUCT__Value_Type": 0,
+                    "STRUCT__Value_Type": "[0] COMMON",
                     "STRUCT__Value_Value": 0
                   }
                 }
@@ -1679,16 +1315,12 @@
             },
             "BadConditions": {
               "app.btable.EmCommonCommand.cCheckStatusBadConditionsArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusBadConditionsArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] POISON"
               }
             },
             "Status": {
               "app.btable.EmCommonCommand.cCheckStatusStatusArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusStatusArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] ANGRY"
               }
             },
             "Health": {
@@ -1700,51 +1332,37 @@
             },
             "AIState": {
               "app.btable.EmCommonCommand.cCheckStatusAIStateArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusAIStateArg.AI_TYPE>": 0
-                }
+                "_EditArg": "[0] LIFE"
               }
             },
             "HolderType": {
               "app.btable.EmCommonCommand.cCheckStatusHolderTypeArg": {
-                "_EditHolderType": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleHold.HOLD_ROLE>": 0
-                }
+                "_EditHolderType": "[0] NONE"
               }
             },
             "DangerLevel": {
               "app.btable.EmCommonCommand.cCheckStatusDangerLevelArg": {
-                "_EditCheckType": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusDangerLevelArg.CHECK_TYPE>": 0
-                }
+                "_EditCheckType": "[0] HIGH"
               }
             },
             "NPCJackSituation": {
               "app.btable.cCheckStatusNPCJackSituation": {
-                "_EditSituation": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleNpcJack.SITUATION>": 0
-                }
+                "_EditSituation": "[0] NONE"
               }
             },
             "DownDir": {
               "app.btable.cCheckStatusDownDirArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckStatusDownDirArg.TYPE>": 0
-                }
+                "_EditArg": "[0] LEFT"
               }
             },
             "GroundMaterial": {
               "app.btable.cCheckGroundMaterialArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckGroundMaterialArg.TYPE>": 0
-                }
+                "_EditArg": "[0] SNOW"
               }
             },
             "Stage": {
               "app.btable.cCheckStage": {
-                "_CheckStage": {
-                  "ace.btable.cEditFieldEnum`1<app.FieldDef.STAGE>": 0
-                },
+                "_CheckStage": "[0] ST101",
                 "_IsCheckAreaNo": {
                   "ace.btable.cEditFieldBool": true
                 },
@@ -1763,18 +1381,10 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 8.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDistanceArg.CHECK_TYPE>": 0
-            },
-            "_CheckHeightType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDistanceArg.CHECK_HEIGHT_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDistanceArg.AXIS_TYPE>": 0
-            },
-            "_BaseType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDistanceArg.BASE_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_CheckHeightType": "[0] HIGH",
+            "_AxisType": "[0] XZ",
+            "_BaseType": "[0] SELF"
           }
         },
         {
@@ -1782,18 +1392,10 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 12.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDistanceArg.CHECK_TYPE>": 0
-            },
-            "_CheckHeightType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDistanceArg.CHECK_HEIGHT_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDistanceArg.AXIS_TYPE>": 0
-            },
-            "_BaseType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDistanceArg.BASE_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_CheckHeightType": "[0] HIGH",
+            "_AxisType": "[0] XZ",
+            "_BaseType": "[0] SELF"
           }
         },
         {
@@ -1801,18 +1403,10 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 18.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDistanceArg.CHECK_TYPE>": 0
-            },
-            "_CheckHeightType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDistanceArg.CHECK_HEIGHT_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDistanceArg.AXIS_TYPE>": 0
-            },
-            "_BaseType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDistanceArg.BASE_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_CheckHeightType": "[0] HIGH",
+            "_AxisType": "[0] XZ",
+            "_BaseType": "[0] SELF"
           }
         },
         {
@@ -1820,30 +1414,20 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 25.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDistanceArg.CHECK_TYPE>": 0
-            },
-            "_CheckHeightType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDistanceArg.CHECK_HEIGHT_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDistanceArg.AXIS_TYPE>": 0
-            },
-            "_BaseType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckDistanceArg.BASE_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_CheckHeightType": "[0] HIGH",
+            "_AxisType": "[0] XZ",
+            "_BaseType": "[0] SELF"
           }
         },
         {
           "app.btable.EmCommonCommand.cCheckStatusArg": {
-            "_EditCategory": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusArg.CATEGORY>": 3
-            },
+            "_EditCategory": "[3] STATUS",
             "StandState": {
               "app.btable.EmCommonCommand.cCheckStatusStandStateArg": {
                 "_EditState": {
                   "ace.btable.cEditFieldDropBox`1<app.btable.EmCommonCommand.cCheckStatusStandStateArg.STAND_STATE_HOLDER>": {
-                    "STRUCT__Value_Type": 0,
+                    "STRUCT__Value_Type": "[0] COMMON",
                     "STRUCT__Value_Value": 0
                   }
                 }
@@ -1851,16 +1435,12 @@
             },
             "BadConditions": {
               "app.btable.EmCommonCommand.cCheckStatusBadConditionsArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusBadConditionsArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] POISON"
               }
             },
             "Status": {
               "app.btable.EmCommonCommand.cCheckStatusStatusArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusStatusArg.CONDITION_TYPE>": 1
-                }
+                "_EditArg": "[1] TIRED"
               }
             },
             "Health": {
@@ -1872,51 +1452,37 @@
             },
             "AIState": {
               "app.btable.EmCommonCommand.cCheckStatusAIStateArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusAIStateArg.AI_TYPE>": 0
-                }
+                "_EditArg": "[0] LIFE"
               }
             },
             "HolderType": {
               "app.btable.EmCommonCommand.cCheckStatusHolderTypeArg": {
-                "_EditHolderType": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleHold.HOLD_ROLE>": 0
-                }
+                "_EditHolderType": "[0] NONE"
               }
             },
             "DangerLevel": {
               "app.btable.EmCommonCommand.cCheckStatusDangerLevelArg": {
-                "_EditCheckType": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusDangerLevelArg.CHECK_TYPE>": 0
-                }
+                "_EditCheckType": "[0] HIGH"
               }
             },
             "NPCJackSituation": {
               "app.btable.cCheckStatusNPCJackSituation": {
-                "_EditSituation": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleNpcJack.SITUATION>": 0
-                }
+                "_EditSituation": "[0] NONE"
               }
             },
             "DownDir": {
               "app.btable.cCheckStatusDownDirArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckStatusDownDirArg.TYPE>": 0
-                }
+                "_EditArg": "[0] LEFT"
               }
             },
             "GroundMaterial": {
               "app.btable.cCheckGroundMaterialArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckGroundMaterialArg.TYPE>": 0
-                }
+                "_EditArg": "[0] SNOW"
               }
             },
             "Stage": {
               "app.btable.cCheckStage": {
-                "_CheckStage": {
-                  "ace.btable.cEditFieldEnum`1<app.FieldDef.STAGE>": 0
-                },
+                "_CheckStage": "[0] ST101",
                 "_IsCheckAreaNo": {
                   "ace.btable.cEditFieldBool": true
                 },
@@ -2034,14 +1600,12 @@
         },
         {
           "app.btable.EmCommonCommand.cCheckStatusArg": {
-            "_EditCategory": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusArg.CATEGORY>": 3
-            },
+            "_EditCategory": "[3] STATUS",
             "StandState": {
               "app.btable.EmCommonCommand.cCheckStatusStandStateArg": {
                 "_EditState": {
                   "ace.btable.cEditFieldDropBox`1<app.btable.EmCommonCommand.cCheckStatusStandStateArg.STAND_STATE_HOLDER>": {
-                    "STRUCT__Value_Type": 0,
+                    "STRUCT__Value_Type": "[0] COMMON",
                     "STRUCT__Value_Value": 0
                   }
                 }
@@ -2049,16 +1613,12 @@
             },
             "BadConditions": {
               "app.btable.EmCommonCommand.cCheckStatusBadConditionsArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusBadConditionsArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] POISON"
               }
             },
             "Status": {
               "app.btable.EmCommonCommand.cCheckStatusStatusArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusStatusArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] ANGRY"
               }
             },
             "Health": {
@@ -2070,51 +1630,37 @@
             },
             "AIState": {
               "app.btable.EmCommonCommand.cCheckStatusAIStateArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusAIStateArg.AI_TYPE>": 0
-                }
+                "_EditArg": "[0] LIFE"
               }
             },
             "HolderType": {
               "app.btable.EmCommonCommand.cCheckStatusHolderTypeArg": {
-                "_EditHolderType": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleHold.HOLD_ROLE>": 0
-                }
+                "_EditHolderType": "[0] NONE"
               }
             },
             "DangerLevel": {
               "app.btable.EmCommonCommand.cCheckStatusDangerLevelArg": {
-                "_EditCheckType": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusDangerLevelArg.CHECK_TYPE>": 0
-                }
+                "_EditCheckType": "[0] HIGH"
               }
             },
             "NPCJackSituation": {
               "app.btable.cCheckStatusNPCJackSituation": {
-                "_EditSituation": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleNpcJack.SITUATION>": 0
-                }
+                "_EditSituation": "[0] NONE"
               }
             },
             "DownDir": {
               "app.btable.cCheckStatusDownDirArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckStatusDownDirArg.TYPE>": 0
-                }
+                "_EditArg": "[0] LEFT"
               }
             },
             "GroundMaterial": {
               "app.btable.cCheckGroundMaterialArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckGroundMaterialArg.TYPE>": 0
-                }
+                "_EditArg": "[0] SNOW"
               }
             },
             "Stage": {
               "app.btable.cCheckStage": {
-                "_CheckStage": {
-                  "ace.btable.cEditFieldEnum`1<app.FieldDef.STAGE>": 0
-                },
+                "_CheckStage": "[0] ST101",
                 "_IsCheckAreaNo": {
                   "ace.btable.cEditFieldBool": true
                 },
@@ -2334,14 +1880,12 @@
         },
         {
           "app.btable.EmCommonCommand.cCheckStatusArg": {
-            "_EditCategory": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusArg.CATEGORY>": 3
-            },
+            "_EditCategory": "[3] STATUS",
             "StandState": {
               "app.btable.EmCommonCommand.cCheckStatusStandStateArg": {
                 "_EditState": {
                   "ace.btable.cEditFieldDropBox`1<app.btable.EmCommonCommand.cCheckStatusStandStateArg.STAND_STATE_HOLDER>": {
-                    "STRUCT__Value_Type": 0,
+                    "STRUCT__Value_Type": "[0] COMMON",
                     "STRUCT__Value_Value": 0
                   }
                 }
@@ -2349,16 +1893,12 @@
             },
             "BadConditions": {
               "app.btable.EmCommonCommand.cCheckStatusBadConditionsArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusBadConditionsArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] POISON"
               }
             },
             "Status": {
               "app.btable.EmCommonCommand.cCheckStatusStatusArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusStatusArg.CONDITION_TYPE>": 1
-                }
+                "_EditArg": "[1] TIRED"
               }
             },
             "Health": {
@@ -2370,51 +1910,37 @@
             },
             "AIState": {
               "app.btable.EmCommonCommand.cCheckStatusAIStateArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusAIStateArg.AI_TYPE>": 0
-                }
+                "_EditArg": "[0] LIFE"
               }
             },
             "HolderType": {
               "app.btable.EmCommonCommand.cCheckStatusHolderTypeArg": {
-                "_EditHolderType": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleHold.HOLD_ROLE>": 0
-                }
+                "_EditHolderType": "[0] NONE"
               }
             },
             "DangerLevel": {
               "app.btable.EmCommonCommand.cCheckStatusDangerLevelArg": {
-                "_EditCheckType": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusDangerLevelArg.CHECK_TYPE>": 0
-                }
+                "_EditCheckType": "[0] HIGH"
               }
             },
             "NPCJackSituation": {
               "app.btable.cCheckStatusNPCJackSituation": {
-                "_EditSituation": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleNpcJack.SITUATION>": 0
-                }
+                "_EditSituation": "[0] NONE"
               }
             },
             "DownDir": {
               "app.btable.cCheckStatusDownDirArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckStatusDownDirArg.TYPE>": 0
-                }
+                "_EditArg": "[0] LEFT"
               }
             },
             "GroundMaterial": {
               "app.btable.cCheckGroundMaterialArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckGroundMaterialArg.TYPE>": 0
-                }
+                "_EditArg": "[0] SNOW"
               }
             },
             "Stage": {
               "app.btable.cCheckStage": {
-                "_CheckStage": {
-                  "ace.btable.cEditFieldEnum`1<app.FieldDef.STAGE>": 0
-                },
+                "_CheckStage": "[0] ST101",
                 "_IsCheckAreaNo": {
                   "ace.btable.cEditFieldBool": true
                 },
@@ -2515,14 +2041,12 @@
         },
         {
           "app.btable.EmCommonCommand.cCheckStatusArg": {
-            "_EditCategory": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusArg.CATEGORY>": 3
-            },
+            "_EditCategory": "[3] STATUS",
             "StandState": {
               "app.btable.EmCommonCommand.cCheckStatusStandStateArg": {
                 "_EditState": {
                   "ace.btable.cEditFieldDropBox`1<app.btable.EmCommonCommand.cCheckStatusStandStateArg.STAND_STATE_HOLDER>": {
-                    "STRUCT__Value_Type": 0,
+                    "STRUCT__Value_Type": "[0] COMMON",
                     "STRUCT__Value_Value": 0
                   }
                 }
@@ -2530,16 +2054,12 @@
             },
             "BadConditions": {
               "app.btable.EmCommonCommand.cCheckStatusBadConditionsArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusBadConditionsArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] POISON"
               }
             },
             "Status": {
               "app.btable.EmCommonCommand.cCheckStatusStatusArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusStatusArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] ANGRY"
               }
             },
             "Health": {
@@ -2551,51 +2071,37 @@
             },
             "AIState": {
               "app.btable.EmCommonCommand.cCheckStatusAIStateArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusAIStateArg.AI_TYPE>": 0
-                }
+                "_EditArg": "[0] LIFE"
               }
             },
             "HolderType": {
               "app.btable.EmCommonCommand.cCheckStatusHolderTypeArg": {
-                "_EditHolderType": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleHold.HOLD_ROLE>": 0
-                }
+                "_EditHolderType": "[0] NONE"
               }
             },
             "DangerLevel": {
               "app.btable.EmCommonCommand.cCheckStatusDangerLevelArg": {
-                "_EditCheckType": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusDangerLevelArg.CHECK_TYPE>": 0
-                }
+                "_EditCheckType": "[0] HIGH"
               }
             },
             "NPCJackSituation": {
               "app.btable.cCheckStatusNPCJackSituation": {
-                "_EditSituation": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleNpcJack.SITUATION>": 0
-                }
+                "_EditSituation": "[0] NONE"
               }
             },
             "DownDir": {
               "app.btable.cCheckStatusDownDirArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckStatusDownDirArg.TYPE>": 0
-                }
+                "_EditArg": "[0] LEFT"
               }
             },
             "GroundMaterial": {
               "app.btable.cCheckGroundMaterialArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckGroundMaterialArg.TYPE>": 0
-                }
+                "_EditArg": "[0] SNOW"
               }
             },
             "Stage": {
               "app.btable.cCheckStage": {
-                "_CheckStage": {
-                  "ace.btable.cEditFieldEnum`1<app.FieldDef.STAGE>": 0
-                },
+                "_CheckStage": "[0] ST101",
                 "_IsCheckAreaNo": {
                   "ace.btable.cEditFieldBool": true
                 },
@@ -2781,14 +2287,12 @@
         },
         {
           "app.btable.EmCommonCommand.cCheckStatusArg": {
-            "_EditCategory": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusArg.CATEGORY>": 3
-            },
+            "_EditCategory": "[3] STATUS",
             "StandState": {
               "app.btable.EmCommonCommand.cCheckStatusStandStateArg": {
                 "_EditState": {
                   "ace.btable.cEditFieldDropBox`1<app.btable.EmCommonCommand.cCheckStatusStandStateArg.STAND_STATE_HOLDER>": {
-                    "STRUCT__Value_Type": 0,
+                    "STRUCT__Value_Type": "[0] COMMON",
                     "STRUCT__Value_Value": 0
                   }
                 }
@@ -2796,16 +2300,12 @@
             },
             "BadConditions": {
               "app.btable.EmCommonCommand.cCheckStatusBadConditionsArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusBadConditionsArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] POISON"
               }
             },
             "Status": {
               "app.btable.EmCommonCommand.cCheckStatusStatusArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusStatusArg.CONDITION_TYPE>": 1
-                }
+                "_EditArg": "[1] TIRED"
               }
             },
             "Health": {
@@ -2817,51 +2317,37 @@
             },
             "AIState": {
               "app.btable.EmCommonCommand.cCheckStatusAIStateArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusAIStateArg.AI_TYPE>": 0
-                }
+                "_EditArg": "[0] LIFE"
               }
             },
             "HolderType": {
               "app.btable.EmCommonCommand.cCheckStatusHolderTypeArg": {
-                "_EditHolderType": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleHold.HOLD_ROLE>": 0
-                }
+                "_EditHolderType": "[0] NONE"
               }
             },
             "DangerLevel": {
               "app.btable.EmCommonCommand.cCheckStatusDangerLevelArg": {
-                "_EditCheckType": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusDangerLevelArg.CHECK_TYPE>": 0
-                }
+                "_EditCheckType": "[0] HIGH"
               }
             },
             "NPCJackSituation": {
               "app.btable.cCheckStatusNPCJackSituation": {
-                "_EditSituation": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleNpcJack.SITUATION>": 0
-                }
+                "_EditSituation": "[0] NONE"
               }
             },
             "DownDir": {
               "app.btable.cCheckStatusDownDirArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckStatusDownDirArg.TYPE>": 0
-                }
+                "_EditArg": "[0] LEFT"
               }
             },
             "GroundMaterial": {
               "app.btable.cCheckGroundMaterialArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckGroundMaterialArg.TYPE>": 0
-                }
+                "_EditArg": "[0] SNOW"
               }
             },
             "Stage": {
               "app.btable.cCheckStage": {
-                "_CheckStage": {
-                  "ace.btable.cEditFieldEnum`1<app.FieldDef.STAGE>": 0
-                },
+                "_CheckStage": "[0] ST101",
                 "_IsCheckAreaNo": {
                   "ace.btable.cEditFieldBool": true
                 },
@@ -2962,14 +2448,12 @@
         },
         {
           "app.btable.EmCommonCommand.cCheckStatusArg": {
-            "_EditCategory": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusArg.CATEGORY>": 3
-            },
+            "_EditCategory": "[3] STATUS",
             "StandState": {
               "app.btable.EmCommonCommand.cCheckStatusStandStateArg": {
                 "_EditState": {
                   "ace.btable.cEditFieldDropBox`1<app.btable.EmCommonCommand.cCheckStatusStandStateArg.STAND_STATE_HOLDER>": {
-                    "STRUCT__Value_Type": 0,
+                    "STRUCT__Value_Type": "[0] COMMON",
                     "STRUCT__Value_Value": 0
                   }
                 }
@@ -2977,16 +2461,12 @@
             },
             "BadConditions": {
               "app.btable.EmCommonCommand.cCheckStatusBadConditionsArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusBadConditionsArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] POISON"
               }
             },
             "Status": {
               "app.btable.EmCommonCommand.cCheckStatusStatusArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusStatusArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] ANGRY"
               }
             },
             "Health": {
@@ -2998,51 +2478,37 @@
             },
             "AIState": {
               "app.btable.EmCommonCommand.cCheckStatusAIStateArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusAIStateArg.AI_TYPE>": 0
-                }
+                "_EditArg": "[0] LIFE"
               }
             },
             "HolderType": {
               "app.btable.EmCommonCommand.cCheckStatusHolderTypeArg": {
-                "_EditHolderType": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleHold.HOLD_ROLE>": 0
-                }
+                "_EditHolderType": "[0] NONE"
               }
             },
             "DangerLevel": {
               "app.btable.EmCommonCommand.cCheckStatusDangerLevelArg": {
-                "_EditCheckType": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusDangerLevelArg.CHECK_TYPE>": 0
-                }
+                "_EditCheckType": "[0] HIGH"
               }
             },
             "NPCJackSituation": {
               "app.btable.cCheckStatusNPCJackSituation": {
-                "_EditSituation": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleNpcJack.SITUATION>": 0
-                }
+                "_EditSituation": "[0] NONE"
               }
             },
             "DownDir": {
               "app.btable.cCheckStatusDownDirArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckStatusDownDirArg.TYPE>": 0
-                }
+                "_EditArg": "[0] LEFT"
               }
             },
             "GroundMaterial": {
               "app.btable.cCheckGroundMaterialArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckGroundMaterialArg.TYPE>": 0
-                }
+                "_EditArg": "[0] SNOW"
               }
             },
             "Stage": {
               "app.btable.cCheckStage": {
-                "_CheckStage": {
-                  "ace.btable.cEditFieldEnum`1<app.FieldDef.STAGE>": 0
-                },
+                "_CheckStage": "[0] ST101",
                 "_IsCheckAreaNo": {
                   "ace.btable.cEditFieldBool": true
                 },
@@ -3228,14 +2694,12 @@
         },
         {
           "app.btable.EmCommonCommand.cCheckStatusArg": {
-            "_EditCategory": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusArg.CATEGORY>": 3
-            },
+            "_EditCategory": "[3] STATUS",
             "StandState": {
               "app.btable.EmCommonCommand.cCheckStatusStandStateArg": {
                 "_EditState": {
                   "ace.btable.cEditFieldDropBox`1<app.btable.EmCommonCommand.cCheckStatusStandStateArg.STAND_STATE_HOLDER>": {
-                    "STRUCT__Value_Type": 0,
+                    "STRUCT__Value_Type": "[0] COMMON",
                     "STRUCT__Value_Value": 0
                   }
                 }
@@ -3243,16 +2707,12 @@
             },
             "BadConditions": {
               "app.btable.EmCommonCommand.cCheckStatusBadConditionsArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusBadConditionsArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] POISON"
               }
             },
             "Status": {
               "app.btable.EmCommonCommand.cCheckStatusStatusArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusStatusArg.CONDITION_TYPE>": 1
-                }
+                "_EditArg": "[1] TIRED"
               }
             },
             "Health": {
@@ -3264,51 +2724,37 @@
             },
             "AIState": {
               "app.btable.EmCommonCommand.cCheckStatusAIStateArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusAIStateArg.AI_TYPE>": 0
-                }
+                "_EditArg": "[0] LIFE"
               }
             },
             "HolderType": {
               "app.btable.EmCommonCommand.cCheckStatusHolderTypeArg": {
-                "_EditHolderType": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleHold.HOLD_ROLE>": 0
-                }
+                "_EditHolderType": "[0] NONE"
               }
             },
             "DangerLevel": {
               "app.btable.EmCommonCommand.cCheckStatusDangerLevelArg": {
-                "_EditCheckType": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusDangerLevelArg.CHECK_TYPE>": 0
-                }
+                "_EditCheckType": "[0] HIGH"
               }
             },
             "NPCJackSituation": {
               "app.btable.cCheckStatusNPCJackSituation": {
-                "_EditSituation": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleNpcJack.SITUATION>": 0
-                }
+                "_EditSituation": "[0] NONE"
               }
             },
             "DownDir": {
               "app.btable.cCheckStatusDownDirArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckStatusDownDirArg.TYPE>": 0
-                }
+                "_EditArg": "[0] LEFT"
               }
             },
             "GroundMaterial": {
               "app.btable.cCheckGroundMaterialArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckGroundMaterialArg.TYPE>": 0
-                }
+                "_EditArg": "[0] SNOW"
               }
             },
             "Stage": {
               "app.btable.cCheckStage": {
-                "_CheckStage": {
-                  "ace.btable.cEditFieldEnum`1<app.FieldDef.STAGE>": 0
-                },
+                "_CheckStage": "[0] ST101",
                 "_IsCheckAreaNo": {
                   "ace.btable.cEditFieldBool": true
                 },
@@ -3324,14 +2770,12 @@
         },
         {
           "app.btable.EmCommonCommand.cCheckStatusArg": {
-            "_EditCategory": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusArg.CATEGORY>": 3
-            },
+            "_EditCategory": "[3] STATUS",
             "StandState": {
               "app.btable.EmCommonCommand.cCheckStatusStandStateArg": {
                 "_EditState": {
                   "ace.btable.cEditFieldDropBox`1<app.btable.EmCommonCommand.cCheckStatusStandStateArg.STAND_STATE_HOLDER>": {
-                    "STRUCT__Value_Type": 0,
+                    "STRUCT__Value_Type": "[0] COMMON",
                     "STRUCT__Value_Value": 0
                   }
                 }
@@ -3339,16 +2783,12 @@
             },
             "BadConditions": {
               "app.btable.EmCommonCommand.cCheckStatusBadConditionsArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusBadConditionsArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] POISON"
               }
             },
             "Status": {
               "app.btable.EmCommonCommand.cCheckStatusStatusArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusStatusArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] ANGRY"
               }
             },
             "Health": {
@@ -3360,51 +2800,37 @@
             },
             "AIState": {
               "app.btable.EmCommonCommand.cCheckStatusAIStateArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusAIStateArg.AI_TYPE>": 0
-                }
+                "_EditArg": "[0] LIFE"
               }
             },
             "HolderType": {
               "app.btable.EmCommonCommand.cCheckStatusHolderTypeArg": {
-                "_EditHolderType": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleHold.HOLD_ROLE>": 0
-                }
+                "_EditHolderType": "[0] NONE"
               }
             },
             "DangerLevel": {
               "app.btable.EmCommonCommand.cCheckStatusDangerLevelArg": {
-                "_EditCheckType": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusDangerLevelArg.CHECK_TYPE>": 0
-                }
+                "_EditCheckType": "[0] HIGH"
               }
             },
             "NPCJackSituation": {
               "app.btable.cCheckStatusNPCJackSituation": {
-                "_EditSituation": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleNpcJack.SITUATION>": 0
-                }
+                "_EditSituation": "[0] NONE"
               }
             },
             "DownDir": {
               "app.btable.cCheckStatusDownDirArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckStatusDownDirArg.TYPE>": 0
-                }
+                "_EditArg": "[0] LEFT"
               }
             },
             "GroundMaterial": {
               "app.btable.cCheckGroundMaterialArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckGroundMaterialArg.TYPE>": 0
-                }
+                "_EditArg": "[0] SNOW"
               }
             },
             "Stage": {
               "app.btable.cCheckStage": {
-                "_CheckStage": {
-                  "ace.btable.cEditFieldEnum`1<app.FieldDef.STAGE>": 0
-                },
+                "_CheckStage": "[0] ST101",
                 "_IsCheckAreaNo": {
                   "ace.btable.cEditFieldBool": true
                 },
@@ -3420,14 +2846,12 @@
         },
         {
           "app.btable.EmCommonCommand.cCheckStatusArg": {
-            "_EditCategory": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusArg.CATEGORY>": 3
-            },
+            "_EditCategory": "[3] STATUS",
             "StandState": {
               "app.btable.EmCommonCommand.cCheckStatusStandStateArg": {
                 "_EditState": {
                   "ace.btable.cEditFieldDropBox`1<app.btable.EmCommonCommand.cCheckStatusStandStateArg.STAND_STATE_HOLDER>": {
-                    "STRUCT__Value_Type": 0,
+                    "STRUCT__Value_Type": "[0] COMMON",
                     "STRUCT__Value_Value": 0
                   }
                 }
@@ -3435,16 +2859,12 @@
             },
             "BadConditions": {
               "app.btable.EmCommonCommand.cCheckStatusBadConditionsArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusBadConditionsArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] POISON"
               }
             },
             "Status": {
               "app.btable.EmCommonCommand.cCheckStatusStatusArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusStatusArg.CONDITION_TYPE>": 1
-                }
+                "_EditArg": "[1] TIRED"
               }
             },
             "Health": {
@@ -3456,51 +2876,37 @@
             },
             "AIState": {
               "app.btable.EmCommonCommand.cCheckStatusAIStateArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusAIStateArg.AI_TYPE>": 0
-                }
+                "_EditArg": "[0] LIFE"
               }
             },
             "HolderType": {
               "app.btable.EmCommonCommand.cCheckStatusHolderTypeArg": {
-                "_EditHolderType": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleHold.HOLD_ROLE>": 0
-                }
+                "_EditHolderType": "[0] NONE"
               }
             },
             "DangerLevel": {
               "app.btable.EmCommonCommand.cCheckStatusDangerLevelArg": {
-                "_EditCheckType": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusDangerLevelArg.CHECK_TYPE>": 0
-                }
+                "_EditCheckType": "[0] HIGH"
               }
             },
             "NPCJackSituation": {
               "app.btable.cCheckStatusNPCJackSituation": {
-                "_EditSituation": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleNpcJack.SITUATION>": 0
-                }
+                "_EditSituation": "[0] NONE"
               }
             },
             "DownDir": {
               "app.btable.cCheckStatusDownDirArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckStatusDownDirArg.TYPE>": 0
-                }
+                "_EditArg": "[0] LEFT"
               }
             },
             "GroundMaterial": {
               "app.btable.cCheckGroundMaterialArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckGroundMaterialArg.TYPE>": 0
-                }
+                "_EditArg": "[0] SNOW"
               }
             },
             "Stage": {
               "app.btable.cCheckStage": {
-                "_CheckStage": {
-                  "ace.btable.cEditFieldEnum`1<app.FieldDef.STAGE>": 0
-                },
+                "_CheckStage": "[0] ST101",
                 "_IsCheckAreaNo": {
                   "ace.btable.cEditFieldBool": true
                 },
@@ -3516,14 +2922,12 @@
         },
         {
           "app.btable.EmCommonCommand.cCheckStatusArg": {
-            "_EditCategory": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusArg.CATEGORY>": 3
-            },
+            "_EditCategory": "[3] STATUS",
             "StandState": {
               "app.btable.EmCommonCommand.cCheckStatusStandStateArg": {
                 "_EditState": {
                   "ace.btable.cEditFieldDropBox`1<app.btable.EmCommonCommand.cCheckStatusStandStateArg.STAND_STATE_HOLDER>": {
-                    "STRUCT__Value_Type": 0,
+                    "STRUCT__Value_Type": "[0] COMMON",
                     "STRUCT__Value_Value": 0
                   }
                 }
@@ -3531,16 +2935,12 @@
             },
             "BadConditions": {
               "app.btable.EmCommonCommand.cCheckStatusBadConditionsArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusBadConditionsArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] POISON"
               }
             },
             "Status": {
               "app.btable.EmCommonCommand.cCheckStatusStatusArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusStatusArg.CONDITION_TYPE>": 0
-                }
+                "_EditArg": "[0] ANGRY"
               }
             },
             "Health": {
@@ -3552,51 +2952,37 @@
             },
             "AIState": {
               "app.btable.EmCommonCommand.cCheckStatusAIStateArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusAIStateArg.AI_TYPE>": 0
-                }
+                "_EditArg": "[0] LIFE"
               }
             },
             "HolderType": {
               "app.btable.EmCommonCommand.cCheckStatusHolderTypeArg": {
-                "_EditHolderType": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleHold.HOLD_ROLE>": 0
-                }
+                "_EditHolderType": "[0] NONE"
               }
             },
             "DangerLevel": {
               "app.btable.EmCommonCommand.cCheckStatusDangerLevelArg": {
-                "_EditCheckType": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckStatusDangerLevelArg.CHECK_TYPE>": 0
-                }
+                "_EditCheckType": "[0] HIGH"
               }
             },
             "NPCJackSituation": {
               "app.btable.cCheckStatusNPCJackSituation": {
-                "_EditSituation": {
-                  "ace.btable.cEditFieldEnum`1<app.cEmModuleNpcJack.SITUATION>": 0
-                }
+                "_EditSituation": "[0] NONE"
               }
             },
             "DownDir": {
               "app.btable.cCheckStatusDownDirArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckStatusDownDirArg.TYPE>": 0
-                }
+                "_EditArg": "[0] LEFT"
               }
             },
             "GroundMaterial": {
               "app.btable.cCheckGroundMaterialArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.btable.cCheckGroundMaterialArg.TYPE>": 0
-                }
+                "_EditArg": "[0] SNOW"
               }
             },
             "Stage": {
               "app.btable.cCheckStage": {
-                "_CheckStage": {
-                  "ace.btable.cEditFieldEnum`1<app.FieldDef.STAGE>": 0
-                },
+                "_CheckStage": "[0] ST101",
                 "_IsCheckAreaNo": {
                   "ace.btable.cEditFieldBool": true
                 },

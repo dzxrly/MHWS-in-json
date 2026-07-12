@@ -6,7 +6,10 @@
           "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
             "_Param": {
               "app.NpcAITableConditions.cCheckNaviAttr_Param": {
-                "_NaviAttr": 3
+                "_NaviAttr": [
+                  "[1] SHORT_CUT",
+                  "[2] IVY"
+                ]
               }
             },
             "_Inverse": false,
@@ -48,7 +51,7 @@
                     "app.NpcAIMoveEffects.cRollingButtonPush_Param": {
                       "_SpeedLv": "[3] RUN",
                       "_UseExternalSpeed": false,
-                      "_StickDir": 0
+                      "_StickDir": "[0] NAVI"
                     }
                   }
                 }

@@ -17,7 +17,7 @@
                     "app.user_data.EmParamParts.cVital": 350.0
                   }
                 ],
-                "_RodExtract": 1,
+                "_RodExtract": "[1] RED",
                 "_MeatGuidNormal": "5f9f01d2-b8c2-44cf-8251-891b858e7d0d",
                 "_MeatGuidBreak": "00000000-0000-0000-0000-000000000000",
                 "_MeatGuidCustom1": "00000000-0000-0000-0000-000000000000",
@@ -37,7 +37,7 @@
                     "app.user_data.EmParamParts.cVital": 350.0
                   }
                 ],
-                "_RodExtract": 1,
+                "_RodExtract": "[1] RED",
                 "_MeatGuidNormal": "d87da6be-ed6e-4fdc-9880-28acc96ed484",
                 "_MeatGuidBreak": "00000000-0000-0000-0000-000000000000",
                 "_MeatGuidCustom1": "00000000-0000-0000-0000-000000000000",
@@ -57,7 +57,7 @@
                     "app.user_data.EmParamParts.cVital": 350.0
                   }
                 ],
-                "_RodExtract": 2,
+                "_RodExtract": "[2] ORANGE",
                 "_MeatGuidNormal": "72cbb502-1d8b-4b5c-8c3f-452f33d8f049",
                 "_MeatGuidBreak": "00000000-0000-0000-0000-000000000000",
                 "_MeatGuidCustom1": "00000000-0000-0000-0000-000000000000",
@@ -77,7 +77,7 @@
                     "app.user_data.EmParamParts.cVital": 500.0
                   }
                 ],
-                "_RodExtract": 1,
+                "_RodExtract": "[1] RED",
                 "_MeatGuidNormal": "3bd653ab-0eec-4b22-97bd-dd08fdf14ecd",
                 "_MeatGuidBreak": "00000000-0000-0000-0000-000000000000",
                 "_MeatGuidCustom1": "00000000-0000-0000-0000-000000000000",
@@ -97,7 +97,7 @@
                     "app.user_data.EmParamParts.cVital": 500.0
                   }
                 ],
-                "_RodExtract": 1,
+                "_RodExtract": "[1] RED",
                 "_MeatGuidNormal": "90439983-2c65-44d1-9d0f-32a8ebb98717",
                 "_MeatGuidBreak": "00000000-0000-0000-0000-000000000000",
                 "_MeatGuidCustom1": "00000000-0000-0000-0000-000000000000",
@@ -117,7 +117,7 @@
                     "app.user_data.EmParamParts.cVital": 250.0
                   }
                 ],
-                "_RodExtract": 3,
+                "_RodExtract": "[3] WHITE",
                 "_MeatGuidNormal": "1bd927b1-c617-431d-8afd-c5f8716f1f18",
                 "_MeatGuidBreak": "00000000-0000-0000-0000-000000000000",
                 "_MeatGuidCustom1": "00000000-0000-0000-0000-000000000000",
@@ -137,7 +137,7 @@
                     "app.user_data.EmParamParts.cVital": 250.0
                   }
                 ],
-                "_RodExtract": 3,
+                "_RodExtract": "[3] WHITE",
                 "_MeatGuidNormal": "5fca3210-d533-4da0-a7a3-5fb4d0e203fc",
                 "_MeatGuidBreak": "00000000-0000-0000-0000-000000000000",
                 "_MeatGuidCustom1": "00000000-0000-0000-0000-000000000000",
@@ -157,7 +157,7 @@
                     "app.user_data.EmParamParts.cVital": 200.0
                   }
                 ],
-                "_RodExtract": 4,
+                "_RodExtract": "[4] GREEN",
                 "_MeatGuidNormal": "8282936c-ed73-4f40-baaf-eb8b293c5210",
                 "_MeatGuidBreak": "00000000-0000-0000-0000-000000000000",
                 "_MeatGuidCustom1": "00000000-0000-0000-0000-000000000000",
@@ -177,7 +177,7 @@
                     "app.user_data.EmParamParts.cVital": 0.0
                   }
                 ],
-                "_RodExtract": 2,
+                "_RodExtract": "[2] ORANGE",
                 "_MeatGuidNormal": "72cbb502-1d8b-4b5c-8c3f-452f33d8f049",
                 "_MeatGuidBreak": "00000000-0000-0000-0000-000000000000",
                 "_MeatGuidCustom1": "00000000-0000-0000-0000-000000000000",
@@ -404,10 +404,12 @@
                     "app.user_data.EmParamParts.cVital": 400.0
                   }
                 ],
-                "_DefaultEnable": 1,
+                "_DefaultEnable": "[1] ENABLE",
                 "_MaxCount": 1,
-                "_Action": 1,
-                "_Attr": 0,
+                "_Action": "[1] SLASH",
+                "_Attr": [
+                  "[0] NONE"
+                ],
                 "_IsSkipUpdateLinkPartsWhenBroken": false,
                 "_LinkAll": false,
                 "_LinkPartsGuids": [
@@ -429,11 +431,11 @@
             {
               "app.user_data.EmParamParts.cPartsBreak": {
                 "_InstanceGuid": "ce437413-ed06-46ff-b026-b50c8b34317a",
-                "_TargetCategory": 0,
+                "_TargetCategory": "[0] PARTS",
                 "_TargetDataGuid": "0fac96e2-caab-4331-9f05-93c9045d4491",
                 "_ExcuteCount": 2,
                 "_MaxCount": 1,
-                "_Condition": 0,
+                "_Condition": "[0] EVERYTIME",
                 "_ConditionCount": -1,
                 "_PartsType": "[517550944] Head"
               }
@@ -441,11 +443,11 @@
             {
               "app.user_data.EmParamParts.cPartsBreak": {
                 "_InstanceGuid": "06a73a85-57c0-4b97-bf1b-376f0f63f285",
-                "_TargetCategory": 0,
+                "_TargetCategory": "[0] PARTS",
                 "_TargetDataGuid": "0f3747be-1f46-41b0-a94c-0ec16cfaaae4",
                 "_ExcuteCount": 1,
                 "_MaxCount": 1,
-                "_Condition": 0,
+                "_Condition": "[0] EVERYTIME",
                 "_ConditionCount": -1,
                 "_PartsType": "[731472640] LEFT_LEG"
               }
@@ -453,11 +455,11 @@
             {
               "app.user_data.EmParamParts.cPartsBreak": {
                 "_InstanceGuid": "963672f0-c33d-4c3c-ae75-d9e369065ea8",
-                "_TargetCategory": 0,
+                "_TargetCategory": "[0] PARTS",
                 "_TargetDataGuid": "a3053321-c842-4d96-827b-e9dd7fe9079e",
                 "_ExcuteCount": 1,
                 "_MaxCount": 1,
-                "_Condition": 0,
+                "_Condition": "[0] EVERYTIME",
                 "_ConditionCount": -1,
                 "_PartsType": "[4152909040] RIGHT_LEG"
               }
@@ -465,11 +467,11 @@
             {
               "app.user_data.EmParamParts.cPartsBreak": {
                 "_InstanceGuid": "8c32bc17-782a-4af2-ac20-4eba6cf91e06",
-                "_TargetCategory": 1,
+                "_TargetCategory": "[1] MULTI_PARTS",
                 "_TargetDataGuid": "a4e1f8e0-404e-4b1a-bb6d-b1580038bc80",
                 "_ExcuteCount": 1,
                 "_MaxCount": 1,
-                "_Condition": 0,
+                "_Condition": "[0] EVERYTIME",
                 "_ConditionCount": -1,
                 "_PartsType": "[2000370944] TAIL"
               }
@@ -477,11 +479,11 @@
             {
               "app.user_data.EmParamParts.cPartsBreak": {
                 "_InstanceGuid": "36bfe61d-a585-4c13-a158-171f0f78f560",
-                "_TargetCategory": 0,
+                "_TargetCategory": "[0] PARTS",
                 "_TargetDataGuid": "0234f002-7150-4342-8617-e4fa18400ea2",
                 "_ExcuteCount": 1,
                 "_MaxCount": 1,
-                "_Condition": 0,
+                "_Condition": "[0] EVERYTIME",
                 "_ConditionCount": -1,
                 "_PartsType": "[665420480] RIGHT_WING"
               }
@@ -489,11 +491,11 @@
             {
               "app.user_data.EmParamParts.cPartsBreak": {
                 "_InstanceGuid": "db967f15-dc80-481e-8c36-752099f17f9b",
-                "_TargetCategory": 0,
+                "_TargetCategory": "[0] PARTS",
                 "_TargetDataGuid": "5632b28f-5427-4d15-a9f9-c75cfd2b23c9",
                 "_ExcuteCount": 1,
                 "_MaxCount": 1,
-                "_Condition": 0,
+                "_Condition": "[0] EVERYTIME",
                 "_ConditionCount": -1,
                 "_PartsType": "[4054288960] LEFT_WING"
               }
@@ -520,7 +522,7 @@
                   0.0,
                   0.0
                 ],
-                "_HighLightEffectType": 0
+                "_HighLightEffectType": "[0] NORMAL"
               }
             },
             {
@@ -539,7 +541,7 @@
                   0.0,
                   0.0
                 ],
-                "_HighLightEffectType": 0
+                "_HighLightEffectType": "[0] NORMAL"
               }
             }
           ]
@@ -754,13 +756,13 @@
       "_LegendaryScarNumArray": [
         {
           "app.user_data.EmParamParts.LegendaryScarNumData": {
-            "Group": 0,
+            "Group": "[0] A",
             "Num": 1
           }
         },
         {
           "app.user_data.EmParamParts.LegendaryScarNumData": {
-            "Group": 1,
+            "Group": "[1] B",
             "Num": 2
           }
         }

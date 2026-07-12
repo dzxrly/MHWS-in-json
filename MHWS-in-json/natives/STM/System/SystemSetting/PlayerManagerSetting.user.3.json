@@ -24,11 +24,13 @@
           "_DamageAngleOffsetDeg": 0.0,
           "_Attack": 0.0,
           "_FixAttack": 0.0,
-          "_GuardType": 0,
+          "_GuardType": "[0] NORMAL",
           "_VersusGuardPower": 0.0,
           "_StageDamageTypeFixed": "[165454032] S",
           "_StageDamageExIDFixed": "[4200943984] NONE",
-          "_AttackAttrFixed": "[0] NONE",
+          "_AttackAttrFixed": [
+            "[0] NONE"
+          ],
           "_AttrLevel": 0,
           "_AttrValue": 0.0,
           "_AttackCond": 1220034176,
@@ -37,7 +39,9 @@
           "_IsUseCondDefaultSec": true,
           "_CondCustomSec": 0.0,
           "_StunDamage": 0.0,
-          "_FlagBit": 0,
+          "_FlagBit": [
+            "[0] NONE"
+          ],
           "_MultiHitTimer": 0.0,
           "_HealValue": 0.0,
           "_PriorityFixed": "[7] PRIO_8",
@@ -94,15 +98,12 @@
           "_IsGestureAttack": false,
           "_IsDisableAnimalAttack": false,
           "_IsExFieldWpAttackFinal": false,
-          "_ExEmote03AttackType": 0,
+          "_ExEmote03AttackType": "[0] NONE",
           "_HitEffectTypeFixed": "[10] NONE",
           "_DisableHitEffect": {
-            "ace.Bitset`1<app.HitDef.HIT_EFFECT_DISABLE_TYPE>": {
-              "_Value": [
-                0
-              ],
-              "_MaxElement": 32
-            }
+            "app.HitDef.HIT_EFFECT_DISABLE_TYPE": [],
+            "_MaxElement": 32,
+            "_WordCount": 1
           },
           "_HitEffectAngleZ": 0.0,
           "_HitEffectAngleX": 0.0,

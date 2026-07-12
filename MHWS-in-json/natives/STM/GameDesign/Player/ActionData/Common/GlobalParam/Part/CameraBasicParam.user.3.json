@@ -13,8 +13,8 @@
         "app.cValueInterpolationTime": {
           "_InTime": 0.5,
           "_OutTime": 1.0,
-          "_InCurve": 5,
-          "_OutCurve": 5
+          "_InCurve": "[5] OutQuad",
+          "_OutCurve": "[5] OutQuad"
         }
       },
       "_OperateParam": {
@@ -30,7 +30,7 @@
       "_AutoRotateParam": {
         "app.cPlayerCameraAutoRotator.cSetting": {
           "_DefaultEaseTime": 0.4,
-          "_DefaultEaseType": 11,
+          "_DefaultEaseType": "[11] OutQuart",
           "_DefaultBreakableRate": 0.6,
           "_StickThreshold": 0.2,
           "_SlopeMeasure": {
@@ -44,7 +44,7 @@
             }
           },
           "_TargetEaseTime": 0.2,
-          "_TargetEaseType": 5,
+          "_TargetEaseType": "[5] OutQuad",
           "_TargetPitchLimit": {
             "raw": "000020c20000be42",
             "type": "Range"
@@ -500,9 +500,9 @@
               "_Fade": {
                 "app.cPlayerActionCameraParam.cMotFade": {
                   "_InTime": 1.0,
-                  "_InEase": 6,
+                  "_InEase": "[6] InOutQuad",
                   "_OutTime": 0.0,
-                  "_OutEase": 6,
+                  "_OutEase": "[6] InOutQuad",
                   "_InFrame": 0.0,
                   "_OutFrame": -1.0,
                   "_FadeType": "[1] FRONT",
@@ -522,9 +522,9 @@
           "_FastTravelGo": {
             "app.cPlayerActionCameraParam.cMotFade": {
               "_InTime": 1.0,
-              "_InEase": 6,
+              "_InEase": "[6] InOutQuad",
               "_OutTime": 0.0,
-              "_OutEase": 6,
+              "_OutEase": "[6] InOutQuad",
               "_InFrame": 0.0,
               "_OutFrame": -1.0,
               "_FadeType": "[0] BLEND",
@@ -540,9 +540,9 @@
           "_FastTravelPorterNoRideGo": {
             "app.cPlayerActionCameraParam.cMotFade": {
               "_InTime": 0.0,
-              "_InEase": 6,
+              "_InEase": "[6] InOutQuad",
               "_OutTime": 0.0,
-              "_OutEase": 6,
+              "_OutEase": "[6] InOutQuad",
               "_InFrame": 0.0,
               "_OutFrame": -1.0,
               "_FadeType": "[1] FRONT",
@@ -558,9 +558,9 @@
           "_FastTravelPorterGo": {
             "app.cPlayerActionCameraParam.cMotFade": {
               "_InTime": 1.0,
-              "_InEase": 6,
+              "_InEase": "[6] InOutQuad",
               "_OutTime": 0.0,
-              "_OutEase": 6,
+              "_OutEase": "[6] InOutQuad",
               "_InFrame": 0.0,
               "_OutFrame": -1.0,
               "_FadeType": "[1] FRONT",
@@ -578,9 +578,9 @@
               "_Fade": {
                 "app.cPlayerActionCameraParam.cMotFade": {
                   "_InTime": 0.0,
-                  "_InEase": 6,
+                  "_InEase": "[6] InOutQuad",
                   "_OutTime": 0.0,
-                  "_OutEase": 6,
+                  "_OutEase": "[6] InOutQuad",
                   "_InFrame": 0.0,
                   "_OutFrame": -1.0,
                   "_FadeType": "[1] FRONT",
@@ -601,9 +601,9 @@
               "_FadeStart": {
                 "app.cPlayerActionCameraParam.cMotFade": {
                   "_InTime": 0.0,
-                  "_InEase": 6,
+                  "_InEase": "[6] InOutQuad",
                   "_OutTime": 0.0,
-                  "_OutEase": 6,
+                  "_OutEase": "[6] InOutQuad",
                   "_InFrame": 0.0,
                   "_OutFrame": -1.0,
                   "_FadeType": "[1] FRONT",
@@ -619,9 +619,9 @@
               "_FadeFailed": {
                 "app.cPlayerActionCameraParam.cMotFade": {
                   "_InTime": 1.0,
-                  "_InEase": 6,
+                  "_InEase": "[6] InOutQuad",
                   "_OutTime": 2.0,
-                  "_OutEase": 6,
+                  "_OutEase": "[6] InOutQuad",
                   "_InFrame": 0.0,
                   "_OutFrame": 170.0,
                   "_FadeType": "[0] BLEND",
@@ -637,9 +637,9 @@
               "_FadeSuccessContinue": {
                 "app.cPlayerActionCameraParam.cMotFade": {
                   "_InTime": 0.3,
-                  "_InEase": 5,
+                  "_InEase": "[5] OutQuad",
                   "_OutTime": 1.0,
-                  "_OutEase": 6,
+                  "_OutEase": "[6] InOutQuad",
                   "_InFrame": 0.0,
                   "_OutFrame": -1.0,
                   "_FadeType": "[1] FRONT",
@@ -655,9 +655,9 @@
               "_FadeSuccessFinish": {
                 "app.cPlayerActionCameraParam.cMotFade": {
                   "_InTime": 0.5,
-                  "_InEase": 5,
+                  "_InEase": "[5] OutQuad",
                   "_OutTime": 3.0,
-                  "_OutEase": 6,
+                  "_OutEase": "[6] InOutQuad",
                   "_InFrame": 0.0,
                   "_OutFrame": 70.0,
                   "_FadeType": "[0] BLEND",
@@ -673,9 +673,9 @@
               "_FadeSuperSuccessFinish": {
                 "app.cPlayerActionCameraParam.cMotFade": {
                   "_InTime": 0.5,
-                  "_InEase": 5,
+                  "_InEase": "[5] OutQuad",
                   "_OutTime": 3.0,
-                  "_OutEase": 6,
+                  "_OutEase": "[6] InOutQuad",
                   "_InFrame": 0.0,
                   "_OutFrame": 150.0,
                   "_FadeType": "[0] BLEND",
@@ -700,9 +700,9 @@
           "_FishBigGet": {
             "app.cPlayerActionCameraParam.cMotFade": {
               "_InTime": 0.0,
-              "_InEase": 6,
+              "_InEase": "[6] InOutQuad",
               "_OutTime": 1.5,
-              "_OutEase": 6,
+              "_OutEase": "[6] InOutQuad",
               "_InFrame": 0.0,
               "_OutFrame": 580.0,
               "_FadeType": "[0] BLEND",
@@ -720,9 +720,9 @@
               "_FadeStart": {
                 "app.cPlayerActionCameraParam.cMotFade": {
                   "_InTime": 0.0,
-                  "_InEase": 0,
+                  "_InEase": "[0] Linear",
                   "_OutTime": 0.0,
-                  "_OutEase": 0,
+                  "_OutEase": "[0] Linear",
                   "_InFrame": 0.0,
                   "_OutFrame": -1.0,
                   "_FadeType": "[1] FRONT",
@@ -738,9 +738,9 @@
               "_FadeFly": {
                 "app.cPlayerActionCameraParam.cMotFade": {
                   "_InTime": 0.0,
-                  "_InEase": 6,
+                  "_InEase": "[6] InOutQuad",
                   "_OutTime": 0.0,
-                  "_OutEase": 0,
+                  "_OutEase": "[0] Linear",
                   "_InFrame": 0.0,
                   "_OutFrame": -1.0,
                   "_FadeType": "[1] FRONT",
@@ -756,9 +756,9 @@
               "_FadeLoop": {
                 "app.cPlayerActionCameraParam.cMotFade": {
                   "_InTime": 0.2,
-                  "_InEase": 11,
+                  "_InEase": "[11] OutQuart",
                   "_OutTime": 0.0,
-                  "_OutEase": 5,
+                  "_OutEase": "[5] OutQuad",
                   "_InFrame": 0.0,
                   "_OutFrame": -1.0,
                   "_FadeType": "[2] FRONT_NOATTACH",
@@ -774,9 +774,9 @@
               "_FadeEnd": {
                 "app.cPlayerActionCameraParam.cMotFade": {
                   "_InTime": 0.5,
-                  "_InEase": 5,
+                  "_InEase": "[5] OutQuad",
                   "_OutTime": 2.0,
-                  "_OutEase": 6,
+                  "_OutEase": "[6] InOutQuad",
                   "_InFrame": 0.0,
                   "_OutFrame": 260.0,
                   "_FadeType": "[0] BLEND",
@@ -794,9 +794,9 @@
           "_RespawnNiguruma": {
             "app.cPlayerActionCameraParam.cMotFade": {
               "_InTime": 1.0,
-              "_InEase": 5,
+              "_InEase": "[5] OutQuad",
               "_OutTime": 2.0,
-              "_OutEase": 6,
+              "_OutEase": "[6] InOutQuad",
               "_InFrame": 0.0,
               "_OutFrame": 240.0,
               "_FadeType": "[0] BLEND",
@@ -812,9 +812,9 @@
           "_SpecialGasagoso": {
             "app.cPlayerActionCameraParam.cMotFade": {
               "_InTime": 2.0,
-              "_InEase": 6,
+              "_InEase": "[6] InOutQuad",
               "_OutTime": 2.0,
-              "_OutEase": 6,
+              "_OutEase": "[6] InOutQuad",
               "_InFrame": 0.0,
               "_OutFrame": -1.0,
               "_FadeType": "[1] FRONT",
@@ -830,9 +830,9 @@
           "_BindStart": {
             "app.cPlayerActionCameraParam.cMotFade": {
               "_InTime": 1.0,
-              "_InEase": 5,
+              "_InEase": "[5] OutQuad",
               "_OutTime": 1.0,
-              "_OutEase": 5,
+              "_OutEase": "[5] OutQuad",
               "_InFrame": 0.0,
               "_OutFrame": -1.0,
               "_FadeType": "[1] FRONT",
@@ -848,9 +848,9 @@
           "_Binding": {
             "app.cPlayerActionCameraParam.cMotFade": {
               "_InTime": 0.0,
-              "_InEase": 6,
+              "_InEase": "[6] InOutQuad",
               "_OutTime": 0.0,
-              "_OutEase": 6,
+              "_OutEase": "[6] InOutQuad",
               "_InFrame": 0.0,
               "_OutFrame": -1.0,
               "_FadeType": "[1] FRONT",
@@ -866,9 +866,9 @@
           "_BindFinish": {
             "app.cPlayerActionCameraParam.cMotFade": {
               "_InTime": 0.0,
-              "_InEase": 5,
+              "_InEase": "[5] OutQuad",
               "_OutTime": 1.0,
-              "_OutEase": 5,
+              "_OutEase": "[5] OutQuad",
               "_InFrame": 0.0,
               "_OutFrame": 211.0,
               "_FadeType": "[1] FRONT",
@@ -884,9 +884,9 @@
           "_ExFieldFinish": {
             "app.cPlayerActionCameraParam.cMotFade": {
               "_InTime": 1.5,
-              "_InEase": 5,
+              "_InEase": "[5] OutQuad",
               "_OutTime": 0.6,
-              "_OutEase": 5,
+              "_OutEase": "[5] OutQuad",
               "_InFrame": 0.0,
               "_OutFrame": 515.0,
               "_FadeType": "[0] BLEND",
@@ -921,7 +921,7 @@
               ],
               "Octaves": 2,
               "Persistent": 0.4,
-              "WaveCurve": 3
+              "WaveCurve": "[3] InOutSine"
             }
           },
           "PitchRange": {
@@ -937,7 +937,7 @@
           "_ResetTime": 1.5,
           "_ResetDamping": 15.0,
           "_ZoomTime": 0.7,
-          "_ZoomEase": 14
+          "_ZoomEase": "[14] OutQuint"
         }
       },
       "_LockonCameraParam": {
@@ -1071,7 +1071,7 @@
                         0.0,
                         0.0
                       ],
-                      "_Curve": 0
+                      "_Curve": "[0] Linear"
                     }
                   },
                   {
@@ -1101,7 +1101,7 @@
                         0.0,
                         0.0
                       ],
-                      "_Curve": 0
+                      "_Curve": "[0] Linear"
                     }
                   },
                   {
@@ -1131,7 +1131,7 @@
                         0.0,
                         0.0
                       ],
-                      "_Curve": 0
+                      "_Curve": "[0] Linear"
                     }
                   },
                   {
@@ -1161,7 +1161,7 @@
                         0.0,
                         0.0
                       ],
-                      "_Curve": 0
+                      "_Curve": "[0] Linear"
                     }
                   }
                 ]
@@ -1216,7 +1216,7 @@
                         0.0,
                         0.0
                       ],
-                      "_Curve": 0
+                      "_Curve": "[0] Linear"
                     }
                   },
                   {
@@ -1246,7 +1246,7 @@
                         0.0,
                         0.0
                       ],
-                      "_Curve": 0
+                      "_Curve": "[0] Linear"
                     }
                   },
                   {
@@ -1276,7 +1276,7 @@
                         0.0,
                         0.0
                       ],
-                      "_Curve": 0
+                      "_Curve": "[0] Linear"
                     }
                   }
                 ]
@@ -1331,7 +1331,7 @@
                         0.0,
                         0.0
                       ],
-                      "_Curve": 0
+                      "_Curve": "[0] Linear"
                     }
                   },
                   {
@@ -1361,7 +1361,7 @@
                         0.0,
                         0.0
                       ],
-                      "_Curve": 0
+                      "_Curve": "[0] Linear"
                     }
                   },
                   {
@@ -1391,7 +1391,7 @@
                         0.0,
                         0.0
                       ],
-                      "_Curve": 0
+                      "_Curve": "[0] Linear"
                     }
                   }
                 ]
@@ -1460,7 +1460,7 @@
                         0.0,
                         0.0
                       ],
-                      "_Curve": 0
+                      "_Curve": "[0] Linear"
                     }
                   },
                   {
@@ -1490,7 +1490,7 @@
                         0.0,
                         0.0
                       ],
-                      "_Curve": 0
+                      "_Curve": "[0] Linear"
                     }
                   },
                   {
@@ -1520,7 +1520,7 @@
                         0.0,
                         0.0
                       ],
-                      "_Curve": 0
+                      "_Curve": "[0] Linear"
                     }
                   },
                   {
@@ -1550,7 +1550,7 @@
                         0.0,
                         0.0
                       ],
-                      "_Curve": 0
+                      "_Curve": "[0] Linear"
                     }
                   }
                 ]
@@ -1635,14 +1635,14 @@
           "_TargetTrackingSpeed": 1.0,
           "_DampingBufferSpeed": 2.5,
           "_DampingBufferDeg": 10.0,
-          "_InterpolationEase": 6
+          "_InterpolationEase": "[6] InOutQuad"
         }
       },
       "_CombatParam": {
         "app.mcCam_OfsCombat.cGlobalSetting": {
           "_LinearDampingRate": 0.85,
           "_InterpolationTime": 1.6,
-          "_InterpolationType": 6,
+          "_InterpolationType": "[6] InOutQuad",
           "_ZakoParam": {
             "app.mcCam_OfsCombat.cSetting": {
               "_Patterns": [
@@ -1688,7 +1688,7 @@
           "_DiedRate": 0.5,
           "_NotCombatRate": 0.5,
           "_InsideInterpolationTime": 1.0,
-          "_InsideInterpolationType": 6,
+          "_InsideInterpolationType": "[6] InOutQuad",
           "_InsideContinueTime": 1.5,
           "_InsideDistanceMargin": 1.5
         }

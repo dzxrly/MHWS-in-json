@@ -31,44 +31,34 @@
       "_CommandArgArray": [
         {
           "app.btable.PorterCommonCommand.cIsPtContinueFlagArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPtContinueFlagArg.TYPE>": 0
-            }
+            "_EditType": [
+              "[0] ENABLE_NAVI_WHEN_AI_ALONE"
+            ]
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsOwnerStateArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsOwnerStateArg.TYPE>": 0
-            }
+            "_EditType": "[0] CALL_REQUEST"
           }
         },
         {
           "app.btable.PorterCommonCommand.cFollowStateNoCombatArg": {
-            "_FollowState": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.FOLLOW_STATE_NO_COMBAT>": 0
-            }
+            "_FollowState": "[0] NORMAL"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 1
-            }
+            "_EditType": "[1] OWNER"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsOwnerStateArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsOwnerStateArg.TYPE>": 10
-            }
+            "_EditType": "[10] FOLLOW"
           }
         },
         {
           "app.btable.PorterCommonCommand.cEmoteCallStateArg": {
-            "_EmoteCallState": {
-              "ace.btable.cEditFieldEnum`1<app.cPorterEmoteInfo.cCallInfo.STATE>": 3
-            }
+            "_EmoteCallState": "[3] PLAY_EMOTE"
           }
         },
         {
@@ -95,23 +85,17 @@
         },
         {
           "app.btable.PorterCommonCommand.cIsPorterStateArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 1
-            }
+            "_EditType": "[1] IN_NEED_MOVE_TO_GM040_000_00"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsPorterStateArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 4
-            }
+            "_EditType": "[4] IN_NEED_MOVE_TO_AVOID_EM0078_LAST_RESORT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsPorterStateArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 3
-            }
+            "_EditType": "[3] IN_NEED_MOVE_TO_WAIT_POINT_FOR_ZONE_AREA_FIELD_ATTR"
           }
         },
         {
@@ -155,12 +139,8 @@
                       "_Distance": {
                         "ace.btable.cEditFieldFloat": 25.0
                       },
-                      "_CheckType": {
-                        "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-                      },
-                      "_AxisType": {
-                        "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-                      }
+                      "_CheckType": "[0] NEAR",
+                      "_AxisType": "[0] XYZ"
                     }
                   }
                 }
@@ -209,12 +189,8 @@
                       "_Distance": {
                         "ace.btable.cEditFieldFloat": 30.0
                       },
-                      "_CheckType": {
-                        "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-                      },
-                      "_AxisType": {
-                        "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-                      }
+                      "_CheckType": "[0] NEAR",
+                      "_AxisType": "[0] XYZ"
                     }
                   }
                 }
@@ -224,30 +200,22 @@
         },
         {
           "app.btable.PorterCommonCommand.cIsPorterStateArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 6
-            }
+            "_EditType": "[6] IS_FORCE_NOT_COMBAT_FOLLOW_WHEN_COMBAT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
-            }
+            "_EditType": "[0] STOP"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsOwnerStateArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsOwnerStateArg.TYPE>": 0
-            }
+            "_EditType": "[0] CALL_REQUEST"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
-            }
+            "_EditType": "[0] STOP"
           }
         },
         {
@@ -258,9 +226,7 @@
                   "_ArgumentCommandHash": 5870363613210426345,
                   "_ArgumentCommandArgument": {
                     "app.btable.PorterCommonCommand.cIsPorterStateArg": {
-                      "_EditType": {
-                        "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 1
-                      }
+                      "_EditType": "[1] IN_NEED_MOVE_TO_GM040_000_00"
                     }
                   }
                 }
@@ -270,9 +236,7 @@
                   "_ArgumentCommandHash": 5870363613210426345,
                   "_ArgumentCommandArgument": {
                     "app.btable.PorterCommonCommand.cIsPorterStateArg": {
-                      "_EditType": {
-                        "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 2
-                      }
+                      "_EditType": "[2] IN_GM040_000_00"
                     }
                   }
                 }
@@ -282,65 +246,49 @@
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
-            }
+            "_EditType": "[0] STOP"
           }
         },
         {
           "app.btable.PorterCommonCommand.cFollowStateNoCombatArg": {
-            "_FollowState": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.FOLLOW_STATE_NO_COMBAT>": 0
-            }
+            "_FollowState": "[0] NORMAL"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 1
-            }
+            "_EditType": "[1] OWNER"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
-            }
+            "_EditType": "[0] STOP"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsPorterStateArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 0
-            }
+            "_EditType": "[0] READY_CONST"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsPtContinueFlagArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPtContinueFlagArg.TYPE>": 1
-            }
+            "_EditType": [
+              "[1] RIDING"
+            ]
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsPtStandStateArg": {
-            "_StandState": {
-              "ace.btable.cEditFieldEnum`1<app.CharacterDef.STAND_STATE>": 1
-            }
+            "_StandState": "[1] FLY"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsPtStandStateArg": {
-            "_StandState": {
-              "ace.btable.cEditFieldEnum`1<app.CharacterDef.STAND_STATE>": 2
-            }
+            "_StandState": "[2] WALL"
           }
         },
         {
           "app.btable.PorterCommonCommand.cOwnerStandStateArg": {
-            "_StandState": {
-              "ace.btable.cEditFieldEnum`1<app.CharacterDef.STAND_STATE>": 2
-            }
+            "_StandState": "[2] WALL"
           }
         },
         {
@@ -348,12 +296,8 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 30.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_AxisType": "[0] XYZ"
           }
         },
         {
@@ -361,26 +305,18 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 40.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_AxisType": "[0] XYZ"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
-            }
+            "_EditType": "[0] STOP"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 10
-            }
+            "_EditType": "[10] WALK"
           }
         },
         {
@@ -388,26 +324,18 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 50.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_AxisType": "[0] XYZ"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 10
-            }
+            "_EditType": "[10] WALK"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 20
-            }
+            "_EditType": "[20] RUN"
           }
         },
         {
@@ -415,26 +343,18 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 20.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_AxisType": "[0] XYZ"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
-            }
+            "_EditType": "[0] STOP"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 10
-            }
+            "_EditType": "[10] WALK"
           }
         },
         {
@@ -442,26 +362,18 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 25.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_AxisType": "[0] XYZ"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 10
-            }
+            "_EditType": "[10] WALK"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 20
-            }
+            "_EditType": "[20] RUN"
           }
         },
         {
@@ -469,12 +381,8 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 20.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_AxisType": "[0] XYZ"
           }
         },
         {
@@ -482,26 +390,18 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 25.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_AxisType": "[0] XYZ"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
-            }
+            "_EditType": "[0] STOP"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 10
-            }
+            "_EditType": "[10] WALK"
           }
         },
         {
@@ -509,47 +409,33 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 30.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_AxisType": "[0] XYZ"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 10
-            }
+            "_EditType": "[10] WALK"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 20
-            }
+            "_EditType": "[20] RUN"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 1
-            }
+            "_EditType": "[1] OWNER"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsPtStandStateArg": {
-            "_StandState": {
-              "ace.btable.cEditFieldEnum`1<app.CharacterDef.STAND_STATE>": 1
-            }
+            "_StandState": "[1] FLY"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsPtStandStateArg": {
-            "_StandState": {
-              "ace.btable.cEditFieldEnum`1<app.CharacterDef.STAND_STATE>": 2
-            }
+            "_StandState": "[2] WALL"
           }
         },
         {
@@ -563,12 +449,8 @@
                       "_Distance": {
                         "ace.btable.cEditFieldFloat": 10.0
                       },
-                      "_CheckType": {
-                        "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-                      },
-                      "_AxisType": {
-                        "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-                      }
+                      "_CheckType": "[0] NEAR",
+                      "_AxisType": "[0] XYZ"
                     }
                   }
                 }
@@ -578,15 +460,11 @@
                   "_ArgumentCommandHash": 4620336213854129237,
                   "_ArgumentCommandArgument": {
                     "ace.btable.cCommandArgumentCheckHeight": {
-                      "_TargetType": {
-                        "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckHeight.TARGET_TYPE>": 0
-                      },
+                      "_TargetType": "[0] TARGET_DESTINATION",
                       "_Height": {
                         "ace.btable.cEditFieldFloat": 5.0
                       },
-                      "_CheckType": {
-                        "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckHeight.CHECK_TYPE>": 2
-                      }
+                      "_CheckType": "[2] IN_SIDE"
                     }
                   }
                 }
@@ -599,26 +477,18 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 15.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_AxisType": "[0] XYZ"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
-            }
+            "_EditType": "[0] STOP"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 20
-            }
+            "_EditType": "[20] RUN"
           }
         },
         {
@@ -626,61 +496,45 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 20.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_AxisType": "[0] XYZ"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 20
-            }
+            "_EditType": "[20] RUN"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 30
-            }
+            "_EditType": "[30] FOLLOW_RUN"
           }
         },
         {
           "app.btable.PorterCommonCommand.cFollowStateNoCombatArg": {
-            "_FollowState": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.FOLLOW_STATE_NO_COMBAT>": 0
-            }
+            "_FollowState": "[0] NORMAL"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsOwnerStateArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsOwnerStateArg.TYPE>": 0
-            }
+            "_EditType": "[0] CALL_REQUEST"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsPorterStateArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 0
-            }
+            "_EditType": "[0] READY_CONST"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsPtContinueFlagArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPtContinueFlagArg.TYPE>": 1
-            }
+            "_EditType": [
+              "[1] RIDING"
+            ]
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 2
-            }
+            "_EditType": "[2] OWNER_PLAYER_COMBAT_WAIT_POS"
           }
         },
         {
@@ -688,82 +542,60 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 5.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_AxisType": "[0] XYZ"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
-            }
+            "_EditType": "[0] STOP"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsOwnerStateArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsOwnerStateArg.TYPE>": 20
-            }
+            "_EditType": "[20] PORTER_RIDE_START_NO_CALL"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
-            }
+            "_EditType": "[0] STOP"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 30
-            }
+            "_EditType": "[30] FOLLOW_RUN"
           }
         },
         {
           "app.btable.PorterCommonCommand.cFollowStateNoCombatArg": {
-            "_FollowState": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.FOLLOW_STATE_NO_COMBAT>": 0
-            }
+            "_FollowState": "[0] NORMAL"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
-            }
+            "_EditType": "[0] STOP"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsPorterStateArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 0
-            }
+            "_EditType": "[0] READY_CONST"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsOwnerStateArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsOwnerStateArg.TYPE>": 0
-            }
+            "_EditType": "[0] CALL_REQUEST"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsPtContinueFlagArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPtContinueFlagArg.TYPE>": 1
-            }
+            "_EditType": [
+              "[1] RIDING"
+            ]
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 8
-            }
+            "_EditType": "[8] OWNER_PLAYER_HIDE_WAIT_POS"
           }
         },
         {
@@ -771,68 +603,50 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 5.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_AxisType": "[0] XYZ"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
-            }
+            "_EditType": "[0] STOP"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 20
-            }
+            "_EditType": "[20] RUN"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
-            }
+            "_EditType": "[0] STOP"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsPorterStateArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 0
-            }
+            "_EditType": "[0] READY_CONST"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsOwnerStateArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsOwnerStateArg.TYPE>": 0
-            }
+            "_EditType": "[0] CALL_REQUEST"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsPtContinueFlagArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPtContinueFlagArg.TYPE>": 1
-            }
+            "_EditType": [
+              "[1] RIDING"
+            ]
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 10
-            }
+            "_EditType": "[10] OWNER_AROUND_SINGLE_ENEMY_NO_COMBAT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 11
-            }
+            "_EditType": "[11] OWNER_AROUND_MULTIPLE_ENEMY_NO_COMBAT"
           }
         },
         {
@@ -846,12 +660,8 @@
                       "_Distance": {
                         "ace.btable.cEditFieldFloat": 10.0
                       },
-                      "_CheckType": {
-                        "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-                      },
-                      "_AxisType": {
-                        "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-                      }
+                      "_CheckType": "[0] NEAR",
+                      "_AxisType": "[0] XYZ"
                     }
                   }
                 }
@@ -861,15 +671,11 @@
                   "_ArgumentCommandHash": 4620336213854129237,
                   "_ArgumentCommandArgument": {
                     "ace.btable.cCommandArgumentCheckHeight": {
-                      "_TargetType": {
-                        "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckHeight.TARGET_TYPE>": 0
-                      },
+                      "_TargetType": "[0] TARGET_DESTINATION",
                       "_Height": {
                         "ace.btable.cEditFieldFloat": 5.0
                       },
-                      "_CheckType": {
-                        "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckHeight.CHECK_TYPE>": 2
-                      }
+                      "_CheckType": "[2] IN_SIDE"
                     }
                   }
                 }
@@ -879,9 +685,7 @@
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
-            }
+            "_EditType": "[0] STOP"
           }
         },
         {
@@ -889,19 +693,13 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 18.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_AxisType": "[0] XYZ"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 10
-            }
+            "_EditType": "[10] WALK"
           }
         },
         {
@@ -909,61 +707,45 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 25.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_AxisType": "[0] XYZ"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 20
-            }
+            "_EditType": "[20] RUN"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 30
-            }
+            "_EditType": "[30] FOLLOW_RUN"
           }
         },
         {
           "app.btable.PorterCommonCommand.cFollowStateNoCombatArg": {
-            "_FollowState": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.FOLLOW_STATE_NO_COMBAT>": 0
-            }
+            "_FollowState": "[0] NORMAL"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 1
-            }
+            "_EditType": "[1] OWNER"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
-            }
+            "_EditType": "[0] STOP"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsPorterStateArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 0
-            }
+            "_EditType": "[0] READY_CONST"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsPtContinueFlagArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPtContinueFlagArg.TYPE>": 1
-            }
+            "_EditType": [
+              "[1] RIDING"
+            ]
           }
         },
         {
@@ -1006,166 +788,120 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 3.5
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_AxisType": "[0] XYZ"
           }
         },
         {
           "app.btable.PorterCommonCommand.cEmoteCallStateArg": {
-            "_EmoteCallState": {
-              "ace.btable.cEditFieldEnum`1<app.cPorterEmoteInfo.cCallInfo.STATE>": 1
-            }
+            "_EmoteCallState": "[1] GO_TO_PLAYER"
           }
         },
         {
           "app.btable.PorterCommonCommand.cEmoteCallStateArg": {
-            "_EmoteCallState": {
-              "ace.btable.cEditFieldEnum`1<app.cPorterEmoteInfo.cCallInfo.STATE>": 2
-            }
+            "_EmoteCallState": "[2] WAITING_PLAY_REQUEST"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
-            }
+            "_EditType": "[0] STOP"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 30
-            }
+            "_EditType": "[30] FOLLOW_RUN"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 12
-            }
+            "_EditType": "[12] OWNER_ARENA_CENTER_POS"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 30
-            }
+            "_EditType": "[30] FOLLOW_RUN"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 1
-            }
+            "_EditType": "[1] OWNER"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 1
-            }
+            "_EditType": "[1] OWNER"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 13
-            }
+            "_EditType": "[13] OUTSIDE_QUICKSAND_L_POS"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 30
-            }
+            "_EditType": "[30] FOLLOW_RUN"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 13
-            }
+            "_EditType": "[13] OUTSIDE_QUICKSAND_L_POS"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 30
-            }
+            "_EditType": "[30] FOLLOW_RUN"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 13
-            }
+            "_EditType": "[13] OUTSIDE_QUICKSAND_L_POS"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 30
-            }
+            "_EditType": "[30] FOLLOW_RUN"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 30
-            }
+            "_EditType": "[30] FOLLOW_RUN"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
-            }
+            "_EditType": "[0] STOP"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 30
-            }
+            "_EditType": "[30] FOLLOW_RUN"
           }
         },
         {
           "app.btable.PorterCommonCommand.cFollowStateNoCombatArg": {
-            "_FollowState": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.FOLLOW_STATE_NO_COMBAT>": 0
-            }
+            "_FollowState": "[0] NORMAL"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsOwnerStateArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsOwnerStateArg.TYPE>": 0
-            }
+            "_EditType": "[0] CALL_REQUEST"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsPorterStateArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 0
-            }
+            "_EditType": "[0] READY_CONST"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsPtContinueFlagArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPtContinueFlagArg.TYPE>": 1
-            }
+            "_EditType": [
+              "[1] RIDING"
+            ]
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 14
-            }
+            "_EditType": "[14] GRILL"
           }
         },
         {
@@ -1173,61 +909,45 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 3.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_AxisType": "[0] XYZ"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
-            }
+            "_EditType": "[0] STOP"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 10
-            }
+            "_EditType": "[10] WALK"
           }
         },
         {
           "app.btable.PorterCommonCommand.cFollowStateNoCombatArg": {
-            "_FollowState": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.FOLLOW_STATE_NO_COMBAT>": 0
-            }
+            "_FollowState": "[0] NORMAL"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsOwnerStateArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsOwnerStateArg.TYPE>": 0
-            }
+            "_EditType": "[0] CALL_REQUEST"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsPorterStateArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 0
-            }
+            "_EditType": "[0] READY_CONST"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsPtContinueFlagArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPtContinueFlagArg.TYPE>": 1
-            }
+            "_EditType": [
+              "[1] RIDING"
+            ]
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 15
-            }
+            "_EditType": "[15] FISHING"
           }
         },
         {
@@ -1235,68 +955,50 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 3.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_AxisType": "[0] XYZ"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
-            }
+            "_EditType": "[0] STOP"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 10
-            }
+            "_EditType": "[10] WALK"
           }
         },
         {
           "app.btable.PorterCommonCommand.cFollowStateNoCombatArg": {
-            "_FollowState": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.FOLLOW_STATE_NO_COMBAT>": 0
-            }
+            "_FollowState": "[0] NORMAL"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsOwnerStateArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsOwnerStateArg.TYPE>": 0
-            }
+            "_EditType": "[0] CALL_REQUEST"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsPorterStateArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 0
-            }
+            "_EditType": "[0] READY_CONST"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsPtContinueFlagArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPtContinueFlagArg.TYPE>": 1
-            }
+            "_EditType": [
+              "[1] RIDING"
+            ]
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 18
-            }
+            "_EditType": "[18] WATAR_GUN_ATTACK_WAIT_POS"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
-            }
+            "_EditType": "[0] STOP"
           }
         },
         {
@@ -1304,26 +1006,18 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 6.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_AxisType": "[0] XYZ"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
-            }
+            "_EditType": "[0] STOP"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 20
-            }
+            "_EditType": "[20] RUN"
           }
         },
         {
@@ -1331,47 +1025,33 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 4.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_AxisType": "[0] XYZ"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
-            }
+            "_EditType": "[0] STOP"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 20
-            }
+            "_EditType": "[20] RUN"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 17
-            }
+            "_EditType": "[17] EX_FIELD_WAIT_POS"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsPtStandStateArg": {
-            "_StandState": {
-              "ace.btable.cEditFieldEnum`1<app.CharacterDef.STAND_STATE>": 1
-            }
+            "_StandState": "[1] FLY"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsPtStandStateArg": {
-            "_StandState": {
-              "ace.btable.cEditFieldEnum`1<app.CharacterDef.STAND_STATE>": 2
-            }
+            "_StandState": "[2] WALL"
           }
         },
         {
@@ -1385,12 +1065,8 @@
                       "_Distance": {
                         "ace.btable.cEditFieldFloat": 10.0
                       },
-                      "_CheckType": {
-                        "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-                      },
-                      "_AxisType": {
-                        "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-                      }
+                      "_CheckType": "[0] NEAR",
+                      "_AxisType": "[0] XYZ"
                     }
                   }
                 }
@@ -1400,15 +1076,11 @@
                   "_ArgumentCommandHash": 4620336213854129237,
                   "_ArgumentCommandArgument": {
                     "ace.btable.cCommandArgumentCheckHeight": {
-                      "_TargetType": {
-                        "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckHeight.TARGET_TYPE>": 0
-                      },
+                      "_TargetType": "[0] TARGET_DESTINATION",
                       "_Height": {
                         "ace.btable.cEditFieldFloat": 5.0
                       },
-                      "_CheckType": {
-                        "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckHeight.CHECK_TYPE>": 2
-                      }
+                      "_CheckType": "[2] IN_SIDE"
                     }
                   }
                 }
@@ -1421,26 +1093,18 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 15.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_AxisType": "[0] XYZ"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
-            }
+            "_EditType": "[0] STOP"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 30
-            }
+            "_EditType": "[30] FOLLOW_RUN"
           }
         },
         {
@@ -1448,103 +1112,75 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 20.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_AxisType": "[0] XYZ"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 30
-            }
+            "_EditType": "[30] FOLLOW_RUN"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 30
-            }
+            "_EditType": "[30] FOLLOW_RUN"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 19
-            }
+            "_EditType": "[19] GM040_000_00"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsPtStandStateArg": {
-            "_StandState": {
-              "ace.btable.cEditFieldEnum`1<app.CharacterDef.STAND_STATE>": 1
-            }
+            "_StandState": "[1] FLY"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsPtStandStateArg": {
-            "_StandState": {
-              "ace.btable.cEditFieldEnum`1<app.CharacterDef.STAND_STATE>": 2
-            }
+            "_StandState": "[2] WALL"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsPorterStateArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 2
-            }
+            "_EditType": "[2] IN_GM040_000_00"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
-            }
+            "_EditType": "[0] STOP"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 30
-            }
+            "_EditType": "[30] FOLLOW_RUN"
           }
         },
         {
           "app.btable.PorterCommonCommand.cFollowStateNoCombatArg": {
-            "_FollowState": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.FOLLOW_STATE_NO_COMBAT>": 0
-            }
+            "_FollowState": "[0] NORMAL"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsOwnerStateArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsOwnerStateArg.TYPE>": 0
-            }
+            "_EditType": "[0] CALL_REQUEST"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsPorterStateArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 0
-            }
+            "_EditType": "[0] READY_CONST"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsPtContinueFlagArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPtContinueFlagArg.TYPE>": 1
-            }
+            "_EditType": [
+              "[1] RIDING"
+            ]
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 20
-            }
+            "_EditType": "[20] WAIT_POINT_FOR_ZONE_AREA_FIELD_ATTR"
           }
         },
         {
@@ -1552,103 +1188,73 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 5.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_AxisType": "[0] XYZ"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
-            }
+            "_EditType": "[0] STOP"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 30
-            }
+            "_EditType": "[30] FOLLOW_RUN"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 21
-            }
+            "_EditType": "[21] AVOID_EM0078_LAST_RESORT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsPtStandStateArg": {
-            "_StandState": {
-              "ace.btable.cEditFieldEnum`1<app.CharacterDef.STAND_STATE>": 1
-            }
+            "_StandState": "[1] FLY"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsPtStandStateArg": {
-            "_StandState": {
-              "ace.btable.cEditFieldEnum`1<app.CharacterDef.STAND_STATE>": 2
-            }
+            "_StandState": "[2] WALL"
           }
         },
         {
           "app.btable.PorterCommonCommand.cIsPorterStateArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cIsPorterStateArg.TYPE>": 5
-            }
+            "_EditType": "[5] IS_NEED_STOP_WHEN_AVOID_EM0078_LAST_RESORT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
-            }
+            "_EditType": "[0] STOP"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 30
-            }
+            "_EditType": "[30] FOLLOW_RUN"
           }
         },
         {
           "app.btable.PorterCommonCommand.cFollowStateNoCombatArg": {
-            "_FollowState": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.FOLLOW_STATE_NO_COMBAT>": 0
-            }
+            "_FollowState": "[0] NORMAL"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -1528799616
-            }
+            "_TargetPhase": "[2766167680] INVALID"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 22853
-            }
+            "_TargetPhase": "[22853] GO_TO_SIT_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 22853
-            }
+            "_TargetPhase": "[22853] GO_TO_SIT_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 16
-            }
+            "_EditType": "[16] SIT_POS"
           }
         },
         {
@@ -1656,138 +1262,98 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 15.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_AxisType": "[0] XYZ"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 9
-            }
+            "_EditType": "[9] WALK_SLOW"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 10
-            }
+            "_EditType": "[10] WALK"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -688619200
-            }
+            "_TargetPhase": "[3606348096] GO_TO_WAIT_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -688619200
-            }
+            "_TargetPhase": "[3606348096] GO_TO_WAIT_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -688619200
-            }
+            "_TargetPhase": "[3606348096] GO_TO_WAIT_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -1054624448
-            }
+            "_TargetPhase": "[3240342848] WAITING_WAIT_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 118899960
-            }
+            "_TargetPhase": "[118899960] GO_TO_EAT_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -691672640
-            }
+            "_TargetPhase": "[3603294656] GO_TO_DRINK_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 22853
-            }
+            "_TargetPhase": "[22853] GO_TO_SIT_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 701629248
-            }
+            "_TargetPhase": "[701629248] GO_TO_EAT_POINT_ADJUST"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -715556224
-            }
+            "_TargetPhase": "[3579411072] GO_TO_DRINK_POINT_ADJUST"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 12432
-            }
+            "_TargetPhase": "[12432] GO_TO_SIT_POINT_ADJUST"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -1087547776
-            }
+            "_TargetPhase": "[3207419520] EATING"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -408941632
-            }
+            "_TargetPhase": "[3886025664] DRINKING"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 19374
-            }
+            "_TargetPhase": "[19374] SITTING"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 767810944
-            }
+            "_TargetPhase": "[767810944] RETURN_TO_WAIT_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 3
-            }
+            "_EditType": "[3] BASE_CAMP_WAIT_POS"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 4
-            }
+            "_EditType": "[4] TENT_WAIT_POS"
           }
         },
         {
@@ -1795,131 +1361,93 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 3.3
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_AxisType": "[0] XYZ"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -1054624448
-            }
+            "_TargetPhase": "[3240342848] WAITING_WAIT_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
-            }
+            "_EditType": "[0] STOP"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 10
-            }
+            "_EditType": "[10] WALK"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 118899960
-            }
+            "_TargetPhase": "[118899960] GO_TO_EAT_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 118899960
-            }
+            "_TargetPhase": "[118899960] GO_TO_EAT_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 6
-            }
+            "_EditType": "[6] EAT_FOOD_POS"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 9
-            }
+            "_EditType": "[9] WALK_SLOW"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -691672640
-            }
+            "_TargetPhase": "[3603294656] GO_TO_DRINK_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -691672640
-            }
+            "_TargetPhase": "[3603294656] GO_TO_DRINK_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 7
-            }
+            "_EditType": "[7] DRINK_WATER_POS"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 9
-            }
+            "_EditType": "[9] WALK_SLOW"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 22853
-            }
+            "_TargetPhase": "[22853] GO_TO_SIT_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 22853
-            }
+            "_TargetPhase": "[22853] GO_TO_SIT_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 16
-            }
+            "_EditType": "[16] SIT_POS"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 9
-            }
+            "_EditType": "[9] WALK_SLOW"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 3
-            }
+            "_EditType": "[3] BASE_CAMP_WAIT_POS"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 4
-            }
+            "_EditType": "[4] TENT_WAIT_POS"
           }
         },
         {
@@ -1927,75 +1455,53 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 10.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_AxisType": "[0] XYZ"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -688619200
-            }
+            "_TargetPhase": "[3606348096] GO_TO_WAIT_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 118899960
-            }
+            "_TargetPhase": "[118899960] GO_TO_EAT_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 6
-            }
+            "_EditType": "[6] EAT_FOOD_POS"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -691672640
-            }
+            "_TargetPhase": "[3603294656] GO_TO_DRINK_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 7
-            }
+            "_EditType": "[7] DRINK_WATER_POS"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 22853
-            }
+            "_TargetPhase": "[22853] GO_TO_SIT_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 16
-            }
+            "_EditType": "[16] SIT_POS"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
-            }
+            "_EditType": "[0] STOP"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 9
-            }
+            "_EditType": "[9] WALK_SLOW"
           }
         },
         {
@@ -2003,19 +1509,13 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 12.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_AxisType": "[0] XYZ"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 9
-            }
+            "_EditType": "[9] WALK_SLOW"
           }
         },
         {
@@ -2023,75 +1523,53 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 2.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_AxisType": "[0] XYZ"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 118899960
-            }
+            "_TargetPhase": "[118899960] GO_TO_EAT_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 701629248
-            }
+            "_TargetPhase": "[701629248] GO_TO_EAT_POINT_ADJUST"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -691672640
-            }
+            "_TargetPhase": "[3603294656] GO_TO_DRINK_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -715556224
-            }
+            "_TargetPhase": "[3579411072] GO_TO_DRINK_POINT_ADJUST"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 22853
-            }
+            "_TargetPhase": "[22853] GO_TO_SIT_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 12432
-            }
+            "_TargetPhase": "[12432] GO_TO_SIT_POINT_ADJUST"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
-            }
+            "_EditType": "[0] STOP"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -1087547776
-            }
+            "_TargetPhase": "[3207419520] EATING"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -1087547776
-            }
+            "_TargetPhase": "[3207419520] EATING"
           }
         },
         {
@@ -2109,30 +1587,22 @@
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -1087547776
-            }
+            "_TargetPhase": "[3207419520] EATING"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 767810944
-            }
+            "_TargetPhase": "[767810944] RETURN_TO_WAIT_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -408941632
-            }
+            "_TargetPhase": "[3886025664] DRINKING"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -408941632
-            }
+            "_TargetPhase": "[3886025664] DRINKING"
           }
         },
         {
@@ -2150,30 +1620,22 @@
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -408941632
-            }
+            "_TargetPhase": "[3886025664] DRINKING"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 767810944
-            }
+            "_TargetPhase": "[767810944] RETURN_TO_WAIT_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 19374
-            }
+            "_TargetPhase": "[19374] SITTING"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 19374
-            }
+            "_TargetPhase": "[19374] SITTING"
           }
         },
         {
@@ -2191,93 +1653,67 @@
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 19374
-            }
+            "_TargetPhase": "[19374] SITTING"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 767810944
-            }
+            "_TargetPhase": "[767810944] RETURN_TO_WAIT_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 767810944
-            }
+            "_TargetPhase": "[767810944] RETURN_TO_WAIT_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 767810944
-            }
+            "_TargetPhase": "[767810944] RETURN_TO_WAIT_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 767810944
-            }
+            "_TargetPhase": "[767810944] RETURN_TO_WAIT_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 22853
-            }
+            "_TargetPhase": "[22853] GO_TO_SIT_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 22853
-            }
+            "_TargetPhase": "[22853] GO_TO_SIT_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 16
-            }
+            "_EditType": "[16] SIT_POS"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 9
-            }
+            "_EditType": "[9] WALK_SLOW"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 767810944
-            }
+            "_TargetPhase": "[767810944] RETURN_TO_WAIT_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 22853
-            }
+            "_TargetPhase": "[22853] GO_TO_SIT_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": 22853
-            }
+            "_TargetPhase": "[22853] GO_TO_SIT_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 16
-            }
+            "_EditType": "[16] SIT_POS"
           }
         },
         {
@@ -2285,40 +1721,28 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 15.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_AxisType": "[0] XYZ"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 9
-            }
+            "_EditType": "[9] WALK_SLOW"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 10
-            }
+            "_EditType": "[10] WALK"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 3
-            }
+            "_EditType": "[3] BASE_CAMP_WAIT_POS"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 4
-            }
+            "_EditType": "[4] TENT_WAIT_POS"
           }
         },
         {
@@ -2326,40 +1750,28 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 3.3
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_AxisType": "[0] XYZ"
           }
         },
         {
           "app.btable.PorterCommonCommand.cWaitPointPhaseArg": {
-            "_TargetPhase": {
-              "ace.btable.cEditFieldEnum`1<app.PorterDef.WAIT_POINT_PHASE_Fixed>": -1054624448
-            }
+            "_TargetPhase": "[3240342848] WAITING_WAIT_POINT"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
-            }
+            "_EditType": "[0] STOP"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 9
-            }
+            "_EditType": "[9] WALK_SLOW"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSelectNavigationDestinationArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSelectNavigationDestinationArg.TYPE>": 9
-            }
+            "_EditType": "[9] CLIMBING_DIE_BODY_DEST_POS"
           }
         },
         {
@@ -2367,33 +1779,23 @@
             "_Distance": {
               "ace.btable.cEditFieldFloat": 5.0
             },
-            "_CheckType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.CHECK_TYPE>": 0
-            },
-            "_AxisType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cCommandArgumentCheckDistance.AXIS_TYPE>": 0
-            }
+            "_CheckType": "[0] NEAR",
+            "_AxisType": "[0] XYZ"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 10
-            }
+            "_EditType": "[10] WALK"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 20
-            }
+            "_EditType": "[20] RUN"
           }
         },
         {
           "app.btable.PorterCommonCommand.cSetMoveSpeedArg": {
-            "_EditType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.PorterCommonCommand.cSetMoveSpeedArg.TYPE>": 0
-            }
+            "_EditType": "[0] STOP"
           }
         }
       ],

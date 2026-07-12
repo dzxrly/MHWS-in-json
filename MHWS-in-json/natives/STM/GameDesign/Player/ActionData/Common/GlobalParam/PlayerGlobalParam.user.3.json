@@ -91,20 +91,20 @@
       "_MoveTurn_BrakeEnabledDegMax": 35.0,
       "_MoveTurn_BrakeEnabledDegMin": 0.5,
       "_MoveTurn_BrakeRateMin": 0.2,
-      "_MoveTurn_BrakeCurve": 4,
+      "_MoveTurn_BrakeCurve": "[4] InQuad",
       "_MoveBankAdjustList": [
         {
           "app.user_data.PlayerGlobalParam.cMoveBankAdjust": {
             "_Rate": 1.0,
             "_InterpolationTime": 1.5,
-            "_InterpolationEaseType": 9
+            "_InterpolationEaseType": "[9] InOutCubic"
           }
         },
         {
           "app.user_data.PlayerGlobalParam.cMoveBankAdjust": {
             "_Rate": 0.7,
             "_InterpolationTime": 1.5,
-            "_InterpolationEaseType": 9
+            "_InterpolationEaseType": "[9] InOutCubic"
           }
         }
       ],
@@ -1002,7 +1002,7 @@
       "_KettleBoilTime": 20.0,
       "_TentTeaIdleTime": 30.0,
       "_TentHammockMotInterFrame": 20,
-      "_TentHammockMotInterMode": 1,
+      "_TentHammockMotInterMode": "[1] FrontFade",
       "_TempTentPosOffset": [
         -0.5,
         0.1373,

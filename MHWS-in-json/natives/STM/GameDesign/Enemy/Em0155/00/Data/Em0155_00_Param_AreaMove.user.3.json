@@ -1479,7 +1479,7 @@
                                     }
                                   }
                                 ],
-                                "_NeedMoveType": 0,
+                                "_NeedMoveType": "[0] AS_POSSIBLE_MOVE",
                                 "_IsCanAreaMove": false,
                                 "_IsWaitBeginLifeAct": false,
                                 "_IsActAllMember": true,
@@ -1574,7 +1574,7 @@
                                     }
                                   }
                                 ],
-                                "_NeedMoveType": 0,
+                                "_NeedMoveType": "[0] AS_POSSIBLE_MOVE",
                                 "_IsCanAreaMove": true,
                                 "_IsWaitBeginLifeAct": false,
                                 "_IsActAllMember": true,
@@ -1669,7 +1669,7 @@
                                     }
                                   }
                                 ],
-                                "_NeedMoveType": 0,
+                                "_NeedMoveType": "[0] AS_POSSIBLE_MOVE",
                                 "_IsCanAreaMove": false,
                                 "_IsWaitBeginLifeAct": false,
                                 "_IsActAllMember": true,
@@ -1764,7 +1764,7 @@
                                     }
                                   }
                                 ],
-                                "_NeedMoveType": 0,
+                                "_NeedMoveType": "[0] AS_POSSIBLE_MOVE",
                                 "_IsCanAreaMove": true,
                                 "_IsWaitBeginLifeAct": false,
                                 "_IsActAllMember": true,
@@ -1859,7 +1859,7 @@
                                     }
                                   }
                                 ],
-                                "_NeedMoveType": 0,
+                                "_NeedMoveType": "[0] AS_POSSIBLE_MOVE",
                                 "_IsCanAreaMove": true,
                                 "_IsWaitBeginLifeAct": false,
                                 "_IsActAllMember": true,
@@ -1954,7 +1954,7 @@
                                     }
                                   }
                                 ],
-                                "_NeedMoveType": 0,
+                                "_NeedMoveType": "[0] AS_POSSIBLE_MOVE",
                                 "_IsCanAreaMove": true,
                                 "_IsWaitBeginLifeAct": false,
                                 "_IsActAllMember": true,
@@ -2286,12 +2286,15 @@
                       },
                       "_EnvironmentOffsetSec_RuinToAbnormal": 0,
                       "_EnvironmentOffsetSec_AbnormalToFertility": 0,
-                      "_UseCalcShcduleRandomSeed": 1,
+                      "_UseCalcShcduleRandomSeed": "[1] USE_FREE_QUEST",
                       "_CalcShcduleRandomSeed": -1674678014
                     }
                   }
                 ],
-                "_ForExAttr": 9
+                "_ForExAttr": [
+                  "[1] NORMAL",
+                  "[8] LEGENDARY"
+                ]
               }
             },
             {
@@ -2585,7 +2588,7 @@
                                     }
                                   }
                                 ],
-                                "_NeedMoveType": 0,
+                                "_NeedMoveType": "[0] AS_POSSIBLE_MOVE",
                                 "_IsCanAreaMove": true,
                                 "_IsWaitBeginLifeAct": false,
                                 "_IsActAllMember": true,
@@ -2700,12 +2703,15 @@
                       },
                       "_EnvironmentOffsetSec_RuinToAbnormal": 0,
                       "_EnvironmentOffsetSec_AbnormalToFertility": 0,
-                      "_UseCalcShcduleRandomSeed": 0,
+                      "_UseCalcShcduleRandomSeed": "[0] NO_USE",
                       "_CalcShcduleRandomSeed": 0
                     }
                   }
                 ],
-                "_ForExAttr": 9
+                "_ForExAttr": [
+                  "[1] NORMAL",
+                  "[8] LEGENDARY"
+                ]
               }
             }
           ]

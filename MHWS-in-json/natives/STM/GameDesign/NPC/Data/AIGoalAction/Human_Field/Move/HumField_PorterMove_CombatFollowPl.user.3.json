@@ -17,7 +17,7 @@
                 "_Hash": 4175418299
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -84,7 +84,10 @@
                 "goatree.cGoalPackage.cGoalEffectHolder": {
                   "_Param": {
                     "app.NpcGoaTreeEffects.cSetHunterContinueFlag_Param": {
-                      "_ContinueFlag": 257
+                      "_ContinueFlag": [
+                        "[1] DISABLE_MOT_SEQUENCE_NO_HIT",
+                        "[256] ON_TAR_GROUND"
+                      ]
                     }
                   }
                 }
@@ -99,7 +102,7 @@
                 "_Hash": 3467601969
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -156,9 +159,9 @@
                   "_Param": {
                     "app.NpcGoaTreeEffects.cPorterMoveByStick_Param": {
                       "STRUCT__OverwriteSpeedLv__HasValue": false,
-                      "STRUCT__OverwriteSpeedLv__Value": 0,
+                      "STRUCT__OverwriteSpeedLv__Value": "[0] STOP",
                       "_IsTurn": false,
-                      "_TurnTarget": 0,
+                      "_TurnTarget": "[0] COMBAT_ENEMY",
                       "_TurnRange": 90.0,
                       "_ShieldRange": 90.0,
                       "_StickMagunitude": 0.5

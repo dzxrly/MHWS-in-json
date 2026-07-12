@@ -18,77 +18,55 @@
       "_CommandArgArray": [
         {
           "app.btable.EmCommonCommand.cCheckStateSignTypeArg": {
-            "_EditArg": {
-              "ace.btable.cEditFieldEnum`1<app.EnemyDef.STATE_SIGN_ACTION_TYPE_Fixed>": -603285696
-            }
+            "_EditArg": "[3691681600] COMBAT_EM_REACTION_INTIMIDATE"
           }
         },
         {
           "app.btable.EmCommonCommand.cCheckStateSignTypeArg": {
-            "_EditArg": {
-              "ace.btable.cEditFieldEnum`1<app.EnemyDef.STATE_SIGN_ACTION_TYPE_Fixed>": -1464929152
-            }
+            "_EditArg": "[2830038144] COMBAT_EM_END"
           }
         },
         {
           "app.btable.EmCommonCommand.cCheckStateSignTypeArg": {
-            "_EditArg": {
-              "ace.btable.cEditFieldEnum`1<app.EnemyDef.STATE_SIGN_ACTION_TYPE_Fixed>": 2010871040
-            }
+            "_EditArg": "[2010871040] COMBAT_BEGIN"
           }
         },
         {
           "app.btable.EmCommonCommand.cCheckStateSignTypeArg": {
-            "_EditArg": {
-              "ace.btable.cEditFieldEnum`1<app.EnemyDef.STATE_SIGN_ACTION_TYPE_Fixed>": 753280256
-            }
+            "_EditArg": "[753280256] LEAD_BEGIN"
           }
         },
         {
           "app.btable.EmCommonCommand.cCheckStateSignTypeArg": {
-            "_EditArg": {
-              "ace.btable.cEditFieldEnum`1<app.EnemyDef.STATE_SIGN_ACTION_TYPE_Fixed>": 1133183232
-            }
+            "_EditArg": "[1133183232] REACTION_GIMMICK_BEGIN"
           }
         },
         {
           "app.btable.EmCommonCommand.cCheckStateSignTypeArg": {
-            "_EditArg": {
-              "ace.btable.cEditFieldEnum`1<app.EnemyDef.STATE_SIGN_ACTION_TYPE_Fixed>": 1683822720
-            }
+            "_EditArg": "[1683822720] REACTION_GIMMICK_END"
           }
         },
         {
           "app.btable.EmCommonCommand.cRequestSelectedActionArg": {
-            "_EditArg": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cRequestSelectedActionArg.ACTION_TYPE>": 3
-            }
+            "_EditArg": "[3] STATE_SIGN"
           }
         },
         {
           "app.btable.EmCommonCommand.cCheckStateSignTypeArg": {
-            "_EditArg": {
-              "ace.btable.cEditFieldEnum`1<app.EnemyDef.STATE_SIGN_ACTION_TYPE_Fixed>": 2010871040
-            }
+            "_EditArg": "[2010871040] COMBAT_BEGIN"
           }
         },
         {
           "app.btable.EmCommonCommand.cCheckSelfTypeArg": {
-            "_EditCategory": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckSelfTypeArg.CATEGORY>": 2
-            },
+            "_EditCategory": "[2] QUEST_RANK",
             "Enemy": {
               "app.btable.EmCommonCommand.cCheckTypeEnemyArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.ID_Fixed>": 0
-                }
+                "_EditArg": "[0] INVALID"
               }
             },
             "RoleID": {
               "app.btable.EmCommonCommand.cCheckTypeEnemyRoleIDArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.ROLE_ID>": 0
-                }
+                "_EditArg": "[0] NORMAL"
               }
             },
             "QuestRank": {
@@ -100,16 +78,12 @@
             },
             "LegendaryID": {
               "app.btable.EmCommonCommand.cCheckTypeEnemyLegendaryIDArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.LEGENDARY_ID>": 0
-                }
+                "_EditArg": "[0] NONE"
               }
             },
             "RewardRank": {
               "app.btable.EmCommonCommand.cCheckTypeEnemyRewardRankArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.QuestDef.EM_REWARD_RANK>": 0
-                }
+                "_EditArg": "[0] INVALID"
               }
             }
           }
@@ -119,9 +93,7 @@
             "_TargetVariableIndex": {
               "ace.btable.cEditFieldDropBox`1<System.Guid>": "6e4a87ef-2d0b-4cb4-9a48-98bc73e367db"
             },
-            "_SetType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cSetTimerValueArg.SET_TYPE>": 0
-            }
+            "_SetType": "[0] ACTIVATE"
           }
         },
         {
@@ -129,25 +101,17 @@
             "_TargetVariableIndex": {
               "ace.btable.cEditFieldDropBox`1<System.Guid>": "c5f03685-2187-469f-a3a4-0ee0b277ce02"
             },
-            "_SetType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cSetTimerValueArg.SET_TYPE>": 0
-            }
+            "_SetType": "[0] ACTIVATE"
           }
         },
         {
           "app.btable.EmCommonCommand.cCheckAngleArg": {
-            "_BaseType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckAngleArg.BASE_TYPE>": 3
-            },
+            "_BaseType": "[3] BACK",
             "_AngleWidth": {
               "ace.btable.cEditFieldFloat": 330.0
             },
-            "_Option": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckAngleArg.OPTION>": 0
-            },
-            "_Option2": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckAngleArg.OPTION>": 0
-            }
+            "_Option": "[0] NONE",
+            "_Option2": "[0] NONE"
           }
         },
         {

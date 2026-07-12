@@ -42,8 +42,8 @@
               "app.cNpcDesireConditionHolder": {
                 "_Param": {
                   "app.NpcDesireConditions.cCanBadConditionCombatEnemy_Param": {
-                    "_Condition": 23,
-                    "_ResistLevel": 0
+                    "_Condition": "[23] WEAK_ATTR_BOOST",
+                    "_ResistLevel": "[0] ZERO"
                   }
                 },
                 "_Inverse": false
@@ -53,7 +53,7 @@
               "app.cNpcDesireConditionHolder": {
                 "_Param": {
                   "app.NpcDesireConditions.cCheckRangeInEnergyCrystal_Param": {
-                    "_DetectType": 1,
+                    "_DetectType": "[1] PL_TO_GM",
                     "_NpcToGmRange": {
                       "raw": "0000000000002042",
                       "type": "Range"
@@ -83,7 +83,7 @@
               "app.cNpcDesireConditionHolder": {
                 "_Param": {
                   "app.NpcDesireConditions.cSetSlingerShotTarget_Param": {
-                    "_TargetType": 3,
+                    "_TargetType": "[3] ENERGY_CRYSTAL",
                     "_IsDungTarget": false,
                     "_TargetEnemyRange": 0.0,
                     "_SlingerTargetRange": 0.0

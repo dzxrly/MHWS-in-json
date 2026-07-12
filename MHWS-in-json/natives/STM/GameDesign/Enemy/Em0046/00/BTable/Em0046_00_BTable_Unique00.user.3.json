@@ -25,23 +25,17 @@
       "_CommandArgArray": [
         {
           "app.btable.Em0046_00BTableCommandArg.cCheckSwimPointType": {
-            "_CheckSwimPointType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.Em0046_00BTableCommandArg.cCheckSwimPointType.SWIM_COMBAT_TYPE>": 0
-            }
+            "_CheckSwimPointType": "[0] IN_WATER"
           }
         },
         {
           "app.btable.Em0046_00BTableCommandArg.cCheckSwimPointType": {
-            "_CheckSwimPointType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.Em0046_00BTableCommandArg.cCheckSwimPointType.SWIM_COMBAT_TYPE>": 1
-            }
+            "_CheckSwimPointType": "[1] TO_COMBAT_START_POINT"
           }
         },
         {
           "app.btable.Em0046_00BTableCommandArg.cCheckSwimPointType": {
-            "_CheckSwimPointType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.Em0046_00BTableCommandArg.cCheckSwimPointType.SWIM_COMBAT_TYPE>": 2
-            }
+            "_CheckSwimPointType": "[2] FINISH_NORMAL"
           }
         },
         {
@@ -59,15 +53,11 @@
         },
         {
           "app.btable.Em0046_00BTableCommandArg.cSetDestination_SwimPointArg": {
-            "_PointType": {
-              "ace.btable.cEditFieldEnum`1<app.point_graph_data.Em0046Point_SwimPoint.SWIM_POINT_TYPE>": 4
-            },
+            "_PointType": "[4] SWIM_COMBAT_START_POINT",
             "_SearchRange": {
               "ace.btable.cEditFieldFloat": 500.0
             },
-            "_SearchType": {
-              "ace.btable.cEditFieldEnum`1<app.btable.Em0046_00BTableCommandArg.cSetDestination_SwimPointArg.SEARCH_TYPE>": 1
-            }
+            "_SearchType": "[1] ENEMY"
           }
         },
         {

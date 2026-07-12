@@ -57,7 +57,7 @@
           "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
             "_Param": {
               "app.NpcAITableConditions.cCheckTargetEnemyEnableBadCondition_Param": {
-                "_Condition": 13
+                "_Condition": "[13] RIDE"
               }
             },
             "_Inverse": false,
@@ -78,10 +78,10 @@
             "_Param": {
               "app.NpcAITableConditions.cActiveBadConditionsCombatEnemy_Param": {
                 "_Condition": [
-                  5,
-                  6,
-                  15,
-                  16
+                  "[5] PARALYSE",
+                  "[6] PARALYSE_EM",
+                  "[15] STUN",
+                  "[16] STUN_EM"
                 ]
               }
             },

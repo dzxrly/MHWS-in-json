@@ -5,7 +5,9 @@
       "_MissionId": "[5668] MISSION_204001",
       "_Version": "[2] VER_1010_00_00",
       "_QuestType": "[5] ARENA",
-      "_QuestAttribute": "[0] NORMAL",
+      "_QuestAttribute": [
+        "[0] NORMAL"
+      ],
       "_QuestLv": 5,
       "_ClearCondition": {
         "app.user_data.QuestData.cClearCondition": {
@@ -13,8 +15,8 @@
           "_TargetInfoArray": [
             {
               "app.user_data.QuestData.cClearCondition.cTargetInfo": {
-                "_RoleID": 0,
-                "_LegendaryID": 0,
+                "_RoleID": "[0] NORMAL",
+                "_LegendaryID": "[0] NONE",
                 "_EmTargetID": 101,
                 "_ConditionalMoveData": {
                   "app.user_data.EmParamAreaMove.cConditionalMoveData": {
@@ -52,12 +54,12 @@
       "_PartnerNpc": "[4] INVALID",
       "_Stage": "[1181994624] ST401",
       "_IsOverrideArenaFenceParam": false,
-      "_ArenaFenceStatus": 0,
+      "_ArenaFenceStatus": "[0] OPEN",
       "_ArenaFenceInitWaitTime": 60,
       "_ArenaFenceCloseTime": 60,
       "_ArenaFenceReuseableTime": 120,
       "_IsOverrideArenaPillarParam": false,
-      "_ArenaPillarStatus": 0,
+      "_ArenaPillarStatus": "[0] USE",
       "_BattleBGM": "[0] DEFAULT",
       "_ClearBGM": "[0] DEFAULT",
       "_ExOverrideID": "[0] INVALID",

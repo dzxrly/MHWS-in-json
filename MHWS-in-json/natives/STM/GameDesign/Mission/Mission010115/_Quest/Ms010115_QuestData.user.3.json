@@ -5,7 +5,9 @@
       "_MissionId": "[3760861312] MISSION_010115",
       "_Version": "[0] VER_1000_00_00",
       "_QuestType": "[1] KILL",
-      "_QuestAttribute": "[0] NORMAL",
+      "_QuestAttribute": [
+        "[0] NORMAL"
+      ],
       "_QuestLv": 6,
       "_ClearCondition": {
         "app.user_data.QuestData.cClearCondition": {
@@ -13,8 +15,8 @@
           "_TargetInfoArray": [
             {
               "app.user_data.QuestData.cClearCondition.cTargetInfo": {
-                "_RoleID": 0,
-                "_LegendaryID": 0,
+                "_RoleID": "[0] NORMAL",
+                "_LegendaryID": "[0] NONE",
                 "_EmTargetID": 101,
                 "_ConditionalMoveData": {
                   "app.user_data.EmParamAreaMove.cConditionalMoveData": {
@@ -52,8 +54,8 @@
             },
             {
               "app.user_data.QuestData.cClearCondition.cTargetInfo": {
-                "_RoleID": 3,
-                "_LegendaryID": 0,
+                "_RoleID": "[3] FRENZY",
+                "_LegendaryID": "[0] NONE",
                 "_EmTargetID": 102,
                 "_ConditionalMoveData": {
                   "app.user_data.EmParamAreaMove.cConditionalMoveData": {
@@ -112,12 +114,12 @@
       "_PartnerNpc": "[3816320992] NPC101_00_006",
       "_Stage": "[1182228864] ST104",
       "_IsOverrideArenaFenceParam": false,
-      "_ArenaFenceStatus": 0,
+      "_ArenaFenceStatus": "[0] OPEN",
       "_ArenaFenceInitWaitTime": 60,
       "_ArenaFenceCloseTime": 60,
       "_ArenaFenceReuseableTime": 120,
       "_IsOverrideArenaPillarParam": false,
-      "_ArenaPillarStatus": 0,
+      "_ArenaPillarStatus": "[0] USE",
       "_BattleBGM": "[0] DEFAULT",
       "_ClearBGM": "[1] SP_CLEAR01",
       "_ExOverrideID": "[0] INVALID",
@@ -125,8 +127,8 @@
       "_SubBossInfoArray": [
         {
           "app.user_data.QuestData.cSubBossInfo": {
-            "_RoleID": 3,
-            "_LegendaryID": 0,
+            "_RoleID": "[3] FRENZY",
+            "_LegendaryID": "[0] NONE",
             "_EmTargetID": 20,
             "_ConditionalMoveData": {
               "app.user_data.EmParamAreaMove.cConditionalMoveData": {
@@ -141,8 +143,8 @@
         },
         {
           "app.user_data.QuestData.cSubBossInfo": {
-            "_RoleID": 3,
-            "_LegendaryID": 0,
+            "_RoleID": "[3] FRENZY",
+            "_LegendaryID": "[0] NONE",
             "_EmTargetID": 21,
             "_ConditionalMoveData": {
               "app.user_data.EmParamAreaMove.cConditionalMoveData": {

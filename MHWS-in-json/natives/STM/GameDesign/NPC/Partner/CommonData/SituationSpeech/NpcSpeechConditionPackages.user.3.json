@@ -349,8 +349,8 @@
                 "app.cNpcSpeechConditionHolder": {
                   "_Param": {
                     "app.SpeechConditions.cAIInterruptChanged_Param": {
-                      "_Timing": 0,
-                      "_AIInterrupt": 4,
+                      "_Timing": "[0] START",
+                      "_AIInterrupt": "[4] RIDE",
                       "_IsOnceSameTarget": false
                     }
                   },
@@ -494,7 +494,7 @@
                 "app.cNpcSpeechConditionHolder": {
                   "_Param": {
                     "app.SpeechConditions.cNotSoundTiming_Param": {
-                      "Timing": 1
+                      "Timing": "[1] PLAYING_UNIQUE_MISSION_01"
                     }
                   },
                   "_Inverse": false
@@ -573,7 +573,7 @@
                 "app.cNpcSpeechConditionHolder": {
                   "_Param": {
                     "app.SpeechConditions.cNotSoundTiming_Param": {
-                      "Timing": 1
+                      "Timing": "[1] PLAYING_UNIQUE_MISSION_01"
                     }
                   },
                   "_Inverse": false
@@ -745,7 +745,7 @@
                   "_Param": {
                     "app.SpeechConditions.cPlayerArmerSkillCheck_Param": {
                       "checkSkillArray": [
-                        101
+                        "[101] HunterSkill_100"
                       ]
                     }
                   },
@@ -917,7 +917,7 @@
                 "app.cNpcSpeechConditionHolder": {
                   "_Param": {
                     "app.SpeechConditions.cNotSoundTiming_Param": {
-                      "Timing": 1
+                      "Timing": "[1] PLAYING_UNIQUE_MISSION_01"
                     }
                   },
                   "_Inverse": false
@@ -949,8 +949,8 @@
                 "app.cNpcSpeechConditionHolder": {
                   "_Param": {
                     "app.SpeechConditions.cAIStateChanged_Param": {
-                      "_Timing": 0,
-                      "_AIState": 2,
+                      "_Timing": "[0] START",
+                      "_AIState": "[2] COMBAT",
                       "_IsOnceSameTarget": true
                     }
                   },
@@ -984,7 +984,7 @@
                 "app.cNpcSpeechConditionHolder": {
                   "_Param": {
                     "app.SpeechConditions.cNotSoundTiming_Param": {
-                      "Timing": 1
+                      "Timing": "[1] PLAYING_UNIQUE_MISSION_01"
                     }
                   },
                   "_Inverse": false
@@ -1043,7 +1043,7 @@
                 "app.cNpcSpeechConditionHolder": {
                   "_Param": {
                     "app.SpeechConditions.cQuestClearCondition_Param": {
-                      "_QuestType": 2
+                      "_QuestType": "[2] CAPTURE"
                     }
                   },
                   "_Inverse": true
@@ -1196,7 +1196,7 @@
                 "app.cNpcSpeechConditionHolder": {
                   "_Param": {
                     "app.SpeechConditions.cNotSoundTiming_Param": {
-                      "Timing": 1
+                      "Timing": "[1] PLAYING_UNIQUE_MISSION_01"
                     }
                   },
                   "_Inverse": false
@@ -1593,10 +1593,10 @@
                   "_Param": {
                     "app.SpeechConditions.cDownCombatEnemyByHoldGimmick_Param": {
                       "_ActionIDList": [
-                        119,
-                        123,
-                        168,
-                        165
+                        "[119] QUICKSAND",
+                        "[123] TRAP_IVY",
+                        "[168] WATER_FLOW",
+                        "[165] GIMMICK_DOWN"
                       ]
                     }
                   },
@@ -1702,8 +1702,8 @@
                 "app.cNpcSpeechConditionHolder": {
                   "_Param": {
                     "app.SpeechConditions.cBadConditionValueRateCombatEnemy_Param": {
-                      "_Condition": 1,
-                      "_CompareType": 5,
+                      "_Condition": "[1] TIRED",
+                      "_CompareType": "[5] LESS_OR_EQUAL",
                       "_Rate": 0.1,
                       "_IgnoreActive": true
                     }
@@ -1761,7 +1761,7 @@
                 "app.cNpcSpeechConditionHolder": {
                   "_Param": {
                     "app.SpeechConditions.cNotSoundTiming_Param": {
-                      "Timing": 0
+                      "Timing": "[0] QUEST_SUCCESS_FREE_PLAY_TIME"
                     }
                   },
                   "_Inverse": false
@@ -1796,7 +1796,7 @@
                 "app.cNpcSpeechConditionHolder": {
                   "_Param": {
                     "app.SpeechConditions.cNotSoundTiming_Param": {
-                      "Timing": 0
+                      "Timing": "[0] QUEST_SUCCESS_FREE_PLAY_TIME"
                     }
                   },
                   "_Inverse": false
@@ -1932,7 +1932,7 @@
                 "app.cNpcSpeechConditionHolder": {
                   "_Param": {
                     "app.SpeechConditions.cNotSoundTiming_Param": {
-                      "Timing": 1
+                      "Timing": "[1] PLAYING_UNIQUE_MISSION_01"
                     }
                   },
                   "_Inverse": false
@@ -1999,7 +1999,7 @@
                 "app.cNpcSpeechConditionHolder": {
                   "_Param": {
                     "app.SpeechConditions.cNotSoundTiming_Param": {
-                      "Timing": 1
+                      "Timing": "[1] PLAYING_UNIQUE_MISSION_01"
                     }
                   },
                   "_Inverse": false
@@ -2435,7 +2435,7 @@
                 "app.cNpcSpeechConditionHolder": {
                   "_Param": {
                     "app.SpeechConditions.cNotSoundTiming_Param": {
-                      "Timing": 1
+                      "Timing": "[1] PLAYING_UNIQUE_MISSION_01"
                     }
                   },
                   "_Inverse": false
@@ -2781,7 +2781,7 @@
                 "app.cNpcSpeechConditionHolder": {
                   "_Param": {
                     "app.SpeechConditions.cWp05ExistMusicNotify_Param": {
-                      "_Category": 0
+                      "_Category": "[0] ATK_UP"
                     }
                   },
                   "_Inverse": false
@@ -2805,7 +2805,7 @@
                 "app.cNpcSpeechConditionHolder": {
                   "_Param": {
                     "app.SpeechConditions.cWp05ExistMusicNotify_Param": {
-                      "_Category": 1
+                      "_Category": "[1] DEF_UP"
                     }
                   },
                   "_Inverse": false
@@ -2829,7 +2829,7 @@
                 "app.cNpcSpeechConditionHolder": {
                   "_Param": {
                     "app.SpeechConditions.cWp05ExistMusicNotify_Param": {
-                      "_Category": 2
+                      "_Category": "[2] STAMINA_UP"
                     }
                   },
                   "_Inverse": false
@@ -2853,7 +2853,7 @@
                 "app.cNpcSpeechConditionHolder": {
                   "_Param": {
                     "app.SpeechConditions.cWp05ExistMusicNotify_Param": {
-                      "_Category": 3
+                      "_Category": "[3] WIND_DISABLE"
                     }
                   },
                   "_Inverse": false
@@ -2877,7 +2877,7 @@
                 "app.cNpcSpeechConditionHolder": {
                   "_Param": {
                     "app.SpeechConditions.cWp05ExistMusicNotify_Param": {
-                      "_Category": 4
+                      "_Category": "[4] HEAL"
                     }
                   },
                   "_Inverse": false
@@ -2901,7 +2901,7 @@
                 "app.cNpcSpeechConditionHolder": {
                   "_Param": {
                     "app.SpeechConditions.cWp05ExistMusicNotify_Param": {
-                      "_Category": 5
+                      "_Category": "[5] HIBIKI"
                     }
                   },
                   "_Inverse": false
@@ -2990,7 +2990,7 @@
                 "app.cNpcSpeechConditionHolder": {
                   "_Param": {
                     "app.SpeechConditions.cNotSoundTiming_Param": {
-                      "Timing": 0
+                      "Timing": "[0] QUEST_SUCCESS_FREE_PLAY_TIME"
                     }
                   },
                   "_Inverse": false
@@ -3065,7 +3065,7 @@
                 "app.cNpcSpeechConditionHolder": {
                   "_Param": {
                     "app.SpeechConditions.cNotSoundTiming_Param": {
-                      "Timing": 0
+                      "Timing": "[0] QUEST_SUCCESS_FREE_PLAY_TIME"
                     }
                   },
                   "_Inverse": false
@@ -3115,7 +3115,7 @@
                 "app.cNpcSpeechConditionHolder": {
                   "_Param": {
                     "app.SpeechConditions.cNotSoundTiming_Param": {
-                      "Timing": 0
+                      "Timing": "[0] QUEST_SUCCESS_FREE_PLAY_TIME"
                     }
                   },
                   "_Inverse": false
@@ -3226,7 +3226,7 @@
                 "app.cNpcSpeechConditionHolder": {
                   "_Param": {
                     "app.SpeechConditions.cNotSoundTiming_Param": {
-                      "Timing": 0
+                      "Timing": "[0] QUEST_SUCCESS_FREE_PLAY_TIME"
                     }
                   },
                   "_Inverse": false
@@ -3328,7 +3328,7 @@
                 "app.cNpcSpeechConditionHolder": {
                   "_Param": {
                     "app.SpeechConditions.cNotSoundTiming_Param": {
-                      "Timing": 0
+                      "Timing": "[0] QUEST_SUCCESS_FREE_PLAY_TIME"
                     }
                   },
                   "_Inverse": false
@@ -3401,7 +3401,7 @@
                 "app.cNpcSpeechConditionHolder": {
                   "_Param": {
                     "app.SpeechConditions.cNotSoundTiming_Param": {
-                      "Timing": 0
+                      "Timing": "[0] QUEST_SUCCESS_FREE_PLAY_TIME"
                     }
                   },
                   "_Inverse": false
@@ -3466,7 +3466,7 @@
                 "app.cNpcSpeechConditionHolder": {
                   "_Param": {
                     "app.SpeechConditions.cNotSoundTiming_Param": {
-                      "Timing": 0
+                      "Timing": "[0] QUEST_SUCCESS_FREE_PLAY_TIME"
                     }
                   },
                   "_Inverse": false
@@ -3534,7 +3534,7 @@
                 "app.cNpcSpeechConditionHolder": {
                   "_Param": {
                     "app.SpeechConditions.cNotSoundTiming_Param": {
-                      "Timing": 0
+                      "Timing": "[0] QUEST_SUCCESS_FREE_PLAY_TIME"
                     }
                   },
                   "_Inverse": false
@@ -3619,7 +3619,7 @@
                 "app.cNpcSpeechConditionHolder": {
                   "_Param": {
                     "app.SpeechConditions.cNotSoundTiming_Param": {
-                      "Timing": 0
+                      "Timing": "[0] QUEST_SUCCESS_FREE_PLAY_TIME"
                     }
                   },
                   "_Inverse": false
@@ -3718,7 +3718,7 @@
                 "app.cNpcSpeechConditionHolder": {
                   "_Param": {
                     "app.SpeechConditions.cNotSoundTiming_Param": {
-                      "Timing": 1
+                      "Timing": "[1] PLAYING_UNIQUE_MISSION_01"
                     }
                   },
                   "_Inverse": false

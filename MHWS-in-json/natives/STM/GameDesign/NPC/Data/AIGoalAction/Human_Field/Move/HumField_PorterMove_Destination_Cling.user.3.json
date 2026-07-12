@@ -17,7 +17,7 @@
                 "_Hash": 4175418299
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[1] SEQUENTIAL",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -106,7 +106,7 @@
                 "_Hash": 2626926207
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -141,9 +141,9 @@
                   "_Param": {
                     "app.NpcGoaTreeEffects.cPorterMoveByStick_Param": {
                       "STRUCT__OverwriteSpeedLv__HasValue": false,
-                      "STRUCT__OverwriteSpeedLv__Value": 0,
+                      "STRUCT__OverwriteSpeedLv__Value": "[0] STOP",
                       "_IsTurn": false,
-                      "_TurnTarget": 0,
+                      "_TurnTarget": "[0] COMBAT_ENEMY",
                       "_TurnRange": 90.0,
                       "_ShieldRange": 90.0,
                       "_StickMagunitude": 0.5
@@ -155,7 +155,7 @@
                 "goatree.cGoalPackage.cGoalEffectHolder": {
                   "_Param": {
                     "app.NpcGoaTreeEffects.cRequestHunterNpcMainAction_Param": {
-                      "_LoopMotionSetId": 1,
+                      "_LoopMotionSetId": "[1] Ride_PTSister_Cling_TopS_Loop",
                       "_IsLinkFrame": true
                     }
                   }
@@ -171,7 +171,7 @@
                 "_Hash": 3389212796
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,

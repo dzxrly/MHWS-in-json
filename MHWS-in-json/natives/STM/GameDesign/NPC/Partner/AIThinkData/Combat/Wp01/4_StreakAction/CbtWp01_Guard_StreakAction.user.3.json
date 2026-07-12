@@ -1,13 +1,13 @@
 [
   {
     "app.user_data.NpcStreakActionData": {
-      "_TerminateType": 0,
+      "_TerminateType": "[0] ACTION_EXECUTED",
       "_ActionEffectParam": {
         "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Action": {
           "_Param": {
             "app.NpcStreakEffects.cShortSword_Guard_Param": {
-              "_StartType": 1,
-              "_EndType": 1,
+              "_StartType": "[1] ATK_FRAME",
+              "_EndType": "[1] ATK_DETECT",
               "_HitStartFrameRange": {
                 "raw": "000040c09a99a940",
                 "type": "Range"
@@ -28,7 +28,7 @@
               "_UseAIMoveEnd": false,
               "_FixedSpeedLv": "[3] RUN",
               "_IsMoveStopTurn": false,
-              "_StopTurnDir": 0,
+              "_StopTurnDir": "[0] PL_AXIS_Z",
               "_DegRange": {
                 "raw": "0000000000003443",
                 "type": "Range"
@@ -42,10 +42,10 @@
         "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Aim": {
           "_Param": {
             "app.NpcStreakEffects.cSetTargetCenter_AimParam": {
-              "_StartType": 1,
-              "_EndType": 0,
+              "_StartType": "[1] ACTION_ID",
+              "_EndType": "[0] NONE",
               "_CanAimWpOff": false,
-              "_UseParabora": 0,
+              "_UseParabora": "[0] NONE",
               "_StartActionSelector": {
                 "app.cNpcHunterActionSelector": {
                   "_Category": -614648896,

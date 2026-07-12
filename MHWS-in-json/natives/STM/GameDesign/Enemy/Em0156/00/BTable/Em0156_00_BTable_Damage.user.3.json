@@ -18,9 +18,7 @@
       "_CommandArgArray": [
         {
           "app.btable.EmCommonCommand.cActionSwitchArg": {
-            "_EditArg": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cActionSwitchArg.ACTION_TYPE>": 1
-            }
+            "_EditArg": "[1] DAMAGE"
           }
         },
         {
@@ -38,21 +36,15 @@
         },
         {
           "app.btable.EmCommonCommand.cCheckSelfTypeArg": {
-            "_EditCategory": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cCheckSelfTypeArg.CATEGORY>": 6
-            },
+            "_EditCategory": "[6] LEGENDARY_ID",
             "Enemy": {
               "app.btable.EmCommonCommand.cCheckTypeEnemyArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.ID_Fixed>": 0
-                }
+                "_EditArg": "[0] INVALID"
               }
             },
             "RoleID": {
               "app.btable.EmCommonCommand.cCheckTypeEnemyRoleIDArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.ROLE_ID>": 0
-                }
+                "_EditArg": "[0] NORMAL"
               }
             },
             "QuestRank": {
@@ -64,16 +56,12 @@
             },
             "LegendaryID": {
               "app.btable.EmCommonCommand.cCheckTypeEnemyLegendaryIDArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.EnemyDef.LEGENDARY_ID>": 2
-                }
+                "_EditArg": "[2] KING"
               }
             },
             "RewardRank": {
               "app.btable.EmCommonCommand.cCheckTypeEnemyRewardRankArg": {
-                "_EditArg": {
-                  "ace.btable.cEditFieldEnum`1<app.QuestDef.EM_REWARD_RANK>": 0
-                }
+                "_EditArg": "[0] INVALID"
               }
             }
           }
@@ -83,9 +71,7 @@
             "_TargetVariableIndex": {
               "ace.btable.cEditFieldDropBox`1<System.Guid>": "3713b5aa-018a-4dea-be5c-1e6f73a9d6e8"
             },
-            "_SetType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cSetTimerValueArg.SET_TYPE>": 0
-            }
+            "_SetType": "[0] ACTIVATE"
           }
         },
         {
@@ -93,16 +79,12 @@
             "_TargetVariableIndex": {
               "ace.btable.cEditFieldDropBox`1<System.Guid>": "ba3d8da4-3196-490c-887f-93b330e853cd"
             },
-            "_SetType": {
-              "ace.btable.cEditFieldEnum`1<ace.btable.cSetTimerValueArg.SET_TYPE>": 0
-            }
+            "_SetType": "[0] ACTIVATE"
           }
         },
         {
           "app.btable.EmCommonCommand.cRequestSelectedActionArg": {
-            "_EditArg": {
-              "ace.btable.cEditFieldEnum`1<app.btable.EmCommonCommand.cRequestSelectedActionArg.ACTION_TYPE>": 0
-            }
+            "_EditArg": "[0] DAMAGE"
           }
         }
       ],

@@ -5,7 +5,7 @@
         {
           "ace.cShellminiParamCommon": {
             "MiniParamName": "Common",
-            "MiniParamtype": 1,
+            "MiniParamtype": "[1] COMMON",
             "_IsDependedOn": false,
             "UpdateOrder": 0,
             "LateUpdateOrder": 0,
@@ -16,7 +16,7 @@
         {
           "app.cShellminiParamColHit": {
             "MiniParamName": "AppColHit",
-            "MiniParamtype": 3,
+            "MiniParamtype": "[3] COLLISION",
             "_IsDependedOn": false,
             "UpdateOrder": 100,
             "LateUpdateOrder": 100,
@@ -40,13 +40,13 @@
             "_IsUseLifeTimerRateHitOn": false,
             "_AppHitTerrainSetting": {
               "app.cShellminiParamColHit.HitTerrainSetting": {
-                "_FirstTerrainHitType": 1,
-                "_ShellHitWaterBehavior": 3,
-                "_ShellHitGroundBehavior": 2,
+                "_FirstTerrainHitType": "[1] DESTROY",
+                "_ShellHitWaterBehavior": "[3] CONTINUE",
+                "_ShellHitGroundBehavior": "[2] HIT_CONTINUE",
                 "STRUCT__ShellHitWallBehavior__HasValue": false,
-                "STRUCT__ShellHitWallBehavior__Value": 0,
+                "STRUCT__ShellHitWallBehavior__Value": "[0] FINISH",
                 "STRUCT__ShellHitCeilingBehavior__HasValue": false,
-                "STRUCT__ShellHitCeilingBehavior__Value": 0,
+                "STRUCT__ShellHitCeilingBehavior__Value": "[0] FINISH",
                 "_IsFirstTerrainCheck": false,
                 "_FirstTerrainCheckJoint": {
                   "ace.cJointHash": {
@@ -85,7 +85,7 @@
         {
           "app.cShellminiParamMoveStraight": {
             "MiniParamName": "MoveStraight",
-            "MiniParamtype": 2,
+            "MiniParamtype": "[2] MOVE",
             "_IsDependedOn": false,
             "UpdateOrder": 200,
             "LateUpdateOrder": 200,
@@ -97,9 +97,9 @@
               0.0
             ],
             "_IsOwnerRootToTargetOffset": false,
-            "_RotationType": 1,
+            "_RotationType": "[1] TURN_TO_MOVE_DIR_AT_START",
             "STRUCT__OverwriteTurnToMoveDirCalcType__HasValue": false,
-            "STRUCT__OverwriteTurnToMoveDirCalcType__Value": 0,
+            "STRUCT__OverwriteTurnToMoveDirCalcType__Value": "[0] USE_WORLD_AXISY",
             "_IsUseTargetRotOffset": false,
             "_TargetRotOffset": [
               0.0,
@@ -128,7 +128,7 @@
         {
           "app.cShellminiParamCallGroundHitChildShell": {
             "MiniParamName": "CallGroundHitChildShell",
-            "MiniParamtype": 4,
+            "MiniParamtype": "[4] CALL_CHILD",
             "_IsDependedOn": false,
             "UpdateOrder": 0,
             "LateUpdateOrder": 0,
@@ -209,22 +209,22 @@
         {
           "app.cShellminiParamGroundContact": {
             "MiniParamName": "GroundContact",
-            "MiniParamtype": 2,
+            "MiniParamtype": "[2] MOVE",
             "_IsDependedOn": false,
             "UpdateOrder": 200,
             "LateUpdateOrder": 200,
             "_IsApplyGroundPos": true,
             "_IsApplyGroundNormal": true,
-            "_AxisType": 0,
+            "_AxisType": "[0] WORLD_Y",
             "_CheckUpDistance": 5.0,
             "_CheckDownDistance": 5.0,
             "_IsUpdateContact": false,
             "_IsShellDeleteInGroundCheck": false,
             "_IgnoreContactSlopeDeg": -1,
-            "_WaterContactOption": 0,
+            "_WaterContactOption": "[0] NONE",
             "_IsGroundRun": true,
-            "_GroundRunMoveType": 0,
-            "_GroundRunRayType": 0,
+            "_GroundRunMoveType": "[0] NONE",
+            "_GroundRunRayType": "[0] SHELL_VEC",
             "_IsShellDeleteIsHitTerrain": true,
             "_CheckTerrainOffset": 1.0,
             "_DisableContactWall": false,
@@ -234,7 +234,7 @@
         {
           "app.cShellminiParamCallLifespanChildShell": {
             "MiniParamName": "CallLifespanChildShell",
-            "MiniParamtype": 4,
+            "MiniParamtype": "[4] CALL_CHILD",
             "_IsDependedOn": false,
             "UpdateOrder": 0,
             "LateUpdateOrder": 0,
@@ -315,7 +315,7 @@
         {
           "app.cShellminiParamCallEnemyHitChildShell": {
             "MiniParamName": "CallEnemyHitChildShell",
-            "MiniParamtype": 4,
+            "MiniParamtype": "[4] CALL_CHILD",
             "_IsDependedOn": false,
             "UpdateOrder": 0,
             "LateUpdateOrder": 0,
@@ -396,7 +396,7 @@
         {
           "app.cShellminiParamCallObjHitChildShell": {
             "MiniParamName": "CallObjHitChildShell",
-            "MiniParamtype": 4,
+            "MiniParamtype": "[4] CALL_CHILD",
             "_IsDependedOn": false,
             "UpdateOrder": 0,
             "LateUpdateOrder": 0,
@@ -477,7 +477,7 @@
         {
           "app.cShellMiniParamEmSensorProcess": {
             "MiniParamName": "SensorProcess",
-            "MiniParamtype": 7,
+            "MiniParamtype": "[7] OTHER",
             "_IsDependedOn": false,
             "UpdateOrder": 600,
             "LateUpdateOrder": 600
@@ -487,7 +487,7 @@
       "_CommonParam": {
         "ace.cShellminiParamCommon": {
           "MiniParamName": "Common",
-          "MiniParamtype": 1,
+          "MiniParamtype": "[1] COMMON",
           "_IsDependedOn": false,
           "UpdateOrder": 0,
           "LateUpdateOrder": 0,

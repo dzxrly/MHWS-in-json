@@ -6,7 +6,7 @@
           "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
             "_Param": {
               "app.NpcAITableConditions.cCheckVerNaviLink_Param": {
-                "_CheckVertical": 1,
+                "_CheckVertical": "[1] UP",
                 "_Dist": 0.0,
                 "_EnableLinkRange": 5.0
               }
@@ -32,9 +32,9 @@
                     "app.NpcAIMoveEffects.cClimbMove_Param": {
                       "_SpeedLv": "[3] RUN",
                       "_UseExternalSpeed": false,
-                      "_StickDir": 0,
-                      "MoveDir": 1,
-                      "ClimbAction": 0,
+                      "_StickDir": "[0] NAVI",
+                      "MoveDir": "[1] UP",
+                      "ClimbAction": "[0] INVALID",
                       "DelayTime": 0.0
                     }
                   }

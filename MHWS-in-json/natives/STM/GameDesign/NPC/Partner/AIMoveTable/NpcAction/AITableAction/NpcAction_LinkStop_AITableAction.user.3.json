@@ -6,7 +6,10 @@
           "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
             "_Param": {
               "app.NpcAITableConditions.cCheckNaviAttr_Param": {
-                "_NaviAttr": 17
+                "_NaviAttr": [
+                  "[1] SHORT_CUT",
+                  "[16] WALL"
+                ]
               }
             },
             "_Inverse": false,
@@ -18,9 +21,9 @@
             "_Param": {
               "app.NpcAITableConditions.cUsingItem_Param": {
                 "ItemList": [
-                  1,
-                  4,
-                  8
+                  "[1] ITEM_0000",
+                  "[4] ITEM_0003",
+                  "[8] ITEM_0007"
                 ]
               }
             },
@@ -45,7 +48,7 @@
                     "app.NpcAIMoveEffects.cStickMove_Param": {
                       "_SpeedLv": "[1] STOP",
                       "_UseExternalSpeed": false,
-                      "_StickDir": 0
+                      "_StickDir": "[0] NAVI"
                     }
                   }
                 }

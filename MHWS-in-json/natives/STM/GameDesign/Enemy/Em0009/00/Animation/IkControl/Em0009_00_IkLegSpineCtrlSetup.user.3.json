@@ -4,8 +4,8 @@
       "_UseMotionSequence": true,
       "_MotionSequenceCommonSetting": {
         "ace.user_data.IkCtrlSetupParamBase.cMotionSequenceCommonSetting": {
-          "_SequenceApplyMode": 0,
-          "_BlendRateApplyMode": 5
+          "_SequenceApplyMode": "[0] APPEND",
+          "_BlendRateApplyMode": "[5] MINIMIZE"
         }
       },
       "_RequestCapacity": 64,
@@ -27,7 +27,9 @@
       ],
       "_FootTypeSwitchDuration": 15.0,
       "_FootTypeSwitchRestoreDuration": -1.0,
-      "_GroundSkipStatus": 1,
+      "_GroundSkipStatus": [
+        "[1] NONE"
+      ],
       "_BlendRatePoolData": {
         "ace.IkDef.PoolSetupData": {
           "_Capacity": 16,

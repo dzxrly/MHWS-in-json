@@ -5,7 +5,7 @@
         {
           "ace.cShellminiParamCommon": {
             "MiniParamName": "Common",
-            "MiniParamtype": 1,
+            "MiniParamtype": "[1] COMMON",
             "_IsDependedOn": false,
             "UpdateOrder": 0,
             "LateUpdateOrder": 0,
@@ -16,7 +16,7 @@
         {
           "app.cShellminiParamColHit": {
             "MiniParamName": "AppColHit",
-            "MiniParamtype": 3,
+            "MiniParamtype": "[3] COLLISION",
             "_IsDependedOn": false,
             "UpdateOrder": 100,
             "LateUpdateOrder": 100,
@@ -40,13 +40,13 @@
             "_IsUseLifeTimerRateHitOn": false,
             "_AppHitTerrainSetting": {
               "app.cShellminiParamColHit.HitTerrainSetting": {
-                "_FirstTerrainHitType": 0,
-                "_ShellHitWaterBehavior": 2,
-                "_ShellHitGroundBehavior": 0,
+                "_FirstTerrainHitType": "[0] FINISH",
+                "_ShellHitWaterBehavior": "[2] HIT_CONTINUE",
+                "_ShellHitGroundBehavior": "[0] FINISH",
                 "STRUCT__ShellHitWallBehavior__HasValue": false,
-                "STRUCT__ShellHitWallBehavior__Value": 0,
+                "STRUCT__ShellHitWallBehavior__Value": "[0] FINISH",
                 "STRUCT__ShellHitCeilingBehavior__HasValue": false,
-                "STRUCT__ShellHitCeilingBehavior__Value": 0,
+                "STRUCT__ShellHitCeilingBehavior__Value": "[0] FINISH",
                 "_IsFirstTerrainCheck": true,
                 "_FirstTerrainCheckJoint": {
                   "ace.cJointHash": {
@@ -85,7 +85,7 @@
         {
           "app.cShellminiParamMoveAccel": {
             "MiniParamName": "MoveAccel",
-            "MiniParamtype": 2,
+            "MiniParamtype": "[2] MOVE",
             "_IsDependedOn": false,
             "UpdateOrder": 200,
             "LateUpdateOrder": 200,
@@ -97,9 +97,9 @@
               0.0
             ],
             "_IsOwnerRootToTargetOffset": false,
-            "_RotationType": 2,
+            "_RotationType": "[2] TURN_TO_MOVE_DIR_ALWAYS",
             "STRUCT__OverwriteTurnToMoveDirCalcType__HasValue": false,
-            "STRUCT__OverwriteTurnToMoveDirCalcType__Value": 0,
+            "STRUCT__OverwriteTurnToMoveDirCalcType__Value": "[0] USE_WORLD_AXISY",
             "_IsUseTargetRotOffset": false,
             "_TargetRotOffset": [
               0.0,
@@ -136,12 +136,12 @@
         {
           "app.cShellminiParamPlWp11Arrow": {
             "MiniParamName": "PlWp11Arrow",
-            "MiniParamtype": 6,
+            "MiniParamtype": "[6] DATA",
             "_IsDependedOn": false,
             "UpdateOrder": 500,
             "LateUpdateOrder": 500,
-            "_ArrowType": 2,
-            "_ArrowLv": 5,
+            "_ArrowType": "[2] GOSHA",
+            "_ArrowLv": "[5] HOMING",
             "_Critical_Begin_Dist": -1.0,
             "_Critical_End_Dist": -1.0,
             "_Critical_AttackRate": 1.0,
@@ -300,7 +300,7 @@
         {
           "app.cShellminiParamCallCustomChildShell": {
             "MiniParamName": "CallCustomChildShell",
-            "MiniParamtype": 4,
+            "MiniParamtype": "[4] CALL_CHILD",
             "_IsDependedOn": false,
             "UpdateOrder": 0,
             "LateUpdateOrder": 0,
@@ -346,13 +346,13 @@
                 "_ShellNameHash": 3273845917
               }
             },
-            "_ShellIndex": 0
+            "_ShellIndex": "[0] INDEX_1"
           }
         },
         {
           "app.cShellminiParamPlPenetrateHit": {
             "MiniParamName": "PlPenetrateHit",
-            "MiniParamtype": 6,
+            "MiniParamtype": "[6] DATA",
             "_IsDependedOn": false,
             "UpdateOrder": 300,
             "LateUpdateOrder": 300,
@@ -365,7 +365,7 @@
       "_CommonParam": {
         "ace.cShellminiParamCommon": {
           "MiniParamName": "Common",
-          "MiniParamtype": 1,
+          "MiniParamtype": "[1] COMMON",
           "_IsDependedOn": false,
           "UpdateOrder": 0,
           "LateUpdateOrder": 0,

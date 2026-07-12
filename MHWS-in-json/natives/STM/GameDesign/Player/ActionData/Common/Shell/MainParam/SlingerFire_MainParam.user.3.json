@@ -5,7 +5,7 @@
         {
           "ace.cShellminiParamCommon": {
             "MiniParamName": "Common",
-            "MiniParamtype": 1,
+            "MiniParamtype": "[1] COMMON",
             "_IsDependedOn": false,
             "UpdateOrder": 0,
             "LateUpdateOrder": 0,
@@ -16,7 +16,7 @@
         {
           "app.cShellminiParamMoveAccel": {
             "MiniParamName": "MoveAccel",
-            "MiniParamtype": 2,
+            "MiniParamtype": "[2] MOVE",
             "_IsDependedOn": false,
             "UpdateOrder": 200,
             "LateUpdateOrder": 200,
@@ -28,9 +28,9 @@
               0.0
             ],
             "_IsOwnerRootToTargetOffset": false,
-            "_RotationType": 1,
+            "_RotationType": "[1] TURN_TO_MOVE_DIR_AT_START",
             "STRUCT__OverwriteTurnToMoveDirCalcType__HasValue": false,
-            "STRUCT__OverwriteTurnToMoveDirCalcType__Value": 0,
+            "STRUCT__OverwriteTurnToMoveDirCalcType__Value": "[0] USE_WORLD_AXISY",
             "_IsUseTargetRotOffset": false,
             "_TargetRotOffset": [
               0.0,
@@ -67,7 +67,7 @@
         {
           "app.cShellminiParamColHit": {
             "MiniParamName": "AppColHit",
-            "MiniParamtype": 3,
+            "MiniParamtype": "[3] COLLISION",
             "_IsDependedOn": false,
             "UpdateOrder": 100,
             "LateUpdateOrder": 100,
@@ -91,13 +91,13 @@
             "_IsUseLifeTimerRateHitOn": false,
             "_AppHitTerrainSetting": {
               "app.cShellminiParamColHit.HitTerrainSetting": {
-                "_FirstTerrainHitType": 0,
-                "_ShellHitWaterBehavior": 0,
-                "_ShellHitGroundBehavior": 0,
+                "_FirstTerrainHitType": "[0] FINISH",
+                "_ShellHitWaterBehavior": "[0] FINISH",
+                "_ShellHitGroundBehavior": "[0] FINISH",
                 "STRUCT__ShellHitWallBehavior__HasValue": false,
-                "STRUCT__ShellHitWallBehavior__Value": 0,
+                "STRUCT__ShellHitWallBehavior__Value": "[0] FINISH",
                 "STRUCT__ShellHitCeilingBehavior__HasValue": false,
-                "STRUCT__ShellHitCeilingBehavior__Value": 0,
+                "STRUCT__ShellHitCeilingBehavior__Value": "[0] FINISH",
                 "_IsFirstTerrainCheck": true,
                 "_FirstTerrainCheckJoint": {
                   "ace.cJointHash": {
@@ -136,7 +136,7 @@
         {
           "app.cShellminiParamCallGroundHitChildShell": {
             "MiniParamName": "CallGroundHitChildShell",
-            "MiniParamtype": 4,
+            "MiniParamtype": "[4] CALL_CHILD",
             "_IsDependedOn": false,
             "UpdateOrder": 0,
             "LateUpdateOrder": 0,
@@ -217,7 +217,7 @@
         {
           "app.cShellminiParamCallWallHitChildShell": {
             "MiniParamName": "CallWallHitChildShell",
-            "MiniParamtype": 4,
+            "MiniParamtype": "[4] CALL_CHILD",
             "_IsDependedOn": false,
             "UpdateOrder": 0,
             "LateUpdateOrder": 0,
@@ -268,7 +268,7 @@
         {
           "app.cShellminiParamCallCustomChildShell": {
             "MiniParamName": "CallCustomChildShell",
-            "MiniParamtype": 4,
+            "MiniParamtype": "[4] CALL_CHILD",
             "_IsDependedOn": false,
             "UpdateOrder": 0,
             "LateUpdateOrder": 0,
@@ -344,13 +344,13 @@
                 "_ShellNameHash": 1647279146
               }
             },
-            "_ShellIndex": 0
+            "_ShellIndex": "[0] INDEX_1"
           }
         },
         {
           "app.cShellminiParamPLPreConstraintSync": {
             "MiniParamName": "PLPreConstraintSync",
-            "MiniParamtype": 6,
+            "MiniParamtype": "[6] DATA",
             "_IsDependedOn": false,
             "UpdateOrder": 600,
             "LateUpdateOrder": 600,
@@ -361,7 +361,7 @@
         {
           "app.cShellminiParamCallCustomChildShell": {
             "MiniParamName": "CallCustomChildShell",
-            "MiniParamtype": 4,
+            "MiniParamtype": "[4] CALL_CHILD",
             "_IsDependedOn": false,
             "UpdateOrder": 0,
             "LateUpdateOrder": 0,
@@ -491,17 +491,17 @@
                 "_ShellNameHash": 1210643947
               }
             },
-            "_ShellIndex": 4
+            "_ShellIndex": "[4] INDEX_5"
           }
         },
         {
           "app.cShellminiParamPlSlingerAttribute": {
             "MiniParamName": "SlingerAttribute",
-            "MiniParamtype": 6,
+            "MiniParamtype": "[6] DATA",
             "_IsDependedOn": false,
             "UpdateOrder": 600,
             "LateUpdateOrder": 600,
-            "_SlingerType": 92,
+            "_SlingerType": "[92] SLINGER_FIRE",
             "_IsCreateSoundReact": true,
             "_IsBlastSoundReact": false,
             "_IsSoundReactRadiusOverwrite": false,
@@ -516,7 +516,7 @@
       "_CommonParam": {
         "ace.cShellminiParamCommon": {
           "MiniParamName": "Common",
-          "MiniParamtype": 1,
+          "MiniParamtype": "[1] COMMON",
           "_IsDependedOn": false,
           "UpdateOrder": 0,
           "LateUpdateOrder": 0,

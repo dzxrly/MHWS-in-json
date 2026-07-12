@@ -17,7 +17,7 @@
                 "_Hash": 4175418299
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[1] SEQUENTIAL",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -76,7 +76,7 @@
                 "_Hash": 2249147959
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -112,7 +112,7 @@
                 "_Hash": 2490079840
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -136,7 +136,10 @@
                           "_IgnoreInterrupt": false,
                           "_EvaluatorParam": {
                             "app.NpcGoaTreeEvaluators.cCheckUnitStatus_Param": {
-                              "_Status": "[5] CAUTION_MOVE"
+                              "_Status": [
+                                "[1] ENTRY",
+                                "[4] SCOUTER_DETECTED"
+                              ]
                             }
                           }
                         }
@@ -154,7 +157,10 @@
                           "_IgnoreInterrupt": false,
                           "_EvaluatorParam": {
                             "app.NpcGoaTreeEvaluators.cCheckUnitStatus_Param": {
-                              "_Status": "[6] CAUTION"
+                              "_Status": [
+                                "[2] EXIT",
+                                "[4] SCOUTER_DETECTED"
+                              ]
                             }
                           }
                         }
@@ -191,7 +197,7 @@
                 "_Hash": 2757961586
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -253,7 +259,7 @@
                 "_Hash": 1891728680
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -315,7 +321,7 @@
                 "_Hash": 975630369
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -359,7 +365,7 @@
                 "_Hash": 1910173673
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -383,7 +389,10 @@
                           "_IgnoreInterrupt": false,
                           "_EvaluatorParam": {
                             "app.NpcGoaTreeEvaluators.cCheckUnitStatus_Param": {
-                              "_Status": "[5] CAUTION_MOVE"
+                              "_Status": [
+                                "[1] ENTRY",
+                                "[4] SCOUTER_DETECTED"
+                              ]
                             }
                           }
                         }
@@ -401,7 +410,10 @@
                           "_IgnoreInterrupt": false,
                           "_EvaluatorParam": {
                             "app.NpcGoaTreeEvaluators.cCheckUnitStatus_Param": {
-                              "_Status": "[6] CAUTION"
+                              "_Status": [
+                                "[2] EXIT",
+                                "[4] SCOUTER_DETECTED"
+                              ]
                             }
                           }
                         }
@@ -460,9 +472,9 @@
                   "_Param": {
                     "app.NpcGoaTreeEffects.cPorterMoveByStick_Param": {
                       "STRUCT__OverwriteSpeedLv__HasValue": false,
-                      "STRUCT__OverwriteSpeedLv__Value": 0,
+                      "STRUCT__OverwriteSpeedLv__Value": "[0] STOP",
                       "_IsTurn": false,
-                      "_TurnTarget": 0,
+                      "_TurnTarget": "[0] COMBAT_ENEMY",
                       "_TurnRange": 90.0,
                       "_ShieldRange": 90.0,
                       "_StickMagunitude": 0.5
@@ -480,7 +492,7 @@
                 "_Hash": 2253305190
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -565,7 +577,7 @@
                 "_Hash": 2798172638
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,
@@ -657,7 +669,7 @@
                 "_Hash": 2819453848
               }
             },
-            "_BuildType": 0,
+            "_BuildType": "[0] SET",
             "_SubGoalSelectType": "[0] MOST_DESIRABILITY",
             "_EndlessLoop": false,
             "_ParallelWhenInterrupted": false,

@@ -6,7 +6,7 @@
           "app.user_data.NpcAITableData.cNpcAITableConditionHolder": {
             "_Param": {
               "app.NpcAITableConditions.cCheckAction_Param": {
-                "MoveAction": 2
+                "MoveAction": "[2] CLIMB_UP_DASH"
               }
             },
             "_Inverse": false,
@@ -30,9 +30,9 @@
                     "app.NpcAIMoveEffects.cClimbMove_Param": {
                       "_SpeedLv": "[4] DASH",
                       "_UseExternalSpeed": false,
-                      "_StickDir": 1,
-                      "MoveDir": 1,
-                      "ClimbAction": 0,
+                      "_StickDir": "[1] CHARA_DIR",
+                      "MoveDir": "[1] UP",
+                      "ClimbAction": "[0] INVALID",
                       "DelayTime": 0.0
                     }
                   }

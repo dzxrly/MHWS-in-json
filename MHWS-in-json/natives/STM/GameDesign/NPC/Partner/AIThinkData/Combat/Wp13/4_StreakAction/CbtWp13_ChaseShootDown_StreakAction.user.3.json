@@ -1,7 +1,7 @@
 [
   {
     "app.user_data.NpcStreakActionData": {
-      "_TerminateType": 0,
+      "_TerminateType": "[0] ACTION_EXECUTED",
       "_ActionEffectParam": {
         "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Action": {
           "_Param": {
@@ -24,19 +24,19 @@
         "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Aim": {
           "_Param": {
             "app.NpcStreakEffects.cSetTarget_AimParam": {
-              "_StartType": 0,
-              "_EndType": 0,
+              "_StartType": "[0] NONE",
+              "_EndType": "[0] NONE",
               "_CanAimWpOff": false,
-              "_UseParabora": 0,
+              "_UseParabora": "[0] NONE",
               "_StartActionSelector": {
                 "app.cNpcHunterActionSelector": {
                   "_Category": 773579456,
                   "_Action": 0
                 }
               },
-              "_LogicType": 0,
-              "_AdjustType": 0,
-              "_UpdateTiming": 0,
+              "_LogicType": "[0] NEAR_COLLIDER",
+              "_AdjustType": "[0] TO_KEY_JOINTS",
+              "_UpdateTiming": "[0] ALWAYS",
               "_CheckRayCast": true,
               "_IsDirectionAim": false
             }
@@ -65,7 +65,7 @@
             "_Param": {
               "app.NpcStreakEvaluators.cCheckShootRange_Param": {
                 "_AimRangeType": "[1471956480] CRITICAL",
-                "_CompareType": 5,
+                "_CompareType": "[5] LESS_OR_EQUAL",
                 "_IgnoreMeleeExBullet": true
               }
             },
@@ -96,7 +96,7 @@
           "app.user_data.NpcStreakActionData.cNpcStreakEvaluatorHolder": {
             "_Param": {
               "app.NpcStreakEvaluators.cCheckDownTimeCombatEnemy_Param": {
-                "_CompareType": 2,
+                "_CompareType": "[2] GREATER",
                 "_DownTime": 0.0
               }
             },

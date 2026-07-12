@@ -10,13 +10,13 @@
       "_FadeInSetting": {
         "app.user_data.SeatingCorrectionParameter.cEaseValueParam": {
           "_Duration": 1.0,
-          "_EaseType": 3
+          "_EaseType": "[3] InOutSine"
         }
       },
       "_FadeOutSetting": {
         "app.user_data.SeatingCorrectionParameter.cEaseValueParam": {
           "_Duration": 1.5,
-          "_EaseType": 3
+          "_EaseType": "[3] InOutSine"
         }
       },
       "_CogJointHash": {
@@ -45,8 +45,8 @@
       ],
       "_DisableUpAdjust": true,
       "_DisableCenterAdjustRate": true,
-      "_CollisionFilter": 14,
-      "_RayBasis": 1,
+      "_CollisionFilter": "[14] EFFECT_CHARACTER",
+      "_RayBasis": "[1] TRANSFORM",
       "_RayOffsetFrom": [
         0.0,
         0.4,
@@ -71,7 +71,7 @@
       "_LimbsInfo": [
         {
           "app.user_data.SeatingCorrectionParameter.cLimbInfo": {
-            "_LimbIdx": 2,
+            "_LimbIdx": "[2] L_ARM",
             "_EndJointHash": {
               "ace.cJointHash": {
                 "_Hash": 682134405
@@ -87,7 +87,7 @@
         },
         {
           "app.user_data.SeatingCorrectionParameter.cLimbInfo": {
-            "_LimbIdx": 3,
+            "_LimbIdx": "[3] R_ARM",
             "_EndJointHash": {
               "ace.cJointHash": {
                 "_Hash": 315581468

@@ -544,8 +544,8 @@
       ],
       "_HalfCount": 10,
       "_Space": 2.0,
-      "_RotType": 1,
-      "_UpdateType": 0,
+      "_RotType": "[1] TARGET_ROT",
+      "_UpdateType": "[0] UPDATE_ALWAYS",
       "_UpdateDistance": 5.0,
       "_IsImmediateRecalc": true,
       "_FilterParams": [
@@ -555,7 +555,7 @@
               "app.NpcPQSScoringFilters.cDistance_Param": {
                 "_Inverse": false,
                 "_IsFilter": false,
-                "_DistanceTo": 0,
+                "_DistanceTo": "[0] TARGET",
                 "_Range": {
                   "raw": "0000000000009041",
                   "type": "Range"
@@ -573,7 +573,7 @@
               "app.NpcPQSScoringFilters.cDot_Param": {
                 "_Inverse": false,
                 "_IsFilter": false,
-                "_Type": 0,
+                "_Type": "[0] TARGET_AXIS_Z",
                 "_Range": {
                   "raw": "000000bf0000803f",
                   "type": "Range"

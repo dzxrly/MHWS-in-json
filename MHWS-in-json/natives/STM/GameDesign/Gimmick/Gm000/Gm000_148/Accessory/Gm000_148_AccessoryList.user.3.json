@@ -16,7 +16,7 @@
             "_Offset": {
               "app.accessory.Def.cOffset": {
                 "UseOffset": false,
-                "OffsetOrder": 1,
+                "OffsetOrder": "[1] ROT_POS",
                 "STRUCT_Coord_Position": [
                   0.0,
                   0.0,
@@ -29,8 +29,8 @@
                   0.0,
                   1.0
                 ],
-                "PositionOffsetCtrl": 0,
-                "RotationOffsetCtrl": 0
+                "PositionOffsetCtrl": "[0] LOCAL",
+                "RotationOffsetCtrl": "[0] LOCAL"
               }
             },
             "_AllowDisableMotionByAnimationLOD": false,
@@ -43,7 +43,7 @@
                   "_Actions": [
                     {
                       "app.accessory.ActObjectVisibility": {
-                        "_Visibility": 0
+                        "_Visibility": "[0] VISIBLE"
                       }
                     },
                     {
@@ -65,7 +65,7 @@
                   "_Actions": [
                     {
                       "app.accessory.ActObjectVisibility": {
-                        "_Visibility": 1
+                        "_Visibility": "[1] HIDDEN"
                       }
                     },
                     {

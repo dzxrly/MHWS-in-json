@@ -17,7 +17,7 @@
                     "app.user_data.EmParamParts.cVital": 600.0
                   }
                 ],
-                "_RodExtract": 1,
+                "_RodExtract": "[1] RED",
                 "_MeatGuidNormal": "1c6a25c6-b430-4c5b-83ea-47d9a2f8e5eb",
                 "_MeatGuidBreak": "00000000-0000-0000-0000-000000000000",
                 "_MeatGuidCustom1": "b775f67c-cf93-4c7c-811d-395c623601be",
@@ -37,7 +37,7 @@
                     "app.user_data.EmParamParts.cVital": 500.0
                   }
                 ],
-                "_RodExtract": 3,
+                "_RodExtract": "[3] WHITE",
                 "_MeatGuidNormal": "cad44a0c-3d19-4531-ac04-d060ace8d87c",
                 "_MeatGuidBreak": "00000000-0000-0000-0000-000000000000",
                 "_MeatGuidCustom1": "092cff8e-9ae5-40fe-9bfa-cd644c4dad91",
@@ -57,7 +57,7 @@
                     "app.user_data.EmParamParts.cVital": 500.0
                   }
                 ],
-                "_RodExtract": 3,
+                "_RodExtract": "[3] WHITE",
                 "_MeatGuidNormal": "cad44a0c-3d19-4531-ac04-d060ace8d87c",
                 "_MeatGuidBreak": "00000000-0000-0000-0000-000000000000",
                 "_MeatGuidCustom1": "092cff8e-9ae5-40fe-9bfa-cd644c4dad91",
@@ -77,7 +77,7 @@
                     "app.user_data.EmParamParts.cVital": 500.0
                   }
                 ],
-                "_RodExtract": 3,
+                "_RodExtract": "[3] WHITE",
                 "_MeatGuidNormal": "dc623f64-e7d0-460d-a20c-f7a55f7e151d",
                 "_MeatGuidBreak": "00000000-0000-0000-0000-000000000000",
                 "_MeatGuidCustom1": "a9340985-d710-43ed-aa63-49d695f6d6b2",
@@ -97,7 +97,7 @@
                     "app.user_data.EmParamParts.cVital": 500.0
                   }
                 ],
-                "_RodExtract": 3,
+                "_RodExtract": "[3] WHITE",
                 "_MeatGuidNormal": "dc623f64-e7d0-460d-a20c-f7a55f7e151d",
                 "_MeatGuidBreak": "00000000-0000-0000-0000-000000000000",
                 "_MeatGuidCustom1": "a9340985-d710-43ed-aa63-49d695f6d6b2",
@@ -117,7 +117,7 @@
                     "app.user_data.EmParamParts.cVital": 500.0
                   }
                 ],
-                "_RodExtract": 2,
+                "_RodExtract": "[2] ORANGE",
                 "_MeatGuidNormal": "13bbbcbd-53e1-4747-8a22-4424f3549095",
                 "_MeatGuidBreak": "00000000-0000-0000-0000-000000000000",
                 "_MeatGuidCustom1": "a1325e8c-8501-471b-8c76-183fbaee2aa1",
@@ -137,7 +137,7 @@
                     "app.user_data.EmParamParts.cVital": 300.0
                   }
                 ],
-                "_RodExtract": 4,
+                "_RodExtract": "[4] GREEN",
                 "_MeatGuidNormal": "79db2e4d-1da1-499a-a916-46ea7d1ab257",
                 "_MeatGuidBreak": "00000000-0000-0000-0000-000000000000",
                 "_MeatGuidCustom1": "7d46f128-561c-4480-9f01-69bae3318d9c",
@@ -157,7 +157,7 @@
                     "app.user_data.EmParamParts.cVital": 0.0
                   }
                 ],
-                "_RodExtract": 2,
+                "_RodExtract": "[2] ORANGE",
                 "_MeatGuidNormal": "518600eb-6390-488e-a127-9531f3f84e3a",
                 "_MeatGuidBreak": "00000000-0000-0000-0000-000000000000",
                 "_MeatGuidCustom1": "1e5644d7-9712-4fa9-a1bc-cf5755ce81ba",
@@ -552,10 +552,12 @@
                     "app.user_data.EmParamParts.cVital": 9999.0
                   }
                 ],
-                "_DefaultEnable": 2,
+                "_DefaultEnable": "[2] DISABLE",
                 "_MaxCount": 2,
-                "_Action": 0,
-                "_Attr": 0,
+                "_Action": "[0] NONE",
+                "_Attr": [
+                  "[0] NONE"
+                ],
                 "_IsSkipUpdateLinkPartsWhenBroken": true,
                 "_LinkAll": true,
                 "_LinkPartsGuids": [],
@@ -577,10 +579,12 @@
                     "app.user_data.EmParamParts.cVital": 9999.0
                   }
                 ],
-                "_DefaultEnable": 2,
+                "_DefaultEnable": "[2] DISABLE",
                 "_MaxCount": 2,
-                "_Action": 0,
-                "_Attr": 0,
+                "_Action": "[0] NONE",
+                "_Attr": [
+                  "[0] NONE"
+                ],
                 "_IsSkipUpdateLinkPartsWhenBroken": true,
                 "_LinkAll": true,
                 "_LinkPartsGuids": [],
@@ -600,11 +604,11 @@
             {
               "app.user_data.EmParamParts.cPartsBreak": {
                 "_InstanceGuid": "a9e9b815-30e5-44a2-8056-f0198ac8cc2a",
-                "_TargetCategory": 0,
+                "_TargetCategory": "[0] PARTS",
                 "_TargetDataGuid": "52408407-646e-435f-8e12-520d2858439e",
                 "_ExcuteCount": 2,
                 "_MaxCount": 1,
-                "_Condition": 0,
+                "_Condition": "[0] EVERYTIME",
                 "_ConditionCount": -1,
                 "_PartsType": "[4082942400] HEAD"
               }
@@ -612,11 +616,11 @@
             {
               "app.user_data.EmParamParts.cPartsBreak": {
                 "_InstanceGuid": "44df4777-fb7c-403c-8018-3286d2dbd964",
-                "_TargetCategory": 0,
+                "_TargetCategory": "[0] PARTS",
                 "_TargetDataGuid": "4ce8006d-0909-444b-9e63-8cf4a2f25b55",
                 "_ExcuteCount": 2,
                 "_MaxCount": 1,
-                "_Condition": 0,
+                "_Condition": "[0] EVERYTIME",
                 "_ConditionCount": -1,
                 "_PartsType": "[3403054080] LEFT_FRONT_LEG"
               }
@@ -624,11 +628,11 @@
             {
               "app.user_data.EmParamParts.cPartsBreak": {
                 "_InstanceGuid": "15aecef9-0926-4ae1-bf8e-edc90f56fff0",
-                "_TargetCategory": 0,
+                "_TargetCategory": "[0] PARTS",
                 "_TargetDataGuid": "d5d9f99b-ef0d-4b5a-b82e-af1692b98310",
                 "_ExcuteCount": 2,
                 "_MaxCount": 1,
-                "_Condition": 0,
+                "_Condition": "[0] EVERYTIME",
                 "_ConditionCount": -1,
                 "_PartsType": "[1920497920] RIGHT_FRONT_LEG"
               }
@@ -636,11 +640,11 @@
             {
               "app.user_data.EmParamParts.cPartsBreak": {
                 "_InstanceGuid": "33ff4b76-ab6d-4580-b9bf-d277737e417b",
-                "_TargetCategory": 0,
+                "_TargetCategory": "[0] PARTS",
                 "_TargetDataGuid": "caf18d47-71e6-4908-b376-fbb2a164a34a",
                 "_ExcuteCount": 2,
                 "_MaxCount": 1,
-                "_Condition": 0,
+                "_Condition": "[0] EVERYTIME",
                 "_ConditionCount": -1,
                 "_PartsType": "[304214656] LEFT_HIND_LEG"
               }
@@ -648,11 +652,11 @@
             {
               "app.user_data.EmParamParts.cPartsBreak": {
                 "_InstanceGuid": "6c3fa510-a6c4-4b23-9a70-2e82e105defb",
-                "_TargetCategory": 0,
+                "_TargetCategory": "[0] PARTS",
                 "_TargetDataGuid": "b3334aff-b1d4-4856-830d-befc28e35fa1",
                 "_ExcuteCount": 2,
                 "_MaxCount": 1,
-                "_Condition": 0,
+                "_Condition": "[0] EVERYTIME",
                 "_ConditionCount": -1,
                 "_PartsType": "[591465408] RIGHT_HIND_LEG"
               }
@@ -660,11 +664,11 @@
             {
               "app.user_data.EmParamParts.cPartsBreak": {
                 "_InstanceGuid": "fd1bfd4b-2943-4956-82e4-4fcdef6f91a0",
-                "_TargetCategory": 0,
+                "_TargetCategory": "[0] PARTS",
                 "_TargetDataGuid": "da60ae8b-1128-442a-b433-d8967e354fd9",
                 "_ExcuteCount": 1,
                 "_MaxCount": 1,
-                "_Condition": 0,
+                "_Condition": "[0] EVERYTIME",
                 "_ConditionCount": -1,
                 "_PartsType": "[20830] PERISCOPE"
               }
@@ -691,7 +695,7 @@
                   0.0,
                   0.0
                 ],
-                "_HighLightEffectType": 0
+                "_HighLightEffectType": "[0] NORMAL"
               }
             },
             {
@@ -710,7 +714,7 @@
                   0.0,
                   0.0
                 ],
-                "_HighLightEffectType": 0
+                "_HighLightEffectType": "[0] NORMAL"
               }
             },
             {
@@ -729,7 +733,7 @@
                   0.0,
                   0.0
                 ],
-                "_HighLightEffectType": 0
+                "_HighLightEffectType": "[0] NORMAL"
               }
             },
             {
@@ -748,7 +752,7 @@
                   0.0,
                   0.0
                 ],
-                "_HighLightEffectType": 0
+                "_HighLightEffectType": "[0] NORMAL"
               }
             },
             {
@@ -767,7 +771,7 @@
                   0.0,
                   0.0
                 ],
-                "_HighLightEffectType": 0
+                "_HighLightEffectType": "[0] NORMAL"
               }
             }
           ]

@@ -20,7 +20,7 @@
                     "app.user_data.EmParamParts.cVital": 300.0
                   }
                 ],
-                "_RodExtract": 1,
+                "_RodExtract": "[1] RED",
                 "_MeatGuidNormal": "2bfd287f-cccf-458e-8b50-bcf66bd2e033",
                 "_MeatGuidBreak": "00000000-0000-0000-0000-000000000000",
                 "_MeatGuidCustom1": "00000000-0000-0000-0000-000000000000",
@@ -40,7 +40,7 @@
                     "app.user_data.EmParamParts.cVital": 200.0
                   }
                 ],
-                "_RodExtract": 2,
+                "_RodExtract": "[2] ORANGE",
                 "_MeatGuidNormal": "a4fec738-d640-4ad4-85df-a8b843b5f8ca",
                 "_MeatGuidBreak": "00000000-0000-0000-0000-000000000000",
                 "_MeatGuidCustom1": "00000000-0000-0000-0000-000000000000",
@@ -60,7 +60,7 @@
                     "app.user_data.EmParamParts.cVital": 300.0
                   }
                 ],
-                "_RodExtract": 1,
+                "_RodExtract": "[1] RED",
                 "_MeatGuidNormal": "2c832031-bd4f-4cb9-a778-e2f03a88fa12",
                 "_MeatGuidBreak": "00000000-0000-0000-0000-000000000000",
                 "_MeatGuidCustom1": "00000000-0000-0000-0000-000000000000",
@@ -80,7 +80,7 @@
                     "app.user_data.EmParamParts.cVital": 300.0
                   }
                 ],
-                "_RodExtract": 1,
+                "_RodExtract": "[1] RED",
                 "_MeatGuidNormal": "2c832031-bd4f-4cb9-a778-e2f03a88fa12",
                 "_MeatGuidBreak": "00000000-0000-0000-0000-000000000000",
                 "_MeatGuidCustom1": "00000000-0000-0000-0000-000000000000",
@@ -100,7 +100,7 @@
                     "app.user_data.EmParamParts.cVital": 300.0
                   }
                 ],
-                "_RodExtract": 3,
+                "_RodExtract": "[3] WHITE",
                 "_MeatGuidNormal": "010026bf-521a-48b7-b9be-508f15f2df91",
                 "_MeatGuidBreak": "00000000-0000-0000-0000-000000000000",
                 "_MeatGuidCustom1": "00000000-0000-0000-0000-000000000000",
@@ -120,7 +120,7 @@
                     "app.user_data.EmParamParts.cVital": 300.0
                   }
                 ],
-                "_RodExtract": 3,
+                "_RodExtract": "[3] WHITE",
                 "_MeatGuidNormal": "010026bf-521a-48b7-b9be-508f15f2df91",
                 "_MeatGuidBreak": "00000000-0000-0000-0000-000000000000",
                 "_MeatGuidCustom1": "00000000-0000-0000-0000-000000000000",
@@ -140,7 +140,7 @@
                     "app.user_data.EmParamParts.cVital": 300.0
                   }
                 ],
-                "_RodExtract": 4,
+                "_RodExtract": "[4] GREEN",
                 "_MeatGuidNormal": "731764eb-44ba-4ad0-b47d-37f95c2eabb7",
                 "_MeatGuidBreak": "00000000-0000-0000-0000-000000000000",
                 "_MeatGuidCustom1": "00000000-0000-0000-0000-000000000000",
@@ -292,10 +292,12 @@
                     "app.user_data.EmParamParts.cVital": 400.0
                   }
                 ],
-                "_DefaultEnable": 1,
+                "_DefaultEnable": "[1] ENABLE",
                 "_MaxCount": 2,
-                "_Action": 0,
-                "_Attr": 0,
+                "_Action": "[0] NONE",
+                "_Attr": [
+                  "[0] NONE"
+                ],
                 "_IsSkipUpdateLinkPartsWhenBroken": false,
                 "_LinkAll": false,
                 "_LinkPartsGuids": [
@@ -316,10 +318,12 @@
                     "app.user_data.EmParamParts.cVital": 400.0
                   }
                 ],
-                "_DefaultEnable": 2,
+                "_DefaultEnable": "[2] DISABLE",
                 "_MaxCount": 2,
-                "_Action": 0,
-                "_Attr": 0,
+                "_Action": "[0] NONE",
+                "_Attr": [
+                  "[0] NONE"
+                ],
                 "_IsSkipUpdateLinkPartsWhenBroken": false,
                 "_LinkAll": false,
                 "_LinkPartsGuids": [
@@ -341,11 +345,11 @@
             {
               "app.user_data.EmParamParts.cPartsBreak": {
                 "_InstanceGuid": "f5aaf220-c5bf-4392-8ac1-cecb0795ebcb",
-                "_TargetCategory": 1,
+                "_TargetCategory": "[1] MULTI_PARTS",
                 "_TargetDataGuid": "6fccbe19-6757-4d80-b6f4-8da4734b04fc",
                 "_ExcuteCount": 2,
                 "_MaxCount": 1,
-                "_Condition": 0,
+                "_Condition": "[0] EVERYTIME",
                 "_ConditionCount": -1,
                 "_PartsType": "[6609] FANG_FIRST"
               }
@@ -353,11 +357,11 @@
             {
               "app.user_data.EmParamParts.cPartsBreak": {
                 "_InstanceGuid": "e5538255-c32e-4193-b10d-40207923b680",
-                "_TargetCategory": 1,
+                "_TargetCategory": "[1] MULTI_PARTS",
                 "_TargetDataGuid": "11dd34df-ad9a-4ec5-a04d-e27cb05b9475",
                 "_ExcuteCount": 2,
                 "_MaxCount": 1,
-                "_Condition": 0,
+                "_Condition": "[0] EVERYTIME",
                 "_ConditionCount": -1,
                 "_PartsType": "[29797] FANG_SECOND"
               }
@@ -365,11 +369,11 @@
             {
               "app.user_data.EmParamParts.cPartsBreak": {
                 "_InstanceGuid": "b9aec5a1-9dfc-4179-8d6d-d23219c1166e",
-                "_TargetCategory": 0,
+                "_TargetCategory": "[0] PARTS",
                 "_TargetDataGuid": "ce230440-f397-4938-b587-5ec2cf33f5e9",
                 "_ExcuteCount": 1,
                 "_MaxCount": 1,
-                "_Condition": 0,
+                "_Condition": "[0] EVERYTIME",
                 "_ConditionCount": -1,
                 "_PartsType": "[2000370944] TAIL"
               }
@@ -396,7 +400,7 @@
                   0.0,
                   0.0
                 ],
-                "_HighLightEffectType": 0
+                "_HighLightEffectType": "[0] NORMAL"
               }
             }
           ]
@@ -586,13 +590,13 @@
       "_LegendaryScarNumArray": [
         {
           "app.user_data.EmParamParts.LegendaryScarNumData": {
-            "Group": 0,
+            "Group": "[0] A",
             "Num": 1
           }
         },
         {
           "app.user_data.EmParamParts.LegendaryScarNumData": {
-            "Group": 1,
+            "Group": "[1] B",
             "Num": 2
           }
         }

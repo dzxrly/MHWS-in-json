@@ -1,12 +1,12 @@
 [
   {
     "app.user_data.NpcStreakActionData": {
-      "_TerminateType": 0,
+      "_TerminateType": "[0] ACTION_EXECUTED",
       "_ActionEffectParam": {
         "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Action": {
           "_Param": {
             "app.NpcStreakEffects.cWp13RapidStepShoot_ActionParam": {
-              "_DodgeType": 10,
+              "_DodgeType": "[10] AVOID_ATTACK",
               "_SpecifiedDist": 0.0
             }
           }
@@ -27,10 +27,10 @@
         "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Aim": {
           "_Param": {
             "app.NpcStreakEffects.cSetTargetCenter_AimParam": {
-              "_StartType": 0,
-              "_EndType": 0,
+              "_StartType": "[0] NONE",
+              "_EndType": "[0] NONE",
               "_CanAimWpOff": false,
-              "_UseParabora": 0,
+              "_UseParabora": "[0] NONE",
               "_StartActionSelector": {
                 "app.cNpcHunterActionSelector": {
                   "_Category": 773579456,
@@ -53,7 +53,7 @@
           "app.user_data.NpcStreakActionData.cNpcStreakEvaluatorHolder": {
             "_Param": {
               "app.NpcStreakEvaluators.cCheckWp13CurrentMode_Param": {
-                "_Mode": 1
+                "_Mode": "[1] RAPID_BOOST"
               }
             },
             "_Inverse": false
@@ -63,7 +63,7 @@
           "app.user_data.NpcStreakActionData.cNpcStreakEvaluatorHolder": {
             "_Param": {
               "app.NpcStreakEvaluators.cCheckAnyCancel_Param": {
-                "_CancelMotSeq": 1
+                "_CancelMotSeq": "[1] WP"
               }
             },
             "_Inverse": false

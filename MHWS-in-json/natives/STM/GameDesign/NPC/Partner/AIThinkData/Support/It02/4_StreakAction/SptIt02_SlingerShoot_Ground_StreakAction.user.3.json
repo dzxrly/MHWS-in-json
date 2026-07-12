@@ -1,7 +1,7 @@
 [
   {
     "app.user_data.NpcStreakActionData": {
-      "_TerminateType": 0,
+      "_TerminateType": "[0] ACTION_EXECUTED",
       "_ActionEffectParam": {
         "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Action": {
           "_Param": {
@@ -30,18 +30,18 @@
         "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Aim": {
           "_Param": {
             "app.NpcStreakEffects.cSetHunterTarget_AimParam": {
-              "_StartType": 0,
-              "_EndType": 1,
+              "_StartType": "[0] NONE",
+              "_EndType": "[1] SLINGER_SHOT",
               "_CanAimWpOff": false,
-              "_UseParabora": 0,
+              "_UseParabora": "[0] NONE",
               "_StartActionSelector": {
                 "app.cNpcHunterActionSelector": {
                   "_Category": 773579456,
                   "_Action": 0
                 }
               },
-              "_TargetType": 3,
-              "_TargetJoint": 0,
+              "_TargetType": "[3] STREAK_TARGET",
+              "_TargetJoint": "[0] ROOT",
               "_DeviationTimeSec": 0.0
             }
           }

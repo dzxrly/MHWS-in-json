@@ -1,7 +1,7 @@
 [
   {
     "app.user_data.NpcStreakActionData": {
-      "_TerminateType": 0,
+      "_TerminateType": "[0] ACTION_EXECUTED",
       "_ActionEffectParam": {
         "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Action": {
           "_Param": {
@@ -22,7 +22,7 @@
               "_UseAIMoveEnd": false,
               "_FixedSpeedLv": "[0] INVALID",
               "_IsMoveStopTurn": false,
-              "_StopTurnDir": 0,
+              "_StopTurnDir": "[0] PL_AXIS_Z",
               "_DegRange": {
                 "raw": "0000000000003443",
                 "type": "Range"
@@ -46,7 +46,7 @@
                       "path": "GameDesign/NPC/Partner/CommonData/PointQuery/Combat/Wp13_Combat_PQSRelayingData.user"
                     }
                   },
-                  "_RouteType": 1,
+                  "_RouteType": "[1] RELAYING_ROUTE",
                   "_DirectionType": "[0] INVALID",
                   "_EnvLayer": "[0] SHORT",
                   "_IsEnableJointTarget": false,
@@ -70,7 +70,7 @@
                       "path": "GameDesign/NPC/Partner/CommonData/PointQuery/Combat/Wp13_Combat_PQSRelayingData.user"
                     }
                   },
-                  "_RouteType": 1,
+                  "_RouteType": "[1] RELAYING_ROUTE",
                   "_DirectionType": "[0] INVALID",
                   "_EnvLayer": "[0] SHORT",
                   "_IsEnableJointTarget": false,
@@ -85,19 +85,19 @@
         "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Aim": {
           "_Param": {
             "app.NpcStreakEffects.cSetTarget_AimParam": {
-              "_StartType": 0,
-              "_EndType": 0,
+              "_StartType": "[0] NONE",
+              "_EndType": "[0] NONE",
               "_CanAimWpOff": false,
-              "_UseParabora": 0,
+              "_UseParabora": "[0] NONE",
               "_StartActionSelector": {
                 "app.cNpcHunterActionSelector": {
                   "_Category": 773579456,
                   "_Action": 0
                 }
               },
-              "_LogicType": 1,
-              "_AdjustType": 1,
-              "_UpdateTiming": 0,
+              "_LogicType": "[1] EFFECTIVE_MEAT",
+              "_AdjustType": "[1] TO_CENTER",
+              "_UpdateTiming": "[0] ALWAYS",
               "_CheckRayCast": false,
               "_IsDirectionAim": false
             }

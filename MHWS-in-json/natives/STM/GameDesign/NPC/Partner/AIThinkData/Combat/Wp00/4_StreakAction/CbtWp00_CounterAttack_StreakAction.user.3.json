@@ -1,7 +1,7 @@
 [
   {
     "app.user_data.NpcStreakActionData": {
-      "_TerminateType": 0,
+      "_TerminateType": "[0] ACTION_EXECUTED",
       "_ActionEffectParam": {
         "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Action": {
           "_Param": {
@@ -30,7 +30,7 @@
               "_UseAIMoveEnd": false,
               "_FixedSpeedLv": "[0] INVALID",
               "_IsMoveStopTurn": false,
-              "_StopTurnDir": 0,
+              "_StopTurnDir": "[0] PL_AXIS_Z",
               "_DegRange": {
                 "raw": "0000000000003443",
                 "type": "Range"
@@ -43,19 +43,19 @@
         "app.user_data.NpcStreakActionData.cNpcStreakEffectHolder_Aim": {
           "_Param": {
             "app.NpcStreakEffects.cSetTarget_AimParam": {
-              "_StartType": 0,
-              "_EndType": 0,
+              "_StartType": "[0] NONE",
+              "_EndType": "[0] NONE",
               "_CanAimWpOff": false,
-              "_UseParabora": 0,
+              "_UseParabora": "[0] NONE",
               "_StartActionSelector": {
                 "app.cNpcHunterActionSelector": {
                   "_Category": 773579456,
                   "_Action": 0
                 }
               },
-              "_LogicType": 0,
-              "_AdjustType": 2,
-              "_UpdateTiming": 0,
+              "_LogicType": "[0] NEAR_COLLIDER",
+              "_AdjustType": "[2] UNADJUSTED",
+              "_UpdateTiming": "[0] ALWAYS",
               "_CheckRayCast": false,
               "_IsDirectionAim": false
             }

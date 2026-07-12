@@ -19,7 +19,7 @@
                     "app.user_data.EmParamParts.cVital": 440.0
                   }
                 ],
-                "_RodExtract": 1,
+                "_RodExtract": "[1] RED",
                 "_MeatGuidNormal": "bfdd2f8c-62f3-4a4e-8845-54774a4e1581",
                 "_MeatGuidBreak": "00000000-0000-0000-0000-000000000000",
                 "_MeatGuidCustom1": "00000000-0000-0000-0000-000000000000",
@@ -39,7 +39,7 @@
                     "app.user_data.EmParamParts.cVital": 300.0
                   }
                 ],
-                "_RodExtract": 2,
+                "_RodExtract": "[2] ORANGE",
                 "_MeatGuidNormal": "ea992fc0-d940-4407-ba50-6961da022cf0",
                 "_MeatGuidBreak": "00000000-0000-0000-0000-000000000000",
                 "_MeatGuidCustom1": "00000000-0000-0000-0000-000000000000",
@@ -59,7 +59,7 @@
                     "app.user_data.EmParamParts.cVital": 350.0
                   }
                 ],
-                "_RodExtract": 2,
+                "_RodExtract": "[2] ORANGE",
                 "_MeatGuidNormal": "1ec5415b-351e-4cba-86bb-25da6c845817",
                 "_MeatGuidBreak": "00000000-0000-0000-0000-000000000000",
                 "_MeatGuidCustom1": "00000000-0000-0000-0000-000000000000",
@@ -79,7 +79,7 @@
                     "app.user_data.EmParamParts.cVital": 350.0
                   }
                 ],
-                "_RodExtract": 2,
+                "_RodExtract": "[2] ORANGE",
                 "_MeatGuidNormal": "1ec5415b-351e-4cba-86bb-25da6c845817",
                 "_MeatGuidBreak": "00000000-0000-0000-0000-000000000000",
                 "_MeatGuidCustom1": "00000000-0000-0000-0000-000000000000",
@@ -99,7 +99,7 @@
                     "app.user_data.EmParamParts.cVital": 440.0
                   }
                 ],
-                "_RodExtract": 4,
+                "_RodExtract": "[4] GREEN",
                 "_MeatGuidNormal": "7cdfdd7b-01f7-440e-afbd-1075a5f5f50a",
                 "_MeatGuidBreak": "00000000-0000-0000-0000-000000000000",
                 "_MeatGuidCustom1": "00000000-0000-0000-0000-000000000000",
@@ -119,7 +119,7 @@
                     "app.user_data.EmParamParts.cVital": 300.0
                   }
                 ],
-                "_RodExtract": 3,
+                "_RodExtract": "[3] WHITE",
                 "_MeatGuidNormal": "3ab19d62-2279-4e2d-b2e1-f7fd09288887",
                 "_MeatGuidBreak": "00000000-0000-0000-0000-000000000000",
                 "_MeatGuidCustom1": "00000000-0000-0000-0000-000000000000",
@@ -139,7 +139,7 @@
                     "app.user_data.EmParamParts.cVital": 300.0
                   }
                 ],
-                "_RodExtract": 3,
+                "_RodExtract": "[3] WHITE",
                 "_MeatGuidNormal": "3ab19d62-2279-4e2d-b2e1-f7fd09288887",
                 "_MeatGuidBreak": "00000000-0000-0000-0000-000000000000",
                 "_MeatGuidCustom1": "00000000-0000-0000-0000-000000000000",
@@ -321,10 +321,12 @@
                     "app.user_data.EmParamParts.cVital": 400.0
                   }
                 ],
-                "_DefaultEnable": 1,
+                "_DefaultEnable": "[1] ENABLE",
                 "_MaxCount": 1,
-                "_Action": 1,
-                "_Attr": 0,
+                "_Action": "[1] SLASH",
+                "_Attr": [
+                  "[0] NONE"
+                ],
                 "_IsSkipUpdateLinkPartsWhenBroken": false,
                 "_LinkAll": false,
                 "_LinkPartsGuids": [
@@ -346,11 +348,11 @@
             {
               "app.user_data.EmParamParts.cPartsBreak": {
                 "_InstanceGuid": "d030a61f-afcd-4b52-b1e4-e29f6a19c365",
-                "_TargetCategory": 1,
+                "_TargetCategory": "[1] MULTI_PARTS",
                 "_TargetDataGuid": "243a09b8-f0af-4486-92c8-dd2f24c65dd5",
                 "_ExcuteCount": 1,
                 "_MaxCount": 1,
-                "_Condition": 0,
+                "_Condition": "[0] EVERYTIME",
                 "_ConditionCount": -1,
                 "_PartsType": "[2000370944] TAIL"
               }
@@ -358,11 +360,11 @@
             {
               "app.user_data.EmParamParts.cPartsBreak": {
                 "_InstanceGuid": "d3161be6-6c8b-49ca-9b54-ca05340a1c58",
-                "_TargetCategory": 0,
+                "_TargetCategory": "[0] PARTS",
                 "_TargetDataGuid": "55fbf046-fbaa-4253-b582-a277d2ed963c",
                 "_ExcuteCount": 1,
                 "_MaxCount": 1,
-                "_Condition": 0,
+                "_Condition": "[0] EVERYTIME",
                 "_ConditionCount": -1,
                 "_PartsType": "[4054288960] LEFT_WING"
               }
@@ -370,11 +372,11 @@
             {
               "app.user_data.EmParamParts.cPartsBreak": {
                 "_InstanceGuid": "339302f9-8047-4f5d-a5bd-39cebbe2bdd4",
-                "_TargetCategory": 0,
+                "_TargetCategory": "[0] PARTS",
                 "_TargetDataGuid": "8dd98ea8-9468-46c8-ae2a-3c46e0a8b10b",
                 "_ExcuteCount": 1,
                 "_MaxCount": 1,
-                "_Condition": 0,
+                "_Condition": "[0] EVERYTIME",
                 "_ConditionCount": -1,
                 "_PartsType": "[665420480] RIGHT_WING"
               }
@@ -401,7 +403,7 @@
                   0.0,
                   0.0
                 ],
-                "_HighLightEffectType": 0
+                "_HighLightEffectType": "[0] NORMAL"
               }
             }
           ]
@@ -591,19 +593,19 @@
       "_LegendaryScarNumArray": [
         {
           "app.user_data.EmParamParts.LegendaryScarNumData": {
-            "Group": 0,
+            "Group": "[0] A",
             "Num": 1
           }
         },
         {
           "app.user_data.EmParamParts.LegendaryScarNumData": {
-            "Group": 1,
+            "Group": "[1] B",
             "Num": 1
           }
         },
         {
           "app.user_data.EmParamParts.LegendaryScarNumData": {
-            "Group": 2,
+            "Group": "[2] C",
             "Num": 1
           }
         }

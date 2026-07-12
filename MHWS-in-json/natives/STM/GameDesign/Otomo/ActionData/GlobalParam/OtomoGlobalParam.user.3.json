@@ -985,9 +985,9 @@
       "_ThresholdWetBodyFull": -0.3,
       "_ThresholdWetHead": -0.15,
       "_WetTime": 2.0,
-      "_WetEaseType": 0,
+      "_WetEaseType": "[0] Linear",
       "_DryTime": 25.0,
-      "_DryEaseType": 4,
+      "_DryEaseType": "[4] InQuad",
       "_HeatCheckData": {
         "app.user_data.HeatCheckParam": {
           "ref_instance_id": 93,
@@ -1222,19 +1222,19 @@
       "_VoiceProbabilityData": [
         {
           "app.OtomoDef.cVoiceProbabilityData": {
-            "_Type": 0,
+            "_Type": "[0] NORMAL",
             "_ProbabilityCoef": 100.0
           }
         },
         {
           "app.OtomoDef.cVoiceProbabilityData": {
-            "_Type": 1,
+            "_Type": "[1] FEW",
             "_ProbabilityCoef": 30.0
           }
         },
         {
           "app.OtomoDef.cVoiceProbabilityData": {
-            "_Type": 2,
+            "_Type": "[2] STORY_ONLY",
             "_ProbabilityCoef": 0.0
           }
         }

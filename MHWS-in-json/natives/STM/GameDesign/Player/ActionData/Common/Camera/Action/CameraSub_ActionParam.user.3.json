@@ -13,9 +13,9 @@
             "_FacilityTalkerCenterWeight": 2.0,
             "_SideMissionTalkerCenterWeight": 3.0,
             "_StartTime": 1.0,
-            "_StartEase": 6,
+            "_StartEase": "[6] InOutQuad",
             "_FinishTime": 1.0,
-            "_FinishEase": 6,
+            "_FinishEase": "[6] InOutQuad",
             "_CamDistanceMin": 2.8,
             "_OffsetY": 0.85,
             "_CenterYaw": 30.0,
@@ -35,7 +35,7 @@
         {
           "app.CameraSubAction.cFacility": {
             "_FadeOutTime": 1.0,
-            "_FadeOutEase": 6,
+            "_FadeOutEase": "[6] InOutQuad",
             "_PostGuid": "43cc1fe7-e8e4-409f-8708-5febf0ee964a"
           }
         },
@@ -67,9 +67,9 @@
                 "_OffsetRoll": 0.0,
                 "_RollType": "[90867432] RIGHT",
                 "_InFrame": 45.0,
-                "_InEase": 5,
+                "_InEase": "[5] OutQuad",
                 "_OutFrame": 60.0,
-                "_OutEase": 6
+                "_OutEase": "[6] InOutQuad"
               }
             },
             "_Gm500ImpactContinueTime": 600.0,
@@ -203,7 +203,7 @@
           "app.CameraSubAction.cCampShoulder": {
             "_OffsetTargetY": 0.0,
             "_AutoRotTime": 0.6,
-            "_AutoRotEase": 6,
+            "_AutoRotEase": "[6] InOutQuad",
             "_LookatPitchRange": {
               "raw": "0000c8c100003442",
               "type": "Range"
@@ -238,7 +238,7 @@
           "app.CameraSubAction.cExGm02Active": {
             "_CameraWorkGuid": "b482ae98-c2b6-4457-a58d-b14d7dac8789",
             "_CameraWorkOutTime": 0.0,
-            "_CameraWorkOutEase": 6
+            "_CameraWorkOutEase": "[6] InOutQuad"
           }
         }
       ],

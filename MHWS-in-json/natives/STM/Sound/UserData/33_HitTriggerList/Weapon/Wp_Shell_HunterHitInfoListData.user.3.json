@@ -31,7 +31,7 @@
                     "[1176633088] EM5225_00_0"
                   ],
                   "_CategoryList": [
-                    2
+                    "[2] ANIMAL"
                   ],
                   "_EffectTypeList": [
                     "[19] SHOT",
@@ -48,10 +48,10 @@
                     "[1830683392] SCATTER"
                   ],
                   "_ResponseList": [
-                    0,
-                    1,
-                    1,
-                    3
+                    "[0] LOW",
+                    "[1] MIDDLE",
+                    "[1] MIDDLE",
+                    "[3] RECOIL"
                   ]
                 }
               },
@@ -61,16 +61,16 @@
                   "_MasterPlTriggerId": 4104981969,
                   "_EmIdList": [],
                   "_CategoryList": [
-                    0,
-                    1,
-                    2
+                    "[0] BOSS",
+                    "[1] ZAKO",
+                    "[2] ANIMAL"
                   ],
                   "_EffectTypeList": [
                     "[19] SHOT",
                     "[6] ARROW"
                   ],
                   "_ResponseList": [
-                    3
+                    "[3] RECOIL"
                   ]
                 }
               },
@@ -80,9 +80,9 @@
                   "_MasterPlTriggerId": 1911157358,
                   "_EmIdList": [],
                   "_CategoryList": [
-                    0,
-                    1,
-                    2
+                    "[0] BOSS",
+                    "[1] ZAKO",
+                    "[2] ANIMAL"
                   ],
                   "_EffectTypeList": [
                     "[5] EXPLOSION",
@@ -90,7 +90,7 @@
                     "[17] EXPLOSION_L"
                   ],
                   "_ResponseList": [
-                    3
+                    "[3] RECOIL"
                   ]
                 }
               },
@@ -100,14 +100,14 @@
                   "_MasterPlTriggerId": 1555440439,
                   "_EmIdList": [],
                   "_CategoryList": [
-                    0
+                    "[0] BOSS"
                   ],
                   "_EffectTypeList": [
                     "[19] SHOT",
                     "[6] ARROW"
                   ],
                   "_ResponseList": [
-                    0
+                    "[0] LOW"
                   ]
                 }
               },
@@ -117,14 +117,14 @@
                   "_MasterPlTriggerId": 2714808430,
                   "_EmIdList": [],
                   "_CategoryList": [
-                    0
+                    "[0] BOSS"
                   ],
                   "_EffectTypeList": [
                     "[19] SHOT",
                     "[6] ARROW"
                   ],
                   "_ResponseList": [
-                    1
+                    "[1] MIDDLE"
                   ]
                 }
               },
@@ -134,14 +134,14 @@
                   "_MasterPlTriggerId": 1536140549,
                   "_EmIdList": [],
                   "_CategoryList": [
-                    0
+                    "[0] BOSS"
                   ],
                   "_EffectTypeList": [
                     "[19] SHOT",
                     "[6] ARROW"
                   ],
                   "_ResponseList": [
-                    2
+                    "[2] HIGH"
                   ]
                 }
               },
@@ -151,16 +151,16 @@
                   "_MasterPlTriggerId": 2714808430,
                   "_EmIdList": [],
                   "_CategoryList": [
-                    1
+                    "[1] ZAKO"
                   ],
                   "_EffectTypeList": [
                     "[19] SHOT",
                     "[6] ARROW"
                   ],
                   "_ResponseList": [
-                    0,
-                    1,
-                    2
+                    "[0] LOW",
+                    "[1] MIDDLE",
+                    "[2] HIGH"
                   ]
                 }
               },
@@ -170,16 +170,16 @@
                   "_MasterPlTriggerId": 1555440439,
                   "_EmIdList": [],
                   "_CategoryList": [
-                    2
+                    "[2] ANIMAL"
                   ],
                   "_EffectTypeList": [
                     "[19] SHOT",
                     "[6] ARROW"
                   ],
                   "_ResponseList": [
-                    0,
-                    1,
-                    2
+                    "[0] LOW",
+                    "[1] MIDDLE",
+                    "[2] HIGH"
                   ]
                 }
               },
@@ -189,17 +189,17 @@
                   "_MasterPlTriggerId": 3283465732,
                   "_EmIdList": [],
                   "_CategoryList": [
-                    0,
-                    1,
-                    2
+                    "[0] BOSS",
+                    "[1] ZAKO",
+                    "[2] ANIMAL"
                   ],
                   "_EffectTypeList": [
                     "[16] ARROW_KYOKUSYA"
                   ],
                   "_ResponseList": [
-                    0,
-                    1,
-                    2
+                    "[0] LOW",
+                    "[1] MIDDLE",
+                    "[2] HIGH"
                   ]
                 }
               },
@@ -209,15 +209,15 @@
                   "_MasterPlTriggerId": 4104981969,
                   "_EmIdList": [],
                   "_CategoryList": [
-                    0,
-                    1,
-                    2
+                    "[0] BOSS",
+                    "[1] ZAKO",
+                    "[2] ANIMAL"
                   ],
                   "_EffectTypeList": [
                     "[16] ARROW_KYOKUSYA"
                   ],
                   "_ResponseList": [
-                    3
+                    "[3] RECOIL"
                   ]
                 }
               }
@@ -248,11 +248,23 @@
                     "[2442127360] BLAST"
                   ],
                   "_AttrList": [
-                    "[1] FIRE",
-                    "[2] WATER",
-                    "[3] ELEC",
-                    "[4] ICE",
-                    "[5] DRAGON"
+                    [
+                      "[1] FIRE"
+                    ],
+                    [
+                      "[2] WATER"
+                    ],
+                    [
+                      "[1] FIRE",
+                      "[2] WATER"
+                    ],
+                    [
+                      "[4] ICE"
+                    ],
+                    [
+                      "[1] FIRE",
+                      "[4] ICE"
+                    ]
                   ],
                   "_IsHitLegendaryScar": false,
                   "_IsHitWeakPointScar": false
@@ -352,7 +364,9 @@
                   "_EmIdList": [],
                   "_ConditionList": [],
                   "_AttrList": [
-                    "[1] FIRE"
+                    [
+                      "[1] FIRE"
+                    ]
                   ],
                   "_IsHitLegendaryScar": false,
                   "_IsHitWeakPointScar": false
@@ -365,7 +379,9 @@
                   "_EmIdList": [],
                   "_ConditionList": [],
                   "_AttrList": [
-                    "[2] WATER"
+                    [
+                      "[2] WATER"
+                    ]
                   ],
                   "_IsHitLegendaryScar": false,
                   "_IsHitWeakPointScar": false
@@ -378,7 +394,10 @@
                   "_EmIdList": [],
                   "_ConditionList": [],
                   "_AttrList": [
-                    "[3] ELEC"
+                    [
+                      "[1] FIRE",
+                      "[2] WATER"
+                    ]
                   ],
                   "_IsHitLegendaryScar": false,
                   "_IsHitWeakPointScar": false
@@ -391,7 +410,9 @@
                   "_EmIdList": [],
                   "_ConditionList": [],
                   "_AttrList": [
-                    "[4] ICE"
+                    [
+                      "[4] ICE"
+                    ]
                   ],
                   "_IsHitLegendaryScar": false,
                   "_IsHitWeakPointScar": false
@@ -404,7 +425,10 @@
                   "_EmIdList": [],
                   "_ConditionList": [],
                   "_AttrList": [
-                    "[5] DRAGON"
+                    [
+                      "[1] FIRE",
+                      "[4] ICE"
+                    ]
                   ],
                   "_IsHitLegendaryScar": false,
                   "_IsHitWeakPointScar": false
