@@ -110,6 +110,13 @@ def _expand(row: dict, root: dict) -> dict:
     _expand_nested(out, "ExperimentalRayTrace", "ExperimentalRayTrace")
     _expand_match(out, "GIQuality", _wrapped(root.get("_GIQualitySettings")), "Type", "GIQuality")
     _expand_match(out, "DynamicResolutionMode", _wrapped(root.get("_DynamicResolutionParamList")), "Mode", "DynamicResolution")
+    _expand_match(
+        out,
+        "ShadowCastDistanceType",
+        _wrapped(root.get("_ShadowDistanceSettings")),
+        "Type",
+        "ShadowDistance",
+    )
     _expand_match(out, "StreamingTextureQuality", _wrapped(root.get("_StreamingTextureSettingList")), "Quality", "StreamingTexture")
     _expand_match(
         out,

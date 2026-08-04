@@ -1711,6 +1711,16 @@
     "RESET": 2,
     "STOP": 1
   },
+  "ace.GraphicsUtil.NSW2_DISPLAY_MODE_DOCK": {
+    "RESOLUTION_1080": 0,
+    "RESOLUTION_1260": 1,
+    "RESOLUTION_1440": 2
+  },
+  "ace.GraphicsUtil.NSW2_DISPLAY_MODE_HANDHELD": {
+    "RESOLUTION_720": 0,
+    "RESOLUTION_810": 1,
+    "RESOLUTION_864": 2
+  },
   "ace.GroundHeightControllerBase.DEFORM_M_PER_PIX": {
     "MPP0125": 5,
     "MPP025": 4,
@@ -2865,13 +2875,16 @@
   },
   "ace.cGraphicsSetting.DYNAMIC_RESOLUTION_MODE": {
     "DISABLE": 0,
-    "MAX": 11,
+    "MAX": 14,
     "TARGET_120": 5,
     "TARGET_25": 6,
     "TARGET_28": 7,
     "TARGET_30": 4,
     "TARGET_30_LOW": 10,
+    "TARGET_30_LOW_900p": 13,
+    "TARGET_30_LOW_D": 12,
     "TARGET_40": 9,
+    "TARGET_40_LOW": 11,
     "TARGET_50": 3,
     "TARGET_55": 2,
     "TARGET_60": 1,
@@ -2925,7 +2938,8 @@
     "FAR": 0,
     "MIDDLE": 1,
     "NEAR": 2,
-    "NEAREST": 3
+    "NEAREST": 3,
+    "NEAREST_H": 4
   },
   "ace.cGraphicsSetting.STREAMING_TEXTURE_QUALITY": {
     "HIGH": 1,
@@ -9415,7 +9429,8 @@
     "VER_1040_00_00": 7,
     "VER_1040_00_01": 8,
     "VER_1041_00_00": 9,
-    "VER_9999_99_99": 10
+    "VER_1042_00_00": 10,
+    "VER_9999_99_99": 11
   },
   "app.AppDef.APP_VERSION_Fixed": {
     "VER_1000_00_00": 0,
@@ -9428,6 +9443,7 @@
     "VER_1040_00_00": 6,
     "VER_1040_00_01": 10,
     "VER_1041_00_00": 7,
+    "VER_1042_00_00": 11,
     "VER_9999_99_99": 8
   },
   "app.AppEffectManager.FORCE_DRAWOFF_TYPE": {
@@ -15380,7 +15396,9 @@
     "LOG_0271": 271,
     "LOG_0272": 272,
     "LOG_0273": 273,
-    "MAX": 274
+    "LOG_0274": 274,
+    "LOG_0275": 275,
+    "MAX": 276
   },
   "app.ChatDef.LOG_ID_Fixed": {
     "INVALID": 0,
@@ -15658,6 +15676,8 @@
     "LOG_0271": 274,
     "LOG_0272": 275,
     "LOG_0273": 276,
+    "LOG_0274": 277,
+    "LOG_0275": 278,
     "MAX": 131
   },
   "app.ChatDef.MEMBER_SCOPE": {
@@ -58204,6 +58224,8 @@
     "IMG_239": 239,
     "IMG_240": 240,
     "IMG_241": 241,
+    "IMG_242": 242,
+    "IMG_243": 243,
     "INVALID": 4294967295
   },
   "app.GUIDLCStoreTextureDef.ID_Fixed": {
@@ -58449,6 +58471,8 @@
     "IMG_239": 240,
     "IMG_240": 241,
     "IMG_241": 242,
+    "IMG_242": 244,
+    "IMG_243": 245,
     "INVALID": 0
   },
   "app.GUIDefApp.DIRECTION_TYPE": {
@@ -58774,6 +58798,12 @@
     "NONE": 0,
     "REQUEST_DIALOGUE": 1,
     "START_FADE_WAIT": 2
+  },
+  "app.GUIFlowPrefabLoad.FLAG": {
+    "INSTANTIATE_PREFAB": 2,
+    "INSTANTIATE_PRELOAD_PREFAB": 1,
+    "LOADED": 4,
+    "NONE": 0
   },
   "app.GUIFlowProcessing.FLOW_STATE": {
     "DEMO": 3,
@@ -61186,6 +61216,7 @@
   },
   "app.GUIMaskContentsDef.MASK_PATTERN": {
     "INVALID": 4294967295,
+    "MASK_000": 4,
     "MASK_001": 5,
     "MASK_002": 6,
     "MASK_003": 7,
@@ -61278,13 +61309,13 @@
     "MASK_090": 94,
     "MAX": 95,
     "MENU_QUEST": 3,
-    "MENU_SYSTEM": 4,
     "NPC_FACILITY_TALK": 1,
     "NPC_TALK": 0,
     "WORLD_MAP": 2
   },
   "app.GUIMaskContentsDef.MASK_PATTERN_Fixed": {
     "INVALID": 0,
+    "MASK_000": 5,
     "MASK_001": 6,
     "MASK_002": 7,
     "MASK_003": 8,
@@ -61377,7 +61408,6 @@
     "MASK_090": 97,
     "MAX": 52,
     "MENU_QUEST": 4,
-    "MENU_SYSTEM": 5,
     "NPC_FACILITY_TALK": 2,
     "NPC_TALK": 1,
     "WORLD_MAP": 3
@@ -61409,11 +61439,6 @@
     "QuestInvite": 5
   },
   "app.GUINotifyWindowDef.ID": {
-    "DUMMY_0112": 643,
-    "DUMMY_0113": 644,
-    "DUMMY_0114": 645,
-    "DUMMY_0115": 646,
-    "DUMMY_0116": 647,
     "DUMMY_0117": 648,
     "DUMMY_0118": 649,
     "DUMMY_0119": 650,
@@ -62019,6 +62044,11 @@
     "Net_Session_036": 641,
     "Net_show_000": 474,
     "Net_show_001": 475,
+    "NewTrialData_Convert_00": 644,
+    "NewTrialData_Convert_01": 645,
+    "NewTrialData_Convert_02": 646,
+    "NewTrialData_Convert_03": 647,
+    "NewTrialText_DLG_00": 643,
     "OpenBetaText_000": 465,
     "OpenBetaText_001": 466,
     "OpenBetaText_002": 467,
@@ -62145,11 +62175,6 @@
     "SYS0010_000": 444
   },
   "app.GUINotifyWindowDef.ID_Fixed": {
-    "DUMMY_0112": 667,
-    "DUMMY_0113": 668,
-    "DUMMY_0114": 669,
-    "DUMMY_0115": 670,
-    "DUMMY_0116": 671,
     "DUMMY_0117": 672,
     "DUMMY_0118": 673,
     "DUMMY_0119": 674,
@@ -62755,6 +62780,11 @@
     "Net_Session_036": 665,
     "Net_show_000": 371,
     "Net_show_001": 372,
+    "NewTrialData_Convert_00": 668,
+    "NewTrialData_Convert_01": 669,
+    "NewTrialData_Convert_02": 670,
+    "NewTrialData_Convert_03": 671,
+    "NewTrialText_DLG_00": 667,
     "OpenBetaText_000": 317,
     "OpenBetaText_001": 318,
     "OpenBetaText_002": 321,
@@ -80263,8 +80293,6 @@
     "MISSION_631001": 596,
     "MISSION_631002": 597,
     "MISSION_632000": 547,
-    "MISSION_633006": 622,
-    "MISSION_633007": 623,
     "MISSION_633008": 624,
     "MISSION_633009": 625,
     "MISSION_633010": 626,
@@ -80317,6 +80345,8 @@
     "MISSION_650008": 618,
     "MISSION_650009": 619,
     "MISSION_652000": 559,
+    "MISSION_661001": 622,
+    "MISSION_661002": 623,
     "MISSION_699000": 297,
     "MISSION_699001": 298,
     "MISSION_699002": 299,
@@ -81029,8 +81059,6 @@
     "MISSION_631001": 17391,
     "MISSION_631002": 21330,
     "MISSION_632000": 30293,
-    "MISSION_633006": 3350,
-    "MISSION_633007": 15104,
     "MISSION_633008": 5919,
     "MISSION_633009": 6667,
     "MISSION_633010": 30631,
@@ -81083,6 +81111,8 @@
     "MISSION_650008": 14108,
     "MISSION_650009": 23137,
     "MISSION_652000": 25425,
+    "MISSION_661001": 3350,
+    "MISSION_661002": 15104,
     "MISSION_699000": 311650624,
     "MISSION_699001": 662704640,
     "MISSION_699002": 3768545056,
@@ -82071,6 +82101,10 @@
     "COMMON_VIEW_EQUIP_TIMEOUT": 106006,
     "FOLLOW_BLOCK": 103005,
     "LOCAL_COMMON": 110001,
+    "LOCAL_HUNTER_PROFILE_DECODE_FAILED": 110006,
+    "LOCAL_HUNTER_PROFILE_TARGET_FAIL": 110007,
+    "LOCAL_HUNTER_PROFILE_TIME_OUT": 110005,
+    "LOCAL_PASSWORD_VALID_CHECK_FAILED": 110004,
     "LOCAL_QUEST_JOIN_TIME_OUT": 110003,
     "LOCAL_SESSION_NOT_FOUND": 110002,
     "NONE": 0,
@@ -82173,6 +82207,11 @@
     "SERVER_COMMON_ONLINE_BAN": 201006,
     "SERVER_COMMON_PARTIAL_MAINTENANCE": 201002,
     "SERVER_COMMON_VALIDATION_FAILED": 201011,
+    "SERVER_CRASHREPORT_CREATE_METADATA_FAILED": 227003,
+    "SERVER_CRASHREPORT_CREATE_UPLOAD_URL_FAILED": 227004,
+    "SERVER_CRASHREPORT_GET_AUTH_HEADER_FAILED": 227001,
+    "SERVER_CRASHREPORT_INVALID_AUTH_HEADER": 227002,
+    "SERVER_CRASHREPORT_UPLOAD_STATUS_FAILED": 227005,
     "SERVER_DELIVERY_ALREADY_RECEIVED_BEGINNER_LOGIN_BONUS": 225008,
     "SERVER_DELIVERY_ALREADY_RECEIVED_COME_BACK_LOGIN_BONUS": 225009,
     "SERVER_DELIVERY_ALREADY_RECEIVED_DAILY_LOGIN_BONUS": 225006,
@@ -82468,8 +82507,9 @@
     "LINKPARTY": 4,
     "LINK_RECRUIT": 24,
     "LOBBY": 3,
+    "LOCAL_NETWORK": 25,
     "LOGIN": 0,
-    "MAX": 25,
+    "MAX": 26,
     "NOTIFY_LIST": 16,
     "OBT": 22,
     "PF_INVITATION": 17,
@@ -82481,37 +82521,37 @@
     "VOICECHAT": 14
   },
   "app.NETWORK_REQUEST_SEQUENCE": {
-    "ACCEPTING_REQUEST_FRIEND": 173,
+    "ACCEPTING_REQUEST_FRIEND": 175,
     "ACCEPT_INVITE_LINKPARTY_SYNC_GOQUEST": 7,
     "ACCEPT_REQUEST_FRIEND": 74,
-    "ACCEPT_WAITING_INVITE_LINKPARTY_SYNC_GOQUEST": 124,
-    "APPLYING_JOINCIRCLE": 155,
+    "ACCEPT_WAITING_INVITE_LINKPARTY_SYNC_GOQUEST": 126,
+    "APPLYING_JOINCIRCLE": 157,
     "APPLY_JOINCIRCLE": 44,
     "BANNER_GET": 103,
-    "BLOCKLIST_PROCESSING": 198,
-    "CANCELING_CIRCLEJOIN": 157,
-    "CANCELING_INVITECIRCLE": 154,
-    "CANCELING_REQUEST_FRIEND": 175,
+    "BLOCKLIST_PROCESSING": 200,
+    "CANCELING_CIRCLEJOIN": 159,
+    "CANCELING_INVITECIRCLE": 156,
+    "CANCELING_REQUEST_FRIEND": 177,
     "CANCEL_CIRCLEINVITE": 43,
     "CANCEL_CIRCLEJOIN": 46,
     "CANCEL_REQUEST_FRIEND": 76,
     "CHANGE_CIRCLELEADER": 50,
     "CHANGE_CIRCLEMEMBERROLE": 52,
-    "CHANGING_CIRCLEMEMBERROLE": 163,
-    "CHANGING_CIRLCLELEADER": 161,
+    "CHANGING_CIRCLEMEMBERROLE": 165,
+    "CHANGING_CIRLCLELEADER": 163,
     "CHECK_DELIVERY_UPDATE": 97,
     "CIRCLE_MATCHMAKE_DELETEDB": 32,
-    "CIRCLE_MATCHMAKE_DELETINGDB": 143,
+    "CIRCLE_MATCHMAKE_DELETINGDB": 145,
     "CIRCLE_MATCHMAKE_REGISTDB": 31,
-    "CIRCLE_MATCHMAKE_REGISTINGDB": 142,
+    "CIRCLE_MATCHMAKE_REGISTINGDB": 144,
     "CREATE": 3,
     "CREATE_CIRCLE": 19,
     "CREATE_MATCHMAKECIRCLE": 28,
     "CREATE_RESCURE": 9,
-    "CREATING": 122,
-    "CREATING_CIRCLE": 130,
-    "CREATING_MATCHMAKECIRCLE": 139,
-    "CREATING_RESCURE": 127,
+    "CREATING": 124,
+    "CREATING_CIRCLE": 132,
+    "CREATING_MATCHMAKECIRCLE": 141,
+    "CREATING_RESCURE": 129,
     "DECODE_DELIVERY_DATA": 99,
     "DECODE_DELIVERY_DATA_FLOW": 100,
     "DELETE_CIRCLE": 23,
@@ -82519,34 +82559,34 @@
     "DELETE_FRIEND": 77,
     "DELETE_MATCHMAKECIRCLE": 30,
     "DELETE_RESCURE": 10,
-    "DELETING_CIRCLE": 134,
-    "DELETING_FOLLOW": 180,
-    "DELETING_FRIEND": 176,
-    "DELETING_MATCHMAKECIRCLE": 141,
-    "DELETING_RESCURE": 128,
-    "END": 205,
-    "FOLLOWING_FOLLOW": 179,
+    "DELETING_CIRCLE": 136,
+    "DELETING_FOLLOW": 182,
+    "DELETING_FRIEND": 178,
+    "DELETING_MATCHMAKECIRCLE": 143,
+    "DELETING_RESCURE": 130,
+    "END": 209,
+    "FOLLOWING_FOLLOW": 181,
     "FOLLOW_FOLLOW": 81,
     "GETDATA_CIRCLE": 24,
-    "GETING_DATACIRCLE": 135,
-    "GETTING_ACTIVITY_RANKINGINFO": 189,
-    "GETTING_BBSCIRCLE": 137,
-    "GETTING_CIRCLEINVITELIST": 153,
-    "GETTING_CIRCLEJOINLIST": 156,
-    "GETTING_CIRCLEJOINREQUEST": 158,
-    "GETTING_CIRCLELEADER": 162,
-    "GETTING_CIRCLE_CHATLOG": 166,
-    "GETTING_CIRCLE_MEMBER": 148,
-    "GETTING_CIRCLE_SETTING": 145,
-    "GETTING_HISTORY": 181,
-    "GETTING_INVITECIRCLE": 151,
-    "GETTING_JOINEDCIRCLELOBBYINFOLIST": 167,
-    "GETTING_LOGINCIRCLEINFO": 168,
-    "GETTING_MATCHMAKECIRCLE": 140,
-    "GETTING_OFFLINE_NOTIFY": 192,
-    "GETTING_SOLICITED_NOTIFY": 191,
-    "GETTING_SOLICIT_NOTIFY": 190,
-    "GETTING_TOPMENU_INFO": 129,
+    "GETING_DATACIRCLE": 137,
+    "GETTING_ACTIVITY_RANKINGINFO": 191,
+    "GETTING_BBSCIRCLE": 139,
+    "GETTING_CIRCLEINVITELIST": 155,
+    "GETTING_CIRCLEJOINLIST": 158,
+    "GETTING_CIRCLEJOINREQUEST": 160,
+    "GETTING_CIRCLELEADER": 164,
+    "GETTING_CIRCLE_CHATLOG": 168,
+    "GETTING_CIRCLE_MEMBER": 150,
+    "GETTING_CIRCLE_SETTING": 147,
+    "GETTING_HISTORY": 183,
+    "GETTING_INVITECIRCLE": 153,
+    "GETTING_JOINEDCIRCLELOBBYINFOLIST": 169,
+    "GETTING_LOGINCIRCLEINFO": 170,
+    "GETTING_MATCHMAKECIRCLE": 142,
+    "GETTING_OFFLINE_NOTIFY": 194,
+    "GETTING_SOLICITED_NOTIFY": 193,
+    "GETTING_SOLICIT_NOTIFY": 192,
+    "GETTING_TOPMENU_INFO": 131,
     "GET_ACTIVITY_RANKINGINFO": 104,
     "GET_BBSCIRCLE": 26,
     "GET_CIRCLEJOINLIST": 45,
@@ -82563,104 +82603,108 @@
     "GET_LOGINCIRCLEINFO": 57,
     "GET_MATCHMAKECIRCLE": 29,
     "GET_OBT_INFO": 68,
-    "GET_OBT_INFO_WAIT": 202,
+    "GET_OBT_INFO_WAIT": 204,
     "GET_OFFLINE_NOTIFY": 109,
     "GET_PRODUCT_LIST": 85,
-    "GET_PRODUCT_LIST_WAIT": 183,
+    "GET_PRODUCT_LIST_WAIT": 185,
     "GET_SOLICITED_NOTIFY": 108,
     "GET_SOLICIT_NOTIFY": 107,
     "GET_TOPMENU_INFO": 18,
     "INVITE_CIRCLE": 39,
-    "INVITING_CIRCLE": 150,
+    "INVITING_CIRCLE": 152,
     "JOIN": 4,
-    "JOINING": 123,
-    "JOINING_CIRCLE": 133,
+    "JOINING": 125,
+    "JOINING_CIRCLE": 135,
     "JOIN_CIRCLE": 22,
-    "KICKING_CIRCLEMEMBER": 160,
+    "KICKING_CIRCLEMEMBER": 162,
     "KICK_CIRCLEMEMBER": 49,
     "KICK_LOBBY_MEMBER": 6,
     "LEAVE": 5,
     "LEAVE_CIRCLE": 20,
     "LEAVE_PT": 17,
     "LEAVE_PTSYNC": 11,
-    "LEAVING_CIRCLE": 131,
+    "LEAVING_CIRCLE": 133,
     "LINK_RECRUIT_DELETE": 115,
-    "LINK_RECRUIT_DELETE_WAIT": 196,
+    "LINK_RECRUIT_DELETE_WAIT": 198,
     "LINK_RECRUIT_JOIN": 116,
-    "LINK_RECRUIT_JOIN_WAIT": 197,
+    "LINK_RECRUIT_JOIN_WAIT": 199,
     "LINK_RECRUIT_UPDATE": 114,
-    "LINK_RECRUIT_UPDATE_WAIT": 195,
+    "LINK_RECRUIT_UPDATE_WAIT": 197,
     "LOGIN": 1,
     "LOGINBONUS_GET": 101,
-    "LOGINBONUS_GETTING": 185,
+    "LOGINBONUS_GETTING": 187,
     "LOGINBONUS_SAVECHECK": 102,
-    "LOGINBONUS_SAVECHEKING": 186,
-    "LOGINING": 118,
-    "LOGIN_CONNECTING_MS": 119,
+    "LOGINBONUS_SAVECHEKING": 188,
+    "LOGINING": 120,
+    "LOGIN_CONNECTING_MS": 121,
     "NONE": 0,
     "OPEN_STORE": 84,
-    "OPEN_STORE_WAIT": 182,
+    "OPEN_STORE_WAIT": 184,
     "OPERATE_BBS": 54,
-    "OPERATING_BBS": 165,
+    "OPERATING_BBS": 167,
     "PF_INVITATION_CANCEL": 113,
     "PF_INVITATION_CREATE_LINKPARTY": 110,
-    "PF_INVITATION_CREATE_WAIT": 193,
+    "PF_INVITATION_CREATE_WAIT": 195,
     "PF_INVITATION_JOIN_LINKPARTY": 112,
-    "PF_INVITATION_JOIN_WAIT": 194,
+    "PF_INVITATION_JOIN_WAIT": 196,
     "PF_INVITATION_REQUEST": 111,
-    "POSTING_BBSCIRCLE": 136,
-    "POSTING_CIRCLENAME": 149,
-    "POSTING_CIRCLENEWLEADERCONFIRM": 164,
-    "POSTING_ITEMBOXCIRCLE": 138,
-    "POSTING_REQUEST_FRIEND": 172,
+    "POSTING_BBSCIRCLE": 138,
+    "POSTING_CIRCLENAME": 151,
+    "POSTING_CIRCLENEWLEADERCONFIRM": 166,
+    "POSTING_ITEMBOXCIRCLE": 140,
+    "POSTING_REQUEST_FRIEND": 174,
     "POST_BBSCIRCLE": 25,
     "POST_CIRCLENAME": 38,
     "POST_CIRCLENEWLEADERCONFIRM": 53,
     "POST_ITEMBOXCIRCLE": 27,
     "POST_OBT_INFO": 67,
-    "POST_OBT_INFO_WAIT": 201,
+    "POST_OBT_INFO_WAIT": 203,
     "POST_REQUEST_FRIEND": 73,
     "PRESENT_LIST_GET": 105,
-    "PRESENT_LIST_GETTING": 187,
+    "PRESENT_LIST_GETTING": 189,
     "PRESENT_RECEIVE": 106,
-    "PRESENT_RECEIVEING": 188,
+    "PRESENT_RECEIVEING": 190,
     "PT_ACCEPT": 13,
-    "PT_ACCEPTING": 126,
+    "PT_ACCEPTING": 128,
     "PT_INVITE": 12,
     "PT_QUEST": 15,
     "PT_SYNC": 14,
     "RANKING_ANIMAL_SCORE_GET": 65,
     "RANKING_ANIMAL_SCORE_GET_SELF": 64,
     "RANKING_ANIMAL_SCORE_SEND": 63,
-    "RANKING_EXECUTE_WAIT": 199,
+    "RANKING_EXECUTE_WAIT": 201,
     "RANKING_QUEST_ENTRY": 58,
     "RANKING_QUEST_SCORE_GET": 62,
     "RANKING_QUEST_SCORE_GET_SELF": 61,
     "RANKING_QUEST_SCORE_SEND": 59,
     "RANKING_QUEST_SCORE_SEND_AGAIN": 60,
-    "REJECTING_REQUEST_FRIEND": 174,
+    "REJECTING_REQUEST_FRIEND": 176,
     "REJECT_REQUEST_FRIEND": 75,
     "REMOTE_PT_MEMBER": 16,
     "REPORT": 66,
-    "REPORT_EXECUTE_WAIT": 200,
+    "REPORT_EXECUTE_WAIT": 202,
     "RESPONCE_INVITE": 41,
-    "RESPONDING_CIRLCEJOIN": 159,
-    "RESPONDING_INVITYE": 152,
+    "RESPONDING_CIRLCEJOIN": 161,
+    "RESPONDING_INVITYE": 154,
     "RESPONSE_CIRCLEJOIN": 48,
     "SEARCH": 2,
-    "SEARCHING": 121,
-    "SEARCHING_CIRCLE": 132,
+    "SEARCHING": 123,
+    "SEARCHING_CIRCLE": 134,
     "SEARCH_CIRCLE": 21,
-    "SETTING_ACTIVE_CIRCLE": 144,
-    "SETTING_CIRCLE_INTRODUCE": 147,
-    "SETTING_CIRCLE_SETTING": 146,
+    "SETTING_ACTIVE_CIRCLE": 146,
+    "SETTING_CIRCLE_INTRODUCE": 149,
+    "SETTING_CIRCLE_SETTING": 148,
     "SET_ACTIVE_CIRCLE": 33,
     "SET_CIRCLE_INTRODUCE": 36,
     "SET_CIRCLE_SETTING": 35,
     "SET_HIDDEN_STATUS": 117,
-    "SET_HIDDEN_STATUS_WAIT": 204,
+    "SET_HIDDEN_STATUS_WAIT": 206,
     "SET_OBT_REWARDINFO": 69,
-    "SET_OBT_REWARDINFO_WAIT": 203,
+    "SET_OBT_REWARDINFO_WAIT": 205,
+    "SWITCH_LOCAL_NETWORK": 118,
+    "SWITCH_LOCAL_NETWORK_WAIT": 207,
+    "SWITCH_NETWORK": 119,
+    "SWITCH_NETWORK_WAIT": 208,
     "UPDATE_DELIVERY_DATA": 98,
     "UPDATE_DLC_INFO": 87,
     "UPDATE_DLC_INFO_WAIT": 88,
@@ -82671,13 +82715,13 @@
     "UPDATE_REQUESTLIST_FRIEND": 71,
     "UPDATE_SENDREQUESTLIST_FRIEND": 72,
     "UPDATE_SESSION": 8,
-    "UPDATING_DELIVERY_DATA": 184,
-    "UPDATING_FOLLOWER_LIST_FOLLOW": 178,
-    "UPDATING_LIST_FOLLOW": 177,
-    "UPDATING_LIST_FRIEND": 169,
-    "UPDATING_REQUESTLIST_FRIEND": 170,
-    "UPDATING_SENDREQUESTLIST_FRIEND": 171,
-    "UPDATING_SESSION": 125,
+    "UPDATING_DELIVERY_DATA": 186,
+    "UPDATING_FOLLOWER_LIST_FOLLOW": 180,
+    "UPDATING_LIST_FOLLOW": 179,
+    "UPDATING_LIST_FRIEND": 171,
+    "UPDATING_REQUESTLIST_FRIEND": 172,
+    "UPDATING_SENDREQUESTLIST_FRIEND": 173,
+    "UPDATING_SESSION": 127,
     "VC_CURRENT_CHANGE": 90,
     "VC_GET_MEMBER_VOLUME": 96,
     "VC_MEMBER_BLOCK": 94,
@@ -82686,7 +82730,7 @@
     "VC_SET_MASTER_VOLUME": 91,
     "VC_SET_MEMBER_VOLUME": 95,
     "VC_USE": 89,
-    "WAITING": 120
+    "WAITING": 122
   },
   "app.NET_USERINFO_VOICECHAT_STATUS": {
     "BLOCK": 4,
@@ -82877,6 +82921,13 @@
     "SESSION_WELCOME": 133,
     "SHUTDOWN_NOTIFY": 171
   },
+  "app.Net_DeflateService.DELIVERY_COMPRESS_STATE": {
+    "COMPLETE": 2,
+    "ERROR": 4,
+    "FINISH": 3,
+    "IDLE": 0,
+    "WAIT_COMPRESS": 1
+  },
   "app.Net_DeflateService.DELIVERY_DECODE_STATE": {
     "COMPLETE": 2,
     "ERROR": 4,
@@ -82933,6 +82984,13 @@
     "ExecDone": 2,
     "ExecRequest": 1,
     "None": 0
+  },
+  "app.Net_NSOPremiumChecker.CHECK_STATE": {
+    "CHECKING": 2,
+    "END": 3,
+    "REQUEST": 1,
+    "SHOW_UI": 4,
+    "WAIT": 0
   },
   "app.Net_NotifyListService.SolicitNotifyType": {
     "CIRCLE": 1,
@@ -83452,6 +83510,8 @@
     "SET_HIDDEN_STATUS": 129,
     "SET_OBT_REWARDINFO": 127,
     "SHOW_PROFILE": 2,
+    "SWITCH_LOCAL_NETWORK": 130,
+    "SWITCH_NETWORK": 131,
     "UPDATE_ANALYSIS": 3,
     "UPDATE_CROSSPLAY": 4,
     "UPDATE_DLC_INFO": 88,
@@ -98566,6 +98626,7 @@
     "DISABLE_WIN_KEY": 186,
     "DISPLAY_OUTPUT": 206,
     "DISTANT_SHADOW": 303,
+    "DIST_CORR": 370,
     "DKEY_AND_BUTTON_OP": 224,
     "EFFECT_DISPLAY_NUM": 359,
     "ELAPSED_TIME_DISP": 291,
@@ -98588,8 +98649,6 @@
     "FREE_288": 288,
     "FREE_31": 160,
     "FREE_35": 161,
-    "FREE_370": 370,
-    "FREE_371": 371,
     "FREE_372": 372,
     "FREE_373": 373,
     "FREE_374": 374,
@@ -98629,6 +98688,7 @@
     "FUR_QUALITY": 299,
     "GRAPHICS_PRESETS": 230,
     "GRAPHICS_SETTING": 309,
+    "GRAPHICS_SETTING_02": 371,
     "GRAPHIC_TYPE_CS": 3,
     "GRAPHIC_TYPE_PC": 2,
     "GROUND_QUALITY": 301,
@@ -98970,6 +99030,7 @@
     "DISABLE_WIN_KEY": 186,
     "DISPLAY_OUTPUT": 206,
     "DISTANT_SHADOW": 303,
+    "DIST_CORR": 370,
     "DKEY_AND_BUTTON_OP": 224,
     "EFFECT_DISPLAY_NUM": 359,
     "ELAPSED_TIME_DISP": 291,
@@ -98992,8 +99053,6 @@
     "FREE_288": 288,
     "FREE_31": 31,
     "FREE_35": 35,
-    "FREE_370": 370,
-    "FREE_371": 371,
     "FREE_372": 372,
     "FREE_373": 373,
     "FREE_374": 374,
@@ -99033,6 +99092,7 @@
     "FUR_QUALITY": 299,
     "GRAPHICS_PRESETS": 230,
     "GRAPHICS_SETTING": 309,
+    "GRAPHICS_SETTING_02": 371,
     "GRAPHIC_TYPE_CS": 8,
     "GRAPHIC_TYPE_PC": 7,
     "GROUND_QUALITY": 301,
@@ -110923,6 +110983,146 @@
     "ID4": 4,
     "ID5": 5
   },
+  "app.RELogId.Enemy_ActionLog": {
+    "Debug": 1,
+    "Error": 4,
+    "Fatal": 5,
+    "Info": 2,
+    "Warn": 3
+  },
+  "app.RELogId.Enemy_AreaMove": {
+    "Debug": 1,
+    "Error": 4,
+    "Fatal": 5,
+    "Info": 2,
+    "Warn": 3
+  },
+  "app.RELogId.Enemy_Chara": {
+    "Debug": 1,
+    "Error": 4,
+    "Fatal": 5,
+    "Info": 2,
+    "Warn": 3
+  },
+  "app.RELogId.Enemy_CogJoint": {
+    "Debug": 1,
+    "Error": 4,
+    "Fatal": 5,
+    "Info": 2,
+    "Warn": 3
+  },
+  "app.RELogId.Enemy_CombatEmData": {
+    "Debug": 1,
+    "Error": 4,
+    "Fatal": 5,
+    "Info": 2,
+    "Warn": 3
+  },
+  "app.RELogId.Enemy_Create": {
+    "Debug": 1,
+    "Error": 4,
+    "Fatal": 5,
+    "Info": 2,
+    "Warn": 3
+  },
+  "app.RELogId.Enemy_Dump": {
+    "Debug": 1,
+    "Error": 4,
+    "Fatal": 5,
+    "Info": 2,
+    "Warn": 3
+  },
+  "app.RELogId.Enemy_Entrance": {
+    "Debug": 1,
+    "Error": 4,
+    "Fatal": 5,
+    "Info": 2,
+    "Warn": 3
+  },
+  "app.RELogId.Enemy_Grapple": {
+    "Debug": 1,
+    "Error": 4,
+    "Fatal": 5,
+    "Info": 2,
+    "Warn": 3
+  },
+  "app.RELogId.Enemy_Group": {
+    "Debug": 1,
+    "Error": 4,
+    "Fatal": 5,
+    "Info": 2,
+    "Warn": 3
+  },
+  "app.RELogId.Enemy_Manager": {
+    "Debug": 1,
+    "Error": 4,
+    "Fatal": 5,
+    "Info": 2,
+    "Warn": 3
+  },
+  "app.RELogId.Enemy_Net": {
+    "Debug": 1,
+    "Error": 4,
+    "Fatal": 5,
+    "Info": 2,
+    "Warn": 3
+  },
+  "app.RELogId.Enemy_Other": {
+    "Debug": 1,
+    "Error": 4,
+    "Fatal": 5,
+    "Info": 2,
+    "Warn": 3
+  },
+  "app.RELogId.Enemy_PointGraph": {
+    "Debug": 1,
+    "Error": 4,
+    "Fatal": 5,
+    "Info": 2,
+    "Warn": 3
+  },
+  "app.RELogId.Enemy_Predator": {
+    "Debug": 1,
+    "Error": 4,
+    "Fatal": 5,
+    "Info": 2,
+    "Warn": 3
+  },
+  "app.RELogId.Enemy_Repop": {
+    "Debug": 1,
+    "Error": 4,
+    "Fatal": 5,
+    "Info": 2,
+    "Warn": 3
+  },
+  "app.RELogId.Enemy_Research": {
+    "Debug": 1,
+    "Error": 4,
+    "Fatal": 5,
+    "Info": 2,
+    "Warn": 3
+  },
+  "app.RELogId.Enemy_SaveData": {
+    "Debug": 1,
+    "Error": 4,
+    "Fatal": 5,
+    "Info": 2,
+    "Warn": 3
+  },
+  "app.RELogId.Enemy_Scar": {
+    "Debug": 1,
+    "Error": 4,
+    "Fatal": 5,
+    "Info": 2,
+    "Warn": 3
+  },
+  "app.RELogId.Enemy_Zone": {
+    "Debug": 1,
+    "Error": 4,
+    "Fatal": 5,
+    "Info": 2,
+    "Warn": 3
+  },
   "app.RELogId.Environment": {
     "ERROR": 271,
     "ID256": 256,
@@ -110954,6 +111154,9 @@
   "app.RELogId.Event_EndMotion": {
     "EndMotionDiscarded": 2,
     "EndMotionSet": 1
+  },
+  "app.RELogId.ExPop": {
+    "PopEm": 1
   },
   "app.RELogId.Fade": {
     "ID256": 256,
@@ -111403,6 +111606,180 @@
     "SESSION_JOIN": 7,
     "SESSION_LEAVE": 9,
     "SESSION_MEMBER_LEAVE": 8
+  },
+  "app.RELogId.Otomo_Default": {
+    "ID0001": 1,
+    "ID0002": 2,
+    "ID0003": 3,
+    "ID0004": 4,
+    "ID0005": 5,
+    "ID0006": 6,
+    "ID0007": 7,
+    "ID0008": 8,
+    "ID0009": 9,
+    "ID0010": 10,
+    "ID0011": 11,
+    "ID0012": 12,
+    "ID0013": 13,
+    "ID0014": 14,
+    "ID0015": 15,
+    "ID0016": 16,
+    "ID0017": 17,
+    "ID0018": 18,
+    "ID0019": 19,
+    "ID0020": 20,
+    "ID0021": 21,
+    "ID0022": 22,
+    "ID0023": 23,
+    "ID0024": 24,
+    "ID0025": 25,
+    "ID0026": 26
+  },
+  "app.RELogId.Otomo_Emote": {
+    "ID0001": 1,
+    "ID0002": 2,
+    "ID0003": 3,
+    "ID0004": 4,
+    "ID0005": 5,
+    "ID0006": 6,
+    "ID0007": 7,
+    "ID0008": 8,
+    "ID0009": 9,
+    "ID0010": 10,
+    "ID0011": 11,
+    "ID0012": 12,
+    "ID0013": 13,
+    "ID0014": 14,
+    "ID0015": 15
+  },
+  "app.RELogId.Otomo_Fishing": {
+    "ID0001": 1
+  },
+  "app.RELogId.Otomo_FreeAct": {
+    "ID0001": 1,
+    "ID0002": 2,
+    "ID0003": 3
+  },
+  "app.RELogId.Otomo_GoaTree": {
+    "ID0001": 1,
+    "ID0002": 2,
+    "ID0003": 3,
+    "ID0004": 4,
+    "ID0005": 5
+  },
+  "app.RELogId.Otomo_Grill": {
+    "ID0001": 1,
+    "ID0002": 2,
+    "ID0003": 3,
+    "ID0004": 4,
+    "ID0005": 5
+  },
+  "app.RELogId.Otomo_Motion": {
+    "ID0001": 1,
+    "ID0002": 2,
+    "ID0003": 3,
+    "ID0004": 4
+  },
+  "app.RELogId.Otomo_Move": {
+    "ID0001": 1,
+    "ID0002": 2,
+    "ID0003": 3,
+    "ID0004": 4,
+    "ID0005": 5,
+    "ID0006": 6,
+    "ID0007": 7,
+    "ID0008": 8,
+    "ID0009": 9,
+    "ID0010": 10,
+    "ID0011": 11,
+    "ID0012": 12,
+    "ID0013": 13,
+    "ID0014": 14,
+    "ID0015": 15,
+    "ID0016": 16,
+    "ID0017": 17,
+    "ID0018": 18,
+    "ID0019": 19,
+    "ID0020": 20
+  },
+  "app.RELogId.Otomo_Navigation": {
+    "ID0001": 1,
+    "ID0002": 2,
+    "ID0003": 3,
+    "ID0004": 4,
+    "ID0005": 5,
+    "ID0006": 6,
+    "ID0007": 7,
+    "ID0008": 8
+  },
+  "app.RELogId.Otomo_Network": {
+    "ID0001": 1
+  },
+  "app.RELogId.Otomo_QuestClear": {
+    "ID0001": 1
+  },
+  "app.RELogId.Otomo_SupportAction": {
+    "ID0003": 3,
+    "ID0004": 4,
+    "ID0005": 5,
+    "ID0006": 6,
+    "ID0007": 7,
+    "ID0008": 8,
+    "ID0009": 9,
+    "ID0010": 10,
+    "ID0011": 11,
+    "ID0012": 12,
+    "ID0013": 13,
+    "ID0014": 14,
+    "ID0015": 15,
+    "ID0016": 16,
+    "ID0017": 17,
+    "ID0018": 18,
+    "ID0019": 19,
+    "ID0020": 20,
+    "ID0021": 21,
+    "ID0022": 22,
+    "ID0023": 23,
+    "ID0024": 24,
+    "ID0025": 25,
+    "ID0026": 26,
+    "ID0027": 27,
+    "ID0028": 28,
+    "ID0029": 29
+  },
+  "app.RELogId.Otomo_System": {
+    "ID0001": 1,
+    "ID0002": 2,
+    "ID0003": 3,
+    "ID0004": 4,
+    "ID0005": 5,
+    "ID0006": 6,
+    "ID0007": 7,
+    "ID0008": 8,
+    "ID0009": 9,
+    "ID0010": 10,
+    "ID0011": 11,
+    "ID0012": 12,
+    "ID0013": 13,
+    "ID0014": 14,
+    "ID0015": 15,
+    "ID0016": 16,
+    "ID0017": 17,
+    "ID0018": 18,
+    "ID0019": 19,
+    "ID0020": 20,
+    "ID0021": 21,
+    "ID0022": 22,
+    "ID0023": 23,
+    "ID0024": 24,
+    "ID0025": 25
+  },
+  "app.RELogId.Otomo_Warp": {
+    "ID0001": 1,
+    "ID0002": 2,
+    "ID0003": 3,
+    "ID0004": 4,
+    "ID0005": 5
   },
   "app.RELogId.Player": {
     "ERROR": 258,
@@ -112240,6 +112617,7 @@
   },
   "app.SaveDataManager.APP_SAVE_SEGMENT": {
     "PHOTO": 1,
+    "STORY_TRIAL": 2,
     "SYSTEM_USER": 0
   },
   "app.SaveDataManager.APP_SAVE_SLOT": {
@@ -112247,6 +112625,10 @@
     "PHOTO_START": 1,
     "SYSTEM": 4294967295,
     "USER": 1
+  },
+  "app.SaveDataManager.APP_SAVE_TRANSFERRING": {
+    "Default": 0,
+    "STORY_TRIAL": 2
   },
   "app.SavePresetUtil.PARAM_TYPE": {
     "ALL": 4,
@@ -112749,6 +113131,16 @@
   "app.SensorDef.CONTACT_TYPE": {
     "CONTACT": 0,
     "OVERLAPPING": 1
+  },
+  "app.ShadowCastType.TYPE": {
+    "Default": 0,
+    "Fur": 1,
+    "MAX": 2
+  },
+  "app.ShadowCastType.TYPE_Fixed": {
+    "Default": 0,
+    "Fur": 1,
+    "MAX": 2
   },
   "app.ShareMysetUtil.MYSET_TYPE": {
     "EQUIP": 0,
@@ -129839,6 +130231,11 @@
     "ExitWait": 3,
     "Invalid": 0
   },
+  "app.cEnvBABUpdater_MaterialParam.TIME_STATE": {
+    "NORMAL": 0,
+    "ONSTOP": 1,
+    "STOP": 2
+  },
   "app.cEquipPreviewController.OBJECT_TYPE": {
     "HUNTER": 2,
     "MAX": 4,
@@ -134126,11 +134523,13 @@
     "CHARM_SET_CAT": 29,
     "COLLABO_00": 22,
     "COLLABO_01": 23,
+    "COLLECTIONPACK00": 31,
     "COSMETIC_DLC_PACK_01": 6,
     "COSMETIC_DLC_PACK_02": 12,
     "COSMETIC_DLC_PACK_03": 18,
     "COSMETIC_DLC_PACK_04": 24,
     "DELUXE_PACK": 1,
+    "DLCEXTRAPACK0000": 32,
     "EVENT_00": 9,
     "FAIRY_CHARM": 10,
     "FESTIVAL_01": 8,
@@ -134145,7 +134544,7 @@
     "HAIR_SET_02": 26,
     "HANIWA_CHARM": 7,
     "LAYER_SET_PW_01": 25,
-    "MAX": 31,
+    "MAX": 33,
     "NONE": 0,
     "POP_EFFECT_CHARM": 15,
     "PRE_ORDER": 2,
@@ -134160,11 +134559,13 @@
     "CHARM_SET_CAT": 30,
     "COLLABO_00": 23,
     "COLLABO_01": 24,
+    "COLLECTIONPACK00": 32,
     "COSMETIC_DLC_PACK_01": 7,
     "COSMETIC_DLC_PACK_02": 13,
     "COSMETIC_DLC_PACK_03": 19,
     "COSMETIC_DLC_PACK_04": 25,
     "DELUXE_PACK": 2,
+    "DLCEXTRAPACK0000": 33,
     "EVENT_00": 10,
     "FAIRY_CHARM": 11,
     "FESTIVAL_01": 8,
@@ -134286,10 +134687,12 @@
     "CHARMSET00000010": 211,
     "CHARMSET00000011": 212,
     "CHARMSET00000012": 265,
+    "COLLECTIONPACK00": 279,
     "COSMETICDLCPACK1": 94,
     "COSMETICDLCPACK2": 106,
     "COSMETICDLCPACK3": 156,
     "COSMETICDLCPACK4": 207,
+    "DLCEXTRAPACK0000": 280,
     "EARTH_DELUXE_PACK": 2,
     "EARTH_FULLGAME": 1,
     "FACE000_00000001": 25,
@@ -134421,7 +134824,8 @@
     "LAYER_PW00000012": 228,
     "LAYER_PW00000013": 229,
     "LAYER_PW00000014": 230,
-    "MAX": 279,
+    "MAX": 282,
+    "MHWILDSCOLLPACK0": 281,
     "POSE000_00000001": 70,
     "POSE000_00000002": 232,
     "POSE000_00000003": 259,
@@ -134568,10 +134972,12 @@
     "CHARMSET00000010": 22852,
     "CHARMSET00000011": 27496,
     "CHARMSET00000012": 15911,
+    "COLLECTIONPACK00": 8310,
     "COSMETICDLCPACK1": 25288,
     "COSMETICDLCPACK2": 32262,
     "COSMETICDLCPACK3": 24123,
     "COSMETICDLCPACK4": 23607,
+    "DLCEXTRAPACK0000": 2709,
     "EARTH_DELUXE_PACK": 27368,
     "EARTH_FULLGAME": 2835145728,
     "FACE000_00000001": 3080,
@@ -134704,6 +135110,7 @@
     "LAYER_PW00000013": 13974,
     "LAYER_PW00000014": 30576,
     "MAX": 3402955968,
+    "MHWILDSCOLLPACK0": 28705,
     "POSE000_00000001": 11405,
     "POSE000_00000002": 12359,
     "POSE000_00000003": 3836,
@@ -138293,6 +138700,10 @@
     "MEMORIES": 4,
     "NONE": 0,
     "QUEST": 2
+  },
+  "app.net_session_manager.SessionManager.BroadCastInfo.BroadCastType": {
+    "LATEJOIN": 0,
+    "LOCAL_HUNTER_PROFILE": 1
   },
   "app.net_session_manager.SessionManager.DELEGATE_TYPE": {
     "CREATE": 0,
@@ -148263,6 +148674,11 @@
     "GroundBeautyMaskChannel_6": 5,
     "GroundBeautyMaskChannel_7": 6
   },
+  "via.landscape.GroundClipmapResolutionType": {
+    "Auto": 0,
+    "k1024": 1,
+    "k2048": 2
+  },
   "via.landscape.GroundCommonSegment": {
     "ClearVirtualTexture": 0,
     "Clipmap": 4,
@@ -150683,6 +151099,18 @@
     "Centimeter": 0,
     "Meter": 1
   },
+  "via.motion.exprgraph.RbfDistanceType": {
+    "Angle": 1,
+    "Euclidean": 0
+  },
+  "via.motion.exprgraph.RbfKernelType": {
+    "Gaussian1": 1,
+    "Gaussian2": 2,
+    "InverseMultiQuadricBiharmonic": 5,
+    "Linear": 0,
+    "MultiQuadricBiharmonic": 4,
+    "ThinPlateSpline": 3
+  },
   "via.motion.exprgraph.RotComposeType": {
     "ExpMap": 2,
     "RotPYR": 1,
@@ -152073,7 +152501,8 @@
   "via.network.error.MethodNative": {
     "Method0": 0,
     "Method1": 1,
-    "Method2": 2
+    "Method2": 2,
+    "Method3": 3
   },
   "via.network.error.MethodOverlaySession": {
     "HostChange": 1,
@@ -153743,7 +154172,9 @@
   },
   "via.render.CompressAlgorismForQuadTree": {
     "DualLayerCompression": 1,
-    "SingleLayerCompression": 0
+    "DualLayerCompressionFallBack_MAX": 2,
+    "SingleLayerCompression": 0,
+    "SpotLightCompression_MAX": 3
   },
   "via.render.ComputeSkinning.LodStreamingPolicy": {
     "ClampAvailableLevel": 0,
@@ -153861,15 +154292,16 @@
   "via.render.DPGIDebugProbeParam.DebugProbeState": {
     "Active": 2,
     "ForceUpdate": 4,
-    "GSDFClipmap": 6,
+    "GSDFClipmap": 7,
     "GSDFOut": 10,
-    "GSDFUpdate": 8,
-    "Init": 7,
+    "Init": 8,
     "None": 0,
-    "Type": 9,
+    "RadianceForceUpdate": 5,
+    "RadianceInit": 9,
+    "Round": 11,
     "Update": 3,
     "Visible": 1,
-    "Volume": 5
+    "Volume": 6
   },
   "via.render.DPGIDebugProbeParam.DebugProbeType": {
     "Opaque": 0,
@@ -153880,6 +154312,19 @@
     "GSDF": 1,
     "GSDFClipmap": 2,
     "None": 0
+  },
+  "via.render.DPGIDebugSceneRadianceCacheParam.DebugSceneRadianceCache": {
+    "Albedo": 2,
+    "Emissive": 4,
+    "Exist": 9,
+    "HashNotFound": 10,
+    "IBLApertureRate": 6,
+    "IBLDominant": 8,
+    "IBLOcclusionTrace": 7,
+    "IBLRadiance": 5,
+    "None": 0,
+    "Normal": 3,
+    "Radiance": 1
   },
   "via.render.DPGIDebugScreenProbeParam.DebugScreenProbeData": {
     "Distance": 3,
@@ -153917,8 +154362,9 @@
     "Disable": 2,
     "Enable": 1
   },
-  "via.render.DefaultDOFBaseResolution": {
-    "Max": 5,
+  "via.render.DefaultPostProcessBaseResolution": {
+    "Legacy": 5,
+    "Max": 6,
     "None": 0,
     "res1280x720": 1,
     "res1920x1080": 2,
@@ -153937,7 +154383,7 @@
     "DefaultResolution_2160p": 2160
   },
   "via.render.DepthOfField.BaseResolutionOverride": {
-    "BaseSettings": 5,
+    "BaseSettings": 6,
     "None": 0,
     "res1280x720": 1,
     "res1920x1080": 2,
@@ -154074,6 +154520,11 @@
   },
   "via.render.DynamicProbeGI.RayTrace": {
     "GlobalSDF_GIPointCloud": 0
+  },
+  "via.render.DynamicProbeGI.SceneRadianceCache": {
+    "Default": 1,
+    "Default_NoIBL": 2,
+    "None": 0
   },
   "via.render.DynamicProbeGI.ScreenProbeRadianceResolution": {
     "W16xH16": 1,
@@ -154326,6 +154777,10 @@
     "Transparent": 2,
     "TransparentDynamic": 3
   },
+  "via.render.GIPRadianceVolumeFormat": {
+    "R16G16Floatx2": 1,
+    "R32Uintx4": 0
+  },
   "via.render.GIPRadianceVolumeVersion": {
     "V1": 0,
     "V2": 1
@@ -154354,6 +154809,11 @@
     "Divison4": 2,
     "Interlace": 1,
     "None": 0
+  },
+  "via.render.GIPointCloudCubemap.ResolutionType": {
+    "ResolutionType_128x128": 2,
+    "ResolutionType_32x32": 0,
+    "ResolutionType_64x64": 1
   },
   "via.render.GIPointCloudManager.MemoryType": {
     "ReadOnly": 0,
@@ -154448,6 +154908,7 @@
   },
   "via.render.GraphicsFeatures": {
     "GraphicsFeatures_64BitAtomics": 1,
+    "GraphicsFeatures_AmplificationShader": 17179869184,
     "GraphicsFeatures_AsyncCompute": 8,
     "GraphicsFeatures_BindlessResource": 32768,
     "GraphicsFeatures_CapableHDRCurvePQ": 64,
@@ -155147,6 +155608,15 @@
     "HiddenSwitch": 3,
     "Outline": 0,
     "Silhouette": 1
+  },
+  "via.render.Outline.OutlineBaseResolution": {
+    "BaseSettings": 6,
+    "Legacy": 5,
+    "None": 0,
+    "res1280x720": 1,
+    "res1920x1080": 2,
+    "res2560x1440": 3,
+    "res3840x2160": 4
   },
   "via.render.OutputLimitConfigMode": {
     "Disable": 0,
@@ -156000,7 +156470,9 @@
   },
   "via.render.SparseShadowTreeResolution": {
     "SparseShadowTreeResolution_16K": 16,
+    "SparseShadowTreeResolution_1K": 1,
     "SparseShadowTreeResolution_24K": 24,
+    "SparseShadowTreeResolution_2K": 2,
     "SparseShadowTreeResolution_32K": 32,
     "SparseShadowTreeResolution_4K": 4,
     "SparseShadowTreeResolution_64K": 64,
@@ -156155,6 +156627,16 @@
     "Lowest": 5,
     "Normal": 3,
     "TimeCritical": 0
+  },
+  "via.render.StreamingTextureDebugInfoResolution": {
+    "StreamingTextureDebugInfoResolution_1024": 3,
+    "StreamingTextureDebugInfoResolution_128": 6,
+    "StreamingTextureDebugInfoResolution_2048": 2,
+    "StreamingTextureDebugInfoResolution_256": 5,
+    "StreamingTextureDebugInfoResolution_4096": 1,
+    "StreamingTextureDebugInfoResolution_512": 4,
+    "StreamingTextureDebugInfoResolution_64": 7,
+    "StreamingTextureDebugInfoResolution_8192": 0
   },
   "via.render.StreamingTextureRequestStrategy": {
     "Default": 0,
@@ -156957,27 +157439,28 @@
     "Specular": 2
   },
   "via.render.layer.Environment.Segment": {
-    "Atmosphere": 5,
-    "Atmosphere_PreUpdate": 0,
-    "Cloudscape": 16,
-    "DefaultGIPointCloud": 18,
-    "DrawSkyBGBegin": 1,
-    "DrawSkyBGEnd": 6,
-    "DynamicProbeGI": 17,
-    "DynamicProbeGIProbe": 8,
-    "EarlyGIPointCloud": 7,
-    "EffectVertexLighting": 15,
-    "FogIsAvailable": 14,
-    "IndirectIlluminationWait": 12,
-    "Moon": 4,
-    "Star": 2,
-    "Sun": 3,
-    "VolumetricFogBegin": 9,
-    "VolumetricFogFinish": 14,
-    "VolumetricFogSimulate": 13,
-    "VolumetricFogUpdateCustomMaterial": 11,
-    "VolumetricParticle": 9,
-    "VolumetricParticleDraw": 10
+    "Atmosphere": 7,
+    "Atmosphere_PreUpdate": 2,
+    "Cloudscape": 17,
+    "DefaultGIPointCloud": 19,
+    "DrawSkyBGBegin": 3,
+    "DrawSkyBGEnd": 8,
+    "DynamicProbeGI": 18,
+    "DynamicProbeGIProbe": 9,
+    "EarlyGIPointCloud": 0,
+    "EffectVertexLighting": 16,
+    "FogIsAvailable": 15,
+    "IndirectIlluminationWait": 13,
+    "LateIndirectIllumination": 1,
+    "Moon": 6,
+    "Star": 4,
+    "Sun": 5,
+    "VolumetricFogBegin": 10,
+    "VolumetricFogFinish": 15,
+    "VolumetricFogSimulate": 14,
+    "VolumetricFogUpdateCustomMaterial": 12,
+    "VolumetricParticle": 10,
+    "VolumetricParticleDraw": 11
   },
   "via.render.layer.Environment.VolumetricParticlePriority": {
     "VolumetricParticleClear": 0,
@@ -157128,15 +157611,14 @@
     "DepthOcclusion": 0
   },
   "via.render.layer.PreDeferredLighting.Segment": {
-    "DPGIProbe": 5,
-    "EarlyGIPointCloud": 0,
-    "GeometryAO": 2,
-    "IndirectIllumination": 6,
+    "DPGIProbe": 4,
+    "GeometryAO": 1,
+    "IndirectIllumination": 5,
     "LegacyParticleDepthOperation": 1,
-    "SDFShadow": 7,
-    "SSAO_CompressDepthNormal": 1,
-    "SSAO_Process": 3,
-    "SSAO_Resolve": 4
+    "SDFShadow": 6,
+    "SSAO_CompressDepthNormal": 0,
+    "SSAO_Process": 2,
+    "SSAO_Resolve": 3
   },
   "via.render.layer.PrepareOutput.DISPLAYCOLORSPACE": {
     "BT2020": 2,

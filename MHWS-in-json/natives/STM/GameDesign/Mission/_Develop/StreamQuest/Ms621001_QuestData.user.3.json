@@ -1,0 +1,104 @@
+[
+  {
+    "app.user_data.QuestData": {
+      "_Index": 0,
+      "_MissionId": "[29537] MISSION_621001",
+      "_Version": "[4] VER_1020_00_00",
+      "_QuestType": "[5] ARENA",
+      "_QuestAttribute": [
+        "[0] NORMAL"
+      ],
+      "_QuestLv": 4,
+      "_ClearCondition": {
+        "app.user_data.QuestData.cClearCondition": {
+          "_TargetType": "[2] EM_BOSS_KILL",
+          "_TargetInfoArray": [
+            {
+              "app.user_data.QuestData.cClearCondition.cTargetInfo": {
+                "_RoleID": "[0] NORMAL",
+                "_LegendaryID": "[0] NONE",
+                "_EmTargetID": 101,
+                "_ConditionalMoveData": {
+                  "app.user_data.EmParamAreaMove.cConditionalMoveData": {
+                    "_IsUse": false,
+                    "_RevertOnCompleted": false,
+                    "_StartAfterFirstCondition": false,
+                    "_DestArray": []
+                  }
+                },
+                "_TargetIDValue": -34937520,
+                "_TargetValue": 1,
+                "_ShowTargetGuide": true
+              }
+            }
+          ]
+        }
+      },
+      "_IconType": "[1927315328] DEFAULT",
+      "_OrderCondition": {
+        "app.user_data.QuestData.cOrderCondition": {
+          "_MaxPlayerNum": 2,
+          "_OrderHR": 16,
+          "_OrderMR": 0,
+          "_PremiseMission": "[4071635344] MISSION_006020"
+        }
+      },
+      "_TimeLimit": 50,
+      "_QuestLife": 9,
+      "_RemMoney": 12240,
+      "_HRPoint": 500,
+      "_AddPoint": 165,
+      "_IsSettingSupply": true,
+      "_SupplyID": "[4261] SUPPLY_0010",
+      "_EnableGuestNpc": false,
+      "_PartnerNpc": "[4] INVALID",
+      "_Stage": "[1181994624] ST401",
+      "_IsOverrideArenaFenceParam": false,
+      "_ArenaFenceStatus": "[0] OPEN",
+      "_ArenaFenceInitWaitTime": 60,
+      "_ArenaFenceCloseTime": 60,
+      "_ArenaFenceReuseableTime": 120,
+      "_IsOverrideArenaPillarParam": false,
+      "_ArenaPillarStatus": "[0] USE",
+      "_BattleBGM": "[3] SP_BATTLE01",
+      "_ClearBGM": "[6] SP_CLEAR06",
+      "_ExOverrideID": "[0] INVALID",
+      "_BossRushParams": [],
+      "_SubBossInfoArray": [],
+      "_QuestMsg": {
+        "app.user_data.QuestData.cQuestMsg": {
+          "_TitleMsg": "47d2b327-d471-4090-8862-d725b236e432",
+          "_ClientNameMsg": "844aafc2-aac2-4ffa-bc2b-7f7bdd5a58c3",
+          "_DetailMsg": "adf04a47-dcc9-4a95-818c-43900df8c85a",
+          "_ClearConditionMsg": {
+            "app.user_data.QuestData.cQuestMsgParts": {
+              "_IsAuto": true,
+              "_MsgID": "00000000-0000-0000-0000-000000000000"
+            }
+          },
+          "_OrderConditionMsg": {
+            "app.user_data.QuestData.cQuestMsgArrayParts": {
+              "_IsAuto": true,
+              "_MsgIDs": [
+                "00000000-0000-0000-0000-000000000000",
+                "00000000-0000-0000-0000-000000000000"
+              ]
+            }
+          },
+          "_OrderConditionMsg_StProgress": "6c995884-53cb-4dd8-866d-28c339ccf889",
+          "_OrderConditionMsg_Other": "c177e0c1-30e5-4307-8669-ced0a9e3f616",
+          "_FailConditionMsg": {
+            "app.user_data.QuestData.cQuestMsgArrayParts": {
+              "_IsAuto": true,
+              "_MsgIDs": [
+                "00000000-0000-0000-0000-000000000000",
+                "00000000-0000-0000-0000-000000000000"
+              ]
+            }
+          },
+          "_FailConditionMsg_Other": "14df1b4c-ac08-400d-9aaa-31366ce77226"
+        }
+      }
+    }
+  }
+]
