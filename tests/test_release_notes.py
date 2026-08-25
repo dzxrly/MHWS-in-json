@@ -113,6 +113,17 @@ class ReleaseNotesTests(unittest.TestCase):
 
         self.assertEqual(stdout.getvalue(), "# Release notes\n")
 
+    def test_reconfigures_cp1252_stdout_before_writing_unicode(self) -> None:
+        buffer = io.BytesIO()
+        stdout = io.TextIOWrapper(buffer, encoding="cp1252")
+
+        with contextlib.redirect_stdout(stdout):
+            release_notes.emit_release_notes("简体中文")
+            stdout.flush()
+
+        self.assertEqual(stdout.encoding, "utf-8")
+        self.assertEqual(buffer.getvalue().decode("utf-8").splitlines(), ["简体中文"])
+
     def test_standalone_cli_outputs_notes_without_project_imports(self) -> None:
         version = "standalone-version"
         output_dir = self._create_assets(version)
@@ -178,9 +189,11 @@ class ReleaseNotesTests(unittest.TestCase):
         )
         payload = json.loads(result.stdout)
 
+        self.assertTrue(result.stdout.isascii())
         self.assertEqual(payload["tag"], f"database-{version}")
         self.assertEqual(payload["title"], f"Database {version}")
         self.assertIn("## What's Changed", payload["notes"])
+        self.assertIn("日本語", payload["notes"])
         self.assertEqual(len(payload["assets"]), 3)
 
     def test_script_configuration_matches_project_exporter(self) -> None:

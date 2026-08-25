@@ -192,6 +192,9 @@ def collect_upload_assets(output_dir: Path) -> tuple[Path, ...]:
 
 def emit_release_notes(notes: str, output: Path | None = None) -> None:
     if output is None or output == Path("-"):
+        reconfigure = getattr(sys.stdout, "reconfigure", None)
+        if callable(reconfigure):
+            reconfigure(encoding="utf-8")
         sys.stdout.write(notes)
         if not notes.endswith("\n"):
             sys.stdout.write("\n")
@@ -485,7 +488,7 @@ def main() -> None:
             "notes": notes,
             "assets": [str(path) for path in upload_assets],
         }
-        emit_release_notes(json.dumps(payload, ensure_ascii=False), args.output)
+        emit_release_notes(json.dumps(payload, ensure_ascii=True), args.output)
     else:
         emit_release_notes(notes, args.output)
 
