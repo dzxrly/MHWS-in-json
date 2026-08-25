@@ -45,20 +45,24 @@ jobs:
       - name: Export database
         run: python main.py
 
-      - name: Generate release notes
-        run: python -m src.release_notes --output output/release-notes.md
-
       - name: Publish release
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          $tag = "database-$env:RELEASE_VERSION"
-          $assets = Get-ChildItem -Path output -Filter "*.zip" | ForEach-Object { $_.FullName }
+          $releaseJson = python .github/scripts/release_notes.py --format json
+          if ($LASTEXITCODE -ne 0) {
+            exit $LASTEXITCODE
+          }
+          $release = $releaseJson | ConvertFrom-Json
+          $tag = $release.tag
+          $title = $release.title
+          $assets = @($release.assets)
+          $notes = $release.notes
           gh release view $tag *> $null
           if ($LASTEXITCODE -eq 0) {
             gh release upload $tag $assets --clobber
-            gh release edit $tag --title "Database $env:RELEASE_VERSION" --notes-file output/release-notes.md
+            $notes | gh release edit $tag --title $title --notes-file -
           } else {
-            gh release create $tag $assets --title "Database $env:RELEASE_VERSION" --notes-file output/release-notes.md
+            $notes | gh release create $tag $assets --title $title --notes-file -
           }
