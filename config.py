@@ -23,6 +23,7 @@ PROCESSED_ZIP_PREFIX = "PROCESSED_DATA"
 SOURCE_ZIP_PREFIX = JSON_ROOT.name
 PROCESSED_DIR_NAME = "processed_data"
 FULL_TEXT_WORKBOOK = "FullText.xlsx"
+AMULET_WORKBOOK = "AmuletCollection.xlsx"
 MAX_COLUMN_WIDTH = 80.0
 FULL_TEXT_MAX_COLUMN_WIDTH = 300.0
 
@@ -53,13 +54,13 @@ LANGUAGES: dict[int, Language] = {
     23: Language("bg-BG", "Български"),
     24: Language("el-GR", "Ελληνικά"),
     25: Language("ro-RO", "Română"),
-    26: Language("es-419", "Español (Latinoamérica)"),
+    26: Language("th-TH", "ไทย"),
     27: Language("vi-VN", "Tiếng Việt"),
     28: Language("id-ID", "Bahasa Indonesia"),
     29: Language("uk-UA", "Українська"),
     30: Language("hi-IN", "हिन्दी"),
     31: Language("ms-MY", "Bahasa Melayu"),
-    32: Language("th-TH", "ไทย"),
+    32: Language("es-419", "Español (Latinoamérica)"),
 }
 
 SUPPORT_FILES = {

@@ -68,10 +68,17 @@ def _apply_rare_colors(sheet) -> None:
             if not match:
                 continue
             rare = int(match.group(1))
-            color = _blend_with_white(RARE_COLORS.get(rare, "FFFFFF"), 0.5)
-            cell.fill = PatternFill(start_color=color, end_color=color, fill_type="solid")
-            cell.font = Font(color="FFFFFF" if _brightness(color) < 64 else "000000")
+            apply_rare_style(cell, rare)
             cell.value = rare + 1
+
+
+def apply_rare_style(cell, rare: int, bold: bool = False) -> None:
+    color = _blend_with_white(RARE_COLORS.get(rare, "FFFFFF"), 0.5)
+    cell.fill = PatternFill(start_color=color, end_color=color, fill_type="solid")
+    cell.font = Font(
+        bold=bold,
+        color="FFFFFF" if _brightness(color) < 64 else "000000",
+    )
 
 
 def _text_width(value: Any) -> float:

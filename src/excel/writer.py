@@ -1,3 +1,4 @@
+from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
@@ -8,7 +9,15 @@ from src.excel.style import style_workbook
 INVALID_SHEET_CHARS = str.maketrans({c: "_" for c in r'[]:*?/\\'})
 
 
-def write_workbook(path: Path, sheets: dict[str, list[dict]], max_width: float) -> Path:
+WorkbookFormatter = Callable[[Workbook], None]
+
+
+def write_workbook(
+    path: Path,
+    sheets: dict[str, list[dict]],
+    max_width: float,
+    formatter: WorkbookFormatter | None = None,
+) -> Path:
     path.parent.mkdir(parents=True, exist_ok=True)
     workbook = Workbook()
     first = True
@@ -21,6 +30,8 @@ def write_workbook(path: Path, sheets: dict[str, list[dict]], max_width: float) 
         for row in rows:
             sheet.append([_cell(row.get(column)) for column in columns])
     style_workbook(workbook, max_width)
+    if formatter:
+        formatter(workbook)
     workbook.save(path)
     return path
 
@@ -29,7 +40,7 @@ def _sheet_name(name: str) -> str:
     return name.translate(INVALID_SHEET_CHARS)[:31] or "Sheet"
 
 
-def _columns(rows: list[dict]) -> list[str]:
+def _columns(rows: list[dict]) -> list[Any]:
     columns = []
     seen = set()
     for row in rows:

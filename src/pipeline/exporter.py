@@ -4,6 +4,7 @@ import os
 import shutil
 
 from config import (
+    AMULET_WORKBOOK,
     FULL_TEXT_MAX_COLUMN_WIDTH,
     FULL_TEXT_WORKBOOK,
     JSON_ROOT,
@@ -20,11 +21,17 @@ from config import (
     WORKBOOKS,
     ZIP_PREFIX,
 )
-from src.converters.amulet import export_amulet_pools
+from src.converters.amulet import (
+    AmuletCatalog,
+    build_amulet_workbook_sheets,
+    export_amulet_pools,
+    load_amulet_catalog,
+)
 from src.converters.bowgun import export_bowgun_workbooks
 from src.converters.graphics import export_graphic_preset
 from src.data.text_db import TextDB, TextSource, discover_language_ids
 from src.data.user3 import load_user3_table
+from src.excel.amulet import style_amulet_workbook
 from src.excel.writer import write_workbook
 from src.pipeline.package import zip_language_output, zip_processed_output, zip_source_output
 from src.pipeline.transforms import transform_workbook
@@ -54,6 +61,7 @@ def export_all() -> list[Path]:
     info(f"Loading text database: {NATIVES_DIR}")
     text_source = TextSource.from_natives(NATIVES_DIR)
     info(f"Loaded text database: {text_source.file_count} message file(s), {len(text_source.entries)} entries")
+    amulet_catalog = load_amulet_catalog(_load_raw_relative)
 
     archives: list[Path] = []
     for index, lang_id in enumerate(language_ids, start=1):
@@ -61,7 +69,7 @@ def export_all() -> list[Path]:
         language_dir = OUTPUT_DIR / language_code
         info(f"[{index}/{len(language_ids)}] Building language database: {language_code} ({lang_id})")
         text_db = text_source.build(lang_id)
-        outputs = _export_language(language_dir, text_db)
+        outputs = _export_language(language_dir, text_db, amulet_catalog)
         info(f"Generated {len(outputs)} workbook(s) for {language_code}")
         archive = zip_language_output(
             language_dir,
@@ -74,7 +82,7 @@ def export_all() -> list[Path]:
 
     processed_dir = OUTPUT_DIR / PROCESSED_DIR_NAME
     info("Exporting processed data")
-    _export_processed(processed_dir, text_source, language_ids)
+    _export_processed(processed_dir, text_source, language_ids, amulet_catalog)
     processed_archive = zip_processed_output(
         processed_dir,
         OUTPUT_DIR,
@@ -95,7 +103,11 @@ def export_all() -> list[Path]:
     return archives
 
 
-def _export_language(output_dir: Path, text_db: TextDB) -> list[Path]:
+def _export_language(
+    output_dir: Path,
+    text_db: TextDB,
+    amulet_catalog: AmuletCatalog,
+) -> list[Path]:
     outputs = [_export_full_text(output_dir, text_db)]
     for workbook_name, specs in WORKBOOKS.items():
         info(f"  Workbook: {workbook_name}")
@@ -117,6 +129,7 @@ def _export_language(output_dir: Path, text_db: TextDB) -> list[Path]:
         else:
             info(f"  Skipped workbook without available sheets: {workbook_name}")
 
+    outputs.append(_export_amulet_workbook(output_dir, text_db, amulet_catalog))
     return outputs
 
 
@@ -129,6 +142,27 @@ def _export_full_text(output_dir: Path, text_db: TextDB) -> Path:
         FULL_TEXT_MAX_COLUMN_WIDTH,
     )
     info(f"  Saved workbook: {path} ({file_size(path)}, {len(rows)} text row(s))")
+    return path
+
+
+def _export_amulet_workbook(
+    output_dir: Path,
+    text_db: TextDB,
+    amulet_catalog: AmuletCatalog,
+) -> Path:
+    info(f"  Workbook: {AMULET_WORKBOOK}")
+    sheets = build_amulet_workbook_sheets(
+        amulet_catalog,
+        lambda guid: text_db.get(guid) or "",
+    )
+    path = write_workbook(
+        output_dir / AMULET_WORKBOOK,
+        sheets,
+        MAX_COLUMN_WIDTH,
+        style_amulet_workbook,
+    )
+    row_count = sum(len(rows) for rows in sheets.values())
+    info(f"  Saved workbook: {path} ({file_size(path)}, {row_count} data row(s))")
     return path
 
 
@@ -147,11 +181,16 @@ def _full_text_rows(text_db: TextDB) -> list[dict[str, str]]:
     return available + rejected + empty
 
 
-def _export_processed(output_dir: Path, text_source: TextSource, language_ids: list[int]) -> None:
+def _export_processed(
+    output_dir: Path,
+    text_source: TextSource,
+    language_ids: list[int],
+    amulet_catalog: AmuletCatalog,
+) -> None:
     info("  Exporting amulet and skill pools")
     export_amulet_pools(
         output_dir,
-        _load_raw_relative,
+        amulet_catalog,
         _name_resolver(text_source, language_ids),
     )
     info("  Exporting graphic preset workbook")

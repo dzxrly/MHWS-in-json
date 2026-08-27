@@ -23,7 +23,7 @@ MHWS 遊戲資料匯出工具，輸出形式與 [eigeen/mhws-data-dump-scripts](
 
 執行 `python main.py` 後，所有檔案都會寫入 `output/`。
 
-- `output/<語言>/*.xlsx`：對應語言的資料庫活頁簿，其中 `FullText.xlsx` 使用單一工作表記錄全部訊息 GUID 及其本地化文字，並按實際內容、已拒絕文字、空白文字分組，各組內保留來源檔案讀取順序；已拒絕文字以 `[#Rejected#]` 開頭，未標記的空白文字維持空白。
+- `output/<語言>/*.xlsx`：對應語言的資料庫活頁簿。`FullText.xlsx` 使用單一工作表記錄全部訊息 GUID 及其本地化文字，並按實際內容、已拒絕文字、空白文字分組，各組內保留來源檔案讀取順序；已拒絕文字以 `[#Rejected#]` 開頭，未標記的空白文字維持空白。`AmuletCollection.xlsx` 包含正規化的護石、技能和孔位池，名稱依語言本地化，稀有度顯示為 `Rare.X`，武器與防具孔位分欄並使用 `Lv.X` 格式；其中 `SkillPool` 依技能點數橫向分池，每個池各占一欄，項目顯示為「技能名稱 `Lv.X`」。
 - `output/DATABASE_<語言名稱>_<版本號>.zip`：每種語言一個發布資源包，僅包含該語言的 xlsx 檔案，不包含 `MHWS-in-json/`。
 - `output/processed_data/`：額外轉換器產生的語言無關處理結果。
 - `output/PROCESSED_DATA_<版本號>.zip`：語言無關的發布資源包，包含 `skill_pool.json`、`amulet_pool.json`、`graphic_preset.xlsx`、`Bowgun_Custom.xlsx`、`HeavyBowgun.xlsx` 和 `LightBowgun.xlsx`。
