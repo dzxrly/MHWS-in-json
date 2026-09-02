@@ -43,6 +43,30 @@ Progress and packaging details are printed to the terminal.
 
 Only player attack-value requestSets are exported. Nested values are flattened to leaf columns, and an RS is repeated for every action or resource mapping edge. `MappingKind`, stable identity, internal-name, name-source, resource-role, confidence, condition, and provenance columns make the two relation types explicit.
 
+`MappingNameSource` records where the base `MappingName` came from. It describes name provenance, not the strength of the mapping. The generator can emit the following values; `+request_set_resource_marker` is appended to a base source when a requestSet resource marker distinguishes an inferred variant.
+
+| `MappingNameSource` value | Meaning |
+| --- | --- |
+| `action_guide_message` | Localized text addressed by the ActionGuide message GUID. |
+| `action_internal_fallback` | The action has no usable ActionGuide message GUID; its fallback or internal name is used. |
+| `weapon_gun_static_item_table` | Ammo name and message GUID from the WeaponGun static item table. |
+| `shell_fixed_enum` | Fixed enum name from the ShellList entry. |
+| `main_param_stem` | Filename stem of the shell's main-parameter resource. |
+| `prefab_stem` | Filename stem of the shell PFB. |
+| `generated_shell_identity` | Generated `<scope>_SHELL_<fixed_id>` name when the shell has no better name source. |
+| `rcol_filename` | RCOL filename stem used by an RCOL structural fallback. |
+| `<base>+request_set_resource_marker` | The base source plus a requestSet resource marker; the marker is also appended to `MappingName` in brackets. |
+
+`MappingConfidence` is a categorical evidence grade for the relation, not a probability.
+
+| `MappingConfidence` value | Meaning |
+| --- | --- |
+| `proven` | Exact static evidence directly connects the action or resource to the requestSet, such as action/motion evidence or a ShellList → PFB → RCOL chain. |
+| `derived` | The relation is inferred from established static structure, such as a shell relation without an exact action-name hash or a repeated requestSet offset paired with a resource marker. |
+| `structural` | PFB/RCOL structure establishes that the requestSet belongs to the referenced RCOL, but does not safely identify a more specific shell; the row is an explicit RCOL fallback. |
+
+Both columns are blank for an unmapped requestSet.
+
 `actionRelations` and `resourceRelations` are separate arrays. Every edge targets the exact identity `(scope, rcol, requestSetID, keyHash, sourceRequestSetOrdinal)`; export stops on a stale target or conflicting edge. Missing localization GUIDs use generated internal/resource names instead of requiring a manual mapping. Many-to-many identities remain separate even when their localized display text is the same. Resource relations include exact ShellList/PFB/RCOL evidence, automatically inferred variants, and an explicit RCOL structural fallback.
 
 Row 1 of each sheet lists the RCOL source paths, and row 2 contains the headers. Data rows omit the repeated `rcol` path.

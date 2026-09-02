@@ -43,6 +43,30 @@
 
 只匯出玩家攻擊動作值 requestSet。嵌套值展開為葉節點欄位；每條動作或資源對映邊都會輸出一列，同一 RS 因此可以重複。`MappingKind`、穩定身分、內部名稱、名稱來源、資源角色、信賴級別、條件和證據來源等欄位會明確說明對映性質。
 
+`MappingNameSource` 說明 `MappingName` 的基礎名稱取自何處。它只記錄名稱來源，不表示對映強弱。產生器可能寫入下列值；根據 requestSet 資源標記區分推導變體時，會在基礎值後附加 `+request_set_resource_marker`。
+
+| `MappingNameSource` 值 | 含義 |
+| --- | --- |
+| `action_guide_message` | 透過 ActionGuide 的訊息 GUID 取得對應語言文字。 |
+| `action_internal_fallback` | 沒有可用的 ActionGuide 訊息 GUID，改用動作記錄中的備援名稱或內部名稱。 |
+| `weapon_gun_static_item_table` | 從 WeaponGun 靜態道具表取得彈藥名稱和訊息 GUID。 |
+| `shell_fixed_enum` | ShellList 項目中的 Fixed 列舉名稱。 |
+| `main_param_stem` | Shell 主參數資源的檔名，不含副檔名。 |
+| `prefab_stem` | Shell PFB 的檔名，不含副檔名。 |
+| `generated_shell_identity` | 沒有更合適的名稱來源時，產生 `<scope>_SHELL_<fixed_id>`。 |
+| `rcol_filename` | RCOL 結構備援使用的 RCOL 檔名，不含副檔名。 |
+| `<base>+request_set_resource_marker` | 沿用基礎名稱來源，並附加 requestSet 資源標記；該標記也會以方括號後綴寫入 `MappingName`。 |
+
+`MappingConfidence` 是關係的證據等級，不是機率值。
+
+| `MappingConfidence` 值 | 含義 |
+| --- | --- |
+| `proven` | 有直接靜態證據將動作或資源連到該 requestSet，例如動作/運動證據或 ShellList → PFB → RCOL 鏈。 |
+| `derived` | 根據已確認的靜態結構推導關係，例如缺少精確動作名稱雜湊的 Shell 關係，或由重複 requestSet 位移和資源標記識別的變體。 |
+| `structural` | PFB/RCOL 結構只能確認該 requestSet 屬於引用的 RCOL，無法安全細分到具體 Shell；該列是明確的 RCOL 備援關係。 |
+
+未對映的 requestSet 在這兩欄中都留空。
+
 `actionRelations` 與 `resourceRelations` 是兩個獨立陣列。每條邊都指向精確識別 `(scope, rcol, requestSetID, keyHash, sourceRequestSetOrdinal)`；目標過期或同一條邊衝突時，匯出立即失敗。缺少本地化 GUID 時自動使用內部名稱或資源名稱，不需要人工補對映。即使本地化顯示文字相同，不同對映身分也不會合併。資源關係包含精確的 ShellList/PFB/RCOL 證據、自動推導的變體，以及明確標記的 RCOL 結構備援。
 
 每個 sheet 的第一列列出 RCOL 來源路徑，第二列為欄位標題。資料列不重複顯示 `rcol` 路徑。
