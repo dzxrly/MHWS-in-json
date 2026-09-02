@@ -10,7 +10,6 @@ from src.converters.action_values import (
     ActionBinding,
     ActionValueCatalog,
     SHEET_NAMES,
-    UNMAPPED_ACTION_NAME,
     build_action_value_workbook,
     load_action_value_catalog,
 )
@@ -113,7 +112,7 @@ class ActionValueTests(unittest.TestCase):
                 ("Action A", 0),
                 ("Action A", 1),
                 ("Action B", 0),
-                (UNMAPPED_ACTION_NAME, 2),
+                (None, 2),
             ],
         )
         self.assertEqual(
@@ -148,7 +147,7 @@ class ActionValueTests(unittest.TestCase):
                 self.assertNotIn("A5:A6", sheet.merged_cells)
                 self.assertTrue(sheet["A1"].value.startswith("RCOL sources (1): "))
                 self.assertEqual(sheet["A2"].value, "ActionName")
-                self.assertEqual(sheet["A6"].value, UNMAPPED_ACTION_NAME)
+                self.assertIsNone(sheet["A6"].value)
                 self.assertEqual(sheet["B3"].border.bottom.style, None)
                 self.assertEqual(sheet["B4"].border.bottom.style, "medium")
                 self.assertEqual(sheet["A6"].fill.fgColor.rgb, "00F4B183")
@@ -199,7 +198,7 @@ class ActionValueTests(unittest.TestCase):
         rows = data.sheets["Wp00_LongSword"]
         self.assertEqual(
             [(row["ActionName"], row["requestSetID"]) for row in rows],
-            [("同名动作", 0), ("同名动作", 1), (UNMAPPED_ACTION_NAME, 2)],
+            [("同名动作", 0), ("同名动作", 1), (None, 2)],
         )
         groups = data.groups["Wp00_LongSword"]
         self.assertEqual(
@@ -255,12 +254,22 @@ class ActionValueTests(unittest.TestCase):
         self.assertGreater(catalog.action_map_audit.named_relations, 0)
 
         for sheet_name, rows in data.sheets.items():
-            unmapped_seen = False
-            for row in rows:
-                if row["ActionName"] == UNMAPPED_ACTION_NAME:
-                    unmapped_seen = True
-                elif unmapped_seen:
-                    self.fail(f"Mapped row found after unmapped block in {sheet_name}")
+            groups = data.groups[sheet_name]
+            unmapped_groups = [group for group in groups if group.unmapped]
+            self.assertLessEqual(len(unmapped_groups), 1)
+            if unmapped_groups:
+                unmapped_group = unmapped_groups[0]
+                self.assertIs(unmapped_group, groups[-1])
+                unmapped_start = unmapped_group.start_row - 3
+                self.assertTrue(
+                    all(row["ActionName"] for row in rows[:unmapped_start])
+                )
+                self.assertTrue(
+                    all(
+                        row["ActionName"] is None
+                        for row in rows[unmapped_start:]
+                    )
+                )
 
             expected_columns = data.columns[sheet_name]
             self.assertEqual(expected_columns[0], "ActionName")

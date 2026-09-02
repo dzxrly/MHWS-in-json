@@ -15,7 +15,6 @@ from src.data.rcol import (
 
 
 ACTION_DATA_RELATIVE = Path("STM/GameDesign/Player/ActionData")
-UNMAPPED_ACTION_NAME = "[未映射]"
 
 SHEET_NAMES = {
     **{
@@ -275,7 +274,7 @@ def build_action_value_workbook(
                 key=lambda item: item.sort_key,
             ):
                 rows.append(
-                    _workbook_row(UNMAPPED_ACTION_NAME, record, columns)
+                    _workbook_row(None, record, columns)
                 )
                 next_excel_row += 1
             row_groups.append(
@@ -398,7 +397,7 @@ def _sheet_columns(
 
 
 def _workbook_row(
-    action_name: str,
+    action_name: str | None,
     record: RequestSetRecord,
     columns: tuple[str, ...],
 ) -> dict[str, Any]:
