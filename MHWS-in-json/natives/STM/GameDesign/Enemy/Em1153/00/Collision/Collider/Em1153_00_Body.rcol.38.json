@@ -354,6 +354,24 @@
             },
             "RequestSetIndex": 1
           }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 1
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 1
+          }
         }
       ],
       "userData": {
@@ -567,6 +585,69 @@
             ],
             "_AngleLimit": 180.0
           }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 4,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.8,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
         }
       ],
       "userData": {
@@ -589,106 +670,6 @@
               "_PartsDataGuid": "dacd71dd-3f28-4d12-96a9-2aeed984fc24"
             }
           }
-        }
-      }
-    },
-    {
-      "requestSetID": 3278789551,
-      "groupIndex": 1263582301,
-      "status": 3732201175,
-      "requestSetIndex": 1318402617,
-      "keyHash": 28255655,
-      "KeyNameMMHash": 431882106,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 0,
-      "groupIndex": 0,
-      "status": 0,
-      "requestSetIndex": 0,
-      "keyHash": 6553697,
-      "KeyNameMMHash": 4390912,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "app.col_user_data.DamageParamEm": {
-            "Name": "",
-            "ParentUserData": {
-              "": {}
-            },
-            "RequestSetIndex": 0,
-            "_PriorityFixed": {
-              "app.CollisionDef.PRIORITY_Serializable": {
-                "_Value": "[7]PRIO_8"
-              }
-            },
-            "_IsSensorCollision": false,
-            "_IsArrowFlipCollision": false,
-            "_Parts": {
-              "app.col_user_data.DamageParamEm.cParts": {
-                "_Category": "[0]PARTS",
-                "_PartsDataGuid": "00000000-0000-0000-0000-000000000000"
-              }
-            }
-          }
-        }
-      ],
-      "userData": {
-        "app.col_user_data.DamageParamEm": {
-          "Name": "",
-          "ParentUserData": {
-            "": {}
-          },
-          "RequestSetIndex": 0,
-          "_PriorityFixed": {
-            "app.CollisionDef.PRIORITY_Serializable": {
-              "_Value": "[7]PRIO_8"
-            }
-          },
-          "_IsSensorCollision": false,
-          "_IsArrowFlipCollision": false,
-          "_Parts": {
-            "app.col_user_data.DamageParamEm.cParts": {
-              "_Category": "[0]PARTS",
-              "_PartsDataGuid": "00000000-0000-0000-0000-000000000000"
-            }
-          }
-        }
-      }
-    },
-    {
-      "requestSetID": 6619240,
-      "groupIndex": 7602291,
-      "status": 3145836,
-      "requestSetIndex": 5505024,
-      "keyHash": 3407980,
-      "KeyNameMMHash": 5505024,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
         }
       }
     }

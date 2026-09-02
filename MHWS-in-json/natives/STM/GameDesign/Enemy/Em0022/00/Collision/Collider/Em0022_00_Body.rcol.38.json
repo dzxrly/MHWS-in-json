@@ -1457,10 +1457,11 @@
       "nativeShapeColliders": [
         {
           "via.physics.RequestSetColliderUserData": {
-            "Name": "\u0001",
+            "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 0
           }
         }
       ],
@@ -1470,13 +1471,19 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 0,
           "_PriorityFixed": {
-            "": {}
+            "app.CollisionDef.PRIORITY_Serializable": {
+              "_Value": "[7]PRIO_8"
+            }
           },
-          "_IsSensorCollision": true,
+          "_IsSensorCollision": false,
           "_IsArrowFlipCollision": false,
           "_Parts": {
-            "": {}
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[0]PARTS",
+              "_PartsDataGuid": "00000000-0000-0000-0000-000000000000"
+            }
           }
         }
       }
@@ -1493,15 +1500,16 @@
       "nativeShapeColliders": [
         {
           "app.col_user_data.ShapeParamBase": {
-            "Name": "\u0005",
+            "Name": "",
             "ParentUserData": {
               "": {}
             },
-            "_IsCylinder": true,
-            "_AdjustRate": 0.0,
+            "RequestSetIndex": 1,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.2,
             "_EnableDynamicShape": false,
             "_DynamicSphere": {
-              "raw": "cdcc4c3e000000000000000000000000",
+              "raw": "00000000000000000000000000000000",
               "type": "Sphere"
             },
             "_DynamicCapsule": [
@@ -1540,17 +1548,17 @@
               0.0,
               0.0
             ],
-            "_DynamicShapeType": 0,
-            "_DynamicInterpolationSec": 0.0,
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
             "_EnableAngleLimit": false,
             "_AngleLimitType": "[0]PLANE",
             "_AngleLimitJointRotation": [
               0.0,
-              1.0,
+              0.0,
               0.0,
               0.0
             ],
-            "_AngleLimit": 0.0
+            "_AngleLimit": 180.0
           }
         }
       ],
@@ -1560,15 +1568,19 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 1,
           "_PriorityFixed": {
             "app.CollisionDef.PRIORITY_Serializable": {
-              "_Value": "[7]PRIO_8"
+              "_Value": "[0]PRIO_15"
             }
           },
           "_IsSensorCollision": false,
           "_IsArrowFlipCollision": false,
           "_Parts": {
-            "": {}
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[1]WEAK_POINT",
+              "_PartsDataGuid": "10f9bdde-69a0-4d7d-8952-f58402257ab8"
+            }
           }
         }
       }
@@ -1588,7 +1600,17 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 2
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 2
           }
         }
       ],
@@ -1598,17 +1620,18 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 2,
           "_PriorityFixed": {
-            "Ref": {
-              "ref_instance_id": -1855314504,
-              "missing": true
-            }
-          },
-          "_IsSensorCollision": true,
-          "_IsArrowFlipCollision": true,
-          "_Parts": {
             "app.CollisionDef.PRIORITY_Serializable": {
               "_Value": "[7]PRIO_8"
+            }
+          },
+          "_IsSensorCollision": false,
+          "_IsArrowFlipCollision": false,
+          "_Parts": {
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[0]PARTS",
+              "_PartsDataGuid": "95914a6f-62e7-4e58-b825-6a91d315035a"
             }
           }
         }
@@ -1629,7 +1652,26 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 3
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 3
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 3
           }
         }
       ],
@@ -1639,16 +1681,19 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 3,
           "_PriorityFixed": {
-            "app.col_user_data.DamageParamEm.cParts": {
-              "_Category": "[0]PARTS",
-              "_PartsDataGuid": "00000000-0000-0000-0000-000000000000"
+            "app.CollisionDef.PRIORITY_Serializable": {
+              "_Value": "[7]PRIO_8"
             }
           },
-          "_IsSensorCollision": true,
+          "_IsSensorCollision": false,
           "_IsArrowFlipCollision": false,
           "_Parts": {
-            "": {}
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[0]PARTS",
+              "_PartsDataGuid": "d6c03294-a5cb-4fd6-a47f-8f59794d86ef"
+            }
           }
         }
       }
@@ -1668,7 +1713,26 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 4
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 4
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 4
           }
         }
       ],
@@ -1678,26 +1742,19 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 4,
           "_PriorityFixed": {
-            "app.col_user_data.DamageParamEm": {
-              "Name": "",
-              "ParentUserData": {
-                "": {}
-              },
-              "_PriorityFixed": {
-                "": {}
-              },
-              "_IsSensorCollision": true,
-              "_IsArrowFlipCollision": false,
-              "_Parts": {
-                "": {}
-              }
+            "app.CollisionDef.PRIORITY_Serializable": {
+              "_Value": "[7]PRIO_8"
             }
           },
-          "_IsSensorCollision": true,
+          "_IsSensorCollision": false,
           "_IsArrowFlipCollision": false,
           "_Parts": {
-            "": {}
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[0]PARTS",
+              "_PartsDataGuid": "207dfc0f-f7ee-4f8a-9468-924d90af56d7"
+            }
           }
         }
       }
@@ -1717,7 +1774,35 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 5
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 5
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 5
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 5
           }
         }
       ],
@@ -1727,9 +1812,10 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 5,
           "_PriorityFixed": {
             "app.CollisionDef.PRIORITY_Serializable": {
-              "_Value": "[0]PRIO_15"
+              "_Value": "[7]PRIO_8"
             }
           },
           "_IsSensorCollision": false,
@@ -1737,7 +1823,7 @@
           "_Parts": {
             "app.col_user_data.DamageParamEm.cParts": {
               "_Category": "[0]PARTS",
-              "_PartsDataGuid": "0000000e-0000-0000-0f00-000001000000"
+              "_PartsDataGuid": "ce230440-f397-4938-b587-5ec2cf33f5e9"
             }
           }
         }
@@ -1758,7 +1844,35 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 6
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 6
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 6
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 6
           }
         }
       ],
@@ -1768,17 +1882,18 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 6,
           "_PriorityFixed": {
             "app.CollisionDef.PRIORITY_Serializable": {
-              "_Value": 545127439
+              "_Value": "[7]PRIO_8"
             }
           },
           "_IsSensorCollision": false,
           "_IsArrowFlipCollision": false,
           "_Parts": {
             "app.col_user_data.DamageParamEm.cParts": {
-              "_Category": 1334507502,
-              "_PartsDataGuid": "4d926894-af90-d756-0100-000000000000"
+              "_Category": "[0]PARTS",
+              "_PartsDataGuid": "4c7168e5-c37c-4791-922a-234c5bf28550"
             }
           }
         }
@@ -1796,10 +1911,38 @@
       "nativeShapeColliders": [
         {
           "via.physics.RequestSetColliderUserData": {
-            "Name": "\u0001\u0000\u0000\u0000\u0000\u0000\u0006\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0006\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0006\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0006\u0000\u0007",
+            "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 7
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 7
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 7
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 7
           }
         }
       ],
@@ -1809,16 +1952,19 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 7,
           "_PriorityFixed": {
-            "app.col_user_data.DamageParamEm.cParts": {
-              "_Category": "[0]PARTS",
-              "_PartsDataGuid": "00000001-0000-0000-debd-f910a0697d4d"
+            "app.CollisionDef.PRIORITY_Serializable": {
+              "_Value": "[7]PRIO_8"
             }
           },
-          "_IsSensorCollision": true,
+          "_IsSensorCollision": false,
           "_IsArrowFlipCollision": false,
           "_Parts": {
-            "": {}
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[0]PARTS",
+              "_PartsDataGuid": "c9e29f62-d176-4a63-bb1f-f80cc0441aeb"
+            }
           }
         }
       }
@@ -1838,7 +1984,26 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 8
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 8
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 8
           }
         }
       ],
@@ -1848,28 +2013,19 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 8,
           "_PriorityFixed": {
-            "app.col_user_data.DamageParamEm": {
-              "Name": "",
-              "ParentUserData": {
-                "": {}
-              },
-              "_PriorityFixed": {
-                "app.CollisionDef.PRIORITY_Serializable": {
-                  "_Value": "[7]PRIO_8"
-                }
-              },
-              "_IsSensorCollision": false,
-              "_IsArrowFlipCollision": false,
-              "_Parts": {
-                "": {}
-              }
+            "app.CollisionDef.PRIORITY_Serializable": {
+              "_Value": "[7]PRIO_8"
             }
           },
-          "_IsSensorCollision": true,
+          "_IsSensorCollision": false,
           "_IsArrowFlipCollision": false,
           "_Parts": {
-            "": {}
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[0]PARTS",
+              "_PartsDataGuid": "84c6e645-3922-4fd0-852b-69f232fdebd9"
+            }
           }
         }
       }
@@ -1889,7 +2045,170 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 9
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 9
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 9
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 9
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 9
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 9
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 9
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 9
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 9
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 9
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 9
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 9
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 9
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 9
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 9
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 9
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 9
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 9
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 9
           }
         }
       ],
@@ -1899,7 +2218,8 @@
           "ParentUserData": {
             "": {}
           },
-          "_PressLevel": -2067339707
+          "RequestSetIndex": 9,
+          "_PressLevel": "[5]ENEMY_BOSS_S"
         }
       }
     },
@@ -1915,450 +2235,40 @@
       "nativeShapeColliders": [
         {
           "via.physics.RequestSetColliderUserData": {
-            "Name": "\u0001\u0000\u0000\u0000\u0000\u0000\t\u0000\u0001",
+            "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 10
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 10
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 10
           }
         }
       ],
       "userData": {
         "app.col_user_data.PressParam": {
-          "Name": "\u0001\u0000\u0000\u0000\u0000\u0000\t\u0000\u0001",
-          "ParentUserData": {
-            "": {}
-          },
-          "_PressLevel": "[0]ONLY_PRESSED"
-        }
-      }
-    },
-    {
-      "requestSetID": 3278789551,
-      "groupIndex": 1263582301,
-      "status": 3732201175,
-      "requestSetIndex": 1318402617,
-      "keyHash": 28255655,
-      "KeyNameMMHash": 431882106,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 3732201175,
-      "groupIndex": 1318402617,
-      "status": 3732201175,
-      "requestSetIndex": 1318402617,
-      "keyHash": 28255655,
-      "KeyNameMMHash": 431882106,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 3732201175,
-      "groupIndex": 1318402617,
-      "status": 3732201175,
-      "requestSetIndex": 1318402617,
-      "keyHash": 1138594729,
-      "KeyNameMMHash": 3769597201,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 0,
-      "groupIndex": 0,
-      "status": 0,
-      "requestSetIndex": 0,
-      "keyHash": 0,
-      "KeyNameMMHash": 0,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "app.col_user_data.DamageParamEm": {
-            "Name": "",
-            "ParentUserData": {
-              "": {}
-            },
-            "_PriorityFixed": {
-              "": {}
-            },
-            "_IsSensorCollision": true,
-            "_IsArrowFlipCollision": false,
-            "_Parts": {
-              "": {}
-            }
-          }
-        }
-      ],
-      "userData": {
-        "app.col_user_data.DamageParamEm": {
           "Name": "",
           "ParentUserData": {
             "": {}
           },
-          "_PriorityFixed": {
-            "": {}
-          },
-          "_IsSensorCollision": true,
-          "_IsArrowFlipCollision": false,
-          "_Parts": {
-            "": {}
-          }
-        }
-      }
-    },
-    {
-      "requestSetID": 0,
-      "groupIndex": 0,
-      "status": 0,
-      "requestSetIndex": 0,
-      "keyHash": 0,
-      "KeyNameMMHash": 0,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "app.col_user_data.DamageParamEm": {
-            "Name": "",
-            "ParentUserData": {
-              "": {}
-            },
-            "_PriorityFixed": {
-              "": {}
-            },
-            "_IsSensorCollision": true,
-            "_IsArrowFlipCollision": false,
-            "_Parts": {
-              "": {}
-            }
-          }
-        }
-      ],
-      "userData": {
-        "app.col_user_data.DamageParamEm": {
-          "Name": "",
-          "ParentUserData": {
-            "": {}
-          },
-          "_PriorityFixed": {
-            "": {}
-          },
-          "_IsSensorCollision": true,
-          "_IsArrowFlipCollision": false,
-          "_Parts": {
-            "": {}
-          }
-        }
-      }
-    },
-    {
-      "requestSetID": 0,
-      "groupIndex": 0,
-      "status": 0,
-      "requestSetIndex": 6815811,
-      "keyHash": 100,
-      "KeyNameMMHash": 6619214,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "app.col_user_data.DamageParamEm": {
-            "Name": "",
-            "ParentUserData": {
-              "": {}
-            },
-            "_PriorityFixed": {
-              "": {}
-            },
-            "_IsSensorCollision": true,
-            "_IsArrowFlipCollision": false,
-            "_Parts": {
-              "": {}
-            }
-          }
-        }
-      ],
-      "userData": {
-        "app.col_user_data.DamageParamEm": {
-          "Name": "",
-          "ParentUserData": {
-            "": {}
-          },
-          "_PriorityFixed": {
-            "": {}
-          },
-          "_IsSensorCollision": true,
-          "_IsArrowFlipCollision": false,
-          "_Parts": {
-            "": {}
-          }
-        }
-      }
-    },
-    {
-      "requestSetID": 7012451,
-      "groupIndex": 48,
-      "status": 6225996,
-      "requestSetIndex": 7471169,
-      "keyHash": 4980845,
-      "KeyNameMMHash": 48,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 6225996,
-      "groupIndex": 6357072,
-      "status": 6226002,
-      "requestSetIndex": 7471169,
-      "keyHash": 4980845,
-      "KeyNameMMHash": 48,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 6226002,
-      "groupIndex": 6357072,
-      "status": 6225996,
-      "requestSetIndex": 6619212,
-      "keyHash": 4980839,
-      "KeyNameMMHash": 48,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 6225996,
-      "groupIndex": 7274566,
-      "status": 6226002,
-      "requestSetIndex": 6619212,
-      "keyHash": 4980839,
-      "KeyNameMMHash": 48,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "via.physics.RequestSetColliderUserData": {
-            "Name": "\u0001\u0000\u0000\u0000\u0000\u0000\t\u0000\u0001",
-            "ParentUserData": {
-              "": {}
-            }
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 6226002,
-      "groupIndex": 7274566,
-      "status": 6357076,
-      "requestSetIndex": 7077993,
-      "keyHash": 6357076,
-      "KeyNameMMHash": 7077993,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "via.physics.RequestSetColliderUserData": {
-            "Name": "\u0001\u0000\u0000\u0000\u0000\u0000\t\u0000\u0001",
-            "ParentUserData": {
-              "": {}
-            }
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 51,
-      "groupIndex": 6357076,
-      "status": 6225996,
-      "requestSetIndex": 7274566,
-      "keyHash": 7602287,
-      "KeyNameMMHash": 50,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "via.physics.RequestSetColliderUserData": {
-            "Name": "",
-            "ParentUserData": {
-              "": {}
-            }
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 6357076,
-      "groupIndex": 7077993,
-      "status": 7077993,
-      "requestSetIndex": 54,
-      "keyHash": 7667823,
-      "KeyNameMMHash": 6553710,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "via.physics.RequestSetColliderUserData": {
-          "Name": "",
-          "ParentUserData": {
-            "": {}
-          }
-        }
-      }
-    },
-    {
-      "requestSetID": 6619218,
-      "groupIndex": 6488161,
-      "status": 0,
-      "requestSetIndex": 6619223,
-      "keyHash": 0,
-      "KeyNameMMHash": 6619208,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 6553697,
-      "groupIndex": 0,
-      "status": 109,
-      "requestSetIndex": 5046272,
-      "keyHash": 7077993,
-      "KeyNameMMHash": 0,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 6225996,
-      "groupIndex": 6619212,
-      "status": 4980831,
-      "requestSetIndex": 6750309,
-      "keyHash": 7471184,
-      "KeyNameMMHash": 7536741,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
+          "RequestSetIndex": 10,
+          "_PressLevel": "[5]ENEMY_BOSS_S"
         }
       }
     }

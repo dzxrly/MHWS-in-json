@@ -1,0 +1,584 @@
+{
+  "_format": "re_engine_motlist_action_tracks_v1",
+  "sourcePath": "STM/Motion/Enemy/em0159/00/em0159_05/em0159_05.motlist.992",
+  "motlistName": "em0159_05",
+  "motlistVersion": 992,
+  "motlistVersionName": "MHWILDS",
+  "trackFilters": [
+    "property:_RequestSetID"
+  ],
+  "statistics": {
+    "totalMotions": 59,
+    "matchedMotions": 2,
+    "inspectedClips": 21,
+    "matchedClips": 2,
+    "matchedTracks": 3,
+    "requestSetMappings": 4
+  },
+  "requestSetMappings": [
+    {
+      "motionId": 18,
+      "motionName": "Motion/Enemy/em0159/00/em0159_05/fbx/em0159_05_018.mot",
+      "motionType": "MotFileLink",
+      "clipSource": "override",
+      "clipIndex": 0,
+      "mainTrackName": "app.motion_track.AttackCollision_Em",
+      "trackIndex": 1,
+      "trackName": "app.motion_track.AttackCollision_Em",
+      "propertyIndex": 2,
+      "propertyPath": "_RequestSetID",
+      "requestSetId": 30,
+      "startFrame": 137.0,
+      "endFrame": 149.0
+    },
+    {
+      "motionId": 18,
+      "motionName": "Motion/Enemy/em0159/00/em0159_05/fbx/em0159_05_018.mot",
+      "motionType": "MotFileLink",
+      "clipSource": "override",
+      "clipIndex": 0,
+      "mainTrackName": "app.motion_track.AttackCollision_Em",
+      "trackIndex": 2,
+      "trackName": "app.motion_track.AttackCollision_Em",
+      "propertyIndex": 2,
+      "propertyPath": "_RequestSetID",
+      "requestSetId": 31,
+      "startFrame": 50.0,
+      "endFrame": 64.0
+    },
+    {
+      "motionId": 18,
+      "motionName": "Motion/Enemy/em0159/00/em0159_05/fbx/em0159_05_018.mot",
+      "motionType": "MotFileLink",
+      "clipSource": "override",
+      "clipIndex": 0,
+      "mainTrackName": "app.motion_track.AttackCollision_Em",
+      "trackIndex": 2,
+      "trackName": "app.motion_track.AttackCollision_Em",
+      "propertyIndex": 2,
+      "propertyPath": "_RequestSetID",
+      "requestSetId": 31,
+      "startFrame": 121.0,
+      "endFrame": 149.0
+    },
+    {
+      "motionId": 22,
+      "motionName": "Motion/Enemy/em0159/00/em0159_05/fbx/em0159_05_022.mot",
+      "motionType": "MotFileLink",
+      "clipSource": "override",
+      "clipIndex": 0,
+      "mainTrackName": "app.motion_track.AttackCollision_Em",
+      "trackIndex": 1,
+      "trackName": "app.motion_track.AttackCollision_Em",
+      "propertyIndex": 2,
+      "propertyPath": "_RequestSetID",
+      "requestSetId": 24,
+      "startFrame": 6.0,
+      "endFrame": 33.0
+    }
+  ],
+  "motions": [
+    {
+      "motionId": 18,
+      "motionName": "Motion/Enemy/em0159/00/em0159_05/fbx/em0159_05_018.mot",
+      "motionType": "MotFileLink",
+      "clips": [
+        {
+          "source": "override",
+          "index": 0,
+          "mainTrackName": "app.motion_track.AttackCollision_Em",
+          "frameCount": 149.0,
+          "tracks": [
+            {
+              "index": 1,
+              "name": "app.motion_track.AttackCollision_Em",
+              "startFrame": 0.0,
+              "endFrame": 0.0,
+              "properties": [
+                {
+                  "name": "_IsInRange",
+                  "path": "_IsInRange",
+                  "dataType": "Bool",
+                  "arrayIndex": -1,
+                  "startFrame": 137.0,
+                  "endFrame": 149.0,
+                  "keys": [
+                    {
+                      "frame": 137.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    },
+                    {
+                      "frame": 149.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    }
+                  ]
+                },
+                {
+                  "name": "_On",
+                  "path": "_On",
+                  "dataType": "Bool",
+                  "arrayIndex": -1,
+                  "startFrame": 0.0,
+                  "endFrame": 149.0,
+                  "keys": [
+                    {
+                      "frame": 0.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    },
+                    {
+                      "frame": 137.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    },
+                    {
+                      "frame": 149.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    },
+                    {
+                      "frame": 150.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    }
+                  ]
+                },
+                {
+                  "name": "_RequestSetID",
+                  "path": "_RequestSetID",
+                  "dataType": "U32",
+                  "arrayIndex": -1,
+                  "startFrame": 137.0,
+                  "endFrame": 149.0,
+                  "keys": [
+                    {
+                      "frame": 137.0,
+                      "keyType": "NoHermiteKey",
+                      "value": 30,
+                      "extra": false,
+                      "interpolation": "Discrete"
+                    },
+                    {
+                      "frame": 149.0,
+                      "keyType": "NoHermiteKey",
+                      "value": 30,
+                      "extra": false,
+                      "interpolation": "Event"
+                    }
+                  ]
+                },
+                {
+                  "name": "_HitIDGroup",
+                  "path": "_HitIDGroup",
+                  "dataType": "Enum",
+                  "arrayIndex": -1,
+                  "startFrame": 137.0,
+                  "endFrame": 149.0,
+                  "keys": [
+                    {
+                      "frame": 137.0,
+                      "keyType": "NoHermiteKey",
+                      "value": "NONE",
+                      "extra": false,
+                      "interpolation": "Discrete"
+                    },
+                    {
+                      "frame": 149.0,
+                      "keyType": "NoHermiteKey",
+                      "value": "NONE",
+                      "extra": false,
+                      "interpolation": "Event"
+                    }
+                  ]
+                },
+                {
+                  "name": "_IsHoldGroup",
+                  "path": "_IsHoldGroup",
+                  "dataType": "Bool",
+                  "arrayIndex": -1,
+                  "startFrame": 137.0,
+                  "endFrame": 149.0,
+                  "keys": [
+                    {
+                      "frame": 137.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    },
+                    {
+                      "frame": 149.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "index": 2,
+              "name": "app.motion_track.AttackCollision_Em",
+              "startFrame": 0.0,
+              "endFrame": 0.0,
+              "properties": [
+                {
+                  "name": "_IsInRange",
+                  "path": "_IsInRange",
+                  "dataType": "Bool",
+                  "arrayIndex": -1,
+                  "startFrame": 50.0,
+                  "endFrame": 149.0,
+                  "keys": [
+                    {
+                      "frame": 50.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    },
+                    {
+                      "frame": 64.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    },
+                    {
+                      "frame": 121.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    },
+                    {
+                      "frame": 149.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    }
+                  ]
+                },
+                {
+                  "name": "_On",
+                  "path": "_On",
+                  "dataType": "Bool",
+                  "arrayIndex": -1,
+                  "startFrame": 0.0,
+                  "endFrame": 149.0,
+                  "keys": [
+                    {
+                      "frame": 0.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    },
+                    {
+                      "frame": 50.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    },
+                    {
+                      "frame": 64.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    },
+                    {
+                      "frame": 65.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    },
+                    {
+                      "frame": 121.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    },
+                    {
+                      "frame": 149.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    },
+                    {
+                      "frame": 150.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    }
+                  ]
+                },
+                {
+                  "name": "_RequestSetID",
+                  "path": "_RequestSetID",
+                  "dataType": "U32",
+                  "arrayIndex": -1,
+                  "startFrame": 50.0,
+                  "endFrame": 149.0,
+                  "keys": [
+                    {
+                      "frame": 50.0,
+                      "keyType": "NoHermiteKey",
+                      "value": 31,
+                      "extra": false,
+                      "interpolation": "Discrete"
+                    },
+                    {
+                      "frame": 64.0,
+                      "keyType": "NoHermiteKey",
+                      "value": 31,
+                      "extra": false,
+                      "interpolation": "Event"
+                    },
+                    {
+                      "frame": 121.0,
+                      "keyType": "NoHermiteKey",
+                      "value": 31,
+                      "extra": false,
+                      "interpolation": "Discrete"
+                    },
+                    {
+                      "frame": 149.0,
+                      "keyType": "NoHermiteKey",
+                      "value": 31,
+                      "extra": false,
+                      "interpolation": "Event"
+                    }
+                  ]
+                },
+                {
+                  "name": "_HitIDGroup",
+                  "path": "_HitIDGroup",
+                  "dataType": "Enum",
+                  "arrayIndex": -1,
+                  "startFrame": 50.0,
+                  "endFrame": 149.0,
+                  "keys": [
+                    {
+                      "frame": 50.0,
+                      "keyType": "NoHermiteKey",
+                      "value": "NONE",
+                      "extra": false,
+                      "interpolation": "Discrete"
+                    },
+                    {
+                      "frame": 64.0,
+                      "keyType": "NoHermiteKey",
+                      "value": "NONE",
+                      "extra": false,
+                      "interpolation": "Event"
+                    },
+                    {
+                      "frame": 121.0,
+                      "keyType": "NoHermiteKey",
+                      "value": "NONE",
+                      "extra": false,
+                      "interpolation": "Discrete"
+                    },
+                    {
+                      "frame": 149.0,
+                      "keyType": "NoHermiteKey",
+                      "value": "NONE",
+                      "extra": false,
+                      "interpolation": "Event"
+                    }
+                  ]
+                },
+                {
+                  "name": "_IsHoldGroup",
+                  "path": "_IsHoldGroup",
+                  "dataType": "Bool",
+                  "arrayIndex": -1,
+                  "startFrame": 50.0,
+                  "endFrame": 149.0,
+                  "keys": [
+                    {
+                      "frame": 50.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    },
+                    {
+                      "frame": 64.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    },
+                    {
+                      "frame": 121.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    },
+                    {
+                      "frame": 149.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "motionId": 22,
+      "motionName": "Motion/Enemy/em0159/00/em0159_05/fbx/em0159_05_022.mot",
+      "motionType": "MotFileLink",
+      "clips": [
+        {
+          "source": "override",
+          "index": 0,
+          "mainTrackName": "app.motion_track.AttackCollision_Em",
+          "frameCount": 33.0,
+          "tracks": [
+            {
+              "index": 1,
+              "name": "app.motion_track.AttackCollision_Em",
+              "startFrame": 0.0,
+              "endFrame": 0.0,
+              "properties": [
+                {
+                  "name": "_IsInRange",
+                  "path": "_IsInRange",
+                  "dataType": "Bool",
+                  "arrayIndex": -1,
+                  "startFrame": 6.0,
+                  "endFrame": 33.0,
+                  "keys": [
+                    {
+                      "frame": 6.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    },
+                    {
+                      "frame": 33.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    }
+                  ]
+                },
+                {
+                  "name": "_On",
+                  "path": "_On",
+                  "dataType": "Bool",
+                  "arrayIndex": -1,
+                  "startFrame": 0.0,
+                  "endFrame": 33.0,
+                  "keys": [
+                    {
+                      "frame": 0.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    },
+                    {
+                      "frame": 6.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    },
+                    {
+                      "frame": 33.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    },
+                    {
+                      "frame": 34.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    }
+                  ]
+                },
+                {
+                  "name": "_RequestSetID",
+                  "path": "_RequestSetID",
+                  "dataType": "U32",
+                  "arrayIndex": -1,
+                  "startFrame": 6.0,
+                  "endFrame": 33.0,
+                  "keys": [
+                    {
+                      "frame": 6.0,
+                      "keyType": "NoHermiteKey",
+                      "value": 24,
+                      "extra": false,
+                      "interpolation": "Discrete"
+                    },
+                    {
+                      "frame": 33.0,
+                      "keyType": "NoHermiteKey",
+                      "value": 24,
+                      "extra": false,
+                      "interpolation": "Event"
+                    }
+                  ]
+                },
+                {
+                  "name": "_HitIDGroup",
+                  "path": "_HitIDGroup",
+                  "dataType": "Enum",
+                  "arrayIndex": -1,
+                  "startFrame": 6.0,
+                  "endFrame": 33.0,
+                  "keys": [
+                    {
+                      "frame": 6.0,
+                      "keyType": "NoHermiteKey",
+                      "value": "GROUP_00",
+                      "extra": false,
+                      "interpolation": "Discrete"
+                    },
+                    {
+                      "frame": 33.0,
+                      "keyType": "NoHermiteKey",
+                      "value": "GROUP_00",
+                      "extra": false,
+                      "interpolation": "Event"
+                    }
+                  ]
+                },
+                {
+                  "name": "_IsHoldGroup",
+                  "path": "_IsHoldGroup",
+                  "dataType": "Bool",
+                  "arrayIndex": -1,
+                  "startFrame": 6.0,
+                  "endFrame": 33.0,
+                  "keys": [
+                    {
+                      "frame": 6.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    },
+                    {
+                      "frame": 33.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

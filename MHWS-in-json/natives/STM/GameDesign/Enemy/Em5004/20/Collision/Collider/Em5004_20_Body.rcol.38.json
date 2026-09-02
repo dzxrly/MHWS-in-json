@@ -60,23 +60,47 @@
       "KeyNameMMHash": 2376776116,
       "name": "",
       "keyName": "Sensor",
+      "nativeShapeColliders": [],
+      "userData": {
+        "app.col_user_data.DamageParamEm": {
+          "Name": "",
+          "ParentUserData": {
+            "": {}
+          },
+          "RequestSetIndex": 0,
+          "_PriorityFixed": {
+            "app.CollisionDef.PRIORITY_Serializable": {
+              "_Value": "[7]PRIO_8"
+            }
+          },
+          "_IsSensorCollision": true,
+          "_IsArrowFlipCollision": false,
+          "_Parts": {
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[0]PARTS",
+              "_PartsDataGuid": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        }
+      }
+    },
+    {
+      "requestSetID": 0,
+      "groupIndex": 1,
+      "status": 1,
+      "requestSetIndex": 1,
+      "keyHash": 2910652208,
+      "KeyNameMMHash": 2878922317,
+      "name": "",
+      "keyName": "Damage",
       "nativeShapeColliders": [
         {
-          "app.col_user_data.DamageParamEm": {
+          "via.physics.RequestSetColliderUserData": {
             "Name": "",
             "ParentUserData": {
               "": {}
             },
-            "_PriorityFixed": {
-              "app.CollisionDef.PRIORITY_Serializable": {
-                "_Value": "[7]PRIO_8"
-              }
-            },
-            "_IsSensorCollision": false,
-            "_IsArrowFlipCollision": false,
-            "_Parts": {
-              "": {}
-            }
+            "RequestSetIndex": 1
           }
         }
       ],
@@ -86,14 +110,18 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 1,
           "_PriorityFixed": {
-            "": {}
-          },
-          "_IsSensorCollision": true,
-          "_IsArrowFlipCollision": false,
-          "_Parts": {
             "app.CollisionDef.PRIORITY_Serializable": {
               "_Value": "[7]PRIO_8"
+            }
+          },
+          "_IsSensorCollision": false,
+          "_IsArrowFlipCollision": false,
+          "_Parts": {
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[0]PARTS",
+              "_PartsDataGuid": "00000000-0000-0000-0000-000000000000"
             }
           }
         }

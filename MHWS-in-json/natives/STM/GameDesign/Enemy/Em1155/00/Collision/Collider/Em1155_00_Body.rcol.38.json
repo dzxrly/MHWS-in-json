@@ -568,6 +568,132 @@
             ],
             "_AngleLimit": 180.0
           }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 2,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 2,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
         }
       ],
       "userData": {
@@ -642,6 +768,24 @@
             },
             "RequestSetIndex": 4
           }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 4
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 4
+          }
         }
       ],
       "userData": {
@@ -683,128 +827,6 @@
           },
           "RequestSetIndex": 5,
           "_PressLevel": "[7]ENEMY_ZAKO"
-        }
-      }
-    },
-    {
-      "requestSetID": 3278789551,
-      "groupIndex": 1263582301,
-      "status": 3732201175,
-      "requestSetIndex": 1318402617,
-      "keyHash": 28255655,
-      "KeyNameMMHash": 431882106,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 0,
-      "groupIndex": 0,
-      "status": 0,
-      "requestSetIndex": 0,
-      "keyHash": 116,
-      "KeyNameMMHash": 4718592,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "app.col_user_data.DamageParamEm": {
-            "Name": "",
-            "ParentUserData": {
-              "": {}
-            },
-            "RequestSetIndex": 0,
-            "_PriorityFixed": {
-              "app.CollisionDef.PRIORITY_Serializable": {
-                "_Value": "[7]PRIO_8"
-              }
-            },
-            "_IsSensorCollision": false,
-            "_IsArrowFlipCollision": false,
-            "_Parts": {
-              "app.col_user_data.DamageParamEm.cParts": {
-                "_Category": "[0]PARTS",
-                "_PartsDataGuid": "00000000-0000-0000-0000-000000000000"
-              }
-            }
-          }
-        }
-      ],
-      "userData": {
-        "app.col_user_data.DamageParamEm": {
-          "Name": "",
-          "ParentUserData": {
-            "": {}
-          },
-          "RequestSetIndex": 0,
-          "_PriorityFixed": {
-            "app.CollisionDef.PRIORITY_Serializable": {
-              "_Value": "[7]PRIO_8"
-            }
-          },
-          "_IsSensorCollision": false,
-          "_IsArrowFlipCollision": false,
-          "_Parts": {
-            "app.col_user_data.DamageParamEm.cParts": {
-              "_Category": "[0]PARTS",
-              "_PartsDataGuid": "00000000-0000-0000-0000-000000000000"
-            }
-          }
-        }
-      }
-    },
-    {
-      "requestSetID": 6357093,
-      "groupIndex": 100,
-      "status": 53,
-      "requestSetIndex": 6619214,
-      "keyHash": 6357076,
-      "KeyNameMMHash": 7077993,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 48,
-      "groupIndex": 6357076,
-      "status": 6357076,
-      "requestSetIndex": 7077993,
-      "keyHash": 6815843,
-      "KeyNameMMHash": 7536741,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
         }
       }
     }

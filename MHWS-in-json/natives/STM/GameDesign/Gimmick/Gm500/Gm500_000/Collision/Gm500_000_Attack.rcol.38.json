@@ -236,7 +236,17 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 0
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 0
           }
         }
       ],
@@ -246,59 +256,67 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 0,
           "_DamageTypeFixed": {
-            "": {}
+            "app.HitDef.DAMAGE_TYPE_Serializable": {
+              "_Value": "[20]SMASH_MIDDLE"
+            }
           },
-          "_DamageTypeCustom": 1,
+          "_DamageTypeCustom": -956543104,
           "_DamageAngleFixed": {
-            "Ref": {
-              "ref_instance_id": -956543104,
-              "missing": true
+            "app.HitDef.DAMAGE_ANGLE_Serializable": {
+              "_Value": "[0]FRONT"
             }
           },
           "_DamageAngleOffsetDeg": 0.0,
           "_Attack": 0.0,
           "_FixAttack": 0.0,
-          "_GuardType": "[0]NORMAL",
+          "_GuardType": "[2]UNABLE_GUARD",
           "_VersusGuardPower": 0.0,
           "_StageDamageTypeFixed": {
-            "": {}
-          },
-          "_StageDamageExIDFixed": {
             "app.HitDef.STAGE_DAMAGE_TYPE_Serializable": {
               "_Value": "[1444776192]NONE"
             }
           },
-          "_AttackAttrFixed": {
+          "_StageDamageExIDFixed": {
             "app.HitDef.STAGE_DAMAGE_EX_ID_Serializable": {
               "_Value": "[-94023312]NONE"
             }
           },
-          "_AttrLevel": 5,
+          "_AttackAttrFixed": {
+            "app.HitDef.ATTR_Serializable": {
+              "_Value": "[0]NONE"
+            }
+          },
+          "_AttrLevel": 0,
           "_AttrValue": 0.0,
-          "_AttackCond": 0,
-          "_IsForceCond": true,
+          "_AttackCond": 1220034176,
+          "_IsForceCond": false,
           "_CondValue": 0.0,
-          "_IsUseCondDefaultSec": false,
+          "_IsUseCondDefaultSec": true,
           "_CondCustomSec": 0.0,
           "_StunDamage": 0.0,
           "_FlagBit": "[0]NONE",
           "_MultiHitTimer": 0.0,
           "_HealValue": 0.0,
           "_PriorityFixed": {
-            "": {}
-          },
-          "_PriorityTypeFixed": {
             "app.CollisionDef.PRIORITY_Serializable": {
               "_Value": "[7]PRIO_8"
             }
           },
-          "_DisableContactPointAdjust": true,
+          "_PriorityTypeFixed": {
+            "app.CollisionDef.PRIORITY_TYPE_Serializable": {
+              "_Value": "[0]ATTACK_FIRST"
+            }
+          },
+          "_DisableContactPointAdjust": false,
           "_IsContactPointAdjustIgnoreDamageAngle": false,
           "_PorterDodgeFixed": {
-            "": {}
+            "app.HitDef.PORTER_DODGE_TYPE_Serializable": {
+              "_Value": "[744790592]FORCE_HIT_STAMINA_0"
+            }
           },
-          "_IsEnterCombatMode": true,
+          "_IsEnterCombatMode": false,
           "STRUCT__EmBlowVec__HasValue": false,
           "STRUCT__EmBlowVec__Value": [
             0.0,
@@ -338,7 +356,17 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 1
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 1
           }
         }
       ],
@@ -348,50 +376,67 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 1,
           "_DamageTypeFixed": {
-            "": {}
+            "app.HitDef.DAMAGE_TYPE_Serializable": {
+              "_Value": "[0]NORMAL"
+            }
           },
-          "_DamageTypeCustom": 1,
+          "_DamageTypeCustom": -956543104,
           "_DamageAngleFixed": {
-            "": {}
+            "app.HitDef.DAMAGE_ANGLE_Serializable": {
+              "_Value": "[0]FRONT"
+            }
           },
           "_DamageAngleOffsetDeg": 0.0,
           "_Attack": 0.0,
           "_FixAttack": 0.0,
-          "_GuardType": -956543104,
+          "_GuardType": "[0]NORMAL",
           "_VersusGuardPower": 0.0,
           "_StageDamageTypeFixed": {
-            "": {}
+            "app.HitDef.STAGE_DAMAGE_TYPE_Serializable": {
+              "_Value": "[1444776192]NONE"
+            }
           },
           "_StageDamageExIDFixed": {
-            "": {}
+            "app.HitDef.STAGE_DAMAGE_EX_ID_Serializable": {
+              "_Value": "[-94023312]NONE"
+            }
           },
           "_AttackAttrFixed": {
-            "": {}
+            "app.HitDef.ATTR_Serializable": {
+              "_Value": "[0]NONE"
+            }
           },
           "_AttrLevel": 0,
           "_AttrValue": 0.0,
-          "_AttackCond": 15,
-          "_IsForceCond": true,
+          "_AttackCond": 1220034176,
+          "_IsForceCond": false,
           "_CondValue": 0.0,
-          "_IsUseCondDefaultSec": false,
+          "_IsUseCondDefaultSec": true,
           "_CondCustomSec": 0.0,
-          "_StunDamage": 377332.0,
+          "_StunDamage": 0.0,
           "_FlagBit": "[0]NONE",
           "_MultiHitTimer": 0.0,
           "_HealValue": 0.0,
           "_PriorityFixed": {
-            "": {}
+            "app.CollisionDef.PRIORITY_Serializable": {
+              "_Value": "[7]PRIO_8"
+            }
           },
           "_PriorityTypeFixed": {
-            "": {}
+            "app.CollisionDef.PRIORITY_TYPE_Serializable": {
+              "_Value": "[0]ATTACK_FIRST"
+            }
           },
           "_DisableContactPointAdjust": false,
           "_IsContactPointAdjustIgnoreDamageAngle": false,
           "_PorterDodgeFixed": {
-            "": {}
+            "app.HitDef.PORTER_DODGE_TYPE_Serializable": {
+              "_Value": "[-1072110528]AUTO"
+            }
           },
-          "_IsEnterCombatMode": false,
+          "_IsEnterCombatMode": true,
           "STRUCT__EmBlowVec__HasValue": false,
           "STRUCT__EmBlowVec__Value": [
             0.0,
@@ -399,18 +444,20 @@
             0.0,
             0.0
           ],
-          "_EmRateAttack": 0.0,
-          "_EmZakoRateAttack": 0.0,
-          "_EmMinAttack": 0.0,
+          "_EmRateAttack": 8.0,
+          "_EmZakoRateAttack": 100.0,
+          "_EmMinAttack": 511.0,
           "STRUCT__OtomoFixAttack__HasValue": false,
           "STRUCT__OtomoFixAttack__Value": 0.0,
-          "_IsKillableEnemy": false,
-          "_IsKillableEnemyZako": false,
+          "_IsKillableEnemy": true,
+          "_IsKillableEnemyZako": true,
           "_EmAttackAttrFixed": {
-            "": {}
+            "app.HitDef.ATTR_Serializable": {
+              "_Value": "[0]NONE"
+            }
           },
           "_EmAttackAttrRate": 0.0,
-          "_EmAttackSleepRate": 8.0
+          "_EmAttackSleepRate": 1.5
         }
       }
     },
@@ -429,227 +476,17 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 2
           }
-        }
-      ],
-      "userData": {
-        "app.col_user_data.AttackParamGimmick": {
-          "Name": "",
-          "ParentUserData": {
-            "": {}
-          },
-          "_DamageTypeFixed": {
-            "app.HitDef.DAMAGE_TYPE_Serializable": {
-              "_Value": "[20]SMASH_MIDDLE"
-            }
-          },
-          "_DamageTypeCustom": 55,
-          "_DamageAngleFixed": {
-            "": {}
-          },
-          "_DamageAngleOffsetDeg": 9621340160.0,
-          "_Attack": -2.9767193233414323e+35,
-          "_FixAttack": 0.0,
-          "_GuardType": 7,
-          "_VersusGuardPower": 0.0,
-          "_StageDamageTypeFixed": {
-            "Ref": {
-              "ref_instance_id": -1072110528,
-              "missing": true
-            }
-          },
-          "_StageDamageExIDFixed": {
-            "": {}
-          },
-          "_AttackAttrFixed": {
-            "app.HitDef.DAMAGE_TYPE_Serializable": {
-              "_Value": "[20]SMASH_MIDDLE"
-            }
-          },
-          "_AttrLevel": 0,
-          "_AttrValue": 0.0,
-          "_AttackCond": 2,
-          "_IsForceCond": true,
-          "_CondValue": -32295.75,
-          "_IsUseCondDefaultSec": true,
-          "_CondCustomSec": 0.0,
-          "_StunDamage": 0.0,
-          "_FlagBit": "[0]NONE",
-          "_MultiHitTimer": 0.0,
-          "_HealValue": 0.0,
-          "_PriorityFixed": {
-            "app.HitDef.STAGE_DAMAGE_TYPE_Serializable": {
-              "_Value": 0
-            }
-          },
-          "_PriorityTypeFixed": {
-            "app.HitDef.STAGE_DAMAGE_EX_ID_Serializable": {
-              "_Value": 1069547520
-            }
-          },
-          "_DisableContactPointAdjust": true,
-          "_IsContactPointAdjustIgnoreDamageAngle": false,
-          "_PorterDodgeFixed": {
-            "": {}
-          },
-          "_IsEnterCombatMode": false,
-          "STRUCT__EmBlowVec__HasValue": false,
-          "STRUCT__EmBlowVec__Value": [
-            0.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "_EmRateAttack": 0.0,
-          "_EmZakoRateAttack": 0.0,
-          "_EmMinAttack": 0.0,
-          "STRUCT__OtomoFixAttack__HasValue": false,
-          "STRUCT__OtomoFixAttack__Value": 0.0,
-          "_IsKillableEnemy": true,
-          "_IsKillableEnemyZako": false,
-          "_EmAttackAttrFixed": {
-            "": {}
-          },
-          "_EmAttackAttrRate": 0.0,
-          "_EmAttackSleepRate": 0.0
-        }
-      }
-    },
-    {
-      "requestSetID": 746338825,
-      "groupIndex": 1299932468,
-      "status": 563498616,
-      "requestSetIndex": 1262125784,
-      "keyHash": 2784548786,
-      "KeyNameMMHash": 1026510106,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
+        },
         {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 3732201175,
-      "groupIndex": 1318402617,
-      "status": 1477473361,
-      "requestSetIndex": 1250688871,
-      "keyHash": 2828537989,
-      "KeyNameMMHash": 2556491816,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 0,
-      "groupIndex": 0,
-      "status": 0,
-      "requestSetIndex": 5242880,
-      "keyHash": 4521984,
-      "KeyNameMMHash": 4259949,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "app.col_user_data.AttackParamGimmick": {
+          "via.physics.RequestSetColliderUserData": {
             "Name": "",
             "ParentUserData": {
               "": {}
             },
-            "_DamageTypeFixed": {
-              "": {}
-            },
-            "_DamageTypeCustom": 1,
-            "_DamageAngleFixed": {
-              "Ref": {
-                "ref_instance_id": -956543104,
-                "missing": true
-              }
-            },
-            "_DamageAngleOffsetDeg": 0.0,
-            "_Attack": 0.0,
-            "_FixAttack": 0.0,
-            "_GuardType": "[0]NORMAL",
-            "_VersusGuardPower": 0.0,
-            "_StageDamageTypeFixed": {
-              "": {}
-            },
-            "_StageDamageExIDFixed": {
-              "app.HitDef.STAGE_DAMAGE_TYPE_Serializable": {
-                "_Value": "[1444776192]NONE"
-              }
-            },
-            "_AttackAttrFixed": {
-              "app.HitDef.STAGE_DAMAGE_EX_ID_Serializable": {
-                "_Value": "[-94023312]NONE"
-              }
-            },
-            "_AttrLevel": 5,
-            "_AttrValue": 0.0,
-            "_AttackCond": 0,
-            "_IsForceCond": true,
-            "_CondValue": 0.0,
-            "_IsUseCondDefaultSec": false,
-            "_CondCustomSec": 0.0,
-            "_StunDamage": 0.0,
-            "_FlagBit": "[0]NONE",
-            "_MultiHitTimer": 0.0,
-            "_HealValue": 0.0,
-            "_PriorityFixed": {
-              "": {}
-            },
-            "_PriorityTypeFixed": {
-              "app.CollisionDef.PRIORITY_Serializable": {
-                "_Value": "[7]PRIO_8"
-              }
-            },
-            "_DisableContactPointAdjust": true,
-            "_IsContactPointAdjustIgnoreDamageAngle": false,
-            "_PorterDodgeFixed": {
-              "": {}
-            },
-            "_IsEnterCombatMode": true,
-            "STRUCT__EmBlowVec__HasValue": false,
-            "STRUCT__EmBlowVec__Value": [
-              0.0,
-              0.0,
-              0.0,
-              0.0
-            ],
-            "_EmRateAttack": 0.0,
-            "_EmZakoRateAttack": 0.0,
-            "_EmMinAttack": 0.0,
-            "STRUCT__OtomoFixAttack__HasValue": false,
-            "STRUCT__OtomoFixAttack__Value": 0.0,
-            "_IsKillableEnemy": true,
-            "_IsKillableEnemyZako": true,
-            "_EmAttackAttrFixed": {
-              "app.HitDef.ATTR_Serializable": {
-                "_Value": "[0]NONE"
-              }
-            },
-            "_EmAttackAttrRate": 0.0,
-            "_EmAttackSleepRate": 2.0
+            "RequestSetIndex": 2
           }
         }
       ],
@@ -659,14 +496,16 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 2,
           "_DamageTypeFixed": {
-            "": {}
+            "app.HitDef.DAMAGE_TYPE_Serializable": {
+              "_Value": "[55]NONE"
+            }
           },
-          "_DamageTypeCustom": 1,
+          "_DamageTypeCustom": -956543104,
           "_DamageAngleFixed": {
-            "Ref": {
-              "ref_instance_id": -956543104,
-              "missing": true
+            "app.HitDef.DAMAGE_ANGLE_Serializable": {
+              "_Value": "[0]FRONT"
             }
           },
           "_DamageAngleOffsetDeg": 0.0,
@@ -675,43 +514,49 @@
           "_GuardType": "[0]NORMAL",
           "_VersusGuardPower": 0.0,
           "_StageDamageTypeFixed": {
-            "": {}
-          },
-          "_StageDamageExIDFixed": {
             "app.HitDef.STAGE_DAMAGE_TYPE_Serializable": {
-              "_Value": "[1444776192]NONE"
+              "_Value": "[1343184512]L"
             }
           },
-          "_AttackAttrFixed": {
+          "_StageDamageExIDFixed": {
             "app.HitDef.STAGE_DAMAGE_EX_ID_Serializable": {
               "_Value": "[-94023312]NONE"
             }
           },
-          "_AttrLevel": 5,
+          "_AttackAttrFixed": {
+            "app.HitDef.ATTR_Serializable": {
+              "_Value": "[0]NONE"
+            }
+          },
+          "_AttrLevel": 0,
           "_AttrValue": 0.0,
-          "_AttackCond": 0,
-          "_IsForceCond": true,
+          "_AttackCond": 1220034176,
+          "_IsForceCond": false,
           "_CondValue": 0.0,
-          "_IsUseCondDefaultSec": false,
+          "_IsUseCondDefaultSec": true,
           "_CondCustomSec": 0.0,
           "_StunDamage": 0.0,
           "_FlagBit": "[0]NONE",
           "_MultiHitTimer": 0.0,
           "_HealValue": 0.0,
           "_PriorityFixed": {
-            "": {}
-          },
-          "_PriorityTypeFixed": {
             "app.CollisionDef.PRIORITY_Serializable": {
               "_Value": "[7]PRIO_8"
             }
           },
-          "_DisableContactPointAdjust": true,
+          "_PriorityTypeFixed": {
+            "app.CollisionDef.PRIORITY_TYPE_Serializable": {
+              "_Value": "[0]ATTACK_FIRST"
+            }
+          },
+          "_DisableContactPointAdjust": false,
           "_IsContactPointAdjustIgnoreDamageAngle": false,
           "_PorterDodgeFixed": {
-            "": {}
+            "app.HitDef.PORTER_DODGE_TYPE_Serializable": {
+              "_Value": "[-1072110528]AUTO"
+            }
           },
-          "_IsEnterCombatMode": true,
+          "_IsEnterCombatMode": false,
           "STRUCT__EmBlowVec__HasValue": false,
           "STRUCT__EmBlowVec__Value": [
             0.0,

@@ -2933,10 +2933,11 @@
       "nativeShapeColliders": [
         {
           "via.physics.RequestSetColliderUserData": {
-            "Name": "\u0001",
+            "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 0
           }
         }
       ],
@@ -2946,13 +2947,19 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 0,
           "_PriorityFixed": {
-            "": {}
+            "app.CollisionDef.PRIORITY_Serializable": {
+              "_Value": "[7]PRIO_8"
+            }
           },
-          "_IsSensorCollision": true,
+          "_IsSensorCollision": false,
           "_IsArrowFlipCollision": false,
           "_Parts": {
-            "": {}
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[0]PARTS",
+              "_PartsDataGuid": "00000000-0000-0000-0000-000000000000"
+            }
           }
         }
       }
@@ -2969,15 +2976,16 @@
       "nativeShapeColliders": [
         {
           "app.col_user_data.ShapeParamBase": {
-            "Name": "\u0005",
+            "Name": "",
             "ParentUserData": {
               "": {}
             },
-            "_IsCylinder": true,
-            "_AdjustRate": 0.0,
+            "RequestSetIndex": 1,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.2,
             "_EnableDynamicShape": false,
             "_DynamicSphere": {
-              "raw": "cdcc4c3e000000000000000000000000",
+              "raw": "00000000000000000000000000000000",
               "type": "Sphere"
             },
             "_DynamicCapsule": [
@@ -3016,17 +3024,206 @@
               0.0,
               0.0
             ],
-            "_DynamicShapeType": 0,
-            "_DynamicInterpolationSec": 0.0,
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
             "_EnableAngleLimit": false,
             "_AngleLimitType": "[0]PLANE",
             "_AngleLimitJointRotation": [
               0.0,
-              1.0,
+              0.0,
               0.0,
               0.0
             ],
-            "_AngleLimit": 0.0
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 1,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.2,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 1,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 1,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.6,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
           }
         }
       ],
@@ -3036,6 +3233,7 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 1,
           "_PriorityFixed": {
             "app.CollisionDef.PRIORITY_Serializable": {
               "_Value": "[7]PRIO_8"
@@ -3044,7 +3242,10 @@
           "_IsSensorCollision": false,
           "_IsArrowFlipCollision": false,
           "_Parts": {
-            "": {}
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[0]PARTS",
+              "_PartsDataGuid": "e4536a1c-4635-4500-af52-623311184658"
+            }
           }
         }
       }
@@ -3064,7 +3265,143 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 2
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 2
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 2,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.2,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 2,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.2,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
           }
         }
       ],
@@ -3074,17 +3411,18 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 2,
           "_PriorityFixed": {
-            "Ref": {
-              "ref_instance_id": -1119621970,
-              "missing": true
-            }
-          },
-          "_IsSensorCollision": true,
-          "_IsArrowFlipCollision": true,
-          "_Parts": {
             "app.CollisionDef.PRIORITY_Serializable": {
               "_Value": "[7]PRIO_8"
+            }
+          },
+          "_IsSensorCollision": false,
+          "_IsArrowFlipCollision": false,
+          "_Parts": {
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[0]PARTS",
+              "_PartsDataGuid": "e159bd18-4788-400a-aeec-43bd6e9e7e32"
             }
           }
         }
@@ -3106,15 +3444,16 @@
             "ParentUserData": {
               "": {}
             },
-            "_IsCylinder": true,
-            "_AdjustRate": 0.0,
+            "RequestSetIndex": 3,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
             "_EnableDynamicShape": false,
             "_DynamicSphere": {
-              "raw": "00000000000000000300000000000000",
+              "raw": "00000000000000000000000000000000",
               "type": "Sphere"
             },
             "_DynamicCapsule": [
-              0.4,
+              0.0,
               0.0,
               0.0,
               0.0,
@@ -3149,8 +3488,8 @@
               0.0,
               0.0
             ],
-            "_DynamicShapeType": 0,
-            "_DynamicInterpolationSec": 0.0,
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
             "_EnableAngleLimit": false,
             "_AngleLimitType": "[0]PLANE",
             "_AngleLimitJointRotation": [
@@ -3159,7 +3498,1204 @@
               0.0,
               0.0
             ],
-            "_AngleLimit": 0.0
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 3,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 3,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 3,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 3,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 3,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.6,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 3,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 3,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.6,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 3,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 3,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 3,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 3,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 3,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 3,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 3,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 3,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 3,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 3,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 3,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 3,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
           }
         }
       ],
@@ -3169,17 +4705,18 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 3,
           "_PriorityFixed": {
-            "Ref": {
-              "ref_instance_id": -1255432268,
-              "missing": true
-            }
-          },
-          "_IsSensorCollision": true,
-          "_IsArrowFlipCollision": true,
-          "_Parts": {
             "app.CollisionDef.PRIORITY_Serializable": {
               "_Value": "[7]PRIO_8"
+            }
+          },
+          "_IsSensorCollision": false,
+          "_IsArrowFlipCollision": false,
+          "_Parts": {
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[0]PARTS",
+              "_PartsDataGuid": "26a6187c-7afb-46f8-b49f-2bb5f59e9a95"
             }
           }
         }
@@ -3201,11 +4738,12 @@
             "ParentUserData": {
               "": {}
             },
-            "_IsCylinder": true,
-            "_AdjustRate": 0.0,
+            "RequestSetIndex": 4,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
             "_EnableDynamicShape": false,
             "_DynamicSphere": {
-              "raw": "2a000000000000002b00000001000000",
+              "raw": "00000000000000000000000000000000",
               "type": "Sphere"
             },
             "_DynamicCapsule": [
@@ -3213,7 +4751,7 @@
               0.0,
               0.0,
               0.0,
-              0.4,
+              0.0,
               0.0,
               0.0,
               0.0,
@@ -3244,8 +4782,8 @@
               0.0,
               0.0
             ],
-            "_DynamicShapeType": 0,
-            "_DynamicInterpolationSec": 0.0,
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
             "_EnableAngleLimit": false,
             "_AngleLimitType": "[0]PLANE",
             "_AngleLimitJointRotation": [
@@ -3254,7 +4792,1204 @@
               0.0,
               0.0
             ],
-            "_AngleLimit": 0.0
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 4,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 4,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 4,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 4,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 4,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.6,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 4,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 4,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.6,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 4,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 4,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 4,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 4,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 4,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 4,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 4,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 4,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 4,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 4,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 4,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 4,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
           }
         }
       ],
@@ -3264,15 +5999,18 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 4,
           "_PriorityFixed": {
-            "": {}
+            "app.CollisionDef.PRIORITY_Serializable": {
+              "_Value": "[7]PRIO_8"
+            }
           },
           "_IsSensorCollision": false,
           "_IsArrowFlipCollision": false,
           "_Parts": {
-            "Ref": {
-              "ref_instance_id": -571736612,
-              "missing": true
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[0]PARTS",
+              "_PartsDataGuid": "ddebfddc-bd4e-442b-9248-5d578351bbe6"
             }
           }
         }
@@ -3290,10 +6028,155 @@
       "nativeShapeColliders": [
         {
           "via.physics.RequestSetColliderUserData": {
-            "Name": "\u0000\u0000\u0000\u0000▹",
+            "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 5
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 5
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 5
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 5,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.6,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 5,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.6,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
           }
         }
       ],
@@ -3303,15 +6186,18 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 5,
           "_PriorityFixed": {
-            "": {}
+            "app.CollisionDef.PRIORITY_Serializable": {
+              "_Value": "[7]PRIO_8"
+            }
           },
           "_IsSensorCollision": false,
           "_IsArrowFlipCollision": false,
           "_Parts": {
-            "Ref": {
-              "ref_instance_id": 1127481344,
-              "missing": true
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[0]PARTS",
+              "_PartsDataGuid": "e378e6cc-25b9-47bb-a867-aa504211480e"
             }
           }
         }
@@ -3332,7 +6218,152 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 6
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 6
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 6
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 6,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.6,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 6,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.6,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
           }
         }
       ],
@@ -3342,13 +6373,19 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 6,
           "_PriorityFixed": {
-            "": {}
+            "app.CollisionDef.PRIORITY_Serializable": {
+              "_Value": "[7]PRIO_8"
+            }
           },
           "_IsSensorCollision": false,
           "_IsArrowFlipCollision": false,
           "_Parts": {
-            "": {}
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[0]PARTS",
+              "_PartsDataGuid": "93c667bf-16f6-4e3a-ba40-5929937c74eb"
+            }
           }
         }
       }
@@ -3369,22 +6406,23 @@
             "ParentUserData": {
               "": {}
             },
+            "RequestSetIndex": 7,
             "_IsCylinder": false,
-            "_AdjustRate": 0.0,
+            "_AdjustRate": 0.4,
             "_EnableDynamicShape": false,
             "_DynamicSphere": {
               "raw": "00000000000000000000000000000000",
               "type": "Sphere"
             },
             "_DynamicCapsule": [
-              180.0,
               0.0,
               0.0,
               0.0,
-              -0.0,
-              200.8203,
-              -1.7807289817759744e+16,
-              129282695168.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
               0.0,
               0.0,
               0.0,
@@ -3399,7 +6437,7 @@
               0.0,
               0.0,
               0.0,
-              0.4,
+              0.0,
               0.0,
               0.0,
               0.0,
@@ -3412,8 +6450,8 @@
               0.0,
               0.0
             ],
-            "_DynamicShapeType": 0,
-            "_DynamicInterpolationSec": 0.0,
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
             "_EnableAngleLimit": false,
             "_AngleLimitType": "[0]PLANE",
             "_AngleLimitJointRotation": [
@@ -3422,7 +6460,205 @@
               0.0,
               0.0
             ],
-            "_AngleLimit": 0.0
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 7
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 7,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.6,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 7,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.6,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 7,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
           }
         }
       ],
@@ -3432,13 +6668,19 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 7,
           "_PriorityFixed": {
-            "": {}
+            "app.CollisionDef.PRIORITY_Serializable": {
+              "_Value": "[7]PRIO_8"
+            }
           },
           "_IsSensorCollision": false,
           "_IsArrowFlipCollision": false,
           "_Parts": {
-            "": {}
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[0]PARTS",
+              "_PartsDataGuid": "903f7b56-d202-4348-8b0e-7ddacbcef051"
+            }
           }
         }
       }
@@ -3458,7 +6700,134 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 8
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 8,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 8,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.4,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
           }
         }
       ],
@@ -3468,13 +6837,19 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 8,
           "_PriorityFixed": {
-            "": {}
+            "app.CollisionDef.PRIORITY_Serializable": {
+              "_Value": "[7]PRIO_8"
+            }
           },
           "_IsSensorCollision": false,
           "_IsArrowFlipCollision": false,
           "_Parts": {
-            "": {}
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[0]PARTS",
+              "_PartsDataGuid": "876fc690-06a3-40d6-afbe-bbdb84475ca6"
+            }
           }
         }
       }
@@ -3494,7 +6869,8 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 9
           }
         }
       ],
@@ -3504,13 +6880,19 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 9,
           "_PriorityFixed": {
-            "": {}
+            "app.CollisionDef.PRIORITY_Serializable": {
+              "_Value": "[0]PRIO_15"
+            }
           },
           "_IsSensorCollision": false,
           "_IsArrowFlipCollision": false,
           "_Parts": {
-            "": {}
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[1]WEAK_POINT",
+              "_PartsDataGuid": "ec8a915e-a343-41c0-a56d-51405e618344"
+            }
           }
         }
       }
@@ -3530,7 +6912,44 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 10
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 10
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 10
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 10
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 10
           }
         }
       ],
@@ -3540,7 +6959,8 @@
           "ParentUserData": {
             "": {}
           },
-          "_PressLevel": "[0]ONLY_PRESSED"
+          "RequestSetIndex": 10,
+          "_PressLevel": "[4]ENEMY_BOSS_M"
         }
       }
     },
@@ -3559,7 +6979,35 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 11
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 11
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 11
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 11
           }
         }
       ],
@@ -3569,7 +7017,8 @@
           "ParentUserData": {
             "": {}
           },
-          "_PressLevel": "[0]ONLY_PRESSED"
+          "RequestSetIndex": 11,
+          "_PressLevel": "[4]ENEMY_BOSS_M"
         }
       }
     },
@@ -3588,7 +7037,35 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 12
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 12
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 12
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 12
           }
         }
       ],
@@ -3598,7 +7075,8 @@
           "ParentUserData": {
             "": {}
           },
-          "_PressLevel": "[0]ONLY_PRESSED"
+          "RequestSetIndex": 12,
+          "_PressLevel": "[4]ENEMY_BOSS_M"
         }
       }
     },
@@ -3617,17 +7095,82 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 13
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 13
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 13
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 13
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 13
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 13
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 13
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 13
           }
         }
       ],
       "userData": {
         "app.col_user_data.PressParam": {
-          "Name": "_\u0000\u0000\u0000`\u0000\u0001",
+          "Name": "",
           "ParentUserData": {
             "": {}
           },
-          "_PressLevel": "[9]PLAYER"
+          "RequestSetIndex": 13,
+          "_PressLevel": "[4]ENEMY_BOSS_M"
         }
       }
     },
@@ -3646,17 +7189,28 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 14
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 14
           }
         }
       ],
       "userData": {
         "app.col_user_data.PressParam": {
-          "Name": "\u0001\u0000\u0000\u0000\u0000\u0000\u000b\u0000\u0001",
+          "Name": "",
           "ParentUserData": {
             "": {}
           },
-          "_PressLevel": "[11]NPC"
+          "RequestSetIndex": 14,
+          "_PressLevel": "[4]ENEMY_BOSS_M"
         }
       }
     },
@@ -3675,7 +7229,8 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 15
           }
         }
       ],
@@ -3685,15 +7240,19 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 15,
           "_PriorityFixed": {
             "app.CollisionDef.PRIORITY_Serializable": {
               "_Value": "[0]PRIO_15"
             }
           },
-          "_IsSensorCollision": true,
+          "_IsSensorCollision": false,
           "_IsArrowFlipCollision": false,
           "_Parts": {
-            "": {}
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[0]PARTS",
+              "_PartsDataGuid": "e4536a1c-4635-4500-af52-623311184658"
+            }
           }
         }
       }
@@ -3714,779 +7273,22 @@
             "ParentUserData": {
               "": {}
             },
-            "_IsCylinder": true,
-            "_AdjustRate": 0.0,
-            "_EnableDynamicShape": false,
-            "_DynamicSphere": {
-              "raw": "00000000000000000d00000001000000",
-              "type": "Sphere"
-            },
-            "_DynamicCapsule": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0
-            ],
-            "_DynamicBox": [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              -1.5599635943280335e+22,
-              2052.3879
-            ],
-            "_DynamicShapeType": 862081711,
-            "_DynamicInterpolationSec": 871226666909696.0,
-            "_EnableAngleLimit": true,
-            "_AngleLimitType": "[0]PLANE",
-            "_AngleLimitJointRotation": [
-              0.0,
-              0.0,
-              0.0,
-              0.0
-            ],
-            "_AngleLimit": 0.0
-          }
-        }
-      ],
-      "userData": {
-        "app.col_user_data.DamageParamEm": {
-          "Name": "",
-          "ParentUserData": {
-            "": {}
-          },
-          "_PriorityFixed": {
-            "app.col_user_data.DamageParamEm.cParts": {
-              "_Category": "[0]PARTS",
-              "_PartsDataGuid": "43340000-0007-0000-0000-000000000000"
-            }
-          },
-          "_IsSensorCollision": true,
-          "_IsArrowFlipCollision": false,
-          "_Parts": {
-            "": {}
-          }
-        }
-      }
-    },
-    {
-      "requestSetID": 3278789551,
-      "groupIndex": 1263582301,
-      "status": 3732201175,
-      "requestSetIndex": 1318402617,
-      "keyHash": 28255655,
-      "KeyNameMMHash": 431882106,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 3732201175,
-      "groupIndex": 1318402617,
-      "status": 3732201175,
-      "requestSetIndex": 1318402617,
-      "keyHash": 28255655,
-      "KeyNameMMHash": 431882106,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 3732201175,
-      "groupIndex": 1318402617,
-      "status": 3732201175,
-      "requestSetIndex": 1318402617,
-      "keyHash": 28255655,
-      "KeyNameMMHash": 431882106,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 1051000738,
-      "groupIndex": 1309790940,
-      "status": 3732201175,
-      "requestSetIndex": 1318402617,
-      "keyHash": 1138594729,
-      "KeyNameMMHash": 3769597201,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 34376,
-      "groupIndex": 0,
-      "status": 0,
-      "requestSetIndex": 0,
-      "keyHash": 0,
-      "KeyNameMMHash": 0,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "app.col_user_data.DamageParamEm": {
-            "Name": "",
-            "ParentUserData": {
-              "": {}
-            },
-            "_PriorityFixed": {
-              "": {}
-            },
-            "_IsSensorCollision": true,
-            "_IsArrowFlipCollision": false,
-            "_Parts": {
-              "": {}
-            }
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 0,
-      "groupIndex": 0,
-      "status": 0,
-      "requestSetIndex": 0,
-      "keyHash": 0,
-      "KeyNameMMHash": 0,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "app.col_user_data.DamageParamEm": {
-            "Name": "",
-            "ParentUserData": {
-              "": {}
-            },
-            "_PriorityFixed": {
-              "": {}
-            },
-            "_IsSensorCollision": true,
-            "_IsArrowFlipCollision": false,
-            "_Parts": {
-              "": {}
-            }
-          }
-        }
-      ],
-      "userData": {
-        "app.col_user_data.DamageParamEm": {
-          "Name": "",
-          "ParentUserData": {
-            "": {}
-          },
-          "_PriorityFixed": {
-            "": {}
-          },
-          "_IsSensorCollision": true,
-          "_IsArrowFlipCollision": false,
-          "_Parts": {
-            "": {}
-          }
-        }
-      }
-    },
-    {
-      "requestSetID": 0,
-      "groupIndex": 0,
-      "status": 0,
-      "requestSetIndex": 0,
-      "keyHash": 0,
-      "KeyNameMMHash": 0,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "app.col_user_data.DamageParamEm": {
-            "Name": "",
-            "ParentUserData": {
-              "": {}
-            },
-            "_PriorityFixed": {
-              "": {}
-            },
-            "_IsSensorCollision": true,
-            "_IsArrowFlipCollision": false,
-            "_Parts": {
-              "": {}
-            }
-          }
-        }
-      ],
-      "userData": {
-        "app.col_user_data.DamageParamEm": {
-          "Name": "",
-          "ParentUserData": {
-            "": {}
-          },
-          "_PriorityFixed": {
-            "": {}
-          },
-          "_IsSensorCollision": true,
-          "_IsArrowFlipCollision": false,
-          "_Parts": {
-            "": {}
-          }
-        }
-      }
-    },
-    {
-      "requestSetID": 0,
-      "groupIndex": 0,
-      "status": 0,
-      "requestSetIndex": 0,
-      "keyHash": 0,
-      "KeyNameMMHash": 0,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "app.col_user_data.DamageParamEm": {
-            "Name": "",
-            "ParentUserData": {
-              "": {}
-            },
-            "_PriorityFixed": {
-              "": {}
-            },
-            "_IsSensorCollision": true,
-            "_IsArrowFlipCollision": false,
-            "_Parts": {
-              "": {}
-            }
-          }
-        }
-      ],
-      "userData": {
-        "app.col_user_data.DamageParamEm": {
-          "Name": "",
-          "ParentUserData": {
-            "": {}
-          },
-          "_PriorityFixed": {
-            "": {}
-          },
-          "_IsSensorCollision": true,
-          "_IsArrowFlipCollision": false,
-          "_Parts": {
-            "": {}
-          }
-        }
-      }
-    },
-    {
-      "requestSetID": 0,
-      "groupIndex": 0,
-      "status": 0,
-      "requestSetIndex": 0,
-      "keyHash": 0,
-      "KeyNameMMHash": 4718592,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "app.col_user_data.DamageParamEm": {
-            "Name": "",
-            "ParentUserData": {
-              "": {}
-            },
-            "_PriorityFixed": {
-              "": {}
-            },
-            "_IsSensorCollision": true,
-            "_IsArrowFlipCollision": false,
-            "_Parts": {
-              "": {}
-            }
-          }
-        }
-      ],
-      "userData": {
-        "app.col_user_data.DamageParamEm": {
-          "Name": "",
-          "ParentUserData": {
-            "": {}
-          },
-          "_PriorityFixed": {
-            "": {}
-          },
-          "_IsSensorCollision": true,
-          "_IsArrowFlipCollision": false,
-          "_Parts": {
-            "": {}
-          }
-        }
-      }
-    },
-    {
-      "requestSetID": 7340137,
-      "groupIndex": 0,
-      "status": 4849664,
-      "requestSetIndex": 7798881,
-      "keyHash": 6488165,
-      "KeyNameMMHash": 3145835,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 5111808,
-      "groupIndex": 6488165,
-      "status": 6881392,
-      "requestSetIndex": 6619246,
-      "keyHash": 6225996,
-      "KeyNameMMHash": 6881367,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 6750318,
-      "groupIndex": 3145813,
-      "status": 7209065,
-      "requestSetIndex": 5570663,
-      "keyHash": 3145815,
-      "KeyNameMMHash": 4980736,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 4784223,
-      "groupIndex": 6553710,
-      "status": 4980736,
-      "requestSetIndex": 4784223,
-      "keyHash": 6225992,
-      "KeyNameMMHash": 7209061,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 100,
-      "groupIndex": 6225996,
-      "status": 6619244,
-      "requestSetIndex": 3276887,
-      "keyHash": 5701733,
-      "KeyNameMMHash": 6225972,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 4718659,
-      "groupIndex": 6619231,
-      "status": 5374047,
-      "requestSetIndex": 7209065,
-      "keyHash": 6750318,
-      "KeyNameMMHash": 3407959,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 4391007,
-      "groupIndex": 6225992,
-      "status": 6225996,
-      "requestSetIndex": 6881360,
-      "keyHash": 6881360,
-      "KeyNameMMHash": 7012462,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "via.physics.RequestSetColliderUserData": {
-            "Name": "",
-            "ParentUserData": {
-              "": {}
-            }
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 5701753,
-      "groupIndex": 6225972,
-      "status": 6553710,
-      "requestSetIndex": 4980736,
-      "keyHash": 4980736,
-      "KeyNameMMHash": 4259935,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 6553700,
-      "groupIndex": 3342423,
-      "status": 6225992,
-      "requestSetIndex": 7209061,
-      "keyHash": 6225968,
-      "KeyNameMMHash": 49,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 6225996,
-      "groupIndex": 6553665,
-      "status": 49,
-      "requestSetIndex": 6225996,
-      "keyHash": 6357076,
-      "KeyNameMMHash": 7077993,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 49,
-      "groupIndex": 6225996,
-      "status": 5701730,
-      "requestSetIndex": 48,
-      "keyHash": 5373952,
-      "KeyNameMMHash": 5701727,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 7209065,
-      "groupIndex": 5570663,
-      "status": 6357064,
-      "requestSetIndex": 6553710,
-      "keyHash": 7864421,
-      "KeyNameMMHash": 3276887,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "app.col_user_data.ShapeParamBase": {
-          "Name": "",
-          "ParentUserData": {
-            "": {}
-          },
-          "_IsCylinder": false,
-          "_AdjustRate": 0.0,
-          "_EnableDynamicShape": false,
-          "_DynamicSphere": {
-            "raw": "00000000000000000000000000000000",
-            "type": "Sphere"
-          },
-          "_DynamicCapsule": [
-            180.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.4,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "_DynamicBox": [
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "_DynamicShapeType": 0,
-          "_DynamicInterpolationSec": 0.0,
-          "_EnableAngleLimit": false,
-          "_AngleLimitType": "[0]PLANE",
-          "_AngleLimitJointRotation": [
-            0.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "_AngleLimit": 0.0
-        }
-      }
-    },
-    {
-      "requestSetID": 5373952,
-      "groupIndex": 4784223,
-      "status": 3407959,
-      "requestSetIndex": 4391007,
-      "keyHash": 6881357,
-      "KeyNameMMHash": 6553700,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 6619244,
-      "groupIndex": 3276887,
-      "status": 6553705,
-      "requestSetIndex": 7077988,
-      "keyHash": 6553710,
-      "KeyNameMMHash": 5373952,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 5374047,
-      "groupIndex": 7209065,
-      "status": 6226002,
-      "requestSetIndex": 6881362,
-      "keyHash": 7209061,
-      "KeyNameMMHash": 100,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "app.col_user_data.ShapeParamBase": {
-            "Name": "",
-            "ParentUserData": {
-              "": {}
-            },
+            "RequestSetIndex": 16,
             "_IsCylinder": false,
-            "_AdjustRate": 0.0,
+            "_AdjustRate": 0.2,
             "_EnableDynamicShape": false,
             "_DynamicSphere": {
               "raw": "00000000000000000000000000000000",
               "type": "Sphere"
             },
             "_DynamicCapsule": [
-              180.0,
               0.0,
               0.0,
               0.0,
               0.0,
               0.0,
-              0.4,
+              0.0,
+              0.0,
               0.0,
               0.0,
               0.0,
@@ -4515,8 +7317,8 @@
               0.0,
               0.0
             ],
-            "_DynamicShapeType": 0,
-            "_DynamicInterpolationSec": 0.0,
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
             "_EnableAngleLimit": false,
             "_AngleLimitType": "[0]PLANE",
             "_AngleLimitJointRotation": [
@@ -4525,636 +7327,70 @@
               0.0,
               0.0
             ],
-            "_AngleLimit": 0.0
+            "_AngleLimit": 180.0
           }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 6226002,
-      "groupIndex": 6881360,
-      "status": 50,
-      "requestSetIndex": 6226002,
-      "keyHash": 4718659,
-      "KeyNameMMHash": 6619231,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
+        },
         {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 6553710,
-      "groupIndex": 5373952,
-      "status": 3342423,
-      "requestSetIndex": 3211359,
-      "keyHash": 3276895,
-      "KeyNameMMHash": 4391007,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 6225992,
-      "groupIndex": 7209061,
-      "status": 6553665,
-      "requestSetIndex": 5701732,
-      "keyHash": 5701732,
-      "KeyNameMMHash": 6225969,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "via.physics.RequestSetColliderUserData": {
-          "Name": "",
-          "ParentUserData": {
-            "": {}
-          }
-        }
-      }
-    },
-    {
-      "requestSetID": 49,
-      "groupIndex": 6226002,
-      "status": 6225970,
-      "requestSetIndex": 49,
-      "keyHash": 48,
-      "KeyNameMMHash": 6225996,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 6619212,
-      "groupIndex": 5570663,
-      "status": 6619212,
-      "requestSetIndex": 5570663,
-      "keyHash": 48,
-      "KeyNameMMHash": 6225996,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "app.col_user_data.ShapeParamBase": {
-          "Name": "",
-          "ParentUserData": {
-            "": {}
-          },
-          "_IsCylinder": false,
-          "_AdjustRate": 0.0,
-          "_EnableDynamicShape": false,
-          "_DynamicSphere": {
-            "raw": "00000000000000000000000000000000",
-            "type": "Sphere"
-          },
-          "_DynamicCapsule": [
-            180.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.4,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "_DynamicBox": [
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "_DynamicShapeType": 0,
-          "_DynamicInterpolationSec": 0.0,
-          "_EnableAngleLimit": false,
-          "_AngleLimitType": "[0]PLANE",
-          "_AngleLimitJointRotation": [
-            0.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "_AngleLimit": 0.0
-        }
-      }
-    },
-    {
-      "requestSetID": 7274566,
-      "groupIndex": 7602287,
-      "status": 7274566,
-      "requestSetIndex": 7602287,
-      "keyHash": 48,
-      "KeyNameMMHash": 6226002,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "app.col_user_data.ShapeParamBase": {
-          "Name": "",
-          "ParentUserData": {
-            "": {}
-          },
-          "_IsCylinder": false,
-          "_AdjustRate": 0.0,
-          "_EnableDynamicShape": false,
-          "_DynamicSphere": {
-            "raw": "00000000000000000000000000000000",
-            "type": "Sphere"
-          },
-          "_DynamicCapsule": [
-            180.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.4,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "_DynamicBox": [
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "_DynamicShapeType": 0,
-          "_DynamicInterpolationSec": 0.0,
-          "_EnableAngleLimit": false,
-          "_AngleLimitType": "[0]PLANE",
-          "_AngleLimitJointRotation": [
-            0.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "_AngleLimit": 0.0
-        }
-      }
-    },
-    {
-      "requestSetID": 6619212,
-      "groupIndex": 5570663,
-      "status": 7274566,
-      "requestSetIndex": 7602287,
-      "keyHash": 49,
-      "KeyNameMMHash": 6226002,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "app.col_user_data.ShapeParamBase": {
-          "Name": "",
-          "ParentUserData": {
-            "": {}
-          },
-          "_IsCylinder": false,
-          "_AdjustRate": 0.0,
-          "_EnableDynamicShape": false,
-          "_DynamicSphere": {
-            "raw": "00000000000000000000000000000000",
-            "type": "Sphere"
-          },
-          "_DynamicCapsule": [
-            180.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.4,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "_DynamicBox": [
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "_DynamicShapeType": 0,
-          "_DynamicInterpolationSec": 0.0,
-          "_EnableAngleLimit": false,
-          "_AngleLimitType": "[0]PLANE",
-          "_AngleLimitJointRotation": [
-            0.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "_AngleLimit": 0.0
-        }
-      }
-    },
-    {
-      "requestSetID": 7274566,
-      "groupIndex": 7602287,
-      "status": 7077993,
-      "requestSetIndex": 50,
-      "keyHash": 7077993,
-      "KeyNameMMHash": 52,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "app.col_user_data.ShapeParamBase": {
-          "Name": "",
-          "ParentUserData": {
-            "": {}
-          },
-          "_IsCylinder": false,
-          "_AdjustRate": 0.0,
-          "_EnableDynamicShape": false,
-          "_DynamicSphere": {
-            "raw": "00000000000000000000000000000000",
-            "type": "Sphere"
-          },
-          "_DynamicCapsule": [
-            180.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.4,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "_DynamicBox": [
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "_DynamicShapeType": 0,
-          "_DynamicInterpolationSec": 0.0,
-          "_EnableAngleLimit": false,
-          "_AngleLimitType": "[0]PLANE",
-          "_AngleLimitJointRotation": [
-            0.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "_AngleLimit": 0.0
-        }
-      }
-    },
-    {
-      "requestSetID": 6357076,
-      "groupIndex": 7077993,
-      "status": 7077993,
-      "requestSetIndex": 54,
-      "keyHash": 6619214,
-      "KeyNameMMHash": 7012451,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "app.col_user_data.ShapeParamBase": {
-          "Name": "",
-          "ParentUserData": {
-            "": {}
-          },
-          "_IsCylinder": false,
-          "_AdjustRate": 0.0,
-          "_EnableDynamicShape": false,
-          "_DynamicSphere": {
-            "raw": "00000000000000000000000000000000",
-            "type": "Sphere"
-          },
-          "_DynamicCapsule": [
-            180.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.4,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "_DynamicBox": [
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "_DynamicShapeType": 0,
-          "_DynamicInterpolationSec": 0.0,
-          "_EnableAngleLimit": false,
-          "_AngleLimitType": "[0]PLANE",
-          "_AngleLimitJointRotation": [
-            0.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "_AngleLimit": 0.0
-        }
-      }
-    },
-    {
-      "requestSetID": 51,
-      "groupIndex": 6815811,
-      "status": 6225996,
-      "requestSetIndex": 6619212,
-      "keyHash": 4980839,
-      "KeyNameMMHash": 48,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 5439488,
-      "groupIndex": 7667823,
-      "status": 6488161,
-      "requestSetIndex": 6881396,
-      "keyHash": 0,
-      "KeyNameMMHash": 7274562,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 7929956,
-      "groupIndex": 0,
-      "status": 6619212,
-      "requestSetIndex": 7602278,
-      "keyHash": 6815847,
-      "KeyNameMMHash": 116,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 4980736,
-      "groupIndex": 6750309,
-      "status": 0,
-      "requestSetIndex": 6619212,
-      "keyHash": 6357076,
-      "KeyNameMMHash": 7077993,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 0,
-      "groupIndex": 6619214,
-      "status": 6619223,
-      "requestSetIndex": 7012449,
-      "keyHash": 7536757,
-      "KeyNameMMHash": 6226024,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "app.col_user_data.DamageParamEm": {
+          "app.col_user_data.ShapeParamBase": {
             "Name": "",
             "ParentUserData": {
               "": {}
             },
-            "_PriorityFixed": {
-              "": {}
+            "RequestSetIndex": 16,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.2,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
             },
-            "_IsSensorCollision": true,
-            "_IsArrowFlipCollision": false,
-            "_Parts": {
-              "": {}
-            }
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 6619208,
-      "groupIndex": 6553697,
-      "status": 6815859,
-      "requestSetIndex": 4325471,
-      "keyHash": 6226024,
-      "KeyNameMMHash": 6357076,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
           }
         }
       ],
@@ -5164,58 +7400,20 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 16,
           "_PriorityFixed": {
-            "": {}
+            "app.CollisionDef.PRIORITY_Serializable": {
+              "_Value": "[0]PRIO_15"
+            }
           },
-          "_IsSensorCollision": true,
+          "_IsSensorCollision": false,
           "_IsArrowFlipCollision": false,
           "_Parts": {
-            "": {}
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[1]WEAK_POINT",
+              "_PartsDataGuid": "ee6bb8bb-a585-48c2-b046-67b23e17fe62"
+            }
           }
-        }
-      }
-    },
-    {
-      "requestSetID": 7077993,
-      "groupIndex": 0,
-      "status": 4980831,
-      "requestSetIndex": 6750309,
-      "keyHash": 7536751,
-      "KeyNameMMHash": 115,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 4390912,
-      "groupIndex": 7602273,
-      "status": 6357093,
-      "requestSetIndex": 5242987,
-      "keyHash": 6226023,
-      "KeyNameMMHash": 6619223,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
         }
       }
     }

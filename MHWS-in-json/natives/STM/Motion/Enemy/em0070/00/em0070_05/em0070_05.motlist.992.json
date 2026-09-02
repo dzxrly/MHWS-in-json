@@ -1,0 +1,418 @@
+{
+  "_format": "re_engine_motlist_action_tracks_v1",
+  "sourcePath": "STM/Motion/Enemy/em0070/00/em0070_05/em0070_05.motlist.992",
+  "motlistName": "em0070_05",
+  "motlistVersion": 992,
+  "motlistVersionName": "MHWILDS",
+  "trackFilters": [
+    "property:_RequestSetID"
+  ],
+  "statistics": {
+    "totalMotions": 25,
+    "matchedMotions": 1,
+    "inspectedClips": 5,
+    "matchedClips": 1,
+    "matchedTracks": 1,
+    "requestSetMappings": 1
+  },
+  "requestSetMappings": [
+    {
+      "motionId": 102,
+      "motionName": "Motion/Enemy/em0070/00/em0070_05/fbx/em0070_05_102.mot",
+      "motionType": "MotFileLink",
+      "clipSource": "override",
+      "clipIndex": 0,
+      "mainTrackName": "app.motion_track.EmMotionTrack.PosAdjustTargetDynamic",
+      "trackIndex": 2,
+      "trackName": "app.motion_track.ShellCreate",
+      "propertyIndex": 2,
+      "propertyPath": "_RequestSetID",
+      "requestSetId": 9,
+      "startFrame": 30.0
+    }
+  ],
+  "motions": [
+    {
+      "motionId": 102,
+      "motionName": "Motion/Enemy/em0070/00/em0070_05/fbx/em0070_05_102.mot",
+      "motionType": "MotFileLink",
+      "clips": [
+        {
+          "source": "override",
+          "index": 0,
+          "mainTrackName": "app.motion_track.EmMotionTrack.PosAdjustTargetDynamic",
+          "frameCount": 109.0,
+          "tracks": [
+            {
+              "index": 2,
+              "name": "app.motion_track.ShellCreate",
+              "startFrame": 0.0,
+              "endFrame": 0.0,
+              "properties": [
+                {
+                  "name": "_IsInRange",
+                  "path": "_IsInRange",
+                  "dataType": "Bool",
+                  "arrayIndex": -1,
+                  "startFrame": 30.0,
+                  "endFrame": 30.0,
+                  "keys": [
+                    {
+                      "frame": 30.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    }
+                  ]
+                },
+                {
+                  "name": "_On",
+                  "path": "_On",
+                  "dataType": "Bool",
+                  "arrayIndex": -1,
+                  "startFrame": 0.0,
+                  "endFrame": 109.0,
+                  "keys": [
+                    {
+                      "frame": 0.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    },
+                    {
+                      "frame": 30.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    },
+                    {
+                      "frame": 31.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    }
+                  ]
+                },
+                {
+                  "name": "_RequestSetID",
+                  "path": "_RequestSetID",
+                  "dataType": "S32",
+                  "arrayIndex": -1,
+                  "startFrame": 30.0,
+                  "endFrame": 109.0,
+                  "keys": [
+                    {
+                      "frame": 30.0,
+                      "keyType": "NoHermiteKey",
+                      "value": 9,
+                      "extra": false,
+                      "interpolation": "None"
+                    }
+                  ]
+                },
+                {
+                  "name": "_HitIDGroup",
+                  "path": "_HitIDGroup",
+                  "dataType": "Enum",
+                  "arrayIndex": -1,
+                  "startFrame": 30.0,
+                  "endFrame": 109.0,
+                  "keys": [
+                    {
+                      "frame": 30.0,
+                      "keyType": "NoHermiteKey",
+                      "value": "NONE",
+                      "extra": false,
+                      "interpolation": "None"
+                    }
+                  ]
+                },
+                {
+                  "name": "_IsApplyMirrorMotion",
+                  "path": "_IsApplyMirrorMotion",
+                  "dataType": "Bool",
+                  "arrayIndex": -1,
+                  "startFrame": 30.0,
+                  "endFrame": 30.0,
+                  "keys": [
+                    {
+                      "frame": 30.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    }
+                  ]
+                },
+                {
+                  "name": "x",
+                  "path": "_OffsetVec.x",
+                  "dataType": "F64",
+                  "arrayIndex": -1,
+                  "startFrame": 30.0,
+                  "endFrame": 30.0,
+                  "keys": [
+                    {
+                      "frame": 30.0,
+                      "keyType": "NoHermiteKey",
+                      "value": 0.0,
+                      "extra": false,
+                      "interpolation": "None"
+                    }
+                  ]
+                },
+                {
+                  "name": "y",
+                  "path": "_OffsetVec.y",
+                  "dataType": "F64",
+                  "arrayIndex": -1,
+                  "startFrame": 30.0,
+                  "endFrame": 30.0,
+                  "keys": [
+                    {
+                      "frame": 30.0,
+                      "keyType": "NoHermiteKey",
+                      "value": 0.0,
+                      "extra": false,
+                      "interpolation": "None"
+                    }
+                  ]
+                },
+                {
+                  "name": "z",
+                  "path": "_OffsetVec.z",
+                  "dataType": "F64",
+                  "arrayIndex": -1,
+                  "startFrame": 30.0,
+                  "endFrame": 30.0,
+                  "keys": [
+                    {
+                      "frame": 30.0,
+                      "keyType": "NoHermiteKey",
+                      "value": 0.0,
+                      "extra": false,
+                      "interpolation": "None"
+                    }
+                  ]
+                },
+                {
+                  "name": "_IsMirrorOffset_X",
+                  "path": "_IsMirrorOffset_X",
+                  "dataType": "Bool",
+                  "arrayIndex": -1,
+                  "startFrame": 30.0,
+                  "endFrame": 30.0,
+                  "keys": [
+                    {
+                      "frame": 30.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    }
+                  ]
+                },
+                {
+                  "name": "_IsMirrorOffset_Y",
+                  "path": "_IsMirrorOffset_Y",
+                  "dataType": "Bool",
+                  "arrayIndex": -1,
+                  "startFrame": 30.0,
+                  "endFrame": 30.0,
+                  "keys": [
+                    {
+                      "frame": 30.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    }
+                  ]
+                },
+                {
+                  "name": "_IsMirrorOffset_Z",
+                  "path": "_IsMirrorOffset_Z",
+                  "dataType": "Bool",
+                  "arrayIndex": -1,
+                  "startFrame": 30.0,
+                  "endFrame": 30.0,
+                  "keys": [
+                    {
+                      "frame": 30.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    }
+                  ]
+                },
+                {
+                  "name": "_IsStartRot",
+                  "path": "_IsStartRot",
+                  "dataType": "Bool",
+                  "arrayIndex": -1,
+                  "startFrame": 30.0,
+                  "endFrame": 30.0,
+                  "keys": [
+                    {
+                      "frame": 30.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    }
+                  ]
+                },
+                {
+                  "name": "x",
+                  "path": "_StartRot.x",
+                  "dataType": "F64",
+                  "arrayIndex": -1,
+                  "startFrame": 30.0,
+                  "endFrame": 30.0,
+                  "keys": [
+                    {
+                      "frame": 30.0,
+                      "keyType": "NoHermiteKey",
+                      "value": 0.0,
+                      "extra": false,
+                      "interpolation": "None"
+                    }
+                  ]
+                },
+                {
+                  "name": "y",
+                  "path": "_StartRot.y",
+                  "dataType": "F64",
+                  "arrayIndex": -1,
+                  "startFrame": 30.0,
+                  "endFrame": 30.0,
+                  "keys": [
+                    {
+                      "frame": 30.0,
+                      "keyType": "NoHermiteKey",
+                      "value": 0.0,
+                      "extra": false,
+                      "interpolation": "None"
+                    }
+                  ]
+                },
+                {
+                  "name": "z",
+                  "path": "_StartRot.z",
+                  "dataType": "F64",
+                  "arrayIndex": -1,
+                  "startFrame": 30.0,
+                  "endFrame": 30.0,
+                  "keys": [
+                    {
+                      "frame": 30.0,
+                      "keyType": "NoHermiteKey",
+                      "value": 0.0,
+                      "extra": false,
+                      "interpolation": "None"
+                    }
+                  ]
+                },
+                {
+                  "name": "_IsMirrorStartRot",
+                  "path": "_IsMirrorStartRot",
+                  "dataType": "Bool",
+                  "arrayIndex": -1,
+                  "startFrame": 30.0,
+                  "endFrame": 30.0,
+                  "keys": [
+                    {
+                      "frame": 30.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    }
+                  ]
+                },
+                {
+                  "name": "_IsUseTargetOffset",
+                  "path": "_IsUseTargetOffset",
+                  "dataType": "Bool",
+                  "arrayIndex": -1,
+                  "startFrame": 30.0,
+                  "endFrame": 30.0,
+                  "keys": [
+                    {
+                      "frame": 30.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    }
+                  ]
+                },
+                {
+                  "name": "x",
+                  "path": "_TargetOffsetVec.x",
+                  "dataType": "F64",
+                  "arrayIndex": -1,
+                  "startFrame": 30.0,
+                  "endFrame": 30.0,
+                  "keys": [
+                    {
+                      "frame": 30.0,
+                      "keyType": "NoHermiteKey",
+                      "value": 0.0,
+                      "extra": false,
+                      "interpolation": "None"
+                    }
+                  ]
+                },
+                {
+                  "name": "y",
+                  "path": "_TargetOffsetVec.y",
+                  "dataType": "F64",
+                  "arrayIndex": -1,
+                  "startFrame": 30.0,
+                  "endFrame": 30.0,
+                  "keys": [
+                    {
+                      "frame": 30.0,
+                      "keyType": "NoHermiteKey",
+                      "value": 0.0,
+                      "extra": false,
+                      "interpolation": "None"
+                    }
+                  ]
+                },
+                {
+                  "name": "z",
+                  "path": "_TargetOffsetVec.z",
+                  "dataType": "F64",
+                  "arrayIndex": -1,
+                  "startFrame": 30.0,
+                  "endFrame": 30.0,
+                  "keys": [
+                    {
+                      "frame": 30.0,
+                      "keyType": "NoHermiteKey",
+                      "value": 0.0,
+                      "extra": false,
+                      "interpolation": "None"
+                    }
+                  ]
+                },
+                {
+                  "name": "_IsMirrorTargetOffset",
+                  "path": "_IsMirrorTargetOffset",
+                  "dataType": "Bool",
+                  "arrayIndex": -1,
+                  "startFrame": 30.0,
+                  "endFrame": 30.0,
+                  "keys": [
+                    {
+                      "frame": 30.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

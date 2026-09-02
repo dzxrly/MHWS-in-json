@@ -4181,10 +4181,11 @@
       "nativeShapeColliders": [
         {
           "via.physics.RequestSetColliderUserData": {
-            "Name": "\u0001",
+            "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 0
           }
         }
       ],
@@ -4194,13 +4195,19 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 0,
           "_PriorityFixed": {
-            "": {}
+            "app.CollisionDef.PRIORITY_Serializable": {
+              "_Value": "[7]PRIO_8"
+            }
           },
-          "_IsSensorCollision": true,
+          "_IsSensorCollision": false,
           "_IsArrowFlipCollision": false,
           "_Parts": {
-            "": {}
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[0]PARTS",
+              "_PartsDataGuid": "00000000-0000-0000-0000-000000000000"
+            }
           }
         }
       }
@@ -4217,10 +4224,272 @@
       "nativeShapeColliders": [
         {
           "via.physics.RequestSetColliderUserData": {
-            "Name": "\u0005",
+            "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 1
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 1,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.35,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 1,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.45,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 1
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 1,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.35,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 1,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.45,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
           }
         }
       ],
@@ -4230,15 +4499,19 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 1,
           "_PriorityFixed": {
             "app.CollisionDef.PRIORITY_Serializable": {
-              "_Value": "[7]PRIO_8"
+              "_Value": "[0]PRIO_15"
             }
           },
           "_IsSensorCollision": false,
           "_IsArrowFlipCollision": false,
           "_Parts": {
-            "": {}
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[1]WEAK_POINT",
+              "_PartsDataGuid": "238a78c7-cc10-402b-b7b8-0507c8a98868"
+            }
           }
         }
       }
@@ -4258,7 +4531,287 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 2
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 2
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 2
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 2,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.35,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 2,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.45,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 2
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 2,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.35,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 2,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.45,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
           }
         }
       ],
@@ -4268,15 +4821,18 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 2,
           "_PriorityFixed": {
-            "": {}
+            "app.CollisionDef.PRIORITY_Serializable": {
+              "_Value": "[7]PRIO_8"
+            }
           },
           "_IsSensorCollision": false,
           "_IsArrowFlipCollision": false,
           "_Parts": {
-            "Ref": {
-              "ref_instance_id": -858177789,
-              "missing": true
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[0]PARTS",
+              "_PartsDataGuid": "ccd93f03-0c35-4992-86dd-c92bb6a603f3"
             }
           }
         }
@@ -4298,18 +4854,19 @@
             "ParentUserData": {
               "": {}
             },
+            "RequestSetIndex": 3,
             "_IsCylinder": false,
-            "_AdjustRate": 0.0,
+            "_AdjustRate": 0.35,
             "_EnableDynamicShape": false,
             "_DynamicSphere": {
-              "raw": "00003443060000000000000000000000",
+              "raw": "00000000000000000000000000000000",
               "type": "Sphere"
             },
             "_DynamicCapsule": [
-              -1242128187392.0,
-              2407.4692,
-              0.307,
-              -0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
               0.0,
               0.0,
               0.0,
@@ -4324,7 +4881,7 @@
               0.0,
               0.0,
               0.0,
-              0.35,
+              0.0,
               0.0,
               0.0,
               0.0,
@@ -4341,8 +4898,8 @@
               0.0,
               0.0
             ],
-            "_DynamicShapeType": 0,
-            "_DynamicInterpolationSec": 0.0,
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
             "_EnableAngleLimit": false,
             "_AngleLimitType": "[0]PLANE",
             "_AngleLimitJointRotation": [
@@ -4351,7 +4908,133 @@
               0.0,
               0.0
             ],
-            "_AngleLimit": 0.0
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 3,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.2,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 3,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.35,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
           }
         }
       ],
@@ -4361,14 +5044,18 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 3,
           "_PriorityFixed": {
-            "": {}
+            "app.CollisionDef.PRIORITY_Serializable": {
+              "_Value": "[6]PRIO_9"
+            }
           },
           "_IsSensorCollision": false,
           "_IsArrowFlipCollision": false,
           "_Parts": {
-            "app.CollisionDef.PRIORITY_Serializable": {
-              "_Value": "[7]PRIO_8"
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[0]PARTS",
+              "_PartsDataGuid": "d3909a4e-7782-4516-ba30-9d3e61735a9a"
             }
           }
         }
@@ -4389,7 +5076,143 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 4
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 4
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 4,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.2,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 4,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.35,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
           }
         }
       ],
@@ -4399,13 +5222,19 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 4,
           "_PriorityFixed": {
-            "": {}
+            "app.CollisionDef.PRIORITY_Serializable": {
+              "_Value": "[7]PRIO_8"
+            }
           },
           "_IsSensorCollision": false,
           "_IsArrowFlipCollision": false,
           "_Parts": {
-            "": {}
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[0]PARTS",
+              "_PartsDataGuid": "f9ec035b-1737-46da-891c-caac04390eef"
+            }
           }
         }
       }
@@ -4426,8 +5255,9 @@
             "ParentUserData": {
               "": {}
             },
+            "RequestSetIndex": 5,
             "_IsCylinder": false,
-            "_AdjustRate": 0.0,
+            "_AdjustRate": 0.35,
             "_EnableDynamicShape": false,
             "_DynamicSphere": {
               "raw": "00000000000000000000000000000000",
@@ -4435,22 +5265,20 @@
             },
             "_DynamicCapsule": [
               0.0,
-              1.0,
               0.0,
               0.0,
               0.0,
               0.0,
               0.0,
               0.0,
-              180.0,
+              0.0,
+              0.0,
               0.0,
               0.0,
               0.0
             ],
             "_DynamicBox": [
               0.0,
-              26.5518,
-              3.481476008824013e+16,
               0.0,
               0.0,
               0.0,
@@ -4464,13 +5292,15 @@
               0.0,
               0.0,
               0.0,
-              0.35,
+              0.0,
+              0.0,
+              0.0,
               0.0,
               0.0,
               0.0
             ],
-            "_DynamicShapeType": 0,
-            "_DynamicInterpolationSec": 0.0,
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
             "_EnableAngleLimit": false,
             "_AngleLimitType": "[0]PLANE",
             "_AngleLimitJointRotation": [
@@ -4479,7 +5309,133 @@
               0.0,
               0.0
             ],
-            "_AngleLimit": 0.0
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 5,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.35,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 5,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.35,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
           }
         }
       ],
@@ -4489,13 +5445,19 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 5,
           "_PriorityFixed": {
-            "": {}
+            "app.CollisionDef.PRIORITY_Serializable": {
+              "_Value": "[6]PRIO_9"
+            }
           },
           "_IsSensorCollision": false,
           "_IsArrowFlipCollision": false,
           "_Parts": {
-            "": {}
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[0]PARTS",
+              "_PartsDataGuid": "2c5f10d4-6a01-41d4-ae5f-f75a2cf5bc0c"
+            }
           }
         }
       }
@@ -4516,8 +5478,9 @@
             "ParentUserData": {
               "": {}
             },
+            "RequestSetIndex": 6,
             "_IsCylinder": false,
-            "_AdjustRate": 0.0,
+            "_AdjustRate": 0.35,
             "_EnableDynamicShape": false,
             "_DynamicSphere": {
               "raw": "00000000000000000000000000000000",
@@ -4529,7 +5492,7 @@
               0.0,
               0.0,
               0.0,
-              1.0,
+              0.0,
               0.0,
               0.0,
               0.0,
@@ -4538,14 +5501,14 @@
               0.0
             ],
             "_DynamicBox": [
-              180.0,
               0.0,
               0.0,
               0.0,
-              1.4951745398727039e+23,
-              5931921.0,
               0.0,
-              32029.918,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
               0.0,
               0.0,
               0.0,
@@ -4559,8 +5522,8 @@
               0.0,
               0.0
             ],
-            "_DynamicShapeType": 1051931443,
-            "_DynamicInterpolationSec": 0.0,
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
             "_EnableAngleLimit": false,
             "_AngleLimitType": "[0]PLANE",
             "_AngleLimitJointRotation": [
@@ -4569,7 +5532,133 @@
               0.0,
               0.0
             ],
-            "_AngleLimit": 0.0
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 6,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.35,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 6,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.35,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
           }
         }
       ],
@@ -4579,13 +5668,19 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 6,
           "_PriorityFixed": {
-            "": {}
+            "app.CollisionDef.PRIORITY_Serializable": {
+              "_Value": "[6]PRIO_9"
+            }
           },
           "_IsSensorCollision": false,
           "_IsArrowFlipCollision": false,
           "_Parts": {
-            "": {}
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[0]PARTS",
+              "_PartsDataGuid": "65fd4adc-0722-4ab5-9c10-9d1bd63bfa46"
+            }
           }
         }
       }
@@ -4605,7 +5700,332 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 7
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 7
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 7
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 7
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 7
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 7
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 7
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 7
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 7
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 7
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 7
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 7
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 7
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 7
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 7
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 7
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 7
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 7
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 7
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 7
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 7
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 7
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 7
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 7,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.35,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 7,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.35,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
           }
         }
       ],
@@ -4615,13 +6035,19 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 7,
           "_PriorityFixed": {
-            "": {}
+            "app.CollisionDef.PRIORITY_Serializable": {
+              "_Value": "[7]PRIO_8"
+            }
           },
           "_IsSensorCollision": false,
           "_IsArrowFlipCollision": false,
           "_Parts": {
-            "": {}
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[0]PARTS",
+              "_PartsDataGuid": "872d5803-9807-4d55-96af-7706f83f7d73"
+            }
           }
         }
       }
@@ -4641,7 +6067,332 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 8
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 8
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 8
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 8
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 8
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 8
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 8
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 8
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 8
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 8
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 8
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 8
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 8
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 8
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 8
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 8
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 8
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 8
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 8
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 8
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 8
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 8
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 8
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 8,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.35,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamBase": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 8,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.35,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
           }
         }
       ],
@@ -4651,14 +6402,18 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 8,
           "_PriorityFixed": {
-            "": {}
+            "app.CollisionDef.PRIORITY_Serializable": {
+              "_Value": "[7]PRIO_8"
+            }
           },
           "_IsSensorCollision": false,
           "_IsArrowFlipCollision": false,
           "_Parts": {
-            "app.CollisionDef.PRIORITY_Serializable": {
-              "_Value": "[7]PRIO_8"
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[0]PARTS",
+              "_PartsDataGuid": "ced61bd3-2537-4ae9-bc68-6a4195db3163"
             }
           }
         }
@@ -4679,7 +6434,89 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 9
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 9
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 9
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamDisableScar": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 9,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.0,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
           }
         }
       ],
@@ -4689,18 +6526,19 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 9,
           "_PriorityFixed": {
-            "via.physics.RequestSetColliderUserData": {
-              "Name": "\u0005",
-              "ParentUserData": {
-                "": {}
-              }
+            "app.CollisionDef.PRIORITY_Serializable": {
+              "_Value": "[7]PRIO_8"
             }
           },
-          "_IsSensorCollision": true,
+          "_IsSensorCollision": false,
           "_IsArrowFlipCollision": false,
           "_Parts": {
-            "": {}
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[0]PARTS",
+              "_PartsDataGuid": "c35a2c48-1671-4228-bfc9-953faff5b96f"
+            }
           }
         }
       }
@@ -4720,7 +6558,89 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 10
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 10
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 10
+          }
+        },
+        {
+          "app.col_user_data.ShapeParamDisableScar": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 10,
+            "_IsCylinder": false,
+            "_AdjustRate": 0.0,
+            "_EnableDynamicShape": false,
+            "_DynamicSphere": {
+              "raw": "00000000000000000000000000000000",
+              "type": "Sphere"
+            },
+            "_DynamicCapsule": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicBox": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_DynamicShapeType": 1,
+            "_DynamicInterpolationSec": 1.0,
+            "_EnableAngleLimit": false,
+            "_AngleLimitType": "[0]PLANE",
+            "_AngleLimitJointRotation": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "_AngleLimit": 180.0
           }
         }
       ],
@@ -4730,13 +6650,19 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 10,
           "_PriorityFixed": {
-            "": {}
+            "app.CollisionDef.PRIORITY_Serializable": {
+              "_Value": "[7]PRIO_8"
+            }
           },
           "_IsSensorCollision": false,
           "_IsArrowFlipCollision": false,
           "_Parts": {
-            "": {}
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[0]PARTS",
+              "_PartsDataGuid": "6612c3eb-80d8-45a9-afc3-de198b0688d3"
+            }
           }
         }
       }
@@ -4756,7 +6682,26 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 11
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 11
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 11
           }
         }
       ],
@@ -4766,72 +6711,19 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 11,
           "_PriorityFixed": {
-            "app.col_user_data.ShapeParamBase": {
-              "Name": "\u0001",
-              "ParentUserData": {
-                "": {}
-              },
-              "_IsCylinder": true,
-              "_AdjustRate": 0.0,
-              "_EnableDynamicShape": false,
-              "_DynamicSphere": {
-                "raw": "3333b33e000000000000000000000000",
-                "type": "Sphere"
-              },
-              "_DynamicCapsule": [
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0
-              ],
-              "_DynamicBox": [
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0
-              ],
-              "_DynamicShapeType": 0,
-              "_DynamicInterpolationSec": 0.0,
-              "_EnableAngleLimit": false,
-              "_AngleLimitType": "[0]PLANE",
-              "_AngleLimitJointRotation": [
-                0.0,
-                1.0,
-                0.0,
-                0.0
-              ],
-              "_AngleLimit": 0.0
+            "app.CollisionDef.PRIORITY_Serializable": {
+              "_Value": "[7]PRIO_8"
             }
           },
           "_IsSensorCollision": false,
           "_IsArrowFlipCollision": false,
           "_Parts": {
-            "": {}
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[0]PARTS",
+              "_PartsDataGuid": "ccd93f03-0c35-4992-86dd-c92bb6a603f3"
+            }
           }
         }
       }
@@ -4851,7 +6743,35 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 12
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 12
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 12
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 12
           }
         }
       ],
@@ -4861,13 +6781,19 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 12,
           "_PriorityFixed": {
-            "": {}
+            "app.CollisionDef.PRIORITY_Serializable": {
+              "_Value": "[7]PRIO_8"
+            }
           },
           "_IsSensorCollision": false,
           "_IsArrowFlipCollision": false,
           "_Parts": {
-            "": {}
+            "app.col_user_data.DamageParamEm.cParts": {
+              "_Category": "[0]PARTS",
+              "_PartsDataGuid": "7a21be7b-76b5-4108-acf1-87037e0f866e"
+            }
           }
         }
       }
@@ -4887,7 +6813,62 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 13
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 13
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 13
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 13
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 13
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 13
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 13
           }
         }
       ],
@@ -4897,7 +6878,8 @@
           "ParentUserData": {
             "": {}
           },
-          "_PressLevel": "[0]ONLY_PRESSED"
+          "RequestSetIndex": 13,
+          "_PressLevel": "[3]ENEMY_BOSS_L"
         }
       }
     },
@@ -4916,7 +6898,35 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 14
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 14
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 14
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 14
           }
         }
       ],
@@ -4926,7 +6936,8 @@
           "ParentUserData": {
             "": {}
           },
-          "_PressLevel": "[0]ONLY_PRESSED"
+          "RequestSetIndex": 14,
+          "_PressLevel": "[3]ENEMY_BOSS_L"
         }
       }
     },
@@ -4942,10 +6953,47 @@
       "nativeShapeColliders": [
         {
           "via.physics.RequestSetColliderUserData": {
-            "Name": "\u0000\u0000r\u0000\u0001\u0000\u0000\u0000\u0000\u0000\n\u0000\u0001\u0000\u0000\u0000\u0000\u0000\n\u0000\u0001\u0000\u0000\u0000\u0000\u0000\n\u0000\u0001\u0000\u0000\u0000\u0000\u0000\n",
+            "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 15
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 15
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 15
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 15
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 15
           }
         }
       ],
@@ -4955,7 +7003,8 @@
           "ParentUserData": {
             "": {}
           },
-          "_PressLevel": "[10]OTOMO"
+          "RequestSetIndex": 15,
+          "_PressLevel": "[3]ENEMY_BOSS_L"
         }
       }
     },
@@ -4974,7 +7023,71 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 16
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 16
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 16
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 16
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 16
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 16
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 16
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 16
           }
         }
       ],
@@ -4984,7 +7097,8 @@
           "ParentUserData": {
             "": {}
           },
-          "_PressLevel": "[7]ENEMY_ZAKO"
+          "RequestSetIndex": 16,
+          "_PressLevel": "[3]ENEMY_BOSS_L"
         }
       }
     },
@@ -5003,7 +7117,44 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 17
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 17
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 17
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 17
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 17
           }
         }
       ],
@@ -5013,7 +7164,8 @@
           "ParentUserData": {
             "": {}
           },
-          "_PressLevel": "[1]NO_MOVE"
+          "RequestSetIndex": 17,
+          "_PressLevel": "[3]ENEMY_BOSS_L"
         }
       }
     },
@@ -5032,7 +7184,44 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 18
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 18
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 18
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 18
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 18
           }
         }
       ],
@@ -5042,7 +7231,8 @@
           "ParentUserData": {
             "": {}
           },
-          "_PressLevel": "[1]NO_MOVE"
+          "RequestSetIndex": 18,
+          "_PressLevel": "[3]ENEMY_BOSS_L"
         }
       }
     },
@@ -5061,1367 +7251,82 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 19
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 19
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 19
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 19
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 19
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 19
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 19
+          }
+        },
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 19
           }
         }
       ],
       "userData": {
         "app.col_user_data.PressParam": {
-          "Name": "\u0003\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u000e\u0000\u0001",
-          "ParentUserData": {
-            "": {}
-          },
-          "_PressLevel": 14
-        }
-      }
-    },
-    {
-      "requestSetID": 3278789551,
-      "groupIndex": 1263582301,
-      "status": 3732201175,
-      "requestSetIndex": 1318402617,
-      "keyHash": 28255655,
-      "KeyNameMMHash": 431882106,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 3732201175,
-      "groupIndex": 1318402617,
-      "status": 3732201175,
-      "requestSetIndex": 1318402617,
-      "keyHash": 28255655,
-      "KeyNameMMHash": 431882106,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 3732201175,
-      "groupIndex": 1318402617,
-      "status": 3732201175,
-      "requestSetIndex": 1318402617,
-      "keyHash": 28255655,
-      "KeyNameMMHash": 431882106,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 3732201175,
-      "groupIndex": 1318402617,
-      "status": 3732201175,
-      "requestSetIndex": 1318402617,
-      "keyHash": 28255655,
-      "KeyNameMMHash": 431882106,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 1051000738,
-      "groupIndex": 1309790940,
-      "status": 36584,
-      "requestSetIndex": 0,
-      "keyHash": 558154010,
-      "KeyNameMMHash": 0,
-      "name": "",
-      "keyName": "左翼_纏い段階１",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 36620,
-      "groupIndex": 0,
-      "status": 36638,
-      "requestSetIndex": 0,
-      "keyHash": 1361527981,
-      "KeyNameMMHash": 0,
-      "name": "",
-      "keyName": "右翼_纏い段階１",
-      "nativeShapeColliders": [
-        {
-          "app.col_user_data.DamageParamEm": {
-            "Name": "",
-            "ParentUserData": {
-              "": {}
-            },
-            "_PriorityFixed": {
-              "": {}
-            },
-            "_IsSensorCollision": true,
-            "_IsArrowFlipCollision": false,
-            "_Parts": {
-              "": {}
-            }
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 36674,
-      "groupIndex": 0,
-      "status": 36692,
-      "requestSetIndex": 0,
-      "keyHash": 221181707,
-      "KeyNameMMHash": 0,
-      "name": "",
-      "keyName": "尻尾_纏い段階１",
-      "nativeShapeColliders": [
-        {
-          "app.col_user_data.DamageParamEm": {
-            "Name": "",
-            "ParentUserData": {
-              "": {}
-            },
-            "_PriorityFixed": {
-              "": {}
-            },
-            "_IsSensorCollision": true,
-            "_IsArrowFlipCollision": false,
-            "_Parts": {
-              "": {}
-            }
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 36728,
-      "groupIndex": 0,
-      "status": 36746,
-      "requestSetIndex": 0,
-      "keyHash": 2754029149,
-      "KeyNameMMHash": 0,
-      "name": "",
-      "keyName": "頭部破壊",
-      "nativeShapeColliders": [
-        {
-          "app.col_user_data.DamageParamEm": {
-            "Name": "",
-            "ParentUserData": {
-              "": {}
-            },
-            "_PriorityFixed": {
-              "": {}
-            },
-            "_IsSensorCollision": true,
-            "_IsArrowFlipCollision": false,
-            "_Parts": {
-              "": {}
-            }
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 0,
-      "groupIndex": 0,
-      "status": 0,
-      "requestSetIndex": 0,
-      "keyHash": 0,
-      "KeyNameMMHash": 0,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "app.col_user_data.DamageParamEm": {
-            "Name": "",
-            "ParentUserData": {
-              "": {}
-            },
-            "_PriorityFixed": {
-              "": {}
-            },
-            "_IsSensorCollision": true,
-            "_IsArrowFlipCollision": false,
-            "_Parts": {
-              "": {}
-            }
-          }
-        }
-      ],
-      "userData": {
-        "app.col_user_data.DamageParamEm": {
           "Name": "",
           "ParentUserData": {
             "": {}
           },
-          "_PriorityFixed": {
-            "": {}
-          },
-          "_IsSensorCollision": true,
-          "_IsArrowFlipCollision": false,
-          "_Parts": {
-            "": {}
-          }
-        }
-      }
-    },
-    {
-      "requestSetID": 0,
-      "groupIndex": 0,
-      "status": 0,
-      "requestSetIndex": 0,
-      "keyHash": 0,
-      "KeyNameMMHash": 0,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "app.col_user_data.DamageParamEm": {
-            "Name": "",
-            "ParentUserData": {
-              "": {}
-            },
-            "_PriorityFixed": {
-              "": {}
-            },
-            "_IsSensorCollision": true,
-            "_IsArrowFlipCollision": false,
-            "_Parts": {
-              "": {}
-            }
-          }
-        }
-      ],
-      "userData": {
-        "app.col_user_data.DamageParamEm": {
-          "Name": "",
-          "ParentUserData": {
-            "": {}
-          },
-          "_PriorityFixed": {
-            "": {}
-          },
-          "_IsSensorCollision": true,
-          "_IsArrowFlipCollision": false,
-          "_Parts": {
-            "": {}
-          }
-        }
-      }
-    },
-    {
-      "requestSetID": 0,
-      "groupIndex": 0,
-      "status": 0,
-      "requestSetIndex": 0,
-      "keyHash": 0,
-      "KeyNameMMHash": 0,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "app.col_user_data.DamageParamEm": {
-            "Name": "",
-            "ParentUserData": {
-              "": {}
-            },
-            "_PriorityFixed": {
-              "": {}
-            },
-            "_IsSensorCollision": true,
-            "_IsArrowFlipCollision": false,
-            "_Parts": {
-              "": {}
-            }
-          }
-        }
-      ],
-      "userData": {
-        "app.col_user_data.DamageParamEm": {
-          "Name": "",
-          "ParentUserData": {
-            "": {}
-          },
-          "_PriorityFixed": {
-            "": {}
-          },
-          "_IsSensorCollision": true,
-          "_IsArrowFlipCollision": false,
-          "_Parts": {
-            "": {}
-          }
-        }
-      }
-    },
-    {
-      "requestSetID": 0,
-      "groupIndex": 0,
-      "status": 0,
-      "requestSetIndex": 0,
-      "keyHash": 0,
-      "KeyNameMMHash": 0,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "app.col_user_data.DamageParamEm": {
-            "Name": "",
-            "ParentUserData": {
-              "": {}
-            },
-            "_PriorityFixed": {
-              "": {}
-            },
-            "_IsSensorCollision": true,
-            "_IsArrowFlipCollision": false,
-            "_Parts": {
-              "": {}
-            }
-          }
-        }
-      ],
-      "userData": {
-        "app.col_user_data.DamageParamEm": {
-          "Name": "",
-          "ParentUserData": {
-            "": {}
-          },
-          "_PriorityFixed": {
-            "": {}
-          },
-          "_IsSensorCollision": true,
-          "_IsArrowFlipCollision": false,
-          "_Parts": {
-            "": {}
-          }
-        }
-      }
-    },
-    {
-      "requestSetID": 0,
-      "groupIndex": 0,
-      "status": 0,
-      "requestSetIndex": 0,
-      "keyHash": 0,
-      "KeyNameMMHash": 0,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "app.col_user_data.DamageParamEm": {
-            "Name": "",
-            "ParentUserData": {
-              "": {}
-            },
-            "_PriorityFixed": {
-              "": {}
-            },
-            "_IsSensorCollision": true,
-            "_IsArrowFlipCollision": false,
-            "_Parts": {
-              "": {}
-            }
-          }
-        }
-      ],
-      "userData": {
-        "app.col_user_data.DamageParamEm": {
-          "Name": "",
-          "ParentUserData": {
-            "": {}
-          },
-          "_PriorityFixed": {
-            "": {}
-          },
-          "_IsSensorCollision": true,
-          "_IsArrowFlipCollision": false,
-          "_Parts": {
-            "": {}
-          }
-        }
-      }
-    },
-    {
-      "requestSetID": 0,
-      "groupIndex": 0,
-      "status": 0,
-      "requestSetIndex": 0,
-      "keyHash": 0,
-      "KeyNameMMHash": 0,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "app.col_user_data.DamageParamEm": {
-            "Name": "",
-            "ParentUserData": {
-              "": {}
-            },
-            "_PriorityFixed": {
-              "": {}
-            },
-            "_IsSensorCollision": true,
-            "_IsArrowFlipCollision": false,
-            "_Parts": {
-              "": {}
-            }
-          }
-        }
-      ],
-      "userData": {
-        "app.col_user_data.DamageParamEm": {
-          "Name": "",
-          "ParentUserData": {
-            "": {}
-          },
-          "_PriorityFixed": {
-            "": {}
-          },
-          "_IsSensorCollision": true,
-          "_IsArrowFlipCollision": false,
-          "_Parts": {
-            "": {}
-          }
-        }
-      }
-    },
-    {
-      "requestSetID": 0,
-      "groupIndex": 0,
-      "status": 0,
-      "requestSetIndex": 4718592,
-      "keyHash": 49,
-      "KeyNameMMHash": 6357076,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "app.col_user_data.DamageParamEm": {
-            "Name": "",
-            "ParentUserData": {
-              "": {}
-            },
-            "_PriorityFixed": {
-              "": {}
-            },
-            "_IsSensorCollision": true,
-            "_IsArrowFlipCollision": false,
-            "_Parts": {
-              "": {}
-            }
-          }
-        }
-      ],
-      "userData": {
-        "app.col_user_data.DamageParamEm": {
-          "Name": "",
-          "ParentUserData": {
-            "": {}
-          },
-          "_PriorityFixed": {
-            "": {}
-          },
-          "_IsSensorCollision": true,
-          "_IsArrowFlipCollision": false,
-          "_Parts": {
-            "": {}
-          }
-        }
-      }
-    },
-    {
-      "requestSetID": 7077993,
-      "groupIndex": 49,
-      "status": 4849664,
-      "requestSetIndex": 7798881,
-      "keyHash": 6488165,
-      "KeyNameMMHash": 3276907,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 5111808,
-      "groupIndex": 6488165,
-      "status": 6881392,
-      "requestSetIndex": 6619246,
-      "keyHash": 6357076,
-      "KeyNameMMHash": 7077993,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 50,
-      "groupIndex": 6357076,
-      "status": 6357076,
-      "requestSetIndex": 7077993,
-      "keyHash": 6357076,
-      "KeyNameMMHash": 7077993,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "via.physics.RequestSetColliderUserData": {
-            "Name": "",
-            "ParentUserData": {
-              "": {}
-            }
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 54,
-      "groupIndex": 6225996,
-      "status": 48,
-      "requestSetIndex": 6225996,
-      "keyHash": 7274566,
-      "KeyNameMMHash": 7602287,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 48,
-      "groupIndex": 6225996,
-      "status": 49,
-      "requestSetIndex": 6225996,
-      "keyHash": 5373952,
-      "KeyNameMMHash": 4980831,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 6750309,
-      "groupIndex": 3145813,
-      "status": 6750309,
-      "requestSetIndex": 3211349,
-      "keyHash": 5373952,
-      "KeyNameMMHash": 4587615,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 7274607,
-      "groupIndex": 3211380,
-      "status": 6553705,
-      "requestSetIndex": 7077988,
-      "keyHash": 6750318,
-      "KeyNameMMHash": 3145813,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 4980736,
-      "groupIndex": 5701727,
-      "status": 49,
-      "requestSetIndex": 6225996,
-      "keyHash": 5046367,
-      "KeyNameMMHash": 6553705,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 7077988,
-      "groupIndex": 5701733,
-      "status": 6881357,
-      "requestSetIndex": 6553700,
-      "keyHash": 6553710,
-      "KeyNameMMHash": 7864421,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "via.physics.RequestSetColliderUserData": {
-          "Name": "",
-          "ParentUserData": {
-            "": {}
-          }
-        }
-      }
-    },
-    {
-      "requestSetID": 3211351,
-      "groupIndex": 4980736,
-      "status": 7864421,
-      "requestSetIndex": 3276887,
-      "keyHash": 3342423,
-      "KeyNameMMHash": 5373952,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 5701727,
-      "groupIndex": 7209065,
-      "status": 6226002,
-      "requestSetIndex": 6881367,
-      "keyHash": 7209057,
-      "KeyNameMMHash": 5701732,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "via.physics.RequestSetColliderUserData": {
-            "Name": "",
-            "ParentUserData": {
-              "": {}
-            }
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 48,
-      "groupIndex": 6226002,
-      "status": 6619244,
-      "requestSetIndex": 3211351,
-      "keyHash": 5701733,
-      "KeyNameMMHash": 50,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 6226002,
-      "groupIndex": 7209033,
-      "status": 49,
-      "requestSetIndex": 6226002,
-      "keyHash": 6226002,
-      "KeyNameMMHash": 7209033,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 6619236,
-      "groupIndex": 5701752,
-      "status": 7274568,
-      "requestSetIndex": 7209074,
-      "keyHash": 49,
-      "KeyNameMMHash": 6225996,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "via.physics.RequestSetColliderUserData": {
-          "Name": "",
-          "ParentUserData": {
-            "": {}
-          }
-        }
-      }
-    },
-    {
-      "requestSetID": 6357062,
-      "groupIndex": 6750318,
-      "status": 7274568,
-      "requestSetIndex": 7209074,
-      "keyHash": 49,
-      "KeyNameMMHash": 6226002,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "via.physics.RequestSetColliderUserData": {
-          "Name": "",
-          "ParentUserData": {
-            "": {}
-          }
-        }
-      }
-    },
-    {
-      "requestSetID": 6357062,
-      "groupIndex": 6750318,
-      "status": 6881367,
-      "requestSetIndex": 6750318,
-      "keyHash": 7864421,
-      "KeyNameMMHash": 3145815,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "via.physics.RequestSetColliderUserData": {
-          "Name": "",
-          "ParentUserData": {
-            "": {}
-          }
-        }
-      }
-    },
-    {
-      "requestSetID": 4980736,
-      "groupIndex": 5046367,
-      "status": 5701733,
-      "requestSetIndex": 51,
-      "keyHash": 4980736,
-      "KeyNameMMHash": 5374047,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 7209065,
-      "groupIndex": 5701735,
-      "status": 6881362,
-      "requestSetIndex": 6750318,
-      "keyHash": 7929963,
-      "KeyNameMMHash": 3342423,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "via.physics.RequestSetColliderUserData": {
-          "Name": "\u0000\u0000\u0000\u0000堃蜭頇",
-          "ParentUserData": {
-            "": {}
-          }
-        }
-      }
-    },
-    {
-      "requestSetID": 4980736,
-      "groupIndex": 4259935,
-      "status": 3211359,
-      "requestSetIndex": 4980736,
-      "keyHash": 4980736,
-      "KeyNameMMHash": 4259935,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 6553700,
-      "groupIndex": 3342423,
-      "status": 5242975,
-      "requestSetIndex": 7209065,
-      "keyHash": 7209065,
-      "KeyNameMMHash": 4980839,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 48,
-      "groupIndex": 6226002,
-      "status": 5701752,
-      "requestSetIndex": 48,
-      "keyHash": 3342423,
-      "KeyNameMMHash": 5373952,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 5374047,
-      "groupIndex": 7209065,
-      "status": 6226002,
-      "requestSetIndex": 6881362,
-      "keyHash": 7209065,
-      "KeyNameMMHash": 5701735,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "via.physics.RequestSetColliderUserData": {
-            "Name": "",
-            "ParentUserData": {
-              "": {}
-            }
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 51,
-      "groupIndex": 6226002,
-      "status": 5701753,
-      "requestSetIndex": 51,
-      "keyHash": 49,
-      "KeyNameMMHash": 6226002,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 6881360,
-      "groupIndex": 7012462,
-      "status": 6226002,
-      "requestSetIndex": 6553665,
-      "keyHash": 6881360,
-      "KeyNameMMHash": 7012462,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "via.physics.RequestSetColliderUserData": {
-            "Name": "",
-            "ParentUserData": {
-              "": {}
-            }
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 5701753,
-      "groupIndex": 48,
-      "status": 6553710,
-      "requestSetIndex": 6619218,
-      "keyHash": 0,
-      "KeyNameMMHash": 6619208,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 6553697,
-      "groupIndex": 48,
-      "status": 3211372,
-      "requestSetIndex": 4587615,
-      "keyHash": 0,
-      "KeyNameMMHash": 6881367,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 6750318,
-      "groupIndex": 6619212,
-      "status": 49,
-      "requestSetIndex": 5701632,
-      "keyHash": 4587615,
-      "KeyNameMMHash": 49,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 5701632,
-      "groupIndex": 7209065,
-      "status": 116,
-      "requestSetIndex": 5701632,
-      "keyHash": 0,
-      "KeyNameMMHash": 6619212,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 4980839,
-      "groupIndex": 6684773,
-      "status": 6619212,
-      "requestSetIndex": 5374055,
-      "keyHash": 6488165,
-      "KeyNameMMHash": 107,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "app.col_user_data.DamageParamEm": {
-            "Name": "",
-            "ParentUserData": {
-              "": {}
-            },
-            "_PriorityFixed": {
-              "": {}
-            },
-            "_IsSensorCollision": true,
-            "_IsArrowFlipCollision": false,
-            "_Parts": {
-              "": {}
-            }
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 4325376,
-      "groupIndex": 6553711,
-      "status": 7536757,
-      "requestSetIndex": 6226024,
-      "keyHash": 6815859,
-      "KeyNameMMHash": 4325471,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "via.physics.RequestSetColliderUserData": {
-          "Name": "",
-          "ParentUserData": {
-            "": {}
-          }
-        }
-      }
-    },
-    {
-      "requestSetID": 6553711,
-      "groupIndex": 121,
-      "status": 6226024,
-      "requestSetIndex": 6357076,
-      "keyHash": 7077983,
-      "KeyNameMMHash": 6750309,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 0,
-      "groupIndex": 7667792,
-      "status": 7209065,
-      "requestSetIndex": 4980839,
-      "keyHash": 7209065,
-      "KeyNameMMHash": 5374055,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 0,
-      "groupIndex": 7667792,
-      "status": 7536751,
-      "requestSetIndex": 115,
-      "keyHash": 1575354368,
-      "KeyNameMMHash": 6258684,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 809795215,
-      "groupIndex": 2525916085,
-      "status": 2123300959,
-      "requestSetIndex": 1807036484,
-      "keyHash": 2525916085,
-      "KeyNameMMHash": 65296,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 2147242995,
-      "groupIndex": 2123300959,
-      "status": 1408434176,
-      "requestSetIndex": 6258684,
-      "keyHash": 2123300959,
-      "KeyNameMMHash": 1807036484,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
-        }
-      }
-    },
-    {
-      "requestSetID": 4279277198,
-      "groupIndex": 1547370496,
-      "status": 2525916085,
-      "requestSetIndex": 65297,
-      "keyHash": 1547370496,
-      "KeyNameMMHash": 1376214078,
-      "name": "",
-      "keyName": "",
-      "nativeShapeColliders": [
-        {
-          "Ref": {
-            "ref_instance_id": null
-          }
-        }
-      ],
-      "userData": {
-        "Ref": {
-          "ref_instance_id": null
+          "RequestSetIndex": 19,
+          "_PressLevel": "[3]ENEMY_BOSS_L"
         }
       }
     }

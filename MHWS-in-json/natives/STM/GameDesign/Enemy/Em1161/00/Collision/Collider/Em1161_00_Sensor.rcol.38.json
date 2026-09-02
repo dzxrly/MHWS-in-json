@@ -109,7 +109,8 @@
             "Name": "",
             "ParentUserData": {
               "": {}
-            }
+            },
+            "RequestSetIndex": 0
           }
         }
       ],
@@ -119,15 +120,18 @@
           "ParentUserData": {
             "": {}
           },
+          "RequestSetIndex": 0,
           "_HitType": {
-            "": {}
+            "app.ActBtnHitType.TYPE_Serializable": {
+              "_Value": "[0]POS_ONLY"
+            }
           },
           "_OwnRangeDegree": 0.0,
           "STRUCT__OwnRangeDegreeRiding__HasValue": false,
           "STRUCT__OwnRangeDegreeRiding__Value": 0.0,
           "_TargetRangeDegree": 0.0,
-          "_UniqueIndex": "[0]NONE",
-          "_FreeInt": 2,
+          "_UniqueIndex": "[2]PARTS_01",
+          "_FreeInt": 0,
           "_FreeFloat": 0.0
         }
       }
@@ -141,23 +145,45 @@
       "KeyNameMMHash": 757139940,
       "name": "",
       "keyName": "DownSensorPLPut",
-      "nativeShapeColliders": [
-        {
-          "via.physics.RequestSetColliderUserData": {
-            "Name": "",
-            "ParentUserData": {
-              "": {}
-            }
-          }
-        }
-      ],
+      "nativeShapeColliders": [],
       "userData": {
         "app.col_user_data.SensorParamEm": {
           "Name": "",
           "ParentUserData": {
             "": {}
           },
-          "_Type": "[0]NONE"
+          "RequestSetIndex": 1,
+          "_Type": "[3]CLIBMABLE_DIE"
+        }
+      }
+    },
+    {
+      "requestSetID": 101,
+      "groupIndex": 2,
+      "status": 1,
+      "requestSetIndex": 2,
+      "keyHash": 4286995858,
+      "KeyNameMMHash": 1613301400,
+      "name": "",
+      "keyName": "SensorReceiver",
+      "nativeShapeColliders": [
+        {
+          "via.physics.RequestSetColliderUserData": {
+            "Name": "",
+            "ParentUserData": {
+              "": {}
+            },
+            "RequestSetIndex": 2
+          }
+        }
+      ],
+      "userData": {
+        "via.physics.RequestSetColliderUserData": {
+          "Name": "",
+          "ParentUserData": {
+            "": {}
+          },
+          "RequestSetIndex": 2
         }
       }
     }

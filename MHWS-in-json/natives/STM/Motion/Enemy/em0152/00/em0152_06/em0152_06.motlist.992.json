@@ -1,0 +1,192 @@
+{
+  "_format": "re_engine_motlist_action_tracks_v1",
+  "sourcePath": "STM/Motion/Enemy/em0152/00/em0152_06/em0152_06.motlist.992",
+  "motlistName": "em0152_06",
+  "motlistVersion": 992,
+  "motlistVersionName": "MHWILDS",
+  "trackFilters": [
+    "property:_RequestSetID"
+  ],
+  "statistics": {
+    "totalMotions": 10,
+    "matchedMotions": 2,
+    "inspectedClips": 19,
+    "matchedClips": 2,
+    "matchedTracks": 2,
+    "requestSetMappings": 2
+  },
+  "requestSetMappings": [
+    {
+      "motionId": 11,
+      "motionName": "em0152_06_011",
+      "motionType": "MotFile",
+      "clipSource": "override",
+      "clipIndex": 0,
+      "mainTrackName": "app.motion_track.DamageCollision_Em",
+      "trackIndex": 1,
+      "trackName": "app.motion_track.DamageCollision_Em",
+      "propertyIndex": 1,
+      "propertyPath": "_RequestSetID",
+      "requestSetId": 8,
+      "startFrame": 30.0
+    },
+    {
+      "motionId": 12,
+      "motionName": "em0152_06_012_Loop",
+      "motionType": "MotFile",
+      "clipSource": "override",
+      "clipIndex": 0,
+      "mainTrackName": "app.motion_track.DamageCollision_Em",
+      "trackIndex": 1,
+      "trackName": "app.motion_track.DamageCollision_Em",
+      "propertyIndex": 1,
+      "propertyPath": "_RequestSetID",
+      "requestSetId": 8,
+      "startFrame": 0.0
+    }
+  ],
+  "motions": [
+    {
+      "motionId": 11,
+      "motionName": "em0152_06_011",
+      "motionType": "MotFile",
+      "clips": [
+        {
+          "source": "override",
+          "index": 0,
+          "mainTrackName": "app.motion_track.DamageCollision_Em",
+          "frameCount": 273.0,
+          "tracks": [
+            {
+              "index": 1,
+              "name": "app.motion_track.DamageCollision_Em",
+              "startFrame": 0.0,
+              "endFrame": 0.0,
+              "properties": [
+                {
+                  "name": "_On",
+                  "path": "_On",
+                  "dataType": "Bool",
+                  "arrayIndex": -1,
+                  "startFrame": 0.0,
+                  "endFrame": 273.0,
+                  "keys": [
+                    {
+                      "frame": 0.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    },
+                    {
+                      "frame": 30.0,
+                      "keyType": "BoolKey",
+                      "value": true,
+                      "extra": false
+                    },
+                    {
+                      "frame": 273.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    },
+                    {
+                      "frame": 274.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    }
+                  ]
+                },
+                {
+                  "name": "_RequestSetID",
+                  "path": "_RequestSetID",
+                  "dataType": "U32",
+                  "arrayIndex": -1,
+                  "startFrame": 30.0,
+                  "endFrame": 273.0,
+                  "keys": [
+                    {
+                      "frame": 30.0,
+                      "keyType": "NoHermiteKey",
+                      "value": 8,
+                      "extra": false,
+                      "interpolation": "Discrete"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "motionId": 12,
+      "motionName": "em0152_06_012_Loop",
+      "motionType": "MotFile",
+      "clips": [
+        {
+          "source": "override",
+          "index": 0,
+          "mainTrackName": "app.motion_track.DamageCollision_Em",
+          "frameCount": 289.0,
+          "tracks": [
+            {
+              "index": 1,
+              "name": "app.motion_track.DamageCollision_Em",
+              "startFrame": 0.0,
+              "endFrame": 0.0,
+              "properties": [
+                {
+                  "name": "_On",
+                  "path": "_On",
+                  "dataType": "Bool",
+                  "arrayIndex": -1,
+                  "startFrame": 0.0,
+                  "endFrame": 289.0,
+                  "keys": [
+                    {
+                      "frame": 0.0,
+                      "keyType": "BoolKey",
+                      "value": true,
+                      "extra": false
+                    },
+                    {
+                      "frame": 289.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    },
+                    {
+                      "frame": 290.0,
+                      "keyType": "BoolKey",
+                      "value": false,
+                      "extra": false
+                    }
+                  ]
+                },
+                {
+                  "name": "_RequestSetID",
+                  "path": "_RequestSetID",
+                  "dataType": "U32",
+                  "arrayIndex": -1,
+                  "startFrame": 0.0,
+                  "endFrame": 289.0,
+                  "keys": [
+                    {
+                      "frame": 0.0,
+                      "keyType": "NoHermiteKey",
+                      "value": 8,
+                      "extra": false,
+                      "interpolation": "Discrete"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
