@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import os
 from pathlib import Path
 
 
@@ -13,6 +14,10 @@ BASE_DIR = Path(__file__).resolve().parent
 JSON_ROOT = BASE_DIR / "MHWS-in-json"
 NATIVES_DIR = JSON_ROOT / "natives"
 ENUMS_PATH = JSON_ROOT / "Enums_Internal.json"
+ACTION_MAP_ENV_VAR = "MHWS_ACTION_MAP_PATH"
+ACTION_MAP_PATH = Path(
+    os.environ.get(ACTION_MAP_ENV_VAR, str(JSON_ROOT / "ActionMap.json"))
+)
 OUTPUT_DIR = BASE_DIR / "output"
 
 LANGUAGE_IDS = None
@@ -24,6 +29,7 @@ SOURCE_ZIP_PREFIX = JSON_ROOT.name
 PROCESSED_DIR_NAME = "processed_data"
 FULL_TEXT_WORKBOOK = "FullText.xlsx"
 AMULET_WORKBOOK = "AmuletCollection.xlsx"
+ACTION_VALUE_WORKBOOK = "WeaponActionValues.xlsx"
 MAX_COLUMN_WIDTH = 80.0
 FULL_TEXT_MAX_COLUMN_WIDTH = 300.0
 
