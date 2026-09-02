@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any
 
 
-ACTION_MAP_FORMAT = "mhws_static_action_request_set_map_v1"
+ACTION_MAP_FORMAT = "mhws_static_action_request_set_map_v2"
 ACTION_MAP_SCOPES = {
     **{f"Wp{index:02d}": None for index in range(14)},
     "Ammo": None,
@@ -25,6 +25,8 @@ class ActionMapRelation:
     fallback_name: str
     source: str
     resolution_methods: tuple[str, ...]
+    confidence: str
+    conditions: tuple[dict[str, Any], ...]
     rcol: str
     request_set_id: int
     key_hash: int
@@ -44,7 +46,40 @@ class ActionMapRelation:
 @dataclass(frozen=True, slots=True)
 class ActionMapDocument:
     path: Path
-    relations: tuple[ActionMapRelation, ...]
+    action_relations: tuple[ActionMapRelation, ...]
+    resource_relations: tuple["ResourceMapRelation", ...]
+
+
+@dataclass(frozen=True, slots=True)
+class ResourceMapRelation:
+    scope: str
+    resource_identity: str
+    resource_order: int
+    resource_internal_name: str
+    resource_name_guid: str
+    resource_japanese_name: str
+    resource_name_source: str
+    resource_name_suffix: str
+    resource_role: str
+    fallback_name: str
+    source: str
+    resolution_methods: tuple[str, ...]
+    confidence: str
+    conditions: tuple[dict[str, Any], ...]
+    rcol: str
+    request_set_id: int
+    key_hash: int
+    source_request_set_ordinal: int
+
+    @property
+    def request_set_identity(self) -> tuple[str, str, int, int, int]:
+        return (
+            self.scope,
+            self.rcol,
+            self.request_set_id,
+            self.key_hash,
+            self.source_request_set_ordinal,
+        )
 
 
 def load_action_map(path: Path) -> ActionMapDocument:
@@ -62,19 +97,34 @@ def load_action_map(path: Path) -> ActionMapDocument:
         raise ValueError(
             f"Unsupported ActionMap _format in {path}: {data.get('_format')!r}"
         )
-    raw_relations = data.get("relations")
-    if not isinstance(raw_relations, list):
-        raise ValueError(f"ActionMap relations must be an array: {path}")
+    raw_actions = data.get("actionRelations")
+    raw_resources = data.get("resourceRelations")
+    if not isinstance(raw_actions, list):
+        raise ValueError(f"ActionMap actionRelations must be an array: {path}")
+    if not isinstance(raw_resources, list):
+        raise ValueError(f"ActionMap resourceRelations must be an array: {path}")
 
-    relations = tuple(
-        _parse_relation(value, index, path)
-        for index, value in enumerate(raw_relations)
+    action_relations = tuple(
+        _parse_action_relation(value, index, path)
+        for index, value in enumerate(raw_actions)
     )
-    return ActionMapDocument(path=path, relations=relations)
+    resource_relations = tuple(
+        _parse_resource_relation(value, index, path)
+        for index, value in enumerate(raw_resources)
+    )
+    return ActionMapDocument(
+        path=path,
+        action_relations=action_relations,
+        resource_relations=resource_relations,
+    )
 
 
-def _parse_relation(value: Any, index: int, path: Path) -> ActionMapRelation:
-    where = f"{path} relation #{index}"
+def _parse_action_relation(
+    value: Any,
+    index: int,
+    path: Path,
+) -> ActionMapRelation:
+    where = f"{path} action relation #{index}"
     if not isinstance(value, dict):
         raise ValueError(f"{where} must be an object")
     scope = _required_string(value, "scope", where)
@@ -100,6 +150,8 @@ def _parse_relation(value: Any, index: int, path: Path) -> ActionMapRelation:
         fallback_name=_required_string(value, "fallbackName", where),
         source=_required_string(value, "source", where),
         resolution_methods=tuple(method.strip() for method in methods),
+        confidence=_confidence(value, where),
+        conditions=_conditions(value, where),
         rcol=rcol,
         request_set_id=_required_int(value, "requestSetId", where),
         key_hash=_required_int(value, "keyHash", where),
@@ -109,6 +161,86 @@ def _parse_relation(value: Any, index: int, path: Path) -> ActionMapRelation:
             where,
         ),
     )
+
+
+def _parse_resource_relation(
+    value: Any,
+    index: int,
+    path: Path,
+) -> ResourceMapRelation:
+    where = f"{path} resource relation #{index}"
+    if not isinstance(value, dict):
+        raise ValueError(f"{where} must be an object")
+    scope = _required_string(value, "scope", where)
+    if scope not in ACTION_MAP_SCOPES:
+        raise ValueError(f"{where} has unsupported scope: {scope!r}")
+    methods = value.get("resolutionMethods")
+    if not isinstance(methods, list) or not all(
+        isinstance(method, str) and method.strip() for method in methods
+    ):
+        raise ValueError(f"{where}.resolutionMethods must be a non-empty string array")
+    role = _required_string(value, "resourceRole", where)
+    if role not in {"shell", "ammo", "rcol_fallback"}:
+        raise ValueError(f"{where}.resourceRole is unsupported: {role!r}")
+    return ResourceMapRelation(
+        scope=scope,
+        resource_identity=_required_string(value, "resourceIdentity", where),
+        resource_order=_required_int(value, "resourceOrder", where),
+        resource_internal_name=_required_string(
+            value,
+            "resourceInternalName",
+            where,
+        ),
+        resource_name_guid=_optional_string(value, "resourceNameGuid", where),
+        resource_japanese_name=_optional_string(
+            value,
+            "resourceJapaneseName",
+            where,
+        ),
+        resource_name_source=_required_string(
+            value,
+            "resourceNameSource",
+            where,
+        ),
+        resource_name_suffix=_optional_string(
+            value,
+            "resourceNameSuffix",
+            where,
+        ),
+        resource_role=role,
+        fallback_name=_required_string(value, "fallbackName", where),
+        source=_required_string(value, "source", where),
+        resolution_methods=tuple(method.strip() for method in methods),
+        confidence=_confidence(value, where),
+        conditions=_conditions(value, where),
+        rcol=_required_string(value, "rcol", where).replace("\\", "/"),
+        request_set_id=_required_int(value, "requestSetId", where),
+        key_hash=_required_int(value, "keyHash", where),
+        source_request_set_ordinal=_required_int(
+            value,
+            "sourceRequestSetOrdinal",
+            where,
+        ),
+    )
+
+
+def _confidence(value: dict[str, Any], where: str) -> str:
+    result = _required_string(value, "confidence", where)
+    if result not in {"proven", "derived", "structural"}:
+        raise ValueError(f"{where}.confidence is unsupported: {result!r}")
+    return result
+
+
+def _conditions(
+    value: dict[str, Any],
+    where: str,
+) -> tuple[dict[str, Any], ...]:
+    result = value.get("conditions")
+    if not isinstance(result, list) or not all(
+        isinstance(condition, dict) for condition in result
+    ):
+        raise ValueError(f"{where}.conditions must be an object array")
+    return tuple(dict(condition) for condition in result)
 
 
 def _required_string(value: dict[str, Any], key: str, where: str) -> str:

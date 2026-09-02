@@ -28,6 +28,9 @@ VERTICAL_SIDE = Side(style="thin", color="D9E2F3")
 GROUP_SIDE = Side(style="medium", color="7F8C8D")
 
 CENTER_COLUMNS = {
+    "MappingKind",
+    "ResourceRole",
+    "MappingConfidence",
     "sourceRequestSetOrdinal",
     "requestSetID",
     "groupIndex",
@@ -39,7 +42,15 @@ CENTER_COLUMNS = {
 }
 
 FIXED_WIDTHS = {
-    "ActionName": 34.0,
+    "MappingName": 34.0,
+    "MappingKind": 12.0,
+    "MappingIdentity": 42.0,
+    "MappingInternalName": 28.0,
+    "MappingNameSource": 24.0,
+    "ResourceRole": 16.0,
+    "MappingConfidence": 16.0,
+    "MappingCondition": 38.0,
+    "MappingSource": 36.0,
     "sourceRequestSetOrdinal": 14.0,
     "requestSetID": 14.0,
     "groupIndex": 12.0,
@@ -135,7 +146,16 @@ def _style_sheet(
             cell.alignment = Alignment(
                 horizontal="center" if header in CENTER_COLUMNS else "left",
                 vertical="center",
-                wrap_text=header in {"ActionName", "name", "keyName"},
+                wrap_text=header
+                in {
+                    "MappingName",
+                    "MappingIdentity",
+                    "MappingInternalName",
+                    "MappingCondition",
+                    "MappingSource",
+                    "name",
+                    "keyName",
+                },
             )
 
     mapped_index = 0

@@ -7,8 +7,8 @@ from openpyxl import load_workbook
 
 from config import ACTION_MAP_PATH, NATIVES_DIR
 from src.converters.action_values import (
-    ActionBinding,
     ActionValueCatalog,
+    MappingBinding,
     SHEET_NAMES,
     build_action_value_workbook,
     load_action_value_catalog,
@@ -79,18 +79,22 @@ class ActionValueTests(unittest.TestCase):
         record_a = _record(0, 100, 0, "=guard")
         record_b = _record(1, 101, 1, "safe")
         record_unmapped = _record(2, 102, 2, "unknown")
-        action_a = ActionBinding(
+        action_a = MappingBinding(
             identity="action:a",
             scope="Wp00",
             order=(0, 1, 1, "action:a"),
+            kind="Action",
             fallback_name="Action A",
+            internal_name="ACTION_A",
             source="test",
         )
-        action_b = ActionBinding(
+        action_b = MappingBinding(
             identity="action:b",
             scope="Wp00",
             order=(0, 2, 2, "action:b"),
+            kind="Action",
             fallback_name="Action B",
+            internal_name="ACTION_B",
             source="test",
         )
         catalog = ActionValueCatalog(
@@ -107,7 +111,7 @@ class ActionValueTests(unittest.TestCase):
         rows = data.sheets["Wp00_LongSword"]
 
         self.assertEqual(
-            [(row["ActionName"], row["requestSetID"]) for row in rows],
+            [(row["MappingName"], row["requestSetID"]) for row in rows],
             [
                 ("Action A", 0),
                 ("Action A", 1),
@@ -142,11 +146,14 @@ class ActionValueTests(unittest.TestCase):
                 sheet = workbook["Wp00_LongSword"]
                 self.assertEqual(sheet.freeze_panes, "B3")
                 self.assertFalse(sheet.sheet_view.showGridLines)
-                self.assertIn("A1:H1", sheet.merged_cells)
+                self.assertTrue(
+                    any(str(cell_range).startswith("A1:") for cell_range in sheet.merged_cells)
+                )
                 self.assertIn("A3:A4", sheet.merged_cells)
                 self.assertNotIn("A5:A6", sheet.merged_cells)
                 self.assertTrue(sheet["A1"].value.startswith("RCOL sources (1): "))
-                self.assertEqual(sheet["A2"].value, "ActionName")
+                self.assertEqual(sheet["A2"].value, "MappingName")
+                self.assertEqual(sheet["B3"].value, "Action")
                 self.assertIsNone(sheet["A6"].value)
                 self.assertEqual(sheet["B3"].border.bottom.style, None)
                 self.assertEqual(sheet["B4"].border.bottom.style, "medium")
@@ -188,7 +195,7 @@ class ActionValueTests(unittest.TestCase):
         records = catalog.records["Wp00"]
         self.assertEqual(len(catalog.bindings[records[0].key]), 2)
         self.assertEqual(len(catalog.bindings[records[1].key]), 1)
-        self.assertNotIn(records[2].key, catalog.bindings)
+        self.assertEqual(len(catalog.bindings[records[2].key]), 1)
         self.assertTrue(
             all(
                 source.startswith("action_map:")
@@ -197,18 +204,59 @@ class ActionValueTests(unittest.TestCase):
         )
         rows = data.sheets["Wp00_LongSword"]
         self.assertEqual(
-            [(row["ActionName"], row["requestSetID"]) for row in rows],
-            [("同名动作", 0), ("同名动作", 1), (None, 2)],
+            [(row["MappingName"], row["requestSetID"]) for row in rows],
+            [
+                ("同名动作", 0),
+                ("同名动作", 1),
+                ("同名动作", 0),
+                ("Action 30", 2),
+            ],
         )
         groups = data.groups["Wp00_LongSword"]
         self.assertEqual(
             [(group.start_row, group.end_row, group.unmapped) for group in groups],
-            [(3, 4, False), (5, 5, True)],
+            [(3, 4, False), (5, 5, False), (6, 6, False)],
         )
         assert catalog.action_map_audit is not None
         self.assertEqual(catalog.action_map_audit.relations, 4)
         self.assertEqual(catalog.action_map_audit.unnamed_relations, 1)
-        self.assertEqual(catalog.action_map_audit.bound_request_sets, 2)
+        self.assertEqual(catalog.action_map_audit.bound_request_sets, 3)
+
+    def test_resource_relation_uses_fallback_name_and_keeps_condition(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            natives_dir = _synthetic_natives(root, [(7, 107)])
+            rcol = "Wp00/Collision/Wp00_Test.rcol.38.json"
+            action_map = root / "ActionMap.json"
+            _write_action_map(
+                action_map,
+                [],
+                [
+                    _resource_relation(
+                        "shell:Wp00:7:variant:test",
+                        rcol,
+                        7,
+                        107,
+                        0,
+                    )
+                ],
+            )
+
+            catalog = load_action_value_catalog(natives_dir, action_map)
+            data = build_action_value_workbook(catalog, lambda _guid: "")
+
+        row = data.sheets["Wp00_LongSword"][0]
+        self.assertEqual(row["MappingName"], "SPECIAL_SHELL [TEST_MODE]")
+        self.assertEqual(row["MappingKind"], "Resource")
+        self.assertEqual(row["MappingIdentity"], "shell:Wp00:7:variant:test")
+        self.assertEqual(row["MappingInternalName"], "SPECIAL_SHELL_TEST")
+        self.assertEqual(row["ResourceRole"], "shell")
+        self.assertEqual(row["MappingConfidence"], "derived")
+        self.assertIn('"value":"TEST_MODE"', row["MappingCondition"])
+        assert catalog.action_map_audit is not None
+        self.assertEqual(catalog.action_map_audit.action_relations, 0)
+        self.assertEqual(catalog.action_map_audit.resource_relations, 1)
+        self.assertEqual(catalog.action_map_audit.bound_request_sets, 1)
 
     def test_action_map_rejects_stale_or_ambiguous_exact_identity(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -232,11 +280,16 @@ class ActionValueTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "exact current requestSet"):
                 load_action_value_catalog(natives_dir, action_map)
 
-    def test_action_map_rejects_wrong_format(self) -> None:
+    def test_action_map_rejects_v1_format(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             path = Path(temp_dir) / "ActionMap.json"
             path.write_text(
-                json.dumps({"_format": "wrong", "relations": []}),
+                json.dumps(
+                    {
+                        "_format": "mhws_static_action_request_set_map_v1",
+                        "relations": [],
+                    }
+                ),
                 encoding="utf-8",
             )
             with self.assertRaisesRegex(ValueError, "Unsupported ActionMap"):
@@ -262,17 +315,18 @@ class ActionValueTests(unittest.TestCase):
                 self.assertIs(unmapped_group, groups[-1])
                 unmapped_start = unmapped_group.start_row - 3
                 self.assertTrue(
-                    all(row["ActionName"] for row in rows[:unmapped_start])
+                    all(row["MappingName"] for row in rows[:unmapped_start])
                 )
                 self.assertTrue(
                     all(
-                        row["ActionName"] is None
+                        row["MappingName"] is None
                         for row in rows[unmapped_start:]
                     )
                 )
 
             expected_columns = data.columns[sheet_name]
-            self.assertEqual(expected_columns[0], "ActionName")
+            self.assertEqual(expected_columns[0], "MappingName")
+            self.assertEqual(expected_columns[1], "MappingKind")
             self.assertIn("_ActionTypeFixed._Value", expected_columns)
 
 
@@ -367,6 +421,8 @@ def _relation(
         "fallbackName": f"Action {guide_id}",
         "source": "test_static",
         "resolutionMethods": ["test_exact"],
+        "confidence": "proven",
+        "conditions": [],
         "rcol": rcol,
         "requestSetId": request_set_id,
         "keyHash": key_hash,
@@ -374,12 +430,48 @@ def _relation(
     }
 
 
-def _write_action_map(path: Path, relations: list[dict[str, object]]) -> None:
+def _resource_relation(
+    identity: str,
+    rcol: str,
+    request_set_id: int,
+    key_hash: int,
+    source_ordinal: int,
+) -> dict[str, object]:
+    return {
+        "scope": "Wp00",
+        "resourceIdentity": identity,
+        "resourceOrder": 10,
+        "resourceInternalName": "SPECIAL_SHELL_TEST",
+        "resourceNameGuid": "",
+        "resourceJapaneseName": "",
+        "resourceNameSource": "shell_fixed_enum",
+        "resourceNameSuffix": " [TEST_MODE]",
+        "fallbackName": "SPECIAL_SHELL",
+        "resourceRole": "shell",
+        "source": "test_resource",
+        "resolutionMethods": ["test_exact"],
+        "confidence": "derived",
+        "conditions": [
+            {"kind": "request_set_resource_marker", "value": "TEST_MODE"}
+        ],
+        "rcol": rcol,
+        "requestSetId": request_set_id,
+        "keyHash": key_hash,
+        "sourceRequestSetOrdinal": source_ordinal,
+    }
+
+
+def _write_action_map(
+    path: Path,
+    action_relations: list[dict[str, object]],
+    resource_relations: list[dict[str, object]] | None = None,
+) -> None:
     path.write_text(
         json.dumps(
             {
                 "_format": ACTION_MAP_FORMAT,
-                "relations": relations,
+                "actionRelations": action_relations,
+                "resourceRelations": resource_relations or [],
             },
             ensure_ascii=False,
         ),

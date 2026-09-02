@@ -91,9 +91,10 @@ def export_all() -> list[Path]:
     if action_map_audit is not None:
         info(
             "Static ActionMap: "
-            f"{action_map_audit.relations} relation(s), "
-            f"{action_map_audit.named_relations} named relation(s), "
-            f"{action_map_audit.unnamed_relations} unnamed relation(s), "
+            f"{action_map_audit.action_relations} action relation(s), "
+            f"{action_map_audit.resource_relations} resource relation(s), "
+            f"{action_map_audit.named_relations} localized-name relation(s), "
+            f"{action_map_audit.unnamed_relations} fallback-name relation(s), "
             f"{action_map_audit.bound_request_sets} mapped RS, "
             f"{action_map_audit.bindings} exact binding(s)"
         )
@@ -232,7 +233,7 @@ def _export_action_value_workbook(
         info(
             f"    {sheet_name}: {audit.eligible_request_sets} eligible RS, "
             f"{audit.mapped_request_sets} mapped, {audit.unmapped_request_sets} unmapped, "
-            f"{audit.displayed_rows} displayed row(s), {audit.action_groups} action group(s)"
+            f"{audit.displayed_rows} displayed row(s), {audit.mapping_groups} mapping group(s)"
         )
     row_count = sum(len(rows) for rows in data.sheets.values())
     info(f"  Saved workbook: {path} ({file_size(path)}, {row_count} data row(s))")

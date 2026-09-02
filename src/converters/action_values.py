@@ -2,11 +2,16 @@ from __future__ import annotations
 
 from collections import Counter, defaultdict
 from dataclasses import dataclass
+import json
 from pathlib import Path
 from typing import Any, Callable
 
 from config import WEAPON_TYPES
-from src.data.action_map import ActionMapRelation, load_action_map
+from src.data.action_map import (
+    ActionMapRelation,
+    ResourceMapRelation,
+    load_action_map,
+)
 from src.data.rcol import (
     RequestSetKey,
     RequestSetRecord,
@@ -24,8 +29,20 @@ SHEET_NAMES = {
     "Ammo": "Ammo",
 }
 
+MAPPING_COLUMNS = (
+    "MappingName",
+    "MappingKind",
+    "MappingIdentity",
+    "MappingInternalName",
+    "MappingNameSource",
+    "ResourceRole",
+    "MappingConfidence",
+    "MappingCondition",
+    "MappingSource",
+)
+
 DEFAULT_COLUMNS = (
-    "ActionName",
+    *MAPPING_COLUMNS,
     "sourceRequestSetOrdinal",
     "requestSetID",
     "groupIndex",
@@ -40,25 +57,34 @@ DEFAULT_COLUMNS = (
 
 
 @dataclass(frozen=True, slots=True)
-class ActionBinding:
+class MappingBinding:
     identity: str
     scope: str
     order: tuple[int, int, int, str]
+    kind: str
     fallback_name: str
+    internal_name: str
     name_guid: str = ""
     suffix: str = ""
+    name_source: str = ""
+    resource_role: str = ""
+    confidence: str = ""
+    condition: str = ""
     source: str = ""
 
     def display_name(self, resolve_text: Callable[[str], str]) -> str:
         localized = (resolve_text(self.name_guid) or "").strip() if self.name_guid else ""
         fallback = self.fallback_name.strip()
-        return f"{localized or fallback}{self.suffix}".strip()
+        base = localized or fallback
+        return f"{base} {self.suffix}".strip() if self.suffix else base
 
 
 @dataclass(frozen=True, slots=True)
 class ActionMapAudit:
     path: str
     relations: int
+    action_relations: int
+    resource_relations: int
     named_relations: int
     unnamed_relations: int
     bound_request_sets: int
@@ -69,7 +95,7 @@ class ActionMapAudit:
 class ActionValueCatalog:
     records: dict[str, tuple[RequestSetRecord, ...]]
     actions: dict[str, dict[int, Any]]
-    bindings: dict[RequestSetKey, tuple[ActionBinding, ...]]
+    bindings: dict[RequestSetKey, tuple[MappingBinding, ...]]
     mapping_source_counts: dict[str, int]
     action_map_audit: ActionMapAudit | None = None
 
@@ -88,7 +114,7 @@ class SheetAudit:
     mapped_request_sets: int
     unmapped_request_sets: int
     displayed_rows: int
-    action_groups: int
+    mapping_groups: int
 
 
 @dataclass(frozen=True, slots=True)
@@ -117,19 +143,27 @@ def load_action_value_catalog(
 
     document = load_action_map(Path(action_map_path))
     collector = _BindingCollector(record_index)
-    unnamed_relations = 0
-    relation_contracts: dict[tuple[RequestSetKey, str], ActionBinding] = {}
-    for relation in document.relations:
+    relation_contracts: dict[tuple[RequestSetKey, str], MappingBinding] = {}
+    relation_bindings = [
+        *(
+            (relation, _action_map_binding(relation))
+            for relation in document.action_relations
+        ),
+        *(
+            (relation, _resource_map_binding(relation))
+            for relation in document.resource_relations
+        ),
+    ]
+    unnamed_relations = sum(
+        not binding.name_guid for _relation, binding in relation_bindings
+    )
+    for relation, binding in relation_bindings:
         key = _request_set_key(relation)
         if key not in record_index:
             raise ValueError(
                 "ActionMap relation does not resolve to an exact current requestSet: "
                 f"{key}"
             )
-        if not relation.action_name_guid:
-            unnamed_relations += 1
-            continue
-        binding = _action_map_binding(relation)
         contract_key = (key, binding.identity)
         current = relation_contracts.get(contract_key)
         if current is not None and current != binding:
@@ -143,8 +177,10 @@ def load_action_value_catalog(
     bindings = collector.freeze()
     audit = ActionMapAudit(
         path=str(document.path),
-        relations=len(document.relations),
-        named_relations=len(document.relations) - unnamed_relations,
+        relations=len(relation_bindings),
+        action_relations=len(document.action_relations),
+        resource_relations=len(document.resource_relations),
+        named_relations=len(relation_bindings) - unnamed_relations,
         unnamed_relations=unnamed_relations,
         bound_request_sets=len(bindings),
         bindings=sum(len(values) for values in bindings.values()),
@@ -173,7 +209,10 @@ def build_action_value_workbook(
         record_by_key = {record.key: record for record in records}
         grouped: dict[
             str,
-            tuple[ActionBinding, dict[RequestSetKey, RequestSetRecord]],
+            tuple[
+                MappingBinding,
+                dict[RequestSetKey, tuple[MappingBinding, RequestSetRecord]],
+            ],
         ] = {}
         mapped_keys: set[RequestSetKey] = set()
 
@@ -184,55 +223,27 @@ def build_action_value_workbook(
                 if existing is None:
                     grouped[binding.identity] = (
                         binding,
-                        {record.key: record},
+                        {record.key: (binding, record)},
                     )
                     continue
                 current_binding, group_records = existing
                 if binding.order < current_binding.order:
                     current_binding = binding
-                group_records[record.key] = record
+                group_records[record.key] = (binding, record)
                 grouped[binding.identity] = (
                     current_binding,
                     group_records,
                 )
 
-        display_groups: dict[
-            str,
-            tuple[
-                ActionBinding,
-                dict[RequestSetKey, RequestSetRecord],
-                set[str],
-            ],
-        ] = {}
-        for binding, group_records in grouped.values():
-            display_name = binding.display_name(resolve_text)
-            existing = display_groups.get(display_name)
-            if existing is None:
-                display_groups[display_name] = (
-                    binding,
-                    dict(group_records),
-                    {binding.identity},
-                )
-                continue
-            current_binding, current_records, identities = existing
-            if binding.order < current_binding.order:
-                current_binding = binding
-            current_records.update(group_records)
-            identities.add(binding.identity)
-            display_groups[display_name] = (
-                current_binding,
-                current_records,
-                identities,
-            )
-
         mapped_groups = sorted(
             (
-                (display_name, binding, group_records, identities)
-                for display_name, (
+                (
+                    binding.display_name(resolve_text),
                     binding,
                     group_records,
-                    identities,
-                ) in display_groups.items()
+                    {binding.identity},
+                )
+                for binding, group_records in grouped.values()
             ),
             key=lambda item: (
                 item[1].order,
@@ -245,16 +256,23 @@ def build_action_value_workbook(
         row_groups: list[RowGroup] = []
         next_excel_row = 3
 
-        for action_name, _binding, group_records, identities in mapped_groups:
+        for mapping_name, binding, group_records, identities in mapped_groups:
             ordered_records = sorted(
                 group_records.values(),
-                key=lambda record: record.sort_key,
+                key=lambda item: item[1].sort_key,
             )
             if not ordered_records:
                 continue
             start_row = next_excel_row
-            for record in ordered_records:
-                rows.append(_workbook_row(action_name, record, columns))
+            for edge_binding, record in ordered_records:
+                rows.append(
+                    _workbook_row(
+                        mapping_name,
+                        edge_binding,
+                        record,
+                        columns,
+                    )
+                )
                 next_excel_row += 1
             row_groups.append(
                 RowGroup(
@@ -274,7 +292,7 @@ def build_action_value_workbook(
                 key=lambda item: item.sort_key,
             ):
                 rows.append(
-                    _workbook_row(None, record, columns)
+                    _workbook_row(None, None, record, columns)
                 )
                 next_excel_row += 1
             row_groups.append(
@@ -300,7 +318,7 @@ def build_action_value_workbook(
             mapped_request_sets=len(mapped_keys),
             unmapped_request_sets=len(records) - len(mapped_keys),
             displayed_rows=len(rows),
-            action_groups=len(mapped_groups),
+            mapping_groups=len(mapped_groups),
         )
 
         if len(record_by_key) != len(records):
@@ -320,11 +338,11 @@ class _BindingCollector:
         self.record_keys = set(records)
         self.bindings: dict[
             RequestSetKey,
-            dict[str, ActionBinding],
+            dict[str, MappingBinding],
         ] = defaultdict(dict)
         self.source_counts: Counter[str] = Counter()
 
-    def add(self, key: RequestSetKey, binding: ActionBinding) -> None:
+    def add(self, key: RequestSetKey, binding: MappingBinding) -> None:
         if key not in self.record_keys:
             raise ValueError(f"Unknown requestSet identity: {key}")
         current = self.bindings[key].get(binding.identity)
@@ -338,7 +356,7 @@ class _BindingCollector:
         self.bindings[key][binding.identity] = binding
         self.source_counts[binding.source] += 1
 
-    def freeze(self) -> dict[RequestSetKey, tuple[ActionBinding, ...]]:
+    def freeze(self) -> dict[RequestSetKey, tuple[MappingBinding, ...]]:
         return {
             key: tuple(
                 sorted(
@@ -350,7 +368,9 @@ class _BindingCollector:
         }
 
 
-def _request_set_key(relation: ActionMapRelation) -> RequestSetKey:
+def _request_set_key(
+    relation: ActionMapRelation | ResourceMapRelation,
+) -> RequestSetKey:
     return RequestSetKey(
         scope=relation.scope,
         rcol=relation.rcol,
@@ -360,7 +380,7 @@ def _request_set_key(relation: ActionMapRelation) -> RequestSetKey:
     )
 
 
-def _action_map_binding(relation: ActionMapRelation) -> ActionBinding:
+def _action_map_binding(relation: ActionMapRelation) -> MappingBinding:
     guide_order = (
         relation.action_guide_id
         if relation.action_guide_id is not None
@@ -371,20 +391,69 @@ def _action_map_binding(relation: ActionMapRelation) -> ActionBinding:
         or relation.fallback_name
         or relation.action_internal_name
     )
-    return ActionBinding(
+    return MappingBinding(
         identity=relation.action_identity,
         scope=relation.scope,
         order=(0, relation.action_order, guide_order, relation.action_identity),
+        kind="Action",
         fallback_name=fallback_name,
+        internal_name=relation.action_internal_name,
         name_guid=relation.action_name_guid,
+        name_source=(
+            "action_guide_message"
+            if relation.action_name_guid
+            else "action_internal_fallback"
+        ),
+        confidence=relation.confidence,
+        condition=_format_conditions(relation.conditions),
         source=f"action_map:{relation.source}",
+    )
+
+
+def _resource_map_binding(relation: ResourceMapRelation) -> MappingBinding:
+    fallback_name = (
+        relation.resource_japanese_name
+        or relation.fallback_name
+        or relation.resource_internal_name
+    )
+    return MappingBinding(
+        identity=relation.resource_identity,
+        scope=relation.scope,
+        order=(
+            1,
+            relation.resource_order,
+            0,
+            relation.resource_identity,
+        ),
+        kind="Resource",
+        fallback_name=fallback_name,
+        internal_name=relation.resource_internal_name,
+        name_guid=relation.resource_name_guid,
+        suffix=relation.resource_name_suffix,
+        name_source=relation.resource_name_source,
+        resource_role=relation.resource_role,
+        confidence=relation.confidence,
+        condition=_format_conditions(relation.conditions),
+        source=f"action_map:{relation.source}",
+    )
+
+
+def _format_conditions(conditions: tuple[dict[str, Any], ...]) -> str:
+    return "; ".join(
+        json.dumps(
+            condition,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+        for condition in conditions
     )
 
 
 def _sheet_columns(
     records: tuple[RequestSetRecord, ...],
 ) -> tuple[str, ...]:
-    columns = ["ActionName"]
+    columns = list(MAPPING_COLUMNS)
     seen = set(columns)
     for record in records:
         for key in record.properties:
@@ -397,12 +466,21 @@ def _sheet_columns(
 
 
 def _workbook_row(
-    action_name: str | None,
+    mapping_name: str | None,
+    binding: MappingBinding | None,
     record: RequestSetRecord,
     columns: tuple[str, ...],
 ) -> dict[str, Any]:
     values = {
-        "ActionName": action_name,
+        "MappingName": mapping_name,
+        "MappingKind": binding.kind if binding else None,
+        "MappingIdentity": binding.identity if binding else None,
+        "MappingInternalName": binding.internal_name if binding else None,
+        "MappingNameSource": binding.name_source if binding else None,
+        "ResourceRole": binding.resource_role if binding else None,
+        "MappingConfidence": binding.confidence if binding else None,
+        "MappingCondition": binding.condition if binding else None,
+        "MappingSource": binding.source if binding else None,
         **record.properties,
     }
     return {column: values.get(column) for column in columns}
