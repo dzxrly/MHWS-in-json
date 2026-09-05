@@ -4,6 +4,7 @@ import unittest
 from pathlib import Path
 
 from openpyxl import load_workbook
+from openpyxl.utils import get_column_letter
 
 from config import ACTION_MAP_PATH, NATIVES_DIR
 from src.converters.action_values import (
@@ -144,20 +145,33 @@ class ActionValueTests(unittest.TestCase):
             try:
                 self.assertEqual(workbook.sheetnames, list(SHEET_NAMES.values()))
                 sheet = workbook["Wp00_LongSword"]
-                self.assertEqual(sheet.freeze_panes, "B3")
+                columns = data.columns[sheet.title]
+                name_column = columns.index("MappingName") + 1
+                name_letter = get_column_letter(name_column)
+                kind_column = columns.index("MappingKind") + 1
+                self.assertEqual(columns[:2], ("MappingInternalName", "MappingConfidence"))
+                self.assertEqual(columns[-7:], (
+                    "MappingName", "MappingKind", "MappingIdentity", "MappingNameSource",
+                    "ResourceRole", "MappingCondition", "MappingSource",
+                ))
+                self.assertEqual(sheet.freeze_panes, "C3")
                 self.assertFalse(sheet.sheet_view.showGridLines)
                 self.assertTrue(
                     any(str(cell_range).startswith("A1:") for cell_range in sheet.merged_cells)
                 )
-                self.assertIn("A3:A4", sheet.merged_cells)
-                self.assertNotIn("A5:A6", sheet.merged_cells)
+                self.assertIn(f"{name_letter}3:{name_letter}4", sheet.merged_cells)
+                self.assertNotIn("A3:A4", sheet.merged_cells)
+                self.assertEqual(sheet["A4"].value, rows[1]["MappingInternalName"])
+                self.assertNotIn(f"{name_letter}5:{name_letter}6", sheet.merged_cells)
                 self.assertTrue(sheet["A1"].value.startswith("RCOL sources (1): "))
-                self.assertEqual(sheet["A2"].value, "MappingName")
-                self.assertEqual(sheet["B3"].value, "Action")
-                self.assertIsNone(sheet["A6"].value)
+                self.assertEqual(sheet["A2"].value, "MappingInternalName")
+                self.assertEqual(sheet["B2"].value, "MappingConfidence")
+                self.assertEqual(sheet.cell(2, name_column).value, "MappingName")
+                self.assertEqual(sheet.cell(3, kind_column).value, "Action")
+                self.assertIsNone(sheet.cell(6, name_column).value)
                 self.assertEqual(sheet["B3"].border.bottom.style, None)
                 self.assertEqual(sheet["B4"].border.bottom.style, "medium")
-                self.assertEqual(sheet["A6"].fill.fgColor.rgb, "00F4B183")
+                self.assertEqual(sheet.cell(6, name_column).fill.fgColor.rgb, "00F4B183")
 
                 note_column = data.columns["Wp00_LongSword"].index("note") + 1
                 self.assertEqual(sheet.cell(3, note_column).value, "'=guard")
@@ -325,8 +339,11 @@ class ActionValueTests(unittest.TestCase):
                 )
 
             expected_columns = data.columns[sheet_name]
-            self.assertEqual(expected_columns[0], "MappingName")
-            self.assertEqual(expected_columns[1], "MappingKind")
+            self.assertEqual(expected_columns[:2], ("MappingInternalName", "MappingConfidence"))
+            self.assertEqual(expected_columns[-7:], (
+                "MappingName", "MappingKind", "MappingIdentity", "MappingNameSource",
+                "ResourceRole", "MappingCondition", "MappingSource",
+            ))
             self.assertIn("_ActionTypeFixed._Value", expected_columns)
 
 

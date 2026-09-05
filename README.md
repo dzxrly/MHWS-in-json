@@ -41,6 +41,8 @@ Progress and packaging details are printed to the terminal.
 
 `WeaponActionValues.xlsx` reads mappings only from `MHWS-in-json/ActionMap.json` (`_format = mhws_static_action_request_set_map_v2`). Generate this file locally with `motlist-to-json action-map` using inputs from the same game version: the executable dump, `il2cpp_dump.json`, motbank/motlist resources, PAK file list, and MHWS JSON. Version 1 is not accepted. Set `MHWS_ACTION_MAP_PATH` to test a file elsewhere. CI reads the committed package and does not need the generator inputs.
 
+The package includes `MHWS-in-json/schema/action-map-v2.schema.json` and `MHWS-in-json/schema/motlist-action-tracks-v1.schema.json` for validating ActionMap v2 and motlist action-track JSON respectively.
+
 Only player attack-value requestSets are exported. Nested values are flattened to leaf columns, and an RS is repeated for every action or resource mapping edge. `MappingKind`, stable identity, internal-name, name-source, resource-role, confidence, condition, and provenance columns make the two relation types explicit.
 
 `MappingNameSource` records where the base `MappingName` came from. It describes name provenance, not the strength of the mapping. The generator can emit the following values; `+request_set_resource_marker` is appended to a base source when a requestSet resource marker distinguishes an inferred variant.
@@ -67,9 +69,13 @@ Only player attack-value requestSets are exported. Nested values are flattened t
 
 Both columns are blank for an unmapped requestSet.
 
+`MappingCondition` preserves supplied conditions, including collider roles, ammo levels and unverified activation. Nonempty conditions wrap and increase the row height within Excel's limit. A derived family name does not confirm collider activation.
+
 `actionRelations` and `resourceRelations` are separate arrays. Every edge targets the exact identity `(scope, rcol, requestSetID, keyHash, sourceRequestSetOrdinal)`; export stops on a stale target or conflicting edge. Missing localization GUIDs use generated internal/resource names instead of requiring a manual mapping. Many-to-many identities remain separate even when their localized display text is the same. Resource relations include exact ShellList/PFB/RCOL evidence, automatically inferred variants, and an explicit RCOL structural fallback.
 
 Row 1 of each sheet lists the RCOL source paths, and row 2 contains the headers. Data rows omit the repeated `rcol` path.
+
+The first two columns are `MappingInternalName` and `MappingConfidence` and remain frozen when scrolling. Original data columns follow in their source order; the remaining mapping columns, including `MappingName`, appear at the end.
 
 ## Usage
 

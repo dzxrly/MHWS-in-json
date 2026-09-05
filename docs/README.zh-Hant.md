@@ -41,6 +41,8 @@
 
 `WeaponActionValues.xlsx` 只讀取 `MHWS-in-json/ActionMap.json`（`_format = mhws_static_action_request_set_map_v2`）。該檔案需在本機使用 `motlist-to-json action-map` 產生，輸入必須來自同一遊戲版本：EXE dump、`il2cpp_dump.json`、motbank/motlist、PAK 檔案清單和 MHWS JSON。不再接受 v1。測試其他路徑的檔案時，設定 `MHWS_ACTION_MAP_PATH`。CI 直接讀取儲存庫中的資料包，不需要上述產生依賴。
 
+資料包附帶 `MHWS-in-json/schema/action-map-v2.schema.json` 和 `MHWS-in-json/schema/motlist-action-tracks-v1.schema.json`，分別用於驗證 ActionMap v2 與 motlist 動作軌道 JSON。
+
 只匯出玩家攻擊動作值 requestSet。嵌套值展開為葉節點欄位；每條動作或資源對映邊都會輸出一列，同一 RS 因此可以重複。`MappingKind`、穩定身分、內部名稱、名稱來源、資源角色、信賴級別、條件和證據來源等欄位會明確說明對映性質。
 
 `MappingNameSource` 說明 `MappingName` 的基礎名稱取自何處。它只記錄名稱來源，不表示對映強弱。產生器可能寫入下列值；根據 requestSet 資源標記區分推導變體時，會在基礎值後附加 `+request_set_resource_marker`。
@@ -67,9 +69,13 @@
 
 未對映的 requestSet 在這兩欄中都留空。
 
+`MappingCondition` 保留輸入中的條件，包括判定角色、彈藥等級及未核驗的觸發狀態。非空條件自動換行，並在 Excel 限制內增加列高。推定的家族名稱不代表判定已確認啟用。
+
 `actionRelations` 與 `resourceRelations` 是兩個獨立陣列。每條邊都指向精確識別 `(scope, rcol, requestSetID, keyHash, sourceRequestSetOrdinal)`；目標過期或同一條邊衝突時，匯出立即失敗。缺少本地化 GUID 時自動使用內部名稱或資源名稱，不需要人工補對映。即使本地化顯示文字相同，不同對映身分也不會合併。資源關係包含精確的 ShellList/PFB/RCOL 證據、自動推導的變體，以及明確標記的 RCOL 結構備援。
 
 每個 sheet 的第一列列出 RCOL 來源路徑，第二列為欄位標題。資料列不重複顯示 `rcol` 路徑。
+
+前兩欄為 `MappingInternalName` 和 `MappingConfidence`，水平捲動時保持凍結。隨後依原順序排列原始資料欄位；包含 `MappingName` 在內的其餘對映欄位放在末尾。
 
 ## 使用方式
 

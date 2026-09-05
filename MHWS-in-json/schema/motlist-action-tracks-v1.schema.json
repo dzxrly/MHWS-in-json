@@ -1,0 +1,203 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RE Engine motlist action tracks",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "_format",
+    "sourcePath",
+    "motlistName",
+    "motlistVersion",
+    "motlistVersionName",
+    "trackFilters",
+    "statistics",
+    "requestSetMappings",
+    "motions"
+  ],
+  "properties": {
+    "_format": {
+      "const": "re_engine_motlist_action_tracks_v1"
+    },
+    "sourcePath": {
+      "type": "string"
+    },
+    "motlistName": {
+      "type": "string"
+    },
+    "motlistVersion": {
+      "type": "integer"
+    },
+    "motlistVersionName": {
+      "type": "string"
+    },
+    "trackFilters": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "statistics": {
+      "$ref": "#/$defs/statistics"
+    },
+    "requestSetMappings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/requestSetMapping"
+      }
+    },
+    "motions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/motion"
+      }
+    }
+  },
+  "$defs": {
+    "float": {
+      "oneOf": [
+        { "type": "number" },
+        { "enum": ["NaN", "Infinity", "-Infinity"] }
+      ]
+    },
+    "nullableFloat": {
+      "oneOf": [
+        { "$ref": "#/$defs/float" },
+        { "type": "null" }
+      ]
+    },
+    "statistics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "totalMotions",
+        "matchedMotions",
+        "inspectedClips",
+        "matchedClips",
+        "matchedTracks",
+        "requestSetMappings"
+      ],
+      "properties": {
+        "totalMotions": { "type": "integer", "minimum": 0 },
+        "matchedMotions": { "type": "integer", "minimum": 0 },
+        "inspectedClips": { "type": "integer", "minimum": 0 },
+        "matchedClips": { "type": "integer", "minimum": 0 },
+        "matchedTracks": { "type": "integer", "minimum": 0 },
+        "requestSetMappings": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "requestSetMapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "motionId",
+        "motionName",
+        "motionType",
+        "clipSource",
+        "clipIndex",
+        "mainTrackName",
+        "trackIndex",
+        "trackName",
+        "propertyIndex",
+        "propertyPath",
+        "requestSetId",
+        "startFrame"
+      ],
+      "properties": {
+        "motionId": { "type": "integer", "minimum": 0 },
+        "motionName": { "type": "string" },
+        "motionType": { "type": "string" },
+        "clipSource": { "enum": ["motion", "override"] },
+        "clipIndex": { "type": "integer", "minimum": 0 },
+        "mainTrackName": { "type": "string" },
+        "trackIndex": { "type": "integer", "minimum": 0 },
+        "trackName": { "type": "string" },
+        "propertyIndex": { "type": "integer", "minimum": 0 },
+        "propertyPath": { "type": "string" },
+        "requestSetId": { "type": "integer", "minimum": 0, "maximum": 4294967295 },
+        "startFrame": { "$ref": "#/$defs/float" },
+        "endFrame": { "$ref": "#/$defs/nullableFloat" }
+      }
+    },
+    "motion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["motionId", "motionName", "motionType", "clips"],
+      "properties": {
+        "motionId": { "type": "integer", "minimum": 0 },
+        "motionName": { "type": "string" },
+        "motionType": { "type": "string" },
+        "clips": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/clip" }
+        }
+      }
+    },
+    "clip": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "index", "mainTrackName", "frameCount", "tracks"],
+      "properties": {
+        "source": { "enum": ["motion", "override"] },
+        "index": { "type": "integer", "minimum": 0 },
+        "mainTrackName": { "type": "string" },
+        "frameCount": { "$ref": "#/$defs/float" },
+        "tracks": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/track" }
+        }
+      }
+    },
+    "track": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["index", "name", "startFrame", "endFrame", "properties"],
+      "properties": {
+        "index": { "type": "integer", "minimum": 0 },
+        "name": { "type": "string" },
+        "startFrame": { "$ref": "#/$defs/float" },
+        "endFrame": { "$ref": "#/$defs/float" },
+        "properties": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/property" }
+        }
+      }
+    },
+    "property": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "path",
+        "dataType",
+        "arrayIndex",
+        "startFrame",
+        "endFrame",
+        "keys"
+      ],
+      "properties": {
+        "name": { "type": "string" },
+        "path": { "type": "string" },
+        "dataType": { "type": "string" },
+        "arrayIndex": { "type": "integer" },
+        "startFrame": { "$ref": "#/$defs/float" },
+        "endFrame": { "$ref": "#/$defs/float" },
+        "keys": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/key" }
+        }
+      }
+    },
+    "key": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["frame", "keyType", "value", "extra"],
+      "properties": {
+        "frame": { "$ref": "#/$defs/float" },
+        "keyType": { "type": "string" },
+        "value": {},
+        "interpolation": { "type": ["string", "null"] },
+        "extra": { "type": "boolean" }
+      }
+    }
+  }
+}

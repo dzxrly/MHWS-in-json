@@ -1,0 +1,240 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/mhws/action-map-v2.schema.json",
+  "title": "MHWS static action and resource to requestSet map v2",
+  "type": "object",
+  "required": [
+    "_format",
+    "inputs",
+    "statistics",
+    "actionRelations",
+    "resourceRelations"
+  ],
+  "properties": {
+    "_format": {
+      "const": "mhws_static_action_request_set_map_v2"
+    },
+    "inputs": {"type": "object"},
+    "statistics": {"type": "object"},
+    "actionRelations": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/actionRelation"}
+    },
+    "resourceRelations": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/resourceRelation"}
+    },
+    "unresolvedActions": {"type": "array"},
+    "unresolvedCoordinates": {"type": "array"},
+    "unresolvedNames": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["scope", "keyHash", "candidateGuideIds", "reason"],
+        "properties": {
+          "scope": {"$ref": "#/$defs/scope"},
+          "keyHash": {"type": "integer"},
+          "candidateGuideIds": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"type": "integer"}},
+          "reason": {"const": "action_name_hash_ambiguous"}
+        }
+      }
+    },
+    "unresolvedShellEntries": {"type": "array"},
+    "missingShellPrefabs": {"type": "array"},
+    "ammoItemMapEvidence": {"type": "array"}
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "scope": {
+      "enum": [
+        "Wp00", "Wp01", "Wp02", "Wp03", "Wp04", "Wp05", "Wp06",
+        "Wp07", "Wp08", "Wp09", "Wp10", "Wp11", "Wp12", "Wp13",
+        "Ammo"
+      ]
+    },
+    "exactTarget": {
+      "type": "object",
+      "required": [
+        "scope",
+        "rcol",
+        "requestSetId",
+        "keyHash",
+        "sourceRequestSetOrdinal"
+      ],
+      "properties": {
+        "scope": {"$ref": "#/$defs/scope"},
+        "rcol": {"type": "string", "minLength": 1},
+        "requestSetId": {"type": "integer"},
+        "keyHash": {"type": "integer"},
+        "sourceRequestSetOrdinal": {"type": "integer", "minimum": 0}
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "fallbackName",
+        "confidence",
+        "source",
+        "resolutionMethods",
+        "conditions"
+      ],
+      "properties": {
+        "fallbackName": {"type": "string", "minLength": 1},
+        "confidence": {"enum": ["proven", "derived", "structural"]},
+        "source": {"type": "string", "minLength": 1},
+        "resolutionMethods": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "conditions": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/condition"}
+        }
+      }
+    },
+    "actionRelation": {
+      "allOf": [
+        {"$ref": "#/$defs/exactTarget"},
+        {"$ref": "#/$defs/provenance"},
+        {
+          "type": "object",
+          "required": [
+            "actionIdentity",
+            "actionOrder",
+            "actionInternalName",
+            "actionNameGuid",
+            "actionJapaneseName"
+          ],
+          "properties": {
+            "actionIdentity": {"type": "string", "minLength": 1},
+            "actionGuideId": {"type": ["integer", "null"]},
+            "actionOrder": {"type": "integer"},
+            "actionInternalName": {"type": "string"},
+            "actionNameGuid": {"type": "string"},
+            "actionJapaneseName": {"type": "string"},
+            "evidence": {"type": "array", "items": {"$ref": "#/$defs/motionEvidence"}},
+            "shellEvidence": {"type": "array", "items": {"$ref": "#/$defs/resourceEvidence"}}
+          }
+        }
+      ]
+    },
+    "resourceRelation": {
+      "allOf": [
+        {"$ref": "#/$defs/exactTarget"},
+        {"$ref": "#/$defs/provenance"},
+        {
+          "type": "object",
+          "required": [
+            "resourceIdentity",
+            "resourceOrder",
+            "resourceInternalName",
+            "resourceNameGuid",
+            "resourceJapaneseName",
+            "resourceNameSource",
+            "resourceNameSuffix",
+            "resourceRole"
+          ],
+          "properties": {
+            "resourceIdentity": {"type": "string", "minLength": 1},
+            "resourceOrder": {"type": "integer"},
+            "resourceInternalName": {"type": "string", "minLength": 1},
+            "resourceNameGuid": {"type": "string"},
+            "resourceJapaneseName": {"type": "string"},
+            "resourceNameSource": {"type": "string", "minLength": 1},
+            "resourceNameSuffix": {"type": "string"},
+            "resourceRole": {"enum": ["shell", "ammo", "rcol_fallback"]},
+            "evidence": {"type": "array", "items": {"$ref": "#/$defs/resourceEvidence"}}
+          }
+        }
+      ]
+    },
+    "condition": {
+      "type": "object",
+      "allOf": [
+        {
+          "if": {"required": ["kind"], "properties": {"kind": {"const": "collision_configuration"}}},
+          "then": {
+            "required": ["roles", "ammoLevel"],
+            "properties": {
+              "roles": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/collisionRole"}},
+              "ammoLevel": {"type": ["integer", "null"], "minimum": 1}
+            }
+          }
+        },
+        {
+          "if": {"required": ["kind"], "properties": {"kind": {"const": "resource_family_membership"}}},
+          "then": {
+            "required": ["activation", "hitOrdinal", "ammoLevel"],
+            "properties": {
+              "activation": {"const": "unverified"}, "hitOrdinal": {"type": "null"},
+              "ammoLevel": {"type": ["integer", "null"], "minimum": 1}
+            }
+          }
+        },
+        {
+          "if": {"required": ["kind"], "properties": {"kind": {"const": "action_name_hash_candidates"}}},
+          "then": {
+            "required": ["candidateGuideIds"],
+            "properties": {"candidateGuideIds": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"type": "integer"}}}
+          }
+        }
+      ]
+    },
+    "collisionRole": {"enum": ["primary", "sub_collision", "additional_collision"]},
+    "collisionReference": {
+      "type": "object",
+      "required": ["role", "sourceField", "sourcePath", "listIndex", "enabledByDefault"],
+      "properties": {
+        "role": {"$ref": "#/$defs/collisionRole"},
+        "sourceField": {"type": "string", "minLength": 1},
+        "sourcePath": {"type": "string", "minLength": 1},
+        "listIndex": {"type": ["integer", "null"], "minimum": 0},
+        "enabledByDefault": {"type": ["boolean", "null"]}
+      }
+    },
+    "motionEvidence": {
+      "type": "object",
+      "properties": {
+        "fieldWrite": {
+          "type": "object",
+          "required": ["declaringType", "fieldName", "fieldOffset", "fieldWidth", "writeOffset", "writeWidth", "laneByteOffset", "loadInstructionAddress", "initializerType"],
+          "properties": {
+            "declaringType": {"type": "string", "minLength": 1},
+            "fieldName": {"type": "string", "minLength": 1},
+            "fieldOffset": {"type": "integer", "minimum": 0}, "fieldWidth": {"const": 4},
+            "writeOffset": {"type": "integer", "minimum": 0}, "writeWidth": {"enum": [4, 8]},
+            "laneByteOffset": {"enum": [0, 4]},
+            "loadInstructionAddress": {"type": "string", "pattern": "^0x[0-9a-f]+$"},
+            "initializerType": {"type": "string", "minLength": 1}
+          }
+        },
+        "constructorChain": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["callerType", "callerMethod", "callerFunctionAddress", "callInstructionAddress"],
+            "properties": {
+              "callerType": {"type": "string", "minLength": 1}, "callerMethod": {"type": "string", "minLength": 1},
+              "callerFunctionAddress": {"type": "string", "pattern": "^0x[0-9a-f]+$"},
+              "callInstructionAddress": {"type": "string", "pattern": "^0x[0-9a-f]+$"}
+            }
+          }
+        }
+      }
+    },
+    "resourceEvidence": {
+      "type": "object",
+      "properties": {
+        "ammoLevel": {"type": ["integer", "null"], "minimum": 1},
+        "collisionReferences": {"type": "array", "items": {"$ref": "#/$defs/collisionReference"}},
+        "anchor": {"$ref": "#/$defs/resourceEvidence"},
+        "anchorTarget": {"$ref": "#/$defs/exactTarget"},
+        "attackPayloadSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "anchorShapeTypes": {"type": "array", "items": {"type": "string"}},
+        "memberShapeTypes": {"type": "array", "items": {"type": "string"}},
+        "activationConfirmed": {"const": false}
+      }
+    }
+  }
+}

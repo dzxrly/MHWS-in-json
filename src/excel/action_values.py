@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import math
 import re
 from typing import Any
 
@@ -8,7 +9,9 @@ from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
 
-from src.converters.action_values import ActionValueWorkbookData, RowGroup
+from src.converters.action_values import (
+    ActionValueWorkbookData, LEADING_MAPPING_COLUMNS, RowGroup,
+)
 
 
 HEADER_FILL = PatternFill("solid", fgColor="1F4E78")
@@ -105,7 +108,8 @@ def _style_sheet(
     columns: tuple[str, ...],
     groups: tuple[RowGroup, ...],
 ) -> None:
-    sheet.freeze_panes = "B3"
+    sheet.freeze_panes = f"{get_column_letter(len(LEADING_MAPPING_COLUMNS) + 1)}3"
+    name_column = columns.index("MappingName") + 1
     sheet.sheet_view.showGridLines = False
     sheet.sheet_view.zoomScale = 85
     sheet.sheet_properties.tabColor = "ED7D31" if sheet.title == "Ammo" else "5B9BD5"
@@ -139,8 +143,21 @@ def _style_sheet(
         )
         cell.border = HEADER_BORDER
 
+    wrapped_columns = [
+        (columns.index(name) + 1, FIXED_WIDTHS[name] - 2.0)
+        for name in ("MappingInternalName", "MappingCondition")
+    ]
     for row_index in range(3, sheet.max_row + 1):
-        sheet.row_dimensions[row_index].height = 21
+        wrapped_lines = max(
+            sum(
+                max(1, math.ceil(_text_width(line) / width))
+                for line in str(sheet.cell(row_index, column).value or "").splitlines()
+            )
+            for column, width in wrapped_columns
+        )
+        sheet.row_dimensions[row_index].height = min(
+            409.0, max(21.0, 15.0 * wrapped_lines + 6.0)
+        )
         for column_index, header in enumerate(columns, start=1):
             cell = sheet.cell(row_index, column_index)
             cell.alignment = Alignment(
@@ -155,7 +172,9 @@ def _style_sheet(
                     "MappingSource",
                     "name",
                     "keyName",
-                },
+                }
+                # Keep raw text inside its cell beside the merged name column.
+                or column_index == name_column - 1,
             )
 
     mapped_index = 0
@@ -168,16 +187,16 @@ def _style_sheet(
             row_fill = MAPPED_FILLS[color_index]
             action_fill = MAPPED_ACTION_FILLS[color_index]
             mapped_index += 1
-        _style_group(sheet, group, row_fill, action_fill)
+        _style_group(sheet, group, row_fill, action_fill, name_column)
 
         if not group.unmapped and group.end_row > group.start_row:
             sheet.merge_cells(
                 start_row=group.start_row,
-                start_column=1,
+                start_column=name_column,
                 end_row=group.end_row,
-                end_column=1,
+                end_column=name_column,
             )
-        action_cell = sheet.cell(group.start_row, 1)
+        action_cell = sheet.cell(group.start_row, name_column)
         action_cell.font = Font(bold=True, color="9C5700" if group.unmapped else "1F1F1F")
         action_cell.alignment = Alignment(
             horizontal="center",
@@ -188,13 +207,15 @@ def _style_sheet(
     _set_column_widths(sheet, columns)
 
 
-def _style_group(sheet, group: RowGroup, row_fill: PatternFill, action_fill: PatternFill) -> None:
+def _style_group(
+    sheet, group: RowGroup, row_fill: PatternFill, action_fill: PatternFill, name_column: int,
+) -> None:
     for row_index in range(group.start_row, group.end_row + 1):
         top = GROUP_SIDE if row_index == group.start_row else Side(style=None)
         bottom = GROUP_SIDE if row_index == group.end_row else Side(style=None)
         for column_index in range(1, sheet.max_column + 1):
             cell = sheet.cell(row_index, column_index)
-            cell.fill = action_fill if column_index == 1 else row_fill
+            cell.fill = action_fill if column_index == name_column else row_fill
             cell.border = Border(
                 left=VERTICAL_SIDE,
                 right=VERTICAL_SIDE,

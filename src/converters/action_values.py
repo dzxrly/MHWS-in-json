@@ -29,20 +29,22 @@ SHEET_NAMES = {
     "Ammo": "Ammo",
 }
 
-MAPPING_COLUMNS = (
+LEADING_MAPPING_COLUMNS = ("MappingInternalName", "MappingConfidence")
+
+TRAILING_MAPPING_COLUMNS = (
     "MappingName",
     "MappingKind",
     "MappingIdentity",
-    "MappingInternalName",
     "MappingNameSource",
     "ResourceRole",
-    "MappingConfidence",
     "MappingCondition",
     "MappingSource",
 )
 
+MAPPING_COLUMNS = (*LEADING_MAPPING_COLUMNS, *TRAILING_MAPPING_COLUMNS)
+
 DEFAULT_COLUMNS = (
-    *MAPPING_COLUMNS,
+    *LEADING_MAPPING_COLUMNS,
     "sourceRequestSetOrdinal",
     "requestSetID",
     "groupIndex",
@@ -53,6 +55,7 @@ DEFAULT_COLUMNS = (
     "name",
     "keyName",
     "userDataType",
+    *TRAILING_MAPPING_COLUMNS,
 )
 
 
@@ -453,8 +456,8 @@ def _format_conditions(conditions: tuple[dict[str, Any], ...]) -> str:
 def _sheet_columns(
     records: tuple[RequestSetRecord, ...],
 ) -> tuple[str, ...]:
-    columns = list(MAPPING_COLUMNS)
-    seen = set(columns)
+    columns = list(LEADING_MAPPING_COLUMNS)
+    seen = set(MAPPING_COLUMNS)
     for record in records:
         for key in record.properties:
             if key not in seen:
@@ -462,7 +465,7 @@ def _sheet_columns(
                 seen.add(key)
     if not records:
         return DEFAULT_COLUMNS
-    return tuple(columns)
+    return (*columns, *TRAILING_MAPPING_COLUMNS)
 
 
 def _workbook_row(
