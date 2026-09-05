@@ -75,7 +75,7 @@ Both columns are blank for an unmapped requestSet.
 
 Row 1 of each sheet lists the RCOL source paths, and row 2 contains the headers. Data rows omit the repeated `rcol` path.
 
-The first two columns are `MappingInternalName` and `MappingConfidence` and remain frozen when scrolling. Original data columns follow in their source order; the remaining mapping columns, including `MappingName`, appear at the end.
+The first five columns are `MappingName`, `MappingInternalName`, `MappingConfidence`, `_Attack`, and `_FixAttack`, in that order, and remain frozen when scrolling. The remaining original data columns keep their source order, followed by the remaining mapping columns.
 
 ## Usage
 

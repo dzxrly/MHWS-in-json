@@ -75,7 +75,7 @@
 
 每个 sheet 的第一行列出 RCOL 来源路径，第二行为表头。数据行不重复显示 `rcol` 路径。
 
-首两列为 `MappingInternalName` 和 `MappingConfidence`，横向滚动时保持冻结。随后按原顺序排列原始数据列；包含 `MappingName` 在内的其余映射列放在末尾。
+前五列依次为 `MappingName`、`MappingInternalName`、`MappingConfidence`、`_Attack` 和 `_FixAttack`，横向滚动时保持冻结。其余原始数据列按原顺序排列，剩余映射列继续放在末尾。
 
 ## 使用方式
 

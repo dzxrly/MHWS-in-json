@@ -10,7 +10,7 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
 
 from src.converters.action_values import (
-    ActionValueWorkbookData, LEADING_MAPPING_COLUMNS, RowGroup,
+    ActionValueWorkbookData, LEADING_COLUMNS, RowGroup,
 )
 
 
@@ -108,8 +108,9 @@ def _style_sheet(
     columns: tuple[str, ...],
     groups: tuple[RowGroup, ...],
 ) -> None:
-    sheet.freeze_panes = f"{get_column_letter(len(LEADING_MAPPING_COLUMNS) + 1)}3"
+    sheet.freeze_panes = f"{get_column_letter(len(LEADING_COLUMNS) + 1)}3"
     name_column = columns.index("MappingName") + 1
+    metadata_start = columns.index("MappingKind") + 1
     sheet.sheet_view.showGridLines = False
     sheet.sheet_view.zoomScale = 85
     sheet.sheet_properties.tabColor = "ED7D31" if sheet.title == "Ammo" else "5B9BD5"
@@ -173,8 +174,8 @@ def _style_sheet(
                     "name",
                     "keyName",
                 }
-                # Keep raw text inside its cell beside the merged name column.
-                or column_index == name_column - 1,
+                # Keep raw text inside its cell before the trailing metadata.
+                or column_index == metadata_start - 1,
             )
 
     mapped_index = 0

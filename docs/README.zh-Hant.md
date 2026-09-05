@@ -75,7 +75,7 @@
 
 每個 sheet 的第一列列出 RCOL 來源路徑，第二列為欄位標題。資料列不重複顯示 `rcol` 路徑。
 
-前兩欄為 `MappingInternalName` 和 `MappingConfidence`，水平捲動時保持凍結。隨後依原順序排列原始資料欄位；包含 `MappingName` 在內的其餘對映欄位放在末尾。
+前五欄依序為 `MappingName`、`MappingInternalName`、`MappingConfidence`、`_Attack` 和 `_FixAttack`，水平捲動時保持凍結。其餘原始資料欄位依原順序排列，剩餘對映欄位繼續放在末尾。
 
 ## 使用方式
 

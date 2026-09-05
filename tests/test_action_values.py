@@ -144,28 +144,37 @@ class ActionValueTests(unittest.TestCase):
             workbook = load_workbook(path, read_only=False, data_only=False)
             try:
                 self.assertEqual(workbook.sheetnames, list(SHEET_NAMES.values()))
+                for worksheet in workbook:
+                    headers = tuple(cell.value for cell in worksheet[2])
+                    self.assertEqual(headers[:5], (
+                        "MappingName", "MappingInternalName", "MappingConfidence",
+                        "_Attack", "_FixAttack",
+                    ))
+                    self.assertEqual(len(headers), len(set(headers)))
+                    self.assertEqual(worksheet.freeze_panes, "F3")
                 sheet = workbook["Wp00_LongSword"]
                 columns = data.columns[sheet.title]
                 name_column = columns.index("MappingName") + 1
                 name_letter = get_column_letter(name_column)
                 kind_column = columns.index("MappingKind") + 1
-                self.assertEqual(columns[:2], ("MappingInternalName", "MappingConfidence"))
-                self.assertEqual(columns[-7:], (
-                    "MappingName", "MappingKind", "MappingIdentity", "MappingNameSource",
+                self.assertEqual(columns[-6:], (
+                    "MappingKind", "MappingIdentity", "MappingNameSource",
                     "ResourceRole", "MappingCondition", "MappingSource",
                 ))
-                self.assertEqual(sheet.freeze_panes, "C3")
                 self.assertFalse(sheet.sheet_view.showGridLines)
                 self.assertTrue(
                     any(str(cell_range).startswith("A1:") for cell_range in sheet.merged_cells)
                 )
                 self.assertIn(f"{name_letter}3:{name_letter}4", sheet.merged_cells)
-                self.assertNotIn("A3:A4", sheet.merged_cells)
-                self.assertEqual(sheet["A4"].value, rows[1]["MappingInternalName"])
+                self.assertEqual(name_column, 1)
+                self.assertNotIn("B3:B4", sheet.merged_cells)
+                self.assertEqual(sheet["B4"].value, rows[1]["MappingInternalName"])
+                self.assertNotIn("C3:C4", sheet.merged_cells)
+                self.assertEqual(sheet["C4"].value, rows[1]["MappingConfidence"] or None)
+                self.assertEqual(sheet["D3"].value, rows[0]["_Attack"])
+                self.assertEqual(sheet["E3"].value, rows[0]["_FixAttack"])
                 self.assertNotIn(f"{name_letter}5:{name_letter}6", sheet.merged_cells)
                 self.assertTrue(sheet["A1"].value.startswith("RCOL sources (1): "))
-                self.assertEqual(sheet["A2"].value, "MappingInternalName")
-                self.assertEqual(sheet["B2"].value, "MappingConfidence")
                 self.assertEqual(sheet.cell(2, name_column).value, "MappingName")
                 self.assertEqual(sheet.cell(3, kind_column).value, "Action")
                 self.assertIsNone(sheet.cell(6, name_column).value)
@@ -339,9 +348,12 @@ class ActionValueTests(unittest.TestCase):
                 )
 
             expected_columns = data.columns[sheet_name]
-            self.assertEqual(expected_columns[:2], ("MappingInternalName", "MappingConfidence"))
-            self.assertEqual(expected_columns[-7:], (
-                "MappingName", "MappingKind", "MappingIdentity", "MappingNameSource",
+            self.assertEqual(expected_columns[:5], (
+                "MappingName", "MappingInternalName", "MappingConfidence", "_Attack", "_FixAttack",
+            ))
+            self.assertEqual(len(expected_columns), len(set(expected_columns)))
+            self.assertEqual(expected_columns[-6:], (
+                "MappingKind", "MappingIdentity", "MappingNameSource",
                 "ResourceRole", "MappingCondition", "MappingSource",
             ))
             self.assertIn("_ActionTypeFixed._Value", expected_columns)
@@ -369,6 +381,7 @@ def _record(
             "keyHash": key_hash,
             "userDataType": "AttackParamPl",
             "_Attack": 10.0 + request_set_id,
+            "_FixAttack": 2.0 + request_set_id,
             "_ActionTypeFixed._Value": "[1]SLASH",
             "note": note,
         },

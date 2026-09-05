@@ -29,10 +29,10 @@ SHEET_NAMES = {
     "Ammo": "Ammo",
 }
 
-LEADING_MAPPING_COLUMNS = ("MappingInternalName", "MappingConfidence")
+LEADING_MAPPING_COLUMNS = ("MappingName", "MappingInternalName", "MappingConfidence")
+LEADING_COLUMNS = (*LEADING_MAPPING_COLUMNS, "_Attack", "_FixAttack")
 
 TRAILING_MAPPING_COLUMNS = (
-    "MappingName",
     "MappingKind",
     "MappingIdentity",
     "MappingNameSource",
@@ -44,7 +44,7 @@ TRAILING_MAPPING_COLUMNS = (
 MAPPING_COLUMNS = (*LEADING_MAPPING_COLUMNS, *TRAILING_MAPPING_COLUMNS)
 
 DEFAULT_COLUMNS = (
-    *LEADING_MAPPING_COLUMNS,
+    *LEADING_COLUMNS,
     "sourceRequestSetOrdinal",
     "requestSetID",
     "groupIndex",
@@ -456,8 +456,8 @@ def _format_conditions(conditions: tuple[dict[str, Any], ...]) -> str:
 def _sheet_columns(
     records: tuple[RequestSetRecord, ...],
 ) -> tuple[str, ...]:
-    columns = list(LEADING_MAPPING_COLUMNS)
-    seen = set(MAPPING_COLUMNS)
+    columns = list(LEADING_COLUMNS)
+    seen = set(MAPPING_COLUMNS) | set(LEADING_COLUMNS)
     for record in records:
         for key in record.properties:
             if key not in seen:
