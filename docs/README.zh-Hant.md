@@ -28,12 +28,12 @@
 - `output/<語言>/AmuletCollection.xlsx`：正規化的護石、技能和孔位池。名稱依語言本地化，稀有度使用 `Rare.X`，武器與防具孔位分欄，孔位等級使用 `Lv.X`。`SkillPool` 中每個技能點數池單獨佔一欄，項目格式為「技能名稱 `Lv.X`」。
 - `output/<語言>/WeaponActionValues.xlsx`：每種武器一個 sheet，另有 `Ammo` sheet。動作對映與資源對映會明確區分；兩者都不存在的 requestSet 放在末尾，`MappingName` 保持空白並使用橙色底紋。
 - `output/DATABASE_<語言名稱>_<版本號>.zip`：每種語言一個發布資源包，僅包含該語言的 xlsx 檔案，不包含 `MHWS-in-json/`。
-- `output/processed_data/`：額外轉換器產生的語言無關處理結果。
-- `output/PROCESSED_DATA_<版本號>.zip`：語言無關的發布資源包，包含 `skill_pool.json`、`amulet_pool.json`、`graphic_preset.xlsx`、`Bowgun_Custom.xlsx`、`HeavyBowgun.xlsx` 和 `LightBowgun.xlsx`。
+- `output/processed_data/`：額外的處理結果；依賴本地化名稱的活頁簿使用簡體中文。
+- `output/PROCESSED_DATA_<版本號>.zip`：處理結果發布資源包，包含 `skill_pool.json`、`amulet_pool.json`、`graphic_preset.xlsx`、`Bowgun_Custom.xlsx`、`HeavyBowgun.xlsx`、`LightBowgun.xlsx` 和 `EnemyActionNames.xlsx`。
 - `output/MHWS-in-json_<版本號>.zip`：共享來源資料庫 JSON 發布資源包，包含 `MHWS-in-json/` 目錄。
 
 壓縮包使用 deflate 最高壓縮級別。來源 JSON 只打包一次，不重複放入每個語言包。
-`PROCESSED_DATA` 中的弩槍工作簿固定只匯出簡體中文。
+`PROCESSED_DATA` 中的弩槍活頁簿和 `EnemyActionNames.xlsx` 固定只匯出簡體中文。`EnemyActionNames.xlsx` 的第一個 sheet 是可點擊跳轉的魔物索引，之後按完整敵人 ID 為每個魔物建立一個 `name`／`comment` sheet；同一魔物內完全相同的二元組會去重。條目來自 `ShellCreatorInfo`，不代表完整的魔物動作目錄。
 如果某種語言在任一訊息檔案中的文字索引為 `-1`，則跳過該語言。
 載入、轉換、儲存和打包進度會輸出到終端。
 

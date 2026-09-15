@@ -70,7 +70,7 @@ ASSET_SECTIONS: tuple[dict[str, str], ...] = (
     },
     {
         "heading": "PROCESSED_DATA",
-        "description": "Language-independent processed data.",
+        "description": "Additional processed data, including Simplified Chinese workbooks.",
         "filename_template": "PROCESSED_DATA_{version}.zip",
         "link_text": "Download PROCESSED_DATA (ZIP)",
     },

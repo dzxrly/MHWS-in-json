@@ -28,12 +28,12 @@ Running `python main.py` writes the following files to `output/`:
 - `output/<language>/AmuletCollection.xlsx`: normalized amulet, skill, and slot pools. Names are localized, rarity uses `Rare.X`, and weapon and armor slots are separate. Slot levels use `Lv.X`. `SkillPool` stores each skill-point pool in its own column as `Skill Name Lv.X`.
 - `output/<language>/WeaponActionValues.xlsx`: one sheet per weapon plus `Ammo`. Action and resource mappings are identified separately; requestSets with neither mapping stay at the bottom with a blank `MappingName` cell and orange fill.
 - `output/DATABASE_<language>_<version>.zip`: one release asset per language. Each zip contains only that language's xlsx files and does not include `MHWS-in-json/`.
-- `output/processed_data/`: language-independent processed files from the extra converter flow.
-- `output/PROCESSED_DATA_<version>.zip`: one language-independent release asset containing `skill_pool.json`, `amulet_pool.json`, `graphic_preset.xlsx`, `Bowgun_Custom.xlsx`, `HeavyBowgun.xlsx`, and `LightBowgun.xlsx`.
+- `output/processed_data/`: additional processed files. Workbooks that depend on localized names use Simplified Chinese.
+- `output/PROCESSED_DATA_<version>.zip`: one processed-data release asset containing `skill_pool.json`, `amulet_pool.json`, `graphic_preset.xlsx`, `Bowgun_Custom.xlsx`, `HeavyBowgun.xlsx`, `LightBowgun.xlsx`, and `EnemyActionNames.xlsx`.
 - `output/MHWS-in-json_<version>.zip`: one shared source JSON release asset containing the `MHWS-in-json/` directory.
 
 Archives use the maximum deflate compression level. The source JSON is packaged once rather than copied into every language archive.
-Bowgun workbooks in `PROCESSED_DATA` are exported in Simplified Chinese only.
+Bowgun workbooks and `EnemyActionNames.xlsx` in `PROCESSED_DATA` are exported in Simplified Chinese only. `EnemyActionNames.xlsx` starts with a linked enemy index, followed by one `name`/`comment` sheet per full enemy ID. Exact duplicate pairs are removed within each enemy; the entries come from `ShellCreatorInfo` and are not a complete enemy action catalog.
 Languages whose text index is `-1` in any message file are skipped.
 Progress and packaging details are printed to the terminal.
 

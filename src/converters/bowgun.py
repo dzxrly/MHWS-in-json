@@ -6,14 +6,13 @@ from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
 
+from config import ZH_HANS_LANGUAGE_ID
 from src.data.text_db import TextDB, TextSource
 from src.data.user3 import load_user3_table
 from src.pipeline.transforms import transform_workbook
 from src.utils.log import file_size, info
 
 Table = list[dict]
-
-ZH_HANS_LANGUAGE_ID = 13
 
 CUSTOMIZE_DATA_PATH = "STM/GameDesign/Common/Equip/BowgunCustomizeData.user.3.json"
 CUSTOMIZE_ITEM_PATH = "STM/GameDesign/Common/Equip/BowgunCustomizeItemData.user.3.json"

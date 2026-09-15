@@ -35,6 +35,7 @@ from src.converters.amulet import (
     load_amulet_catalog,
 )
 from src.converters.bowgun import export_bowgun_workbooks
+from src.converters.enemy_actions import export_enemy_action_workbook
 from src.converters.graphics import export_graphic_preset
 from src.data.text_db import TextDB, TextSource, discover_language_ids
 from src.data.user3 import load_user3_table
@@ -271,6 +272,8 @@ def _export_processed(
     export_graphic_preset(output_dir, NATIVES_DIR)
     info("  Exporting bowgun workbooks")
     export_bowgun_workbooks(output_dir, NATIVES_DIR, text_source)
+    info("  Exporting enemy action-name workbook")
+    export_enemy_action_workbook(output_dir, NATIVES_DIR, text_source)
 
 
 def _load_relative(relative_path: str, text_db: TextDB, label: str | None = None):
