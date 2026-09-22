@@ -23,10 +23,27 @@ Converts the bundled MHWS JSON data into Excel workbooks and release archives. T
 
 ```powershell
 python -m pip install -r requirements.txt
+python -B -m tests
 python main.py
 ```
 
-The script takes no command-line arguments. Set paths, languages, and version in [config.py](config.py). Files are written to `output/`.
+The script takes no command-line arguments. Set paths, languages, and version in [config.py](config.py). Files are written to `output/`. The output path must remain inside the project. Exports are built under `.agents/export-runs/`, checked for complete workbooks and archive contents, then published together. A failed generation leaves the previous output in place. `output/manifest.json` records file hashes, language IDs, input table paths, and stage timings.
+
+## Code layout
+
+```text
+src/
+  database/        # DATABASE workbooks, with one subdirectory per feature
+  processed_data/  # Bowguns, enemy actions, graphics, and amulet JSON pools
+  shared/          # Source cache, text references, equipment rules, and Excel utilities
+  pipeline/        # Export coordination, packaging, validation, and publication
+tests/
+  database/  processed_data/  shared/  pipeline/  release/
+```
+
+Common source tables are read and normalized once per export. Database preparation keeps explicit message GUID references, including compound skill and material descriptions; localization fills those references for each language. Structural GUIDs remain identifiers. Text policies preserve the separate database and quest fallback rules. Action-value and mission workbooks reuse registered cell styles; the flat full-text workbook is streamed to Excel.
+
+Run the regression suite with `python -B -m tests`. CI runs it before exporting. Temporary test files stay under `.agents/`. The release-notes script in `.github/scripts/` remains standalone.
 
 ## Release archives
 

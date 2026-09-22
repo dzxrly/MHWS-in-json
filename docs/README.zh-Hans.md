@@ -23,10 +23,27 @@
 
 ```powershell
 python -m pip install -r requirements.txt
+python -B -m tests
 python main.py
 ```
 
-入口不接收命令行参数。路径、语言和版本在 [config.py](../config.py) 中设置。结果写入 `output/`。
+入口不接收命令行参数。路径、语言和版本在 [config.py](../config.py) 中设置。输出路径须位于项目内，默认写入 `output/`。导出先在 `.agents/export-runs/` 中生成完整结果，检查工作簿和压缩包内容后再统一发布；生成失败时保留上一次输出。`output/manifest.json` 记录文件哈希、语言编号、输入表路径和各阶段耗时。
+
+## 代码结构
+
+```text
+src/
+  database/        # DATABASE 工作簿，每个功能独立子目录
+  processed_data/  # 弩枪、怪物动作、画质预设、护石 JSON 池
+  shared/          # 源数据缓存、文本引用、装备规则、Excel 工具
+  pipeline/        # 导出协调、打包、校验、发布
+tests/
+  database/  processed_data/  shared/  pipeline/  release/
+```
+
+公共源表在一次导出中只读取和标准化一次。数据库预处理保留明确的文本 GUID 引用，包括技能与材料组合文本，再按语言填入翻译；结构 GUID 保留为标识符。数据库和任务文本各自保留原有的清理与回退规则。动作值和任务工作簿复用已注册样式，全文本工作簿采用流式写出。
+
+使用 `python -B -m tests` 运行回归测试，CI 在导出前执行同一套测试。测试临时文件位于 `.agents/`；`.github/scripts/` 中的发布说明脚本保持独立运行。
 
 ## 发布压缩包
 

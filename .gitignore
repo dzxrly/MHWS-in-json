@@ -165,14 +165,15 @@ cython_debug/
 .codex*/
 output/
 outputs/
-tests/*
-!tests/test_amulet.py
-!tests/test_action_values.py
-!tests/test_motlist.py
-!tests/test_graphics.py
-!tests/test_release_notes.py
-!tests/test_enemy_actions.py
-!tests/test_mission.py
+# Local exploratory audits predate the regression suite.
+tests/additional_skill_link_audit.py
+tests/skill_effect_audit.py
+tests/test_additional_skill_links.py
+tests/test_skill_effect_audit.py
+tests/verify_raw_user3.py
+tests/MHWS_SKILL_MECHANICS_REPORT.md
+tests/fixtures/
+tests/results/
 
 # Large generated MHWS JSON data that exceeds GitHub file-size limits.
 MHWS-in-json/natives/STM/GameDesign/Stage/**/VoxelData/

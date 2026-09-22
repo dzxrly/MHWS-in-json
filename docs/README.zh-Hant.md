@@ -23,10 +23,27 @@
 
 ```powershell
 python -m pip install -r requirements.txt
+python -B -m tests
 python main.py
 ```
 
-程式不接收命令列參數。路徑、語言和版本在 [config.py](../config.py) 中設定。結果寫入 `output/`。
+程式不接收命令列參數。路徑、語言和版本在 [config.py](../config.py) 中設定。輸出路徑須位於專案內，預設寫入 `output/`。匯出先在 `.agents/export-runs/` 中產生完整結果，檢查活頁簿與壓縮檔內容後再統一發布；產生失敗時保留上一次輸出。`output/manifest.json` 記錄檔案雜湊、語言編號、輸入表路徑與各階段耗時。
+
+## 程式碼結構
+
+```text
+src/
+  database/        # DATABASE 活頁簿，每個功能獨立子目錄
+  processed_data/  # 弩槍、魔物動作、畫質預設、護石 JSON 池
+  shared/          # 來源資料快取、文字引用、裝備規則、Excel 工具
+  pipeline/        # 匯出協調、打包、驗證、發布
+tests/
+  database/  processed_data/  shared/  pipeline/  release/
+```
+
+共用來源表在一次匯出中只讀取與標準化一次。資料庫預處理保留明確的文字 GUID 引用，包括技能與素材組合文字，再依語言填入翻譯；結構 GUID 保留為識別碼。資料庫與任務文字各自保留原有的清理與回退規則。動作值與任務活頁簿重複使用已註冊樣式，全文本活頁簿採用串流寫出。
+
+使用 `python -B -m tests` 執行迴歸測試，CI 在匯出前執行同一套測試。測試暫存檔位於 `.agents/`；`.github/scripts/` 中的發布說明指令碼保持獨立執行。
 
 ## 發布壓縮檔
 

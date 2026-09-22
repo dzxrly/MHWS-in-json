@@ -1,7 +1,7 @@
 from pathlib import Path, PurePosixPath
 from zipfile import ZIP_DEFLATED, ZipFile
 
-from src.utils.log import file_size, format_size, info
+from src.shared.log import file_size, format_size, info
 
 
 def zip_language_output(

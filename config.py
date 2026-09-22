@@ -96,29 +96,3 @@ WEAPON_TYPES = [
     "HeavyBowgun",
     "LightBowgun",
 ]
-
-WORKBOOKS = {
-    "ItemDataCollection.xlsx": [
-        ("ItemData", "STM/GameDesign/Common/Item/itemData.user.3.json"),
-        ("ItemRecipeData", "STM/GameDesign/Common/Item/ItemRecipe.user.3.json"),
-    ],
-    "SkillCollection.xlsx": [
-        ("SkillCommonData", "STM/GameDesign/Common/Equip/SkillCommonData.user.3.json"),
-        ("SkillData", "STM/GameDesign/Common/Equip/SkillData.user.3.json"),
-        ("AccessoryData", "STM/GameDesign/Common/Equip/AccessoryData.user.3.json"),
-    ],
-    "EquipCollection.xlsx": [
-        ("Armor", "STM/GameDesign/Common/Equip/ArmorData.user.3.json"),
-        *[
-            (f"Wp_{name}", f"STM/GameDesign/Common/Weapon/{name}.user.3.json")
-            for name in WEAPON_TYPES
-        ],
-    ],
-    "EquipRecipeCollection.xlsx": [
-        ("Armor", "STM/GameDesign/Common/Equip/ArmorRecipeData.user.3.json"),
-        *[
-            (f"Wp_{name}", f"STM/GameDesign/Common/Weapon/{name}Recipe.user.3.json")
-            for name in WEAPON_TYPES
-        ],
-    ],
-}
