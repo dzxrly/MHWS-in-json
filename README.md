@@ -6,7 +6,18 @@ English | [简体中文](docs/README.zh-Hans.md) | [繁體中文](docs/README.zh
 
 </div>
 
-Converts the bundled MHWS JSON data into Excel workbooks and release archives. The JSON layout follows [eigeen/mhws-data-dump-scripts](https://github.com/eigeen/mhws-data-dump-scripts) and [dtlnor/MHWs-in-json](https://github.com/dtlnor/MHWs-in-json). The data extraction uses [PyREUser3](https://github.com/dzxrly/PyREUser3).
+Converts the bundled MHWS JSON data into Excel workbooks and release archives. The JSON layout follows [eigeen/mhws-data-dump-scripts](https://github.com/eigeen/mhws-data-dump-scripts) and [dtlnor/MHWs-in-json](https://github.com/dtlnor/MHWs-in-json).
+
+<div align="center">
+
+<a href="https://github.com/dzxrly/PyREUser3">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/dzxrly/PyREUser3/branding/powered-by-pyreuser3-dark.svg">
+    <img alt="Powered by PyREUser3" src="https://raw.githubusercontent.com/dzxrly/PyREUser3/branding/powered-by-pyreuser3-light.svg">
+  </picture>
+</a>
+
+</div>
 
 ## Run
 

@@ -155,6 +155,13 @@ class ReleaseNotesTests(unittest.TestCase):
             errors="replace",
         )
 
+        self.assertTrue(
+            result.stdout.startswith(
+                '<div align="center">\n\n<a href="https://github.com/dzxrly/PyREUser3">'
+            )
+        )
+        self.assertIn("powered-by-pyreuser3-dark.svg", result.stdout)
+        self.assertIn("powered-by-pyreuser3-light.svg", result.stdout)
         self.assertIn("## What's Changed", result.stdout)
         self.assertIn("## DATABASE", result.stdout)
         self.assertIn("## MHWS-in-json", result.stdout)
