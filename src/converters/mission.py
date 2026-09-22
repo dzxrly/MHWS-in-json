@@ -5,23 +5,30 @@ import re
 from dataclasses import dataclass
 from pathlib import Path
 
+from src.converters.mission_difficulty import (
+    MissionColumn,
+    MissionDifficultyCatalog,
+    load_mission_difficulty,
+)
 from src.data.text_db import EMID_RE, ILLEGAL_CHARS_RE, REF_RE, REJECTED, TextSource
 from src.data.user3 import load_user3_table
 
 
-MISSION_COLUMNS = (
+MISSION_PREFIX_COLUMNS = (
     "_MissionId",
+    "_QuestLv",
+    "_OrderHR",
+    "_OrderMR",
+    "_TitleMsg",
+    "MonsterName",
+    "_TargetType",
+    "_LegendaryID",
+)
+MISSION_TAIL_COLUMNS = (
     "_Version",
     "_QuestType",
     "_QuestAttribute",
-    "_QuestLv",
-    "_TitleMsg",
-    "_TargetType",
-    "_LegendaryID",
-    "MonsterName",
     "_MaxPlayerNum",
-    "_OrderHR",
-    "_OrderMR",
     "_TimeLimit",
     "_RemMoney",
     "_HRPoint",
@@ -31,9 +38,13 @@ MISSION_COLUMNS = (
     "_BattleBGM",
     "_ClearBGM",
     "_DetailMsg",
-    "_SubBossInfoArray",
 )
-TARGET_COLUMNS = frozenset({"_TargetType", "_LegendaryID", "MonsterName"})
+MISSION_COLUMNS = (*MISSION_PREFIX_COLUMNS, *MISSION_TAIL_COLUMNS, "_SubBossInfoArray")
+TARGET_COLUMNS = frozenset({"MonsterName", "_TargetType", "_LegendaryID"})
+BASE_HEADERS = tuple(
+    MissionColumn(column, column, section="target" if column in TARGET_COLUMNS else "mission")
+    for column in MISSION_COLUMNS
+)
 
 # StreamQuestTextData uses field names instead of msg language indices. Preserve
 # the source's spellings, including its two Chinese field-name typos.
@@ -81,12 +92,18 @@ class MissionCatalog:
     fixed_enemy_ids: dict[int, str]
     enemy_name_guids: dict[str, str]
     missions_without_quest_data: tuple[str, ...] = ()
+    difficulty: MissionDifficultyCatalog | None = None
 
 
 @dataclass(frozen=True, slots=True)
 class MissionWorkbookData:
     rows: list[dict]
     groups: tuple[tuple[int, int], ...]
+    headers: tuple[MissionColumn, ...] = BASE_HEADERS
+
+    @property
+    def columns(self) -> tuple[str, ...]:
+        return tuple(header.key for header in self.headers)
 
 
 def load_mission_catalog(natives_dir: Path, enums_path: Path) -> MissionCatalog:
@@ -151,8 +168,14 @@ def load_mission_catalog(natives_dir: Path, enums_path: Path) -> MissionCatalog:
             raise ValueError(f"Duplicate MsData mission ID: {mission_id}")
         mission_ids.add(mission_id)
     missions_without_quest_data = tuple(sorted(mission_ids - seen_missions, key=_mission_id_sort_key))
+    difficulty = load_mission_difficulty(
+        natives_dir,
+        ((record.source, record.data) for record in quests),
+        fixed_enemy_ids,
+    )
     return MissionCatalog(
-        tuple(quests), fixed_enemy_ids, enemy_name_guids, missions_without_quest_data
+        tuple(quests), fixed_enemy_ids, enemy_name_guids, missions_without_quest_data,
+        difficulty,
     )
 
 
@@ -162,6 +185,13 @@ def build_mission_workbook_data(
     text = MissionTextResolver(text_source, language_id)
     rows: list[dict] = []
     groups: list[tuple[int, int]] = []
+    headers = (
+        BASE_HEADERS[:len(MISSION_PREFIX_COLUMNS)]
+        + catalog.difficulty.schema.columns()
+        + BASE_HEADERS[len(MISSION_PREFIX_COLUMNS):]
+        if catalog.difficulty else BASE_HEADERS
+    )
+    columns = tuple(header.key for header in headers)
     for record in catalog.quests:
         quest = record.data
         mission_id = _enum_symbol(quest["_MissionId"])
@@ -203,13 +233,13 @@ def build_mission_workbook_data(
             "_DetailMsg": detail,
             "_SubBossInfoArray": "\n".join(sub_bosses),
         }
-        first_row = len(rows) + 2  # header occupies Excel row 1
-        for clear in clears:
+        first_row = len(rows) + 3  # two header rows
+        for clear_index, clear in enumerate(clears):
             target_type = _enum_symbol(clear["_TargetType"])
             targets = (
                 [None] if target_type == "ITEM" else clear.get("_TargetInfoArray", []) or [None]
             )
-            for item in targets:
+            for target_index, item in enumerate(targets):
                 legendary = ""
                 monster_name = ""
                 if item is not None:
@@ -229,10 +259,17 @@ def build_mission_workbook_data(
                     "_LegendaryID": legendary,
                     "MonsterName": monster_name,
                 }
-                rows.append({column: values.get(column, "") for column in MISSION_COLUMNS})
-        groups.append((first_row, len(rows) + 1))
+                if (
+                    catalog.difficulty and item is not None
+                    and target_type.startswith("EM_") and target_type != "EM_ZAKO_KILL"
+                ):
+                    values.update(
+                        catalog.difficulty.targets[(mission_id, clear_index, target_index)]
+                    )
+                rows.append({column: values.get(column, "") for column in columns})
+        groups.append((first_row, len(rows) + 2))
     for mission_id in catalog.missions_without_quest_data:
-        values = dict.fromkeys(MISSION_COLUMNS, "")
+        values = dict.fromkeys(columns, "")
         values["_MissionId"] = mission_id
         message_prefix = "Mission" + mission_id.removeprefix("MISSION_")
         for column, suffixes in MISSION_TEXT_SUFFIXES.items():
@@ -245,9 +282,9 @@ def build_mission_workbook_data(
                 "",
             )
         rows.append(values)
-        excel_row = len(rows) + 1
+        excel_row = len(rows) + 2
         groups.append((excel_row, excel_row))
-    return MissionWorkbookData(rows, tuple(groups))
+    return MissionWorkbookData(rows, tuple(groups), headers)
 
 
 class MissionTextResolver:

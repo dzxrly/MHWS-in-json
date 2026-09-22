@@ -3,6 +3,7 @@ import unittest
 from pathlib import Path
 
 from openpyxl import load_workbook
+from openpyxl.cell.cell import MergedCell
 from openpyxl.utils import get_column_letter
 
 from config import BASE_DIR, ENUMS_PATH, NATIVES_DIR
@@ -107,7 +108,7 @@ class MissionFixtureTests(unittest.TestCase):
         data = build_mission_workbook_data(
             _catalog(_quest(), missions_without_quest_data=missing), source, 13
         )
-        self.assertEqual(data.groups, ((2, 3), (4, 4), (5, 5), (6, 6)))
+        self.assertEqual(data.groups, ((3, 4), (5, 5), (6, 6), (7, 7)))
         self.assertEqual([row["_MissionId"] for row in data.rows[-3:]], list(missing))
         self.assertEqual(data.rows[-3]["_TitleMsg"], "Quest title")
         self.assertEqual(data.rows[-3]["_DetailMsg"], "Quest detail")
@@ -174,7 +175,7 @@ class MissionFixtureTests(unittest.TestCase):
             },
         ]
         data = build_mission_workbook_data(_catalog(quest), _text_source(), 13)
-        self.assertEqual(data.groups, ((2, 4),))
+        self.assertEqual(data.groups, ((3, 5),))
         self.assertEqual([row["_TargetType"] for row in data.rows], [
             "EM_BOSS_HUNTING", "EM_BOSS_HUNTING", "ITEM"
         ])
@@ -240,7 +241,36 @@ class MissionCorpusTests(unittest.TestCase):
             if column != "_MissionId"
         ))
 
-    def test_workbook_merges_mission_fields_and_centers_them(self):
+    def test_target_rates_resolve_selected_layouts_and_stream_quests(self):
+        difficulty = self.catalog.difficulty
+        self.assertIsNotNone(difficulty)
+        self.assertEqual(len(difficulty.targets), 241)
+        self.assertEqual(difficulty.schema.counts, (2, 3, 4, 5))
+        self.assertEqual(len(difficulty.schema.statuses), 9)
+
+        data = build_mission_workbook_data(self.catalog, self.text_source, 1)
+        rows = {row["_MissionId"]: row for row in data.rows}
+        self.assertEqual(data.columns[:9], (
+            "_MissionId", "_QuestLv", "_OrderHR", "_OrderMR", "_TitleMsg",
+            "MonsterName", "_TargetType", "_LegendaryID", "_RewardRank",
+        ))
+        self.assertEqual(len(data.columns), 107)
+        self.assertEqual(rows["MISSION_001130"]["_Health"], 1.17)
+        self.assertEqual(rows["MISSION_001130"]["_Attack"], 1.0)
+        self.assertEqual(rows["MISSION_001130"]["_Count=2._Health"], 1.6)
+        self.assertEqual(
+            rows["MISSION_004320"]["_MultiTableId"],
+            "15789b29-d7df-4354-8e1e-64999b31ab49",
+        )
+        self.assertEqual(
+            rows["MISSION_600000"]["_DifficultyRankId"],
+            rows["MISSION_001130"]["_DifficultyRankId"],
+        )
+        for mission_id in ("MISSION_101001", "MISSION_640001", "MISSION_400063"):
+            self.assertEqual(rows[mission_id]["_Health"], "")
+            self.assertEqual(rows[mission_id]["_Count=2._Health"], "")
+
+    def test_workbook_merges_mission_fields_and_left_aligns_content(self):
         data = build_mission_workbook_data(self.catalog, self.text_source, 1)
         BASE_DIR.joinpath(".agents").mkdir(exist_ok=True)
         with tempfile.TemporaryDirectory(dir=BASE_DIR / ".agents") as temp_dir:
@@ -248,23 +278,55 @@ class MissionCorpusTests(unittest.TestCase):
             workbook = load_workbook(path)
             try:
                 sheet = workbook["MissionData"]
-                self.assertEqual([cell.value for cell in sheet[1]], list(MISSION_COLUMNS))
-                self.assertEqual(sheet.max_row, len(data.rows) + 1)
+                self.assertEqual(sheet.max_column, len(data.columns))
+                self.assertEqual(sheet.max_row, len(data.rows) + 2)
+                self.assertEqual(sheet.freeze_panes, "I3")
+                self.assertEqual([sheet.cell(1, index).value for index in range(1, 10)], [
+                    "_MissionId", "_QuestLv", "_OrderHR", "_OrderMR", "_TitleMsg",
+                    "MonsterName", "_TargetType", "_LegendaryID", "_RewardRank",
+                ])
+                merged = {str(region) for region in sheet.merged_cells.ranges}
+                self.assertIn("A1:A2", merged)
+                poison = data.columns.index("_Poison._DefaultLimit") + 1
+                poison_next = get_column_letter(poison + 1)
+                poison_letter = get_column_letter(poison)
+                self.assertIn(f"{poison_letter}1:{poison_next}1", merged)
+                self.assertEqual(sheet.cell(1, poison).value, "_Poison")
+                self.assertEqual(sheet.cell(2, poison).value, "_DefaultLimit")
+                self.assertEqual(sheet.cell(2, poison + 1).value, "_AddAndMaxLimit")
+                count = data.columns.index("_Count=2._Health") + 1
+                self.assertIn(
+                    f"{get_column_letter(count)}1:{get_column_letter(count + 12)}1", merged
+                )
+                self.assertEqual(sheet.cell(1, count).value, "_Count = 2")
+                self.assertEqual(sheet.cell(2, count).value, "_Health")
+                self.assertNotEqual(
+                    sheet.cell(1, 1).fill.fgColor.rgb,
+                    sheet.cell(1, 9).fill.fgColor.rgb,
+                )
+                self.assertNotEqual(
+                    sheet.cell(3, 1).fill.fgColor.rgb,
+                    sheet.cell(3, 9).fill.fgColor.rgb,
+                )
                 first, last = next(group for group in data.groups if group[1] > group[0])
-                for column in ("_MissionId", "_DetailMsg", "_SubBossInfoArray"):
-                    letter = get_column_letter(MISSION_COLUMNS.index(column) + 1)
-                    self.assertIn(f"{letter}{first}:{letter}{last}", {
-                        str(merged) for merged in sheet.merged_cells.ranges
-                    })
-                    self.assertEqual(sheet[f"{letter}{first}"].alignment.vertical, "center")
-                target_letter = get_column_letter(MISSION_COLUMNS.index("MonsterName") + 1)
-                self.assertNotIn(f"{target_letter}{first}:{target_letter}{last}", {
-                    str(merged) for merged in sheet.merged_cells.ranges
-                })
-                condition_letter = get_column_letter(MISSION_COLUMNS.index("_TargetType") + 1)
-                self.assertNotIn(f"{condition_letter}{first}:{condition_letter}{last}", {
-                    str(merged) for merged in sheet.merged_cells.ranges
-                })
+                for column in (
+                    "_MissionId", "_QuestLv", "_OrderHR", "_OrderMR", "_TitleMsg",
+                    "_DetailMsg", "_SubBossInfoArray",
+                ):
+                    letter = get_column_letter(data.columns.index(column) + 1)
+                    self.assertIn(f"{letter}{first}:{letter}{last}", merged)
+                for column in ("MonsterName", "_TargetType", "_Health", "_Count=2._Health"):
+                    letter = get_column_letter(data.columns.index(column) + 1)
+                    self.assertNotIn(f"{letter}{first}:{letter}{last}", merged)
+                for row in sheet.iter_rows(min_row=3):
+                    for cell in row:
+                        if isinstance(cell, MergedCell):
+                            continue
+                        self.assertEqual(
+                            (cell.alignment.horizontal, cell.alignment.vertical),
+                            ("left", "center"),
+                            cell.coordinate,
+                        )
             finally:
                 workbook.close()
 
