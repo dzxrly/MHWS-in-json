@@ -7,12 +7,14 @@ from config import (
     ACTION_MAP_PATH,
     ACTION_VALUE_WORKBOOK,
     AMULET_WORKBOOK,
+    ENUMS_PATH,
     FULL_TEXT_MAX_COLUMN_WIDTH,
     FULL_TEXT_WORKBOOK,
     JSON_ROOT,
     LANGUAGE_IDS,
     LANGUAGES,
     MAX_COLUMN_WIDTH,
+    MISSION_WORKBOOK,
     NATIVES_DIR,
     OUTPUT_DIR,
     PROCESSED_DIR_NAME,
@@ -37,11 +39,17 @@ from src.converters.amulet import (
 from src.converters.bowgun import export_bowgun_workbooks
 from src.converters.enemy_actions import export_enemy_action_workbook
 from src.converters.graphics import export_graphic_preset
+from src.converters.mission import (
+    MissionCatalog,
+    build_mission_workbook_data,
+    load_mission_catalog,
+)
 from src.data.text_db import TextDB, TextSource, discover_language_ids
 from src.data.user3 import load_user3_table
 from src.excel.amulet import style_amulet_workbook
 from src.excel.action_values import write_action_value_workbook
 from src.excel.writer import write_workbook
+from src.excel.mission import write_mission_workbook
 from src.pipeline.package import zip_language_output, zip_processed_output, zip_source_output
 from src.pipeline.transforms import transform_workbook
 from src.utils.log import file_size, info
@@ -71,6 +79,11 @@ def export_all() -> list[Path]:
     info(f"Loading text database: {NATIVES_DIR}")
     text_source = TextSource.from_natives(NATIVES_DIR)
     info(f"Loaded text database: {text_source.file_count} message file(s), {len(text_source.entries)} entries")
+    mission_catalog = load_mission_catalog(NATIVES_DIR, ENUMS_PATH)
+    info(
+        f"Loaded mission definitions: {len(mission_catalog.quests)} QuestData record(s), "
+        f"{len(mission_catalog.missions_without_quest_data)} MsData ID(s) without QuestData"
+    )
     amulet_catalog = load_amulet_catalog(_load_raw_relative)
     info("Loading weapon and ammo action-value requestSets")
     action_value_catalog = load_action_value_catalog(
@@ -111,6 +124,9 @@ def export_all() -> list[Path]:
             text_db,
             amulet_catalog,
             action_value_catalog,
+            mission_catalog,
+            text_source,
+            lang_id,
         )
         info(f"Generated {len(outputs)} workbook(s) for {language_code}")
         archive = zip_language_output(
@@ -150,6 +166,9 @@ def _export_language(
     text_db: TextDB,
     amulet_catalog: AmuletCatalog,
     action_value_catalog: ActionValueCatalog,
+    mission_catalog: MissionCatalog,
+    text_source: TextSource,
+    language_id: int,
 ) -> list[Path]:
     outputs = [_export_full_text(output_dir, text_db)]
     for workbook_name, specs in WORKBOOKS.items():
@@ -173,6 +192,7 @@ def _export_language(
             info(f"  Skipped workbook without available sheets: {workbook_name}")
 
     outputs.append(_export_amulet_workbook(output_dir, text_db, amulet_catalog))
+    outputs.append(_export_mission_workbook(output_dir, mission_catalog, text_source, language_id))
     outputs.append(
         _export_action_value_workbook(
             output_dir,
@@ -181,6 +201,24 @@ def _export_language(
         )
     )
     return outputs
+
+
+def _export_mission_workbook(
+    output_dir: Path,
+    catalog: MissionCatalog,
+    text_source: TextSource,
+    language_id: int,
+) -> Path:
+    info(f"  Workbook: {MISSION_WORKBOOK}")
+    data = build_mission_workbook_data(catalog, text_source, language_id)
+    path = write_mission_workbook(output_dir / MISSION_WORKBOOK, data)
+    info(
+        f"  Saved workbook: {path} "
+        f"({file_size(path)}, {len(catalog.quests)} QuestData record(s), "
+        f"{len(catalog.missions_without_quest_data)} supplemental mission(s), "
+        f"{len(data.rows)} row(s))"
+    )
+    return path
 
 
 def _export_full_text(output_dir: Path, text_db: TextDB) -> Path:

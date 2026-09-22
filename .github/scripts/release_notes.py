@@ -6,6 +6,7 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 from urllib.parse import quote
+from zipfile import ZipFile
 
 
 # Project configuration: edit only this block when reusing the script.
@@ -21,6 +22,7 @@ UPLOAD_ASSET_PATTERNS = ("*.zip",)
 LANGUAGE_ASSET_SECTION: dict[str, object] | None = {
     "heading": "DATABASE",
     "description": "Localized database workbooks, packaged separately for each language.",
+    "list_files": True,
     "filename_template": "DATABASE_{code}_{version}.zip",
     "link_text": "Download ZIP",
     "languages": {
@@ -61,7 +63,7 @@ LANGUAGE_ASSET_SECTION: dict[str, object] | None = {
 }
 
 # Use an empty tuple when no additional asset sections are needed.
-ASSET_SECTIONS: tuple[dict[str, str], ...] = (
+ASSET_SECTIONS: tuple[dict[str, object], ...] = (
     {
         "heading": "MHWS-in-json",
         "description": "Complete source JSON data.",
@@ -70,7 +72,11 @@ ASSET_SECTIONS: tuple[dict[str, str], ...] = (
     },
     {
         "heading": "PROCESSED_DATA",
-        "description": "Additional processed data, including Simplified Chinese workbooks.",
+        "description": (
+            "Post-processed, non-database data. Only a Simplified Chinese edition "
+            "is available; no other language editions are provided."
+        ),
+        "list_files": True,
         "filename_template": "PROCESSED_DATA_{version}.zip",
         "link_text": "Download PROCESSED_DATA (ZIP)",
     },
@@ -141,7 +147,7 @@ def build_release_notes(
 ) -> str:
     if upload_assets is None:
         upload_assets = collect_upload_assets(output_dir)
-    assets = {path.name for path in upload_assets}
+    assets = {path.name: path for path in upload_assets}
     lines = []
     if commit_sha:
         commit_url = _repository_url(server_url, repository, "commit", commit_sha)
@@ -249,7 +255,7 @@ def _changelog_lines(
 
 def _language_asset_lines(
     section: dict[str, object],
-    assets: set[str],
+    assets: dict[str, Path],
     repository: str,
     tag: str,
     version: str,
@@ -267,7 +273,7 @@ def _language_asset_lines(
         raise ValueError("LANGUAGE_ASSET_SECTION.languages must map codes to names")
 
     language_assets = _language_assets(
-        assets,
+        set(assets),
         version,
         filename_template,
         languages,
@@ -277,9 +283,18 @@ def _language_asset_lines(
         "",
         description,
         "",
-        "| Language | Download |",
-        "| --- | --- |",
     ]
+    if section.get("list_files"):
+        manifests = {
+            tuple(_archive_files(assets[asset]))
+            for _, _, asset in language_assets
+        }
+        if len(manifests) != 1:
+            raise ValueError(f"{heading} language archives contain different files")
+        lines.extend(["Files in each ZIP:", ""])
+        lines.extend(f"- `{filename}`" for filename in next(iter(manifests)))
+        lines.append("")
+    lines.extend(["| Language | Download |", "| --- | --- |"])
     for language_code, language_name, asset in language_assets:
         asset_url = _repository_url(
             server_url,
@@ -295,8 +310,8 @@ def _language_asset_lines(
 
 
 def _asset_section_lines(
-    section: dict[str, str],
-    assets: set[str],
+    section: dict[str, object],
+    assets: dict[str, Path],
     repository: str,
     tag: str,
     version: str,
@@ -307,7 +322,7 @@ def _asset_section_lines(
     filename_template = _config_string(section, "filename_template")
     link_text = _config_string(section, "link_text")
     asset = _format_asset_filename(filename_template, version=version)
-    _require_assets(assets, asset)
+    _require_assets(set(assets), asset)
     asset_url = _repository_url(
         server_url,
         repository,
@@ -316,14 +331,26 @@ def _asset_section_lines(
         tag,
         asset,
     )
-    return [
+    lines = [
         f"## {heading}",
         "",
         description,
         "",
-        f"[{link_text}]({asset_url})",
-        "",
     ]
+    if section.get("list_files"):
+        lines.extend(["Files in ZIP:", ""])
+        lines.extend(f"- `{filename}`" for filename in _archive_files(assets[asset]))
+        lines.append("")
+    lines.extend([f"[{link_text}]({asset_url})", ""])
+    return lines
+
+
+def _archive_files(archive: Path) -> list[str]:
+    with ZipFile(archive) as zf:
+        files = sorted(info.filename for info in zf.infolist() if not info.is_dir())
+    if not files:
+        raise ValueError(f"Release archive is empty: {archive}")
+    return files
 
 
 def _language_assets(

@@ -8,6 +8,7 @@ import tempfile
 import unittest
 from pathlib import Path
 from unittest import mock
+from zipfile import ZipFile
 
 from config import (
     LANGUAGES,
@@ -32,7 +33,9 @@ collect_commit_changelog = release_notes.collect_commit_changelog
 
 class ReleaseNotesTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.temp_dir = tempfile.TemporaryDirectory()
+        scratch_dir = Path(__file__).resolve().parents[1] / ".agents"
+        scratch_dir.mkdir(exist_ok=True)
+        self.temp_dir = tempfile.TemporaryDirectory(dir=scratch_dir)
         self.repository_dir = Path(self.temp_dir.name) / "repository"
         self.repository_dir.mkdir()
         self._git("init", "--initial-branch=main")
@@ -156,6 +159,12 @@ class ReleaseNotesTests(unittest.TestCase):
         self.assertIn("## DATABASE", result.stdout)
         self.assertIn("## MHWS-in-json", result.stdout)
         self.assertIn("## PROCESSED_DATA", result.stdout)
+        self.assertIn("Files in each ZIP:\n\n- `FullText.xlsx`", result.stdout)
+        self.assertIn("- `MissionData.xlsx`", result.stdout)
+        self.assertIn("Files in ZIP:\n\n- `EnemyActionNames.xlsx`", result.stdout)
+        self.assertIn("- `skill_pool.json`", result.stdout)
+        self.assertIn("Post-processed, non-database data.", result.stdout)
+        self.assertIn("no other language editions are provided.", result.stdout)
         self.assertFalse((output_dir / "release-notes.md").exists())
 
     def test_json_payload_centralizes_workflow_release_configuration(self) -> None:
@@ -195,6 +204,24 @@ class ReleaseNotesTests(unittest.TestCase):
         self.assertIn("## What's Changed", payload["notes"])
         self.assertIn("日本語", payload["notes"])
         self.assertEqual(len(payload["assets"]), 3)
+
+    def test_language_archives_must_have_the_same_file_list(self) -> None:
+        version = "different-files"
+        output_dir = self._create_assets(version)
+        language_section = release_notes.LANGUAGE_ASSET_SECTION
+        if language_section is None:
+            self.fail("Test configuration requires a language asset section")
+        codes = iter(language_section["languages"])
+        next(codes)
+        second_code = next(codes)
+        second_name = language_section["filename_template"].format(
+            code=second_code, version=version
+        )
+        with ZipFile(output_dir / second_name, "w") as archive:
+            archive.writestr("FullText.xlsx", "")
+
+        with self.assertRaisesRegex(ValueError, "language archives contain different files"):
+            build_release_notes(output_dir, "owner/repository", f"database-{version}", version)
 
     def test_script_configuration_matches_project_exporter(self) -> None:
         language_section = release_notes.LANGUAGE_ASSET_SECTION
@@ -277,7 +304,15 @@ class ReleaseNotesTests(unittest.TestCase):
             for section in release_notes.ASSET_SECTIONS
         )
         for asset in assets:
-            (output_dir / asset).touch()
+            if asset.startswith("DATABASE_"):
+                files = ("FullText.xlsx", "MissionData.xlsx")
+            elif asset.startswith("PROCESSED_DATA_"):
+                files = ("EnemyActionNames.xlsx", "skill_pool.json")
+            else:
+                files = ("MHWS-in-json/Enums_Internal.json",)
+            with ZipFile(output_dir / asset, "w") as archive:
+                for filename in files:
+                    archive.writestr(filename, "")
         return output_dir
 
     def _commit(self, subject: str) -> None:

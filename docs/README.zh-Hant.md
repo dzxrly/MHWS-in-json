@@ -6,83 +6,48 @@
 
 </div>
 
-將 MHWS 遊戲資料匯出為 JSON 和 Excel，目錄結構參考 [eigeen/mhws-data-dump-scripts](https://github.com/eigeen/mhws-data-dump-scripts) 和 [dtlnor/MHWs-in-json](https://github.com/dtlnor/MHWs-in-json)。
+將儲存庫中的 MHWS JSON 資料轉換為 Excel 活頁簿和發布壓縮檔。JSON 目錄結構參考 [eigeen/mhws-data-dump-scripts](https://github.com/eigeen/mhws-data-dump-scripts) 和 [dtlnor/MHWs-in-json](https://github.com/dtlnor/MHWs-in-json)，資料解包使用 [PyREUser3](https://github.com/dzxrly/PyREUser3)。
 
-<div align="center">
-
-<a href="https://github.com/dzxrly/PyREUser3">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/dzxrly/PyREUser3/branding/powered-by-pyreuser3-dark.svg">
-    <img alt="Powered by PyREUser3" src="https://raw.githubusercontent.com/dzxrly/PyREUser3/branding/powered-by-pyreuser3-light.svg">
-  </picture>
-</a>
-
-</div>
-
-## 輸出內容
-
-執行 `python main.py` 後，以下檔案會寫入 `output/`：
-
-- `output/<語言>/*.xlsx`：對應語言的資料庫活頁簿。
-- `output/<語言>/FullText.xlsx`：訊息 GUID 和本地化文字依次分為正常文字、已拒絕文字和空白文字，每組內保留來源檔案順序。已拒絕文字以 `[#Rejected#]` 開頭，未標記的空白文字保持空白。
-- `output/<語言>/AmuletCollection.xlsx`：正規化的護石、技能和孔位池。名稱依語言本地化，稀有度使用 `Rare.X`，武器與防具孔位分欄，孔位等級使用 `Lv.X`。`SkillPool` 中每個技能點數池單獨佔一欄，項目格式為「技能名稱 `Lv.X`」。
-- `output/<語言>/WeaponActionValues.xlsx`：每種武器一個 sheet，另有 `Ammo` sheet。動作對映與資源對映會明確區分；兩者都不存在的 requestSet 放在末尾，`MappingName` 保持空白並使用橙色底紋。
-- `output/DATABASE_<語言名稱>_<版本號>.zip`：每種語言一個發布資源包，僅包含該語言的 xlsx 檔案，不包含 `MHWS-in-json/`。
-- `output/processed_data/`：額外的處理結果；依賴本地化名稱的活頁簿使用簡體中文。
-- `output/PROCESSED_DATA_<版本號>.zip`：處理結果發布資源包，包含 `skill_pool.json`、`amulet_pool.json`、`graphic_preset.xlsx`、`Bowgun_Custom.xlsx`、`HeavyBowgun.xlsx`、`LightBowgun.xlsx` 和 `EnemyActionNames.xlsx`。
-- `output/MHWS-in-json_<版本號>.zip`：共享來源資料庫 JSON 發布資源包，包含 `MHWS-in-json/` 目錄。
-
-壓縮包使用 deflate 最高壓縮級別。來源 JSON 只打包一次，不重複放入每個語言包。
-`PROCESSED_DATA` 中的弩槍活頁簿和 `EnemyActionNames.xlsx` 固定只匯出簡體中文。`EnemyActionNames.xlsx` 的第一個 sheet 是可點擊跳轉的魔物索引，之後按完整敵人 ID 為每個魔物建立一個 `name`／`comment` sheet；同一魔物內完全相同的二元組會去重。條目來自 `ShellCreatorInfo`，不代表完整的魔物動作目錄。
-如果某種語言在任一訊息檔案中的文字索引為 `-1`，則跳過該語言。
-載入、轉換、儲存和打包進度會輸出到終端。
-
-### 動作值對映
-
-`WeaponActionValues.xlsx` 只讀取 `MHWS-in-json/ActionMap.json`（`_format = mhws_static_action_request_set_map_v2`）。該檔案需在本機使用 `motlist-to-json action-map` 產生，輸入必須來自同一遊戲版本：EXE dump、`il2cpp_dump.json`、motbank/motlist、PAK 檔案清單和 MHWS JSON。不再接受 v1。測試其他路徑的檔案時，設定 `MHWS_ACTION_MAP_PATH`。CI 直接讀取儲存庫中的資料包，不需要上述產生依賴。
-
-資料包附帶 `MHWS-in-json/schema/action-map-v2.schema.json` 和 `MHWS-in-json/schema/motlist-action-tracks-v1.schema.json`，分別用於驗證 ActionMap v2 與 motlist 動作軌道 JSON。
-
-只匯出玩家攻擊動作值 requestSet。嵌套值展開為葉節點欄位；每條動作或資源對映邊都會輸出一列，同一 RS 因此可以重複。`MappingKind`、穩定身分、內部名稱、名稱來源、資源角色、信賴級別、條件和證據來源等欄位會明確說明對映性質。
-
-`MappingNameSource` 說明 `MappingName` 的基礎名稱取自何處。它只記錄名稱來源，不表示對映強弱。產生器可能寫入下列值；根據 requestSet 資源標記區分推導變體時，會在基礎值後附加 `+request_set_resource_marker`。
-
-| `MappingNameSource` 值 | 含義 |
-| --- | --- |
-| `action_guide_message` | 透過 ActionGuide 的訊息 GUID 取得對應語言文字。 |
-| `action_internal_fallback` | 沒有可用的 ActionGuide 訊息 GUID，改用動作記錄中的備援名稱或內部名稱。 |
-| `weapon_gun_static_item_table` | 從 WeaponGun 靜態道具表取得彈藥名稱和訊息 GUID。 |
-| `shell_fixed_enum` | ShellList 項目中的 Fixed 列舉名稱。 |
-| `main_param_stem` | Shell 主參數資源的檔名，不含副檔名。 |
-| `prefab_stem` | Shell PFB 的檔名，不含副檔名。 |
-| `generated_shell_identity` | 沒有更合適的名稱來源時，產生 `<scope>_SHELL_<fixed_id>`。 |
-| `rcol_filename` | RCOL 結構備援使用的 RCOL 檔名，不含副檔名。 |
-| `<base>+request_set_resource_marker` | 沿用基礎名稱來源，並附加 requestSet 資源標記；該標記也會以方括號後綴寫入 `MappingName`。 |
-
-`MappingConfidence` 是關係的證據等級，不是機率值。
-
-| `MappingConfidence` 值 | 含義 |
-| --- | --- |
-| `proven` | 有直接靜態證據將動作或資源連到該 requestSet，例如動作/運動證據或 ShellList → PFB → RCOL 鏈。 |
-| `derived` | 根據已確認的靜態結構推導關係，例如缺少精確動作名稱雜湊的 Shell 關係，或由重複 requestSet 位移和資源標記識別的變體。 |
-| `structural` | PFB/RCOL 結構只能確認該 requestSet 屬於引用的 RCOL，無法安全細分到具體 Shell；該列是明確的 RCOL 備援關係。 |
-
-未對映的 requestSet 在這兩欄中都留空。
-
-`MappingCondition` 保留輸入中的條件，包括判定角色、彈藥等級及未核驗的觸發狀態。非空條件自動換行，並在 Excel 限制內增加列高。推定的家族名稱不代表判定已確認啟用。
-
-`actionRelations` 與 `resourceRelations` 是兩個獨立陣列。每條邊都指向精確識別 `(scope, rcol, requestSetID, keyHash, sourceRequestSetOrdinal)`；目標過期或同一條邊衝突時，匯出立即失敗。缺少本地化 GUID 時自動使用內部名稱或資源名稱，不需要人工補對映。即使本地化顯示文字相同，不同對映身分也不會合併。資源關係包含精確的 ShellList/PFB/RCOL 證據、自動推導的變體，以及明確標記的 RCOL 結構備援。
-
-每個 sheet 的第一列列出 RCOL 來源路徑，第二列為欄位標題。資料列不重複顯示 `rcol` 路徑。
-
-前五欄依序為 `MappingName`、`MappingInternalName`、`MappingConfidence`、`_Attack` 和 `_FixAttack`，水平捲動時保持凍結。其餘原始資料欄位依原順序排列，剩餘對映欄位繼續放在末尾。
-
-## 使用方式
+## 執行
 
 ```powershell
-conda activate torch
 python -m pip install -r requirements.txt
 python main.py
 ```
 
-入口不接收命令列參數。路徑、語言、輸出名稱和版本號等設定都在 [config.py](../config.py) 中修改。
+程式不接收命令列參數。路徑、語言和版本在 [config.py](../config.py) 中設定。結果寫入 `output/`。
+
+## 發布壓縮檔
+
+`DATABASE_<語言>_<版本>.zip` 每種語言一份，包含該語言的資料庫活頁簿：
+
+```text
+AmuletCollection.xlsx
+EquipCollection.xlsx
+EquipRecipeCollection.xlsx
+FullText.xlsx
+ItemDataCollection.xlsx
+MissionData.xlsx
+SkillCollection.xlsx
+WeaponActionValues.xlsx
+```
+
+`PROCESSED_DATA_<版本>.zip` 包含經過後處理的非資料庫資料。僅發布簡體中文版，不提供其他語言版本：
+
+```text
+Bowgun_Custom.xlsx
+EnemyActionNames.xlsx
+HeavyBowgun.xlsx
+LightBowgun.xlsx
+amulet_pool.json
+graphic_preset.xlsx
+skill_pool.json
+```
+
+`MHWS-in-json_<版本>.zip` 包含共用的來源 JSON，與各語言活頁簿分開打包。
+
+## 活頁簿說明
+
+`MissionData.xlsx` 以 `app.user_data.QuestData` 為主體。每個完成條件佔一列，其他任務欄位縱向合併。任務類型保留原值；缺少對應語言文字時回退英文，所有語言都沒有魔物名稱時保留 `EM` 編號。StreamQuest 文字取自配套資料。缺少 `QuestData` 的 `MsData` 任務編號排在末尾，填入能找到的文字。
+
+`WeaponActionValues.xlsx` 需要 `_format` 為 `mhws_static_action_request_set_map_v2` 的 `MHWS-in-json/ActionMap.json`。重新產生時，使用同一遊戲版本的輸入執行 `motlist-to-json action-map`；可透過 `MHWS_ACTION_MAP_PATH` 指定其他檔案。每條動作或資源對映各佔一列；未對映的 requestSet 保留在表中，`MappingName` 留空。`MappingConfidence` 是證據類別，不是機率。

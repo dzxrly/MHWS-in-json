@@ -29,6 +29,7 @@ PROCESSED_ZIP_PREFIX = "PROCESSED_DATA"
 SOURCE_ZIP_PREFIX = JSON_ROOT.name
 PROCESSED_DIR_NAME = "processed_data"
 FULL_TEXT_WORKBOOK = "FullText.xlsx"
+MISSION_WORKBOOK = "MissionData.xlsx"
 AMULET_WORKBOOK = "AmuletCollection.xlsx"
 ACTION_VALUE_WORKBOOK = "WeaponActionValues.xlsx"
 ENEMY_ACTION_WORKBOOK = "EnemyActionNames.xlsx"

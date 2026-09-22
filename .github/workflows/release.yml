@@ -42,7 +42,7 @@ jobs:
           $version = "$(Get-Date -AsUTC -Format 'yyyyMMdd-HHmmss')-$($env:GITHUB_SHA.Substring(0, 7))"
           "RELEASE_VERSION=$version" >> $env:GITHUB_ENV
 
-      - name: Export database
+      - name: Export database and processed data
         run: python main.py
 
       - name: Publish release
