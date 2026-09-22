@@ -157,11 +157,13 @@ class ReleaseNotesTests(unittest.TestCase):
 
         self.assertTrue(
             result.stdout.startswith(
-                '<div align="center">\n\n<a href="https://github.com/dzxrly/PyREUser3">'
+                '<a href="https://github.com/dzxrly/PyREUser3">\n  <picture>'
             )
         )
-        self.assertIn("powered-by-pyreuser3-dark.svg", result.stdout)
-        self.assertIn("powered-by-pyreuser3-light.svg", result.stdout)
+        self.assertIn("powered-by-pyreuser3-simple-dark.svg", result.stdout)
+        self.assertIn("powered-by-pyreuser3-simple-light.svg", result.stdout)
+        self.assertIn("</a>\n\nAutomated export for commit", result.stdout)
+        self.assertNotIn('<div align="center">', result.stdout)
         self.assertIn("## What's Changed", result.stdout)
         self.assertIn("## DATABASE", result.stdout)
         self.assertIn("## MHWS-in-json", result.stdout)

@@ -17,16 +17,12 @@ MAX_CHANGELOG_COMMITS = 20
 DEFAULT_OUTPUT_DIRECTORY = Path("output")
 # Use an empty tuple for a notes-only release with no uploaded assets.
 UPLOAD_ASSET_PATTERNS = ("*.zip",)
-PYREUSER3_BANNER = """<div align="center">
-
-<a href="https://github.com/dzxrly/PyREUser3">
+PYREUSER3_BADGE = """<a href="https://github.com/dzxrly/PyREUser3">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/dzxrly/PyREUser3/branding/powered-by-pyreuser3-dark.svg">
-    <img alt="Powered by PyREUser3" src="https://raw.githubusercontent.com/dzxrly/PyREUser3/branding/powered-by-pyreuser3-light.svg">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/dzxrly/PyREUser3/branding/powered-by-pyreuser3-simple-dark.svg">
+    <img alt="Powered by PyREUser3" src="https://raw.githubusercontent.com/dzxrly/PyREUser3/branding/powered-by-pyreuser3-simple-light.svg">
   </picture>
-</a>
-
-</div>"""
+</a>"""
 
 # Set to None when the project has no language-specific release assets.
 LANGUAGE_ASSET_SECTION: dict[str, object] | None = {
@@ -158,7 +154,7 @@ def build_release_notes(
     if upload_assets is None:
         upload_assets = collect_upload_assets(output_dir)
     assets = {path.name: path for path in upload_assets}
-    lines = [PYREUSER3_BANNER, ""]
+    lines = [PYREUSER3_BADGE, ""]
     if commit_sha:
         commit_url = _repository_url(server_url, repository, "commit", commit_sha)
         lines.extend(
