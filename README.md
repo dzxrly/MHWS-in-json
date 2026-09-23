@@ -34,8 +34,8 @@ The script takes no command-line arguments. Set paths, languages, and version in
 ```text
 src/
   database/        # DATABASE workbooks, with one subdirectory per feature
-  processed_data/  # Bowguns, enemy actions, graphics, and amulet JSON pools
-  shared/          # Source cache, text references, equipment rules, and Excel utilities
+  processed_data/  # Bowguns, enemy actions, calculator JSON, graphics, and amulet JSON pools
+  shared/          # Source cache, text references, RCOL parsing, and Excel utilities
   pipeline/        # Export coordination, packaging, validation, and publication
 tests/
   database/  processed_data/  shared/  pipeline/  release/
@@ -68,9 +68,12 @@ EnemyActionNames.xlsx
 HeavyBowgun.xlsx
 LightBowgun.xlsx
 amulet_pool.json
+damage_calculator.zh-Hans.json
 graphic_preset.xlsx
 skill_pool.json
 ```
+
+`damage_calculator.zh-Hans.json` retains monster part and scar GUIDs, normal and alternate meat tables, source vitality values, and player RCOL hit profiles with their exact request-set identities. The four exported rates are `_PartsBreakRate` and the tear/raw/old scar rates. Missing alternate meat references stay explicit as `null`. The full release validates the JSON before publication. For a standalone snapshot, run `python -m src.processed_data.damage_calculator.exporter --output .agents/damage_calculator.zh-Hans.json` from the project root.
 
 `MHWS-in-json_<version>.zip` contains the shared source JSON. It is packaged once, separately from the language archives.
 

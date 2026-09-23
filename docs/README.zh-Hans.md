@@ -34,8 +34,8 @@ python main.py
 ```text
 src/
   database/        # DATABASE 工作簿，每个功能独立子目录
-  processed_data/  # 弩枪、怪物动作、画质预设、护石 JSON 池
-  shared/          # 源数据缓存、文本引用、装备规则、Excel 工具
+  processed_data/  # 弩枪、怪物动作、伤害计算 JSON、画质预设、护石 JSON 池
+  shared/          # 源数据缓存、文本引用、RCOL 解析、Excel 工具
   pipeline/        # 导出协调、打包、校验、发布
 tests/
   database/  processed_data/  shared/  pipeline/  release/
@@ -68,9 +68,12 @@ EnemyActionNames.xlsx
 HeavyBowgun.xlsx
 LightBowgun.xlsx
 amulet_pool.json
+damage_calculator.zh-Hans.json
 graphic_preset.xlsx
 skill_pool.json
 ```
+
+`damage_calculator.zh-Hans.json` 保留怪物部位和伤口 GUID、普通与替代肉质、源耐久，以及带完整 requestSet 标识的玩家 RCOL 命中配置。四项倍率是部位破坏倍率与撕裂／新伤／旧伤倍率；源数据引用了缺失的替代肉质时明确写为 `null`。完整导出会在发布前校验该 JSON。若只需单独生成快照，可在项目根目录运行 `python -m src.processed_data.damage_calculator.exporter --output .agents/damage_calculator.zh-Hans.json`。
 
 `MHWS-in-json_<版本>.zip` 包含共享的源 JSON，与各语言工作簿分开打包。
 

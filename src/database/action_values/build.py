@@ -12,7 +12,7 @@ from src.database.action_values.action_map import (
     ResourceMapRelation,
     load_action_map,
 )
-from src.database.action_values.rcol import (
+from src.shared.action_values.rcol import (
     RequestSetKey,
     RequestSetRecord,
     load_action_value_request_sets,
