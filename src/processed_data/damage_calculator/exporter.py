@@ -2,6 +2,7 @@
 
 import argparse
 import json
+import math
 import re
 from pathlib import Path
 
@@ -9,6 +10,8 @@ from config import NATIVES_DIR, SUPPORT_FILES, ZH_HANS_LANGUAGE_ID
 from src.shared.action_values.rcol import load_action_value_request_sets
 from src.shared.source.repository import SourceRepository
 from src.shared.text.catalog import TextSource
+from src.processed_data.damage_calculator.actions import action_labels
+from src.processed_data.damage_calculator.bonuses import bonus_catalog
 
 OUTPUT_NAME = "damage_calculator.zh-Hans.json"
 PARAM_GLOB = "STM/GameDesign/Enemy/Em*/*/Data/*_Param_Parts.user.3.json"
@@ -87,9 +90,10 @@ def _monster_names(repository: SourceRepository, text_source: TextSource) -> dic
     return result
 
 
-def _hit_profiles(natives_dir: Path) -> list[dict]:
+def _hit_profiles(natives_dir: Path, text_source: TextSource) -> list[dict]:
     action_data = natives_dir / "STM/GameDesign/Player/ActionData"
     records = load_action_value_request_sets(action_data)
+    labels = action_labels(natives_dir, text_source)
     profiles = []
     for scope, request_sets in records.items():
         for record in request_sets:
@@ -106,6 +110,7 @@ def _hit_profiles(natives_dir: Path) -> list[dict]:
                 "keyHash": key.key_hash, "sourceRequestSetOrdinal": key.source_ordinal,
                 "actionType": _symbol(record.properties.get("_ActionTypeFixed._Value", "NONE")),
                 "sourceAttack": record.properties.get("_Attack"),
+                "actionNames": labels.get(key, []),
                 "rates": rates,
             })
     if not profiles:
@@ -184,18 +189,19 @@ def build_catalog(natives_dir: Path, repository: SourceRepository, text_source: 
     if not monsters:
         raise ValueError(f"No monster part tables under {natives_dir}")
     catalog = {
-        "schemaVersion": 2, "language": "zh-Hans",
+        "schemaVersion": 3, "language": "zh-Hans",
         "meatUnit": "source percent, divide by 100 in damage formula",
         "scope": "Monster part meat and source vitality plus player RCOL hit-rate profiles; no mission or runtime modifiers",
         "monsters": monsters,
-        "hitProfiles": _hit_profiles(natives_dir),
+        "hitProfiles": _hit_profiles(natives_dir, text_source),
+        **bonus_catalog(natives_dir, repository, text_source),
     }
     validate_catalog(catalog)
     return catalog
 
 
 def validate_catalog(catalog: dict) -> None:
-    if catalog.get("schemaVersion") != 2 or catalog.get("language") != "zh-Hans":
+    if catalog.get("schemaVersion") != 3 or catalog.get("language") != "zh-Hans":
         raise ValueError("Unsupported calculator catalog schema")
     profile_ids = set()
     profiles = catalog.get("hitProfiles")
@@ -206,11 +212,35 @@ def validate_catalog(catalog: dict) -> None:
         if not isinstance(profile_id, str) or profile_id in profile_ids:
             raise ValueError(f"Invalid hit profile identity: {profile_id}")
         profile_ids.add(profile_id)
+        attack = profile.get("sourceAttack")
+        if not isinstance(attack, (int, float)) or not math.isfinite(attack) or attack < 0:
+            raise ValueError(f"Invalid motion value: {profile_id}")
+        if not isinstance(profile.get("actionNames"), list) or any(
+            not isinstance(name, str) or not name for name in profile["actionNames"]
+        ):
+            raise ValueError(f"Invalid action names: {profile_id}")
         rates = profile.get("rates", {})
         if set(rates) != set(PROFILE_RATE_FIELDS) or any(
             not isinstance(value, (int, float)) or value < 0 for value in rates.values()
         ):
             raise ValueError(f"Invalid hit profile rates: {profile_id}")
+    for skill in catalog.get("skills", []):
+        if not skill.get("name") or not skill.get("levels"):
+            raise ValueError(f"Invalid skill bonus: {skill.get('id')}")
+        for level in skill["levels"]:
+            if any(
+                not isinstance(level.get(key), (int, float))
+                or not math.isfinite(level[key]) or level[key] < 0
+                for key in ("level", "percent", "flat")
+            ):
+                raise ValueError(f"Invalid skill level: {skill.get('id')}")
+    if not catalog.get("skills") or not catalog.get("items"):
+        raise ValueError("Empty bonus catalog")
+    for item in catalog["items"]:
+        flat = item.get("flat")
+        if (not item.get("name") or not item.get("group")
+                or not isinstance(flat, (int, float)) or not math.isfinite(flat) or flat < 0):
+            raise ValueError(f"Invalid item bonus: {item.get('id')}")
     monsters = catalog.get("monsters")
     if not isinstance(monsters, list) or not monsters:
         raise ValueError("Empty calculator monster list")

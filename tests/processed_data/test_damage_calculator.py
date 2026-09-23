@@ -39,3 +39,15 @@ class DamageCalculatorDataTests(unittest.TestCase):
         self.assertEqual(len({profile["id"] for profile in profiles}), len(profiles))
         self.assertTrue(any(profile["rates"]["PartsBreak"] == 0.9 for profile in profiles))
         self.assertTrue(any(profile["rates"]["PartsBreak"] == 1.5 for profile in profiles))
+
+    def test_player_action_names_and_bonuses_keep_source_values(self) -> None:
+        profile = next(row for row in self.catalog["hitProfiles"] if row["id"] == (
+            "Wp00|Wp00/Collision/Collider/Wp00_Attack.rcol.38.json|0|2844005733|0"
+        ))
+        self.assertEqual(profile["sourceAttack"], 81)
+        self.assertIn("直斩", profile["actionNames"])
+        self.assertGreater(sum(bool(row["actionNames"]) for row in self.catalog["hitProfiles"]), 700)
+        attack = next(row for row in self.catalog["skills"] if row["name"] == "攻击")
+        self.assertEqual(attack["levels"][-1], {"level": 5, "percent": 104, "flat": 9})
+        item = next(row for row in self.catalog["items"] if row["name"] == "力量护符")
+        self.assertEqual(item["flat"], 6)

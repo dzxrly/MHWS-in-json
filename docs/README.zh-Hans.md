@@ -73,7 +73,7 @@ graphic_preset.xlsx
 skill_pool.json
 ```
 
-`damage_calculator.zh-Hans.json` 保留怪物部位和伤口 GUID、普通与替代肉质、源耐久，以及带完整 requestSet 标识的玩家 RCOL 命中配置。四项倍率是部位破坏倍率与撕裂／新伤／旧伤倍率；源数据引用了缺失的替代肉质时明确写为 `null`。完整导出会在发布前校验该 JSON。若只需单独生成快照，可在项目根目录运行 `python -m src.processed_data.damage_calculator.exporter --output .agents/damage_calculator.zh-Hans.json`。
+`damage_calculator.zh-Hans.json` 保留怪物部位和伤口 GUID、普通与替代肉质、源耐久，以及带完整 requestSet 标识的玩家动作记录。每条动作记录包含原始动作值、四项部位／伤口倍率，以及经精确关联并有中文文本的动作名称；另外导出已核对的攻击／属性技能等级与道具补正。源数据引用了缺失的替代肉质时明确写为 `null`。完整导出会在发布前校验该 JSON。若只需单独生成快照，可在项目根目录运行 `python -m src.processed_data.damage_calculator.exporter --output .agents/damage_calculator.zh-Hans.json`。
 
 `MHWS-in-json_<版本>.zip` 包含共享的源 JSON，与各语言工作簿分开打包。
 
