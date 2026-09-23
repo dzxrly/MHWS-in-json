@@ -40,14 +40,31 @@ class DamageCalculatorDataTests(unittest.TestCase):
         self.assertTrue(any(profile["rates"]["PartsBreak"] == 0.9 for profile in profiles))
         self.assertTrue(any(profile["rates"]["PartsBreak"] == 1.5 for profile in profiles))
 
-    def test_player_action_names_and_bonuses_keep_source_values(self) -> None:
+    def test_player_action_names_and_items_keep_source_values(self) -> None:
+        self.assertEqual(self.catalog["schemaVersion"], 6)
         profile = next(row for row in self.catalog["hitProfiles"] if row["id"] == (
             "Wp00|Wp00/Collision/Collider/Wp00_Attack.rcol.38.json|0|2844005733|0"
         ))
         self.assertEqual(profile["sourceAttack"], 81)
+        self.assertTrue(profile["usesAttackPower"])
+        self.assertTrue(profile["usesElementPower"])
+        self.assertFalse(profile["ignoresSharpness"])
+        self.assertFalse(profile["forcesSharpnessAttackRate"])
         self.assertIn("直斩", profile["actionNames"])
         self.assertGreater(sum(bool(row["actionNames"]) for row in self.catalog["hitProfiles"]), 700)
-        attack = next(row for row in self.catalog["skills"] if row["name"] == "攻击")
-        self.assertEqual(attack["levels"][-1], {"level": 5, "percent": 104, "flat": 9})
+        self.assertTrue(any(row["elementRate"] == 0.3 for row in self.catalog["hitProfiles"] if row["actionNames"]))
+        self.assertNotIn("skills", self.catalog)
         item = next(row for row in self.catalog["items"] if row["name"] == "力量护符")
         self.assertEqual(item["flat"], 6)
+
+    def test_sharpness_rates_and_action_flags(self) -> None:
+        colors = self.catalog["sharpness"]
+        self.assertEqual([row["name"] for row in colors], [
+            "红斩", "橙斩", "黄斩", "绿斩", "蓝斩", "白斩", "紫斩",
+        ])
+        self.assertEqual((colors[0]["physical"], colors[0]["element"]), (0.5, 0.25))
+        self.assertEqual((colors[-1]["physical"], colors[-1]["element"]), (1.39, 1.25))
+        flags = {(row["ignoresSharpness"], row["forcesSharpnessAttackRate"])
+                 for row in self.catalog["hitProfiles"]}
+        self.assertIn((True, True), flags)
+        self.assertIn((True, False), flags)

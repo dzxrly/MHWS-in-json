@@ -9,6 +9,7 @@ from xml.etree import ElementTree
 
 import openpyxl
 from src.processed_data.damage_calculator.exporter import OUTPUT_NAME as DAMAGE_OUTPUT_NAME, validate_catalog
+from src.processed_data.skill_effects.exporter import OUTPUT_NAME as SKILL_EFFECTS_OUTPUT_NAME, validate_catalog as validate_skill_effects
 
 
 def validate_outputs(stage: Path, expected_files: set[str], archives: dict[str, Path | None]) -> list[dict]:
@@ -28,6 +29,8 @@ def validate_outputs(stage: Path, expected_files: set[str], archives: dict[str, 
                 payload = json.load(handle)
             if path.name == DAMAGE_OUTPUT_NAME:
                 validate_catalog(payload)
+            elif path.name == SKILL_EFFECTS_OUTPUT_NAME:
+                validate_skill_effects(payload)
         records.append({"path": relative, "bytes": path.stat().st_size,
                         "sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
     for name, source in archives.items():

@@ -70,10 +70,13 @@ LightBowgun.xlsx
 amulet_pool.json
 damage_calculator.zh-Hans.json
 graphic_preset.xlsx
+skill_effects.zh-Hans.json
 skill_pool.json
 ```
 
-`damage_calculator.zh-Hans.json` retains monster part and scar GUIDs, normal and alternate meat tables, source vitality values, and player RCOL hit profiles with their exact request-set identities. The four exported rates are `_PartsBreakRate` and the tear/raw/old scar rates. Missing alternate meat references stay explicit as `null`. The full release validates the JSON before publication. For a standalone snapshot, run `python -m src.processed_data.damage_calculator.exporter --output .agents/damage_calculator.zh-Hans.json` from the project root.
+`damage_calculator.zh-Hans.json` retains monster part and scar GUIDs, normal and alternate meat tables, source vitality values, and player RCOL hit profiles with their exact request-set identities. The four hit rates are `_PartsBreakRate` and the tear/raw/old scar rates. The seven sharpness levels export separate physical and elemental rates from the enemy common table; hit profiles also retain the source sharpness and critical flags. Missing alternate meat references stay explicit as `null`. Items remain in this file; damage skill effects are exported only in `skill_effects.zh-Hans.json`. The full release validates both JSON files before publication. For standalone snapshots, run `python -m src.processed_data.damage_calculator.exporter --output .agents/damage_calculator.zh-Hans.json` and `python -m src.processed_data.skill_effects.exporter --output .agents/skill_effects.zh-Hans.json` from the project root.
+
+The skill catalog retains every source skill identity, localized descriptions, level values, evidence status, and source hashes. Verified damage effects have explicit calculation stages, weapon and element scopes, and optional active states. Its consumer assumes each selected skill is active and critical chance is 100%; trigger rules, durations, affinity chance bonuses, meal skills, and status buildup are outside this catalog. Skills without a verified numeric effect remain visible in the data but must not be applied as zero-valued bonuses.
 
 `MHWS-in-json_<version>.zip` contains the shared source JSON. It is packaged once, separately from the language archives.
 

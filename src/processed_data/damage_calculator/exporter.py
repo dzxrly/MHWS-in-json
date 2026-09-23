@@ -11,7 +11,8 @@ from src.shared.action_values.rcol import load_action_value_request_sets
 from src.shared.source.repository import SourceRepository
 from src.shared.text.catalog import TextSource
 from src.processed_data.damage_calculator.actions import action_labels
-from src.processed_data.damage_calculator.bonuses import bonus_catalog
+from src.processed_data.damage_calculator.bonuses import item_catalog
+from src.processed_data.damage_calculator.sharpness import sharpness_catalog
 
 OUTPUT_NAME = "damage_calculator.zh-Hans.json"
 PARAM_GLOB = "STM/GameDesign/Enemy/Em*/*/Data/*_Param_Parts.user.3.json"
@@ -98,6 +99,9 @@ def _hit_profiles(natives_dir: Path, text_source: TextSource) -> list[dict]:
     for scope, request_sets in records.items():
         for record in request_sets:
             key = record.key
+            no_critical = record.properties.get("_IsNoCritical")
+            if not isinstance(no_critical, bool):
+                raise ValueError(f"Missing critical flag: {key}")
             rates = {}
             for output_key, source_key in PROFILE_RATE_FIELDS.items():
                 value = record.properties.get(source_key)
@@ -110,6 +114,12 @@ def _hit_profiles(natives_dir: Path, text_source: TextSource) -> list[dict]:
                 "keyHash": key.key_hash, "sourceRequestSetOrdinal": key.source_ordinal,
                 "actionType": _symbol(record.properties.get("_ActionTypeFixed._Value", "NONE")),
                 "sourceAttack": record.properties.get("_Attack"),
+                "usesAttackPower": record.properties.get("_UseStatusAttackPower"),
+                "usesElementPower": record.properties.get("_UseStatusAttrPower"),
+                "canCritical": not no_critical,
+                "ignoresSharpness": record.properties.get("_IsNoUseKireaji"),
+                "forcesSharpnessAttackRate": record.properties.get("_IsForceUseKireajiAttackRate"),
+                "elementRate": record.properties.get("_StatusAttrRate"),
                 "actionNames": labels.get(key, []),
                 "rates": rates,
             })
@@ -189,20 +199,33 @@ def build_catalog(natives_dir: Path, repository: SourceRepository, text_source: 
     if not monsters:
         raise ValueError(f"No monster part tables under {natives_dir}")
     catalog = {
-        "schemaVersion": 3, "language": "zh-Hans",
+        "schemaVersion": 6, "language": "zh-Hans",
         "meatUnit": "source percent, divide by 100 in damage formula",
         "scope": "Monster part meat and source vitality plus player RCOL hit-rate profiles; no mission or runtime modifiers",
         "monsters": monsters,
         "hitProfiles": _hit_profiles(natives_dir, text_source),
-        **bonus_catalog(natives_dir, repository, text_source),
+        "sharpness": sharpness_catalog(natives_dir),
+        **item_catalog(natives_dir),
     }
     validate_catalog(catalog)
     return catalog
 
 
 def validate_catalog(catalog: dict) -> None:
-    if catalog.get("schemaVersion") != 3 or catalog.get("language") != "zh-Hans":
+    if catalog.get("schemaVersion") != 6 or catalog.get("language") != "zh-Hans":
         raise ValueError("Unsupported calculator catalog schema")
+    sharpness = catalog.get("sharpness")
+    if not isinstance(sharpness, list) or len(sharpness) != 7 or len({
+        entry.get("id") for entry in sharpness
+    }) != 7:
+        raise ValueError("Invalid sharpness colors")
+    for entry in sharpness:
+        if not isinstance(entry.get("name"), str) or not entry["name"]:
+            raise ValueError("Invalid sharpness name")
+        if any(not isinstance(entry.get(key), (int, float)) or isinstance(entry[key], bool)
+               or not math.isfinite(entry[key]) or entry[key] <= 0
+               for key in ("physical", "element")):
+            raise ValueError(f"Invalid sharpness rates: {entry.get('id')}")
     profile_ids = set()
     profiles = catalog.get("hitProfiles")
     if not isinstance(profiles, list) or not profiles:
@@ -215,6 +238,19 @@ def validate_catalog(catalog: dict) -> None:
         attack = profile.get("sourceAttack")
         if not isinstance(attack, (int, float)) or not math.isfinite(attack) or attack < 0:
             raise ValueError(f"Invalid motion value: {profile_id}")
+        if not isinstance(profile.get("usesAttackPower"), bool) or not isinstance(
+            profile.get("usesElementPower"), bool
+        ) or not isinstance(profile.get("canCritical"), bool):
+            raise ValueError(f"Invalid player stat usage: {profile_id}")
+        if not isinstance(profile.get("ignoresSharpness"), bool) or not isinstance(
+            profile.get("forcesSharpnessAttackRate"), bool
+        ):
+            raise ValueError(f"Invalid sharpness flags: {profile_id}")
+        element_rate = profile.get("elementRate")
+        if not isinstance(element_rate, (int, float)) or not math.isfinite(
+            element_rate
+        ) or element_rate < 0:
+            raise ValueError(f"Invalid action element rate: {profile_id}")
         if not isinstance(profile.get("actionNames"), list) or any(
             not isinstance(name, str) or not name for name in profile["actionNames"]
         ):
@@ -224,18 +260,8 @@ def validate_catalog(catalog: dict) -> None:
             not isinstance(value, (int, float)) or value < 0 for value in rates.values()
         ):
             raise ValueError(f"Invalid hit profile rates: {profile_id}")
-    for skill in catalog.get("skills", []):
-        if not skill.get("name") or not skill.get("levels"):
-            raise ValueError(f"Invalid skill bonus: {skill.get('id')}")
-        for level in skill["levels"]:
-            if any(
-                not isinstance(level.get(key), (int, float))
-                or not math.isfinite(level[key]) or level[key] < 0
-                for key in ("level", "percent", "flat")
-            ):
-                raise ValueError(f"Invalid skill level: {skill.get('id')}")
-    if not catalog.get("skills") or not catalog.get("items"):
-        raise ValueError("Empty bonus catalog")
+    if "skills" in catalog or not catalog.get("items"):
+        raise ValueError("Skills must be exported only by skill_effects; item catalog is required")
     for item in catalog["items"]:
         flat = item.get("flat")
         if (not item.get("name") or not item.get("group")
