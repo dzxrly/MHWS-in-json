@@ -33,8 +33,13 @@ GROUP_BORDER = Side(style="thin", color="A8BACB")
 SECTION_BORDER = Side(style="medium", color="8DA6B6")
 WRAPPED_COLUMNS = {"_TitleMsg", "MonsterName", "_DetailMsg", "_SubBossInfoArray"}
 BODY_ALIGNMENTS = {
-    wrapped: Alignment(horizontal="left", vertical="center", wrap_text=wrapped)
+    (wrapped, numeric): Alignment(
+        horizontal="center" if numeric else "left",
+        vertical="center",
+        wrap_text=wrapped,
+    )
     for wrapped in (False, True)
+    for numeric in (False, True)
 }
 COLUMN_WIDTHS = {
     "_MissionId": 20,
@@ -51,6 +56,7 @@ COLUMN_WIDTHS = {
     "_DifficultyRankId": 37,
     "_MultiTableId": 37,
     "_RewardRank": 20,
+    "SoloHealth": 45,
     "_IsUseRandomSize": 18,
 }
 
@@ -131,9 +137,11 @@ def style_mission_workbook(workbook, data: MissionWorkbookData) -> None:
             sheet.row_dimensions[row_index].height = height
             for column_index, header in enumerate(data.headers, start=1):
                 column = header.key
-                sheet.cell(row_index, column_index).style = styles[
+                cell = sheet.cell(row_index, column_index)
+                numeric = isinstance(cell.value, (int, float)) and not isinstance(cell.value, bool)
+                cell.style = styles[
                     header.section, group_index % 2, column_index in group_starts,
-                    row_index == last_row, column in WRAPPED_COLUMNS,
+                    row_index == last_row, column in WRAPPED_COLUMNS, numeric,
                 ]
         if row_count > 1:
             for column_index, header in enumerate(data.headers, start=1):
@@ -155,13 +163,14 @@ def _body_styles(palette: StylePalette, headers, group_starts: set[int]) -> dict
     for section, left, wrapped in column_styles:
         for alternate, color in enumerate(BODY_COLORS[section]):
             for bottom in (False, True):
-                key = (section, alternate, left, bottom, wrapped)
-                styles[key] = palette.get(
-                    key, fill=PatternFill("solid", fgColor=color),
-                    border=Border(left=SECTION_BORDER if left else Side(),
-                                  bottom=GROUP_BORDER if bottom else Side()),
-                    alignment=BODY_ALIGNMENTS[wrapped],
-                )
+                for numeric in (False, True):
+                    key = (section, alternate, left, bottom, wrapped, numeric)
+                    styles[key] = palette.get(
+                        key, fill=PatternFill("solid", fgColor=color),
+                        border=Border(left=SECTION_BORDER if left else Side(),
+                                      bottom=GROUP_BORDER if bottom else Side()),
+                        alignment=BODY_ALIGNMENTS[wrapped, numeric],
+                    )
     return styles
 
 

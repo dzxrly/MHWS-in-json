@@ -2,7 +2,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from openpyxl import load_workbook
+from openpyxl import Workbook, load_workbook
 from openpyxl.cell.cell import MergedCell
 from openpyxl.utils import get_column_letter
 
@@ -16,7 +16,9 @@ from src.database.missions.build import (
     load_mission_catalog,
 )
 from src.shared.text.catalog import TextSource, discover_language_ids
-from src.database.missions.excel import write_mission_workbook
+from src.database.missions.excel import style_mission_workbook, write_mission_workbook
+from src.database.missions.health import calculate_solo_health
+from src.shared.excel.cells import safe_cell
 
 
 def _entry(guid, name, english, chinese=""):
@@ -97,6 +99,74 @@ def _text_source():
 
 
 class MissionFixtureTests(unittest.TestCase):
+    def test_numeric_cells_are_centered_without_centering_numeric_text_or_lists(self):
+        data = build_mission_workbook_data(_catalog(_quest()), _text_source(), 13)
+        data.rows[0]["_RemMoney"] = 1.25
+        data.rows[0]["_Stage"] = "123"
+        data.rows[0]["_SubBossInfoArray"] = "100、200"
+        workbook = Workbook()
+        sheet = workbook.active
+        sheet.title = "MissionData"
+        sheet.append([None] * len(data.headers))
+        sheet.append([None] * len(data.headers))
+        for row in data.rows:
+            sheet.append([safe_cell(row[header.key]) for header in data.headers])
+        style_mission_workbook(workbook, data)
+        try:
+            for column, expected in (
+                ("_QuestLv", "center"),
+                ("_RemMoney", "center"),
+                ("_EnableGuestNpc", "left"),
+                ("_Stage", "left"),
+                ("_SubBossInfoArray", "left"),
+            ):
+                cell = sheet.cell(3, data.columns.index(column) + 1)
+                self.assertEqual((cell.alignment.horizontal, cell.alignment.vertical),
+                                 (expected, "center"), column)
+        finally:
+            workbook.close()
+
+    def test_solo_health_uses_new_random_grades_from_user3(self):
+        self.assertEqual(calculate_solo_health(
+            enemy_id="EM9999_00_0", base_health=10000, quest_health_rate=1.0,
+            legendary_id="NORMAL", reward_rank=0, legendary_rates={"HealthRate": 1.0},
+            random_rate_table={"_Value0": 1.0, "_ValueP4": 1.125},
+            random_probability_tables=[{"_Prob0": 50, "_ProbP4": 50}],
+            difficulty_adjust_range=0, king_when_none_ids=frozenset(),
+            no_auto_hard_ids=frozenset(),
+        ), "10000、11250")
+
+    def test_solo_health_compiled_exceptions_are_explicit_inputs(self):
+        inputs = {
+            "enemy_id": "EM9999_00_0", "base_health": 10000,
+            "quest_health_rate": 1.0, "reward_rank": 10,
+            "legendary_rates": {
+                "HealthRate": 1.0, "HealthRate_Hard": 1.5,
+                "HealthRate_King": 1.0, "HealthRate_King_Hard": 1.25,
+            },
+            "random_rate_table": {"_Value0": 1.0},
+            "random_probability_tables": [{"_Prob0": 100}],
+            "difficulty_adjust_range": 0,
+        }
+        self.assertEqual(calculate_solo_health(
+            **inputs, legendary_id="NORMAL", king_when_none_ids=frozenset(),
+            no_auto_hard_ids=frozenset({"EM9999_00_0"}),
+        ), 10000)
+        self.assertEqual(calculate_solo_health(
+            **inputs, legendary_id="NORMAL", king_when_none_ids=frozenset(),
+            no_auto_hard_ids=frozenset({"EM9999_00_0"}), preset_hard=True,
+        ), 15000)
+        self.assertEqual(calculate_solo_health(
+            **inputs, legendary_id="NONE",
+            king_when_none_ids=frozenset({"EM9999_00_0"}),
+            no_auto_hard_ids=frozenset(),
+        ), 12500)
+        with self.assertRaisesRegex(ValueError, "Ambiguous rank-10 NONE"):
+            calculate_solo_health(
+                **inputs, legendary_id="NONE", king_when_none_ids=frozenset(),
+                no_auto_hard_ids=frozenset(),
+            )
+
     def test_msdata_id_without_quest_data_is_appended_with_available_text(self):
         source = TextSource(_text_source().entries + [
             _entry(None, "Mission000124_100", "Quest title"),
@@ -254,7 +324,8 @@ class MissionCorpusTests(unittest.TestCase):
             "_MissionId", "_QuestLv", "_OrderHR", "_OrderMR", "_TitleMsg",
             "MonsterName", "_TargetType", "_LegendaryID", "_RewardRank",
         ))
-        self.assertEqual(len(data.columns), 107)
+        self.assertEqual(len(data.columns), 108)
+        self.assertEqual(data.columns.index("SoloHealth") + 1, data.columns.index("_Health"))
         self.assertEqual(rows["MISSION_001130"]["_Health"], 1.17)
         self.assertEqual(rows["MISSION_001130"]["_Attack"], 1.0)
         self.assertEqual(rows["MISSION_001130"]["_Count=2._Health"], 1.6)
@@ -267,10 +338,24 @@ class MissionCorpusTests(unittest.TestCase):
             rows["MISSION_001130"]["_DifficultyRankId"],
         )
         for mission_id in ("MISSION_101001", "MISSION_640001", "MISSION_400063"):
+            self.assertEqual(rows[mission_id]["SoloHealth"], "")
             self.assertEqual(rows[mission_id]["_Health"], "")
             self.assertEqual(rows[mission_id]["_Count=2._Health"], "")
 
-    def test_workbook_merges_mission_fields_and_left_aligns_content(self):
+    def test_solo_health_matches_observed_mission_values(self):
+        data = build_mission_workbook_data(self.catalog, self.text_source, 1)
+        rows = {row["_MissionId"]: row for row in data.rows}
+        for mission_id, expected in (
+            ("MISSION_109011", 47840),
+            ("MISSION_661002", 28944),
+            ("MISSION_650006", 78566),
+            ("MISSION_204000", 6000),
+            ("MISSION_650000", "76726、78325、79923、81522、83120"),
+        ):
+            with self.subTest(mission_id=mission_id):
+                self.assertEqual(rows[mission_id]["SoloHealth"], expected)
+
+    def test_workbook_merges_mission_fields_and_centers_numeric_content(self):
         data = build_mission_workbook_data(self.catalog, self.text_source, 1)
         BASE_DIR.joinpath(".agents").mkdir(exist_ok=True)
         with tempfile.TemporaryDirectory(dir=BASE_DIR / ".agents") as temp_dir:
@@ -281,6 +366,9 @@ class MissionCorpusTests(unittest.TestCase):
                 self.assertEqual(sheet.max_column, len(data.columns))
                 self.assertEqual(sheet.max_row, len(data.rows) + 2)
                 self.assertEqual(sheet.freeze_panes, "I3")
+                solo = data.columns.index("SoloHealth") + 1
+                self.assertEqual(sheet.cell(1, solo).value, "SoloHealth")
+                self.assertEqual(sheet.cell(1, solo + 1).value, "_Health")
                 self.assertEqual([sheet.cell(1, index).value for index in range(1, 10)], [
                     "_MissionId", "_QuestLv", "_OrderHR", "_OrderMR", "_TitleMsg",
                     "MonsterName", "_TargetType", "_LegendaryID", "_RewardRank",
@@ -322,9 +410,10 @@ class MissionCorpusTests(unittest.TestCase):
                     for cell in row:
                         if isinstance(cell, MergedCell):
                             continue
+                        numeric = isinstance(cell.value, (int, float)) and not isinstance(cell.value, bool)
                         self.assertEqual(
                             (cell.alignment.horizontal, cell.alignment.vertical),
-                            ("left", "center"),
+                            ("center" if numeric else "left", "center"),
                             cell.coordinate,
                         )
             finally:

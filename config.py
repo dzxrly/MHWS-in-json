@@ -30,6 +30,16 @@ SOURCE_ZIP_PREFIX = JSON_ROOT.name
 PROCESSED_DIR_NAME = "processed_data"
 FULL_TEXT_WORKBOOK = "FullText.xlsx"
 MISSION_WORKBOOK = "MissionData.xlsx"
+
+# Compiled exceptions checked in the local MonsterHunterWilds.exe:
+# EnemyUtil.getLegendaryID_LegendaryParam compares EnemyDef.ID 0x0C/0x20;
+# cContextInstanceController_Enemy.onSetupContext compares 0x22 when deciding
+# whether to derive Hard from reward rank. The corresponding enum names come
+# from Enums_Internal.json. Recheck the native branches after a game update;
+# these comparisons are not encoded in the user3 mission/monster records.
+MISSION_HEALTH_KING_WHEN_NONE_IDS = frozenset({"EM0078_00_0", "EM0164_50_0"})
+MISSION_HEALTH_NO_AUTO_HARD_IDS = frozenset({"EM0166_00_0"})
+
 AMULET_WORKBOOK = "AmuletCollection.xlsx"
 ACTION_VALUE_WORKBOOK = "WeaponActionValues.xlsx"
 ENEMY_ACTION_WORKBOOK = "EnemyActionNames.xlsx"

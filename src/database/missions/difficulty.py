@@ -6,6 +6,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable
 
+from src.database.missions.health import SoloHealthCalculator
+
 
 RATE_FIELDS = (
     "_RewardRank", "_RewardGrade", "_Health", "_Attack", "_PartsVital",
@@ -45,7 +47,11 @@ class MissionDifficultySchema:
     count_fields: tuple[str, ...]
 
     def columns(self) -> tuple[MissionColumn, ...]:
-        columns = [MissionColumn(field, field, section="difficulty") for field in RATE_FIELDS]
+        columns = []
+        for field in RATE_FIELDS:
+            if field == "_Health":
+                columns.append(MissionColumn("SoloHealth", "SoloHealth", section="difficulty"))
+            columns.append(MissionColumn(field, field, section="difficulty"))
         columns.append(MissionColumn("_DifficultyRankId", "_DifficultyRankId", section="difficulty"))
         columns.extend(
             MissionColumn(f"{status}.{field}", status, field, "status")
@@ -78,6 +84,7 @@ def load_mission_difficulty(
     data = _typed(_read_json(source), "app.user_data.EmParamDifficulty2", source)
     rates = _guid_index(_array(data, "_DifficultyRateArray", RATE_TYPE), RATE_TYPE, source)
     multi_tables = _guid_index(_array(data, "_MultiRateTblArray", MULTI_TYPE), MULTI_TYPE, source)
+    solo_health = SoloHealthCalculator(natives_dir, data)
 
     statuses = tuple(dict.fromkeys(
         key for rate in rates.values() for key, value in rate.items()
@@ -135,7 +142,8 @@ def load_mission_difficulty(
                     raise ValueError(f"Unknown multiplayer table {multi_guid} for {mission_id}")
                 multi = multi_tables.get(multi_guid)
                 targets[(mission_id, clear_index, target_index)] = _flatten_target(
-                    schema, main, rate_guid, rate, multi_guid, multi, source
+                    schema, main, rate_guid, rate, multi_guid, multi, source,
+                    solo_health.calculate(main, rate),
                 )
     return MissionDifficultyCatalog(schema, targets)
 
@@ -148,8 +156,11 @@ def _flatten_target(
     multi_guid: str,
     multi: dict | None,
     source: Path,
+    health: int | str,
 ) -> dict[str, Any]:
-    values: dict[str, Any] = {"_DifficultyRankId": rate_guid, "_MultiTableId": multi_guid}
+    values: dict[str, Any] = {
+        "_DifficultyRankId": rate_guid, "_MultiTableId": multi_guid, "SoloHealth": health,
+    }
     for field in (*RATE_FIELDS, *TRAILING_RATE_FIELDS):
         value = rate[field]
         values[field] = _symbol(value) if field == "_RewardRank" else value
