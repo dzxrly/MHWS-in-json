@@ -41,7 +41,7 @@ class DamageCalculatorDataTests(unittest.TestCase):
         self.assertTrue(any(profile["rates"]["PartsBreak"] == 1.5 for profile in profiles))
 
     def test_player_action_names_and_items_keep_source_values(self) -> None:
-        self.assertEqual(self.catalog["schemaVersion"], 6)
+        self.assertEqual(self.catalog["schemaVersion"], 7)
         profile = next(row for row in self.catalog["hitProfiles"] if row["id"] == (
             "Wp00|Wp00/Collision/Collider/Wp00_Attack.rcol.38.json|0|2844005733|0"
         ))
@@ -68,3 +68,40 @@ class DamageCalculatorDataTests(unittest.TestCase):
                  for row in self.catalog["hitProfiles"]}
         self.assertIn((True, True), flags)
         self.assertIn((True, False), flags)
+
+    def test_ammunition_resources_and_shared_source_contract(self) -> None:
+        from src.processed_data.skill_effects.exporter import build_catalog as build_skills
+        from src.processed_data.skill_effects.specs import WEAPONS
+        profiles = {row["id"]: row for row in self.catalog["hitProfiles"]}
+        actions = self.catalog["actions"]
+        fire = [row for row in actions if row["name"] == "火炎弹"]
+        self.assertTrue(fire)
+        for action in fire:
+            hit = profiles[action["profileId"]]
+            self.assertEqual(hit["elementSource"], "attack_scaled")
+            self.assertEqual((hit["sourceAttack"], hit["sourceElement"]), (8, 20))
+            self.assertEqual(hit["elementType"], "fire")
+            self.assertFalse(hit["usesElementPower"])
+            self.assertEqual(set(action["weapons"]), {"heavybowgun", "lightbowgun"})
+            self.assertEqual(action["shell"]["parameters"]["_Attr_Rate_Light"], 0.7)
+        for weapon in WEAPONS:
+            self.assertTrue(any(weapon in row["weapons"] for row in actions), weapon)
+        self.assertTrue(any(row["sourceFixed"] > 0 for row in profiles.values()))
+        skills = build_skills(NATIVES_DIR, SourceRepository(NATIVES_DIR), TextSource.from_natives(NATIVES_DIR))
+        self.assertEqual(skills["sourceContract"], self.catalog["sourceContract"])
+
+    def test_rejects_corrupt_contract_and_dangling_action(self) -> None:
+        from copy import deepcopy
+        catalog = deepcopy(self.catalog)
+        catalog["sourceContract"]["id"] = "0" * 64
+        with self.assertRaisesRegex(ValueError, "identity mismatch"):
+            validate_catalog(catalog)
+        catalog = deepcopy(self.catalog)
+        catalog["actions"][0]["profileId"] = "missing"
+        with self.assertRaisesRegex(ValueError, "action reference"):
+            validate_catalog(catalog)
+
+    def test_multihit_curve_reference_is_preserved(self) -> None:
+        fire = next(row for row in self.catalog["actions"] if row["name"] == "火炎弹")
+        profile = next(row for row in self.catalog["hitProfiles"] if row["id"] == fire["profileId"])
+        self.assertIn("WpGunElement_MultiHitCurve", profile["multiHit"]["physicalCurve"])

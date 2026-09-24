@@ -18,6 +18,7 @@ def validate_outputs(stage: Path, expected_files: set[str], archives: dict[str, 
     if actual != expected:
         raise ValueError(f"Output manifest mismatch: missing={sorted(expected - actual)}, extra={sorted(actual - expected)}")
     records = []
+    calculator_contracts = set()
     for relative in sorted(expected_files):
         path = stage / relative
         if not path.stat().st_size:
@@ -29,10 +30,14 @@ def validate_outputs(stage: Path, expected_files: set[str], archives: dict[str, 
                 payload = json.load(handle)
             if path.name == DAMAGE_OUTPUT_NAME:
                 validate_catalog(payload)
+                calculator_contracts.add(payload["sourceContract"]["id"])
             elif path.name == SKILL_EFFECTS_OUTPUT_NAME:
                 validate_skill_effects(payload)
+                calculator_contracts.add(payload["sourceContract"]["id"])
         records.append({"path": relative, "bytes": path.stat().st_size,
                         "sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
+    if len(calculator_contracts) > 1:
+        raise ValueError("Calculator and skill exports have different source contracts")
     for name, source in archives.items():
         with ZipFile(stage / name) as archive:
             members = archive.infolist()

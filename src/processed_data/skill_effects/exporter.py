@@ -16,6 +16,7 @@ from src.processed_data.skill_effects.specs import (
 )
 from src.shared.source.repository import SourceRepository
 from src.shared.text.catalog import TextSource
+from src.processed_data.damage_calculator.contract import source_contract, validate_source_contract
 
 
 OUTPUT_NAME = "skill_effects.zh-Hans.json"
@@ -45,7 +46,9 @@ def _pack(root: dict, field: str) -> list[float]:
 
 
 def _effect(stage: str, value: float, source: str, **scope: object) -> dict:
-    return {"stage": stage, "value": value, "source": source, **scope}
+    return {"stage": stage, "value": value, "source": source,
+            "requiresCritical": ".critical." in stage,
+            "unit": "multiplier" if stage.endswith(".rate") else "true_value", **scope}
 
 
 def _slot_effects(skill_id: str, values: list[int]) -> list[dict]:
@@ -97,15 +100,12 @@ def _burst(level: int, params: dict) -> list[dict]:
             reinforced_attack, reinforced_element = values[level + 1], None
         else:
             raise ValueError(f"Unexpected continuous attack layout for {weapon}")
-        for state, attack, element in (
-            ("initial", initial_attack, initial_element),
-            ("reinforced", reinforced_attack, reinforced_element),
-        ):
+        for attack, element in ((reinforced_attack, reinforced_element),):
             result.append(_effect("attack.stat.flat", attack,
-                                  f"PlayerSkillParam.{field}", weapons=[weapon], state=state))
+                                  f"PlayerSkillParam.{field}", weapons=[weapon]))
             if element is not None:
                 result.append(_effect("element.stat.flat", element,
-                                      f"PlayerSkillParam.{field}", weapons=[weapon], state=state))
+                                      f"PlayerSkillParam.{field}", weapons=[weapon]))
     return result
 
 
@@ -173,16 +173,14 @@ def build_catalog(natives_dir: Path, repository: SourceRepository, text_source: 
         if skill_id in PARAMETER_CANDIDATES:
             entry["candidateSources"] = list(PARAMETER_CANDIDATES[skill_id])
         if skill_id == "HunterSkill_114":
-            entry["states"] = [
-                {"id": "initial", "name": "发动后"},
-                {"id": "reinforced", "name": "强化后"},
-            ]
+            entry["activeEffectNote"] = "勾选后按当前等级的强化完成效果计算。"
         skills.append(entry)
 
     catalog = {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
         "language": "zh-Hans",
-        "assumptions": {"skillsAlreadyActive": True, "criticalChance": 1},
+        "assumptions": {"skillsAlreadyActive": True, "criticalMode": "selected_hit"},
+        "sourceContract": source_contract(natives_dir),
         "rules": {
             "physicalCriticalBase": float(status["_CriticalAttackRate"]),
             "source": "PlayerStatusParam._CriticalAttackRate",
@@ -198,9 +196,10 @@ def build_catalog(natives_dir: Path, repository: SourceRepository, text_source: 
 
 
 def validate_catalog(catalog: dict) -> None:
-    if catalog.get("schemaVersion") != 1 or catalog.get("language") != "zh-Hans":
+    if catalog.get("schemaVersion") != 2 or catalog.get("language") != "zh-Hans":
         raise ValueError("Unsupported skill effect schema")
-    if catalog.get("assumptions") != {"skillsAlreadyActive": True, "criticalChance": 1}:
+    validate_source_contract(catalog.get("sourceContract", {}))
+    if catalog.get("assumptions") != {"skillsAlreadyActive": True, "criticalMode": "selected_hit"}:
         raise ValueError("Unexpected skill calculation assumptions")
     base = catalog.get("rules", {}).get("physicalCriticalBase")
     if not isinstance(base, (int, float)) or isinstance(base, bool) or not math.isfinite(base) or base < 1:
@@ -273,8 +272,13 @@ def validate_catalog(catalog: dict) -> None:
                     raise ValueError(f"Unknown effect weapon: {skill_id}/{number}")
                 if "element" in effect and effect["element"] not in ELEMENTS.values():
                     raise ValueError(f"Unknown effect element: {skill_id}/{number}")
-                if (states and effect.get("state") not in state_ids) or (not states and "state" in effect):
+                if "state" in effect:
                     raise ValueError(f"Unknown effect state: {skill_id}/{number}")
+                if effect.get("requiresCritical") != (".critical." in effect["stage"]):
+                    raise ValueError(f"Invalid critical requirement: {skill_id}/{number}")
+                expected_unit = "multiplier" if effect["stage"].endswith(".rate") else "true_value"
+                if effect.get("unit") != expected_unit:
+                    raise ValueError(f"Invalid effect unit: {skill_id}/{number}")
         if (skill["verification"] == "verified") != has_effect:
             raise ValueError(f"Inconsistent skill verification: {skill_id}")
     if not all(key in ids for key in (*SLOT_EFFECTS, "HunterSkill_003", "HunterSkill_019", "HunterSkill_114")):

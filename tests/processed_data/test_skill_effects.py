@@ -19,11 +19,11 @@ class SkillEffectExportTests(unittest.TestCase):
 
     def test_complete_identity_and_separate_effect_status(self) -> None:
         self.assertEqual(len(self.skills), 217)
-        self.assertEqual(self.catalog["assumptions"]["criticalChance"], 1)
+        self.assertEqual(self.catalog["assumptions"]["criticalMode"], "selected_hit")
         self.assertEqual(self.catalog["rules"]["physicalCriticalBase"], 1.25)
         self.assertEqual(self.skills["HunterSkill_000"]["levels"][-1]["effects"][:2], [
-            {"stage": "attack.stat.rate", "value": 1.04, "source": "SkillData._value[0]"},
-            {"stage": "attack.stat.flat", "value": 9, "source": "SkillData._value[1]"},
+            {"stage": "attack.stat.rate", "value": 1.04, "source": "SkillData._value[0]", "requiresCritical": False, "unit": "multiplier"},
+            {"stage": "attack.stat.flat", "value": 9, "source": "SkillData._value[1]", "requiresCritical": False, "unit": "true_value"},
         ])
         self.assertEqual(self.skills["HunterSkill_204"]["verification"], "parameter_found")
         self.assertFalse(self.skills["HunterSkill_204"]["levels"][0]["effects"])
@@ -36,11 +36,9 @@ class SkillEffectExportTests(unittest.TestCase):
         burst = self.skills["HunterSkill_114"]["levels"][-1]
         self.assertEqual(burst["rawValues"], [0, 0, 0, 0])
         greatsword = [effect for effect in burst["effects"] if effect["weapons"] == ["greatsword"]]
-        self.assertEqual([(effect["state"], effect["stage"], effect["value"]) for effect in greatsword], [
-            ("initial", "attack.stat.flat", 5),
-            ("initial", "element.stat.flat", 5),
-            ("reinforced", "attack.stat.flat", 18),
-            ("reinforced", "element.stat.flat", 20),
+        self.assertEqual([(effect["stage"], effect["value"]) for effect in greatsword], [
+            ("attack.stat.flat", 18),
+            ("element.stat.flat", 20),
         ])
         ballistic = self.skills["HunterSkill_019"]["levels"][-1]["effects"]
         self.assertEqual({effect["weapons"][0]: effect["value"] for effect in ballistic}, {

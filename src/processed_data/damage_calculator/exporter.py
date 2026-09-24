@@ -10,7 +10,8 @@ from config import NATIVES_DIR, SUPPORT_FILES, ZH_HANS_LANGUAGE_ID
 from src.shared.action_values.rcol import load_action_value_request_sets
 from src.shared.source.repository import SourceRepository
 from src.shared.text.catalog import TextSource
-from src.processed_data.damage_calculator.actions import action_labels
+from src.processed_data.damage_calculator.actions import action_catalog
+from src.processed_data.damage_calculator.contract import source_contract, validate_source_contract
 from src.processed_data.damage_calculator.bonuses import item_catalog
 from src.processed_data.damage_calculator.sharpness import sharpness_catalog
 
@@ -91,10 +92,9 @@ def _monster_names(repository: SourceRepository, text_source: TextSource) -> dic
     return result
 
 
-def _hit_profiles(natives_dir: Path, text_source: TextSource) -> list[dict]:
+def _hit_profiles(natives_dir: Path, labels: dict) -> list[dict]:
     action_data = natives_dir / "STM/GameDesign/Player/ActionData"
     records = load_action_value_request_sets(action_data)
-    labels = action_labels(natives_dir, text_source)
     profiles = []
     for scope, request_sets in records.items():
         for record in request_sets:
@@ -108,6 +108,18 @@ def _hit_profiles(natives_dir: Path, text_source: TextSource) -> list[dict]:
                 if not isinstance(value, (int, float)) or value < 0:
                     raise ValueError(f"Missing or invalid {source_key}: {key}")
                 rates[output_key] = value
+            props = record.properties
+            special = _symbol(props.get("_SpecialType._Value", "NORMAL"))
+            element = _symbol(props.get("_AttackAttrFixed._Value", "NONE")).lower()
+            element = {"elec": "thunder"}.get(element, element)
+            element_source = ("weapon" if props["_UseStatusAttrPower"] else
+                              "attack_scaled" if special == "BOWGUN_ELEMENT_SHOT" else
+                              "intrinsic" if props.get("_AttrValue", 0) > 0 else "none")
+            unsupported = []
+            if special not in {"NORMAL", "BOWGUN_ELEMENT_SHOT"}:
+                unsupported.append("该特殊命中的武器预处理尚未完整核验")
+            if _symbol(props.get("_ActionTypeFixed._Value", "NONE")) == "NONE" and props.get("_Attack", 0):
+                unsupported.append("无常规物理肉质类型，需专用伤害结算")
             profiles.append({
                 "id": f"{scope}|{key.rcol}|{key.request_set_id}|{key.key_hash}|{key.source_ordinal}",
                 "scope": scope, "rcol": key.rcol, "requestSetID": key.request_set_id,
@@ -120,6 +132,19 @@ def _hit_profiles(natives_dir: Path, text_source: TextSource) -> list[dict]:
                 "ignoresSharpness": record.properties.get("_IsNoUseKireaji"),
                 "forcesSharpnessAttackRate": record.properties.get("_IsForceUseKireajiAttackRate"),
                 "elementRate": record.properties.get("_StatusAttrRate"),
+                "sourceElement": props.get("_AttrValue", 0),
+                "elementType": element,
+                "elementSource": element_source,
+                "sourceFixed": props.get("_FixAttack", 0),
+                "specialType": special,
+                "damageType": _symbol(props.get("_DamageTypeFixed._Value", "NORMAL")),
+                "usesContinuousAttack": props.get("_UseSkillContinuousAttack", False),
+                "usesAdditionalDamage": props.get("_UseSkillAdditionalDamage", False),
+                "multiHit": {"enabled": "USE_MULIT_HIT" in str(props.get("_FlagBit", "")),
+                             "physicalCurve": props.get("_MultiHitRateCurve.path", ""),
+                             "statusCurve": props.get("_MultiHitStatusRateCurve.path", "")},
+                "support": {"status": "unsupported" if unsupported else "basic_hit",
+                            "reasons": unsupported},
                 "actionNames": labels.get(key, []),
                 "rates": rates,
             })
@@ -198,12 +223,28 @@ def build_catalog(natives_dir: Path, repository: SourceRepository, text_source: 
         })
     if not monsters:
         raise ValueError(f"No monster part tables under {natives_dir}")
+    labels, actions, mapping = action_catalog(natives_dir, text_source)
+    status_path = "STM/GameDesign/Player/ActionData/Common/GlobalParam/Part/PlayerStatusParam.user.3.json"
+    status = json.loads((natives_dir / status_path).read_text(encoding="utf-8"))[0]["app.user_data.PlayerStatusParam"]
     catalog = {
-        "schemaVersion": 6, "language": "zh-Hans",
+        "schemaVersion": 7, "language": "zh-Hans",
+        "sourceContract": source_contract(natives_dir),
+        "actionMap": mapping,
+        "units": {"attack": "true_attack", "weaponElement": "display_divided_by_10",
+                  "motion": "percent", "ammoElement": "current_attack_percent", "intrinsicElement": "true_element"},
+        "rules": {"elementRateLimit": status["_ElementAttack_RateLimit"],
+                  "elementAddLimit": status["_ElementAttack_AddLimit"],
+                  "gunElementRateLimit": status["_ElementAttack_RateLimit_Gun"],
+                  "source": status_path,
+                  "nativeVersion": "1.42.0.2",
+                  "nativeMethods": ["cHunterWpGunHandling.doOnHit_AttackPre510644",
+                                    "HunterCharacter.makeActualAttackParam731166",
+                                    "cHunterAttackPower.calcAttrPower491942"]},
         "meatUnit": "source percent, divide by 100 in damage formula",
         "scope": "Monster part meat and source vitality plus player RCOL hit-rate profiles; no mission or runtime modifiers",
         "monsters": monsters,
-        "hitProfiles": _hit_profiles(natives_dir, text_source),
+        "hitProfiles": _hit_profiles(natives_dir, labels),
+        "actions": actions,
         "sharpness": sharpness_catalog(natives_dir),
         **item_catalog(natives_dir),
     }
@@ -212,8 +253,9 @@ def build_catalog(natives_dir: Path, repository: SourceRepository, text_source: 
 
 
 def validate_catalog(catalog: dict) -> None:
-    if catalog.get("schemaVersion") != 6 or catalog.get("language") != "zh-Hans":
+    if catalog.get("schemaVersion") != 7 or catalog.get("language") != "zh-Hans":
         raise ValueError("Unsupported calculator catalog schema")
+    validate_source_contract(catalog.get("sourceContract", {}))
     sharpness = catalog.get("sharpness")
     if not isinstance(sharpness, list) or len(sharpness) != 7 or len({
         entry.get("id") for entry in sharpness
@@ -235,6 +277,14 @@ def validate_catalog(catalog: dict) -> None:
         if not isinstance(profile_id, str) or profile_id in profile_ids:
             raise ValueError(f"Invalid hit profile identity: {profile_id}")
         profile_ids.add(profile_id)
+        for field in ("sourceElement", "sourceFixed"):
+            value = profile.get(field)
+            if not isinstance(value, (int, float)) or isinstance(value, bool) or not math.isfinite(value) or value < 0:
+                raise ValueError(f"Invalid {field}: {profile_id}")
+        if profile.get("elementSource") not in {"none", "weapon", "intrinsic", "attack_scaled"}:
+            raise ValueError(f"Invalid element source: {profile_id}")
+        if profile.get("elementType") not in {"none", "fire", "water", "thunder", "ice", "dragon"}:
+            raise ValueError(f"Invalid element type: {profile_id}")
         attack = profile.get("sourceAttack")
         if not isinstance(attack, (int, float)) or not math.isfinite(attack) or attack < 0:
             raise ValueError(f"Invalid motion value: {profile_id}")
@@ -260,6 +310,24 @@ def validate_catalog(catalog: dict) -> None:
             not isinstance(value, (int, float)) or value < 0 for value in rates.values()
         ):
             raise ValueError(f"Invalid hit profile rates: {profile_id}")
+    action_ids = set()
+    for action in catalog.get("actions", []):
+        if action["id"] in action_ids or action["profileId"] not in profile_ids or not action["weapons"]:
+            raise ValueError("Invalid action reference")
+        action_ids.add(action["id"])
+        level = action.get("ammoLevel")
+        if not action.get("name") or not isinstance(level, int) or isinstance(level, bool) or level < 1:
+            raise ValueError("Invalid action metadata")
+        shell = action.get("shell")
+        if shell is not None and level not in {1, 2, 3}:
+            raise ValueError("Invalid bowgun ammunition level")
+        if shell is not None and (not shell.get("source") or not shell.get("type") or any(
+            not isinstance(value, (int, float)) or isinstance(value, bool) or not math.isfinite(value)
+            for value in shell.get("parameters", {}).values()
+        )):
+            raise ValueError("Invalid shell parameters")
+    if not action_ids or len(catalog.get("sourceContract", {}).get("id", "")) != 64:
+        raise ValueError("Missing action catalog or source contract")
     if "skills" in catalog or not catalog.get("items"):
         raise ValueError("Skills must be exported only by skill_effects; item catalog is required")
     for item in catalog["items"]:
