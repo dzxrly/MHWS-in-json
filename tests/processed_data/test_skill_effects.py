@@ -57,6 +57,19 @@ class SkillEffectExportTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "source hashes"):
             validate_catalog(catalog)
 
+    def test_projectile_skills_and_group_unlocked_name(self) -> None:
+        for skill_id, shell in [("HunterSkill_038", "NORMAL"), ("HunterSkill_039", "PENETRATE"), ("HunterSkill_040", "SHOT_GUN")]:
+            effects = self.skills[skill_id]["levels"][0]["effects"]
+            self.assertEqual(effects[0]["shellTypes"], [shell])
+            self.assertEqual(effects[0]["value"], 1.05)
+            self.assertEqual(effects[1]["weapons"], ["bow"])
+            self.assertTrue(effects[1]["arrowTypes"])
+        guts = self.skills["HunterSkill_205"]
+        self.assertEqual(guts["name"], "毅力【果断】")
+        self.assertEqual(guts["groupName"], "霸主之魂")
+        self.assertEqual(guts["levels"][0]["openSkills"], ["HunterSkill_206"])
+        self.assertEqual(guts["levels"][0]["effects"][0]["value"], 1.05)
+
 
 if __name__ == "__main__":
     unittest.main()

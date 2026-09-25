@@ -41,7 +41,7 @@ class DamageCalculatorDataTests(unittest.TestCase):
         self.assertTrue(any(profile["rates"]["PartsBreak"] == 1.5 for profile in profiles))
 
     def test_player_action_names_and_items_keep_source_values(self) -> None:
-        self.assertEqual(self.catalog["schemaVersion"], 7)
+        self.assertEqual(self.catalog["schemaVersion"], 8)
         profile = next(row for row in self.catalog["hitProfiles"] if row["id"] == (
             "Wp00|Wp00/Collision/Collider/Wp00_Attack.rcol.38.json|0|2844005733|0"
         ))
@@ -105,6 +105,14 @@ class DamageCalculatorDataTests(unittest.TestCase):
         fire = next(row for row in self.catalog["actions"] if row["name"] == "火炎弹")
         profile = next(row for row in self.catalog["hitProfiles"] if row["id"] == fire["profileId"])
         self.assertIn("WpGunElement_MultiHitCurve", profile["multiHit"]["physicalCurve"])
+
+    def test_shared_spread_levels_and_arrow_scope_are_exported(self) -> None:
+        spread = next(row for row in self.catalog["actions"] if row["shell"] and row["shell"]["type"] == "SHOT_GUN")
+        self.assertEqual(spread["ammoLevels"], [1, 2, 3])
+        self.assertEqual(spread["shell"]["parameters"]["_Lv3_AttackRate"], 1.4)
+        arrows = [row for row in self.catalog["actions"] if row["arrowType"]]
+        self.assertTrue(arrows)
+        self.assertTrue(all(row["weapons"] == ["bow"] for row in arrows))
 
     def test_mapping_names_match_database_and_unnamed_hits_are_not_selectable(self) -> None:
         from config import ACTION_MAP_PATH, ZH_HANS_LANGUAGE_ID

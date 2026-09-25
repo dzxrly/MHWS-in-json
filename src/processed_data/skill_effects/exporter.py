@@ -128,6 +128,25 @@ def _effects(skill_id: str, level: int, values: list[int], params: dict) -> list
         result.extend(_burst(level, params))
     elif skill_id == "HunterSkill_019":
         result.extend(_ballistic(level, params))
+    elif skill_id in {"HunterSkill_038", "HunterSkill_039", "HunterSkill_040"}:
+        shell, arrows = {
+            "HunterSkill_038": ("NORMAL", ["NORMAL", "JUMP", "DASH_CLIMB"]),
+            "HunterSkill_039": ("PENETRATE", ["SPECIAL", "SPECIAL_SHORT", "TWIN"]),
+            "HunterSkill_040": ("SHOT_GUN", ["QUICK_SHOT", "GOSHA", "GOSHA_RAPID"]),
+        }[skill_id]
+        # Both gun and bow consumers read slot 0 in executable 1.42.0.2:
+        # GunHandling 0x145303303; Wp11Handling 0x1499e1ddd.
+        result.extend([
+            _effect("attack.hit.rate", values[0] / 100, "SkillData._value[0]",
+                    weapons=["heavybowgun", "lightbowgun"], shellTypes=[shell]),
+            _effect("attack.hit.rate", values[0] / 100, "SkillData._value[0]",
+                    weapons=["bow"], arrowTypes=arrows),
+        ])
+    elif skill_id == "HunterSkill_205":
+        # Group skill opens HunterSkill_206; calcAttackRate493566 reads slot 0
+        # through the runtime parent mapping before the life-saving effect is used.
+        result.append(_effect("attack.stat.rate", values[0] / 100,
+                              "SkillData._openSkill[HunterSkill_206]._value[0]"))
     return result
 
 
@@ -151,6 +170,8 @@ def build_catalog(natives_dir: Path, repository: SourceRepository, text_source: 
             raw = data["value"]
             levels.append({
                 "level": level,
+                "name": text.get(data["skillName"]) or "",
+                "openSkills": [value for value in data.get("openSkill", []) if value != "NONE"],
                 "description": text.get(data["skillExplain"]) or "",
                 "rawValues": raw,
                 "effects": _effects(skill_id, level, raw, params),
@@ -174,10 +195,17 @@ def build_catalog(natives_dir: Path, repository: SourceRepository, text_source: 
             entry["candidateSources"] = list(PARAMETER_CANDIDATES[skill_id])
         if skill_id == "HunterSkill_114":
             entry["activeEffectNote"] = "勾选后按当前等级的强化完成效果计算。"
+        if skill_id == "HunterSkill_205":
+            if not levels or any("HunterSkill_206" not in item["openSkills"] for item in levels):
+                raise ValueError("Super Guts parent identity changed")
+            entry["groupName"] = entry["name"]
+            entry["name"] = levels[0]["name"]
+            entry["description"] = levels[0]["description"]
+            entry["activeEffectNote"] = "勾选表示攻击力提升效果生效；输入攻击力已包含该效果时请勿重复勾选。"
         skills.append(entry)
 
     catalog = {
-        "schemaVersion": 2,
+        "schemaVersion": 3,
         "language": "zh-Hans",
         "assumptions": {"skillsAlreadyActive": True, "criticalMode": "selected_hit"},
         "sourceContract": source_contract(natives_dir),
@@ -196,7 +224,7 @@ def build_catalog(natives_dir: Path, repository: SourceRepository, text_source: 
 
 
 def validate_catalog(catalog: dict) -> None:
-    if catalog.get("schemaVersion") != 2 or catalog.get("language") != "zh-Hans":
+    if catalog.get("schemaVersion") != 3 or catalog.get("language") != "zh-Hans":
         raise ValueError("Unsupported skill effect schema")
     validate_source_contract(catalog.get("sourceContract", {}))
     if catalog.get("assumptions") != {"skillsAlreadyActive": True, "criticalMode": "selected_hit"}:
@@ -272,6 +300,13 @@ def validate_catalog(catalog: dict) -> None:
                     raise ValueError(f"Unknown effect weapon: {skill_id}/{number}")
                 if "element" in effect and effect["element"] not in ELEMENTS.values():
                     raise ValueError(f"Unknown effect element: {skill_id}/{number}")
+                for field, allowed in {
+                    "shellTypes": {"NORMAL", "PENETRATE", "SHOT_GUN"},
+                    "arrowTypes": {"NORMAL", "JUMP", "DASH_CLIMB", "SPECIAL", "SPECIAL_SHORT", "TWIN", "QUICK_SHOT", "GOSHA", "GOSHA_RAPID"},
+                }.items():
+                    if field in effect and (not isinstance(effect[field], list) or not effect[field]
+                                            or any(value not in allowed for value in effect[field])):
+                        raise ValueError(f"Invalid projectile scope: {skill_id}/{field}")
                 if "state" in effect:
                     raise ValueError(f"Unknown effect state: {skill_id}/{number}")
                 if effect.get("requiresCritical") != (".critical." in effect["stage"]):

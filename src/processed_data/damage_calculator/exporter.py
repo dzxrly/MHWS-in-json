@@ -227,7 +227,7 @@ def build_catalog(natives_dir: Path, repository: SourceRepository, text_source: 
     status_path = "STM/GameDesign/Player/ActionData/Common/GlobalParam/Part/PlayerStatusParam.user.3.json"
     status = json.loads((natives_dir / status_path).read_text(encoding="utf-8"))[0]["app.user_data.PlayerStatusParam"]
     catalog = {
-        "schemaVersion": 7, "language": "zh-Hans",
+        "schemaVersion": 8, "language": "zh-Hans",
         "sourceContract": source_contract(natives_dir),
         "actionMap": mapping,
         "units": {"attack": "true_attack", "weaponElement": "display_divided_by_10",
@@ -253,7 +253,7 @@ def build_catalog(natives_dir: Path, repository: SourceRepository, text_source: 
 
 
 def validate_catalog(catalog: dict) -> None:
-    if catalog.get("schemaVersion") != 7 or catalog.get("language") != "zh-Hans":
+    if catalog.get("schemaVersion") != 8 or catalog.get("language") != "zh-Hans":
         raise ValueError("Unsupported calculator catalog schema")
     validate_source_contract(catalog.get("sourceContract", {}))
     sharpness = catalog.get("sharpness")
@@ -321,6 +321,13 @@ def validate_catalog(catalog: dict) -> None:
         shell = action.get("shell")
         if shell is not None and level not in {1, 2, 3}:
             raise ValueError("Invalid bowgun ammunition level")
+        levels = action.get("ammoLevels")
+        if not isinstance(levels, list) or not levels or level not in levels or any(
+            not isinstance(value, int) or isinstance(value, bool) or value < 1 for value in levels
+        ) or (shell is not None and any(value not in {1, 2, 3} for value in levels)):
+            raise ValueError("Invalid selectable ammunition levels")
+        if action.get("arrowType") is not None and not isinstance(action["arrowType"], str):
+            raise ValueError("Invalid arrow type")
         if shell is not None and (not shell.get("source") or not shell.get("type") or any(
             not isinstance(value, (int, float)) or isinstance(value, bool) or not math.isfinite(value)
             for value in shell.get("parameters", {}).values()

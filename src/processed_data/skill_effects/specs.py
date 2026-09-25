@@ -71,12 +71,11 @@ PARAMETER_CANDIDATES: dict[str, tuple[str, ...]] = {
 }
 
 PENDING_DAMAGE_IDS = frozenset({
-    "HunterSkill_035", "HunterSkill_037", "HunterSkill_038", "HunterSkill_039",
-    "HunterSkill_040", "HunterSkill_045", "HunterSkill_146", "HunterSkill_168",
+    "HunterSkill_035", "HunterSkill_037", "HunterSkill_045", "HunterSkill_146", "HunterSkill_168",
     "HunterSkill_170", "HunterSkill_171", "HunterSkill_175", "HunterSkill_178",
     "HunterSkill_179", "HunterSkill_180", "HunterSkill_182", "HunterSkill_183",
     "HunterSkill_186", "HunterSkill_188", "HunterSkill_197", "HunterSkill_198",
-    "HunterSkill_205", "HunterSkill_207", "HunterSkill_209", "HunterSkill_211",
+    "HunterSkill_207", "HunterSkill_209", "HunterSkill_211",
     "HunterSkill_215", "HunterSkill_221", "HunterSkill_223", "HunterSkill_225",
     "HunterSkill_229", "HunterSkill_231", "HunterSkill_236",
 })
