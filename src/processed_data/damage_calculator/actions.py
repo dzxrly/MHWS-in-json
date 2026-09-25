@@ -92,18 +92,23 @@ def action_catalog(natives_dir: Path, text_source: TextSource) -> tuple[dict, li
                         continue
                     seen.add(identity)
                     shell = gun_parameters(natives_dir, path)
+                    # A resource relation's level is not exclusive when the runtime
+                    # applies level multipliers to one shared normal/spread/element shell.
+                    shared_levels = ({"NORMAL": [1, 2, 3], "SHOT_GUN": [1, 2, 3],
+                                      "ELEMENT": [1, 2]}.get(shell["type"]) if shell else None)
                     arrows = profile_arrows.get((scope, key.rcol, key.request_set_id,
                                                  key.key_hash, key.source_ordinal), set())
                     actions.append({
                         "id": hashlib.sha256(identity.encode()).hexdigest()[:24],
-                        "name": name + (f" Lv{level}" if level else ""),
+                        "name": name + (f" Lv{level}" if level and not shared_levels else ""),
                         "profileId": profile_id(key), "weapons": weapons,
                         "kind": binding.kind, "nameSource": binding.name_source,
                         "mappingIdentity": binding.identity, "confidence": binding.confidence,
                         "conditions": binding.condition, "ammoLevel": level or 1,
-                        # Normal/spread shells share one resource across ammunition levels.
+                        # Normal/spread and elemental shells share resources across levels.
                         # cHunterWpGunHandling.doOnHit_AttackPre reads the runtime Lv2/Lv3 rates.
-                        "ammoLevels": [1, 2, 3] if shell and not level and shell["type"] in {"NORMAL", "SHOT_GUN"} else [level or 1],
+                        # WeaponData._ShellLv entries for FIRE/WATER/ELEC/ICE use SL_000/001.
+                        "ammoLevels": shared_levels or [level or 1],
                         "arrowType": arrow_type(natives_dir, path) or (next(iter(arrows)) if len(arrows) == 1 else None),
                         "shell": shell,
                     })

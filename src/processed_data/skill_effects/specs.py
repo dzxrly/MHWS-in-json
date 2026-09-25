@@ -41,7 +41,6 @@ SLOT_EFFECTS: dict[str, tuple[tuple[str, int, str], ...]] = {
     "HunterSkill_100": (("attack.stat.rate", 0, "percent"),),
     "HunterSkill_110": (("attack.stat.flat", 0, "number"),),
     "HunterSkill_111": (("attack.hit.flat", 0, "number"),),
-    "HunterSkill_113": (("element.stat.rate", 0, "percent"),),
     "HunterSkill_115": (("attack.stat.flat", 0, "number"),),
     "HunterSkill_116": (("attack.stat.rate", 0, "percent"),),
 }
@@ -65,7 +64,6 @@ PARAMETER_CANDIDATES: dict[str, tuple[str, ...]] = {
     "HunterSkill_230": ("PlayerSkillParam._RoastCorn_*: identity unconfirmed",),
     "HunterSkill_233": ("PlayerSkillParam._DarkBladeData: identity unconfirmed",),
     "HunterSkill_237": ("PlayerSkillParam._ResonanceData: identity unconfirmed",),
-    "HunterSkill_239": ("PlayerSkillParam._ChallengerAttr_*: identity unconfirmed",),
     "HunterSkill_243": ("PlayerSkillParam._SkillAttrConvertWater_*: identity unconfirmed",),
     "HunterSkill_244": ("Wp00GlobalActionParam._DarkWaveShellExAttack/_DarkWaveShellExAttr: identity unconfirmed",),
 }
@@ -73,8 +71,8 @@ PARAMETER_CANDIDATES: dict[str, tuple[str, ...]] = {
 PENDING_DAMAGE_IDS = frozenset({
     "HunterSkill_035", "HunterSkill_037", "HunterSkill_045", "HunterSkill_146", "HunterSkill_168",
     "HunterSkill_170", "HunterSkill_171", "HunterSkill_175", "HunterSkill_178",
-    "HunterSkill_179", "HunterSkill_180", "HunterSkill_182", "HunterSkill_183",
-    "HunterSkill_186", "HunterSkill_188", "HunterSkill_197", "HunterSkill_198",
+    "HunterSkill_179", "HunterSkill_180", "HunterSkill_182",
+    "HunterSkill_186", "HunterSkill_188", "HunterSkill_197",
     "HunterSkill_207", "HunterSkill_209", "HunterSkill_211",
     "HunterSkill_215", "HunterSkill_221", "HunterSkill_223", "HunterSkill_225",
     "HunterSkill_229", "HunterSkill_231", "HunterSkill_236",

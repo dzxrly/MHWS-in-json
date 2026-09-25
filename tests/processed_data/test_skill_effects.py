@@ -46,6 +46,22 @@ class SkillEffectExportTests(unittest.TestCase):
         })
         validate_catalog(self.catalog)
 
+    def test_first_shot_preserves_weapon_slots_and_explicit_projectile_condition(self) -> None:
+        self.assertEqual(self.catalog["schemaVersion"], 4)
+        skill = self.skills["HunterSkill_198"]
+        self.assertEqual(skill["verification"], "verified")
+        for level, attack in zip(skill["levels"], [5, 10, 15]):
+            for weapon in ["lightbowgun", "heavybowgun"]:
+                effects = [e for e in level["effects"] if e["weapons"] == [weapon]]
+                self.assertEqual([(e["stage"], e["value"]) for e in effects],
+                                 [("attack.hit.flat", attack), ("element.hit.rate", 1.1)])
+                self.assertTrue(all(e["requiresFirstShot"] and e["requiresShell"] for e in effects))
+        broken = deepcopy(self.catalog)
+        effect = next(s for s in broken["skills"] if s["id"] == "HunterSkill_198")["levels"][0]["effects"][0]
+        effect.pop("requiresShell")
+        with self.assertRaisesRegex(ValueError, "requires a shell"):
+            validate_catalog(broken)
+
     def test_reject_invalid_effect_scope_and_missing_source_hash(self) -> None:
         catalog = deepcopy(self.catalog)
         skill = next(item for item in catalog["skills"] if item["id"] == "HunterSkill_114")
@@ -69,6 +85,39 @@ class SkillEffectExportTests(unittest.TestCase):
         self.assertEqual(guts["groupName"], "霸主之魂")
         self.assertEqual(guts["levels"][0]["openSkills"], ["HunterSkill_206"])
         self.assertEqual(guts["levels"][0]["effects"][0]["value"], 1.05)
+
+    def test_black_eclipse_overcome_does_not_invent_element_or_first_tier_attack(self) -> None:
+        skill = self.skills["HunterSkill_183"]
+        self.assertEqual(skill["verification"], "verified")
+        self.assertEqual(skill["name"], "黑蚀一体")
+        self.assertEqual(skill["groupName"], "黑蚀龙之力")
+        self.assertEqual([(row["level"], row["name"]) for row in skill["levels"]],
+                         [(2, "黑蚀一体Ⅰ"), (4, "黑蚀一体Ⅱ")])
+        for level, expected in zip(skill["levels"], [0, 15]):
+            self.assertEqual(level["openSkills"], ["HunterSkill_196"])
+            self.assertEqual([(effect["stage"], effect["value"]) for effect in level["effects"]],
+                             [("attack.stat.flat", expected)])
+
+    def test_challenger_attribute_reads_unlocked_numeric_slots(self) -> None:
+        skill = self.skills["HunterSkill_239"]
+        self.assertEqual(skill["name"], "宣战呼应")
+        self.assertEqual(skill["groupName"], "巨戟龙的默示录")
+        self.assertEqual(skill["verification"], "verified")
+        self.assertNotIn("candidateSources", skill)
+        for level, rate, flat in zip(skill["levels"], [1.2, 1.3], [2, 4]):
+            self.assertEqual(level["openSkills"], ["HunterSkill_242"])
+            self.assertEqual([(effect["stage"], effect["value"]) for effect in level["effects"]],
+                             [("element.stat.rate", rate), ("element.stat.flat", flat)])
+
+    def test_coalescence_uses_weapon_specific_element_slots(self) -> None:
+        effects = self.skills["HunterSkill_113"]["levels"][-1]["effects"]
+        expected = {"greatsword": 1.3, "heavybowgun": 1.3, "lightbowgun": 1.3,
+                    "bow": 1.15, "swordshield": 1.15, "dualblades": 1.15,
+                    "longsword": 1.15, "lance": 1.15, "insectglaive": 1.15}
+        for weapon, value in expected.items():
+            matches = [effect for effect in effects if weapon in effect["weapons"]]
+            self.assertEqual(len(matches), 1)
+            self.assertEqual(matches[0]["value"], value)
 
 
 if __name__ == "__main__":

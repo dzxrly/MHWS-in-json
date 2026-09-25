@@ -27,7 +27,7 @@ SOURCE_FILES = (SUPPORT_FILES["skill_common"], SKILL_DATA, SKILL_PARAM, STATUS_P
 STAGES = frozenset({
     "attack.stat.rate", "attack.stat.flat", "attack.hit.rate", "attack.hit.flat",
     "element.stat.rate", "element.stat.flat", "physical.critical.rate",
-    "element.critical.rate", "part.rate",
+    "element.critical.rate", "element.hit.rate", "part.rate",
 })
 
 
@@ -128,6 +128,40 @@ def _effects(skill_id: str, level: int, values: list[int], params: dict) -> list
         result.extend(_burst(level, params))
     elif skill_id == "HunterSkill_019":
         result.extend(_ballistic(level, params))
+    elif skill_id == "HunterSkill_198":
+        # EXE 1.42.0.2: getOnHitAttackPowerAdd 0x145303A75 reads
+        # runtime skill 172 slots 1 (heavy) / 0 (light), only FULL reload.
+        # getSkillFirstShot*AttrRate 0x1455E3E40/EE0 reads slots 2/3.
+        # calcAttrPower 0x1475912E9: seed * (on-hit rate * skill rate) + flat,
+        # then cap against the unmodified seed, then elemental critical.
+        for weapon, attack_slot, element_slot in (("lightbowgun", 0, 2), ("heavybowgun", 1, 3)):
+            scope = {"weapons": [weapon], "requiresFirstShot": True, "requiresShell": True}
+            result.extend([
+                _effect("attack.hit.flat", values[attack_slot], f"SkillData._value[{attack_slot}]", **scope),
+                _effect("element.hit.rate", values[element_slot] / 100, f"SkillData._value[{element_slot}]", **scope),
+            ])
+    elif skill_id == "HunterSkill_113":
+        # getSkillDisasterAttrRate493374 / calcElemElecRate493575, EXE 1.42.0.2:
+        # weapon mask 0xC4E reads slot 2; all other weapons read slot 0.
+        reduced = {WEAPONS[index] for index in (1, 2, 3, 6, 10, 11)}
+        for slot, weapons in ((0, [weapon for weapon in WEAPONS if weapon not in reduced]),
+                              (2, [weapon for weapon in WEAPONS if weapon in reduced])):
+            result.append(_effect("element.stat.rate", values[slot] / 100,
+                                  f"SkillData._value[{slot}]", weapons=weapons))
+    elif skill_id == "HunterSkill_183":
+        # Runtime HunterSkill_196 == 170. calcAttackAdd493565 reads slot 1
+        # in the overcome state; slot 0 (infection) is not added on top.
+        result.append(_effect("attack.stat.flat", values[1],
+                              "SkillData._openSkill[HunterSkill_196]._value[1]"))
+    elif skill_id == "HunterSkill_239":
+        # Runtime HunterSkill_242 == 243 (0xF3). All five calcElem*Rate/Add
+        # pairs in EXE 1.42.0.2 read slots 0/1 while ChallengerAttr is active.
+        result.extend([
+            _effect("element.stat.rate", values[0] / 100,
+                    "SkillData._openSkill[HunterSkill_242]._value[0]"),
+            _effect("element.stat.flat", values[1],
+                    "SkillData._openSkill[HunterSkill_242]._value[1]"),
+        ])
     elif skill_id in {"HunterSkill_038", "HunterSkill_039", "HunterSkill_040"}:
         shell, arrows = {
             "HunterSkill_038": ("NORMAL", ["NORMAL", "JUMP", "DASH_CLIMB"]),
@@ -195,6 +229,15 @@ def build_catalog(natives_dir: Path, repository: SourceRepository, text_source: 
             entry["candidateSources"] = list(PARAMETER_CANDIDATES[skill_id])
         if skill_id == "HunterSkill_114":
             entry["activeEffectNote"] = "勾选后按当前等级的强化完成效果计算。"
+        if skill_id == "HunterSkill_198":
+            entry["activeEffectNote"] = "需同时勾选“本次弹体触发首发迅击”；装填至全满后的首发弹体及其后续贯穿命中适用，不等同于命中序号 1。"
+        if skill_id == "HunterSkill_183":
+            if not levels or any("HunterSkill_196" not in item["openSkills"] for item in levels):
+                raise ValueError("Black Eclipse parent identity changed")
+            entry["groupName"] = entry["name"]
+            entry["name"] = "黑蚀一体"
+            entry["description"] = "黑蚀一体Ⅰ／Ⅱ，按克服狂龙病后的效果计算。"
+            entry["activeEffectNote"] = "黑蚀龙之力：勾选按克服狂龙病后计算，Ⅰ不直接增加攻击力，Ⅱ攻击力总计 +15。因祸得福及本次是否会心请分别选择。"
         if skill_id == "HunterSkill_205":
             if not levels or any("HunterSkill_206" not in item["openSkills"] for item in levels):
                 raise ValueError("Super Guts parent identity changed")
@@ -202,10 +245,17 @@ def build_catalog(natives_dir: Path, repository: SourceRepository, text_source: 
             entry["name"] = levels[0]["name"]
             entry["description"] = levels[0]["description"]
             entry["activeEffectNote"] = "勾选表示攻击力提升效果生效；输入攻击力已包含该效果时请勿重复勾选。"
+        if skill_id == "HunterSkill_239":
+            if not levels or any("HunterSkill_242" not in item["openSkills"] for item in levels):
+                raise ValueError("Challenger Attribute parent identity changed")
+            entry["groupName"] = entry["name"]
+            entry["name"] = "宣战呼应"
+            entry["description"] = "巨戟龙的默示录：提升属性攻击值。"
+            entry["activeEffectNote"] = "勾选即按属性强化生效计算：Ⅰ属性倍率 ×1.2、属性加值 +2；Ⅱ倍率 ×1.3、加值 +4。加值为真实属性单位，近战面板对应 +20／+40。"
         skills.append(entry)
 
     catalog = {
-        "schemaVersion": 3,
+        "schemaVersion": 4,
         "language": "zh-Hans",
         "assumptions": {"skillsAlreadyActive": True, "criticalMode": "selected_hit"},
         "sourceContract": source_contract(natives_dir),
@@ -224,7 +274,7 @@ def build_catalog(natives_dir: Path, repository: SourceRepository, text_source: 
 
 
 def validate_catalog(catalog: dict) -> None:
-    if catalog.get("schemaVersion") != 3 or catalog.get("language") != "zh-Hans":
+    if catalog.get("schemaVersion") != 4 or catalog.get("language") != "zh-Hans":
         raise ValueError("Unsupported skill effect schema")
     validate_source_contract(catalog.get("sourceContract", {}))
     if catalog.get("assumptions") != {"skillsAlreadyActive": True, "criticalMode": "selected_hit"}:
@@ -309,6 +359,11 @@ def validate_catalog(catalog: dict) -> None:
                         raise ValueError(f"Invalid projectile scope: {skill_id}/{field}")
                 if "state" in effect:
                     raise ValueError(f"Unknown effect state: {skill_id}/{number}")
+                for requirement in ("requiresFirstShot", "requiresShell"):
+                    if requirement in effect and effect[requirement] is not True:
+                        raise ValueError(f"Invalid effect requirement: {skill_id}/{requirement}")
+                if effect.get("requiresFirstShot") and not effect.get("requiresShell"):
+                    raise ValueError(f"First shot effect requires a shell: {skill_id}")
                 if effect.get("requiresCritical") != (".critical." in effect["stage"]):
                     raise ValueError(f"Invalid critical requirement: {skill_id}/{number}")
                 expected_unit = "multiplier" if effect["stage"].endswith(".rate") else "true_value"

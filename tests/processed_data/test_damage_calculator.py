@@ -41,7 +41,7 @@ class DamageCalculatorDataTests(unittest.TestCase):
         self.assertTrue(any(profile["rates"]["PartsBreak"] == 1.5 for profile in profiles))
 
     def test_player_action_names_and_items_keep_source_values(self) -> None:
-        self.assertEqual(self.catalog["schemaVersion"], 8)
+        self.assertEqual(self.catalog["schemaVersion"], 10)
         profile = next(row for row in self.catalog["hitProfiles"] if row["id"] == (
             "Wp00|Wp00/Collision/Collider/Wp00_Attack.rcol.38.json|0|2844005733|0"
         ))
@@ -56,6 +56,34 @@ class DamageCalculatorDataTests(unittest.TestCase):
         self.assertNotIn("skills", self.catalog)
         item = next(row for row in self.catalog["items"] if row["name"] == "力量护符")
         self.assertEqual(item["flat"], 6)
+
+    def test_native_attack_limits_are_required_and_finite(self) -> None:
+        self.assertEqual(self.catalog["rules"]["attackRateLimit"], 4)
+        self.assertEqual(self.catalog["rules"]["attackAddLimit"], 400)
+        for value in (None, 0, -1, True, float("nan"), float("inf")):
+            broken = {**self.catalog, "rules": {**self.catalog["rules"], "attackAddLimit": value}}
+            with self.assertRaisesRegex(ValueError, "attackAddLimit"):
+                validate_catalog(broken)
+
+    def test_elemental_ammo_physical_curve_preserves_native_knots(self) -> None:
+        action = next(item for item in self.catalog["actions"] if item["name"] == "电击弹")
+        profile = next(item for item in self.catalog["hitProfiles"] if item["id"] == action["profileId"])
+        points = profile["multiHit"]["physicalCurvePoints"]
+        self.assertEqual([point["count"] for point in points], [0, 1, 3, 4, 30])
+        for point, rate in zip(points, [1, 1, 0.8, 0.5, 0.5]):
+            self.assertAlmostEqual(point["rate"], rate)
+        self.assertFalse(profile["multiHit"]["statusCurve"])
+
+    def test_normal_ammo_shared_levels_and_pierce_curve(self) -> None:
+        normal = next(a for a in self.catalog["actions"] if a["shell"] and a["shell"]["type"] == "NORMAL")
+        self.assertEqual(normal["name"], "通常弹")
+        self.assertEqual(normal["ammoLevels"], [1, 2, 3])
+        pierce = next(a for a in self.catalog["actions"] if a["shell"] and a["shell"]["type"] == "PENETRATE")
+        profile = next(p for p in self.catalog["hitProfiles"] if p["id"] == pierce["profileId"])
+        points = profile["multiHit"]["physicalCurvePoints"]
+        self.assertEqual([p["count"] for p in points], [0, 1, 2, 3, 4, 30])
+        for point, expected in zip(points, [1, 1, .9, .8, .7, .7]):
+            self.assertAlmostEqual(point["rate"], expected)
 
     def test_sharpness_rates_and_action_flags(self) -> None:
         colors = self.catalog["sharpness"]
@@ -113,6 +141,14 @@ class DamageCalculatorDataTests(unittest.TestCase):
         arrows = [row for row in self.catalog["actions"] if row["arrowType"]]
         self.assertTrue(arrows)
         self.assertTrue(all(row["weapons"] == ["bow"] for row in arrows))
+
+    def test_element_ammo_keeps_both_levels_and_native_rates(self) -> None:
+        elements = [row for row in self.catalog["actions"] if row["shell"] and row["shell"]["type"] == "ELEMENT"]
+        self.assertTrue(elements)
+        for action in elements:
+            self.assertEqual(action["ammoLevels"], [1, 2])
+            self.assertEqual(action["shell"]["parameters"]["_Lv2_AttackRate"], 1.25)
+            self.assertEqual(action["shell"]["parameters"]["_Lv2_SpecialRate"], 1.25)
 
     def test_mapping_names_match_database_and_unnamed_hits_are_not_selectable(self) -> None:
         from config import ACTION_MAP_PATH, ZH_HANS_LANGUAGE_ID

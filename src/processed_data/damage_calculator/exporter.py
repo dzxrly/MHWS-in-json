@@ -14,6 +14,7 @@ from src.processed_data.damage_calculator.actions import action_catalog
 from src.processed_data.damage_calculator.contract import source_contract, validate_source_contract
 from src.processed_data.damage_calculator.bonuses import item_catalog
 from src.processed_data.damage_calculator.sharpness import sharpness_catalog
+from src.processed_data.damage_calculator.multihit import physical_curve_points
 
 OUTPUT_NAME = "damage_calculator.zh-Hans.json"
 PARAM_GLOB = "STM/GameDesign/Enemy/Em*/*/Data/*_Param_Parts.user.3.json"
@@ -142,7 +143,8 @@ def _hit_profiles(natives_dir: Path, labels: dict) -> list[dict]:
                 "usesAdditionalDamage": props.get("_UseSkillAdditionalDamage", False),
                 "multiHit": {"enabled": "USE_MULIT_HIT" in str(props.get("_FlagBit", "")),
                              "physicalCurve": props.get("_MultiHitRateCurve.path", ""),
-                             "statusCurve": props.get("_MultiHitStatusRateCurve.path", "")},
+                             "statusCurve": props.get("_MultiHitStatusRateCurve.path", ""),
+                             "physicalCurvePoints": physical_curve_points(natives_dir, props.get("_MultiHitRateCurve.path", ""))},
                 "support": {"status": "unsupported" if unsupported else "basic_hit",
                             "reasons": unsupported},
                 "actionNames": labels.get(key, []),
@@ -227,19 +229,22 @@ def build_catalog(natives_dir: Path, repository: SourceRepository, text_source: 
     status_path = "STM/GameDesign/Player/ActionData/Common/GlobalParam/Part/PlayerStatusParam.user.3.json"
     status = json.loads((natives_dir / status_path).read_text(encoding="utf-8"))[0]["app.user_data.PlayerStatusParam"]
     catalog = {
-        "schemaVersion": 8, "language": "zh-Hans",
+        "schemaVersion": 10, "language": "zh-Hans",
         "sourceContract": source_contract(natives_dir),
         "actionMap": mapping,
         "units": {"attack": "true_attack", "weaponElement": "display_divided_by_10",
                   "motion": "percent", "ammoElement": "current_attack_percent", "intrinsicElement": "true_element"},
-        "rules": {"elementRateLimit": status["_ElementAttack_RateLimit"],
+        "rules": {"attackRateLimit": status["_PhysicalAttack_RateLimit"],
+                  "attackAddLimit": status["_PhysicalAttack_AddLimit"],
+                  "elementRateLimit": status["_ElementAttack_RateLimit"],
                   "elementAddLimit": status["_ElementAttack_AddLimit"],
                   "gunElementRateLimit": status["_ElementAttack_RateLimit_Gun"],
                   "source": status_path,
                   "nativeVersion": "1.42.0.2",
                   "nativeMethods": ["cHunterWpGunHandling.doOnHit_AttackPre510644",
                                     "HunterCharacter.makeActualAttackParam731166",
-                                    "cHunterAttackPower.calcAttrPower491942"]},
+                                    "cHunterAttackPower.calcAttrPower491942",
+                                    "cHunterAttackPower.calcCurrentAttackPower491937"]},
         "meatUnit": "source percent, divide by 100 in damage formula",
         "scope": "Monster part meat and source vitality plus player RCOL hit-rate profiles; no mission or runtime modifiers",
         "monsters": monsters,
@@ -253,9 +258,13 @@ def build_catalog(natives_dir: Path, repository: SourceRepository, text_source: 
 
 
 def validate_catalog(catalog: dict) -> None:
-    if catalog.get("schemaVersion") != 8 or catalog.get("language") != "zh-Hans":
+    if catalog.get("schemaVersion") != 10 or catalog.get("language") != "zh-Hans":
         raise ValueError("Unsupported calculator catalog schema")
     validate_source_contract(catalog.get("sourceContract", {}))
+    for key in ("attackRateLimit", "attackAddLimit", "elementRateLimit", "elementAddLimit", "gunElementRateLimit"):
+        value = catalog.get("rules", {}).get(key)
+        if not isinstance(value, (int, float)) or isinstance(value, bool) or not math.isfinite(value) or value <= 0:
+            raise ValueError(f"Invalid calculator rule: {key}")
     sharpness = catalog.get("sharpness")
     if not isinstance(sharpness, list) or len(sharpness) != 7 or len({
         entry.get("id") for entry in sharpness
