@@ -13,6 +13,32 @@ class DamageCalculatorDataTests(unittest.TestCase):
             NATIVES_DIR, SourceRepository(NATIVES_DIR), TextSource.from_natives(NATIVES_DIR)
         )
 
+    def test_runtime_weapon_states_keep_source_values_and_aliases(self) -> None:
+        profiles = {p["id"]: p for p in self.catalog["hitProfiles"]}
+        spirit = profiles["Wp03|Wp03/Collision/Collider/Wp03_Attack.rcol.38.json|7|4057751804|7"]
+        self.assertEqual((spirit["sourceAttack"], spirit["renkiAttack"]), (14, 31))
+        self.assertTrue(all(p.get("renkiAttack") is None for p in profiles.values() if p["scope"] != "Wp03"))
+        arrows = [a for a in self.catalog["actions"] if a["profileId"] ==
+                  "Wp11|Wp11/Collision/Shell/Wp11Shell_Gosha.rcol.38.json|4|3101219707|0"]
+        self.assertGreater(len(arrows), 1)
+        for arrow in arrows:
+            self.assertEqual(arrow["bow"]["distanceRates"]["optimal"], 1.1)
+            self.assertAlmostEqual(arrow["bow"]["coatingRates"]["close"], 1.4)
+            self.assertAlmostEqual(arrow["bow"]["coatingRates"]["power"], 1.35)
+
+    def test_weapon_state_validation_rejects_wrong_scope_and_invalid_rates(self) -> None:
+        from copy import deepcopy
+        broken = deepcopy(self.catalog)
+        profile = next(p for p in broken["hitProfiles"] if p.get("renkiAttack"))
+        profile["scope"] = "Wp00"
+        with self.assertRaisesRegex(ValueError, "consumed spirit"):
+            validate_catalog(broken)
+        broken = deepcopy(self.catalog)
+        action = next(a for a in broken["actions"] if a.get("bow"))
+        action["bow"]["distanceRates"]["near"] = float("nan")
+        with self.assertRaisesRegex(ValueError, "bow distanceRates"):
+            validate_catalog(broken)
+
     def test_real_part_and_scar_references(self) -> None:
         monsters = {monster["id"]: monster for monster in self.catalog["monsters"]}
         head = next(part for part in monsters["EM0001_00_0"]["parts"] if part["type"] == "HEAD")
@@ -41,7 +67,7 @@ class DamageCalculatorDataTests(unittest.TestCase):
         self.assertTrue(any(profile["rates"]["PartsBreak"] == 1.5 for profile in profiles))
 
     def test_player_action_names_and_items_keep_source_values(self) -> None:
-        self.assertEqual(self.catalog["schemaVersion"], 10)
+        self.assertEqual(self.catalog["schemaVersion"], 11)
         profile = next(row for row in self.catalog["hitProfiles"] if row["id"] == (
             "Wp00|Wp00/Collision/Collider/Wp00_Attack.rcol.38.json|0|2844005733|0"
         ))

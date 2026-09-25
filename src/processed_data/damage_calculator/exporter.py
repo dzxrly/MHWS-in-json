@@ -15,6 +15,7 @@ from src.processed_data.damage_calculator.contract import source_contract, valid
 from src.processed_data.damage_calculator.bonuses import item_catalog
 from src.processed_data.damage_calculator.sharpness import sharpness_catalog
 from src.processed_data.damage_calculator.multihit import physical_curve_points
+from src.processed_data.damage_calculator.weapon_states import validate_weapon_states, validate_bow
 
 OUTPUT_NAME = "damage_calculator.zh-Hans.json"
 PARAM_GLOB = "STM/GameDesign/Enemy/Em*/*/Data/*_Param_Parts.user.3.json"
@@ -127,6 +128,8 @@ def _hit_profiles(natives_dir: Path, labels: dict) -> list[dict]:
                 "keyHash": key.key_hash, "sourceRequestSetOrdinal": key.source_ordinal,
                 "actionType": _symbol(record.properties.get("_ActionTypeFixed._Value", "NONE")),
                 "sourceAttack": record.properties.get("_Attack"),
+                # doOnHit_AttackPre815550: IsRenkiConsumed && _GeneralValue2 > 0.
+                "renkiAttack": props.get("_GeneralValue._GeneralValue2") if scope == "Wp03" and props.get("_GeneralValue._GeneralValue2", 0) > 0 else None,
                 "usesAttackPower": record.properties.get("_UseStatusAttackPower"),
                 "usesElementPower": record.properties.get("_UseStatusAttrPower"),
                 "canCritical": not no_critical,
@@ -229,7 +232,7 @@ def build_catalog(natives_dir: Path, repository: SourceRepository, text_source: 
     status_path = "STM/GameDesign/Player/ActionData/Common/GlobalParam/Part/PlayerStatusParam.user.3.json"
     status = json.loads((natives_dir / status_path).read_text(encoding="utf-8"))[0]["app.user_data.PlayerStatusParam"]
     catalog = {
-        "schemaVersion": 10, "language": "zh-Hans",
+        "schemaVersion": 11, "language": "zh-Hans",
         "sourceContract": source_contract(natives_dir),
         "actionMap": mapping,
         "units": {"attack": "true_attack", "weaponElement": "display_divided_by_10",
@@ -258,7 +261,7 @@ def build_catalog(natives_dir: Path, repository: SourceRepository, text_source: 
 
 
 def validate_catalog(catalog: dict) -> None:
-    if catalog.get("schemaVersion") != 10 or catalog.get("language") != "zh-Hans":
+    if catalog.get("schemaVersion") != 11 or catalog.get("language") != "zh-Hans":
         raise ValueError("Unsupported calculator catalog schema")
     validate_source_contract(catalog.get("sourceContract", {}))
     for key in ("attackRateLimit", "attackAddLimit", "elementRateLimit", "elementAddLimit", "gunElementRateLimit"):
@@ -282,6 +285,7 @@ def validate_catalog(catalog: dict) -> None:
     if not isinstance(profiles, list) or not profiles:
         raise ValueError("Empty hit profile list")
     for profile in profiles:
+        validate_weapon_states(profile)
         profile_id = profile.get("id")
         if not isinstance(profile_id, str) or profile_id in profile_ids:
             raise ValueError(f"Invalid hit profile identity: {profile_id}")
@@ -321,6 +325,7 @@ def validate_catalog(catalog: dict) -> None:
             raise ValueError(f"Invalid hit profile rates: {profile_id}")
     action_ids = set()
     for action in catalog.get("actions", []):
+        validate_bow(action)
         if action["id"] in action_ids or action["profileId"] not in profile_ids or not action["weapons"]:
             raise ValueError("Invalid action reference")
         action_ids.add(action["id"])
