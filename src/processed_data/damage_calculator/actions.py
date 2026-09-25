@@ -7,7 +7,7 @@ from functools import lru_cache
 from pathlib import Path
 
 from config import ACTION_MAP_PATH, ZH_HANS_LANGUAGE_ID
-from src.database.action_values.build import load_action_value_catalog, mapping_names
+from src.shared.action_values.catalog import load_action_value_catalog, mapping_names
 from src.shared.text.catalog import TextSource
 from src.processed_data.skill_effects.specs import WEAPONS
 from .weapon_states import bow_parameters, shared_bow_parameters
@@ -72,7 +72,7 @@ def action_catalog(natives_dir: Path, text_source: TextSource) -> tuple[dict, li
         for record in records:
             key = record.key
             for binding in catalog.bindings.get(key, ()):
-                # Share the DATABASE MappingName resolver, including internal/resource
+                # Share the common MappingName resolver, including internal/resource
                 # fallbacks. Naming provenance does not change formula support status.
                 name = names[(scope, binding.identity)]
                 if not name:

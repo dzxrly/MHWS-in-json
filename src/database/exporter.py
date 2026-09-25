@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from config import ACTION_VALUE_WORKBOOK, AMULET_WORKBOOK, FULL_TEXT_WORKBOOK, MAX_COLUMN_WIDTH, MISSION_WORKBOOK
-from src.database.action_values.build import ActionValueCatalog, build_action_value_workbook, load_action_value_catalog
+from src.database.action_values.build import build_action_value_workbook
 from src.database.action_values.excel import write_action_value_workbook
 from src.database.amulets.build import build_amulet_workbook_sheets
 from src.database.amulets.excel import style_amulet_workbook
@@ -16,6 +16,7 @@ from src.database.missions.build import MissionCatalog, build_mission_workbook_d
 from src.database.missions.excel import write_mission_workbook
 from src.database.skills import build as skills
 from src.database.table import TableWorkbook
+from src.shared.action_values.catalog import ActionValueCatalog, load_action_value_catalog
 from src.shared.amulets import AmuletCatalog
 from src.shared.excel.writer import write_workbook
 from src.shared.log import info
