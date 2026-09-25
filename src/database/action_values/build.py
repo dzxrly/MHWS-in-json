@@ -195,10 +195,27 @@ def load_action_value_catalog(
     )
 
 
+def mapping_names(
+    catalog: ActionValueCatalog,
+    resolve_text: Callable[[str], str],
+) -> dict[tuple[str, str], str]:
+    """Resolve the representative MappingName per scope and mapping identity."""
+    representatives: dict[tuple[str, str], MappingBinding] = {}
+    for scope, records in catalog.records.items():
+        for record in records:
+            for binding in catalog.bindings.get(record.key, ()):
+                key = (scope, binding.identity)
+                current = representatives.get(key)
+                if current is None or binding.order < current.order:
+                    representatives[key] = binding
+    return {key: binding.display_name(resolve_text) for key, binding in representatives.items()}
+
+
 def build_action_value_workbook(
     catalog: ActionValueCatalog,
     resolve_text: Callable[[str], str],
 ) -> ActionValueWorkbookData:
+    names = mapping_names(catalog, resolve_text)
     sheets: dict[str, list[dict[str, Any]]] = {}
     columns_by_sheet: dict[str, tuple[str, ...]] = {}
     sources_by_sheet: dict[str, tuple[str, ...]] = {}
@@ -239,7 +256,7 @@ def build_action_value_workbook(
         mapped_groups = sorted(
             (
                 (
-                    binding.display_name(resolve_text),
+                    names[(scope, binding.identity)],
                     binding,
                     group_records,
                     {binding.identity},

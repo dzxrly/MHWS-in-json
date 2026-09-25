@@ -105,3 +105,30 @@ class DamageCalculatorDataTests(unittest.TestCase):
         fire = next(row for row in self.catalog["actions"] if row["name"] == "火炎弹")
         profile = next(row for row in self.catalog["hitProfiles"] if row["id"] == fire["profileId"])
         self.assertIn("WpGunElement_MultiHitCurve", profile["multiHit"]["physicalCurve"])
+
+    def test_mapping_names_match_database_and_unnamed_hits_are_not_selectable(self) -> None:
+        from config import ACTION_MAP_PATH, ZH_HANS_LANGUAGE_ID
+        from src.database.action_values.build import build_action_value_workbook, load_action_value_catalog
+        from src.processed_data.damage_calculator.actions import profile_id
+        source = load_action_value_catalog(NATIVES_DIR, ACTION_MAP_PATH)
+        texts = TextSource.from_natives(NATIVES_DIR).build(ZH_HANS_LANGUAGE_ID)
+        workbook = build_action_value_workbook(source, texts.get)
+        mapping_names = {}
+        for rows in workbook.sheets.values():
+            for row in rows:
+                if row["MappingName"]:
+                    mapping_names.setdefault(row["MappingIdentity"], set()).add(row["MappingName"])
+        actions = self.catalog["actions"]
+        internal = [action for action in actions if action["name"] == "cSlash3"]
+        self.assertTrue(internal)
+        for action in actions:
+            self.assertNotEqual(action["kind"], "Unmapped")
+            names = mapping_names[action["mappingIdentity"]]
+            self.assertTrue(any(action["name"] in {name, f"{name} Lv{action['ammoLevel']}"}
+                                for name in names), action["name"])
+        selectable = {action["profileId"] for action in actions}
+        unnamed = {profile_id(record.key) for records in source.records.values() for record in records
+                   if not any(binding.display_name(texts.get)
+                              for binding in source.bindings.get(record.key, ()))}
+        self.assertTrue(unnamed)
+        self.assertTrue(selectable.isdisjoint(unnamed))

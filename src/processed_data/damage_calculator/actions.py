@@ -6,12 +6,9 @@ import re
 from pathlib import Path
 
 from config import ACTION_MAP_PATH, ZH_HANS_LANGUAGE_ID
-from src.database.action_values.build import load_action_value_catalog
+from src.database.action_values.build import load_action_value_catalog, mapping_names
 from src.shared.text.catalog import TextSource
 from src.processed_data.skill_effects.specs import WEAPONS
-
-CHINESE = re.compile(r"[\u3400-\u9fff]")
-
 
 def profile_id(key) -> str:
     return f"{key.scope}|{key.rcol}|{key.request_set_id}|{key.key_hash}|{key.source_ordinal}"
@@ -36,6 +33,7 @@ def gun_parameters(natives_dir: Path, path: str) -> dict | None:
 def action_catalog(natives_dir: Path, text_source: TextSource) -> tuple[dict, list, dict]:
     catalog = load_action_value_catalog(natives_dir, ACTION_MAP_PATH)
     texts = text_source.build(ZH_HANS_LANGUAGE_ID)
+    names = mapping_names(catalog, texts.get)
     document = json.loads(ACTION_MAP_PATH.read_text(encoding="utf-8"))
     resource_evidence = {}
     for row in document["resourceRelations"]:
@@ -44,16 +42,14 @@ def action_catalog(natives_dir: Path, text_source: TextSource) -> tuple[dict, li
         resource_evidence[key] = row.get("evidence", [])
     labels, actions, seen = {}, [], set()
     for scope, records in catalog.records.items():
-        for ordinal, record in enumerate(records, 1):
+        for record in records:
             key = record.key
             for binding in catalog.bindings.get(key, ()):
-                if binding.confidence != "proven":
+                # Share the DATABASE MappingName resolver, including internal/resource
+                # fallbacks. Naming provenance does not change formula support status.
+                name = names[(scope, binding.identity)]
+                if not name:
                     continue
-                name = (texts.get(binding.name_guid) or "").strip()
-                if not name or not CHINESE.search(name):
-                    continue
-                if binding.suffix:
-                    name += " " + binding.suffix
                 evidence = resource_evidence.get((scope, key.rcol, key.request_set_id,
                             key.key_hash, key.source_ordinal, binding.identity), [])
                 if scope == "Ammo":
@@ -87,15 +83,6 @@ def action_catalog(natives_dir: Path, text_source: TextSource) -> tuple[dict, li
                         "shell": gun_parameters(natives_dir, path),
                     })
                     labels.setdefault(key, set()).add(name)
-            if scope != "Ammo" and key not in labels:
-                actions.append({
-                    "id": hashlib.sha256(profile_id(key).encode()).hexdigest()[:24],
-                    "name": f"未命名动作 · 参数组 {ordinal}",
-                    "profileId": profile_id(key), "weapons": [WEAPONS[int(scope[2:])]],
-                    "kind": "Unmapped", "nameSource": "generated_parameter_label",
-                    "mappingIdentity": profile_id(key), "confidence": "unmapped",
-                    "conditions": "", "ammoLevel": 1, "shell": None,
-                })
     return {key: sorted(names) for key, names in labels.items()}, actions, {
         "sha256": hashlib.sha256(ACTION_MAP_PATH.read_bytes()).hexdigest(),
         "inputs": document["inputs"], "nativeEvidenceReused": False,
