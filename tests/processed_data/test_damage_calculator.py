@@ -26,6 +26,70 @@ class DamageCalculatorDataTests(unittest.TestCase):
             self.assertAlmostEqual(arrow["bow"]["coatingRates"]["close"], 1.4)
             self.assertAlmostEqual(arrow["bow"]["coatingRates"]["power"], 1.35)
 
+    def test_lance_charge_and_dragon_piercer_are_native_parameters(self) -> None:
+        profiles = {p["id"]: p for p in self.catalog["hitProfiles"]}
+        lance = profiles["Wp06|Wp06/Collision/Collider/Wp06_Attack.rcol.38.json|28|4067102928|28"]
+        self.assertEqual(lance["lanceCharge"]["rates"], [1, 1.2, 1.4, 1.7])
+        arrow = profiles["Wp11|Wp11/Collision/Shell/Wp11Shell_Special.rcol.38.json|12|2135904740|0"]
+        self.assertEqual(arrow["multiHit"]["physicalCurvePoints"][:3], [
+            {"count": 0, "rate": 1}, {"count": 1, "rate": 1}, {"count": 2, "rate": .75}])
+        self.assertEqual(arrow["support"]["status"], "basic_hit")
+        self.assertTrue(any(a.get("bow") for a in self.catalog["actions"] if a["profileId"] == arrow["id"]))
+
+    def test_real_trace_runtime_overrides_are_not_claimed_as_basic_hits(self) -> None:
+        profiles = {p["id"]: p for p in self.catalog["hitProfiles"]}
+        # Manual capture 20260926_132827: laser 152, sword 374, pile 396.
+        for identity in (
+            "Ammo|WpGunCommon/Collision/Collider/WpGunShell_Laser.rcol.38.json|0|3751903411|0",
+        ):
+            self.assertEqual(profiles[identity]["support"]["status"], "unsupported")
+            self.assertTrue(profiles[identity]["support"]["reasons"])
+        # The verified ordinary axe hit remains available (capture hit 368).
+        axe = profiles["Wp08|Wp08/Collision/Collider/Wp08_Attack.rcol.38.json|18|910774104|17"]
+        self.assertEqual(axe["support"]["status"], "basic_hit")
+        sword = profiles["Wp08|Wp08/Collision/Collider/Wp08_Attack.rcol.38.json|30|3204436267|20"]
+        self.assertEqual(sword["support"]["status"], "basic_hit")
+        self.assertEqual(sword["switchaxe"]["elementSeedRate"], 1.45)
+        self.assertEqual(axe["switchaxe"]["powerAttackRate"], 1.17)
+        self.assertTrue(all(p.get("switchaxe") is None for p in profiles.values() if "_Shell.rcol" in p["rcol"]))
+
+    def test_horn_sound_meat_mode_is_explicit_and_validated(self) -> None:
+        from copy import deepcopy
+        sounds = [p for p in self.catalog["hitProfiles"] if p["scope"] == "Wp05" and p["physicalMeatMode"] == "independent"]
+        self.assertEqual({p["requestSetID"] for p in sounds}, {4, 9})
+        self.assertEqual(len(sounds), 2)
+        self.assertTrue(all(p["support"]["status"] == "basic_hit" for p in sounds))
+        for field, value in (("scope", "Wp00"), ("requestSetID", 5),
+                             ("canCritical", True), ("ignoresSharpness", False)):
+            broken = deepcopy(self.catalog)
+            profile = next(p for p in broken["hitProfiles"] if p["physicalMeatMode"] == "independent")
+            profile[field] = value
+            with self.assertRaisesRegex(ValueError, "physical meat mode"):
+                validate_catalog(broken)
+
+    def test_gunlance_tables_preserve_native_levels_and_projectile_branches(self) -> None:
+        from copy import deepcopy
+        data = self.catalog["gunlance"]
+        normal = data["shellTypes"]["normal"]
+        self.assertEqual(data["levelIndexBase"], 0)
+        self.assertEqual(normal["tables"]["_AttackInfoList"][2], {"Attack": 9, "FireAttack": 8})
+        self.assertEqual(normal["tables"]["_RyuugekiAttackInfoList"][2], {"Attack": 47, "FireAttack": 26})
+        self.assertEqual(normal["tables"]["_PileBlastAttackInfoList"][2], {"Attack": 28, "FireAttack": 23})
+        self.assertEqual(normal["tables"]["_PileAttackList"][2], 7)
+        self.assertEqual(normal["rates"]["_FullBurst_BF_AttackRate"], 1.25)
+        self.assertEqual(data["rbfPileBlastRate"], 1.1)
+        actions = [a for a in self.catalog["actions"] if a.get("gunlance")]
+        self.assertTrue({"SHOT", "FULL_BURST", "PILE_CONST", "RBF_PILE_BLAST"}.issubset(
+            {a["gunlance"]["type"] for a in actions}))
+        profiles = {p["id"]: p for p in self.catalog["hitProfiles"]}
+        self.assertTrue(all(profiles[a["profileId"]]["support"]["status"] == "basic_hit"
+                            for a in actions if a["gunlance"]["type"] in {"SHOT", "FULL_BURST", "PILE_CONST", "RBF_PILE_BLAST"}))
+        for bad in (float("nan"), -1, True):
+            broken = deepcopy(self.catalog)
+            broken["gunlance"]["shellTypes"]["normal"]["tables"]["_AttackInfoList"][2]["Attack"] = bad
+            with self.assertRaisesRegex(ValueError, "gunlance"):
+                validate_catalog(broken)
+
     def test_weapon_state_validation_rejects_wrong_scope_and_invalid_rates(self) -> None:
         from copy import deepcopy
         broken = deepcopy(self.catalog)
@@ -67,7 +131,7 @@ class DamageCalculatorDataTests(unittest.TestCase):
         self.assertTrue(any(profile["rates"]["PartsBreak"] == 1.5 for profile in profiles))
 
     def test_player_action_names_and_items_keep_source_values(self) -> None:
-        self.assertEqual(self.catalog["schemaVersion"], 11)
+        self.assertEqual(self.catalog["schemaVersion"], 15)
         profile = next(row for row in self.catalog["hitProfiles"] if row["id"] == (
             "Wp00|Wp00/Collision/Collider/Wp00_Attack.rcol.38.json|0|2844005733|0"
         ))
@@ -176,7 +240,7 @@ class DamageCalculatorDataTests(unittest.TestCase):
             self.assertEqual(action["shell"]["parameters"]["_Lv2_AttackRate"], 1.25)
             self.assertEqual(action["shell"]["parameters"]["_Lv2_SpecialRate"], 1.25)
 
-    def test_mapping_names_match_database_and_unnamed_hits_are_not_selectable(self) -> None:
+    def test_mapping_names_match_database_and_unnamed_hits_keep_exact_identity(self) -> None:
         from config import ACTION_MAP_PATH, ZH_HANS_LANGUAGE_ID
         from src.database.action_values.build import build_action_value_workbook, load_action_value_catalog
         from src.processed_data.damage_calculator.actions import profile_id
@@ -192,7 +256,11 @@ class DamageCalculatorDataTests(unittest.TestCase):
         internal = [action for action in actions if action["name"] == "cSlash3"]
         self.assertTrue(internal)
         for action in actions:
-            self.assertNotEqual(action["kind"], "Unmapped")
+            if action["kind"] == "Unmapped":
+                self.assertTrue(action["name"].startswith("未命名命中 "))
+                self.assertEqual(action["confidence"], "profile_only")
+                self.assertFalse(action.get("bow"))
+                continue
             names = mapping_names[action["mappingIdentity"]]
             self.assertTrue(any(action["name"] in {name, f"{name} Lv{action['ammoLevel']}"}
                                 for name in names), action["name"])
@@ -201,4 +269,7 @@ class DamageCalculatorDataTests(unittest.TestCase):
                    if not any(binding.display_name(texts.get)
                               for binding in source.bindings.get(record.key, ()))}
         self.assertTrue(unnamed)
-        self.assertTrue(selectable.isdisjoint(unnamed))
+        player_unnamed = {identity for identity in unnamed if identity.startswith("Wp")}
+        self.assertTrue(player_unnamed.issubset(selectable))
+        fallback = [a for a in actions if a["kind"] == "Unmapped"]
+        self.assertEqual(len(fallback), len({a["profileId"] for a in fallback}))

@@ -15,7 +15,8 @@ from src.processed_data.damage_calculator.contract import source_contract, valid
 from src.processed_data.damage_calculator.bonuses import item_catalog
 from src.processed_data.damage_calculator.sharpness import sharpness_catalog
 from src.processed_data.damage_calculator.multihit import physical_curve_points
-from src.processed_data.damage_calculator.weapon_states import validate_weapon_states, validate_bow
+from src.processed_data.damage_calculator.weapon_states import validate_weapon_states, validate_bow, runtime_support_reasons, lance_charge_parameters, switchaxe_parameters
+from src.processed_data.damage_calculator.gunlance import parameters as gunlance_parameters, validate_parameters as validate_gunlance, SHELL_TYPES, SUPPORTED_REQUESTS
 
 OUTPUT_NAME = "damage_calculator.zh-Hans.json"
 PARAM_GLOB = "STM/GameDesign/Enemy/Em*/*/Data/*_Param_Parts.user.3.json"
@@ -117,19 +118,44 @@ def _hit_profiles(natives_dir: Path, labels: dict) -> list[dict]:
             element_source = ("weapon" if props["_UseStatusAttrPower"] else
                               "attack_scaled" if special == "BOWGUN_ELEMENT_SHOT" else
                               "intrinsic" if props.get("_AttrValue", 0) > 0 else "none")
-            unsupported = []
-            if special not in {"NORMAL", "BOWGUN_ELEMENT_SHOT"}:
+            unsupported = runtime_support_reasons(scope, key.rcol, props)
+            switchaxe = (scope == "Wp08" and key.rcol == "Wp08/Collision/Collider/Wp08_Attack.rcol.38.json"
+                         and special == "NORMAL" and element_source == "weapon"
+                         and _symbol(props.get("_ActionTypeFixed._Value", "NONE")) == "SLASH")
+            if switchaxe:
+                unsupported = []  # Consumer requires explicit mode and a verified phial type.
+            # Captures 515/518: ordinary horn sound skips physical meat selection.
+            # calcDamageRate_Pl 0x145FF49FE--0x145FF4B7A leaves the initialized
+            # Meat=1 for ActionType.NONE; elemental meat is still resolved below.
+            horn_sound = (scope == "Wp05" and key.rcol.endswith("/Wp05_Shell.rcol.38.json")
+                          and key.request_set_id in {4, 9} and special == "NORMAL"
+                          and _symbol(props.get("_ActionTypeFixed._Value", "NONE")) == "NONE"
+                          and props.get("_IsNoCritical") and props.get("_IsNoUseKireaji"))
+            gunlance = (scope == "Wp07" and key.rcol == "Wp07/Collision/Collider/Wp07_Shell.rcol.38.json"
+                        and key.request_set_id in SUPPORTED_REQUESTS)
+            if gunlance:
+                unsupported = []  # Resource type and player shell state are required by the consumer.
+            if special not in {"NORMAL", "BOWGUN_ELEMENT_SHOT"} and not gunlance:
                 unsupported.append("该特殊命中的武器预处理尚未完整核验")
-            if _symbol(props.get("_ActionTypeFixed._Value", "NONE")) == "NONE" and props.get("_Attack", 0):
+            if _symbol(props.get("_ActionTypeFixed._Value", "NONE")) == "NONE" and props.get("_Attack", 0) and not (horn_sound or gunlance):
                 unsupported.append("无常规物理肉质类型，需专用伤害结算")
+            curve = physical_curve_points(natives_dir, props.get("_MultiHitRateCurve.path", ""))
+            missing = []
+            if props.get("_MultiHitRateCurve.path") and not curve:
+                missing.append("多段物理曲线尚未核验")
+            if props.get("_MultiHitStatusRateCurve.path"):
+                missing.append("多段属性曲线尚未核验")
             profiles.append({
                 "id": f"{scope}|{key.rcol}|{key.request_set_id}|{key.key_hash}|{key.source_ordinal}",
                 "scope": scope, "rcol": key.rcol, "requestSetID": key.request_set_id,
                 "keyHash": key.key_hash, "sourceRequestSetOrdinal": key.source_ordinal,
                 "actionType": _symbol(record.properties.get("_ActionTypeFixed._Value", "NONE")),
+                "physicalMeatMode": "independent" if horn_sound or (gunlance and _symbol(props.get("_ActionTypeFixed._Value", "NONE")) == "NONE") else "part",
                 "sourceAttack": record.properties.get("_Attack"),
                 # doOnHit_AttackPre815550: IsRenkiConsumed && _GeneralValue2 > 0.
                 "renkiAttack": props.get("_GeneralValue._GeneralValue2") if scope == "Wp03" and props.get("_GeneralValue._GeneralValue2", 0) > 0 else None,
+                "lanceCharge": lance_charge_parameters(natives_dir, scope, key.rcol, key.request_set_id),
+                "switchaxe": switchaxe_parameters(natives_dir) if switchaxe else None,
                 "usesAttackPower": record.properties.get("_UseStatusAttackPower"),
                 "usesElementPower": record.properties.get("_UseStatusAttrPower"),
                 "canCritical": not no_critical,
@@ -147,9 +173,9 @@ def _hit_profiles(natives_dir: Path, labels: dict) -> list[dict]:
                 "multiHit": {"enabled": "USE_MULIT_HIT" in str(props.get("_FlagBit", "")),
                              "physicalCurve": props.get("_MultiHitRateCurve.path", ""),
                              "statusCurve": props.get("_MultiHitStatusRateCurve.path", ""),
-                             "physicalCurvePoints": physical_curve_points(natives_dir, props.get("_MultiHitRateCurve.path", ""))},
-                "support": {"status": "unsupported" if unsupported else "basic_hit",
-                            "reasons": unsupported},
+                             "physicalCurvePoints": curve},
+                "support": {"status": "unsupported" if unsupported else "missing_parameters" if missing else "basic_hit",
+                            "reasons": unsupported + missing},
                 "actionNames": labels.get(key, []),
                 "rates": rates,
             })
@@ -232,7 +258,7 @@ def build_catalog(natives_dir: Path, repository: SourceRepository, text_source: 
     status_path = "STM/GameDesign/Player/ActionData/Common/GlobalParam/Part/PlayerStatusParam.user.3.json"
     status = json.loads((natives_dir / status_path).read_text(encoding="utf-8"))[0]["app.user_data.PlayerStatusParam"]
     catalog = {
-        "schemaVersion": 11, "language": "zh-Hans",
+        "schemaVersion": 15, "language": "zh-Hans",
         "sourceContract": source_contract(natives_dir),
         "actionMap": mapping,
         "units": {"attack": "true_attack", "weaponElement": "display_divided_by_10",
@@ -253,6 +279,7 @@ def build_catalog(natives_dir: Path, repository: SourceRepository, text_source: 
         "monsters": monsters,
         "hitProfiles": _hit_profiles(natives_dir, labels),
         "actions": actions,
+        "gunlance": gunlance_parameters(natives_dir),
         "sharpness": sharpness_catalog(natives_dir),
         **item_catalog(natives_dir),
     }
@@ -261,7 +288,7 @@ def build_catalog(natives_dir: Path, repository: SourceRepository, text_source: 
 
 
 def validate_catalog(catalog: dict) -> None:
-    if catalog.get("schemaVersion") != 11 or catalog.get("language") != "zh-Hans":
+    if catalog.get("schemaVersion") != 15 or catalog.get("language") != "zh-Hans":
         raise ValueError("Unsupported calculator catalog schema")
     validate_source_contract(catalog.get("sourceContract", {}))
     for key in ("attackRateLimit", "attackAddLimit", "elementRateLimit", "elementAddLimit", "gunElementRateLimit"):
@@ -290,6 +317,29 @@ def validate_catalog(catalog: dict) -> None:
         if not isinstance(profile_id, str) or profile_id in profile_ids:
             raise ValueError(f"Invalid hit profile identity: {profile_id}")
         profile_ids.add(profile_id)
+        meat_mode = profile.get("physicalMeatMode")
+        if meat_mode not in {"part", "independent"} or (meat_mode == "independent" and not (
+                ((profile.get("scope") == "Wp05"
+                and profile.get("rcol") == "Wp05/Collision/Collider/Wp05_Shell.rcol.38.json"
+                and profile.get("requestSetID") in {4, 9}
+                and profile.get("actionType") == "NONE"
+                and profile.get("specialType") == "NORMAL")
+                 or (profile.get("scope") == "Wp07"
+                     and profile.get("rcol") == "Wp07/Collision/Collider/Wp07_Shell.rcol.38.json"
+                     and profile.get("requestSetID") in SUPPORTED_REQUESTS
+                     and profile.get("actionType") == "NONE"))
+                and profile.get("canCritical") is False
+                and profile.get("ignoresSharpness") is True)):
+            raise ValueError(f"Invalid physical meat mode: {profile_id}")
+        support = profile.get("support", {})
+        if support.get("status") not in {"basic_hit", "missing_parameters", "unsupported"} or (
+                not isinstance(support.get("reasons"), list)
+                or bool(support["reasons"]) != (support["status"] != "basic_hit")):
+            raise ValueError(f"Invalid hit support: {profile_id}")
+        if support["status"] == "basic_hit" and (
+                profile["multiHit"].get("statusCurve") or
+                (profile["multiHit"].get("physicalCurve") and not profile["multiHit"].get("physicalCurvePoints"))):
+            raise ValueError(f"Missing supported hit curve: {profile_id}")
         for field in ("sourceElement", "sourceFixed"):
             value = profile.get(field)
             if not isinstance(value, (int, float)) or isinstance(value, bool) or not math.isfinite(value) or value < 0:
@@ -324,8 +374,16 @@ def validate_catalog(catalog: dict) -> None:
         ):
             raise ValueError(f"Invalid hit profile rates: {profile_id}")
     action_ids = set()
+    validate_gunlance(catalog.get("gunlance", {}))
     for action in catalog.get("actions", []):
         validate_bow(action)
+        gunlance = action.get("gunlance")
+        if gunlance is not None and (action.get("weapons") != ["gunlance"]
+                or gunlance.get("type") not in SHELL_TYPES
+                or not gunlance.get("source", "").startswith("STM/GameDesign/Player/ActionData/Wp07/")):
+            raise ValueError("Invalid gunlance projectile")
+        if not isinstance(action.get("skillTags"), list) or any(tag not in {"hien", "gunlance_artillery"} for tag in action["skillTags"]):
+            raise ValueError("Invalid action skill tags")
         if action["id"] in action_ids or action["profileId"] not in profile_ids or not action["weapons"]:
             raise ValueError("Invalid action reference")
         action_ids.add(action["id"])

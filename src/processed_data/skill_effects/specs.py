@@ -31,7 +31,6 @@ SLOT_EFFECTS: dict[str, tuple[tuple[str, int, str], ...]] = {
     "HunterSkill_020": (("attack.hit.rate", 0, "percent"),),
     "HunterSkill_028": (("attack.stat.rate", 0, "percent"),),
     "HunterSkill_047": (("attack.hit.rate", 1, "percent"),),
-    "HunterSkill_048": (("element.stat.rate", 0, "percent"),),
     "HunterSkill_055": (("attack.hit.rate", 0, "percent"),),
     "HunterSkill_057": (("attack.hit.rate", 1, "percent"),),
     "HunterSkill_058": (("attack.stat.flat", 0, "number"),),

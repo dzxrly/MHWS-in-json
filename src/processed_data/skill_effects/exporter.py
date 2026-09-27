@@ -27,7 +27,7 @@ SOURCE_FILES = (SUPPORT_FILES["skill_common"], SKILL_DATA, SKILL_PARAM, STATUS_P
 STAGES = frozenset({
     "attack.stat.rate", "attack.stat.flat", "attack.hit.rate", "attack.hit.flat",
     "element.stat.rate", "element.stat.flat", "physical.critical.rate",
-    "element.critical.rate", "element.hit.rate", "part.rate",
+    "element.critical.rate", "element.hit.rate", "element.shell.flat", "part.rate",
 })
 
 
@@ -67,6 +67,8 @@ def _slot_effects(skill_id: str, values: list[int]) -> list[dict]:
             scope["weapons"] = ["switchaxe", "chargeblade"]
         elif skill_id == "HunterSkill_057":
             scope["weapons"] = ["hammer"]
+        elif skill_id == "HunterSkill_055":
+            scope["requiresActionTag"] = "hien"
         result.append(_effect(stage, value, f"SkillData._value[{slot}]", **scope))
     return result
 
@@ -121,6 +123,23 @@ def _ballistic(level: int, params: dict) -> list[dict]:
 
 
 def _effects(skill_id: str, level: int, values: list[int], params: dict) -> list[dict]:
+    if skill_id == "HunterSkill_048":
+        # 1.42.0.2 calcChargeMasterAttrRate 0x1455DC520 selects slot 1 for
+        # bow. These handling classes override isSkill_048_ValidAttack;
+        # the base implementation returns false (0x14B46E3F0).
+        if len(values) < 2:
+            raise ValueError("Missing charge master weapon-specific values")
+        return [_effect("element.stat.rate", values[0] / 100, "SkillData._value[0]",
+                        weapons=[WEAPONS[i] for i in (0, 1, 3, 4, 6, 7, 8, 9, 10)]),
+                _effect("element.stat.rate", values[1] / 100, "SkillData._value[1]",
+                        weapons=["bow"])]
+    if skill_id == "HunterSkill_035":
+        # ArtilleryType=1: calcHitAttackRate 0x1455EADFB and Wp07
+        # doOnHit_AttackPre 0x148176D07; other artillery branches remain separate.
+        return [_effect("attack.hit.rate", 1 + values[0] / 100, "SkillData._value[0] + 100%",
+                        weapons=["gunlance"], requiresActionTag="gunlance_artillery"),
+                _effect("element.shell.flat", values[2], "SkillData._value[2]",
+                        weapons=["gunlance"], element="fire", requiresActionTag="gunlance_artillery")]
     result = _slot_effects(skill_id, values)
     if skill_id == "HunterSkill_003":
         result.extend(_element_critical(level, params))
@@ -229,6 +248,14 @@ def build_catalog(natives_dir: Path, repository: SourceRepository, text_source: 
             entry["candidateSources"] = list(PARAMETER_CANDIDATES[skill_id])
         if skill_id == "HunterSkill_114":
             entry["activeEffectNote"] = "勾选后按当前等级的强化完成效果计算。"
+        if skill_id == "HunterSkill_035":
+            entry["activeEffectNote"] = "当前仅计算已核验的铳枪炮击与龙杭分支；龙杭持续命中的武器属性不接受炮术的火属性加值。"
+        if skill_id == "HunterSkill_047":
+            entry["activeEffectNote"] = "勾选表示本次命中属于可触发高速变形的变形攻击；普通剑、斧攻击请勿勾选。"
+        if skill_id == "HunterSkill_048":
+            entry["activeEffectNote"] = "勾选表示本次命中满足蓄力大师的武器状态与蓄力条件；普通未蓄力攻击请勿勾选。弓使用独立倍率。"
+        if skill_id == "HunterSkill_057":
+            entry["activeEffectNote"] = "勾选表示本次大锤命中满足蓄击强化条件；普通攻击请勿勾选。"
         if skill_id == "HunterSkill_198":
             entry["activeEffectNote"] = "需同时勾选“本次弹体触发首发迅击”；装填至全满后的首发弹体及其后续贯穿命中适用，不等同于命中序号 1。"
         if skill_id == "HunterSkill_183":
@@ -255,7 +282,7 @@ def build_catalog(natives_dir: Path, repository: SourceRepository, text_source: 
         skills.append(entry)
 
     catalog = {
-        "schemaVersion": 4,
+        "schemaVersion": 6,
         "language": "zh-Hans",
         "assumptions": {"skillsAlreadyActive": True, "criticalMode": "selected_hit"},
         "sourceContract": source_contract(natives_dir),
@@ -274,7 +301,7 @@ def build_catalog(natives_dir: Path, repository: SourceRepository, text_source: 
 
 
 def validate_catalog(catalog: dict) -> None:
-    if catalog.get("schemaVersion") != 4 or catalog.get("language") != "zh-Hans":
+    if catalog.get("schemaVersion") != 6 or catalog.get("language") != "zh-Hans":
         raise ValueError("Unsupported skill effect schema")
     validate_source_contract(catalog.get("sourceContract", {}))
     if catalog.get("assumptions") != {"skillsAlreadyActive": True, "criticalMode": "selected_hit"}:
@@ -359,6 +386,8 @@ def validate_catalog(catalog: dict) -> None:
                         raise ValueError(f"Invalid projectile scope: {skill_id}/{field}")
                 if "state" in effect:
                     raise ValueError(f"Unknown effect state: {skill_id}/{number}")
+                if "requiresActionTag" in effect and effect["requiresActionTag"] not in {"hien", "gunlance_artillery"}:
+                    raise ValueError(f"Invalid action requirement: {skill_id}/{number}")
                 for requirement in ("requiresFirstShot", "requiresShell"):
                     if requirement in effect and effect[requirement] is not True:
                         raise ValueError(f"Invalid effect requirement: {skill_id}/{requirement}")

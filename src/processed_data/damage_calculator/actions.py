@@ -11,6 +11,7 @@ from src.shared.action_values.catalog import load_action_value_catalog, mapping_
 from src.shared.text.catalog import TextSource
 from src.processed_data.skill_effects.specs import WEAPONS
 from .weapon_states import bow_parameters, shared_bow_parameters
+from .gunlance import SHELL_TYPES, SUPPORTED_TYPES
 
 def profile_id(key) -> str:
     return f"{key.scope}|{key.rcol}|{key.request_set_id}|{key.key_hash}|{key.source_ordinal}"
@@ -41,6 +42,17 @@ def arrow_type(natives_dir: Path, path: str) -> str | None:
     arrow = next((row["app.cShellminiParamPlWp11Arrow"] for row in shell_parameters(natives_dir, path)
                   if "app.cShellminiParamPlWp11Arrow" in row), None)
     return re.sub(r"^\[-?\d+\]\s*", "", arrow["_ArrowType"]) if arrow else None
+
+
+def gunlance_resource(natives_dir: Path, path: str) -> dict | None:
+    shot = next((row["app.cShellminiParamPlWp07Shot"] for row in shell_parameters(natives_dir, path)
+                 if "app.cShellminiParamPlWp07Shot" in row), None)
+    if shot is None:
+        return None
+    kind = re.sub(r"^\[-?\d+\]\s*", "", shot["_ShellType"])
+    if kind not in SHELL_TYPES:
+        raise ValueError(f"Unknown gunlance projectile type: {kind}")
+    return {"source": "STM/" + path + ".3.json", "type": kind}
 
 
 def bow_resource(natives_dir: Path, path: str) -> dict | None:
@@ -101,6 +113,7 @@ def action_catalog(natives_dir: Path, text_source: TextSource) -> tuple[dict, li
                         continue
                     seen.add(identity)
                     shell = gun_parameters(natives_dir, path)
+                    gunlance = gunlance_resource(natives_dir, path)
                     # A resource relation's level is not exclusive when the runtime
                     # applies level multipliers to one shared normal/spread/element shell.
                     shared_levels = ({"NORMAL": [1, 2, 3], "SHOT_GUN": [1, 2, 3],
@@ -114,16 +127,39 @@ def action_catalog(natives_dir: Path, text_source: TextSource) -> tuple[dict, li
                         "kind": binding.kind, "nameSource": binding.name_source,
                         "mappingIdentity": binding.identity, "confidence": binding.confidence,
                         "conditions": binding.condition, "ammoLevel": level or 1,
+                        "skillTags": (["hien"] if record.properties.get("_IsSkillHien") else [])
+                            + (["gunlance_artillery"] if gunlance and gunlance["type"] in SUPPORTED_TYPES else []),
                         # Normal/spread and elemental shells share resources across levels.
                         # cHunterWpGunHandling.doOnHit_AttackPre reads the runtime Lv2/Lv3 rates.
                         # WeaponData._ShellLv entries for FIRE/WATER/ELEC/ICE use SL_000/001.
                         "ammoLevels": shared_levels or [level or 1],
                         "arrowType": arrow_type(natives_dir, path) or (next(iter(arrows)) if len(arrows) == 1 else None),
                         "shell": shell,
+                        "gunlance": gunlance,
                         "bow": bow_resource(natives_dir, path) if path else shared_bow_parameters(
                             profile_bows.get((scope, key.rcol, key.request_set_id, key.key_hash, key.source_ordinal), [])),
                     })
                     labels.setdefault(key, set()).add(name)
+    # An unnamed collision is still a selectable, exactly identified hit. Do
+    # not invent an action relation or a translated name for missing mappings.
+    bound = {action["profileId"] for action in actions}
+    for scope, records in catalog.records.items():
+        if not re.fullmatch(r"Wp\d\d", scope):
+            continue  # Shared ammunition needs explicit weapon/resource evidence.
+        for record in records:
+            identity = profile_id(record.key)
+            if identity in bound:
+                continue
+            actions.append({
+                "id": hashlib.sha256(f"unmapped|{identity}".encode()).hexdigest()[:24],
+                "name": f"未命名命中 {Path(record.key.rcol).name.split('.')[0]} #{record.key.request_set_id}",
+                "profileId": identity, "weapons": [WEAPONS[int(scope[2:])]],
+                "kind": "Unmapped", "nameSource": "exact_collision_identity",
+                "mappingIdentity": "", "confidence": "profile_only", "conditions": "",
+                "ammoLevel": 1, "ammoLevels": [1], "arrowType": None,
+                "skillTags": ["hien"] if record.properties.get("_IsSkillHien") else [],
+                "shell": None, "bow": None,
+            })
     return {key: sorted(names) for key, names in labels.items()}, actions, {
         "sha256": hashlib.sha256(ACTION_MAP_PATH.read_bytes()).hexdigest(),
         "inputs": document["inputs"], "nativeEvidenceReused": False,

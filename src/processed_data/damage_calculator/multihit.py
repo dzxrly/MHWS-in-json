@@ -7,11 +7,14 @@ from pathlib import Path
 
 ELEMENT_CURVE = "GameDesign/Player/ActionData/WpGunCommon/Collision/Collider/WpGunElement_MultiHitCurve.user"
 PENETRATE_CURVE = "GameDesign/Player/ActionData/WpGunCommon/Collision/Collider/WpGunPenetrate_MultiHitCurve.user"
+BOW_SPECIAL_CURVE = "GameDesign/Player/ActionData/Wp11/Collision/Collider/Wp11Special_MultiHitCurve.user"
 
 
 def physical_curve_points(natives_dir: Path, path: str) -> list[dict] | None:
     # Other curves retain their source reference until their use is audited.
-    if path not in {ELEMENT_CURVE, PENETRATE_CURVE}:
+    # Dragon Piercer capture 52--57 follows 1, 1, .75, .75, .75, .75.
+    # Its RCOL references the same MultiHitRateCurve reader and interpolation.
+    if path not in {ELEMENT_CURVE, PENETRATE_CURVE, BOW_SPECIAL_CURVE}:
         return None
     document = json.loads((natives_dir / "STM" / (path + ".3.json")).read_text(encoding="utf-8"))
     curve = document[0]["app.user_data.MultiHitRateCurve"]["_Curve"]["via.AnimationCurve"]

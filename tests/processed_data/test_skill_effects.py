@@ -28,6 +28,22 @@ class SkillEffectExportTests(unittest.TestCase):
         self.assertEqual(self.skills["HunterSkill_204"]["verification"], "parameter_found")
         self.assertFalse(self.skills["HunterSkill_204"]["levels"][0]["effects"])
 
+    def test_hien_requires_the_collision_aerial_flag(self) -> None:
+        effects = self.skills["HunterSkill_055"]["levels"][0]["effects"]
+        self.assertEqual(len(effects), 1)
+        self.assertEqual(effects[0]["requiresActionTag"], "hien")
+        self.assertEqual(effects[0]["value"], 1.1)
+
+    def test_charge_master_uses_bow_slot_and_excludes_inherited_false_handlers(self) -> None:
+        for level in self.skills["HunterSkill_048"]["levels"]:
+            effects = level["effects"]
+            bow = next(effect for effect in effects if effect["weapons"] == ["bow"])
+            melee = next(effect for effect in effects if "greatsword" in effect["weapons"])
+            self.assertEqual(bow["value"], level["rawValues"][1] / 100)
+            self.assertEqual(melee["value"], level["rawValues"][0] / 100)
+            supported = {weapon for effect in effects for weapon in effect["weapons"]}
+            self.assertTrue(supported.isdisjoint({"dualblades", "huntinghorn", "heavybowgun", "lightbowgun"}))
+
     def test_zero_slot_skills_read_weapon_and_element_parameters(self) -> None:
         critical = self.skills["HunterSkill_003"]["levels"][-1]
         self.assertEqual(critical["rawValues"], [0, 0, 0, 0])
@@ -47,7 +63,7 @@ class SkillEffectExportTests(unittest.TestCase):
         validate_catalog(self.catalog)
 
     def test_first_shot_preserves_weapon_slots_and_explicit_projectile_condition(self) -> None:
-        self.assertEqual(self.catalog["schemaVersion"], 4)
+        self.assertEqual(self.catalog["schemaVersion"], 6)
         skill = self.skills["HunterSkill_198"]
         self.assertEqual(skill["verification"], "verified")
         for level, attack in zip(skill["levels"], [5, 10, 15]):

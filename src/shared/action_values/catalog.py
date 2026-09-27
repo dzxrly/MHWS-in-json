@@ -32,6 +32,10 @@ class MappingBinding:
     source: str = ""
 
     def display_name(self, resolve_text: Callable[[str], str]) -> str:
+        # The gun item table also contains NORMAL_LV* symbols used by bow
+        # resources. Its ammunition label is not a bow action translation.
+        if self.scope == "Wp11" and self.name_source == "weapon_gun_static_item_table":
+            return f"弓弹体 {self.internal_name}"
         localized = (resolve_text(self.name_guid) or "").strip() if self.name_guid else ""
         fallback = self.fallback_name.strip()
         base = localized or fallback
