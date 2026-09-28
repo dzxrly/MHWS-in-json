@@ -28,6 +28,7 @@ STAGES = frozenset({
     "attack.stat.rate", "attack.stat.flat", "attack.hit.rate", "attack.hit.flat",
     "element.stat.rate", "element.stat.flat", "physical.critical.rate",
     "element.critical.rate", "element.hit.rate", "element.shell.flat", "part.rate",
+    "attack.motion.rate", "sharpness.physical.min", "sharpness.element.min",
 })
 
 
@@ -48,7 +49,7 @@ def _pack(root: dict, field: str) -> list[float]:
 def _effect(stage: str, value: float, source: str, **scope: object) -> dict:
     return {"stage": stage, "value": value, "source": source,
             "requiresCritical": ".critical." in stage,
-            "unit": "multiplier" if stage.endswith(".rate") else "true_value", **scope}
+            "unit": "multiplier" if stage.endswith((".rate", ".min")) else "true_value", **scope}
 
 
 def _slot_effects(skill_id: str, values: list[int]) -> list[dict]:
@@ -123,6 +124,33 @@ def _ballistic(level: int, params: dict) -> list[dict]:
 
 
 def _effects(skill_id: str, level: int, values: list[int], params: dict) -> list[dict]:
+    if skill_id == "HunterSkill_217":
+        # calcPreStockDamage 0x145FF1880 copies _IsSkillBladeKiraji to bit 27.
+        # calcDamageRate_Pl 0x145FF4B04/4B2C takes maxima, not products.
+        return [_effect("sharpness.physical.min", params["_SkillBladeToishiDamage"],
+                        "PlayerSkillParam._SkillBladeToishiDamage", weapons=list(MELEE_WEAPONS), requiresActionTag="sharpness"),
+                _effect("sharpness.element.min", params["_SkillBladeToishiElem"],
+                        "PlayerSkillParam._SkillBladeToishiElem", weapons=list(MELEE_WEAPONS), requiresActionTag="sharpness")]
+    if skill_id == "HunterSkill_037":
+        # WpGun doOnHit_AttackPre 0x145303432 mask 0x1C803F8000000;
+        # Wp11 0x1499E19F2 mask 0xA8530. Both read skill slot 0 and
+        # multiply the physical motion, not the attribute or current attack.
+        return [_effect("attack.motion.rate", values[0] / 100, "SkillData._value[0]",
+                        weapons=["heavybowgun", "lightbowgun"], shellTypes=[
+                            "PARRY", "PARRY_SUCCESS_BLAST", "GATLING", "LASER", "LASER_CHILD",
+                            "ENERGY_GRENADE", "ENERGY_GRENADE_BLAST", "SET_BOMB_BLAST",
+                            "CATCH_BLAST", "CATCH_SLASH_BLAST", "CATCH_HIT_BLAST"]),
+                _effect("attack.motion.rate", values[0] / 100, "SkillData._value[0]",
+                        weapons=["bow"], arrowTypes=["KYOKUSHA_CHILD", "SPECIAL", "TSUGIYA_BLAST",
+                                                   "TSUGIYA", "TWIN", "SPECIAL_SHORT", "TSUGIYA_MINI"])]
+    if skill_id == "HunterSkill_218":
+        # The selected skill denotes a projectile carrying IsSkill218Shell
+        # (0xC4) / IsUseSkill218Bottle (0x117), not every shot while equipped.
+        # 0x1453036D6 / 0x1499E1E82 multiply physical motion only.
+        return [_effect("attack.motion.rate", params["_Skill218AttackRate_Gun"],
+                        "PlayerSkillParam._Skill218AttackRate_Gun", weapons=["heavybowgun", "lightbowgun"], requiresShell=True),
+                _effect("attack.motion.rate", params["_Skill218AttackRate_Bow"],
+                        "PlayerSkillParam._Skill218AttackRate_Bow", weapons=["bow"], requiresArrow=True)]
     if skill_id == "HunterSkill_048":
         # 1.42.0.2 calcChargeMasterAttrRate 0x1455DC520 selects slot 1 for
         # bow. These handling classes override isSkill_048_ValidAttack;
@@ -139,7 +167,11 @@ def _effects(skill_id: str, level: int, values: list[int], params: dict) -> list
         return [_effect("attack.hit.rate", 1 + values[0] / 100, "SkillData._value[0] + 100%",
                         weapons=["gunlance"], requiresActionTag="gunlance_artillery"),
                 _effect("element.shell.flat", values[2], "SkillData._value[2]",
-                        weapons=["gunlance"], element="fire", requiresActionTag="gunlance_artillery")]
+                        weapons=["gunlance"], element="fire", requiresActionTag="gunlance_artillery"),
+                # ArtilleryType=WP09 (2): calcHitAttackRate 0x1455EADEC;
+                # getSkillArtilleryAttackRateWp09Grenade reads slot 3 / 100.
+                _effect("attack.hit.rate", values[3] / 100, "SkillData._value[3]",
+                        weapons=["chargeblade"], requiresActionTag="chargeblade_artillery")]
     result = _slot_effects(skill_id, values)
     if skill_id == "HunterSkill_003":
         result.extend(_element_critical(level, params))
@@ -158,6 +190,19 @@ def _effects(skill_id: str, level: int, values: list[int], params: dict) -> list
             result.extend([
                 _effect("attack.hit.flat", values[attack_slot], f"SkillData._value[{attack_slot}]", **scope),
                 _effect("element.hit.rate", values[element_slot] / 100, f"SkillData._value[{element_slot}]", **scope),
+            ])
+    elif skill_id == "HunterSkill_197":
+        # Native 1.42.0.2: GunHandling 0x145303895 -> 0x145303A96 and
+        # Wp11Handling 0x1499E2589 read runtime 0xAB, slot 1 (not affinity
+        # slot 0). Attribute getters 0x1455E3CE0 / 0x1455E3D90 read 2 / 3.
+        # Bow handling checks (BottleShotCount at 0xC8 | 2) == 6, i.e. shot
+        # 4 or 6, not ArrowType (0xFC). Selection means the damage-boosted
+        # shot; on bowguns this is exclusive of the full-reload shot.
+        for scope, slot in (({"weapons": ["lightbowgun", "heavybowgun"], "requiresShell": True}, 2),
+                            ({"weapons": ["bow"], "arrowTypes": ["NORMAL", "JUMP", "DASH_CLIMB", "SPECIAL", "SPECIAL_SHORT", "TWIN", "QUICK_SHOT", "GOSHA", "GOSHA_RAPID"]}, 3)):
+            result.extend([
+                _effect("attack.hit.flat", values[1], "SkillData._value[1]", **scope),
+                _effect("element.hit.rate", values[slot] / 100, f"SkillData._value[{slot}]", **scope),
             ])
     elif skill_id == "HunterSkill_113":
         # getSkillDisasterAttrRate493374 / calcElemElecRate493575, EXE 1.42.0.2:
@@ -200,6 +245,12 @@ def _effects(skill_id: str, level: int, values: list[int], params: dict) -> list
         # through the runtime parent mapping before the life-saving effect is used.
         result.append(_effect("attack.stat.rate", values[0] / 100,
                               "SkillData._openSkill[HunterSkill_206]._value[0]"))
+    elif skill_id == "HunterSkill_186":
+        # EXE 1.42.0.2 calcContinuousAttackAddAttack 0x1455F1730 reads
+        # runtime HunterSkill_160 (0xA1), slot 1; 0x1455F19BA adds the
+        # ordinary Burst value. calcAttackAdd consumes this at 0x1455E9801.
+        result.append(_effect("attack.stat.flat", values[1],
+                              "SkillData._openSkill[HunterSkill_160]._value[1]"))
     return result
 
 
@@ -248,8 +299,18 @@ def build_catalog(natives_dir: Path, repository: SourceRepository, text_source: 
             entry["candidateSources"] = list(PARAMETER_CANDIDATES[skill_id])
         if skill_id == "HunterSkill_114":
             entry["activeEffectNote"] = "勾选后按当前等级的强化完成效果计算。"
+        if skill_id == "HunterSkill_186":
+            entry["activeEffectNote"] = "勾选表示连击已经生效；这里只加入连击强化的额外攻击力。连击本身的加成请另选对应等级，已含在基础值中的加成不要重复选择。"
+        if skill_id == "HunterSkill_197":
+            entry["activeEffectNote"] = "勾选按第 4 或第 6 发射击的攻击强化生效计算；弩炮不能与首发迅击的触发弹体叠加，弓按装填瓶后的射击次数判断。本次是否会心仍单独选择，不计算会心期望。"
         if skill_id == "HunterSkill_035":
-            entry["activeEffectNote"] = "当前仅计算已核验的铳枪炮击与龙杭分支；龙杭持续命中的武器属性不接受炮术的火属性加值。"
+            entry["activeEffectNote"] = "当前计算已核验的铳枪炮击、龙杭与盾斧榴弹瓶分支；盾斧普通剑斧命中及强属性瓶不受此加成。龙杭持续命中的武器属性不接受炮术的火属性加值。"
+        if skill_id == "HunterSkill_037":
+            entry["activeEffectNote"] = "仅对适用的特殊弹药和箭种提高物理动作值，不提高属性伤害；缺少已核验武器状态的动作仍不可计算。"
+        if skill_id == "HunterSkill_218":
+            entry["activeEffectNote"] = "勾选表示本次命中使用刃鳞增装产生的特殊装填弹药或瓶；普通弹药及瓶请勿勾选。仅提高本次命中的物理动作值，不提高属性伤害。"
+        if skill_id == "HunterSkill_217":
+            entry["activeEffectNote"] = "勾选表示本次命中使用特殊锋利度；物理、属性斩味补正分别至少为 1.40、1.25，原有更高补正保留。不使用斩味的命中不适用。"
         if skill_id == "HunterSkill_047":
             entry["activeEffectNote"] = "勾选表示本次命中属于可触发高速变形的变形攻击；普通剑、斧攻击请勿勾选。"
         if skill_id == "HunterSkill_048":
@@ -282,7 +343,7 @@ def build_catalog(natives_dir: Path, repository: SourceRepository, text_source: 
         skills.append(entry)
 
     catalog = {
-        "schemaVersion": 6,
+        "schemaVersion": 7,
         "language": "zh-Hans",
         "assumptions": {"skillsAlreadyActive": True, "criticalMode": "selected_hit"},
         "sourceContract": source_contract(natives_dir),
@@ -301,7 +362,7 @@ def build_catalog(natives_dir: Path, repository: SourceRepository, text_source: 
 
 
 def validate_catalog(catalog: dict) -> None:
-    if catalog.get("schemaVersion") != 6 or catalog.get("language") != "zh-Hans":
+    if catalog.get("schemaVersion") != 7 or catalog.get("language") != "zh-Hans":
         raise ValueError("Unsupported skill effect schema")
     validate_source_contract(catalog.get("sourceContract", {}))
     if catalog.get("assumptions") != {"skillsAlreadyActive": True, "criticalMode": "selected_hit"}:
@@ -364,7 +425,7 @@ def validate_catalog(catalog: dict) -> None:
                     raise ValueError(f"Invalid skill effect record: {skill_id}/{number}")
                 value = effect.get("value")
                 stage = effect.get("stage")
-                if stage not in STAGES or not isinstance(value, (int, float)) or isinstance(value, bool) or not math.isfinite(value) or value < 0 or (stage.endswith(".rate") and value == 0):
+                if stage not in STAGES or not isinstance(value, (int, float)) or isinstance(value, bool) or not math.isfinite(value) or value < 0 or (stage.endswith((".rate", ".min")) and value == 0):
                     raise ValueError(f"Invalid skill effect: {skill_id}/{number}")
                 if not isinstance(effect.get("source"), str) or not effect["source"]:
                     raise ValueError(f"Missing skill effect source: {skill_id}/{number}")
@@ -378,24 +439,24 @@ def validate_catalog(catalog: dict) -> None:
                 if "element" in effect and effect["element"] not in ELEMENTS.values():
                     raise ValueError(f"Unknown effect element: {skill_id}/{number}")
                 for field, allowed in {
-                    "shellTypes": {"NORMAL", "PENETRATE", "SHOT_GUN"},
-                    "arrowTypes": {"NORMAL", "JUMP", "DASH_CLIMB", "SPECIAL", "SPECIAL_SHORT", "TWIN", "QUICK_SHOT", "GOSHA", "GOSHA_RAPID"},
+                    "shellTypes": {"NORMAL", "PENETRATE", "SHOT_GUN", "PARRY", "PARRY_SUCCESS_BLAST", "GATLING", "LASER", "LASER_CHILD", "ENERGY_GRENADE", "ENERGY_GRENADE_BLAST", "SET_BOMB_BLAST", "CATCH_BLAST", "CATCH_SLASH_BLAST", "CATCH_HIT_BLAST"},
+                    "arrowTypes": {"NORMAL", "JUMP", "DASH_CLIMB", "SPECIAL", "SPECIAL_SHORT", "TWIN", "QUICK_SHOT", "GOSHA", "GOSHA_RAPID", "KYOKUSHA_CHILD", "TSUGIYA_BLAST", "TSUGIYA", "TSUGIYA_MINI"},
                 }.items():
                     if field in effect and (not isinstance(effect[field], list) or not effect[field]
                                             or any(value not in allowed for value in effect[field])):
                         raise ValueError(f"Invalid projectile scope: {skill_id}/{field}")
                 if "state" in effect:
                     raise ValueError(f"Unknown effect state: {skill_id}/{number}")
-                if "requiresActionTag" in effect and effect["requiresActionTag"] not in {"hien", "gunlance_artillery"}:
+                if "requiresActionTag" in effect and effect["requiresActionTag"] not in {"hien", "gunlance_artillery", "chargeblade_artillery", "sharpness"}:
                     raise ValueError(f"Invalid action requirement: {skill_id}/{number}")
-                for requirement in ("requiresFirstShot", "requiresShell"):
+                for requirement in ("requiresFirstShot", "requiresShell", "requiresArrow"):
                     if requirement in effect and effect[requirement] is not True:
                         raise ValueError(f"Invalid effect requirement: {skill_id}/{requirement}")
                 if effect.get("requiresFirstShot") and not effect.get("requiresShell"):
                     raise ValueError(f"First shot effect requires a shell: {skill_id}")
                 if effect.get("requiresCritical") != (".critical." in effect["stage"]):
                     raise ValueError(f"Invalid critical requirement: {skill_id}/{number}")
-                expected_unit = "multiplier" if effect["stage"].endswith(".rate") else "true_value"
+                expected_unit = "multiplier" if effect["stage"].endswith((".rate", ".min")) else "true_value"
                 if effect.get("unit") != expected_unit:
                     raise ValueError(f"Invalid effect unit: {skill_id}/{number}")
         if (skill["verification"] == "verified") != has_effect:

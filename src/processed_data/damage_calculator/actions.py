@@ -10,11 +10,24 @@ from config import ACTION_MAP_PATH, ZH_HANS_LANGUAGE_ID
 from src.shared.action_values.catalog import load_action_value_catalog, mapping_names
 from src.shared.text.catalog import TextSource
 from src.processed_data.skill_effects.specs import WEAPONS
-from .weapon_states import bow_parameters, shared_bow_parameters
+from .weapon_states import bow_parameters, shared_bow_parameters, chargeblade_phial_kind
 from .gunlance import SHELL_TYPES, SUPPORTED_TYPES
 
 def profile_id(key) -> str:
     return f"{key.scope}|{key.rcol}|{key.request_set_id}|{key.key_hash}|{key.source_ordinal}"
+
+
+def collision_skill_tags(scope: str, key, properties: dict, gunlance: dict | None = None) -> list[str]:
+    tags = ["hien"] if properties.get("_IsSkillHien") else []
+    if re.fullmatch(r"Wp(?:0[0-9]|10)", scope) and (
+        not properties.get("_IsNoUseKireaji") or properties.get("_IsForceUseKireajiAttackRate")
+    ):
+        tags.append("sharpness")
+    if chargeblade_phial_kind(scope, key.rcol, key.request_set_id, properties) == "impact":
+        tags.append("chargeblade_artillery")
+    if gunlance and gunlance["type"] in SUPPORTED_TYPES:
+        tags.append("gunlance_artillery")
+    return tags
 
 
 @lru_cache(maxsize=1024)
@@ -127,8 +140,7 @@ def action_catalog(natives_dir: Path, text_source: TextSource) -> tuple[dict, li
                         "kind": binding.kind, "nameSource": binding.name_source,
                         "mappingIdentity": binding.identity, "confidence": binding.confidence,
                         "conditions": binding.condition, "ammoLevel": level or 1,
-                        "skillTags": (["hien"] if record.properties.get("_IsSkillHien") else [])
-                            + (["gunlance_artillery"] if gunlance and gunlance["type"] in SUPPORTED_TYPES else []),
+                        "skillTags": collision_skill_tags(scope, key, record.properties, gunlance),
                         # Normal/spread and elemental shells share resources across levels.
                         # cHunterWpGunHandling.doOnHit_AttackPre reads the runtime Lv2/Lv3 rates.
                         # WeaponData._ShellLv entries for FIRE/WATER/ELEC/ICE use SL_000/001.
@@ -157,7 +169,7 @@ def action_catalog(natives_dir: Path, text_source: TextSource) -> tuple[dict, li
                 "kind": "Unmapped", "nameSource": "exact_collision_identity",
                 "mappingIdentity": "", "confidence": "profile_only", "conditions": "",
                 "ammoLevel": 1, "ammoLevels": [1], "arrowType": None,
-                "skillTags": ["hien"] if record.properties.get("_IsSkillHien") else [],
+                "skillTags": collision_skill_tags(scope, record.key, record.properties),
                 "shell": None, "bow": None,
             })
     return {key: sorted(names) for key, names in labels.items()}, actions, {

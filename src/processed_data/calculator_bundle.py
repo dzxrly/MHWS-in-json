@@ -99,6 +99,7 @@ def build_bundle() -> dict[str, bytes]:
     sources = set(repository.loaded_paths) | set(damage["sourceContract"]["sourceHashes"])
     sources.update(monster["sourceFile"] for monster in damage["monsters"])
     sources.add(damage["gunlance"]["source"])
+    sources.add(damage["music"]["source"])
     for profile in damage["hitProfiles"]:
         sources.add("STM/GameDesign/Player/ActionData/" + profile["rcol"])
         for field in ("physicalCurve", "statusCurve"):
@@ -108,6 +109,18 @@ def build_bundle() -> dict[str, bytes]:
             sources.add(profile["lanceCharge"]["source"])
         if profile.get("switchaxe"):
             sources.add(profile["switchaxe"]["source"])
+        if profile.get("dualblades"):
+            sources.add(profile["dualblades"]["source"])
+        if profile.get("longsword"):
+            sources.add(profile["longsword"]["source"])
+        if profile.get("insectglaive"):
+            sources.add(profile["insectglaive"]["source"])
+        if profile.get("huntinghorn"):
+            sources.add(profile["huntinghorn"]["source"])
+        if profile.get("chargeblade"):
+            sources.add(profile["chargeblade"]["source"])
+        if profile.get("chargebladePhial"):
+            sources.add(profile["chargebladePhial"]["source"])
     for action in damage["actions"]:
         if action.get("gunlance"):
             sources.add(action["gunlance"]["source"])

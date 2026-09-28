@@ -13,6 +13,14 @@ class DamageCalculatorDataTests(unittest.TestCase):
             NATIVES_DIR, SourceRepository(NATIVES_DIR), TextSource.from_natives(NATIVES_DIR)
         )
 
+    def test_sharpness_skill_scope_follows_native_collision_flags(self) -> None:
+        profiles = {p["id"]: p for p in self.catalog["hitProfiles"]}
+        for action in self.catalog["actions"]:
+            profile = profiles[action["profileId"]]
+            expected = profile["scope"] in {f"Wp{i:02d}" for i in range(11)} and (
+                not profile["ignoresSharpness"] or profile["forcesSharpnessAttackRate"])
+            self.assertEqual("sharpness" in action["skillTags"], expected, action["id"])
+
     def test_runtime_weapon_states_keep_source_values_and_aliases(self) -> None:
         profiles = {p["id"]: p for p in self.catalog["hitProfiles"]}
         spirit = profiles["Wp03|Wp03/Collision/Collider/Wp03_Attack.rcol.38.json|7|4057751804|7"]
@@ -35,6 +43,94 @@ class DamageCalculatorDataTests(unittest.TestCase):
             {"count": 0, "rate": 1}, {"count": 1, "rate": 1}, {"count": 2, "rate": .75}])
         self.assertEqual(arrow["support"]["status"], "basic_hit")
         self.assertTrue(any(a.get("bow") for a in self.catalog["actions"] if a["profileId"] == arrow["id"]))
+
+    def test_dual_blades_dodge_retains_distinct_attack_and_element_stages(self) -> None:
+        from src.processed_data.damage_calculator.weapon_states import validate_weapon_states
+        profiles = self.catalog["hitProfiles"]
+        for profile in profiles:
+            if profile["scope"] == "Wp02":
+                self.assertEqual(profile["dualblades"]["attackRate"], 1.15)
+                self.assertEqual(profile["dualblades"]["elementMotionRate"], 1.3)
+            else:
+                self.assertIsNone(profile["dualblades"])
+        profile = next(p for p in profiles if p["scope"] == "Wp02")
+        with self.assertRaisesRegex(ValueError, "dual blades"):
+            validate_weapon_states({**profile, "scope": "Wp00"})
+
+    def test_longsword_aura_uses_the_current_color_table(self) -> None:
+        profiles = self.catalog["hitProfiles"]
+        for profile in profiles:
+            if profile["scope"] == "Wp03":
+                self.assertEqual(profile["longsword"]["auraRates"],
+                                 {"none": 1, "white": 1.05, "yellow": 1.075, "red": 1.1})
+            else:
+                self.assertIsNone(profile["longsword"])
+
+    def test_insect_glaive_extract_table_is_scoped_and_validated(self) -> None:
+        from src.processed_data.damage_calculator.weapon_states import validate_weapon_states
+        profiles = self.catalog["hitProfiles"]
+        for profile in profiles:
+            if profile["scope"] == "Wp10":
+                self.assertEqual(profile["insectglaive"]["extractRates"],
+                                 {"none": 1, "redWhite": 1.1, "triple": 1.15})
+            else:
+                self.assertIsNone(profile["insectglaive"])
+        profile = next(p for p in profiles if p["scope"] == "Wp10")
+        with self.assertRaisesRegex(ValueError, "insect glaive"):
+            validate_weapon_states({**profile, "scope": "Wp00"})
+        with self.assertRaisesRegex(ValueError, "insect glaive"):
+            validate_weapon_states({**profile, "insectglaive": {
+                **profile["insectglaive"], "extractRates": {"none": 1, "redWhite": True, "triple": 1.15}}})
+
+    def test_horn_self_improvement_uses_encore_not_movement_value(self) -> None:
+        from src.processed_data.damage_calculator.weapon_states import validate_weapon_states
+        for profile in self.catalog["hitProfiles"]:
+            if profile["scope"] == "Wp05":
+                self.assertEqual(profile["huntinghorn"]["selfEncoreAttackRate"], 1.2)
+                with self.assertRaisesRegex(ValueError, "hunting horn"):
+                    validate_weapon_states({**profile, "scope": "Wp00"})
+            else:
+                self.assertIsNone(profile["huntinghorn"])
+
+    def test_charge_blade_shield_table_does_not_leak_to_phial_shells(self) -> None:
+        from src.processed_data.damage_calculator.weapon_states import validate_weapon_states
+        for profile in self.catalog["hitProfiles"]:
+            if profile["rcol"] == "Wp09/Collision/Collider/Wp09_Attack.rcol.38.json":
+                self.assertEqual(profile["chargeblade"]["shieldAxeMotionRate"], 1.1)
+                with self.assertRaisesRegex(ValueError, "charge blade"):
+                    validate_weapon_states({**profile, "rcol": "Wp09/Collision/Collider/Wp09_Shell.rcol.38.json"})
+            else:
+                self.assertIsNone(profile["chargeblade"])
+
+    def test_shared_melodies_preserve_official_names_and_source_rates(self) -> None:
+        import copy
+        from src.processed_data.damage_calculator.music import validate_music
+        music = self.catalog["music"]
+        self.assertEqual([entry["rate"] for entry in music["attack"]], [1.03, 1.05, 1.05, 1.1])
+        self.assertEqual([entry["rate"] for entry in music["element"]], [1.08, 1.1])
+        self.assertEqual(music["attack"][0]["name"], "攻击力提升【小】")
+        self.assertEqual(music["element"][0]["name"], "属性攻击力提升")
+        invalid = copy.deepcopy(music)
+        invalid["element"][0]["rate"] = True
+        with self.assertRaisesRegex(ValueError, "melody"):
+            validate_music(invalid)
+
+    def test_charge_blade_phials_keep_separate_shield_and_artillery_scope(self) -> None:
+        from src.processed_data.damage_calculator.weapon_states import validate_weapon_states
+        profiles = [p for p in self.catalog["hitProfiles"] if p.get("chargebladePhial")]
+        self.assertEqual(len(profiles), 22)
+        for profile in profiles:
+            impact = profile["chargebladePhial"]["kind"] == "impact"
+            self.assertEqual(profile["support"]["status"], "basic_hit")
+            self.assertEqual(profile["physicalMeatMode"], "independent")
+            self.assertEqual(profile["chargebladePhial"]["shieldMotionRate"], 1.2 if impact else 1)
+            self.assertEqual(profile["chargebladePhial"]["shieldElementRate"], 1 if impact else 1.3)
+            for action in (a for a in self.catalog["actions"] if a["profileId"] == profile["id"]):
+                self.assertEqual("chargeblade_artillery" in action["skillTags"], impact)
+            with self.assertRaisesRegex(ValueError, "charge blade phial"):
+                validate_weapon_states({**profile, "canCritical": True})
+            with self.assertRaisesRegex(ValueError, "charge blade phial"):
+                validate_weapon_states({**profile, "scope": "Wp00"})
 
     def test_real_trace_runtime_overrides_are_not_claimed_as_basic_hits(self) -> None:
         profiles = {p["id"]: p for p in self.catalog["hitProfiles"]}
@@ -64,6 +160,8 @@ class DamageCalculatorDataTests(unittest.TestCase):
             broken = deepcopy(self.catalog)
             profile = next(p for p in broken["hitProfiles"] if p["physicalMeatMode"] == "independent")
             profile[field] = value
+            if field == "scope":
+                profile["huntinghorn"] = None  # Isolate the meat-mode guard from weapon-state validation.
             with self.assertRaisesRegex(ValueError, "physical meat mode"):
                 validate_catalog(broken)
 
@@ -95,6 +193,7 @@ class DamageCalculatorDataTests(unittest.TestCase):
         broken = deepcopy(self.catalog)
         profile = next(p for p in broken["hitProfiles"] if p.get("renkiAttack"))
         profile["scope"] = "Wp00"
+        profile["longsword"] = None  # Isolate consumed-motion validation from the separate aura guard.
         with self.assertRaisesRegex(ValueError, "consumed spirit"):
             validate_catalog(broken)
         broken = deepcopy(self.catalog)

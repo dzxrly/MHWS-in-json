@@ -15,8 +15,10 @@ from src.processed_data.damage_calculator.contract import source_contract, valid
 from src.processed_data.damage_calculator.bonuses import item_catalog
 from src.processed_data.damage_calculator.sharpness import sharpness_catalog
 from src.processed_data.damage_calculator.multihit import physical_curve_points
-from src.processed_data.damage_calculator.weapon_states import validate_weapon_states, validate_bow, runtime_support_reasons, lance_charge_parameters, switchaxe_parameters
+from src.processed_data.damage_calculator.weapon_states import validate_weapon_states, validate_bow, runtime_support_reasons, lance_charge_parameters, switchaxe_parameters, dualblades_parameters, longsword_parameters, insectglaive_parameters, huntinghorn_parameters, chargeblade_parameters
 from src.processed_data.damage_calculator.gunlance import parameters as gunlance_parameters, validate_parameters as validate_gunlance, SHELL_TYPES, SUPPORTED_REQUESTS
+from src.processed_data.damage_calculator.weapon_states import chargeblade_phial_kind, chargeblade_phial_parameters
+from src.processed_data.damage_calculator.music import music_parameters, validate_music
 
 OUTPUT_NAME = "damage_calculator.zh-Hans.json"
 PARAM_GLOB = "STM/GameDesign/Enemy/Em*/*/Data/*_Param_Parts.user.3.json"
@@ -119,6 +121,7 @@ def _hit_profiles(natives_dir: Path, labels: dict) -> list[dict]:
                               "attack_scaled" if special == "BOWGUN_ELEMENT_SHOT" else
                               "intrinsic" if props.get("_AttrValue", 0) > 0 else "none")
             unsupported = runtime_support_reasons(scope, key.rcol, props)
+            chargeblade_phial = chargeblade_phial_kind(scope, key.rcol, key.request_set_id, props)
             switchaxe = (scope == "Wp08" and key.rcol == "Wp08/Collision/Collider/Wp08_Attack.rcol.38.json"
                          and special == "NORMAL" and element_source == "weapon"
                          and _symbol(props.get("_ActionTypeFixed._Value", "NONE")) == "SLASH")
@@ -137,7 +140,7 @@ def _hit_profiles(natives_dir: Path, labels: dict) -> list[dict]:
                 unsupported = []  # Resource type and player shell state are required by the consumer.
             if special not in {"NORMAL", "BOWGUN_ELEMENT_SHOT"} and not gunlance:
                 unsupported.append("该特殊命中的武器预处理尚未完整核验")
-            if _symbol(props.get("_ActionTypeFixed._Value", "NONE")) == "NONE" and props.get("_Attack", 0) and not (horn_sound or gunlance):
+            if _symbol(props.get("_ActionTypeFixed._Value", "NONE")) == "NONE" and props.get("_Attack", 0) and not (horn_sound or gunlance or chargeblade_phial):
                 unsupported.append("无常规物理肉质类型，需专用伤害结算")
             curve = physical_curve_points(natives_dir, props.get("_MultiHitRateCurve.path", ""))
             missing = []
@@ -150,12 +153,18 @@ def _hit_profiles(natives_dir: Path, labels: dict) -> list[dict]:
                 "scope": scope, "rcol": key.rcol, "requestSetID": key.request_set_id,
                 "keyHash": key.key_hash, "sourceRequestSetOrdinal": key.source_ordinal,
                 "actionType": _symbol(record.properties.get("_ActionTypeFixed._Value", "NONE")),
-                "physicalMeatMode": "independent" if horn_sound or (gunlance and _symbol(props.get("_ActionTypeFixed._Value", "NONE")) == "NONE") else "part",
+                "physicalMeatMode": "independent" if horn_sound or chargeblade_phial or (gunlance and _symbol(props.get("_ActionTypeFixed._Value", "NONE")) == "NONE") else "part",
                 "sourceAttack": record.properties.get("_Attack"),
                 # doOnHit_AttackPre815550: IsRenkiConsumed && _GeneralValue2 > 0.
                 "renkiAttack": props.get("_GeneralValue._GeneralValue2") if scope == "Wp03" and props.get("_GeneralValue._GeneralValue2", 0) > 0 else None,
                 "lanceCharge": lance_charge_parameters(natives_dir, scope, key.rcol, key.request_set_id),
                 "switchaxe": switchaxe_parameters(natives_dir) if switchaxe else None,
+                "dualblades": dualblades_parameters(natives_dir) if scope == "Wp02" else None,
+                "longsword": longsword_parameters(natives_dir) if scope == "Wp03" else None,
+                "insectglaive": insectglaive_parameters(natives_dir) if scope == "Wp10" else None,
+                "huntinghorn": huntinghorn_parameters(natives_dir) if scope == "Wp05" else None,
+                "chargeblade": chargeblade_parameters(natives_dir) if scope == "Wp09" and key.rcol == "Wp09/Collision/Collider/Wp09_Attack.rcol.38.json" else None,
+                "chargebladePhial": chargeblade_phial_parameters(natives_dir, chargeblade_phial) if chargeblade_phial else None,
                 "usesAttackPower": record.properties.get("_UseStatusAttackPower"),
                 "usesElementPower": record.properties.get("_UseStatusAttrPower"),
                 "canCritical": not no_critical,
@@ -280,6 +289,7 @@ def build_catalog(natives_dir: Path, repository: SourceRepository, text_source: 
         "hitProfiles": _hit_profiles(natives_dir, labels),
         "actions": actions,
         "gunlance": gunlance_parameters(natives_dir),
+        "music": music_parameters(natives_dir, text_source),
         "sharpness": sharpness_catalog(natives_dir),
         **item_catalog(natives_dir),
     }
@@ -291,6 +301,7 @@ def validate_catalog(catalog: dict) -> None:
     if catalog.get("schemaVersion") != 15 or catalog.get("language") != "zh-Hans":
         raise ValueError("Unsupported calculator catalog schema")
     validate_source_contract(catalog.get("sourceContract", {}))
+    validate_music(catalog.get("music", {}))
     for key in ("attackRateLimit", "attackAddLimit", "elementRateLimit", "elementAddLimit", "gunElementRateLimit"):
         value = catalog.get("rules", {}).get(key)
         if not isinstance(value, (int, float)) or isinstance(value, bool) or not math.isfinite(value) or value <= 0:
@@ -327,7 +338,8 @@ def validate_catalog(catalog: dict) -> None:
                  or (profile.get("scope") == "Wp07"
                      and profile.get("rcol") == "Wp07/Collision/Collider/Wp07_Shell.rcol.38.json"
                      and profile.get("requestSetID") in SUPPORTED_REQUESTS
-                     and profile.get("actionType") == "NONE"))
+                     and profile.get("actionType") == "NONE")
+                 or bool(profile.get("chargebladePhial")))
                 and profile.get("canCritical") is False
                 and profile.get("ignoresSharpness") is True)):
             raise ValueError(f"Invalid physical meat mode: {profile_id}")
@@ -374,6 +386,8 @@ def validate_catalog(catalog: dict) -> None:
         ):
             raise ValueError(f"Invalid hit profile rates: {profile_id}")
     action_ids = set()
+    impact_phial_ids = {p["id"] for p in catalog["hitProfiles"]
+                        if (p.get("chargebladePhial") or {}).get("kind") == "impact"}
     validate_gunlance(catalog.get("gunlance", {}))
     for action in catalog.get("actions", []):
         validate_bow(action)
@@ -382,8 +396,10 @@ def validate_catalog(catalog: dict) -> None:
                 or gunlance.get("type") not in SHELL_TYPES
                 or not gunlance.get("source", "").startswith("STM/GameDesign/Player/ActionData/Wp07/")):
             raise ValueError("Invalid gunlance projectile")
-        if not isinstance(action.get("skillTags"), list) or any(tag not in {"hien", "gunlance_artillery"} for tag in action["skillTags"]):
+        if not isinstance(action.get("skillTags"), list) or any(tag not in {"hien", "gunlance_artillery", "chargeblade_artillery", "sharpness"} for tag in action["skillTags"]):
             raise ValueError("Invalid action skill tags")
+        if ("chargeblade_artillery" in action["skillTags"]) != (action.get("profileId") in impact_phial_ids):
+            raise ValueError("Invalid charge blade artillery scope")
         if action["id"] in action_ids or action["profileId"] not in profile_ids or not action["weapons"]:
             raise ValueError("Invalid action reference")
         action_ids.add(action["id"])
