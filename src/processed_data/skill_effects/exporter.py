@@ -318,7 +318,7 @@ def build_catalog(natives_dir: Path, repository: SourceRepository, text_source: 
         if skill_id == "HunterSkill_057":
             entry["activeEffectNote"] = "勾选表示本次大锤命中满足蓄击强化条件；普通攻击请勿勾选。"
         if skill_id == "HunterSkill_198":
-            entry["activeEffectNote"] = "需同时勾选“本次弹体触发首发迅击”；装填至全满后的首发弹体及其后续贯穿命中适用，不等同于命中序号 1。"
+            entry["activeEffectNote"] = "勾选即按本次弹体已触发首发迅击计算；装填至全满后的首发弹体及其后续贯穿命中适用，不等同于命中序号 1。不能与强四射击同时生效。"
         if skill_id == "HunterSkill_183":
             if not levels or any("HunterSkill_196" not in item["openSkills"] for item in levels):
                 raise ValueError("Black Eclipse parent identity changed")
