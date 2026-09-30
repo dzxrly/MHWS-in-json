@@ -1,10 +1,13 @@
-from config import WEAPON_TYPES
+from config import WEAPON_FILE_STEMS, WEAPON_TYPES
 
 WORKBOOK_NAME = "EquipRecipeCollection.xlsx"
 SHEETS = [
     ("Armor", "STM/GameDesign/Common/Equip/ArmorRecipeData.user.3.json"),
     *[
-        (f"Wp_{name}", f"STM/GameDesign/Common/Weapon/{name}Recipe.user.3.json")
+        (
+            f"Wp_{name}",
+            f"STM/GameDesign/Common/Weapon/{WEAPON_FILE_STEMS[name]}Recipe.user.3.json",
+        )
         for name in WEAPON_TYPES
     ],
 ]

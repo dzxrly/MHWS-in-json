@@ -1,7 +1,17 @@
-from config import SUPPORT_FILES, WEAPON_TYPES
+from config import SUPPORT_FILES, WEAPON_FILE_STEMS, WEAPON_TYPES
 from src.shared.equipment import WEAPON_ID_COLUMNS, support_map
 from src.shared.text.values import TextParts
-from src.shared.tables import Table, FrameLoader, index_by, map_column, as_list, has_columns, drop, rename, insert_after
+from src.shared.tables import (
+    Table,
+    FrameLoader,
+    index_by,
+    map_column,
+    as_list,
+    has_columns,
+    drop,
+    rename,
+    insert_after,
+)
 
 
 def prepare(sheets: dict[str, Table], load: FrameLoader) -> dict[str, Table]:
@@ -18,7 +28,10 @@ def prepare(sheets: dict[str, Table], load: FrameLoader) -> dict[str, Table]:
                 armor,
                 "PartsType",
                 "Name",
-                [armor_name_map.get((row.get("SeriesId"), row.get("PartsType")), "") for row in armor],
+                [
+                    armor_name_map.get((row.get("SeriesId"), row.get("PartsType")), "")
+                    for row in armor
+                ],
             )
         map_column(armor, "SeriesId", series_map)
         _recipe_common(armor, item_map, enemy_map)
@@ -50,7 +63,15 @@ def _recipe_common(frame: Table, item_map: dict, enemy_map: dict) -> None:
 def _merge_item_nums(frame: Table) -> list[list[str]]:
     rows = []
     for row in frame:
-        rows.append([TextParts((item, " x", num)) for item, num in zip(as_list(row.get("Item")), as_list(row.get("ItemNum"))) if num])
+        rows.append(
+            [
+                TextParts((item, " x", num))
+                for item, num in zip(
+                    as_list(row.get("Item")), as_list(row.get("ItemNum"))
+                )
+                if num
+            ]
+        )
     return rows
 
 
@@ -62,7 +83,9 @@ def _armor_name_map(load: FrameLoader) -> dict[tuple[str, str], str]:
 
 
 def _weapon_name_map(load: FrameLoader, weapon_type: str) -> dict:
-    frame = load(f"STM/GameDesign/Common/Weapon/{weapon_type}.user.3.json")
+    frame = load(
+        f"STM/GameDesign/Common/Weapon/{WEAPON_FILE_STEMS[weapon_type]}.user.3.json"
+    )
     id_col = WEAPON_ID_COLUMNS[weapon_type]
     if frame is None or not has_columns(frame, id_col, "Name"):
         return {}

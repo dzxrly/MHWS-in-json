@@ -106,3 +106,8 @@ WEAPON_TYPES = [
     "HeavyBowgun",
     "LightBowgun",
 ]
+
+# Source filenames keep their original casing; workbook names use WEAPON_TYPES.
+WEAPON_FILE_STEMS = {
+    name: "GunLance" if name == "Gunlance" else name for name in WEAPON_TYPES
+}
