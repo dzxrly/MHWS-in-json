@@ -65,6 +65,7 @@ WeaponActionValues.xlsx
 ```text
 Bowgun_Custom.xlsx
 EnemyActionNames.xlsx
+EnemyActionLogic.html
 HeavyBowgun.xlsx
 LightBowgun.xlsx
 amulet_pool.json
@@ -79,6 +80,25 @@ skill_pool.json
 技能 JSON 保留源技能 ID、中文名称和描述、各等级原始数值、核验状态及源文件哈希。已核验的伤害效果另标明结算阶段、武器和属性范围，以及可选的生效档位。消费端以前提“勾选的技能已经触发、会心率恒为 100%”计算；此处不处理触发条件、持续时间、会心率加值、餐点技能或异常积蓄。未核实数值作用的技能仍可供追查，但不得当作零加成参与计算。
 
 `MHWS-in-json_<版本>.zip` 包含共享的源 JSON，与各语言工作簿分开打包。
+
+## 怪物行动逻辑流程图
+
+`EnemyActionLogic.html` 是一个可离线打开的单文件。通过怪物和阶段选择器查看流程图，主图从玩家距离和怪物状态出发，显示具体动作名称、类型、参数版本及所属路径的后续。每个已发现的阶段只有一张连通图。原生图保留状态和距离分支；同一动作的不同分支参数、请求位置和返回上下文分别展示，不把候选列表当作固定连招。HTML 内嵌图形、数据和查看工具，支持缩放、搜索，以及点击节点追踪上游条件、动作内部过程和正常后续。原始编号与地址放在折叠详情中。
+
+范围为 EnemyData 中 EM 基础编号小于 1000 的完整 ID；EM0165 标记为训练对象。动作类型从战斗行为表的 ActionID 引用解析，中文名称是类型名的释义。未发现阶段配置时显示“战斗阶段未解析”。仅凭参数 JSON 无法确定选招分支、执行顺序和每个阶段的适用动作；这些关系保留为未知。
+
+阶段识别优先读取有效的 `_PhaseList`；少数专用结构由 `enemy_action_logic/phases.py` 中的固定 EM 配置兼容，并与实际阶段命令核对。当前分开显示巨戟龙 EM0078 的 3 个阶段、冻峰龙 EM0162 的 4 个任务阶段、白炽龙 EM0164 和游星欧米茄 EM0166 各 4 个阶段。海龙 EM0046 的游泳战斗有 3 个内部阶段，另保留常规战斗入口。愤怒状态、可反复切换的模式、音乐阶段和动作内部阶段不直接当作整体战斗阶段。EM164/166 枚举中未被有效阶段列表使用的 PHASE_5 不生成额外图。没有原生流程证据的怪物仍显示阶段动作归属未恢复，不能把分图理解为已经筛出了各阶段的全部动作。
+
+```powershell
+python -m src.processed_data.enemy_action_logic.exporter --output output/processed_data/EnemyActionLogic.html
+python -m src.processed_data.enemy_action_logic.exporter --enemy EM0166_00_0 --output output/processed_data/EM0166ActionLogic.html --evidence path/to/evidence.json
+```
+
+`--enemy` 可重复指定。`--evidence` 可读取外部原生图 JSON 或保留原生图证据的既有导出 HTML；HTML 的 `nativeEvidence` 与展示图分开保存，可直接复用。只有合并候选而没有原生图的旧版 HTML 需要原始证据 JSON。完整流水线也生成这个 HTML，并将其纳入 `PROCESSED_DATA` 压缩包；环境变量 `MHWS_ENEMY_LOGIC_EVIDENCE` 可指定证据文件。导出本身不生成 PDF 或单独的 ZIP。
+
+原生证据 JSON 使用 `{"schemaVersion": 1, "enemies": {"EM0166_00_0": {...}}}`。每个怪物包含 `sourceFiles`（相对 natives 路径到 SHA256 的映射，覆盖本次读取的资源）、`nativeSnapshot.exeSha256` 和 `graphs`。图含 `id/title/entry/nodes/edges`；节点为 `id/label/kind/evidence/detail`，边为 `from/to/label/evidence/back`。`kind` 为 `process/decision/action/unknown/end`，`evidence` 为 `resource/native/unresolved/context`。原生分支直接保留。动作模板可用 `detail.actionType/requestSites/continuation/executionFlow` 表达请求位置、续执行目标及动作内部流程；请求位置必须匹配源表参数、动作和分支 GUID。动作版本同时关联 ActionParam 中的循环计时、动画过滤器及完整参数。`decisionCases` 仅是辅助证据，不再按距离合并其中的状态或动作集合；其 `distanceBasis` 必须区分 `command` 命令距离与 `player` 玩家距离。布局可以随证据提供，只有布局签名与当前展示图一致时才复用。
+
+导出检查源哈希、阶段一致性、图的连通和返回路径、布局范围，以及 HTML 内嵌数据和图形的一致性。这一版可复用已有 EM166 原生分析，还不能自动恢复所有怪物的完整运行时状态机，也没有进行游戏内验证。
 
 ## 工作簿说明
 

@@ -1,0 +1,30 @@
+* { box-sizing: border-box; }
+body { margin: 0; background: #f2f5f8; color: #24374a; font: 14px "Microsoft YaHei", sans-serif; }
+header { padding: 16px 24px; background: #12394c; color: white; }
+h1 { margin: 0; font-size: 22px; }
+header p { margin: 8px 0 0; line-height: 1.65; }
+nav { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 20px; align-items: center; background: white; border-bottom: 1px solid #ccd6de; }
+button, select, input { font: inherit; padding: 7px 10px; border: 1px solid #b8c8d5; border-radius: 5px; background: white; }
+button { cursor: pointer; }
+main { display: grid; grid-template-columns: minmax(0,1fr) 330px; height: calc(100vh - 160px); min-height: 420px; }
+#viewport { overflow: auto; background: white; padding: 12px; }
+.diagram { width: max-content; }
+.diagram svg { display: block; }
+aside { padding: 16px; overflow: auto; border-left: 1px solid #ccd6de; line-height: 1.7; }
+pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 12px; line-height: 1.6; }
+.node { cursor: pointer; }
+.node.selected > :is(rect,polygon) { stroke: #cf532b; stroke-width: 3.5; }
+.edge[data-role="interruption"], .edge-label[data-role="interruption"] { visibility: hidden; }
+.edge.interrupted, .edge-label.interrupted { visibility: visible; }
+.edge.upstream { stroke: #c97920; stroke-width: 2.8; opacity: 1; }
+.edge.downstream { stroke: #237bac; stroke-width: 2.8; opacity: 1; }
+.edge.interrupted { stroke: #c25948; stroke-width: 2.8; opacity: 1; }
+.has-selection .edge:not(.upstream):not(.downstream):not(.interrupted) { opacity: .08; }
+.has-selection .edge-label:not(.upstream):not(.downstream):not(.interrupted) { opacity: .08; }
+.has-selection .node:not(.path-node) { opacity: .18; }
+#status { font-size: 13px; color: #526b7d; }
+#notes { font-size: 13px; color: #596b78; }
+.action-item { margin: 10px 0; padding: 10px; border-left: 3px solid #258571; background: #eaf8f4; }
+.action-item code { display: block; overflow-wrap: anywhere; }
+details { margin-top: 18px; }
+@media (max-width: 900px) { main { grid-template-columns: 1fr; } aside { max-height: 260px; border-left: 0; border-top: 1px solid #ccd6de; } }

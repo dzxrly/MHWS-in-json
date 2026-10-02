@@ -65,6 +65,7 @@ WeaponActionValues.xlsx
 ```text
 Bowgun_Custom.xlsx
 EnemyActionNames.xlsx
+EnemyActionLogic.html
 HeavyBowgun.xlsx
 LightBowgun.xlsx
 amulet_pool.json
@@ -73,6 +74,12 @@ graphic_preset.xlsx
 skill_effects.zh-Hans.json
 skill_pool.json
 ```
+
+`EnemyActionLogic.html` is one offline file with enemy and phase selectors. Each phase has a connected player-facing flowchart with concrete action names/types. Recovered state and distance branches are preserved; move parameter versions, request sites, execution states, and continuation contexts stay separate. Clicking a node traces its upstream conditions and normal follow-ups, with source IDs/addresses in collapsed details. Full EnemyData IDs below EM1000 are retained, with EM0165 marked as a training object. Missing phases and selection conditions remain unresolved. Resource argument order is never treated as a move sequence, and this version does not automatically recover complete native control flow or prove in-game behavior.
+
+Export it with `python -m src.processed_data.enemy_action_logic.exporter --output output/processed_data/EnemyActionLogic.html`. Repeat `--enemy EM0166_00_0` to restrict full IDs. `--evidence <file.json>` imports source-hash-bound native graphs; a previous exported HTML containing native evidence can also be reused. Full exports accept the same optional input through `MHWS_ENEMY_LOGIC_EVIDENCE`. No PDF or separate feature ZIP is generated. See the [Simplified Chinese README](docs/README.zh-Hans.md#怪物行动逻辑流程图) for the evidence contract and its limits.
+
+Active phase lists are detected generically. A small EM-specific compatibility registry also checks the exact phase commands for EM0078 (3 battle phases), EM0162 (4 quest battle phases), EM0164 and EM0166 (4 active phases each). EM0046 keeps regular combat plus its 3 swim-combat subphases. Reversible modes, anger, music phases, and action-internal stages are not automatically promoted to whole-battle phases. Unknown phase applicability of resource-only moves remains explicit; splitting diagrams does not recover their native selection logic.
 
 `damage_calculator.zh-Hans.json` retains monster part and scar GUIDs, normal and alternate meat tables, source vitality values, and player RCOL hit profiles with their exact request-set identities. The four hit rates are `_PartsBreakRate` and the tear/raw/old scar rates. The seven sharpness levels export separate physical and elemental rates from the enemy common table; hit profiles also retain the source sharpness and critical flags. Missing alternate meat references stay explicit as `null`. Items remain in this file; damage skill effects are exported only in `skill_effects.zh-Hans.json`. The full release validates both JSON files before publication. For standalone snapshots, run `python -m src.processed_data.damage_calculator.exporter --output .agents/damage_calculator.zh-Hans.json` and `python -m src.processed_data.skill_effects.exporter --output .agents/skill_effects.zh-Hans.json` from the project root.
 
