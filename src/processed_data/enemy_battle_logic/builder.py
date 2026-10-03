@@ -11,7 +11,9 @@ from .random_choice import choose_with_uint32, weighted_pool
 from .definitions import DEFAULT_TEMPLATE
 
 
-def build_chain(natives, template_path=None, *, metadata_path=None, rules_path=None):
+def build_chain(
+    natives, template_path=None, *, metadata_path=None, rules_path=None, resources=None
+):
     registry = RuleRegistry.load(rules_path)
     if template_path is None:
         template_path = DEFAULT_TEMPLATE
@@ -30,7 +32,7 @@ def build_chain(natives, template_path=None, *, metadata_path=None, rules_path=N
         if digest.hexdigest() != model["profile"]["metadataSha256"]:
             raise ValueError("当前元数据版本与固化规则不匹配，需要重新核实")
         metadata_status = "matched"
-    resources = Resources(natives)
+    resources = resources if resources is not None else Resources(natives)
     definitions = model.get("resources") or {
         model["resource"]: {"structureSignature": model["structureSignature"]}
     }

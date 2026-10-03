@@ -77,6 +77,10 @@ enemy_battle_logic/EM0001_00_0.json
 enemy_battle_logic/EM0001_00_0.html
 ```
 
+`enemy_battle_logic` 为 EnemyData 中全部 35 个大型怪物与训练对象 ID 各生成一份 JSON，训练对象单独标注。`logicStatus` 区分雌火龙已恢复的局部模型和其余 `not_recovered` 资源清单。清单保留 BTable 参数、去重后的动作参数定义、已绑定的通用判断及源文件哈希；参数槽位不能解释为执行顺序，也不表示完整行动树已经恢复。
+
+默认分支的工作流同时将这些已校验文件发布到 GitHub Pages。首页支持按名称或 EM 编号查找、下载各怪物 JSON，以及打开已有局部控制流图。`.github/scripts/build_pages.py` 直接复制发布文件，不重新提取逻辑；Pages 发布来源需设置为 GitHub Actions。其他分支仍生成发布压缩包，但不部署公开站点。
+
 `damage_calculator.zh-Hans.json` 保留怪物部位和伤口 GUID、普通与替代肉质、源耐久，以及带完整 requestSet 标识的玩家动作记录。每条动作记录包含原始动作值、是否使用玩家攻击／属性、动作属性倍率、斩味和会心适用标记、四项部位／伤口倍率，以及经精确关联并有中文文本的动作名称；另从怪物共通参数导出七档斩味的物理／属性倍率，并保留道具补正。技能数值只由 `skill_effects.zh-Hans.json` 导出。源数据引用了缺失的替代肉质时明确写为 `null`。完整导出会在发布前校验两个 JSON。若只需单独生成快照，可在项目根目录运行 `python -m src.processed_data.damage_calculator.exporter --output .agents/damage_calculator.zh-Hans.json` 和 `python -m src.processed_data.skill_effects.exporter --output .agents/skill_effects.zh-Hans.json`。
 
 技能 JSON 保留源技能 ID、中文名称和描述、各等级原始数值、核验状态及源文件哈希。已核验的伤害效果另标明结算阶段、武器和属性范围，以及可选的生效档位。消费端以前提“勾选的技能已经触发、会心率恒为 100%”计算；此处不处理触发条件、持续时间、会心率加值、餐点技能或异常积蓄。未核实数值作用的技能仍可供追查，但不得当作零加成参与计算。

@@ -6,6 +6,7 @@ from pathlib import Path
 
 from .exporter import export_battle_logic
 from .definitions import INDEX_NAME
+from src.shared.text.catalog import TextSource
 
 
 def main():
@@ -35,6 +36,7 @@ def main():
         template_path=args.template,
         metadata_path=args.metadata,
         rules_path=args.rules,
+        text_db=TextSource.from_natives(args.natives).build(13),
     )
     index = json.loads((args.output / INDEX_NAME).read_text(encoding="utf-8"))
     print(

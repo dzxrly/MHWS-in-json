@@ -1,6 +1,7 @@
 """Exercise the JSON-only battle export and release rejection boundaries."""
 
 from copy import deepcopy
+import importlib.util
 import json
 from pathlib import Path
 import tempfile
@@ -50,6 +51,62 @@ class BattleReleaseTests(unittest.TestCase):
             encoding="utf-8"
         )
         cls.graph = json.loads(cls.json_path.read_text(encoding="utf-8"))
+
+    def test_all_large_enemy_ids_have_json_without_fabricated_graphs(self):
+        index = json.loads(
+            (self.processed / "enemy_battle_logic/index.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(len(index["monsters"]), 35)
+        self.assertEqual(len({item["enemyId"] for item in index["monsters"]}), 35)
+        self.assertEqual(sum(item["html"] is not None for item in index["monsters"]), 1)
+        omega = json.loads(
+            (self.processed / "enemy_battle_logic/EM0166_00_0.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(omega["logicStatus"], "not_recovered")
+        self.assertNotIn("entry", omega)
+        self.assertNotIn("coverage", omega)
+        self.assertGreater(omega["resourceCatalog"]["argumentCount"], 0)
+        self.assertTrue(
+            all(
+                table["controlFlowStatus"] == "not_recovered"
+                for table in omega["resourceCatalog"]["tables"]
+            )
+        )
+
+    def test_pages_reuses_exact_release_bytes_and_has_safe_relative_links(self):
+        spec = importlib.util.spec_from_file_location(
+            "battle_pages", ROOT / ".github/scripts/build_pages.py"
+        )
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        with tempfile.TemporaryDirectory() as folder:
+            destination = Path(folder) / "pages"
+            module.build_pages(
+                self.processed,
+                destination,
+                version="test",
+                repository="dzxrly/MHWS-in-json",
+            )
+            for name in OUTPUT_NAMES:
+                self.assertEqual(
+                    (destination / name).read_bytes(),
+                    (self.processed / name).read_bytes(),
+                )
+            homepage = (destination / "index.html").read_text(encoding="utf-8")
+            self.assertEqual(homepage.count("<article "), 35)
+            self.assertIn("enemy_battle_logic/EM0166_00_0.json", homepage)
+            self.assertNotIn("enemy_battle_logic/EM0166_00_0.html", homepage)
+            with self.assertRaises(ValueError):
+                module.build_pages(
+                    self.processed,
+                    destination,
+                    version="test",
+                    repository="dzxrly/MHWS-in-json",
+                )
 
     def test_default_release_uses_upstream_model_without_native_inputs(self):
         self.assertEqual(self.graph["coverage"]["localTables"], 11)

@@ -44,6 +44,7 @@ class Resources:
         }
         self.cache = {}
         self.hashes = {}
+        self.accessed = set()
 
     def resolve(self, relative):
         raw = str(relative).replace("\\", "/")
@@ -67,6 +68,7 @@ class Resources:
 
     def read(self, relative):
         relative = self.resolve(relative)
+        self.accessed.add(relative)
         if relative not in self.cache:
             raw = self.paths[relative.casefold()].read_bytes()
             data = json.loads(raw)

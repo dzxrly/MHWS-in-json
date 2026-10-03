@@ -8,6 +8,51 @@ import re
 from .definitions import INDEX_NAME
 from .diagram import combined_diagram
 from .random_choice import weighted_pool
+from .catalog import CATALOG_TYPE
+
+
+def validate_catalog(catalog):
+    tables = catalog["tables"]
+    counts = dict(
+        tableCount=len(tables),
+        argumentCount=sum(len(table["arguments"]) for table in tables),
+        actionBindings=sum(
+            "action" in arg for table in tables for arg in table["arguments"]
+        ),
+        verifiedPredicates=sum(
+            arg.get("predicate", {}).get("status") == "verified"
+            for table in tables
+            for arg in table["arguments"]
+        ),
+    )
+    if any(
+        type(catalog.get(key)) is not int or catalog[key] != value
+        for key, value in counts.items()
+    ):
+        raise ValueError("怪物资源清单统计不一致")
+    for source, digest in catalog["sourceHashes"].items():
+        if (
+            not source.startswith("STM/")
+            or ".." in source.split("/")
+            or not re.fullmatch(r"[0-9a-f]{64}", digest)
+        ):
+            raise ValueError("怪物资源清单来源无效")
+    for table in tables:
+        if (
+            table["source"] not in catalog["sourceHashes"]
+            or table["controlFlowStatus"] != "not_recovered"
+        ):
+            raise ValueError("资源清单不能声称已恢复控制流")
+        if [arg["slot"] for arg in table["arguments"]] != list(
+            range(len(table["arguments"]))
+        ):
+            raise ValueError("怪物资源参数槽位不完整")
+        for arg in table["arguments"]:
+            if (
+                "action" in arg
+                and arg["action"]["definitionRef"] not in catalog["actionDefinitions"]
+            ):
+                raise ValueError("动作参数定义引用缺失")
 
 
 def validate_graph(graph):
@@ -161,14 +206,41 @@ def validate_bundle(processed_dir):
         if enemy_id in seen or not re.fullmatch(r"EM\d{4}_\d{2}_\d+", enemy_id):
             raise ValueError("行动图索引中的怪物标识重复或无效")
         seen.add(enemy_id)
-        if item["json"] != f"{enemy_id}.json" or item["html"] != f"{enemy_id}.html":
+        if item["json"] != f"{enemy_id}.json" or item["html"] not in (
+            None,
+            f"{enemy_id}.html",
+        ):
             raise ValueError("行动图索引中的文件名无效")
         folder = (root / INDEX_NAME).parent
         graph = json.loads((folder / item["json"]).read_text(encoding="utf-8"))
-        validate_graph(graph)
-        if graph["enemyId"] != enemy_id or any(
-            item[key] != graph[key]
-            for key in ("profile", "coverage", "metadataVerification")
+        validate_catalog(graph["resourceCatalog"])
+        if (
+            graph["enemyId"] != enemy_id
+            or graph["logicStatus"] != item["logicStatus"]
+            or graph["enemyName"] != item["enemyName"]
+            or any(
+                graph["resourceCatalog"][key] != value
+                for key, value in item["resourceSummary"].items()
+            )
         ):
             raise ValueError("行动图索引与模型内容不一致")
-        validate_html((folder / item["html"]).read_text(encoding="utf-8"), graph)
+        if graph.get("documentType") == CATALOG_TYPE:
+            if (
+                item["html"] is not None
+                or item["coverage"] is not None
+                or item["logicStatus"] != "not_recovered"
+                or item["profile"] != graph["rulesProfile"]
+            ):
+                raise ValueError("未恢复控制流的资源清单状态无效")
+        else:
+            validate_graph(graph)
+            if (
+                item["html"] is None
+                or item["logicStatus"] != "partial"
+                or any(
+                    item[key] != graph[key]
+                    for key in ("profile", "coverage", "metadataVerification")
+                )
+            ):
+                raise ValueError("行动图索引与模型内容不一致")
+            validate_html((folder / item["html"]).read_text(encoding="utf-8"), graph)

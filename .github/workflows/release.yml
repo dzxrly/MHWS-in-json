@@ -1,4 +1,4 @@
-name: Build database release
+name: Build database release and monster Pages
 
 on:
   push:
@@ -48,6 +48,16 @@ jobs:
       - name: Export database and processed data
         run: python main.py
 
+      - name: Build monster Pages from validated processed data
+        if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+        run: python .github/scripts/build_pages.py --output .agents/pages --version "${{ env.RELEASE_VERSION }}" --repository "${{ github.repository }}"
+
+      - name: Upload GitHub Pages artifact
+        if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: .agents/pages
+
       - name: Publish release
         shell: pwsh
         env:
@@ -73,3 +83,24 @@ jobs:
             $notes | gh release create $tag $assets --title $title --notes-file - --target $env:GITHUB_SHA
           }
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+  deploy-pages:
+    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    needs: release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    concurrency:
+      group: github-pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Deploy monster Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

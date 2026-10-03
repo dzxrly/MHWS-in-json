@@ -88,5 +88,5 @@ def export_processed(
             output_dir / SKILL_EFFECTS_OUTPUT_NAME, repository, text_source
         )
     with timings.measure("processed/enemy_battle_logic"):
-        export_battle_logic(output_dir, repository.root)
+        export_battle_logic(output_dir, repository.root, text_db=text_source.build(13))
     return [output_dir / name for name in OUTPUT_NAMES]

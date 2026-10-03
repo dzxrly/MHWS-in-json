@@ -77,6 +77,8 @@ python -m src.processed_data.enemy_battle_logic --template "$work/frozen/em0001.
 
 正式流水线由 `main.py` 调用 `export_processed`，再使用共享行动图导出器生成 `enemy_battle_logic/index.json` 和每个怪物的 `<enemyId>.json`、`<enemyId>.html`，经过校验后纳入 `PROCESSED_DATA`。`models` 中的 `em*.v*.json` 自动参与导出，同一怪物只能有一个正式模型；重复版本会阻止构建。未知节点可保留，连接缺失、来源版本冲突或 JSON/HTML 图数据不一致会阻止发布。CI 无需 EXE 或 Ghidra；未提供 IL2CPP 时标明 `not_supplied`，资源结构检查不能证明原生代码没有变化。
 
+正式导出还覆盖 EnemyData 中基础编号小于 1000 的全部完整 ID，目前共 35 个，包含 1 个训练对象。无固化模型的对象导出 `enemy_battle_resource_catalog`，标记 `logicStatus=not_recovered`，不生成虚构行动树。清单将资源槽位、动作定义、通用判断绑定与原生控制流分开；已绑定通用判断不等于证明该参数在某个战斗入口会执行。默认分支的 Action 将同一份已校验 JSON/HTML 复制到 Pages，不在 CI 读取 EXE 或运行 SDK。后续维护者须逐个补充原生证据和配方，不能将资源清单的状态直接改成已恢复。
+
 ## 游戏更新后的维护顺序
 
 1. 取得同版本的 EXE、IL2CPP dump 和资源导出，保存新 profile 与新证据，不覆盖旧证据。
