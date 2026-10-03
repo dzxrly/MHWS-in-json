@@ -1,0 +1,339 @@
+{
+  "_format": "mhws_pfb_v1",
+  "version": 18,
+  "sourceSha256": "7da4c47b3a14f43bd8f0850a6772ca4cec18d27aa32b6973464da897b918f275",
+  "schemaSha256": "cfe10514c482ee2856e16dddfc543b148f5320479c913d660f905e6ffb0b40ab",
+  "gameObjects": [
+    {
+      "objectTableIndex": 0,
+      "parentObjectTableIndex": -1,
+      "componentCount": 3,
+      "instanceId": 1,
+      "componentInstanceIds": [
+        2,
+        3,
+        4
+      ],
+      "childObjectTableIndices": []
+    }
+  ],
+  "gameObjectReferences": [],
+  "resources": [
+    "System/Collision/Filter/Character/Character_Camera_Photo.cfil"
+  ],
+  "userdata": [],
+  "objectTable": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "class": "",
+      "classHash": "0x00000000",
+      "crc": "0x00000000",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 1,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "PhotoCameraAgent",
+        "v1": "",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 2,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 3,
+      "class": "app.PhotoCameraAgent",
+      "classHash": "0xeec16a3a",
+      "crc": "0x2c8418c8",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 4,
+      "class": "via.physics.CharacterController",
+      "classHash": "0x996ea3bd",
+      "crc": "0xa486b0f7",
+      "fields": {
+        "v0": 1,
+        "v1": 1,
+        "v2": [
+          ""
+        ],
+        "v3": {
+          "x": -0.0,
+          "y": -1.0,
+          "z": -0.0,
+          "w": 0.0
+        },
+        "v4": [
+          31,
+          0,
+          0,
+          0
+        ],
+        "v5": [
+          51,
+          51,
+          51,
+          191
+        ],
+        "v6": 0,
+        "v7": 0,
+        "v8": 0,
+        "v9": 0,
+        "v10": {
+          "x": 0.0,
+          "y": 1.401298464324817e-43
+        },
+        "v11": 1,
+        "v12": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v13": [
+          102,
+          102,
+          230,
+          63
+        ],
+        "v14": [
+          205,
+          204,
+          204,
+          62
+        ],
+        "v15": [
+          0,
+          0,
+          112,
+          66
+        ],
+        "v16": [
+          205,
+          204,
+          76,
+          62
+        ],
+        "v17": [
+          111,
+          18,
+          131,
+          58
+        ],
+        "v18": [
+          0,
+          0,
+          122,
+          68
+        ],
+        "v19": 0,
+        "v20": 0,
+        "v21": 0,
+        "v22": "System/Collision/Filter/Character/Character_Camera_Photo.cfil"
+      },
+      "userdataPath": null
+    }
+  ],
+  "diagnostics": {
+    "nativeDataInference": false,
+    "interpretedFields": [
+      {
+        "instanceId": 1,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 1,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 4,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v8",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v9",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v10",
+        "schemaType": "Data",
+        "interpretedType": "Vec2"
+      },
+      {
+        "instanceId": 4,
+        "field": "v11",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v12",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 4,
+        "field": "v19",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v20",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v21",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      }
+    ]
+  },
+  "rszRawBase64": "UlNaABAAAAAEAAAABQAAAAAAAAAAAAAAQAAAAAAAAAB0AAAAAAAAAHQAAAAAAAAAAQAAAAIAAAADAAAABAAAAAAAAAAAAAAAF6QCyeIeTPJGMKzfp+3tTzpqwe7IGIQsvaNumfewhqQAAAAAAAAAAAAAAAARAAAAUABoAG8AdABvAEMAYQBtAGUAcgBhAEEAZwBlAG4AdAAAAAAAAQAAAAAAAQEAAIC/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgD8AAIA/AACAPwAAgD8AAAAAAQAAAAAAAAAAAAAAAAAAAAEBAQABAAAAAAAAAAAAAAAAAACAAACAvwAAAIAAAAAAHwAAADMzM78AAAAAAAAAAGQAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZmbmP83MzD4AAHBCzcxMPm8SgzoAAHpEAAAAAD4AAABTAHkAcwB0AGUAbQAvAEMAbwBsAGwAaQBzAGkAbwBuAC8ARgBpAGwAdABlAHIALwBDAGgAYQByAGEAYwB0AGUAcgAvAEMAaABhAHIAYQBjAHQAZQByAF8AQwBhAG0AZQByAGEAXwBQAGgAbwB0AG8ALgBjAGYAaQBsAAAA"
+}

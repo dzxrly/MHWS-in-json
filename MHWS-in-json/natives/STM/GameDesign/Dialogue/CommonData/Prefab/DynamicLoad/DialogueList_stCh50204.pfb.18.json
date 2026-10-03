@@ -1,0 +1,196 @@
+{
+  "_format": "mhws_pfb_v1",
+  "version": 18,
+  "sourceSha256": "e7af5c1b8e356698c67625c512973f0bcfb9fee632c31634347cb7ed7dc345ed",
+  "schemaSha256": "cfe10514c482ee2856e16dddfc543b148f5320479c913d660f905e6ffb0b40ab",
+  "gameObjects": [
+    {
+      "objectTableIndex": 0,
+      "parentObjectTableIndex": -1,
+      "componentCount": 3,
+      "instanceId": 1,
+      "componentInstanceIds": [
+        2,
+        4,
+        5
+      ],
+      "childObjectTableIndices": []
+    }
+  ],
+  "gameObjectReferences": [],
+  "resources": [
+    "GameDesign/Dialogue/CommonData/DialogueList/DialogueList_stCh50204.dlglist",
+    "GameDesign/Text/Dialogue/Dia_stCh50204_Ms502040.msg"
+  ],
+  "userdata": [],
+  "objectTable": [
+    1,
+    2,
+    4,
+    5
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "class": "",
+      "classHash": "0x00000000",
+      "crc": "0x00000000",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 1,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "DialogueList_stCh50204",
+        "v1": "",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 2,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 3,
+      "class": "via.gui.AddDialogueListInfo",
+      "classHash": "0x198e2bec",
+      "crc": "0x0c491935",
+      "fields": {
+        "v0_AutoLoad": true,
+        "v1_Resource": "GameDesign/Dialogue/CommonData/DialogueList/DialogueList_stCh50204.dlglist"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 4,
+      "class": "via.gui.AdditionalDialogueList",
+      "classHash": "0xdfcaed91",
+      "crc": "0xc370be93",
+      "fields": {
+        "v0_AddDialogueListTable": [
+          {
+            "refInstanceId": 3
+          }
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 5,
+      "class": "via.gui.AdditionalMessage",
+      "classHash": "0x816822a1",
+      "crc": "0x6165d9ba",
+      "fields": {
+        "v0_MessageList": [
+          "GameDesign/Text/Dialogue/Dia_stCh50204_Ms502040.msg"
+        ]
+      },
+      "userdataPath": null
+    }
+  ],
+  "diagnostics": {
+    "nativeDataInference": false,
+    "interpretedFields": [
+      {
+        "instanceId": 1,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 1,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      }
+    ]
+  },
+  "rszRawBase64": "UlNaABAAAAAEAAAABgAAAAAAAAAAAAAAQAAAAAAAAAByAAAAAAAAAHIAAAAAAAAAAQAAAAIAAAAEAAAABQAAAAAAAAAAAAAAF6QCyeIeTPJGMKzfp+3tT+wrjhk1GUkMke3K35O+cMOhImiButllYQAAFwAAAEQAaQBhAGwAbwBnAHUAZQBMAGkAcwB0AF8AcwB0AEMAaAA1ADAAMgAwADQAAAAAAAEAAAAAAAEBAACAvwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIA/AACAPwAAgD8AAIA/AAAAAAEAAAAAAAAAAAAAAAAAAAABAAAASwAAAEcAYQBtAGUARABlAHMAaQBnAG4ALwBEAGkAYQBsAG8AZwB1AGUALwBDAG8AbQBtAG8AbgBEAGEAdABhAC8ARABpAGEAbABvAGcAdQBlAEwAaQBzAHQALwBEAGkAYQBsAG8AZwB1AGUATABpAHMAdABfAHMAdABDAGgANQAwADIAMAA0AC4AZABsAGcAbABpAHMAdAAAAAAAAQAAAAMAAAABAAAANAAAAEcAYQBtAGUARABlAHMAaQBnAG4ALwBUAGUAeAB0AC8ARABpAGEAbABvAGcAdQBlAC8ARABpAGEAXwBzAHQAQwBoADUAMAAyADAANABfAE0AcwA1ADAAMgAwADQAMAAuAG0AcwBnAAAA"
+}

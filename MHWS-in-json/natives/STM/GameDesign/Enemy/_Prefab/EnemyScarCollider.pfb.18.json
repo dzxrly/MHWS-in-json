@@ -1,0 +1,305 @@
+{
+  "_format": "mhws_pfb_v1",
+  "version": 18,
+  "sourceSha256": "e89a7e72719173a20d4eed51910edcf117d9c6239cf3ca92b54e84180b7f1f4d",
+  "schemaSha256": "cfe10514c482ee2856e16dddfc543b148f5320479c913d660f905e6ffb0b40ab",
+  "gameObjects": [
+    {
+      "objectTableIndex": 0,
+      "parentObjectTableIndex": -1,
+      "componentCount": 7,
+      "instanceId": 1,
+      "componentInstanceIds": [
+        2,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "childObjectTableIndices": []
+    }
+  ],
+  "gameObjectReferences": [],
+  "resources": [
+    "GameDesign/Enemy/CommonData/Collision/EmScar.rcol"
+  ],
+  "userdata": [],
+  "objectTable": [
+    1,
+    2,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "class": "",
+      "classHash": "0x00000000",
+      "crc": "0x00000000",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 1,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "EnemyScarCollider",
+        "v1": "Enemy",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 2,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 3,
+      "class": "via.physics.RequestSetCollider.RequestSetGroup",
+      "classHash": "0x7c0c2e30",
+      "crc": "0x81d1ec59",
+      "fields": {
+        "v0": "GameDesign/Enemy/CommonData/Collision/EmScar.rcol"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 4,
+      "class": "via.physics.RequestSetCollider",
+      "classHash": "0x669fc998",
+      "crc": "0x07a8aeb6",
+      "fields": {
+        "v0": 1,
+        "v1": 1,
+        "v2": [
+          ""
+        ],
+        "v3": [
+          [
+            3,
+            0,
+            0,
+            0
+          ]
+        ],
+        "v4": "",
+        "v5": [
+          4,
+          0,
+          0,
+          0
+        ],
+        "v6": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 5,
+      "class": "app.EnemyScar",
+      "classHash": "0x79045949",
+      "crc": "0x45ff6bd1",
+      "fields": {
+        "v0": 1,
+        "StampSizeRate": 0.5,
+        "IsDetailStampSizeRate": true,
+        "TearStampSizeRate": 0.6000000238418579,
+        "RawStampSizeRate": 0.8500000238418579,
+        "OldStampSizeRate": 0.75,
+        "EnableOffsetAngle_Horizontal": 45.0,
+        "OffsetLimitAngle_Horizontal": 45.0,
+        "EnableOffsetAngle_Target": 10.0,
+        "OffsetLimitAngle_Target": 160.0,
+        "CreatorThroughSec": 0.06400000303983688
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 6,
+      "class": "ace.ColliderPass",
+      "classHash": "0x03708104",
+      "crc": "0x96632d51",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 7,
+      "class": "app.HitController",
+      "classHash": "0xeb5b7848",
+      "crc": "0x62e15351",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 8,
+      "class": "app.ColliderSwitcher",
+      "classHash": "0xcde46068",
+      "crc": "0xa042d2e4",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 9,
+      "class": "app.ConstraintUpdater",
+      "classHash": "0xe33a82c9",
+      "crc": "0x8cd81e7e",
+      "fields": {
+        "v0": 0
+      },
+      "userdataPath": null
+    }
+  ],
+  "diagnostics": {
+    "nativeDataInference": false,
+    "interpretedFields": [
+      {
+        "instanceId": 1,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 1,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 5,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 7,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 8,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 9,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      }
+    ]
+  },
+  "rszRawBase64": "UlNaABAAAAAIAAAACgAAAAAAAAAAAAAAUAAAAAAAAACsAAAAAAAAAKwAAAAAAAAAAQAAAAIAAAAEAAAABQAAAAYAAAAHAAAACAAAAAkAAAAAAAAAAAAAABekAsniHkzyRjCs36ft7U8wLgx8WezRgZjJn2a2rqgHSVkEedFr/0UEgXADUS1jlkh4W+tRU+FiaGDkzeTSQqDJgjrjfh7YjAAAAAAAAAAAAAAAABIAAABFAG4AZQBtAHkAUwBjAGEAcgBDAG8AbABsAGkAZABlAHIAAAAGAAAARQBuAGUAbQB5AAAAAQEAAAAAgL8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAAAABAAAAAAAAAAAAAAAAAAAAMgAAAEcAYQBtAGUARABlAHMAaQBnAG4ALwBFAG4AZQBtAHkALwBDAG8AbQBtAG8AbgBEAGEAdABhAC8AQwBvAGwAbABpAHMAaQBvAG4ALwBFAG0AUwBjAGEAcgAuAHIAYwBvAGwAAAABAQAAAQAAAAAAAAABAAAAAwAAAAAAAAAEAAAAAAAAAAEAAAAAAAA/AQAAAJqZGT+amVk/AABAPwAANEIAADRCAAAgQQAAIENvEoM9AQEA"
+}

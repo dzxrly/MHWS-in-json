@@ -1,0 +1,1819 @@
+{
+  "_format": "mhws_pfb_v1",
+  "version": 18,
+  "sourceSha256": "d042cf5482f182b9891bbc2ddf37a60a9e6663cfad40180d75afb956798d6ed0",
+  "schemaSha256": "cfe10514c482ee2856e16dddfc543b148f5320479c913d660f905e6ffb0b40ab",
+  "gameObjects": [
+    {
+      "objectTableIndex": 0,
+      "parentObjectTableIndex": -1,
+      "componentCount": 13,
+      "instanceId": 1,
+      "componentInstanceIds": [
+        2,
+        3,
+        4,
+        7,
+        8,
+        9,
+        10,
+        11,
+        13,
+        15,
+        17,
+        20,
+        22
+      ],
+      "childObjectTableIndices": []
+    }
+  ],
+  "gameObjectReferences": [],
+  "resources": [
+    "@Art/Model/Character/ch03/019/000/6/ch03_019_0006.mesh",
+    "Art/Model/Character/ch03/019/000/6/ch03_019_0006.mdf2",
+    "Motion/Player/SlingerGimmick/Slg00/slg00_000.motbank"
+  ],
+  "userdata": [
+    "Motion/Player/Decorate/UnderWater/UnderwaterBaseParam.user",
+    "GameDesign/Player/Accessory/HunterAccessory.user"
+  ],
+  "objectTable": [
+    1,
+    2,
+    3,
+    4,
+    7,
+    8,
+    9,
+    10,
+    11,
+    13,
+    15,
+    17,
+    20,
+    22
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "class": "",
+      "classHash": "0x00000000",
+      "crc": "0x00000000",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 1,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "ch03_019_0006",
+        "v1": "",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 2,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 1,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 3,
+      "class": "via.render.Mesh",
+      "classHash": "0xbe980941",
+      "crc": "0xfded2316",
+      "fields": {
+        "v0": [
+          31,
+          0,
+          0,
+          0
+        ],
+        "v1": 1,
+        "v2": "@Art/Model/Character/ch03/019/000/6/ch03_019_0006.mesh",
+        "v3": "Art/Model/Character/ch03/019/000/6/ch03_019_0006.mdf2",
+        "v4": 0,
+        "v5": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v6": 0,
+        "v7": "00000000-0000-0000-0000-000000000000",
+        "v8": [
+          0,
+          0,
+          128,
+          62
+        ],
+        "v9": [
+          2,
+          0,
+          0,
+          0
+        ],
+        "v10": [
+          30,
+          0,
+          0,
+          0
+        ],
+        "v11": 2,
+        "v12": 2,
+        "v13": 2,
+        "v14": 2,
+        "v15": [
+          0,
+          1
+        ],
+        "v16": 0,
+        "v17": 1,
+        "v18": 1,
+        "v19": 0,
+        "v20": 0,
+        "v21": 0,
+        "v22": 1,
+        "v23": 1,
+        "v24": 0,
+        "v25": 0,
+        "v26": 1,
+        "v27": 1,
+        "v28": 0,
+        "v29": 0,
+        "v30": 0,
+        "v31": 0,
+        "v32": 0,
+        "v33": 0,
+        "v34": 0,
+        "v35": 0,
+        "v36": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v37": 1,
+        "v38": [
+          3,
+          0,
+          0,
+          0
+        ],
+        "v39": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v40": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v41": 0,
+        "v42": 0,
+        "v43": [],
+        "v44": 0,
+        "v45": 0,
+        "v46": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v47": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v48": 0,
+        "v49": [
+          10,
+          0,
+          0,
+          0
+        ],
+        "v50": 1,
+        "v51": [
+          2,
+          0,
+          0,
+          0
+        ],
+        "v52": 0,
+        "v53": 0,
+        "v54": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v55": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v56": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v57": "00000000-0000-0000-0000-000000000000",
+        "v58": 0,
+        "v59": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "v60": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v61": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v62": 0,
+        "v63": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "v64": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "v65": 255,
+        "v66": 255,
+        "v67": 255,
+        "v68": 255,
+        "v69": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "v70": 0,
+        "v71": 1,
+        "v72": 0,
+        "v73": 0,
+        "v74": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v75": 1,
+        "v76": 0,
+        "v77": 1,
+        "v78": [],
+        "v79": 0,
+        "v80": 0,
+        "v81": 0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 4,
+      "class": "app.MeshSetting",
+      "classHash": "0xbc86cc1f",
+      "crc": "0xba0bb8e0",
+      "fields": {
+        "v0_Enabled": true,
+        "_PartsEnableNum": 0,
+        "_AlphaFade": 0,
+        "_VisibleOverall": true,
+        "_VisibleManager": false,
+        "_CCSPassThroughUpdateFrameCount": true,
+        "_MeshMaterialLOD": {
+          "refInstanceId": 0
+        },
+        "_WetBlend": 0.0,
+        "_WetBlendLimit": 1.0,
+        "_TopMaskFade": 0.0,
+        "_TopMaskFadeBias": 1.0,
+        "_GlobalTopMaskFade": 0.5,
+        "_TopMaskMapBlend": 0.0,
+        "_EmissiveIntensity": 1.0,
+        "_TopBlendVector": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+        },
+        "_TriPlanarColor": "FF808080",
+        "_DispType": 686504192,
+        "_HeatReceiverParamID": -1343808000,
+        "_GroundBlendBias": 1.0,
+        "_PassThroughLengthBias": 1.0,
+        "_ColorParam": "FFFFFFFF",
+        "_ColorIntensity": 1.0,
+        "_AlphaTestRef": 0.10000000149011612,
+        "_EmissivePower": 0.0,
+        "_WaveScrollSpeed": 0.0,
+        "_IceBlendRate": 1.0,
+        "_IceSDFBlendRate": 0.5,
+        "_IceNormalVector": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+        },
+        "_IceNormalBlend": 0.0,
+        "_EnvironmentGUID": 0,
+        "_ShaderTimerGUID": 0,
+        "_EditMaterialFlag": 0,
+        "_SimpleOrigin": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "_IsBurn": false,
+        "_ShellFurBaseScaleHandheld": 0.25,
+        "_ShadowCastType": 0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 5,
+      "class": "app.cNameHash",
+      "classHash": "0x007091fa",
+      "crc": "0x2492951f",
+      "fields": {
+        "_Hash": 2517189864
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 6,
+      "class": "app.cNameHash",
+      "classHash": "0x007091fa",
+      "crc": "0x2492951f",
+      "fields": {
+        "_Hash": 2180083513
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 7,
+      "class": "app.CharacterEditRegion",
+      "classHash": "0x23f9647a",
+      "crc": "0x471d1661",
+      "fields": {
+        "v0": 1,
+        "_RegionNameHash": {
+          "refInstanceId": 5
+        },
+        "_EditValudeDefinition": {
+          "refInstanceId": 0
+        },
+        "_EditValueMaterialDefinition": {
+          "refInstanceId": 0
+        },
+        "_NodeNameHash": {
+          "refInstanceId": 6
+        },
+        "_DisableSequentialPoseBlend": false,
+        "_MotionBank": "",
+        "_LayerIndex": -1,
+        "_BankID": 0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 8,
+      "class": "via.render.StreamingMeshController",
+      "classHash": "0xcf318533",
+      "crc": "0xa7d47682",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 9,
+      "class": "via.render.StreamingTextureController",
+      "classHash": "0xb67210e9",
+      "crc": "0x173c429c",
+      "fields": {
+        "v0": [
+          3,
+          0,
+          0,
+          0
+        ],
+        "v1": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v2": [
+          3,
+          0,
+          0,
+          0
+        ],
+        "v3": 0,
+        "v4": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 10,
+      "class": "app.AppStreamingController",
+      "classHash": "0xf9b54376",
+      "crc": "0x853e98ab",
+      "fields": {
+        "v0_Enabled": true
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 11,
+      "class": "app.ChainSetting",
+      "classHash": "0x4d94fbe4",
+      "crc": "0x7fbd8f3f",
+      "fields": {
+        "v0_Enabled": true,
+        "_MeshBoundary": "",
+        "_WindAssetOverwrite": "",
+        "_WindAssetOverwrite2": {
+          "refInstanceId": 0
+        },
+        "_ObjectRegisterHandle": 1.0,
+        "_WindBias": 1.0,
+        "v6": true,
+        "_IsUpdateRequest": true,
+        "v8": true,
+        "_IsCreateVolumeOccludee": false
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 12,
+      "class": "via.character.CollisionShapePresetInfo",
+      "classHash": "0xaddf3bf7",
+      "crc": "0x64134253",
+      "fields": {
+        "v0": "",
+        "v1": 1,
+        "v2": 0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 13,
+      "class": "via.character.CollisionShapePreset",
+      "classHash": "0x6c00c472",
+      "crc": "0x37889ac2",
+      "fields": {
+        "v0": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v1": [
+          [
+            12,
+            0,
+            0,
+            0
+          ]
+        ],
+        "v2": 0,
+        "v3": 0,
+        "v4": 1,
+        "v5": 0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 14,
+      "class": "app.user_data.UnderwaterChainParameter",
+      "classHash": "0xacab5fe7",
+      "crc": "0xd444d012",
+      "fields": {},
+      "userdataPath": "Motion/Player/Decorate/UnderWater/UnderwaterBaseParam.user"
+    },
+    {
+      "id": 15,
+      "class": "app.UnderWaterChain",
+      "classHash": "0xed683451",
+      "crc": "0xd65aa5bb",
+      "fields": {
+        "v0": 1,
+        "_ChainParameter": {
+          "refInstanceId": 14
+        },
+        "_ClothParameter": {
+          "refInstanceId": 0
+        }
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 16,
+      "class": "via.motion.TreeLayer",
+      "classHash": "0xe56de1d9",
+      "crc": "0x69f07a17",
+      "fields": {
+        "v0": 1,
+        "v1": 0,
+        "v2": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v3": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v4": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v5": 0,
+        "v6": "",
+        "v7": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v8": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "v9": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v10": 0,
+        "v11": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v12": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v13": 0,
+        "v14": 0,
+        "v15": 0,
+        "v16": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v17": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v18": 0,
+        "v19": 0,
+        "v20": 0,
+        "v21": 0,
+        "v22": 1,
+        "v23": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "v24": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v25": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v26": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v27": 0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 17,
+      "class": "via.motion.Motion",
+      "classHash": "0xf829f958",
+      "crc": "0x5c2dde5c",
+      "fields": {
+        "v0": 1,
+        "v1": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v2": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v3": 0,
+        "v4": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v5": 0,
+        "v6": 0,
+        "v7": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "v8": 0,
+        "v9": [
+          2,
+          0,
+          0,
+          0
+        ],
+        "v10": 0,
+        "v11": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v12": 0,
+        "v13": [
+          2,
+          0,
+          0,
+          0
+        ],
+        "v14": "Motion/Player/SlingerGimmick/Slg00/slg00_000.motbank",
+        "v15": "",
+        "v16": "",
+        "v17": "",
+        "v18": 1,
+        "v19": 1,
+        "v20": 0,
+        "v21": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v22": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v23": 0,
+        "v24": [
+          [
+            16,
+            0,
+            0,
+            0
+          ]
+        ],
+        "v25": [],
+        "v26": [],
+        "v27": 0,
+        "v28": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 18,
+      "class": "app.user_data.AccessoryList",
+      "classHash": "0x22d7c20d",
+      "crc": "0xfb33cb3d",
+      "fields": {},
+      "userdataPath": "GameDesign/Player/Accessory/HunterAccessory.user"
+    },
+    {
+      "id": 19,
+      "class": "via.Prefab",
+      "classHash": "0xf53c28f9",
+      "crc": "0xa0e05e19",
+      "fields": {
+        "v0": 1,
+        "v1": ""
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 20,
+      "class": "app.HunterSlinger",
+      "classHash": "0x577af832",
+      "crc": "0x80f12e3d",
+      "fields": {
+        "v0": 1,
+        "_AccessoryList": {
+          "refInstanceId": 18
+        },
+        "_RopePrefab": {
+          "refInstanceId": 19
+        }
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 21,
+      "class": "via.motion.ActorLayer",
+      "classHash": "0xcc3c1ca4",
+      "crc": "0x068e8abb",
+      "fields": {
+        "v0": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v1": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v2": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v3": "",
+        "v4": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v5": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "v6": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v7": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v8": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v9": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "v10": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v11": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 22,
+      "class": "via.motion.ActorMotion",
+      "classHash": "0x6e765829",
+      "crc": "0xe3a6fb73",
+      "fields": {
+        "v0": 1,
+        "v1": 0,
+        "v2": [
+          3,
+          0,
+          0,
+          0
+        ],
+        "v3": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v4": [
+          2,
+          0,
+          0,
+          0
+        ],
+        "v5": 0,
+        "v6": [
+          [
+            21,
+            0,
+            0,
+            0
+          ]
+        ],
+        "v7": ""
+      },
+      "userdataPath": null
+    }
+  ],
+  "diagnostics": {
+    "nativeDataInference": false,
+    "interpretedFields": [
+      {
+        "instanceId": 1,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 1,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "Guid"
+      },
+      {
+        "instanceId": 3,
+        "field": "v11",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v12",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v13",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v14",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v16",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v17",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v18",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v19",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v20",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v21",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v22",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v23",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v24",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v25",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v26",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v27",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v28",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v29",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v30",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v31",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v32",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v33",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v34",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v35",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v37",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v41",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v42",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v44",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v45",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v48",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v50",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v52",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v53",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v57",
+        "schemaType": "Data",
+        "interpretedType": "Guid"
+      },
+      {
+        "instanceId": 3,
+        "field": "v58",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v59",
+        "schemaType": "Data",
+        "interpretedType": "Vec2"
+      },
+      {
+        "instanceId": 3,
+        "field": "v62",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v63",
+        "schemaType": "Data",
+        "interpretedType": "Vec2"
+      },
+      {
+        "instanceId": 3,
+        "field": "v65",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v66",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v67",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v68",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v69",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v70",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v71",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v72",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v73",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v75",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v76",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v77",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v79",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v80",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v81",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 7,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 9,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 12,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 12,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 13,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 13,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 13,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 13,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 15,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 16,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 16,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 16,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 16,
+        "field": "v10",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 16,
+        "field": "v13",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 16,
+        "field": "v14",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 16,
+        "field": "v15",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 16,
+        "field": "v18",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 16,
+        "field": "v19",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 16,
+        "field": "v20",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 16,
+        "field": "v21",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 16,
+        "field": "v22",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 16,
+        "field": "v27",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 17,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 17,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 17,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 17,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 17,
+        "field": "v8",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 17,
+        "field": "v10",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 17,
+        "field": "v12",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 17,
+        "field": "v18",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 17,
+        "field": "v19",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 17,
+        "field": "v20",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 17,
+        "field": "v23",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 17,
+        "field": "v27",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 19,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 20,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 22,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 22,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 22,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      }
+    ]
+  },
+  "rszRawBase64": "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"
+}

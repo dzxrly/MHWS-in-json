@@ -1,0 +1,2082 @@
+{
+  "_format": "mhws_pfb_v1",
+  "version": 18,
+  "sourceSha256": "b65003d4d3c74f45c8de8a2501785bcad854ad2ec6f7d7a89554229e2fe6e872",
+  "schemaSha256": "cfe10514c482ee2856e16dddfc543b148f5320479c913d660f905e6ffb0b40ab",
+  "gameObjects": [
+    {
+      "objectTableIndex": 0,
+      "parentObjectTableIndex": -1,
+      "componentCount": 18,
+      "instanceId": 1,
+      "componentInstanceIds": [
+        2,
+        3,
+        6,
+        7,
+        9,
+        11,
+        12,
+        13,
+        16,
+        18,
+        21,
+        22,
+        23,
+        27,
+        30,
+        31,
+        34,
+        35
+      ],
+      "childObjectTableIndices": []
+    }
+  ],
+  "gameObjectReferences": [],
+  "resources": [
+    "Art/Model/Item/it10/03/0014/it1003_0014_0.mesh",
+    "Art/Model/Item/it10/03/0014/it1003_0014_0.mdf2",
+    "Motion/Player/WeaponGimmick/Wp10ins_00/Wp10ins_00Gimmick.motbank",
+    "Motion/Player/Decorate/JointMap/wp10_Insect_JointMap.jmap",
+    "GameDesign/Player/ActionData/Wp10/Collision/Collider/Wp10_Insect_Attack.rcol",
+    "Art/VFX/EffectProvider/Weapon/it10/epvr_it10_ins.pfb"
+  ],
+  "userdata": [
+    "GameDesign/Equip/_Prefab/Weapon/Wp10/99/it1099_0000_1_common_mpi.user",
+    "Sound/UserData/02_Container/Weapon/Wp10InsectBase_ContainerListData.user",
+    "Sound/UserData/12_Bank/Weapon/Wp10/it1003_0014_BankListData.user",
+    "Sound/ADVibration/UserData/Weapon/wp10/Sound_wp10_PadVibrationPresetList.user",
+    "@Sound/ADVibration/UserData/Weapon/wp10/Sound_wp10_ADVibrationPresetList.user",
+    "@Sound/ADVibration/UserData/Weapon/wp10/Sound_wp10_VibrationTriggerListData.user",
+    "GameDesign/Environment/UserData/SurfaceTrailSetting_Wp.user"
+  ],
+  "objectTable": [
+    1,
+    2,
+    3,
+    6,
+    7,
+    9,
+    11,
+    12,
+    13,
+    16,
+    18,
+    21,
+    22,
+    23,
+    27,
+    30,
+    31,
+    34,
+    35
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "class": "",
+      "classHash": "0x00000000",
+      "crc": "0x00000000",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 1,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "it1003_0014_0",
+        "v1": "",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 2,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 3,
+      "class": "via.render.Mesh",
+      "classHash": "0xbe980941",
+      "crc": "0xfded2316",
+      "fields": {
+        "v0": [
+          31,
+          0,
+          0,
+          0
+        ],
+        "v1": 1,
+        "v2": "Art/Model/Item/it10/03/0014/it1003_0014_0.mesh",
+        "v3": "Art/Model/Item/it10/03/0014/it1003_0014_0.mdf2",
+        "v4": 0,
+        "v5": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v6": 0,
+        "v7": "00000000-0000-0000-0000-000000000000",
+        "v8": [
+          0,
+          0,
+          128,
+          62
+        ],
+        "v9": [
+          2,
+          0,
+          0,
+          0
+        ],
+        "v10": [
+          30,
+          0,
+          0,
+          0
+        ],
+        "v11": 2,
+        "v12": 2,
+        "v13": 2,
+        "v14": 2,
+        "v15": [
+          0,
+          1
+        ],
+        "v16": 0,
+        "v17": 1,
+        "v18": 1,
+        "v19": 0,
+        "v20": 0,
+        "v21": 0,
+        "v22": 1,
+        "v23": 1,
+        "v24": 0,
+        "v25": 0,
+        "v26": 1,
+        "v27": 1,
+        "v28": 0,
+        "v29": 0,
+        "v30": 0,
+        "v31": 0,
+        "v32": 0,
+        "v33": 0,
+        "v34": 0,
+        "v35": 0,
+        "v36": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v37": 1,
+        "v38": [
+          3,
+          0,
+          0,
+          0
+        ],
+        "v39": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v40": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v41": 0,
+        "v42": 0,
+        "v43": [],
+        "v44": 0,
+        "v45": 0,
+        "v46": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v47": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v48": 0,
+        "v49": [
+          10,
+          0,
+          0,
+          0
+        ],
+        "v50": 1,
+        "v51": [
+          2,
+          0,
+          0,
+          0
+        ],
+        "v52": 0,
+        "v53": 0,
+        "v54": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v55": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v56": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v57": "00000000-0000-0000-0000-000000000000",
+        "v58": 0,
+        "v59": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "v60": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v61": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v62": 0,
+        "v63": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "v64": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "v65": 255,
+        "v66": 255,
+        "v67": 255,
+        "v68": 255,
+        "v69": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "v70": 0,
+        "v71": 1,
+        "v72": 0,
+        "v73": 0,
+        "v74": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v75": 1,
+        "v76": 0,
+        "v77": 1,
+        "v78": [],
+        "v79": 0,
+        "v80": 0,
+        "v81": 0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 4,
+      "class": "via.motion.TreeLayer",
+      "classHash": "0xe56de1d9",
+      "crc": "0x69f07a17",
+      "fields": {
+        "v0": 1,
+        "v1": 0,
+        "v2": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v3": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v4": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v5": 0,
+        "v6": "",
+        "v7": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v8": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "v9": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v10": 0,
+        "v11": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v12": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v13": 0,
+        "v14": 0,
+        "v15": 1,
+        "v16": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v17": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v18": 0,
+        "v19": 0,
+        "v20": 0,
+        "v21": 0,
+        "v22": 1,
+        "v23": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "v24": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v25": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v26": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v27": 0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 5,
+      "class": "via.motion.TreeLayer",
+      "classHash": "0xe56de1d9",
+      "crc": "0x69f07a17",
+      "fields": {
+        "v0": 1,
+        "v1": 0,
+        "v2": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v3": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "v4": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v5": 0,
+        "v6": "",
+        "v7": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v8": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "v9": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v10": 0,
+        "v11": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v12": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v13": 0,
+        "v14": 0,
+        "v15": 1,
+        "v16": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v17": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v18": 0,
+        "v19": 0,
+        "v20": 0,
+        "v21": 0,
+        "v22": 1,
+        "v23": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "v24": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v25": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v26": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v27": 0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 6,
+      "class": "via.motion.Motion",
+      "classHash": "0xf829f958",
+      "crc": "0x5c2dde5c",
+      "fields": {
+        "v0": 1,
+        "v1": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v2": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v3": 0,
+        "v4": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v5": 0,
+        "v6": 0,
+        "v7": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "v8": 0,
+        "v9": [
+          2,
+          0,
+          0,
+          0
+        ],
+        "v10": 0,
+        "v11": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v12": 0,
+        "v13": [
+          2,
+          0,
+          0,
+          0
+        ],
+        "v14": "Motion/Player/WeaponGimmick/Wp10ins_00/Wp10ins_00Gimmick.motbank",
+        "v15": "",
+        "v16": "Motion/Player/Decorate/JointMap/wp10_Insect_JointMap.jmap",
+        "v17": "",
+        "v18": 1,
+        "v19": 1,
+        "v20": 0,
+        "v21": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v22": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v23": 0,
+        "v24": [
+          [
+            4,
+            0,
+            0,
+            0
+          ],
+          [
+            5,
+            0,
+            0,
+            0
+          ]
+        ],
+        "v25": [],
+        "v26": [],
+        "v27": 0,
+        "v28": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 7,
+      "class": "app.HitController",
+      "classHash": "0xeb5b7848",
+      "crc": "0x62e15351",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 8,
+      "class": "via.physics.RequestSetCollider.RequestSetGroup",
+      "classHash": "0x7c0c2e30",
+      "crc": "0x81d1ec59",
+      "fields": {
+        "v0": "GameDesign/Player/ActionData/Wp10/Collision/Collider/Wp10_Insect_Attack.rcol"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 9,
+      "class": "via.physics.RequestSetCollider",
+      "classHash": "0x669fc998",
+      "crc": "0x07a8aeb6",
+      "fields": {
+        "v0": 1,
+        "v1": 1,
+        "v2": [
+          ""
+        ],
+        "v3": [
+          [
+            8,
+            0,
+            0,
+            0
+          ]
+        ],
+        "v4": "",
+        "v5": [
+          4,
+          0,
+          0,
+          0
+        ],
+        "v6": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 10,
+      "class": "app.cValueHolderF",
+      "classHash": "0x7b15a93b",
+      "crc": "0x2112098f",
+      "fields": {
+        "STRUCT_MaxValue__HasValue": false,
+        "STRUCT_MaxValue__Value": 0.0,
+        "STRUCT_MinValue__HasValue": false,
+        "STRUCT_MinValue__Value": 0.0,
+        "DefaultValue": 0.0,
+        "_Value": 0.0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 11,
+      "class": "app.Wp10Insect",
+      "classHash": "0x35d2b230",
+      "crc": "0xbf0410bd",
+      "fields": {
+        "v0": 1,
+        "Stamina": {
+          "refInstanceId": 10
+        },
+        "IsAimAttackTrippleExtraGet": false
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 12,
+      "class": "app.MeshSettingController",
+      "classHash": "0xa693d847",
+      "crc": "0xfef6d2a7",
+      "fields": {
+        "v0_Enabled": true,
+        "v1": false,
+        "v2": true,
+        "v3": false
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 13,
+      "class": "app.MeshSetting",
+      "classHash": "0xbc86cc1f",
+      "crc": "0xba0bb8e0",
+      "fields": {
+        "v0_Enabled": true,
+        "_PartsEnableNum": 0,
+        "_AlphaFade": 0,
+        "_VisibleOverall": true,
+        "_VisibleManager": false,
+        "_CCSPassThroughUpdateFrameCount": false,
+        "_MeshMaterialLOD": {
+          "refInstanceId": 0
+        },
+        "_WetBlend": 0.0,
+        "_WetBlendLimit": 1.0,
+        "_TopMaskFade": 0.0,
+        "_TopMaskFadeBias": 1.0,
+        "_GlobalTopMaskFade": 0.5,
+        "_TopMaskMapBlend": 0.0,
+        "_EmissiveIntensity": 1.0,
+        "_TopBlendVector": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+        },
+        "_TriPlanarColor": "FF808080",
+        "_DispType": 686504192,
+        "_HeatReceiverParamID": -1343808000,
+        "_GroundBlendBias": 1.0,
+        "_PassThroughLengthBias": 1.0,
+        "_ColorParam": "FFFFFFFF",
+        "_ColorIntensity": 1.0,
+        "_AlphaTestRef": 0.10000000149011612,
+        "_EmissivePower": 0.0,
+        "_WaveScrollSpeed": 0.0,
+        "_IceBlendRate": 1.0,
+        "_IceSDFBlendRate": 0.5,
+        "_IceNormalVector": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+        },
+        "_IceNormalBlend": 0.0,
+        "_EnvironmentGUID": 0,
+        "_ShaderTimerGUID": 0,
+        "_EditMaterialFlag": 4096,
+        "_SimpleOrigin": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "_IsBurn": false,
+        "_ShellFurBaseScaleHandheld": 0.25,
+        "_ShadowCastType": 0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 14,
+      "class": "ace.user_data.ModelPartsInfo2",
+      "classHash": "0x912e5231",
+      "crc": "0xedf99da0",
+      "fields": {},
+      "userdataPath": "GameDesign/Equip/_Prefab/Weapon/Wp10/99/it1099_0000_1_common_mpi.user"
+    },
+    {
+      "id": 15,
+      "class": "ace.model_parts_manager.ModelPartsManager2.AssetHolder",
+      "classHash": "0x0c7f9086",
+      "crc": "0x60e1f870",
+      "fields": {
+        "_Id": 0,
+        "_Data": {
+          "refInstanceId": 14
+        }
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 16,
+      "class": "ace.model_parts_manager.ModelPartsManager2",
+      "classHash": "0x35175fe0",
+      "crc": "0xf5f81610",
+      "fields": {
+        "v0": 1,
+        "_Holders": [
+          {
+            "refInstanceId": 15
+          }
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 17,
+      "class": "via.Prefab",
+      "classHash": "0xf53c28f9",
+      "crc": "0xa0e05e19",
+      "fields": {
+        "v0": 1,
+        "v1": "Art/VFX/EffectProvider/Weapon/it10/epvr_it10_ins.pfb"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 18,
+      "class": "via.effect.script.ObjectEffectManager2",
+      "classHash": "0x2609fe06",
+      "crc": "0xf9681b0d",
+      "fields": {
+        "v0": 1,
+        "v1": false,
+        "v2": false,
+        "FilterParameterWLock": false,
+        "DataContainer": {
+          "refInstanceId": 17
+        },
+        "ExternalDataContainers": [],
+        "TargetGameObject": "Ref<00000000-0000-0000-0000-000000000000 => >",
+        "ExternalPropertys": [],
+        "disableVFXTriggerTrack": false,
+        "disableVFXRangeTrack": false,
+        "disableMotionJackCheck": false,
+        "_VFXTriggerTrackUseHighestWeight": false,
+        "_VFXRangeTrackUseHighestWeight": false,
+        "_StaticDataContainer": false,
+        "_DisableByEmptyDataContainer": false
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 19,
+      "class": "soundlib.SoundContainerListData",
+      "classHash": "0xc4af76a2",
+      "crc": "0xdcc8fcc9",
+      "fields": {},
+      "userdataPath": "Sound/UserData/02_Container/Weapon/Wp10InsectBase_ContainerListData.user"
+    },
+    {
+      "id": 20,
+      "class": "soundlib.SoundBankListData",
+      "classHash": "0x41d71261",
+      "crc": "0xc896447e",
+      "fields": {},
+      "userdataPath": "Sound/UserData/12_Bank/Weapon/Wp10/it1003_0014_BankListData.user"
+    },
+    {
+      "id": 21,
+      "class": "soundlib.SoundContainer",
+      "classHash": "0x1f6d61a9",
+      "crc": "0x620b8efd",
+      "fields": {
+        "v0": 1,
+        "_TriggerOnlyDrawSelf": false,
+        "_UserDataList": [
+          {
+            "refInstanceId": 19
+          },
+          {
+            "refInstanceId": 20
+          }
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 22,
+      "class": "app.SoundMotionSequenceApp",
+      "classHash": "0x16266900",
+      "crc": "0x277a3047",
+      "fields": {
+        "v0": 1,
+        "_MotionStatusSettingListData": {
+          "refInstanceId": 0
+        },
+        "_UpdateSequenceCategoryBits": 2,
+        "_UpdateOnlyDrawSelf": false
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 23,
+      "class": "app.Wp10InsectEmissiveVisualManager",
+      "classHash": "0xfdd23a5e",
+      "crc": "0x92f315a6",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 24,
+      "class": "ace.user_data.PadVibrationPresetList",
+      "classHash": "0x57957927",
+      "crc": "0x9df2af37",
+      "fields": {},
+      "userdataPath": "Sound/ADVibration/UserData/Weapon/wp10/Sound_wp10_PadVibrationPresetList.user"
+    },
+    {
+      "id": 25,
+      "class": "ace.user_data.ADVibrationPresetList",
+      "classHash": "0x424644a3",
+      "crc": "0xcdbc1b69",
+      "fields": {},
+      "userdataPath": "@Sound/ADVibration/UserData/Weapon/wp10/Sound_wp10_ADVibrationPresetList.user"
+    },
+    {
+      "id": 26,
+      "class": "app.snd_user_data.SoundVibrationTriggerListData",
+      "classHash": "0xdd35f005",
+      "crc": "0xc451127e",
+      "fields": {},
+      "userdataPath": "@Sound/ADVibration/UserData/Weapon/wp10/Sound_wp10_VibrationTriggerListData.user"
+    },
+    {
+      "id": 27,
+      "class": "app.SoundVibrationContainer",
+      "classHash": "0x99774430",
+      "crc": "0x53d6cfcd",
+      "fields": {
+        "v0": 1,
+        "_VibrationData": {
+          "refInstanceId": 24
+        },
+        "_ADVibrationData": {
+          "refInstanceId": 25
+        },
+        "_VibTriggerList": {
+          "refInstanceId": 26
+        },
+        "_ForceValid": false
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 28,
+      "class": "app.user_data.GroundSurfaceTrailRequestSetting",
+      "classHash": "0xb9b72e81",
+      "crc": "0xd6cd0ba3",
+      "fields": {},
+      "userdataPath": "GameDesign/Environment/UserData/SurfaceTrailSetting_Wp.user"
+    },
+    {
+      "id": 29,
+      "class": "app.GroundSurfaceTrailRequester.RequestData",
+      "classHash": "0xab6d4d8c",
+      "crc": "0x94c26771",
+      "fields": {
+        "Type": 1,
+        "RequestOBB": "[Pos: 0 0.1 0.1, Extent: <0.20000002, 0.19999993, 0.4>]",
+        "JointNameHash": 2580786953
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 30,
+      "class": "app.GroundSurfaceTrailRequester",
+      "classHash": "0xd9e3ef79",
+      "crc": "0xe31b7589",
+      "fields": {
+        "v0": 1,
+        "_Setting": {
+          "refInstanceId": 28
+        },
+        "_RequestDatas": [
+          {
+            "refInstanceId": 29
+          }
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 31,
+      "class": "app.StainMeshController",
+      "classHash": "0xce514949",
+      "crc": "0xaae78597",
+      "fields": {
+        "v0": 1,
+        "_WholeCtrlType": 1,
+        "_HeightCtrlType": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 32,
+      "class": "app.cNameHash",
+      "classHash": "0x007091fa",
+      "crc": "0x2492951f",
+      "fields": {
+        "_Hash": 1006636068
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 33,
+      "class": "app.cNameHash",
+      "classHash": "0x007091fa",
+      "crc": "0x2492951f",
+      "fields": {
+        "_Hash": 2180083513
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 34,
+      "class": "app.CharacterEditRegion",
+      "classHash": "0x23f9647a",
+      "crc": "0x471d1661",
+      "fields": {
+        "v0": 1,
+        "_RegionNameHash": {
+          "refInstanceId": 32
+        },
+        "_EditValudeDefinition": {
+          "refInstanceId": 0
+        },
+        "_EditValueMaterialDefinition": {
+          "refInstanceId": 0
+        },
+        "_NodeNameHash": {
+          "refInstanceId": 33
+        },
+        "_DisableSequentialPoseBlend": false,
+        "_MotionBank": "",
+        "_LayerIndex": -1,
+        "_BankID": 0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 35,
+      "class": "app.ConstraintUpdaterAfter",
+      "classHash": "0x6baccab6",
+      "crc": "0x53ca10da",
+      "fields": {
+        "v0": 0
+      },
+      "userdataPath": null
+    }
+  ],
+  "diagnostics": {
+    "nativeDataInference": false,
+    "interpretedFields": [
+      {
+        "instanceId": 1,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 1,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "Guid"
+      },
+      {
+        "instanceId": 3,
+        "field": "v11",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v12",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v13",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v14",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v16",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v17",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v18",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v19",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v20",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v21",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v22",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v23",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v24",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v25",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v26",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v27",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v28",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v29",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v30",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v31",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v32",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v33",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v34",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v35",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v37",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v41",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v42",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v44",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v45",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v48",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v50",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v52",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v53",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v57",
+        "schemaType": "Data",
+        "interpretedType": "Guid"
+      },
+      {
+        "instanceId": 3,
+        "field": "v58",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v59",
+        "schemaType": "Data",
+        "interpretedType": "Vec2"
+      },
+      {
+        "instanceId": 3,
+        "field": "v62",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v63",
+        "schemaType": "Data",
+        "interpretedType": "Vec2"
+      },
+      {
+        "instanceId": 3,
+        "field": "v65",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v66",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v67",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v68",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v69",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v70",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v71",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v72",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v73",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v75",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v76",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v77",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v79",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v80",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v81",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v10",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v13",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v14",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v15",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v18",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v19",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v20",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v21",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v22",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v27",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 5,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 5,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 5,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 5,
+        "field": "v10",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 5,
+        "field": "v13",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 5,
+        "field": "v14",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 5,
+        "field": "v15",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 5,
+        "field": "v18",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 5,
+        "field": "v19",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 5,
+        "field": "v20",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 5,
+        "field": "v21",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 5,
+        "field": "v22",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 5,
+        "field": "v27",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v8",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v10",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v12",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v18",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v19",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v20",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v23",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v27",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 7,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 9,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 9,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 11,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 16,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 17,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 18,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 21,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 22,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 23,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 27,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 30,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 31,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 34,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 35,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      }
+    ]
+  },
+  "rszRawBase64": "UlNaABAAAAATAAAAJAAAAAcAAAAAAAAAfAAAAAAAAAAYBgAAAAAAAKgBAAAAAAAAAQAAAAIAAAADAAAABgAAAAcAAAAJAAAACwAAAAwAAAANAAAAEAAAABIAAAAVAAAAFgAAABcAAAAbAAAAHgAAAB8AAAAiAAAAIwAAAAAAAAAAAAAAF6QCyeIeTPJGMKzfp+3tT0EJmL4WI+392eFt5Rd68GnZ4W3lF3rwaVj5Kfhc3i1cSHhb61FT4WIwLgx8WezRgZjJn2a2rqgHO6kVe48JEiEwstI1vRAEv0fYk6an0vb+H8yGvOC4C7oxUi6RoJ357YaQfwxw+OFg4F8XNRAW+PX5KDz1GV7goAb+CSYNG2j5onavxMn8yNxhEtdBfkSWyKlhbR/9jgtiAGkmFkcweideOtL9phXzkid5lVc3r/Kdo0RGQmkbvM0F8DXdfhJRxDBEd5nNz9ZTgS63uaMLzdaMTW2rcWfClHnv49mJdRvjSUlRzpeF56r6kXAAH5WSJPqRcAAflZIkemT5I2EWHUe2yqxr2hDKUwAAAAAAAAAAAAAAAA4AAAAxUi6RGAIAAAAAAAATAAAAonavxKQCAAAAAAAAFAAAAGES10E2AwAAAAAAABgAAAAneZVXuAMAAAAAAAAZAAAAo0RGQlQEAAAAAAAAGgAAAAXwNd3wBAAAAAAAABwAAACBLre5kgUAAAAAAABHAGEAbQBlAEQAZQBzAGkAZwBuAC8ARQBxAHUAaQBwAC8AXwBQAHIAZQBmAGEAYgAvAFcAZQBhAHAAbwBuAC8AVwBwADEAMAAvADkAOQAvAGkAdAAxADAAOQA5AF8AMAAwADAAMABfADEAXwBjAG8AbQBtAG8AbgBfAG0AcABpAC4AdQBzAGUAcgAAAFMAbwB1AG4AZAAvAFUAcwBlAHIARABhAHQAYQAvADAAMgBfAEMAbwBuAHQAYQBpAG4AZQByAC8AVwBlAGEAcABvAG4ALwBXAHAAMQAwAEkAbgBzAGUAYwB0AEIAYQBzAGUAXwBDAG8AbgB0AGEAaQBuAGUAcgBMAGkAcwB0AEQAYQB0AGEALgB1AHMAZQByAAAAUwBvAHUAbgBkAC8AVQBzAGUAcgBEAGEAdABhAC8AMQAyAF8AQgBhAG4AawAvAFcAZQBhAHAAbwBuAC8AVwBwADEAMAAvAGkAdAAxADAAMAAzAF8AMAAwADEANABfAEIAYQBuAGsATABpAHMAdABEAGEAdABhAC4AdQBzAGUAcgAAAFMAbwB1AG4AZAAvAEEARABWAGkAYgByAGEAdABpAG8AbgAvAFUAcwBlAHIARABhAHQAYQAvAFcAZQBhAHAAbwBuAC8AdwBwADEAMAAvAFMAbwB1AG4AZABfAHcAcAAxADAAXwBQAGEAZABWAGkAYgByAGEAdABpAG8AbgBQAHIAZQBzAGUAdABMAGkAcwB0AC4AdQBzAGUAcgAAAEAAUwBvAHUAbgBkAC8AQQBEAFYAaQBiAHIAYQB0AGkAbwBuAC8AVQBzAGUAcgBEAGEAdABhAC8AVwBlAGEAcABvAG4ALwB3AHAAMQAwAC8AUwBvAHUAbgBkAF8AdwBwADEAMABfAEEARABWAGkAYgByAGEAdABpAG8AbgBQAHIAZQBzAGUAdABMAGkAcwB0AC4AdQBzAGUAcgAAAEAAUwBvAHUAbgBkAC8AQQBEAFYAaQBiAHIAYQB0AGkAbwBuAC8AVQBzAGUAcgBEAGEAdABhAC8AVwBlAGEAcABvAG4ALwB3AHAAMQAwAC8AUwBvAHUAbgBkAF8AdwBwADEAMABfAFYAaQBiAHIAYQB0AGkAbwBuAFQAcgBpAGcAZwBlAHIATABpAHMAdABEAGEAdABhAC4AdQBzAGUAcgAAAEcAYQBtAGUARABlAHMAaQBnAG4ALwBFAG4AdgBpAHIAbwBuAG0AZQBuAHQALwBVAHMAZQByAEQAYQB0AGEALwBTAHUAcgBmAGEAYwBlAFQAcgBhAGkAbABTAGUAdAB0AGkAbgBnAF8AVwBwAC4AdQBzAGUAcgAAAAAAAAAAAAAAAAAAAAAADgAAAGkAdAAxADAAMAAzAF8AMAAwADEANABfADAAAAABAAAAAAABAQAAgL8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgD8AAIA/AACAPwAAgD8AAAAAAQAAAAAAAAAAAAAAAAAAAB8AAAABAAAALwAAAEEAcgB0AC8ATQBvAGQAZQBsAC8ASQB0AGUAbQAvAGkAdAAxADAALwAwADMALwAwADAAMQA0AC8AaQB0ADEAMAAwADMAXwAwADAAMQA0AF8AMAAuAG0AZQBzAGgAAAAAAC8AAABBAHIAdAAvAE0AbwBkAGUAbAAvAEkAdABlAG0ALwBpAHQAMQAwAC8AMAAzAC8AMAAwADEANAAvAGkAdAAxADAAMAAzAF8AMAAwADEANABfADAALgBtAGQAZgAyAAAAAAAAAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAIA+AgAAAB4AAAACAgICAAEAAQEAAAABAQAAAQEAAAAAAAAAAAAAAAAAAAEAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKAAAAAQAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////////8AAQAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQABAAAAAAAAAQABAAAAAAAAAAABAAAAAAAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAP////8AAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAIA/AAAAAAEAAAABAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAABAAAAAACAPwAAAAAAAAAAAAAAAP////8AAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAIA/AAAAAAEAAAABAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAIA/AAAAAAAAAAAAAAAA/////wAAAAACAAAAAAAAAAAAAAAAAAAAAgAAAEEAAABNAG8AdABpAG8AbgAvAFAAbABhAHkAZQByAC8AVwBlAGEAcABvAG4ARwBpAG0AbQBpAGMAawAvAFcAcAAxADAAaQBuAHMAXwAwADAALwBXAHAAMQAwAGkAbgBzAF8AMAAwAEcAaQBtAG0AaQBjAGsALgBtAG8AdABiAGEAbgBrAAAAAAAAAAAAOgAAAE0AbwB0AGkAbwBuAC8AUABsAGEAeQBlAHIALwBEAGUAYwBvAHIAYQB0AGUALwBKAG8AaQBuAHQATQBhAHAALwB3AHAAMQAwAF8ASQBuAHMAZQBjAHQAXwBKAG8AaQBuAHQATQBhAHAALgBqAG0AYQBwAAAAAAAAAAEBAAAAAAAAAAAAAAAAAAACAAAABAAAAAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAATQAAAEcAYQBtAGUARABlAHMAaQBnAG4ALwBQAGwAYQB5AGUAcgAvAEEAYwB0AGkAbwBuAEQAYQB0AGEALwBXAHAAMQAwAC8AQwBvAGwAbABpAHMAaQBvAG4ALwBDAG8AbABsAGkAZABlAHIALwBXAHAAMQAwAF8ASQBuAHMAZQBjAHQAXwBBAHQAdABhAGMAawAuAHIAYwBvAGwAAAABAQEAAAAAAAAAAQAAAAgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAACgAAAAABAAEAAQAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAIA/AAAAAAAAgD8AAAA/AAAAAAAAgD8AAAAAAAAAAAAAAAAAAAAAAACAPwAAAAAAAAAAgICA/wA56ygAHuevAACAPwAAgD//////AACAP83MzD0AAAAAAAAAAAAAgD8AAAA/AAAAAAAAgD8AAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgD4AAAAAAAAAAA4AAAABAAAAAQAAAA8AAAABAAAANQAAAEEAcgB0AC8AVgBGAFgALwBFAGYAZgBlAGMAdABQAHIAbwB2AGkAZABlAHIALwBXAGUAYQBwAG8AbgAvAGkAdAAxADAALwBlAHAAdgByAF8AaQB0ADEAMABfAGkAbgBzAC4AcABmAGIAAAABAAAAAAARAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAgAAABMAAAAUAAAAAQAAAAAAAAACAAAAAAEBABgAAAAZAAAAGgAAAAAAAAABAAAAAACAPwAAAAAAAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAAAAAAAAAAAAAAAgD8AAAAAAAAAAM3MzD3NzMw9AACAP87MTD7IzEw+zczMPgAAAAAJr9OZAQAAABwAAAABAAAAHQAAAAEAAAABAAAAAQAAACQMADw5b/GBAQAAACAAAAAAAAAAAAAAACEAAAAAAAAAAAAAAP////8AAAAAAA=="
+}

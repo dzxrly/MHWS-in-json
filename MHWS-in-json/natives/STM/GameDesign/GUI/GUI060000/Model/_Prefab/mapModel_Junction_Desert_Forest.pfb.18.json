@@ -1,0 +1,176 @@
+{
+  "_format": "mhws_pfb_v1",
+  "version": 18,
+  "sourceSha256": "a400e0d6803c7952015496ac69dc46910b992cc932d9328da10add9f4516bd05",
+  "schemaSha256": "cfe10514c482ee2856e16dddfc543b148f5320479c913d660f905e6ffb0b40ab",
+  "gameObjects": [
+    {
+      "objectTableIndex": 0,
+      "parentObjectTableIndex": -1,
+      "componentCount": 2,
+      "instanceId": 1,
+      "componentInstanceIds": [
+        2,
+        4
+      ],
+      "childObjectTableIndices": []
+    }
+  ],
+  "gameObjectReferences": [],
+  "resources": [],
+  "userdata": [
+    "GameDesign/GUI/GUI060000/Model/_UserData/St201_MapStageModelData.user"
+  ],
+  "objectTable": [
+    1,
+    2,
+    4
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "class": "",
+      "classHash": "0x00000000",
+      "crc": "0x00000000",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 1,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "mapModel_Junction_Desert_Forest",
+        "v1": "",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 2,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 3,
+      "class": "app.user_data.MapStageModelData",
+      "classHash": "0xe6a72446",
+      "crc": "0x215173ef",
+      "fields": {},
+      "userdataPath": "GameDesign/GUI/GUI060000/Model/_UserData/St201_MapStageModelData.user"
+    },
+    {
+      "id": 4,
+      "class": "app.AreaMapModelHolder",
+      "classHash": "0xbc1fcf41",
+      "crc": "0xcc42b555",
+      "fields": {
+        "_MapModelData": {
+          "refInstanceId": 3
+        }
+      },
+      "userdataPath": null
+    }
+  ],
+  "diagnostics": {
+    "nativeDataInference": false,
+    "interpretedFields": [
+      {
+        "instanceId": 1,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 1,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      }
+    ]
+  },
+  "rszRawBase64": "UlNaABAAAAADAAAABQAAAAEAAAAAAAAAPAAAAAAAAAAEAQAAAAAAAGQAAAAAAAAAAQAAAAIAAAAEAAAAAAAAAAAAAAAXpALJ4h5M8kYwrN+n7e1PRiSn5u9zUSFBzx+8VbVCzAMAAABGJKfmdAAAAAAAAABHAGEAbQBlAEQAZQBzAGkAZwBuAC8ARwBVAEkALwBHAFUASQAwADYAMAAwADAAMAAvAE0AbwBkAGUAbAAvAF8AVQBzAGUAcgBEAGEAdABhAC8AUwB0ADIAMAAxAF8ATQBhAHAAUwB0AGEAZwBlAE0AbwBkAGUAbABEAGEAdABhAC4AdQBzAGUAcgAAAAAAAAAgAAAAbQBhAHAATQBvAGQAZQBsAF8ASgB1AG4AYwB0AGkAbwBuAF8ARABlAHMAZQByAHQAXwBGAG8AcgBlAHMAdAAAAAEAAAAAAAEBAACAvwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIA/AACAPwAAgD8AAIA/AAAAAAEAAAAAAAAAAAAAAAAAAAADAAAA"
+}

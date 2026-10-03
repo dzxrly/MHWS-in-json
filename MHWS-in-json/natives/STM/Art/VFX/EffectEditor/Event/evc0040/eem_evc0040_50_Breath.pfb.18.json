@@ -1,0 +1,800 @@
+{
+  "_format": "mhws_pfb_v1",
+  "version": 18,
+  "sourceSha256": "3970a58fc31e507b00e3bf143ae1cf536d8da7cc70fcfddd081b6201bf285d64",
+  "schemaSha256": "cfe10514c482ee2856e16dddfc543b148f5320479c913d660f905e6ffb0b40ab",
+  "gameObjects": [
+    {
+      "objectTableIndex": 0,
+      "parentObjectTableIndex": -1,
+      "componentCount": 3,
+      "instanceId": 1,
+      "componentInstanceIds": [
+        2,
+        11,
+        13
+      ],
+      "childObjectTableIndices": []
+    }
+  ],
+  "gameObjectReferences": [],
+  "resources": [
+    "Art/VFX/EffectEditor/Event/evc0040/evc0040_50/11_evc0040_50_400.efx"
+  ],
+  "userdata": [],
+  "objectTable": [
+    1,
+    2,
+    11,
+    13
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "class": "",
+      "classHash": "0x00000000",
+      "crc": "0x00000000",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 1,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "eem_evc0040_50_Breath",
+        "v1": "",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 2,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.14521309733390808,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.9894003868103027
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 3,
+      "class": "via.effect.script.GroupNameParameter",
+      "classHash": "0x23d9e5fa",
+      "crc": "0xffa7c4db",
+      "fields": {
+        "Enable": true,
+        "GroupNameLv0": "Group0",
+        "GroupNameLv1": ""
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 4,
+      "class": "via.effect.script.EventEffectDataElement",
+      "classHash": "0x74bb82e3",
+      "crc": "0xd5b2cf21",
+      "fields": {
+        "v0": [
+          "Art/VFX/EffectEditor/Event/evc0040/evc0040_50/11_evc0040_50_400.efx"
+        ],
+        "TriggerId": 4294967295,
+        "StopTriggerId": 4294967295,
+        "GUID": "d68faad4-9b96-41d8-bbde-86185ceb0f84",
+        "EffectCache": false,
+        "IgnoreEffectCache": false,
+        "AntiFlickerOffset": false,
+        "GroupInfoList": [],
+        "RenderOutputID": 31,
+        "AssetGroupNameListLv0": [],
+        "AssetGroupNameListLv1": [],
+        "ID": 0,
+        "RelationType": 0,
+        "InitlizationParentScale": true,
+        "ParentDegree": 0,
+        "RelationChildId": -1,
+        "JointName": "",
+        "UseVirtualSkeletonLocal": false,
+        "UnparentFrame": -1.0,
+        "Offset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "RotationOrder": 2,
+        "BaseRotation": 0,
+        "RelationRotationAxis": 0,
+        "Rotation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "Scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "LifeFrame": -1.0,
+        "EndType": 1,
+        "ActionOnProviderDestroy": 1,
+        "ActionOnParentDisappear": 0,
+        "IsCameraDirection": false,
+        "IsVFXRangeTrack_NoEffectWaitIntervalFrame": false,
+        "IsLanding": false,
+        "IsUseTerrainNormal": false,
+        "SearchTerrainDistance": 0.5,
+        "IsIgnoreLanding": false,
+        "IgnoreLandingPosition": false,
+        "LandingCoordinateSystem": 0,
+        "LandingAxis": 4,
+        "LandingRotationOffset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "CamNodeBillbardSec": 1.0,
+        "SeparateParentScale": false,
+        "DelayFrame": 0.0,
+        "LoopFrame": 0,
+        "LoopDispersionFrame": 1,
+        "PlaySpeed": 1.0,
+        "RelationMotionSpeed": false,
+        "IsDefaultMirror": false,
+        "IsRelationMirror": true,
+        "RelationMirrorReverse": 1,
+        "RelationMirrorMotionBlendType": 0,
+        "ColorEnable": true,
+        "Color": "FFFFFFFF",
+        "MaskEnable": false,
+        "MaskBit": 0,
+        "ActionOnCulling": 0,
+        "ExternParameters": [],
+        "GroupNameParameters": [
+          {
+            "refInstanceId": 3
+          }
+        ],
+        "CustomLOD": false,
+        "LODLevels": [],
+        "UserBit": 0,
+        "EventPlaySpeed": 1.0,
+        "EventColor": "FFFFFFFF",
+        "TargetGameObject": "Ref<00000000-0000-0000-0000-000000000000 => >",
+        "EventJointName": "",
+        "UseDynamicMovement": false,
+        "EventOffset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "EventRotation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "EventScale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "EventExternParameters": [],
+        "EventGroupNameParameters": []
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 5,
+      "class": "via.effect.script.GroupNameParameter",
+      "classHash": "0x23d9e5fa",
+      "crc": "0xffa7c4db",
+      "fields": {
+        "Enable": true,
+        "GroupNameLv0": "Group1",
+        "GroupNameLv1": ""
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 6,
+      "class": "via.effect.script.EventEffectDataElement",
+      "classHash": "0x74bb82e3",
+      "crc": "0xd5b2cf21",
+      "fields": {
+        "v0": [
+          "Art/VFX/EffectEditor/Event/evc0040/evc0040_50/11_evc0040_50_400.efx"
+        ],
+        "TriggerId": 4294967295,
+        "StopTriggerId": 4294967295,
+        "GUID": "3ea4d282-29a3-4ea6-9e32-dc0b06b4405e",
+        "EffectCache": false,
+        "IgnoreEffectCache": false,
+        "AntiFlickerOffset": false,
+        "GroupInfoList": [],
+        "RenderOutputID": 31,
+        "AssetGroupNameListLv0": [],
+        "AssetGroupNameListLv1": [],
+        "ID": 0,
+        "RelationType": 0,
+        "InitlizationParentScale": true,
+        "ParentDegree": 0,
+        "RelationChildId": -1,
+        "JointName": "",
+        "UseVirtualSkeletonLocal": false,
+        "UnparentFrame": -1.0,
+        "Offset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "RotationOrder": 2,
+        "BaseRotation": 0,
+        "RelationRotationAxis": 0,
+        "Rotation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "Scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "LifeFrame": -1.0,
+        "EndType": 1,
+        "ActionOnProviderDestroy": 1,
+        "ActionOnParentDisappear": 0,
+        "IsCameraDirection": false,
+        "IsVFXRangeTrack_NoEffectWaitIntervalFrame": false,
+        "IsLanding": false,
+        "IsUseTerrainNormal": false,
+        "SearchTerrainDistance": 0.5,
+        "IsIgnoreLanding": false,
+        "IgnoreLandingPosition": false,
+        "LandingCoordinateSystem": 0,
+        "LandingAxis": 4,
+        "LandingRotationOffset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "CamNodeBillbardSec": 1.0,
+        "SeparateParentScale": false,
+        "DelayFrame": 0.0,
+        "LoopFrame": 0,
+        "LoopDispersionFrame": 1,
+        "PlaySpeed": 1.0,
+        "RelationMotionSpeed": false,
+        "IsDefaultMirror": false,
+        "IsRelationMirror": true,
+        "RelationMirrorReverse": 1,
+        "RelationMirrorMotionBlendType": 0,
+        "ColorEnable": true,
+        "Color": "FFFFFFFF",
+        "MaskEnable": false,
+        "MaskBit": 0,
+        "ActionOnCulling": 0,
+        "ExternParameters": [],
+        "GroupNameParameters": [
+          {
+            "refInstanceId": 5
+          }
+        ],
+        "CustomLOD": false,
+        "LODLevels": [],
+        "UserBit": 0,
+        "EventPlaySpeed": 1.0,
+        "EventColor": "FFFFFFFF",
+        "TargetGameObject": "Ref<00000000-0000-0000-0000-000000000000 => >",
+        "EventJointName": "",
+        "UseDynamicMovement": false,
+        "EventOffset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "EventRotation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "EventScale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "EventExternParameters": [],
+        "EventGroupNameParameters": []
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 7,
+      "class": "via.effect.script.GroupNameParameter",
+      "classHash": "0x23d9e5fa",
+      "crc": "0xffa7c4db",
+      "fields": {
+        "Enable": true,
+        "GroupNameLv0": "Group2",
+        "GroupNameLv1": ""
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 8,
+      "class": "via.effect.script.EventEffectDataElement",
+      "classHash": "0x74bb82e3",
+      "crc": "0xd5b2cf21",
+      "fields": {
+        "v0": [
+          "Art/VFX/EffectEditor/Event/evc0040/evc0040_50/11_evc0040_50_400.efx"
+        ],
+        "TriggerId": 4294967295,
+        "StopTriggerId": 4294967295,
+        "GUID": "084ae2dc-555f-0962-20a0-ae2a562b2cbf",
+        "EffectCache": false,
+        "IgnoreEffectCache": false,
+        "AntiFlickerOffset": false,
+        "GroupInfoList": [],
+        "RenderOutputID": 31,
+        "AssetGroupNameListLv0": [],
+        "AssetGroupNameListLv1": [],
+        "ID": 0,
+        "RelationType": 0,
+        "InitlizationParentScale": true,
+        "ParentDegree": 0,
+        "RelationChildId": -1,
+        "JointName": "",
+        "UseVirtualSkeletonLocal": false,
+        "UnparentFrame": -1.0,
+        "Offset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "RotationOrder": 2,
+        "BaseRotation": 0,
+        "RelationRotationAxis": 0,
+        "Rotation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "Scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "LifeFrame": -1.0,
+        "EndType": 1,
+        "ActionOnProviderDestroy": 1,
+        "ActionOnParentDisappear": 0,
+        "IsCameraDirection": false,
+        "IsVFXRangeTrack_NoEffectWaitIntervalFrame": false,
+        "IsLanding": false,
+        "IsUseTerrainNormal": false,
+        "SearchTerrainDistance": 0.5,
+        "IsIgnoreLanding": false,
+        "IgnoreLandingPosition": false,
+        "LandingCoordinateSystem": 0,
+        "LandingAxis": 4,
+        "LandingRotationOffset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "CamNodeBillbardSec": 1.0,
+        "SeparateParentScale": false,
+        "DelayFrame": 0.0,
+        "LoopFrame": 0,
+        "LoopDispersionFrame": 1,
+        "PlaySpeed": 1.0,
+        "RelationMotionSpeed": false,
+        "IsDefaultMirror": false,
+        "IsRelationMirror": true,
+        "RelationMirrorReverse": 1,
+        "RelationMirrorMotionBlendType": 0,
+        "ColorEnable": true,
+        "Color": "FFFFFFFF",
+        "MaskEnable": false,
+        "MaskBit": 0,
+        "ActionOnCulling": 0,
+        "ExternParameters": [],
+        "GroupNameParameters": [
+          {
+            "refInstanceId": 7
+          }
+        ],
+        "CustomLOD": false,
+        "LODLevels": [],
+        "UserBit": 0,
+        "EventPlaySpeed": 1.0,
+        "EventColor": "FFFFFFFF",
+        "TargetGameObject": "Ref<00000000-0000-0000-0000-000000000000 => >",
+        "EventJointName": "",
+        "UseDynamicMovement": false,
+        "EventOffset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "EventRotation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "EventScale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "EventExternParameters": [],
+        "EventGroupNameParameters": []
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 9,
+      "class": "via.effect.script.GroupNameParameter",
+      "classHash": "0x23d9e5fa",
+      "crc": "0xffa7c4db",
+      "fields": {
+        "Enable": true,
+        "GroupNameLv0": "Group3",
+        "GroupNameLv1": ""
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 10,
+      "class": "via.effect.script.EventEffectDataElement",
+      "classHash": "0x74bb82e3",
+      "crc": "0xd5b2cf21",
+      "fields": {
+        "v0": [
+          "Art/VFX/EffectEditor/Event/evc0040/evc0040_50/11_evc0040_50_400.efx"
+        ],
+        "TriggerId": 4294967295,
+        "StopTriggerId": 4294967295,
+        "GUID": "fae1ea9b-e7a5-43fb-9d38-dcc607f5c730",
+        "EffectCache": false,
+        "IgnoreEffectCache": false,
+        "AntiFlickerOffset": false,
+        "GroupInfoList": [],
+        "RenderOutputID": 31,
+        "AssetGroupNameListLv0": [],
+        "AssetGroupNameListLv1": [],
+        "ID": 0,
+        "RelationType": 0,
+        "InitlizationParentScale": true,
+        "ParentDegree": 0,
+        "RelationChildId": -1,
+        "JointName": "",
+        "UseVirtualSkeletonLocal": false,
+        "UnparentFrame": -1.0,
+        "Offset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "RotationOrder": 2,
+        "BaseRotation": 0,
+        "RelationRotationAxis": 0,
+        "Rotation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "Scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "LifeFrame": -1.0,
+        "EndType": 1,
+        "ActionOnProviderDestroy": 1,
+        "ActionOnParentDisappear": 0,
+        "IsCameraDirection": false,
+        "IsVFXRangeTrack_NoEffectWaitIntervalFrame": false,
+        "IsLanding": false,
+        "IsUseTerrainNormal": false,
+        "SearchTerrainDistance": 0.5,
+        "IsIgnoreLanding": false,
+        "IgnoreLandingPosition": false,
+        "LandingCoordinateSystem": 0,
+        "LandingAxis": 4,
+        "LandingRotationOffset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "CamNodeBillbardSec": 1.0,
+        "SeparateParentScale": false,
+        "DelayFrame": 0.0,
+        "LoopFrame": 0,
+        "LoopDispersionFrame": 1,
+        "PlaySpeed": 1.0,
+        "RelationMotionSpeed": false,
+        "IsDefaultMirror": false,
+        "IsRelationMirror": true,
+        "RelationMirrorReverse": 1,
+        "RelationMirrorMotionBlendType": 0,
+        "ColorEnable": true,
+        "Color": "FFFFFFFF",
+        "MaskEnable": false,
+        "MaskBit": 0,
+        "ActionOnCulling": 0,
+        "ExternParameters": [],
+        "GroupNameParameters": [
+          {
+            "refInstanceId": 9
+          }
+        ],
+        "CustomLOD": false,
+        "LODLevels": [],
+        "UserBit": 0,
+        "EventPlaySpeed": 1.0,
+        "EventColor": "FFFFFFFF",
+        "TargetGameObject": "Ref<00000000-0000-0000-0000-000000000000 => >",
+        "EventJointName": "",
+        "UseDynamicMovement": false,
+        "EventOffset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "EventRotation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "EventScale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "EventExternParameters": [],
+        "EventGroupNameParameters": []
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 11,
+      "class": "via.effect.script.EventEffectManager",
+      "classHash": "0x999e88d3",
+      "crc": "0xb9d3790a",
+      "fields": {
+        "v0": 1,
+        "v1": [
+          {
+            "refInstanceId": 4
+          },
+          {
+            "refInstanceId": 6
+          },
+          {
+            "refInstanceId": 8
+          },
+          {
+            "refInstanceId": 10
+          }
+        ],
+        "TargetGameObject": "Ref<00000000-0000-0000-0000-000000000000 => >",
+        "useVirtualSkeleton": false
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 12,
+      "class": "via.effect.script.EPVStandardData.Element",
+      "classHash": "0x49c5a434",
+      "crc": "0x86026f1b",
+      "fields": {
+        "v0": [
+          ""
+        ],
+        "TriggerId": 4294967295,
+        "StopTriggerId": 4294967295,
+        "GUID": "1a25c520-4011-45a2-9a50-29724299bd56",
+        "EffectCache": false,
+        "IgnoreEffectCache": false,
+        "AntiFlickerOffset": false,
+        "GroupInfoList": [],
+        "RenderOutputID": 31,
+        "AssetGroupNameListLv0": [],
+        "AssetGroupNameListLv1": [],
+        "ID": 0,
+        "RelationType": 0,
+        "InitlizationParentScale": true,
+        "ParentDegree": 0,
+        "RelationChildId": -1,
+        "JointName": "",
+        "UseVirtualSkeletonLocal": false,
+        "UnparentFrame": -1.0,
+        "Offset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "RotationOrder": 2,
+        "BaseRotation": 0,
+        "RelationRotationAxis": 0,
+        "Rotation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "Scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "LifeFrame": -1.0,
+        "EndType": 1,
+        "ActionOnProviderDestroy": 1,
+        "ActionOnParentDisappear": 0,
+        "IsCameraDirection": false,
+        "IsVFXRangeTrack_NoEffectWaitIntervalFrame": false,
+        "IsLanding": false,
+        "IsUseTerrainNormal": false,
+        "SearchTerrainDistance": 0.5,
+        "IsIgnoreLanding": false,
+        "IgnoreLandingPosition": false,
+        "LandingCoordinateSystem": 0,
+        "LandingAxis": 4,
+        "LandingRotationOffset": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "CamNodeBillbardSec": 1.0,
+        "SeparateParentScale": false,
+        "DelayFrame": 0.0,
+        "LoopFrame": 0,
+        "LoopDispersionFrame": 1,
+        "PlaySpeed": 1.0,
+        "RelationMotionSpeed": false,
+        "IsDefaultMirror": false,
+        "IsRelationMirror": true,
+        "RelationMirrorReverse": 1,
+        "RelationMirrorMotionBlendType": 0,
+        "ColorEnable": true,
+        "Color": "FFFFFFFF",
+        "MaskEnable": false,
+        "MaskBit": 0,
+        "ActionOnCulling": 0,
+        "ExternParameters": [],
+        "GroupNameParameters": [],
+        "CustomLOD": false,
+        "LODLevels": [],
+        "UserBit": 0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 13,
+      "class": "via.effect.script.EPVStandardData",
+      "classHash": "0xa5e90725",
+      "crc": "0x5f39060c",
+      "fields": {
+        "v0": 1,
+        "v1": [
+          {
+            "refInstanceId": 12
+          }
+        ],
+        "Version": 1,
+        "UseVirtualSkeleton": false
+      },
+      "userdataPath": null
+    }
+  ],
+  "diagnostics": {
+    "nativeDataInference": false,
+    "interpretedFields": [
+      {
+        "instanceId": 1,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 1,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 11,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 13,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      }
+    ]
+  },
+  "rszRawBase64": "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"
+}

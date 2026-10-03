@@ -1,0 +1,1254 @@
+{
+  "_format": "mhws_pfb_v1",
+  "version": 18,
+  "sourceSha256": "074f772f41a8971f4cfb0dc4aacf6d77e0cbf66e675980b82fd6daff400b5efc",
+  "schemaSha256": "cfe10514c482ee2856e16dddfc543b148f5320479c913d660f905e6ffb0b40ab",
+  "gameObjects": [
+    {
+      "objectTableIndex": 0,
+      "parentObjectTableIndex": -1,
+      "componentCount": 13,
+      "instanceId": 1,
+      "componentInstanceIds": [
+        2,
+        7,
+        8,
+        9,
+        10,
+        14,
+        15,
+        16,
+        17,
+        19,
+        21,
+        26,
+        27
+      ],
+      "childObjectTableIndices": [
+        14
+      ]
+    },
+    {
+      "objectTableIndex": 14,
+      "parentObjectTableIndex": 0,
+      "componentCount": 4,
+      "instanceId": 28,
+      "componentInstanceIds": [
+        29,
+        31,
+        32,
+        33
+      ],
+      "childObjectTableIndices": []
+    }
+  ],
+  "gameObjectReferences": [],
+  "resources": [
+    "GameDesign/Gimmick/Common/Collision/GmDummyCol.rcol",
+    "Art/Model/Item/it82/18/0000/collision/it8218_0000_7_t.mcol",
+    "Art/Library/Light/LightPostLibrary/LP_Assets/Mesh/Check/TerrainDefault.cfil"
+  ],
+  "userdata": [
+    "GameDesign/Gimmick/Gm006/Gm006/MiniComponent/Gm006_MiniComponentHolder.user",
+    "GameDesign/Gimmick/Gm006/Gm006_009_00/Gm006_009_00_CommonParam.user",
+    "GameDesign/Gimmick/Gm006/Gm006/Gm006_AaaUniqueParam.user",
+    "Sound/UserData/40_Culling/Gimmick/Gm00x_Base_CullingSettings.user"
+  ],
+  "objectTable": [
+    1,
+    2,
+    7,
+    8,
+    9,
+    10,
+    14,
+    15,
+    16,
+    17,
+    19,
+    21,
+    26,
+    27,
+    28,
+    29,
+    31,
+    32,
+    33
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "class": "",
+      "classHash": "0x00000000",
+      "crc": "0x00000000",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 1,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "Gm006_009_00",
+        "v1": "",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 2,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 3,
+      "class": "via.physics.RequestSetCollider.RequestSetGroup",
+      "classHash": "0x7c0c2e30",
+      "crc": "0x81d1ec59",
+      "fields": {
+        "v0": "GameDesign/Gimmick/Common/Collision/GmDummyCol.rcol"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 4,
+      "class": "via.physics.RequestSetCollider.RequestSetGroup",
+      "classHash": "0x7c0c2e30",
+      "crc": "0x81d1ec59",
+      "fields": {
+        "v0": "GameDesign/Gimmick/Common/Collision/GmDummyCol.rcol"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 5,
+      "class": "via.physics.RequestSetCollider.RequestSetGroup",
+      "classHash": "0x7c0c2e30",
+      "crc": "0x81d1ec59",
+      "fields": {
+        "v0": "GameDesign/Gimmick/Common/Collision/GmDummyCol.rcol"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 6,
+      "class": "via.physics.RequestSetCollider.RequestSetGroup",
+      "classHash": "0x7c0c2e30",
+      "crc": "0x81d1ec59",
+      "fields": {
+        "v0": "GameDesign/Gimmick/Common/Collision/GmDummyCol.rcol"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 7,
+      "class": "via.physics.RequestSetCollider",
+      "classHash": "0x669fc998",
+      "crc": "0x07a8aeb6",
+      "fields": {
+        "v0": 1,
+        "v1": 1,
+        "v2": [
+          ""
+        ],
+        "v3": [
+          [
+            3,
+            0,
+            0,
+            0
+          ],
+          [
+            4,
+            0,
+            0,
+            0
+          ],
+          [
+            5,
+            0,
+            0,
+            0
+          ],
+          [
+            6,
+            0,
+            0,
+            0
+          ]
+        ],
+        "v4": "",
+        "v5": [
+          4,
+          0,
+          0,
+          0
+        ],
+        "v6": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 8,
+      "class": "app.HitController",
+      "classHash": "0xeb5b7848",
+      "crc": "0x62e15351",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 9,
+      "class": "ace.ColliderPool",
+      "classHash": "0xe617084e",
+      "crc": "0xa55e794a",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 10,
+      "class": "app.ColliderSwitcher",
+      "classHash": "0xcde46068",
+      "crc": "0xa042d2e4",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 11,
+      "class": "ace.user_data.GimmickMiniComponentHolder",
+      "classHash": "0x19633f57",
+      "crc": "0xe09470cf",
+      "fields": {},
+      "userdataPath": "GameDesign/Gimmick/Gm006/Gm006/MiniComponent/Gm006_MiniComponentHolder.user"
+    },
+    {
+      "id": 12,
+      "class": "app.user_data.GimmickCommonParam",
+      "classHash": "0x1264c8d3",
+      "crc": "0x40b19986",
+      "fields": {},
+      "userdataPath": "GameDesign/Gimmick/Gm006/Gm006_009_00/Gm006_009_00_CommonParam.user"
+    },
+    {
+      "id": 13,
+      "class": "app.user_data.Gm006_AaaUniqueParam",
+      "classHash": "0xe0fb47d5",
+      "crc": "0xd53bc1c5",
+      "fields": {},
+      "userdataPath": "GameDesign/Gimmick/Gm006/Gm006/Gm006_AaaUniqueParam.user"
+    },
+    {
+      "id": 14,
+      "class": "app.GimmickAssetHolder",
+      "classHash": "0x551282e2",
+      "crc": "0x9eacde80",
+      "fields": {
+        "v0": 1,
+        "_MiniComponentHolder": {
+          "refInstanceId": 11
+        },
+        "_CommonParam": {
+          "refInstanceId": 12
+        },
+        "_AaaUniqueParam": {
+          "refInstanceId": 13
+        },
+        "_BbbUniqueParam": {
+          "refInstanceId": 0
+        },
+        "_ShellList": {
+          "refInstanceId": 0
+        }
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 15,
+      "class": "ace.GameMessageReceiver",
+      "classHash": "0xa070bc7f",
+      "crc": "0x7d7dd2a8",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 16,
+      "class": "soundlib.SoundContainer",
+      "classHash": "0x1f6d61a9",
+      "crc": "0x620b8efd",
+      "fields": {
+        "v0": 1,
+        "_TriggerOnlyDrawSelf": false,
+        "_UserDataList": []
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 17,
+      "class": "app.GimmickPrepare",
+      "classHash": "0x9bf15ef4",
+      "crc": "0xbcccc7b7",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 18,
+      "class": "via.Prefab",
+      "classHash": "0xf53c28f9",
+      "crc": "0xa0e05e19",
+      "fields": {
+        "v0": 1,
+        "v1": ""
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 19,
+      "class": "via.effect.script.ObjectEffectManager2",
+      "classHash": "0x2609fe06",
+      "crc": "0xf9681b0d",
+      "fields": {
+        "v0": 1,
+        "v1": false,
+        "v2": false,
+        "FilterParameterWLock": false,
+        "DataContainer": {
+          "refInstanceId": 18
+        },
+        "ExternalDataContainers": [],
+        "TargetGameObject": "Ref<00000000-0000-0000-0000-000000000000 => >",
+        "ExternalPropertys": [],
+        "disableVFXTriggerTrack": true,
+        "disableVFXRangeTrack": false,
+        "disableMotionJackCheck": true,
+        "_VFXTriggerTrackUseHighestWeight": false,
+        "_VFXRangeTrackUseHighestWeight": false,
+        "_StaticDataContainer": true,
+        "_DisableByEmptyDataContainer": false
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 20,
+      "class": "app.snd_user_data.SoundCullingSettingsApp",
+      "classHash": "0x2e397c1f",
+      "crc": "0x16734386",
+      "fields": {},
+      "userdataPath": "Sound/UserData/40_Culling/Gimmick/Gm00x_Base_CullingSettings.user"
+    },
+    {
+      "id": 21,
+      "class": "app.SoundCullingController",
+      "classHash": "0x7b1c7e24",
+      "crc": "0x958261b5",
+      "fields": {
+        "v0": 1,
+        "_Settings": {
+          "refInstanceId": 20
+        }
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 22,
+      "class": "via.physics.MeshShape",
+      "classHash": "0xd5371785",
+      "crc": "0x45a90a2f",
+      "fields": {
+        "v0": [
+          255,
+          255,
+          127,
+          127,
+          255,
+          255,
+          127,
+          127,
+          255,
+          255,
+          127,
+          127,
+          0,
+          0,
+          0,
+          0,
+          255,
+          255,
+          127,
+          255,
+          255,
+          255,
+          127,
+          255,
+          255,
+          255,
+          127,
+          255,
+          0,
+          0,
+          0,
+          0
+        ],
+        "v1": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v2": "Art/Model/Item/it82/18/0000/collision/it8218_0000_7_t.mcol",
+        "v3": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "v4": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "v5": "[Pos: 0 0 0]"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 23,
+      "class": "via.physics.FilterInfo",
+      "classHash": "0x0dd4a871",
+      "crc": "0xfdca9c46",
+      "fields": {
+        "v0": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v1": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v2": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v3": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v4": [
+          255,
+          255,
+          255,
+          255
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 24,
+      "class": "via.physics.UserData",
+      "classHash": "0xf767c93f",
+      "crc": "0x16593069",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 25,
+      "class": "via.physics.Collider",
+      "classHash": "0x15d3b4ec",
+      "crc": "0xd3ef349d",
+      "fields": {
+        "v0": 1,
+        "v1": 1,
+        "v2": [
+          22,
+          0,
+          0,
+          0
+        ],
+        "v3": [
+          23,
+          0,
+          0,
+          0
+        ],
+        "v4": [
+          24,
+          0,
+          0,
+          0
+        ],
+        "v5": "Art/Library/Light/LightPostLibrary/LP_Assets/Mesh/Check/TerrainDefault.cfil",
+        "v6": "",
+        "v7": "",
+        "v8": ""
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 26,
+      "class": "via.physics.Colliders",
+      "classHash": "0x9ab154c4",
+      "crc": "0x78e9a853",
+      "fields": {
+        "v0": 1,
+        "v1": 1,
+        "v2": [
+          ""
+        ],
+        "v3": 0,
+        "v4": [
+          [
+            25,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 27,
+      "class": "app.Gm006",
+      "classHash": "0xf9128d91",
+      "crc": "0x30adc1d1",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 28,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "Gm006_009_AIMapEffecter",
+        "v1": "",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 29,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 1.8119916915893555,
+          "y": 18.349130630493164,
+          "z": 0.3719043731689453,
+          "w": 0.0
+        },
+        "v1": {
+          "x": -0.0,
+          "y": -0.03489949554204941,
+          "z": 0.0,
+          "w": 0.9993908405303955
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 30,
+      "class": "via.navigation.map.InteractionShapeOBB",
+      "classHash": "0x91c88603",
+      "crc": "0x841c0b42",
+      "fields": {
+        "v0": "[Pos: 0 0 0, Extent: <3, 22, 5>]",
+        "v1": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 31,
+      "class": "via.navigation.AIMapEffector",
+      "classHash": "0x16212ad0",
+      "crc": "0x1b4118f4",
+      "fields": {
+        "v0": 1,
+        "v1": "",
+        "v2": [],
+        "v3": [],
+        "v4": "",
+        "v5": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v6": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v7": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "v8": [
+          2,
+          0,
+          0,
+          0
+        ],
+        "v9": [
+          30,
+          0,
+          0,
+          0
+        ],
+        "v10": 1,
+        "v11": 0,
+        "v12": [
+          2,
+          0,
+          0,
+          0
+        ],
+        "v13": [
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 32,
+      "class": "app.GimmickAIMapEffectorController",
+      "classHash": "0x3e3ebb4b",
+      "crc": "0x08b32105",
+      "fields": {
+        "v0": 1,
+        "_Identifier": 0,
+        "_IsEnableAIMapEm": false,
+        "_IsEnableAIMapEmBoss": false,
+        "_IsEnableAIMapNpc": true
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 33,
+      "class": "app.VoxelDataRWEffector",
+      "classHash": "0xdbdffa8c",
+      "crc": "0x56396580",
+      "fields": {
+        "v0": 1,
+        "_ShapeType": 2,
+        "_Attr": 4,
+        "_LocalShape": "Sphere(<0, 0, 0>, 0)",
+        "_LocalShapeBox": "[Pos: 13.9507065 0 1.1920929E-07, Extent: <17.429844, 22.5, 5.5>]"
+      },
+      "userdataPath": null
+    }
+  ],
+  "diagnostics": {
+    "nativeDataInference": false,
+    "interpretedFields": [
+      {
+        "instanceId": 1,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 1,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 7,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 7,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 8,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 9,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 10,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 14,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 16,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 17,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 18,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 19,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 21,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 22,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 22,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "Mat4"
+      },
+      {
+        "instanceId": 25,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 25,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 26,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 26,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 26,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 27,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 28,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 28,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 29,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 29,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 29,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 29,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 29,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 29,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 29,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 30,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "OBB"
+      },
+      {
+        "instanceId": 31,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 31,
+        "field": "v10",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 31,
+        "field": "v11",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 32,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 33,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      }
+    ]
+  },
+  "rszRawBase64": "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"
+}

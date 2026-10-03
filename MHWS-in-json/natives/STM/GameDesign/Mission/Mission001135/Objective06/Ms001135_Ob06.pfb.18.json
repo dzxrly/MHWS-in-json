@@ -1,0 +1,1041 @@
+{
+  "_format": "mhws_pfb_v1",
+  "version": 18,
+  "sourceSha256": "80c1049ff2883c9245165c83005563b82388121daf3719d06dc24135a1307773",
+  "schemaSha256": "cfe10514c482ee2856e16dddfc543b148f5320479c913d660f905e6ffb0b40ab",
+  "gameObjects": [
+    {
+      "objectTableIndex": 0,
+      "parentObjectTableIndex": -1,
+      "componentCount": 5,
+      "instanceId": 1,
+      "componentInstanceIds": [
+        2,
+        7,
+        8,
+        9,
+        10
+      ],
+      "childObjectTableIndices": [
+        6,
+        9,
+        12
+      ]
+    },
+    {
+      "objectTableIndex": 6,
+      "parentObjectTableIndex": 0,
+      "componentCount": 2,
+      "instanceId": 11,
+      "componentInstanceIds": [
+        12,
+        13
+      ],
+      "childObjectTableIndices": []
+    },
+    {
+      "objectTableIndex": 9,
+      "parentObjectTableIndex": 0,
+      "componentCount": 2,
+      "instanceId": 14,
+      "componentInstanceIds": [
+        15,
+        16
+      ],
+      "childObjectTableIndices": []
+    },
+    {
+      "objectTableIndex": 12,
+      "parentObjectTableIndex": 0,
+      "componentCount": 2,
+      "instanceId": 17,
+      "componentInstanceIds": [
+        18,
+        19
+      ],
+      "childObjectTableIndices": []
+    }
+  ],
+  "gameObjectReferences": [],
+  "resources": [
+    "GameDesign/Mission/Mission001135/Objective06/_Fsm/Ms001135_Ob06_RestoreFsm.fsmv2",
+    "GameDesign/Mission/Mission001135/Objective06/_Fsm/Ms001135_Ob06_Fsm00.fsmv2",
+    "GameDesign/Mission/Mission001135/Objective06/_Fsm/Ms001135_Ob06_Fsm01.fsmv2",
+    "GameDesign/Mission/Mission001135/Objective06/_Fsm/Ms001135_Ob06_Fsm02.fsmv2",
+    "GameDesign/Mission/Mission001135/Objective06/_Zone/Ms001135_Ob06_Col.cset"
+  ],
+  "userdata": [],
+  "objectTable": [
+    1,
+    2,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "class": "",
+      "classHash": "0x00000000",
+      "crc": "0x00000000",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 1,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "Ms001135_Ob05",
+        "v1": "",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 2,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 3,
+      "class": "via.behaviortree.BehaviorTree.CoreHandle",
+      "classHash": "0xd2a0ad29",
+      "crc": "0x9ba73e98",
+      "fields": {
+        "v0": 1,
+        "v1": "GameDesign/Mission/Mission001135/Objective06/_Fsm/Ms001135_Ob06_RestoreFsm.fsmv2",
+        "v2": 0,
+        "v3": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v4": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 4,
+      "class": "via.behaviortree.BehaviorTree.CoreHandle",
+      "classHash": "0xd2a0ad29",
+      "crc": "0x9ba73e98",
+      "fields": {
+        "v0": 1,
+        "v1": "GameDesign/Mission/Mission001135/Objective06/_Fsm/Ms001135_Ob06_Fsm00.fsmv2",
+        "v2": 0,
+        "v3": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v4": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 5,
+      "class": "via.behaviortree.BehaviorTree.CoreHandle",
+      "classHash": "0xd2a0ad29",
+      "crc": "0x9ba73e98",
+      "fields": {
+        "v0": 1,
+        "v1": "GameDesign/Mission/Mission001135/Objective06/_Fsm/Ms001135_Ob06_Fsm01.fsmv2",
+        "v2": 0,
+        "v3": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v4": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 6,
+      "class": "via.behaviortree.BehaviorTree.CoreHandle",
+      "classHash": "0xd2a0ad29",
+      "crc": "0x9ba73e98",
+      "fields": {
+        "v0": 1,
+        "v1": "GameDesign/Mission/Mission001135/Objective06/_Fsm/Ms001135_Ob06_Fsm02.fsmv2",
+        "v2": 0,
+        "v3": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v4": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 7,
+      "class": "via.behaviortree.ManualBehaviorTree",
+      "classHash": "0xf24e67b9",
+      "crc": "0xd0228a70",
+      "fields": {
+        "v0": 1,
+        "v1": [
+          [
+            3,
+            0,
+            0,
+            0
+          ],
+          [
+            4,
+            0,
+            0,
+            0
+          ],
+          [
+            5,
+            0,
+            0,
+            0
+          ],
+          [
+            6,
+            0,
+            0,
+            0
+          ]
+        ],
+        "v2": "",
+        "v3": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v4": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v5": 0,
+        "v6": 0,
+        "v7": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 8,
+      "class": "via.physics.ColliderSet",
+      "classHash": "0xe80f5f70",
+      "crc": "0x3863d8d4",
+      "fields": {
+        "v0": 1,
+        "v1": 1,
+        "v2": [
+          ""
+        ],
+        "v3": 1,
+        "v4": "GameDesign/Mission/Mission001135/Objective06/_Zone/Ms001135_Ob06_Col.cset"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 9,
+      "class": "app.ObjectiveController",
+      "classHash": "0xefefc517",
+      "crc": "0x0e0c377d",
+      "fields": {
+        "v0": 1,
+        "_ObjecitiveStatePauseBefore": 0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 10,
+      "class": "app.StoryZoneController",
+      "classHash": "0x1b3aaae0",
+      "crc": "0xd7c6fad5",
+      "fields": {
+        "v0": 1,
+        "isQuest": false
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 11,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "ViewPoint_FrogBird_01",
+        "v1": "",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 12,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": -615.700439453125,
+          "y": 8.041879653930664,
+          "z": 858.38720703125,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 13,
+      "class": "app.MissionObservePointRegister",
+      "classHash": "0x7153969a",
+      "crc": "0x45bb36d0",
+      "fields": {
+        "v0": 1,
+        "_IsCameraLookAt": false,
+        "_CameraAttachParamGuid": "00000000-0000-0000-0000-000000000000",
+        "_IsPlOperate": false,
+        "_IsCanOperationPan": false,
+        "_RangeDegree": {
+          "x": 30.0,
+          "y": 50.0
+        },
+        "_IsDampingCenter": false,
+        "_Fov": 40.0,
+        "_IsCameraFixedEye": true,
+        "STRUCT__OverwritePitchDegree__HasValue": true,
+        "STRUCT__OverwritePitchDegree__Value": 5.0,
+        "_CameraEyePos": {
+          "x": -616.968994140625,
+          "y": 8.061989784240723,
+          "z": 852.750732421875
+        },
+        "_IsOverwriteMoveLength": false,
+        "_CameraMoveLength": 25.0,
+        "STRUCT__InterpolationTime__HasValue": false,
+        "STRUCT__InterpolationTime__Value": 0.0,
+        "_CameraDuration": 10.0,
+        "_IsWaitCameraInterpolation": true,
+        "_DialogueID": 1442,
+        "_IsEVDialogue": false,
+        "_ObservePointIndex": 0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 14,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "ViewPoint_BigC_02",
+        "v1": "",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 15,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": -349.8416748046875,
+          "y": 115.54066467285156,
+          "z": 1461.6475830078125,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 16,
+      "class": "app.MissionObservePointRegister",
+      "classHash": "0x7153969a",
+      "crc": "0x45bb36d0",
+      "fields": {
+        "v0": 1,
+        "_IsCameraLookAt": false,
+        "_CameraAttachParamGuid": "039686a5-3f72-4b54-9a7d-7f11d2ab399a",
+        "_IsPlOperate": false,
+        "_IsCanOperationPan": true,
+        "_RangeDegree": {
+          "x": 15.0,
+          "y": 15.0
+        },
+        "_IsDampingCenter": true,
+        "_Fov": 20.0,
+        "_IsCameraFixedEye": true,
+        "STRUCT__OverwritePitchDegree__HasValue": true,
+        "STRUCT__OverwritePitchDegree__Value": 8.0,
+        "_CameraEyePos": {
+          "x": -543.7987060546875,
+          "y": 23.058561325073242,
+          "z": 861.819091796875
+        },
+        "_IsOverwriteMoveLength": false,
+        "_CameraMoveLength": 60.0,
+        "STRUCT__InterpolationTime__HasValue": false,
+        "STRUCT__InterpolationTime__Value": 0.5,
+        "_CameraDuration": 10.0,
+        "_IsWaitCameraInterpolation": false,
+        "_DialogueID": 1443,
+        "_IsEVDialogue": false,
+        "_ObservePointIndex": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 17,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "ViewPoint_Dino_03",
+        "v1": "",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 18,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": -576.278076171875,
+          "y": 0.7624993324279785,
+          "z": 867.7676391601562,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 19,
+      "class": "app.MissionObservePointRegister",
+      "classHash": "0x7153969a",
+      "crc": "0x45bb36d0",
+      "fields": {
+        "v0": 1,
+        "_IsCameraLookAt": false,
+        "_CameraAttachParamGuid": "00000000-0000-0000-0000-000000000000",
+        "_IsPlOperate": false,
+        "_IsCanOperationPan": false,
+        "_RangeDegree": {
+          "x": 30.0,
+          "y": 50.0
+        },
+        "_IsDampingCenter": false,
+        "_Fov": 40.0,
+        "_IsCameraFixedEye": true,
+        "STRUCT__OverwritePitchDegree__HasValue": true,
+        "STRUCT__OverwritePitchDegree__Value": -8.0,
+        "_CameraEyePos": {
+          "x": -575.2119750976562,
+          "y": 2.8019332885742188,
+          "z": 850.52734375
+        },
+        "_IsOverwriteMoveLength": false,
+        "_CameraMoveLength": 15.0,
+        "STRUCT__InterpolationTime__HasValue": false,
+        "STRUCT__InterpolationTime__Value": 0.0,
+        "_CameraDuration": 7.0,
+        "_IsWaitCameraInterpolation": true,
+        "_DialogueID": 1444,
+        "_IsEVDialogue": false,
+        "_ObservePointIndex": 2
+      },
+      "userdataPath": null
+    }
+  ],
+  "diagnostics": {
+    "nativeDataInference": false,
+    "interpretedFields": [
+      {
+        "instanceId": 1,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 1,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 5,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 5,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 7,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 7,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 7,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 8,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 8,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 8,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 9,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 10,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 11,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 11,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 12,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 12,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 12,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 12,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 12,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 12,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 12,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 13,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 14,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 14,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 15,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 15,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 15,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 15,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 15,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 15,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 15,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 16,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 17,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 17,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 18,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 18,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 18,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 18,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 18,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 18,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 18,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 19,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      }
+    ]
+  },
+  "rszRawBase64": "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"
+}

@@ -1,0 +1,303 @@
+{
+  "_format": "mhws_pfb_v1",
+  "version": 18,
+  "sourceSha256": "306c94c0462078c35ed05ef7155f02e759f8615e8025a4e4c751b6d1027b457d",
+  "schemaSha256": "cfe10514c482ee2856e16dddfc543b148f5320479c913d660f905e6ffb0b40ab",
+  "gameObjects": [
+    {
+      "objectTableIndex": 0,
+      "parentObjectTableIndex": -1,
+      "componentCount": 5,
+      "instanceId": 1,
+      "componentInstanceIds": [
+        2,
+        3,
+        5,
+        7,
+        10
+      ],
+      "childObjectTableIndices": []
+    }
+  ],
+  "gameObjectReferences": [],
+  "resources": [
+    "Art/VFX/EffectProvider/Stage/St101/epvr_st101_border.pfb"
+  ],
+  "userdata": [
+    "Sound/UserData/02_Container/Environment/StageEPV/St101_EnvEPV_ContainerListData.user",
+    "Sound/ADVibration/UserData/Env/Sound_EnvEPV_PadVibrationPresetList.user",
+    "@Sound/ADVibration/UserData/Env/Sound_EnvEPV_ADVibrationPresetList.user"
+  ],
+  "objectTable": [
+    1,
+    2,
+    3,
+    5,
+    7,
+    10
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "class": "",
+      "classHash": "0x00000000",
+      "crc": "0x00000000",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 1,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "StageEffect",
+        "v1": "",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 2,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 3,
+      "class": "app.StageEffectSystem",
+      "classHash": "0xf66cbe11",
+      "crc": "0x2b06719b",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 4,
+      "class": "via.Prefab",
+      "classHash": "0xf53c28f9",
+      "crc": "0xa0e05e19",
+      "fields": {
+        "v0": 1,
+        "v1": "Art/VFX/EffectProvider/Stage/St101/epvr_st101_border.pfb"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 5,
+      "class": "via.effect.script.ObjectEffectManager2",
+      "classHash": "0x2609fe06",
+      "crc": "0xf9681b0d",
+      "fields": {
+        "v0": 1,
+        "v1": false,
+        "v2": false,
+        "FilterParameterWLock": false,
+        "DataContainer": {
+          "refInstanceId": 4
+        },
+        "ExternalDataContainers": [],
+        "TargetGameObject": "Ref<00000000-0000-0000-0000-000000000000 => >",
+        "ExternalPropertys": [],
+        "disableVFXTriggerTrack": true,
+        "disableVFXRangeTrack": false,
+        "disableMotionJackCheck": false,
+        "_VFXTriggerTrackUseHighestWeight": false,
+        "_VFXRangeTrackUseHighestWeight": false,
+        "_StaticDataContainer": false,
+        "_DisableByEmptyDataContainer": false
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 6,
+      "class": "soundlib.SoundContainerListData",
+      "classHash": "0xc4af76a2",
+      "crc": "0xdcc8fcc9",
+      "fields": {},
+      "userdataPath": "Sound/UserData/02_Container/Environment/StageEPV/St101_EnvEPV_ContainerListData.user"
+    },
+    {
+      "id": 7,
+      "class": "soundlib.SoundContainer",
+      "classHash": "0x1f6d61a9",
+      "crc": "0x620b8efd",
+      "fields": {
+        "v0": 1,
+        "_TriggerOnlyDrawSelf": false,
+        "_UserDataList": [
+          {
+            "refInstanceId": 6
+          }
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 8,
+      "class": "ace.user_data.PadVibrationPresetList",
+      "classHash": "0x57957927",
+      "crc": "0x9df2af37",
+      "fields": {},
+      "userdataPath": "Sound/ADVibration/UserData/Env/Sound_EnvEPV_PadVibrationPresetList.user"
+    },
+    {
+      "id": 9,
+      "class": "ace.user_data.ADVibrationPresetList",
+      "classHash": "0x424644a3",
+      "crc": "0xcdbc1b69",
+      "fields": {},
+      "userdataPath": "@Sound/ADVibration/UserData/Env/Sound_EnvEPV_ADVibrationPresetList.user"
+    },
+    {
+      "id": 10,
+      "class": "app.SoundVibrationContainer",
+      "classHash": "0x99774430",
+      "crc": "0x53d6cfcd",
+      "fields": {
+        "v0": 1,
+        "_VibrationData": {
+          "refInstanceId": 8
+        },
+        "_ADVibrationData": {
+          "refInstanceId": 9
+        },
+        "_VibTriggerList": {
+          "refInstanceId": 0
+        },
+        "_ForceValid": false
+      },
+      "userdataPath": null
+    }
+  ],
+  "diagnostics": {
+    "nativeDataInference": false,
+    "interpretedFields": [
+      {
+        "instanceId": 1,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 1,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 5,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 7,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 10,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      }
+    ]
+  },
+  "rszRawBase64": "UlNaABAAAAAGAAAACwAAAAMAAAAAAAAASAAAAAAAAACkAgAAAAAAAKQAAAAAAAAAAQAAAAIAAAADAAAABQAAAAcAAAAKAAAAAAAAAAAAAAAXpALJ4h5M8kYwrN+n7e1PEb5s9ptxBiv5KDz1GV7goAb+CSYNG2j5onavxMn8yNypYW0f/Y4LYid5lVc3r/Kdo0RGQmkbvM0wRHeZzc/WUwAAAAAGAAAAonavxNQAAAAAAAAACAAAACd5lVd+AQAAAAAAAAkAAACjREZCDgIAAAAAAABTAG8AdQBuAGQALwBVAHMAZQByAEQAYQB0AGEALwAwADIAXwBDAG8AbgB0AGEAaQBuAGUAcgAvAEUAbgB2AGkAcgBvAG4AbQBlAG4AdAAvAFMAdABhAGcAZQBFAFAAVgAvAFMAdAAxADAAMQBfAEUAbgB2AEUAUABWAF8AQwBvAG4AdABhAGkAbgBlAHIATABpAHMAdABEAGEAdABhAC4AdQBzAGUAcgAAAFMAbwB1AG4AZAAvAEEARABWAGkAYgByAGEAdABpAG8AbgAvAFUAcwBlAHIARABhAHQAYQAvAEUAbgB2AC8AUwBvAHUAbgBkAF8ARQBuAHYARQBQAFYAXwBQAGEAZABWAGkAYgByAGEAdABpAG8AbgBQAHIAZQBzAGUAdABMAGkAcwB0AC4AdQBzAGUAcgAAAEAAUwBvAHUAbgBkAC8AQQBEAFYAaQBiAHIAYQB0AGkAbwBuAC8AVQBzAGUAcgBEAGEAdABhAC8ARQBuAHYALwBTAG8AdQBuAGQAXwBFAG4AdgBFAFAAVgBfAEEARABWAGkAYgByAGEAdABpAG8AbgBQAHIAZQBzAGUAdABMAGkAcwB0AC4AdQBzAGUAcgAAAAAAAAAAAAwAAABTAHQAYQBnAGUARQBmAGYAZQBjAHQAAAABAAAAAAABAQAAgL8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIA/AACAPwAAgD8AAIA/AAAAAAEAAAAAAAAAAAAAAAAAAAABAQAAOQAAAEEAcgB0AC8AVgBGAFgALwBFAGYAZgBlAGMAdABQAHIAbwB2AGkAZABlAHIALwBTAHQAYQBnAGUALwBTAHQAMQAwADEALwBlAHAAdgByAF8AcwB0ADEAMAAxAF8AYgBvAHIAZABlAHIALgBwAGYAYgAAAAEAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAQAAAAABAAAABgAAAAEAAAAIAAAACQAAAAAAAAAA"
+}

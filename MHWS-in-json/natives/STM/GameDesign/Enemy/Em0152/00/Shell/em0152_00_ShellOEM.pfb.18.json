@@ -1,0 +1,239 @@
+{
+  "_format": "mhws_pfb_v1",
+  "version": 18,
+  "sourceSha256": "b6e44ab1624e6440d043153cd98c3ad10e91d9db19cef314058a4ed312309caf",
+  "schemaSha256": "cfe10514c482ee2856e16dddfc543b148f5320479c913d660f905e6ffb0b40ab",
+  "gameObjects": [
+    {
+      "objectTableIndex": 0,
+      "parentObjectTableIndex": -1,
+      "componentCount": 3,
+      "instanceId": 1,
+      "componentInstanceIds": [
+        2,
+        4,
+        6
+      ],
+      "childObjectTableIndices": []
+    }
+  ],
+  "gameObjectReferences": [],
+  "resources": [
+    "Art/VFX/EffectProvider/Enemy/em0152/epvr_em0152_00.pfb"
+  ],
+  "userdata": [
+    "Sound/UserData/11_TriggerInfoList/Enemy/EnemyBoss/Em0152_00_0_Ground_EFX_SoundTriggerInfoListData.user"
+  ],
+  "objectTable": [
+    1,
+    2,
+    4,
+    6
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "class": "",
+      "classHash": "0x00000000",
+      "crc": "0x00000000",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 1,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "em0152_00_ShellOEM",
+        "v1": "",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 2,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 3,
+      "class": "via.Prefab",
+      "classHash": "0xf53c28f9",
+      "crc": "0xa0e05e19",
+      "fields": {
+        "v0": 1,
+        "v1": "Art/VFX/EffectProvider/Enemy/em0152/epvr_em0152_00.pfb"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 4,
+      "class": "via.effect.script.ObjectEffectManager2",
+      "classHash": "0x2609fe06",
+      "crc": "0xf9681b0d",
+      "fields": {
+        "v0": 1,
+        "v1": false,
+        "v2": false,
+        "FilterParameterWLock": false,
+        "DataContainer": {
+          "refInstanceId": 3
+        },
+        "ExternalDataContainers": [],
+        "TargetGameObject": "Ref<00000000-0000-0000-0000-000000000000 => >",
+        "ExternalPropertys": [],
+        "disableVFXTriggerTrack": false,
+        "disableVFXRangeTrack": false,
+        "disableMotionJackCheck": false,
+        "_VFXTriggerTrackUseHighestWeight": false,
+        "_VFXRangeTrackUseHighestWeight": false,
+        "_StaticDataContainer": false,
+        "_DisableByEmptyDataContainer": false
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 5,
+      "class": "soundlib.SoundTriggerInfoListData",
+      "classHash": "0xb92e7e5a",
+      "crc": "0xc34cd85f",
+      "fields": {},
+      "userdataPath": "Sound/UserData/11_TriggerInfoList/Enemy/EnemyBoss/Em0152_00_0_Ground_EFX_SoundTriggerInfoListData.user"
+    },
+    {
+      "id": 6,
+      "class": "soundlib.SoundContainer",
+      "classHash": "0x1f6d61a9",
+      "crc": "0x620b8efd",
+      "fields": {
+        "v0": 1,
+        "_TriggerOnlyDrawSelf": false,
+        "_UserDataList": [
+          {
+            "refInstanceId": 5
+          }
+        ]
+      },
+      "userdataPath": null
+    }
+  ],
+  "diagnostics": {
+    "nativeDataInference": false,
+    "interpretedFields": [
+      {
+        "instanceId": 1,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 1,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      }
+    ]
+  },
+  "rszRawBase64": "UlNaABAAAAAEAAAABwAAAAEAAAAAAAAAQAAAAAAAAABkAQAAAAAAAIQAAAAAAAAAAQAAAAIAAAAEAAAABgAAAAAAAAAAAAAAF6QCyeIeTPJGMKzfp+3tT/koPPUZXuCgBv4JJg0baPlafi65X9hMw6lhbR/9jgtiAAAAAAAAAAAAAAAABQAAAFp+LrmUAAAAAAAAAFMAbwB1AG4AZAAvAFUAcwBlAHIARABhAHQAYQAvADEAMQBfAFQAcgBpAGcAZwBlAHIASQBuAGYAbwBMAGkAcwB0AC8ARQBuAGUAbQB5AC8ARQBuAGUAbQB5AEIAbwBzAHMALwBFAG0AMAAxADUAMgBfADAAMABfADAAXwBHAHIAbwB1AG4AZABfAEUARgBYAF8AUwBvAHUAbgBkAFQAcgBpAGcAZwBlAHIASQBuAGYAbwBMAGkAcwB0AEQAYQB0AGEALgB1AHMAZQByAAAAAAATAAAAZQBtADAAMQA1ADIAXwAwADAAXwBTAGgAZQBsAGwATwBFAE0AAAAAAAEAAAAAAAEBAACAvwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgD8AAIA/AACAPwAAgD8AAAAAAQAAAAAAAAAAAAAAAAAAAAEAAAA3AAAAQQByAHQALwBWAEYAWAAvAEUAZgBmAGUAYwB0AFAAcgBvAHYAaQBkAGUAcgAvAEUAbgBlAG0AeQAvAGUAbQAwADEANQAyAC8AZQBwAHYAcgBfAGUAbQAwADEANQAyAF8AMAAwAC4AcABmAGIAAAABAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAEAAAAFAAAA"
+}

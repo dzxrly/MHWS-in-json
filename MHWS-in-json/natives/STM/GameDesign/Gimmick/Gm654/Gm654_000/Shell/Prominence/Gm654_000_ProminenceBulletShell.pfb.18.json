@@ -1,0 +1,322 @@
+{
+  "_format": "mhws_pfb_v1",
+  "version": 18,
+  "sourceSha256": "9ac59ae889520260893d79b827c7acb97f17ab25e03e14ce06db3c1468bd821a",
+  "schemaSha256": "cfe10514c482ee2856e16dddfc543b148f5320479c913d660f905e6ffb0b40ab",
+  "gameObjects": [
+    {
+      "objectTableIndex": 0,
+      "parentObjectTableIndex": -1,
+      "componentCount": 7,
+      "instanceId": 1,
+      "componentInstanceIds": [
+        2,
+        3,
+        4,
+        6,
+        7,
+        8,
+        10
+      ],
+      "childObjectTableIndices": []
+    }
+  ],
+  "gameObjectReferences": [],
+  "resources": [
+    "GameDesign/Gimmick/Gm654/Gm654_000/Collision/Gm654_000_ProminenceBullet.rcol"
+  ],
+  "userdata": [
+    "Sound/UserData/39_Shell/ShellData.user"
+  ],
+  "objectTable": [
+    1,
+    2,
+    3,
+    4,
+    6,
+    7,
+    8,
+    10
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "class": "",
+      "classHash": "0x00000000",
+      "crc": "0x00000000",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 1,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "Gm654_000_ProminenceBulletShell",
+        "v1": "Gimmick",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 2,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 3,
+      "class": "app.HitController",
+      "classHash": "0xeb5b7848",
+      "crc": "0x62e15351",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 4,
+      "class": "ace.ColliderPool",
+      "classHash": "0xe617084e",
+      "crc": "0xa55e794a",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 5,
+      "class": "via.physics.RequestSetCollider.RequestSetGroup",
+      "classHash": "0x7c0c2e30",
+      "crc": "0x81d1ec59",
+      "fields": {
+        "v0": "GameDesign/Gimmick/Gm654/Gm654_000/Collision/Gm654_000_ProminenceBullet.rcol"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 6,
+      "class": "via.physics.RequestSetCollider",
+      "classHash": "0x669fc998",
+      "crc": "0x07a8aeb6",
+      "fields": {
+        "v0": 1,
+        "v1": 1,
+        "v2": [
+          ""
+        ],
+        "v3": [
+          [
+            5,
+            0,
+            0,
+            0
+          ]
+        ],
+        "v4": "",
+        "v5": [
+          4,
+          0,
+          0,
+          0
+        ],
+        "v6": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 7,
+      "class": "app.AppShell",
+      "classHash": "0x0d6beade",
+      "crc": "0xc4871ff1",
+      "fields": {
+        "v0": 1,
+        "IsMasterShell": false,
+        "IsChangeLifeTimerRate": false,
+        "LifeTimerRate": 1.0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 8,
+      "class": "app.ShellHitController",
+      "classHash": "0x41ec7e3a",
+      "crc": "0xa9a69ea8",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 9,
+      "class": "app.snd_user_data.SoundShellDataApp",
+      "classHash": "0x4cebd7e3",
+      "crc": "0x9ae5f749",
+      "fields": {},
+      "userdataPath": "Sound/UserData/39_Shell/ShellData.user"
+    },
+    {
+      "id": 10,
+      "class": "soundlib.SoundContainer",
+      "classHash": "0x1f6d61a9",
+      "crc": "0x620b8efd",
+      "fields": {
+        "v0": 1,
+        "_TriggerOnlyDrawSelf": false,
+        "_UserDataList": [
+          {
+            "refInstanceId": 9
+          }
+        ]
+      },
+      "userdataPath": null
+    }
+  ],
+  "diagnostics": {
+    "nativeDataInference": false,
+    "interpretedFields": [
+      {
+        "instanceId": 1,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 1,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 7,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 8,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 10,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      }
+    ]
+  },
+  "rszRawBase64": "UlNaABAAAAAIAAAACwAAAAEAAAAAAAAAUAAAAAAAAAAIAQAAAAAAAKgAAAAAAAAAAQAAAAIAAAADAAAABAAAAAYAAAAHAAAACAAAAAoAAAAAAAAAAAAAABekAsniHkzyRjCs36ft7U9IeFvrUVPhYk4IF+ZKeV6lMC4MfFns0YGYyZ9mtq6oB97qaw3xH4fEOn7sQaiepqnj1+tMSfflmqlhbR/9jgtiCQAAAOPX60y4AAAAAAAAAFMAbwB1AG4AZAAvAFUAcwBlAHIARABhAHQAYQAvADMAOQBfAFMAaABlAGwAbAAvAFMAaABlAGwAbABEAGEAdABhAC4AdQBzAGUAcgAAAAAAIAAAAEcAbQA2ADUANABfADAAMAAwAF8AUAByAG8AbQBpAG4AZQBuAGMAZQBCAHUAbABsAGUAdABTAGgAZQBsAGwAAAAIAAAARwBpAG0AbQBpAGMAawAAAAEBAAAAAIC/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgD8AAIA/AACAPwAAgD8AAAAAAQAAAAAAAAAAAAAAAAAAAAEBAABNAAAARwBhAG0AZQBEAGUAcwBpAGcAbgAvAEcAaQBtAG0AaQBjAGsALwBHAG0ANgA1ADQALwBHAG0ANgA1ADQAXwAwADAAMAAvAEMAbwBsAGwAaQBzAGkAbwBuAC8ARwBtADYANQA0AF8AMAAwADAAXwBQAHIAbwBtAGkAbgBlAG4AYwBlAEIAdQBsAGwAZQB0AC4AcgBjAG8AbAAAAAEBAQAAAAAAAAABAAAABQAAAAAAAAAEAAAAAAAAAAEAAAAAAIA/AQEAAAEAAAAJAAAA"
+}

@@ -1,0 +1,471 @@
+{
+  "_format": "mhws_pfb_v1",
+  "version": 18,
+  "sourceSha256": "80e26b4e787cb0c1ba163bffa26d2a511ef0fb2c6bb6dada20c60a44779cf783",
+  "schemaSha256": "cfe10514c482ee2856e16dddfc543b148f5320479c913d660f905e6ffb0b40ab",
+  "gameObjects": [
+    {
+      "objectTableIndex": 0,
+      "parentObjectTableIndex": -1,
+      "componentCount": 11,
+      "instanceId": 1,
+      "componentInstanceIds": [
+        2,
+        3,
+        5,
+        6,
+        7,
+        8,
+        11,
+        15,
+        16,
+        18,
+        20
+      ],
+      "childObjectTableIndices": []
+    }
+  ],
+  "gameObjectReferences": [],
+  "resources": [
+    "GameDesign/Player/ActionData/Wp05/Collision/Collider/Wp05_Shell.rcol"
+  ],
+  "userdata": [
+    "Sound/UserData/39_Shell/ShellData.user",
+    "Sound/UserData/02_Container/Hit/Wp05Shell_Hit_ContainerListData.user",
+    "Sound/ADVibration/UserData/Weapon/wp05/Sound_wp05_PadVibrationPresetList.user",
+    "@Sound/ADVibration/UserData/Weapon/wp05/Sound_wp05_ADVibrationPresetList.user",
+    "@Sound/ADVibration/UserData/Weapon/wp05/Sound_wp05_VibrationTriggerListData.user",
+    "GameDesign/NPC/Partner/CommonData/PlShell/Wp05_PlShellWatchData.user",
+    "GameDesign/NPC/Partner/CommonData/PlShell/Wp05_PlShellRWVoxelData.user"
+  ],
+  "objectTable": [
+    1,
+    2,
+    3,
+    5,
+    6,
+    7,
+    8,
+    11,
+    15,
+    16,
+    18,
+    20
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "class": "",
+      "classHash": "0x00000000",
+      "crc": "0x00000000",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 1,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "Wp05Shell",
+        "v1": "Shell|Weapon",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 2,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 3,
+      "class": "ace.ColliderPool",
+      "classHash": "0xe617084e",
+      "crc": "0xa55e794a",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 4,
+      "class": "via.physics.RequestSetCollider.RequestSetGroup",
+      "classHash": "0x7c0c2e30",
+      "crc": "0x81d1ec59",
+      "fields": {
+        "v0": "GameDesign/Player/ActionData/Wp05/Collision/Collider/Wp05_Shell.rcol"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 5,
+      "class": "via.physics.RequestSetCollider",
+      "classHash": "0x669fc998",
+      "crc": "0x07a8aeb6",
+      "fields": {
+        "v0": 1,
+        "v1": 1,
+        "v2": [
+          ""
+        ],
+        "v3": [
+          [
+            4,
+            0,
+            0,
+            0
+          ]
+        ],
+        "v4": "",
+        "v5": [
+          4,
+          0,
+          0,
+          0
+        ],
+        "v6": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 6,
+      "class": "app.HitController",
+      "classHash": "0xeb5b7848",
+      "crc": "0x62e15351",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 7,
+      "class": "app.AppShell",
+      "classHash": "0x0d6beade",
+      "crc": "0xc4871ff1",
+      "fields": {
+        "v0": 1,
+        "IsMasterShell": false,
+        "IsChangeLifeTimerRate": false,
+        "LifeTimerRate": 1.0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 8,
+      "class": "app.ShellHitController",
+      "classHash": "0x41ec7e3a",
+      "crc": "0xa9a69ea8",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 9,
+      "class": "app.snd_user_data.SoundShellDataApp",
+      "classHash": "0x4cebd7e3",
+      "crc": "0x9ae5f749",
+      "fields": {},
+      "userdataPath": "Sound/UserData/39_Shell/ShellData.user"
+    },
+    {
+      "id": 10,
+      "class": "soundlib.SoundContainerListData",
+      "classHash": "0xc4af76a2",
+      "crc": "0xdcc8fcc9",
+      "fields": {},
+      "userdataPath": "Sound/UserData/02_Container/Hit/Wp05Shell_Hit_ContainerListData.user"
+    },
+    {
+      "id": 11,
+      "class": "soundlib.SoundContainer",
+      "classHash": "0x1f6d61a9",
+      "crc": "0x620b8efd",
+      "fields": {
+        "v0": 1,
+        "_TriggerOnlyDrawSelf": false,
+        "_UserDataList": [
+          {
+            "refInstanceId": 9
+          },
+          {
+            "refInstanceId": 10
+          }
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 12,
+      "class": "ace.user_data.PadVibrationPresetList",
+      "classHash": "0x57957927",
+      "crc": "0x9df2af37",
+      "fields": {},
+      "userdataPath": "Sound/ADVibration/UserData/Weapon/wp05/Sound_wp05_PadVibrationPresetList.user"
+    },
+    {
+      "id": 13,
+      "class": "ace.user_data.ADVibrationPresetList",
+      "classHash": "0x424644a3",
+      "crc": "0xcdbc1b69",
+      "fields": {},
+      "userdataPath": "@Sound/ADVibration/UserData/Weapon/wp05/Sound_wp05_ADVibrationPresetList.user"
+    },
+    {
+      "id": 14,
+      "class": "app.snd_user_data.SoundVibrationTriggerListData",
+      "classHash": "0xdd35f005",
+      "crc": "0xc451127e",
+      "fields": {},
+      "userdataPath": "@Sound/ADVibration/UserData/Weapon/wp05/Sound_wp05_VibrationTriggerListData.user"
+    },
+    {
+      "id": 15,
+      "class": "app.SoundVibrationContainer",
+      "classHash": "0x99774430",
+      "crc": "0x53d6cfcd",
+      "fields": {
+        "v0": 1,
+        "_VibrationData": {
+          "refInstanceId": 12
+        },
+        "_ADVibrationData": {
+          "refInstanceId": 13
+        },
+        "_VibTriggerList": {
+          "refInstanceId": 14
+        },
+        "_ForceValid": false
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 16,
+      "class": "app.VoxelDataRWEffector",
+      "classHash": "0xdbdffa8c",
+      "crc": "0x56396580",
+      "fields": {
+        "v0": 1,
+        "_ShapeType": 0,
+        "_Attr": 64,
+        "_LocalShape": "Sphere(<0, 0, 0>, 3)",
+        "_LocalShapeBox": "[Pos: 0 0 0, Extent: <0, 0, 0>]"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 17,
+      "class": "app.user_data.NpcPlShellWatchData",
+      "classHash": "0x005d86b9",
+      "crc": "0xca6bee4e",
+      "fields": {},
+      "userdataPath": "GameDesign/NPC/Partner/CommonData/PlShell/Wp05_PlShellWatchData.user"
+    },
+    {
+      "id": 18,
+      "class": "app.NpcPlShellWatcher",
+      "classHash": "0x4a045442",
+      "crc": "0x49171ce5",
+      "fields": {
+        "v0": 1,
+        "_DataManager": {
+          "refInstanceId": 17
+        }
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 19,
+      "class": "app.user_data.NpcPlShellRWVoxelData",
+      "classHash": "0x9f94c7f2",
+      "crc": "0x2a35e9ad",
+      "fields": {},
+      "userdataPath": "GameDesign/NPC/Partner/CommonData/PlShell/Wp05_PlShellRWVoxelData.user"
+    },
+    {
+      "id": 20,
+      "class": "app.NpcRWVoxelController_ShellPL",
+      "classHash": "0xad4fe42c",
+      "crc": "0x65e4eb34",
+      "fields": {
+        "v0": 1,
+        "_DataManager": {
+          "refInstanceId": 19
+        }
+      },
+      "userdataPath": null
+    }
+  ],
+  "diagnostics": {
+    "nativeDataInference": false,
+    "interpretedFields": [
+      {
+        "instanceId": 1,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 1,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 5,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 5,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 7,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 8,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 11,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 15,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 16,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 18,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 20,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      }
+    ]
+  },
+  "rszRawBase64": "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"
+}

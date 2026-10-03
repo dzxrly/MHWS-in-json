@@ -1,0 +1,264 @@
+{
+  "_format": "mhws_pfb_v1",
+  "version": 18,
+  "sourceSha256": "dd0fa9e7a2b6fe3f82af1c454a7b5111269c261a8b1ad13e302fb7510cc28a76",
+  "schemaSha256": "cfe10514c482ee2856e16dddfc543b148f5320479c913d660f905e6ffb0b40ab",
+  "gameObjects": [
+    {
+      "objectTableIndex": 0,
+      "parentObjectTableIndex": -1,
+      "componentCount": 5,
+      "instanceId": 1,
+      "componentInstanceIds": [
+        2,
+        4,
+        5,
+        6,
+        7
+      ],
+      "childObjectTableIndices": []
+    }
+  ],
+  "gameObjectReferences": [],
+  "resources": [
+    "Art/VFX/EffectProvider/Props/gm/gm034/gm034_032/epvr_gm034_032.pfb"
+  ],
+  "userdata": [],
+  "objectTable": [
+    1,
+    2,
+    4,
+    5,
+    6,
+    7
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "class": "",
+      "classHash": "0x00000000",
+      "crc": "0x00000000",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 1,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "Acc001_456",
+        "v1": "",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 2,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 3,
+      "class": "via.Prefab",
+      "classHash": "0xf53c28f9",
+      "crc": "0xa0e05e19",
+      "fields": {
+        "v0": 1,
+        "v1": "Art/VFX/EffectProvider/Props/gm/gm034/gm034_032/epvr_gm034_032.pfb"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 4,
+      "class": "via.effect.script.ObjectEffectManager2",
+      "classHash": "0x2609fe06",
+      "crc": "0xf9681b0d",
+      "fields": {
+        "v0": 1,
+        "v1": false,
+        "v2": false,
+        "FilterParameterWLock": false,
+        "DataContainer": {
+          "refInstanceId": 3
+        },
+        "ExternalDataContainers": [],
+        "TargetGameObject": "Ref<00000000-0000-0000-0000-000000000000 => >",
+        "ExternalPropertys": [],
+        "disableVFXTriggerTrack": false,
+        "disableVFXRangeTrack": false,
+        "disableMotionJackCheck": false,
+        "_VFXTriggerTrackUseHighestWeight": false,
+        "_VFXRangeTrackUseHighestWeight": false,
+        "_StaticDataContainer": false,
+        "_DisableByEmptyDataContainer": false
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 5,
+      "class": "via.effect.script.EPVStandard",
+      "classHash": "0x7591ca5b",
+      "crc": "0x54a359ce",
+      "fields": {
+        "v0": 1,
+        "FollowGameObject": {
+          "refInstanceId": 0
+        }
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 6,
+      "class": "app.DropRewardAccessory",
+      "classHash": "0x0a6b5324",
+      "crc": "0x16d5ce20",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 7,
+      "class": "soundlib.SoundContainer",
+      "classHash": "0x1f6d61a9",
+      "crc": "0x620b8efd",
+      "fields": {
+        "v0": 1,
+        "_TriggerOnlyDrawSelf": false,
+        "_UserDataList": []
+      },
+      "userdataPath": null
+    }
+  ],
+  "diagnostics": {
+    "nativeDataInference": false,
+    "interpretedFields": [
+      {
+        "instanceId": 1,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 1,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 5,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 7,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      }
+    ]
+  },
+  "rszRawBase64": "UlNaABAAAAAGAAAACAAAAAAAAAAAAAAASAAAAAAAAACKAAAAAAAAAIoAAAAAAAAAAQAAAAIAAAAEAAAABQAAAAYAAAAHAAAAAAAAAAAAAAAXpALJ4h5M8kYwrN+n7e1P+Sg89Rle4KAG/gkmDRto+VvKkXXOWaNUJFNrCiDO1RapYW0f/Y4LYgAACwAAAEEAYwBjADAAMAAxAF8ANAA1ADYAAAAAAAEAAAAAAAEBAACAvwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgD8AAIA/AACAPwAAgD8AAAAAAQAAAAAAAAAAAAAAAAAAAAEAAABDAAAAQQByAHQALwBWAEYAWAAvAEUAZgBmAGUAYwB0AFAAcgBvAHYAaQBkAGUAcgAvAFAAcgBvAHAAcwAvAGcAbQAvAGcAbQAwADMANAAvAGcAbQAwADMANABfADAAMwAyAC8AZQBwAHYAcgBfAGcAbQAwADMANABfADAAMwAyAC4AcABmAGIAAAABAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAEBAAAAAAAA"
+}

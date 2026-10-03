@@ -1,0 +1,323 @@
+{
+  "_format": "mhws_pfb_v1",
+  "version": 18,
+  "sourceSha256": "4a97ecb7d1a665ccd76788a4b84580808ab65531979d877d07160edf7b234c30",
+  "schemaSha256": "cfe10514c482ee2856e16dddfc543b148f5320479c913d660f905e6ffb0b40ab",
+  "gameObjects": [
+    {
+      "objectTableIndex": 0,
+      "parentObjectTableIndex": -1,
+      "componentCount": 4,
+      "instanceId": 1,
+      "componentInstanceIds": [
+        2,
+        4,
+        5,
+        7
+      ],
+      "childObjectTableIndices": []
+    }
+  ],
+  "gameObjectReferences": [],
+  "resources": [
+    "GameDesign/Mission/Mission400010/_Fsm/Ms400010_RestoreFsm.fsmv2"
+  ],
+  "userdata": [
+    "GameDesign/Mission/Mission400010/Ms400010_ObData.user"
+  ],
+  "objectTable": [
+    1,
+    2,
+    4,
+    5,
+    7
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "class": "",
+      "classHash": "0x00000000",
+      "crc": "0x00000000",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 1,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "Ms400010",
+        "v1": "",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 2,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 3,
+      "class": "app.user_data.ObjectiveListData",
+      "classHash": "0x280f8de2",
+      "crc": "0x72e669b8",
+      "fields": {},
+      "userdataPath": "GameDesign/Mission/Mission400010/Ms400010_ObData.user"
+    },
+    {
+      "id": 4,
+      "class": "app.MissionController",
+      "classHash": "0x3e7915f9",
+      "crc": "0x52ee6169",
+      "fields": {
+        "v0": 1,
+        "_MsCtlrPhasePauseBefore": 9,
+        "DisableNextObjectiveLoad": false,
+        "DisableOnLoadMissionGimmick": false,
+        "IsBeforeBattleExMissionQuest": false,
+        "_ObjectiveListData": {
+          "refInstanceId": 3
+        }
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 5,
+      "class": "app.StoryZoneController",
+      "classHash": "0x1b3aaae0",
+      "crc": "0xd7c6fad5",
+      "fields": {
+        "v0": 1,
+        "isQuest": false
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 6,
+      "class": "via.behaviortree.BehaviorTree.CoreHandle",
+      "classHash": "0xd2a0ad29",
+      "crc": "0x9ba73e98",
+      "fields": {
+        "v0": 1,
+        "v1": "GameDesign/Mission/Mission400010/_Fsm/Ms400010_RestoreFsm.fsmv2",
+        "v2": 0,
+        "v3": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v4": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 7,
+      "class": "via.behaviortree.ManualBehaviorTree",
+      "classHash": "0xf24e67b9",
+      "crc": "0xd0228a70",
+      "fields": {
+        "v0": 1,
+        "v1": [
+          [
+            6,
+            0,
+            0,
+            0
+          ]
+        ],
+        "v2": "",
+        "v3": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "v4": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v5": 0,
+        "v6": 0,
+        "v7": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    }
+  ],
+  "diagnostics": {
+    "nativeDataInference": false,
+    "interpretedFields": [
+      {
+        "instanceId": 1,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 1,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 5,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 7,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 7,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 7,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      }
+    ]
+  },
+  "rszRawBase64": "UlNaABAAAAAFAAAACAAAAAEAAAAAAAAARAAAAAAAAAAEAQAAAAAAAIQAAAAAAAAAAQAAAAIAAAAEAAAABQAAAAcAAAAAAAAAAAAAABekAsniHkzyRjCs36ft7U/ijQ8ouGnmcvkVeT5pYe5S4Ko6G9X6xtcpraDSmD6nm7lnTvJwiiLQAwAAAOKNDyiUAAAAAAAAAEcAYQBtAGUARABlAHMAaQBnAG4ALwBNAGkAcwBzAGkAbwBuAC8ATQBpAHMAcwBpAG8AbgA0ADAAMAAwADEAMAAvAE0AcwA0ADAAMAAwADEAMABfAE8AYgBEAGEAdABhAC4AdQBzAGUAcgAAAAAAAAAJAAAATQBzADQAMAAwADAAMQAwAAAAAAABAAAAAAABAQAAgL8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAAkAAAAAAAAAAwAAAAEAAQBAAAAARwBhAG0AZQBEAGUAcwBpAGcAbgAvAE0AaQBzAHMAaQBvAG4ALwBNAGkAcwBzAGkAbwBuADQAMAAwADAAMQAwAC8AXwBGAHMAbQAvAE0AcwA0ADAAMAAwADEAMABfAFIAZQBzAHQAbwByAGUARgBzAG0ALgBmAHMAbQB2ADIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAABgAAAAAAAAABAAAAAAAAAAAAAAAAAAAA"
+}

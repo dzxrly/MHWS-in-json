@@ -1,0 +1,259 @@
+{
+  "_format": "mhws_pfb_v1",
+  "version": 18,
+  "sourceSha256": "96c30b6d474fd055a88b6331acf9e9d43210940331b9573610300c4592054fa7",
+  "schemaSha256": "cfe10514c482ee2856e16dddfc543b148f5320479c913d660f905e6ffb0b40ab",
+  "gameObjects": [
+    {
+      "objectTableIndex": 0,
+      "parentObjectTableIndex": -1,
+      "componentCount": 5,
+      "instanceId": 1,
+      "componentInstanceIds": [
+        2,
+        6,
+        7,
+        8,
+        9
+      ],
+      "childObjectTableIndices": []
+    }
+  ],
+  "gameObjectReferences": [],
+  "resources": [],
+  "userdata": [
+    "GameDesign/Gimmick/Gm800/Gm800/MiniComponent/Gm800_MiniComponentHolder.user",
+    "GameDesign/Gimmick/Gm800/Gm800_002_58/Gm800_002_58_CommonParam.user",
+    "GameDesign/Gimmick/Gm800/Gm800_002_58/Gm800_002_58_AaaUniqueParam.user"
+  ],
+  "objectTable": [
+    1,
+    2,
+    6,
+    7,
+    8,
+    9
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "class": "",
+      "classHash": "0x00000000",
+      "crc": "0x00000000",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 1,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "Gm800_002_58",
+        "v1": "",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 2,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 3,
+      "class": "ace.user_data.GimmickMiniComponentHolder",
+      "classHash": "0x19633f57",
+      "crc": "0xe09470cf",
+      "fields": {},
+      "userdataPath": "GameDesign/Gimmick/Gm800/Gm800/MiniComponent/Gm800_MiniComponentHolder.user"
+    },
+    {
+      "id": 4,
+      "class": "app.user_data.GimmickCommonParam",
+      "classHash": "0x1264c8d3",
+      "crc": "0x40b19986",
+      "fields": {},
+      "userdataPath": "GameDesign/Gimmick/Gm800/Gm800_002_58/Gm800_002_58_CommonParam.user"
+    },
+    {
+      "id": 5,
+      "class": "app.user_data.Gm800_AaaUniqueParam",
+      "classHash": "0x2fa903f0",
+      "crc": "0xee58d501",
+      "fields": {},
+      "userdataPath": "GameDesign/Gimmick/Gm800/Gm800_002_58/Gm800_002_58_AaaUniqueParam.user"
+    },
+    {
+      "id": 6,
+      "class": "app.GimmickAssetHolder",
+      "classHash": "0x551282e2",
+      "crc": "0x9eacde80",
+      "fields": {
+        "v0": 1,
+        "_MiniComponentHolder": {
+          "refInstanceId": 3
+        },
+        "_CommonParam": {
+          "refInstanceId": 4
+        },
+        "_AaaUniqueParam": {
+          "refInstanceId": 5
+        },
+        "_BbbUniqueParam": {
+          "refInstanceId": 0
+        },
+        "_ShellList": {
+          "refInstanceId": 0
+        }
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 7,
+      "class": "ace.GameMessageReceiver",
+      "classHash": "0xa070bc7f",
+      "crc": "0x7d7dd2a8",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 8,
+      "class": "app.GimmickPrepare",
+      "classHash": "0x9bf15ef4",
+      "crc": "0xbcccc7b7",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 9,
+      "class": "app.Gm800",
+      "classHash": "0x4cfffd03",
+      "crc": "0x5cd18ffb",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    }
+  ],
+  "diagnostics": {
+    "nativeDataInference": false,
+    "interpretedFields": [
+      {
+        "instanceId": 1,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 1,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 8,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 9,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      }
+    ]
+  },
+  "rszRawBase64": "UlNaABAAAAAGAAAACgAAAAMAAAAAAAAASAAAAAAAAACCAgAAAAAAAKIAAAAAAAAAAQAAAAIAAAAGAAAABwAAAAgAAAAJAAAAAAAAAAAAAAAXpALJ4h5M8kYwrN+n7e1PVz9jGc9wlODTyGQShpmxQPADqS8B1Vju4oISVYDerJ5/vHCgqNJ9ffRe8Zu3x8y8A/3/TPuP0VwAAAAAAAAAAAAAAwAAAFc/YxnSAAAAAAAAAAQAAADTyGQSagEAAAAAAAAFAAAA8AOpL/IBAAAAAAAARwBhAG0AZQBEAGUAcwBpAGcAbgAvAEcAaQBtAG0AaQBjAGsALwBHAG0AOAAwADAALwBHAG0AOAAwADAALwBNAGkAbgBpAEMAbwBtAHAAbwBuAGUAbgB0AC8ARwBtADgAMAAwAF8ATQBpAG4AaQBDAG8AbQBwAG8AbgBlAG4AdABIAG8AbABkAGUAcgAuAHUAcwBlAHIAAABHAGEAbQBlAEQAZQBzAGkAZwBuAC8ARwBpAG0AbQBpAGMAawAvAEcAbQA4ADAAMAAvAEcAbQA4ADAAMABfADAAMAAyAF8ANQA4AC8ARwBtADgAMAAwAF8AMAAwADIAXwA1ADgAXwBDAG8AbQBtAG8AbgBQAGEAcgBhAG0ALgB1AHMAZQByAAAARwBhAG0AZQBEAGUAcwBpAGcAbgAvAEcAaQBtAG0AaQBjAGsALwBHAG0AOAAwADAALwBHAG0AOAAwADAAXwAwADAAMgBfADUAOAAvAEcAbQA4ADAAMABfADAAMAAyAF8ANQA4AF8AQQBhAGEAVQBuAGkAcQB1AGUAUABhAHIAYQBtAC4AdQBzAGUAcgAAAAAADQAAAEcAbQA4ADAAMABfADAAMAAyAF8ANQA4AAAAAAABAAAAAAABAQAAgL8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgD8AAIA/AACAPwAAgD8AAAAAAQAAAAAAAAAAAAAAAAAAAAEAAAADAAAABAAAAAUAAAAAAAAAAAAAAAEB"
+}

@@ -1,0 +1,1002 @@
+{
+  "_format": "mhws_pfb_v1",
+  "version": 18,
+  "sourceSha256": "5ae2b216ef0b7a058b5a02b8b53643e2bdb3806f2ee346ec343e62f70226b308",
+  "schemaSha256": "cfe10514c482ee2856e16dddfc543b148f5320479c913d660f905e6ffb0b40ab",
+  "gameObjects": [
+    {
+      "objectTableIndex": 0,
+      "parentObjectTableIndex": -1,
+      "componentCount": 3,
+      "instanceId": 1,
+      "componentInstanceIds": [
+        2,
+        3,
+        47
+      ],
+      "childObjectTableIndices": []
+    }
+  ],
+  "gameObjectReferences": [],
+  "resources": [
+    "GUI/ui010000/ui010300/ui010300.gui"
+  ],
+  "userdata": [],
+  "objectTable": [
+    1,
+    2,
+    3,
+    47
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "class": "",
+      "classHash": "0x00000000",
+      "crc": "0x00000000",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 1,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "GUI010300",
+        "v1": "",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 2,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 3,
+      "class": "via.gui.GUI",
+      "classHash": "0x25f55eb4",
+      "crc": "0xd8e3657b",
+      "fields": {
+        "v0": 1,
+        "v1": "GUI/ui010000/ui010300/ui010300.gui",
+        "v2": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v3": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v4": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v5": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v6": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "v7": "",
+        "v8": 1,
+        "v9": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 4,
+      "class": "app.user_data.SeikretEquipDefaultColors.Data",
+      "classHash": "0x3b170147",
+      "crc": "0x2c2856f7",
+      "fields": {
+        "ColorA": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "ColorB": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "ColorC": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "PatternColor": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "PatternThickness": 0,
+        "PatternTransparency": 0,
+        "EyeLeftColor": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "EyeRightColor": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 5,
+      "class": "app.CharaEditGUICharacterSelect",
+      "classHash": "0xc5d2d971",
+      "crc": "0x063140e4",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 6,
+      "class": "app.CharaEditGUIItemSelect",
+      "classHash": "0x48d3af43",
+      "crc": "0x4f48d7c0",
+      "fields": {
+        "_IsMotionStopHunter": false,
+        "_IsMotionStopPalico": false,
+        "_NowData": {
+          "refInstanceId": 0
+        }
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 7,
+      "class": "app.CharaEditGUIViewOptions",
+      "classHash": "0x74a412d9",
+      "crc": "0xf782a741",
+      "fields": {
+        "Background": 0,
+        "EquipDisplay": false,
+        "SeikretEquipDisplay": true,
+        "HairDisplay": true,
+        "BikiniDisplay": false,
+        "WipeCameraOption": 0,
+        "HunterMotionSample": 0,
+        "PalicoMotionSample": 0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 8,
+      "class": "app.CharaEditGUIRecipeWindow",
+      "classHash": "0x6414f2f5",
+      "crc": "0x931ac9e2",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 9,
+      "class": "app.CharaEditGUISaveLoad",
+      "classHash": "0x15bceaec",
+      "crc": "0x574c42e7",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 10,
+      "class": "app.CharaEditGUISkinPalette",
+      "classHash": "0xa4081aca",
+      "crc": "0xf4fa2141",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 11,
+      "class": "app.CharaEditGUITriangleBlend",
+      "classHash": "0x55782c82",
+      "crc": "0xa1681351",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 12,
+      "class": "app.CharaEditGUILinearBlend",
+      "classHash": "0x2b0e5e26",
+      "crc": "0x74bb9951",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 13,
+      "class": "app.CharaEditGUISquare",
+      "classHash": "0x2881a72c",
+      "crc": "0xe1289c90",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 14,
+      "class": "app.CharaEditGUIThumbnailWindow",
+      "classHash": "0xd9cc6f4c",
+      "crc": "0xf71f42d6",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 15,
+      "class": "app.CharaEditGUIWipeCamera",
+      "classHash": "0x9dbe7672",
+      "crc": "0x3bb4536b",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 16,
+      "class": "app.CharaEditGUICharmList",
+      "classHash": "0x4a11a281",
+      "crc": "0xa4e34715",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 17,
+      "class": "ace.Bitset",
+      "classHash": "0x1ca59446",
+      "crc": "0x1f6006d9",
+      "fields": {
+        "_Value": [
+          0
+        ],
+        "_MaxElement": 32
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 18,
+      "class": "ace.Bitset",
+      "classHash": "0x1ca59446",
+      "crc": "0x1f6006d9",
+      "fields": {
+        "_Value": [
+          0
+        ],
+        "_MaxElement": 32
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 19,
+      "class": "ace.Bitset",
+      "classHash": "0x1ca59446",
+      "crc": "0x1f6006d9",
+      "fields": {
+        "_Value": [
+          0
+        ],
+        "_MaxElement": 32
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 20,
+      "class": "ace.Bitset",
+      "classHash": "0x1ca59446",
+      "crc": "0x1f6006d9",
+      "fields": {
+        "_Value": [
+          0
+        ],
+        "_MaxElement": 32
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 21,
+      "class": "ace.Bitset",
+      "classHash": "0x1ca59446",
+      "crc": "0x1f6006d9",
+      "fields": {
+        "_Value": [
+          0
+        ],
+        "_MaxElement": 32
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 22,
+      "class": "ace.Bitset",
+      "classHash": "0x1ca59446",
+      "crc": "0x1f6006d9",
+      "fields": {
+        "_Value": [
+          0
+        ],
+        "_MaxElement": 32
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 23,
+      "class": "ace.Bitset",
+      "classHash": "0x1ca59446",
+      "crc": "0x1f6006d9",
+      "fields": {
+        "_Value": [
+          0
+        ],
+        "_MaxElement": 32
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 24,
+      "class": "ace.Bitset",
+      "classHash": "0x1ca59446",
+      "crc": "0x1f6006d9",
+      "fields": {
+        "_Value": [
+          0
+        ],
+        "_MaxElement": 32
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 25,
+      "class": "ace.Bitset",
+      "classHash": "0x1ca59446",
+      "crc": "0x1f6006d9",
+      "fields": {
+        "_Value": [
+          0
+        ],
+        "_MaxElement": 32
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 26,
+      "class": "ace.Bitset",
+      "classHash": "0x1ca59446",
+      "crc": "0x1f6006d9",
+      "fields": {
+        "_Value": [
+          0
+        ],
+        "_MaxElement": 32
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 27,
+      "class": "ace.Bitset",
+      "classHash": "0x1ca59446",
+      "crc": "0x1f6006d9",
+      "fields": {
+        "_Value": [
+          0
+        ],
+        "_MaxElement": 32
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 28,
+      "class": "ace.Bitset",
+      "classHash": "0x1ca59446",
+      "crc": "0x1f6006d9",
+      "fields": {
+        "_Value": [
+          0
+        ],
+        "_MaxElement": 32
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 29,
+      "class": "ace.Bitset",
+      "classHash": "0x1ca59446",
+      "crc": "0x1f6006d9",
+      "fields": {
+        "_Value": [
+          0
+        ],
+        "_MaxElement": 32
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 30,
+      "class": "ace.Bitset",
+      "classHash": "0x1ca59446",
+      "crc": "0x1f6006d9",
+      "fields": {
+        "_Value": [
+          0
+        ],
+        "_MaxElement": 32
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 31,
+      "class": "ace.Bitset",
+      "classHash": "0x1ca59446",
+      "crc": "0x1f6006d9",
+      "fields": {
+        "_Value": [
+          0
+        ],
+        "_MaxElement": 32
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 32,
+      "class": "ace.Bitset",
+      "classHash": "0x1ca59446",
+      "crc": "0x1f6006d9",
+      "fields": {
+        "_Value": [
+          0
+        ],
+        "_MaxElement": 32
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 33,
+      "class": "ace.Bitset",
+      "classHash": "0x1ca59446",
+      "crc": "0x1f6006d9",
+      "fields": {
+        "_Value": [
+          0
+        ],
+        "_MaxElement": 32
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 34,
+      "class": "ace.Bitset",
+      "classHash": "0x1ca59446",
+      "crc": "0x1f6006d9",
+      "fields": {
+        "_Value": [
+          0
+        ],
+        "_MaxElement": 32
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 35,
+      "class": "ace.Bitset",
+      "classHash": "0x1ca59446",
+      "crc": "0x1f6006d9",
+      "fields": {
+        "_Value": [
+          0
+        ],
+        "_MaxElement": 32
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 36,
+      "class": "ace.Bitset",
+      "classHash": "0x1ca59446",
+      "crc": "0x1f6006d9",
+      "fields": {
+        "_Value": [
+          0
+        ],
+        "_MaxElement": 32
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 37,
+      "class": "ace.Bitset",
+      "classHash": "0x1ca59446",
+      "crc": "0x1f6006d9",
+      "fields": {
+        "_Value": [
+          0
+        ],
+        "_MaxElement": 32
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 38,
+      "class": "ace.Bitset",
+      "classHash": "0x1ca59446",
+      "crc": "0x1f6006d9",
+      "fields": {
+        "_Value": [
+          0
+        ],
+        "_MaxElement": 32
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 39,
+      "class": "ace.Bitset",
+      "classHash": "0x1ca59446",
+      "crc": "0x1f6006d9",
+      "fields": {
+        "_Value": [
+          0
+        ],
+        "_MaxElement": 32
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 40,
+      "class": "ace.Bitset",
+      "classHash": "0x1ca59446",
+      "crc": "0x1f6006d9",
+      "fields": {
+        "_Value": [
+          0
+        ],
+        "_MaxElement": 32
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 41,
+      "class": "ace.Bitset",
+      "classHash": "0x1ca59446",
+      "crc": "0x1f6006d9",
+      "fields": {
+        "_Value": [
+          0
+        ],
+        "_MaxElement": 32
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 42,
+      "class": "ace.Bitset",
+      "classHash": "0x1ca59446",
+      "crc": "0x1f6006d9",
+      "fields": {
+        "_Value": [
+          0
+        ],
+        "_MaxElement": 32
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 43,
+      "class": "ace.Bitset",
+      "classHash": "0x1ca59446",
+      "crc": "0x1f6006d9",
+      "fields": {
+        "_Value": [
+          0
+        ],
+        "_MaxElement": 32
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 44,
+      "class": "app.cPreviewTentEditor",
+      "classHash": "0x3069ddb7",
+      "crc": "0xe449384e",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 45,
+      "class": "app.CharaEditGUIDef.TentCustomizeSceneInfo",
+      "classHash": "0x4e420b7f",
+      "crc": "0x2ec8b360",
+      "fields": {
+        "SceneController": {
+          "refInstanceId": 0
+        },
+        "TentEditor": {
+          "refInstanceId": 44
+        }
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 46,
+      "class": "app.CharaEditGUIDef.NPCCustomizeSceneInfo",
+      "classHash": "0x01ef58ef",
+      "crc": "0x4ddfa3fc",
+      "fields": {
+        "SceneController": {
+          "refInstanceId": 0
+        }
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 47,
+      "class": "app.GUI010300",
+      "classHash": "0x26eea60d",
+      "crc": "0xbca436f3",
+      "fields": {
+        "v0": 1,
+        "_SceneType": 0,
+        "_EditCharaType": -1,
+        "_SaveIndex": -1,
+        "_TentHeadMainColorCache": [],
+        "_TentHeadSubColorCache": [],
+        "_TentBodyMainColorCache": [],
+        "_TentBodySubColorCache": [],
+        "_HairLengthCache": [],
+        "_SeikretEquipCache": 0,
+        "STRUCT__SeikretEquipUseOriginalColorCache__Value": 0,
+        "_SeikretEquipColorsCache": {
+          "refInstanceId": 4
+        },
+        "CharacterSelect": {
+          "refInstanceId": 5
+        },
+        "ItemSelect": {
+          "refInstanceId": 6
+        },
+        "ViewOptions": {
+          "refInstanceId": 7
+        },
+        "RecipeWindow": {
+          "refInstanceId": 8
+        },
+        "SaveLoad": {
+          "refInstanceId": 9
+        },
+        "SkinPalette": {
+          "refInstanceId": 10
+        },
+        "TriangleBlend": {
+          "refInstanceId": 11
+        },
+        "LinearBlend": {
+          "refInstanceId": 12
+        },
+        "Square": {
+          "refInstanceId": 13
+        },
+        "ThumbnailWindow": {
+          "refInstanceId": 14
+        },
+        "WipeCamera": {
+          "refInstanceId": 15
+        },
+        "CharmList": {
+          "refInstanceId": 16
+        },
+        "_AvailableInnerStyles": [],
+        "_AvailableHairStyles": [],
+        "_AvailableEyebrowStyles": [],
+        "_AvailableBeardStyles": [],
+        "_AvailableMoustacheStyles": [],
+        "_AvailableFacialTextureStyles": [],
+        "_AvailableWrinkleStyles": [],
+        "_AvailablePaintStyles": [],
+        "_AvailableEarStyles": [],
+        "_AvailableFelyneEyeStyles": [],
+        "_AvailableFacialFurStyles": [],
+        "_AvailableEarFurStyles": [],
+        "_AvailableTailStyles": [],
+        "_AvailableFurPatternStyles": [],
+        "_AvailableFelynePaintStyles": [],
+        "_AvailableSeikretEquipStyles": [],
+        "_AvailableSeikretCharms": [],
+        "_AvailableTentLargeFacilities": [],
+        "_AvailableTentSmallFacilities": [],
+        "_AvailableTentLanterns": [],
+        "_AvailableTentHeadClothTypes": [],
+        "_AvailableTentBodyClothTypes": [],
+        "_AvailableAlmaCostumes": [],
+        "_AvailableAlmaGlasses": [],
+        "_AvailableErikCostumes": [],
+        "_AvailableGemmaCostumes": [],
+        "_AvailableTentStampTypes": [],
+        "_OwnedInnerStylesBitset": {
+          "refInstanceId": 17
+        },
+        "_OwnedHairStylesBitset": {
+          "refInstanceId": 18
+        },
+        "_OwnedEyebrowStylesBitset": {
+          "refInstanceId": 19
+        },
+        "_OwnedBeardStylesBitset": {
+          "refInstanceId": 20
+        },
+        "_OwnedMoustacheStylesBitset": {
+          "refInstanceId": 21
+        },
+        "_OwnedFacialTextureStylesBitset": {
+          "refInstanceId": 22
+        },
+        "_OwnedWrinkleStylesBitset": {
+          "refInstanceId": 23
+        },
+        "_OwnedPaintStylesBitset": {
+          "refInstanceId": 24
+        },
+        "_OwnedEarStylesBitset": {
+          "refInstanceId": 25
+        },
+        "_OwnedFelyneEyeStylesBitset": {
+          "refInstanceId": 26
+        },
+        "_OwnedFacialFurStylesBitset": {
+          "refInstanceId": 27
+        },
+        "_OwnedEarFurStylesBitset": {
+          "refInstanceId": 28
+        },
+        "_OwnedTailStylesBitset": {
+          "refInstanceId": 29
+        },
+        "_OwnedFurPatternStylesBitset": {
+          "refInstanceId": 30
+        },
+        "_OwnedFelynePaintStylesBitset": {
+          "refInstanceId": 31
+        },
+        "_OwnedSeikretEquipStylesBitset": {
+          "refInstanceId": 32
+        },
+        "_OwnedSeikretCharmsBitset": {
+          "refInstanceId": 33
+        },
+        "_OwnedTentLargeFacilitiesBitset": {
+          "refInstanceId": 34
+        },
+        "_OwnedTentSmallFacilitiesBitset": {
+          "refInstanceId": 35
+        },
+        "_OwnedTentLanternsBitset": {
+          "refInstanceId": 36
+        },
+        "_OwnedTentHeadClothTypesBitset": {
+          "refInstanceId": 37
+        },
+        "_OwnedTentBodyClothTypesBitset": {
+          "refInstanceId": 38
+        },
+        "_OwnedTentStampTypesBitset": {
+          "refInstanceId": 39
+        },
+        "_OwnedAlmaCostumesBitset": {
+          "refInstanceId": 40
+        },
+        "_OwnedAlmaGlassesBitset": {
+          "refInstanceId": 41
+        },
+        "_OwnedErikCostumesBitset": {
+          "refInstanceId": 42
+        },
+        "_OwnedGemmaCostumesBitset": {
+          "refInstanceId": 43
+        },
+        "_TentCustomizeSceneInfo": {
+          "refInstanceId": 45
+        },
+        "_NPCCustomizeSceneInfo": {
+          "refInstanceId": 46
+        },
+        "SliderSpeed": 0.032999999821186066,
+        "InitialStepDuration": 0.15000000596046448,
+        "_HunterEditItemData": {
+          "refInstanceId": 0
+        },
+        "_OtomoEditItemData": {
+          "refInstanceId": 0
+        },
+        "_HunterAdjustEditItemData": {
+          "refInstanceId": 0
+        },
+        "_OtomoAdjustEditItemData": {
+          "refInstanceId": 0
+        },
+        "_HunterTicketEditItemData": {
+          "refInstanceId": 0
+        },
+        "_OtomoTicketEditItemData": {
+          "refInstanceId": 0
+        },
+        "_SeikretEditItemData": {
+          "refInstanceId": 0
+        },
+        "_SeikretPartialEditItemData": {
+          "refInstanceId": 0
+        },
+        "_TentEditItemData": {
+          "refInstanceId": 0
+        },
+        "_NPC001EditItemData": {
+          "refInstanceId": 0
+        },
+        "_NPC002EditItemData": {
+          "refInstanceId": 0
+        },
+        "_NPC003EditItemData": {
+          "refInstanceId": 0
+        },
+        "_HunterOtomoViewOptionsData": {
+          "refInstanceId": 0
+        },
+        "_HunterViewOptionsData": {
+          "refInstanceId": 0
+        },
+        "_OtomoViewOptionsData": {
+          "refInstanceId": 0
+        },
+        "_SeikretViewOptionsData": {
+          "refInstanceId": 0
+        },
+        "_SeikretPartialViewOptionsData": {
+          "refInstanceId": 0
+        },
+        "_TentViewOptionsData": {
+          "refInstanceId": 0
+        },
+        "_NPC001ViewOptionsData": {
+          "refInstanceId": 0
+        },
+        "_NPC002ViewOptionsData": {
+          "refInstanceId": 0
+        },
+        "_NPC003ViewOptionsData": {
+          "refInstanceId": 0
+        },
+        "_LoadedOBTData": false
+      },
+      "userdataPath": null
+    }
+  ],
+  "diagnostics": {
+    "nativeDataInference": false,
+    "interpretedFields": [
+      {
+        "instanceId": 1,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 1,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v8",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 47,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      }
+    ]
+  },
+  "rszRawBase64": "UlNaABAAAAAEAAAAMAAAAAAAAAAAAAAAQAAAAAAAAADKAQAAAAAAAMoBAAAAAAAAAQAAAAIAAAADAAAALwAAAAAAAAAAAAAAF6QCyeIeTPJGMKzfp+3tT7Re9SV7ZePYRwEXO/dWKCxx2dLF5EAxBkOv00jA10hP2RKkdEGngvf18hRk4skak+zqvBXnQkxXyhoIpEEh+vSCLHhVURNooSZeDitRmbt0LKeBKJCcKOFMb8zZ1kIf93J2vp1rU7Q7gaIRShVH46RGlKUc2QZgH0aUpRzZBmAfRpSlHNkGYB9GlKUc2QZgH0aUpRzZBmAfRpSlHNkGYB9GlKUc2QZgH0aUpRzZBmAfRpSlHNkGYB9GlKUc2QZgH0aUpRzZBmAfRpSlHNkGYB9GlKUc2QZgH0aUpRzZBmAfRpSlHNkGYB9GlKUc2QZgH0aUpRzZBmAfRpSlHNkGYB9GlKUc2QZgH0aUpRzZBmAfRpSlHNkGYB9GlKUc2QZgH0aUpRzZBmAfRpSlHNkGYB9GlKUc2QZgH0aUpRzZBmAfRpSlHNkGYB+33WkwTjhJ5H8LQk5gs8gu71jvAfyj300Npu4m8zakvAAAAAAAAAAAAAAKAAAARwBVAEkAMAAxADAAMwAwADAAAAABAAAAAAABAQAAgL8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAAAABAAAAAAAAAAAAAAAAAAAAAQAAACMAAABHAFUASQAvAHUAaQAwADEAMAAwADAAMAAvAHUAaQAwADEAMAAzADAAMAAvAHUAaQAwADEAMAAzADAAMAAuAGcAdQBpAAAAAAAAAIA/AAAAAAAAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEAAAAAAAAAAAAAAAAAAQAAAAAAAAAgAAAAAQAAAAAAAAAgAAAAAQAAAAAAAAAgAAAAAQAAAAAAAAAgAAAAAQAAAAAAAAAgAAAAAQAAAAAAAAAgAAAAAQAAAAAAAAAgAAAAAQAAAAAAAAAgAAAAAQAAAAAAAAAgAAAAAQAAAAAAAAAgAAAAAQAAAAAAAAAgAAAAAQAAAAAAAAAgAAAAAQAAAAAAAAAgAAAAAQAAAAAAAAAgAAAAAQAAAAAAAAAgAAAAAQAAAAAAAAAgAAAAAQAAAAAAAAAgAAAAAQAAAAAAAAAgAAAAAQAAAAAAAAAgAAAAAQAAAAAAAAAgAAAAAQAAAAAAAAAgAAAAAQAAAAAAAAAgAAAAAQAAAAAAAAAgAAAAAQAAAAAAAAAgAAAAAQAAAAAAAAAgAAAAAQAAAAAAAAAgAAAAAQAAAAAAAAAgAAAAAAAAACwAAAAAAAAAAQAAAAAAAAD//////////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABQAAAAYAAAAHAAAACAAAAAkAAAAKAAAACwAAAAwAAAANAAAADgAAAA8AAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEQAAABIAAAATAAAAFAAAABUAAAAWAAAAFwAAABgAAAAZAAAAGgAAABsAAAAcAAAAHQAAAB4AAAAfAAAAIAAAACEAAAAiAAAAIwAAACQAAAAlAAAAJgAAACcAAAAoAAAAKQAAACoAAAArAAAALQAAAC4AAAACKwc9mpkZPgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+}

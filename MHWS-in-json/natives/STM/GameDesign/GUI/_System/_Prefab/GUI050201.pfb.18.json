@@ -1,0 +1,303 @@
+{
+  "_format": "mhws_pfb_v1",
+  "version": 18,
+  "sourceSha256": "2f89fc7f0a9aee9229fee1a6f3be7a84d4cb7589e0277701fcb7d982d76dda37",
+  "schemaSha256": "cfe10514c482ee2856e16dddfc543b148f5320479c913d660f905e6ffb0b40ab",
+  "gameObjects": [
+    {
+      "objectTableIndex": 0,
+      "parentObjectTableIndex": -1,
+      "componentCount": 5,
+      "instanceId": 1,
+      "componentInstanceIds": [
+        2,
+        3,
+        4,
+        6,
+        7
+      ],
+      "childObjectTableIndices": []
+    }
+  ],
+  "gameObjectReferences": [],
+  "resources": [
+    "GUI/ui050000/ui050200/ui050201.gui",
+    "GUI/ui_texture/tex_render/rtt600000_00.rtex"
+  ],
+  "userdata": [],
+  "objectTable": [
+    1,
+    2,
+    3,
+    4,
+    6,
+    7
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "class": "",
+      "classHash": "0x00000000",
+      "crc": "0x00000000",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 1,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "GUI050201",
+        "v1": "",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 2,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 3,
+      "class": "via.gui.GUI",
+      "classHash": "0x25f55eb4",
+      "crc": "0xd8e3657b",
+      "fields": {
+        "v0": 1,
+        "v1": "GUI/ui050000/ui050200/ui050201.gui",
+        "v2": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v3": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v4": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v5": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v6": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "v7": "",
+        "v8": 1,
+        "v9": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 4,
+      "class": "app.GUI050201",
+      "classHash": "0x5e4a224f",
+      "crc": "0x98763fb8",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 5,
+      "class": "via.movie.MovieContext",
+      "classHash": "0x3ea845ac",
+      "crc": "0x9dda18c7",
+      "fields": {
+        "v0_PlaybackAudio": false,
+        "v1_PlaybackVideo": true,
+        "v2_Loop": true,
+        "v3_OnMemory": false,
+        "v4_Performance": 1,
+        "v5_Strategy": 1,
+        "v6_DecodeLayer": 0,
+        "v7_BlendMode": 0,
+        "v8_ExternalStorageFileName": "",
+        "v9_VideoDecoderMode": 0,
+        "v10_TimeScalingMode": 0,
+        "v11_Diagnostic": false,
+        "v12_AudioBusId": 4294967295,
+        "v13_AudioKeepValueOnSkipped": false
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 6,
+      "class": "via.movie.Movie",
+      "classHash": "0xcbbd1062",
+      "crc": "0x2ce03e4b",
+      "fields": {
+        "v0": [
+          5,
+          0,
+          0,
+          0
+        ],
+        "v1": "",
+        "v2": "GUI/ui_texture/tex_render/rtt600000_00.rtex",
+        "v3": "",
+        "v4": [
+          0,
+          0,
+          128,
+          63
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 7,
+      "class": "app.GuiMoviePlayer",
+      "classHash": "0x8b226cef",
+      "crc": "0x4b7f6d07",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    }
+  ],
+  "diagnostics": {
+    "nativeDataInference": false,
+    "interpretedFields": [
+      {
+        "instanceId": 1,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 1,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v8",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 7,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      }
+    ]
+  },
+  "rszRawBase64": "UlNaABAAAAAGAAAACAAAAAAAAAAAAAAASAAAAAAAAACSAAAAAAAAAJIAAAAAAAAAAQAAAAIAAAADAAAABAAAAAYAAAAHAAAAAAAAAAAAAAAXpALJ4h5M8kYwrN+n7e1PtF71JXtl49hPIkpeuD92mKxFqD7HGNqdYhC9y0s+4CzvbCKLB21/SwAAAAAAAAAAAAAKAAAARwBVAEkAMAA1ADAAMgAwADEAAAABAAAAAAABAQAAgL8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAAAABAAAAAAAAAAAAAAAAAAAAAQAAACMAAABHAFUASQAvAHUAaQAwADUAMAAwADAAMAAvAHUAaQAwADUAMAAyADAAMAAvAHUAaQAwADUAMAAyADAAMQAuAGcAdQBpAAAAAAAAAIA/AAAAAAAAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAEAAQEAAAAAAQAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA/////wAAAAAFAAAAAAAAACwAAABHAFUASQAvAHUAaQBfAHQAZQB4AHQAdQByAGUALwB0AGUAeABfAHIAZQBuAGQAZQByAC8AcgB0AHQANgAwADAAMAAwADAAXwAwADAALgByAHQAZQB4AAAAAQAAAAAAAAAAAIA/AQ=="
+}

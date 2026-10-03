@@ -1,0 +1,269 @@
+{
+  "_format": "mhws_pfb_v1",
+  "version": 18,
+  "sourceSha256": "f0ff6e6d464429c05fa870158d4926ef107f0fcda801e76c64b75822b111fd4c",
+  "schemaSha256": "cfe10514c482ee2856e16dddfc543b148f5320479c913d660f905e6ffb0b40ab",
+  "gameObjects": [
+    {
+      "objectTableIndex": 0,
+      "parentObjectTableIndex": -1,
+      "componentCount": 3,
+      "instanceId": 1,
+      "componentInstanceIds": [
+        2,
+        3,
+        7
+      ],
+      "childObjectTableIndices": []
+    }
+  ],
+  "gameObjectReferences": [],
+  "resources": [
+    "GUI/ui000000/ui000000/ui000027.gui"
+  ],
+  "userdata": [],
+  "objectTable": [
+    1,
+    2,
+    3,
+    7
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "class": "",
+      "classHash": "0x00000000",
+      "crc": "0x00000000",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 1,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "GUI000027",
+        "v1": "",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 2,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 3,
+      "class": "via.gui.GUI",
+      "classHash": "0x25f55eb4",
+      "crc": "0xd8e3657b",
+      "fields": {
+        "v0": 1,
+        "v1": "GUI/ui000000/ui000000/ui000027.gui",
+        "v2": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v3": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v4": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v5": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v6": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "v7": "",
+        "v8": 1,
+        "v9": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 4,
+      "class": "app.GUI000027PrimaryWindow",
+      "classHash": "0xdb374f4d",
+      "crc": "0x348042d1",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 5,
+      "class": "app.GUI000027SecondaryWindow",
+      "classHash": "0x71991594",
+      "crc": "0x08755607",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 6,
+      "class": "app.GUI000027SkillWindow",
+      "classHash": "0xeabd71f3",
+      "crc": "0x7c8f12f8",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 7,
+      "class": "app.GUI000027",
+      "classHash": "0xa9cd0860",
+      "crc": "0x730b3266",
+      "fields": {
+        "v0": 1,
+        "_PrimaryWindow": {
+          "refInstanceId": 4
+        },
+        "_SecondaryWindow": {
+          "refInstanceId": 5
+        },
+        "_SkillWindow": {
+          "refInstanceId": 6
+        },
+        "_CallbackOwnerId": -1
+      },
+      "userdataPath": null
+    }
+  ],
+  "diagnostics": {
+    "nativeDataInference": false,
+    "interpretedFields": [
+      {
+        "instanceId": 1,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 1,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v8",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 7,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      }
+    ]
+  },
+  "rszRawBase64": "UlNaABAAAAAEAAAACAAAAAAAAAAAAAAAQAAAAAAAAACKAAAAAAAAAIoAAAAAAAAAAQAAAAIAAAADAAAABwAAAAAAAAAAAAAAF6QCyeIeTPJGMKzfp+3tT7Re9SV7ZePYTU8329FCgDSUFZlxB1Z1CPNxver4Eo98YAjNqWYyC3MAAAAAAAAAAAAACgAAAEcAVQBJADAAMAAwADAAMgA3AAAAAQAAAAAAAQEAAIC/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgD8AAIA/AACAPwAAgD8AAAAAAQAAAAAAAAAAAAAAAAAAAAEAAAAjAAAARwBVAEkALwB1AGkAMAAwADAAMAAwADAALwB1AGkAMAAwADAAMAAwADAALwB1AGkAMAAwADAAMAAyADcALgBnAHUAaQAAAAAAAACAPwAAAAAAAAAAAAAAAAEAAAAAAAAAAQAAAAAAAAABAAAABAAAAAUAAAAGAAAA/////w=="
+}

@@ -1,0 +1,176 @@
+{
+  "_format": "mhws_pfb_v1",
+  "version": 18,
+  "sourceSha256": "c98f5da9f14933e7a8f68f45a90a266d04a2ca07317b3253ee13f707f5270198",
+  "schemaSha256": "cfe10514c482ee2856e16dddfc543b148f5320479c913d660f905e6ffb0b40ab",
+  "gameObjects": [
+    {
+      "objectTableIndex": 0,
+      "parentObjectTableIndex": -1,
+      "componentCount": 2,
+      "instanceId": 1,
+      "componentInstanceIds": [
+        2,
+        4
+      ],
+      "childObjectTableIndices": []
+    }
+  ],
+  "gameObjectReferences": [],
+  "resources": [],
+  "userdata": [
+    "GameDesign/Enemy/Package/Em1150_00_1_pkg.user"
+  ],
+  "objectTable": [
+    1,
+    2,
+    4
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "class": "",
+      "classHash": "0x00000000",
+      "crc": "0x00000000",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 1,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "Em1150_00_1_pkg",
+        "v1": "",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 2,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 3,
+      "class": "app.user_data.EnemyPackage",
+      "classHash": "0x71f8790c",
+      "crc": "0x62205426",
+      "fields": {},
+      "userdataPath": "GameDesign/Enemy/Package/Em1150_00_1_pkg.user"
+    },
+    {
+      "id": 4,
+      "class": "app.EnemyPackageHolder",
+      "classHash": "0x29942000",
+      "crc": "0x24081dfc",
+      "fields": {
+        "_Package": {
+          "refInstanceId": 3
+        }
+      },
+      "userdataPath": null
+    }
+  ],
+  "diagnostics": {
+    "nativeDataInference": false,
+    "interpretedFields": [
+      {
+        "instanceId": 1,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 1,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      }
+    ]
+  },
+  "rszRawBase64": "UlNaABAAAAADAAAABQAAAAEAAAAAAAAAPAAAAAAAAADUAAAAAAAAAGQAAAAAAAAAAQAAAAIAAAAEAAAAAAAAAAAAAAAXpALJ4h5M8kYwrN+n7e1PDHn4cSZUIGIAIJQp/B0IJAMAAAAMefhxdAAAAAAAAABHAGEAbQBlAEQAZQBzAGkAZwBuAC8ARQBuAGUAbQB5AC8AUABhAGMAawBhAGcAZQAvAEUAbQAxADEANQAwAF8AMAAwAF8AMQBfAHAAawBnAC4AdQBzAGUAcgAAAAAAAAAQAAAARQBtADEAMQA1ADAAXwAwADAAXwAxAF8AcABrAGcAAAABAAAAAAABAQAAgL8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAAAABAAAAAAAAAAAAAAAAAAAAAwAAAA=="
+}

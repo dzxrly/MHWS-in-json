@@ -1,0 +1,504 @@
+{
+  "_format": "mhws_pfb_v1",
+  "version": 18,
+  "sourceSha256": "d07e2a9639a16397332010b6771f108644fd7d5b951c21b8b1f329670092514c",
+  "schemaSha256": "cfe10514c482ee2856e16dddfc543b148f5320479c913d660f905e6ffb0b40ab",
+  "gameObjects": [
+    {
+      "objectTableIndex": 0,
+      "parentObjectTableIndex": -1,
+      "componentCount": 8,
+      "instanceId": 1,
+      "componentInstanceIds": [
+        2,
+        3,
+        5,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "childObjectTableIndices": [
+        9
+      ]
+    },
+    {
+      "objectTableIndex": 9,
+      "parentObjectTableIndex": 0,
+      "componentCount": 2,
+      "instanceId": 13,
+      "componentInstanceIds": [
+        14,
+        16
+      ],
+      "childObjectTableIndices": []
+    }
+  ],
+  "gameObjectReferences": [],
+  "resources": [
+    "GameDesign/Enemy/Em0154/00/Shell/Em0154_00_Shell_Attack.rcol",
+    "GameDesign/Enemy/Em0154/00/Shell/Em0154_00_Shell_Damage.rcol"
+  ],
+  "userdata": [
+    "Sound/UserData/39_Shell/ShellData.user",
+    "GameDesign/NPC/Partner/CommonData/EmShell/Em0154_00_EmObstacleShellData.user"
+  ],
+  "objectTable": [
+    1,
+    2,
+    3,
+    5,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    16
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "class": "",
+      "classHash": "0x00000000",
+      "crc": "0x00000000",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 1,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "Em0154_00_FluffBlow",
+        "v1": "Shell|Enemy",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 2,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 3,
+      "class": "app.AppShell",
+      "classHash": "0x0d6beade",
+      "crc": "0xc4871ff1",
+      "fields": {
+        "v0": 1,
+        "IsMasterShell": false,
+        "IsChangeLifeTimerRate": false,
+        "LifeTimerRate": 1.0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 4,
+      "class": "app.snd_user_data.SoundShellDataApp",
+      "classHash": "0x4cebd7e3",
+      "crc": "0x9ae5f749",
+      "fields": {},
+      "userdataPath": "Sound/UserData/39_Shell/ShellData.user"
+    },
+    {
+      "id": 5,
+      "class": "soundlib.SoundContainer",
+      "classHash": "0x1f6d61a9",
+      "crc": "0x620b8efd",
+      "fields": {
+        "v0": 1,
+        "_TriggerOnlyDrawSelf": false,
+        "_UserDataList": [
+          {
+            "refInstanceId": 4
+          }
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 6,
+      "class": "via.physics.RequestSetCollider.RequestSetGroup",
+      "classHash": "0x7c0c2e30",
+      "crc": "0x81d1ec59",
+      "fields": {
+        "v0": "GameDesign/Enemy/Em0154/00/Shell/Em0154_00_Shell_Attack.rcol"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 7,
+      "class": "via.physics.RequestSetCollider.RequestSetGroup",
+      "classHash": "0x7c0c2e30",
+      "crc": "0x81d1ec59",
+      "fields": {
+        "v0": "GameDesign/Enemy/Em0154/00/Shell/Em0154_00_Shell_Damage.rcol"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 8,
+      "class": "via.physics.RequestSetCollider",
+      "classHash": "0x669fc998",
+      "crc": "0x07a8aeb6",
+      "fields": {
+        "v0": 1,
+        "v1": 1,
+        "v2": [
+          ""
+        ],
+        "v3": [
+          [
+            6,
+            0,
+            0,
+            0
+          ],
+          [
+            7,
+            0,
+            0,
+            0
+          ]
+        ],
+        "v4": "",
+        "v5": [
+          4,
+          0,
+          0,
+          0
+        ],
+        "v6": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 9,
+      "class": "ace.ColliderPool",
+      "classHash": "0xe617084e",
+      "crc": "0xa55e794a",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 10,
+      "class": "app.HitController",
+      "classHash": "0xeb5b7848",
+      "crc": "0x62e15351",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 11,
+      "class": "app.ShellHitController",
+      "classHash": "0x41ec7e3a",
+      "crc": "0xa9a69ea8",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 12,
+      "class": "ace.GameMessageReceiver",
+      "classHash": "0xa070bc7f",
+      "crc": "0x7d7dd2a8",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 13,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "NpcTerrainPoint_ObstacleShell",
+        "v1": "",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 14,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 15,
+      "class": "app.user_data.NpcEmObstacleShellData",
+      "classHash": "0x0093a1f2",
+      "crc": "0x3ff39665",
+      "fields": {},
+      "userdataPath": "GameDesign/NPC/Partner/CommonData/EmShell/Em0154_00_EmObstacleShellData.user"
+    },
+    {
+      "id": 16,
+      "class": "app.NpcAI_PointRegister_ObstacleShell",
+      "classHash": "0xf02a8ef3",
+      "crc": "0x3da12d20",
+      "fields": {
+        "v0": 1,
+        "_DataManager": {
+          "refInstanceId": 15
+        }
+      },
+      "userdataPath": null
+    }
+  ],
+  "diagnostics": {
+    "nativeDataInference": false,
+    "interpretedFields": [
+      {
+        "instanceId": 1,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 1,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 5,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 8,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 8,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 9,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 10,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 11,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 13,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 13,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 14,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 14,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 14,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 14,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 14,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 14,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 14,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 16,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      }
+    ]
+  },
+  "rszRawBase64": "UlNaABAAAAAMAAAAEQAAAAIAAAAAAAAAYAAAAAAAAAAEAgAAAAAAAPQAAAAAAAAAAQAAAAIAAAADAAAABQAAAAgAAAAJAAAACgAAAAsAAAAMAAAADQAAAA4AAAAQAAAAAAAAAAAAAAAXpALJ4h5M8kYwrN+n7e1P3uprDfEfh8Tj1+tMSfflmqlhbR/9jgtiMC4MfFns0YEwLgx8WezRgZjJn2a2rqgHTggX5kp5XqVIeFvrUVPhYjp+7EGonqapf7xwoKjSfX0XpALJ4h5M8kYwrN+n7e1P8qGTAGWW8z/zjirwIC2hPQAAAAAAAAAAAAAAAAQAAADj1+tMFAEAAAAAAAAPAAAA8qGTAGIBAAAAAAAAUwBvAHUAbgBkAC8AVQBzAGUAcgBEAGEAdABhAC8AMwA5AF8AUwBoAGUAbABsAC8AUwBoAGUAbABsAEQAYQB0AGEALgB1AHMAZQByAAAARwBhAG0AZQBEAGUAcwBpAGcAbgAvAE4AUABDAC8AUABhAHIAdABuAGUAcgAvAEMAbwBtAG0AbwBuAEQAYQB0AGEALwBFAG0AUwBoAGUAbABsAC8ARQBtADAAMQA1ADQAXwAwADAAXwBFAG0ATwBiAHMAdABhAGMAbABlAFMAaABlAGwAbABEAGEAdABhAC4AdQBzAGUAcgAAAAAAAAAAAAAAFAAAAEUAbQAwADEANQA0AF8AMAAwAF8ARgBsAHUAZgBmAEIAbABvAHcAAAAMAAAAUwBoAGUAbABsAHwARQBuAGUAbQB5AAAAAQEAAAAAgL8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAAAAgD8BAAAAAQAAAAQAAAA9AAAARwBhAG0AZQBEAGUAcwBpAGcAbgAvAEUAbgBlAG0AeQAvAEUAbQAwADEANQA0AC8AMAAwAC8AUwBoAGUAbABsAC8ARQBtADAAMQA1ADQAXwAwADAAXwBTAGgAZQBsAGwAXwBBAHQAdABhAGMAawAuAHIAYwBvAGwAAAAAAD0AAABHAGEAbQBlAEQAZQBzAGkAZwBuAC8ARQBuAGUAbQB5AC8ARQBtADAAMQA1ADQALwAwADAALwBTAGgAZQBsAGwALwBFAG0AMAAxADUANABfADAAMABfAFMAaABlAGwAbABfAEQAYQBtAGEAZwBlAC4AcgBjAG8AbAAAAAEBAQAAAAAAAAACAAAABgAAAAcAAAAAAAAABAAAAAAAAAABAQEAHgAAAE4AcABjAFQAZQByAHIAYQBpAG4AUABvAGkAbgB0AF8ATwBiAHMAdABhAGMAbABlAFMAaABlAGwAbAAAAAEAAAAAAAEBAACAvwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIA/AACAPwAAgD8AAIA/AAAAAAEAAAAAAAAAAAAAAAAAAAABAAAADwAAAA=="
+}

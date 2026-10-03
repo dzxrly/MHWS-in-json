@@ -1,0 +1,950 @@
+{
+  "_format": "mhws_pfb_v1",
+  "version": 18,
+  "sourceSha256": "a4a8f6a9e4261e8de2615861c8aebf2b83c039b74d3cb6f7ab12e6807b846462",
+  "schemaSha256": "cfe10514c482ee2856e16dddfc543b148f5320479c913d660f905e6ffb0b40ab",
+  "gameObjects": [
+    {
+      "objectTableIndex": 0,
+      "parentObjectTableIndex": -1,
+      "componentCount": 4,
+      "instanceId": 1,
+      "componentInstanceIds": [
+        2,
+        3,
+        4,
+        6
+      ],
+      "childObjectTableIndices": []
+    }
+  ],
+  "gameObjectReferences": [],
+  "resources": [
+    "Art/Light/_Develop/Texture/ExposureTest_01.tex"
+  ],
+  "userdata": [],
+  "objectTable": [
+    1,
+    2,
+    3,
+    4,
+    6
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "class": "",
+      "classHash": "0x00000000",
+      "crc": "0x00000000",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 1,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "SubspaceWipeCamera",
+        "v1": "",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 2,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": -8.881784197001252e-16,
+          "y": 2.4178679830610828e-23,
+          "z": 2.722278047428972e-08,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 3,
+      "class": "via.Camera",
+      "classHash": "0x04a26743",
+      "crc": "0x64562846",
+      "fields": {
+        "v0": [
+          0,
+          0,
+          32,
+          66
+        ],
+        "v1": [
+          205,
+          204,
+          76,
+          63
+        ],
+        "v2": [
+          0,
+          64,
+          28,
+          70
+        ],
+        "v3": 1,
+        "v4": [
+          25,
+          146,
+          227,
+          63
+        ],
+        "v5": [
+          131,
+          121,
+          167,
+          64
+        ],
+        "v6": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v7": 0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 4,
+      "class": "via.render.RenderOutput",
+      "classHash": "0x75825c3a",
+      "crc": "0x74d98a12",
+      "fields": {
+        "v0": [
+          2,
+          0,
+          0,
+          0
+        ],
+        "v1": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v2": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          205,
+          204,
+          76,
+          62,
+          205,
+          204,
+          76,
+          62,
+          205,
+          204,
+          76,
+          62,
+          0,
+          0,
+          0,
+          0
+        ],
+        "v3": 0,
+        "v4": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v5": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v6": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v7": [
+          10,
+          215,
+          35,
+          60
+        ],
+        "v8": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v9": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0,
+          "w": 1.0
+        },
+        "v10": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v11": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v12": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v13": 0,
+        "v14": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v15": 0,
+        "v16": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v17": "",
+        "v18": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v19": [
+          6,
+          0,
+          0,
+          0
+        ],
+        "v20": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        }
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 5,
+      "class": "via.AnimationCurve",
+      "classHash": "0xeab06d4b",
+      "crc": "0xd65769e3",
+      "fields": {
+        "v0": [],
+        "v1": [
+          0,
+          0,
+          32,
+          65
+        ],
+        "v2": [
+          0,
+          0,
+          32,
+          193
+        ],
+        "v3": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v4": [
+          0,
+          0,
+          200,
+          66
+        ],
+        "v5": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v6": [
+          2,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 6,
+      "class": "via.render.ToneMapping",
+      "classHash": "0xd0742287",
+      "crc": "0xcd4672ed",
+      "fields": {
+        "v0": 1,
+        "v1": 1,
+        "v2": [
+          0,
+          0,
+          64,
+          192
+        ],
+        "v3": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v4": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v5": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v6": [
+          5,
+          0,
+          0,
+          0
+        ],
+        "v7": [
+          154,
+          153,
+          89,
+          63
+        ],
+        "v8": [
+          205,
+          204,
+          76,
+          61
+        ],
+        "v9": [
+          205,
+          204,
+          204,
+          61
+        ],
+        "v10": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "v11": [
+          0,
+          0,
+          64,
+          64
+        ],
+        "v12": [
+          10,
+          215,
+          35,
+          60
+        ],
+        "v13": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v14": [
+          0,
+          0,
+          16,
+          65
+        ],
+        "v15": [
+          0,
+          0,
+          0,
+          64
+        ],
+        "v16": [
+          0,
+          0,
+          128,
+          65
+        ],
+        "v17": [
+          0,
+          0,
+          224,
+          192
+        ],
+        "v18": [
+          10,
+          0,
+          0,
+          0
+        ],
+        "v19": [
+          90,
+          0,
+          0,
+          0
+        ],
+        "v20": "Art/Light/_Develop/Texture/ExposureTest_01.tex",
+        "v21": "00000000-0000-0000-0000-000000000000",
+        "v22": 0,
+        "v23": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "v24": [
+          0,
+          0,
+          200,
+          65
+        ],
+        "v25": [
+          0,
+          0,
+          52,
+          66
+        ],
+        "v26": [
+          61,
+          10,
+          183,
+          63
+        ],
+        "v27": [
+          205,
+          204,
+          12,
+          63
+        ],
+        "v28": 1,
+        "v29": [
+          205,
+          204,
+          204,
+          61
+        ],
+        "v30": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v31": [
+          174,
+          71,
+          97,
+          62
+        ],
+        "v32": [
+          205,
+          204,
+          204,
+          62
+        ],
+        "v33": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v34": [
+          113,
+          61,
+          170,
+          63
+        ],
+        "v35": 0,
+        "v36": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v37": 0,
+        "v38": 1,
+        "v39": [
+          0,
+          0,
+          0,
+          63
+        ],
+        "v40": [
+          0,
+          0,
+          0,
+          63
+        ],
+        "v41": [
+          0,
+          0,
+          106,
+          66
+        ],
+        "v42": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v43": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "v44": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v45": [
+          2,
+          0,
+          0,
+          0
+        ],
+        "v46": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "v47": [
+          51,
+          51,
+          115,
+          63
+        ],
+        "v48": [
+          0,
+          0,
+          24,
+          65
+        ],
+        "v49": [
+          20,
+          174,
+          71,
+          63
+        ],
+        "v50": [
+          102,
+          102,
+          38,
+          63
+        ],
+        "v51": 0,
+        "v52": [
+          0,
+          0,
+          0,
+          63
+        ],
+        "v53": [
+          0,
+          0,
+          0,
+          63
+        ],
+        "v54": [
+          0,
+          0,
+          0,
+          63
+        ],
+        "v55": [
+          0,
+          0,
+          0,
+          63
+        ],
+        "v56": [
+          0,
+          0,
+          64,
+          63
+        ],
+        "v57": 0,
+        "v58": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v59": 0,
+        "v60": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "v61": 0,
+        "v62": 0,
+        "v63": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v64": [
+          0,
+          0,
+          192,
+          63
+        ],
+        "v65": [
+          0,
+          0,
+          0,
+          64
+        ],
+        "v66": [
+          5,
+          0,
+          0,
+          0
+        ],
+        "v67": [
+          5,
+          0,
+          0,
+          0
+        ],
+        "v68": 0,
+        "v69": 0,
+        "v70": 0,
+        "v71": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v72": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v73": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v74": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v75": [
+          5,
+          0,
+          0,
+          0
+        ],
+        "v76": [
+          0,
+          0,
+          160,
+          65
+        ],
+        "v77": [
+          0,
+          0,
+          160,
+          193
+        ],
+        "v78": 0,
+        "v79": 0,
+        "v80": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    }
+  ],
+  "diagnostics": {
+    "nativeDataInference": false,
+    "interpretedFields": [
+      {
+        "instanceId": 1,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 1,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 4,
+        "field": "v9",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 4,
+        "field": "v13",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v15",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v20",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 5,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 6,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v21",
+        "schemaType": "Data",
+        "interpretedType": "Guid"
+      },
+      {
+        "instanceId": 6,
+        "field": "v22",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v28",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v35",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v37",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v38",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v51",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v57",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v59",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v61",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v62",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v68",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v69",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v70",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v78",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v79",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      }
+    ]
+  },
+  "rszRawBase64": "UlNaABAAAAAFAAAABwAAAAAAAAAAAAAARAAAAAAAAACCAAAAAAAAAIIAAAAAAAAAAQAAAAIAAAADAAAABAAAAAYAAAAAAAAAAAAAABekAsniHkzyRjCs36ft7U9DZ6IERihWZDpcgnUSitl0S22w6uNpV9aHInTQ7XJGzQAAAAAAABMAAABTAHUAYgBzAHAAYQBjAGUAVwBpAHAAZQBDAGEAbQBlAHIAYQAAAAAAAQAAAAAAAQEAAIC/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACApoPX6RmH1+kyAACAPwAAgD8AAIA/AACAPwAAAAABAAAAAAAAAAAAAAAAAAAAAAAgQs3MTD8AQBxGAQAAABmS4z+DeadAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAzcxMPs3MTD7NzEw+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACtcjPAAAgD8AAAAAAAAAAAAAgD8AAIA/AACAPwAAgD8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgQQAAIMEAAAAAAADIQgAAAAACAAAAAQEAAAAAQMAAAAAAAAAAAAAAAAAFAAAAmplZP83MTD3NzMw9AQAAAAAAQEAK1yM8AACAPwAAEEEAAABAAACAQQAA4MAKAAAAWgAAAC8AAABBAHIAdAAvAEwAaQBnAGgAdAAvAF8ARABlAHYAZQBsAG8AcAAvAFQAZQB4AHQAdQByAGUALwBFAHgAcABvAHMAdQByAGUAVABlAHMAdABfADAAMQAuAHQAZQB4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAADIQQAANEI9Crc/zcwMPwEAAADNzMw9AACAP65HYT7NzMw+AACAP3E9qj8AAAAAAACAPwABAAAAAAA/AAAAPwAAakIAAAAAAQAAAAAAgD8CAAAAAQAAADMzcz8AABhBFK5HP2ZmJj8AAAAAAAAAPwAAAD8AAAA/AAAAPwAAQD8AAAAAAAAAAAAAAAABAAAAAAAAAAAAgD8AAMA/AAAAQAUAAAAFAAAAAAAAAAAAgD8AAIA/AACAPwAAAAAFAAAAAACgQQAAoMEAAAAAAAAAAA=="
+}

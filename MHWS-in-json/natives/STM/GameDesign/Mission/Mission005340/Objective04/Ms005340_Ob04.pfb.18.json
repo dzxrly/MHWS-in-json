@@ -1,0 +1,407 @@
+{
+  "_format": "mhws_pfb_v1",
+  "version": 18,
+  "sourceSha256": "af022ba52b8831615b5d7c9a14627d8cb319dfcfd02b339deb0593b984215449",
+  "schemaSha256": "cfe10514c482ee2856e16dddfc543b148f5320479c913d660f905e6ffb0b40ab",
+  "gameObjects": [
+    {
+      "objectTableIndex": 0,
+      "parentObjectTableIndex": -1,
+      "componentCount": 5,
+      "instanceId": 1,
+      "componentInstanceIds": [
+        2,
+        5,
+        6,
+        7,
+        8
+      ],
+      "childObjectTableIndices": []
+    }
+  ],
+  "gameObjectReferences": [],
+  "resources": [
+    "GameDesign/Mission/Mission005340/Objective04/_Fsm/Ms005340_Ob04_RestoreFsm.fsmv2",
+    "GameDesign/Mission/Mission005340/Objective04/_Fsm/Ms005340_Ob04_Fsm00.fsmv2",
+    "GameDesign/Mission/Mission005340/Objective04/_Zone/Ms005340_Ob04_Col.cset"
+  ],
+  "userdata": [],
+  "objectTable": [
+    1,
+    2,
+    5,
+    6,
+    7,
+    8
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "class": "",
+      "classHash": "0x00000000",
+      "crc": "0x00000000",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 1,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "Ms005340_Ob04",
+        "v1": "",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 2,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 3,
+      "class": "via.behaviortree.BehaviorTree.CoreHandle",
+      "classHash": "0xd2a0ad29",
+      "crc": "0x9ba73e98",
+      "fields": {
+        "v0": 1,
+        "v1": "GameDesign/Mission/Mission005340/Objective04/_Fsm/Ms005340_Ob04_RestoreFsm.fsmv2",
+        "v2": 0,
+        "v3": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v4": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 4,
+      "class": "via.behaviortree.BehaviorTree.CoreHandle",
+      "classHash": "0xd2a0ad29",
+      "crc": "0x9ba73e98",
+      "fields": {
+        "v0": 1,
+        "v1": "GameDesign/Mission/Mission005340/Objective04/_Fsm/Ms005340_Ob04_Fsm00.fsmv2",
+        "v2": 0,
+        "v3": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v4": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 5,
+      "class": "via.behaviortree.ManualBehaviorTree",
+      "classHash": "0xf24e67b9",
+      "crc": "0xd0228a70",
+      "fields": {
+        "v0": 1,
+        "v1": [
+          [
+            3,
+            0,
+            0,
+            0
+          ],
+          [
+            4,
+            0,
+            0,
+            0
+          ]
+        ],
+        "v2": "",
+        "v3": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v4": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v5": 0,
+        "v6": 0,
+        "v7": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 6,
+      "class": "via.physics.ColliderSet",
+      "classHash": "0xe80f5f70",
+      "crc": "0x3863d8d4",
+      "fields": {
+        "v0": 1,
+        "v1": 1,
+        "v2": [
+          ""
+        ],
+        "v3": 1,
+        "v4": "GameDesign/Mission/Mission005340/Objective04/_Zone/Ms005340_Ob04_Col.cset"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 7,
+      "class": "app.ObjectiveController",
+      "classHash": "0xefefc517",
+      "crc": "0x0e0c377d",
+      "fields": {
+        "v0": 1,
+        "_ObjecitiveStatePauseBefore": 0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 8,
+      "class": "app.StoryZoneController",
+      "classHash": "0x1b3aaae0",
+      "crc": "0xd7c6fad5",
+      "fields": {
+        "v0": 1,
+        "isQuest": false
+      },
+      "userdataPath": null
+    }
+  ],
+  "diagnostics": {
+    "nativeDataInference": false,
+    "interpretedFields": [
+      {
+        "instanceId": 1,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 1,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 5,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 5,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 5,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 7,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 8,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      }
+    ]
+  },
+  "rszRawBase64": "UlNaABAAAAAGAAAACQAAAAAAAAAAAAAASAAAAAAAAACSAAAAAAAAAJIAAAAAAAAAAQAAAAIAAAAFAAAABgAAAAcAAAAIAAAAAAAAAAAAAAAXpALJ4h5M8kYwrN+n7e1PKa2g0pg+p5spraDSmD6nm7lnTvJwiiLQcF8P6NTYYzgXxe/vfTcMDuCqOhvV+sbXAAAOAAAATQBzADAAMAA1ADMANAAwAF8ATwBiADAANAAAAAEAAAAAAAEBAACAvwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAFEAAABHAGEAbQBlAEQAZQBzAGkAZwBuAC8ATQBpAHMAcwBpAG8AbgAvAE0AaQBzAHMAaQBvAG4AMAAwADUAMwA0ADAALwBPAGIAagBlAGMAdABpAHYAZQAwADQALwBfAEYAcwBtAC8ATQBzADAAMAA1ADMANAAwAF8ATwBiADAANABfAFIAZQBzAHQAbwByAGUARgBzAG0ALgBmAHMAbQB2ADIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAATAAAAEcAYQBtAGUARABlAHMAaQBnAG4ALwBNAGkAcwBzAGkAbwBuAC8ATQBpAHMAcwBpAG8AbgAwADAANQAzADQAMAAvAE8AYgBqAGUAYwB0AGkAdgBlADAANAAvAF8ARgBzAG0ALwBNAHMAMAAwADUAMwA0ADAAXwBPAGIAMAA0AF8ARgBzAG0AMAAwAC4AZgBzAG0AdgAyAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAgAAAAMAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAQAAAQAAAAAAAAABAAAASgAAAEcAYQBtAGUARABlAHMAaQBnAG4ALwBNAGkAcwBzAGkAbwBuAC8ATQBpAHMAcwBpAG8AbgAwADAANQAzADQAMAAvAE8AYgBqAGUAYwB0AGkAdgBlADAANAAvAF8AWgBvAG4AZQAvAE0AcwAwADAANQAzADQAMABfAE8AYgAwADQAXwBDAG8AbAAuAGMAcwBlAHQAAAABAAAAAAAAAAEA"
+}

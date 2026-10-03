@@ -1,0 +1,377 @@
+{
+  "_format": "mhws_pfb_v1",
+  "version": 18,
+  "sourceSha256": "49404aedc7d497ecdc501a7c8dbd0a0f8053f7a8c58e82d610bf5a4a0102a3e9",
+  "schemaSha256": "cfe10514c482ee2856e16dddfc543b148f5320479c913d660f905e6ffb0b40ab",
+  "gameObjects": [
+    {
+      "objectTableIndex": 0,
+      "parentObjectTableIndex": -1,
+      "componentCount": 8,
+      "instanceId": 1,
+      "componentInstanceIds": [
+        2,
+        3,
+        4,
+        6,
+        7,
+        8,
+        10,
+        14
+      ],
+      "childObjectTableIndices": []
+    }
+  ],
+  "gameObjectReferences": [],
+  "resources": [
+    "GameDesign/Gimmick/Gm578/Gm578_000/Collision/Gm578_000_Attack.rcol"
+  ],
+  "userdata": [
+    "Sound/UserData/39_Shell/ShellData.user",
+    "Sound/ADVibration/UserData/04_00/Gimmick/Sound_gm_04_00_PadVibrationPresetList.user",
+    "@Sound/ADVibration/UserData/04_00/Gimmick/Sound_gm_04_00_ADVibrationPresetList.user",
+    "Sound/ADVibration/UserData/04_00/Gimmick/Sound_gm_04_00_VibrationTriggerListData.user"
+  ],
+  "objectTable": [
+    1,
+    2,
+    3,
+    4,
+    6,
+    7,
+    8,
+    10,
+    14
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "class": "",
+      "classHash": "0x00000000",
+      "crc": "0x00000000",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 1,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "Gm578_000_AttackShell",
+        "v1": "Gimmick",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 2,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 3,
+      "class": "app.HitController",
+      "classHash": "0xeb5b7848",
+      "crc": "0x62e15351",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 4,
+      "class": "ace.ColliderPool",
+      "classHash": "0xe617084e",
+      "crc": "0xa55e794a",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 5,
+      "class": "via.physics.RequestSetCollider.RequestSetGroup",
+      "classHash": "0x7c0c2e30",
+      "crc": "0x81d1ec59",
+      "fields": {
+        "v0": "GameDesign/Gimmick/Gm578/Gm578_000/Collision/Gm578_000_Attack.rcol"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 6,
+      "class": "via.physics.RequestSetCollider",
+      "classHash": "0x669fc998",
+      "crc": "0x07a8aeb6",
+      "fields": {
+        "v0": 1,
+        "v1": 1,
+        "v2": [
+          ""
+        ],
+        "v3": [
+          [
+            5,
+            0,
+            0,
+            0
+          ]
+        ],
+        "v4": "",
+        "v5": [
+          4,
+          0,
+          0,
+          0
+        ],
+        "v6": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 7,
+      "class": "app.AppShell",
+      "classHash": "0x0d6beade",
+      "crc": "0xc4871ff1",
+      "fields": {
+        "v0": 1,
+        "IsMasterShell": false,
+        "IsChangeLifeTimerRate": false,
+        "LifeTimerRate": 1.0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 8,
+      "class": "app.ShellHitController",
+      "classHash": "0x41ec7e3a",
+      "crc": "0xa9a69ea8",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 9,
+      "class": "app.snd_user_data.SoundShellDataApp",
+      "classHash": "0x4cebd7e3",
+      "crc": "0x9ae5f749",
+      "fields": {},
+      "userdataPath": "Sound/UserData/39_Shell/ShellData.user"
+    },
+    {
+      "id": 10,
+      "class": "soundlib.SoundContainer",
+      "classHash": "0x1f6d61a9",
+      "crc": "0x620b8efd",
+      "fields": {
+        "v0": 1,
+        "_TriggerOnlyDrawSelf": false,
+        "_UserDataList": [
+          {
+            "refInstanceId": 9
+          }
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 11,
+      "class": "ace.user_data.PadVibrationPresetList",
+      "classHash": "0x57957927",
+      "crc": "0x9df2af37",
+      "fields": {},
+      "userdataPath": "Sound/ADVibration/UserData/04_00/Gimmick/Sound_gm_04_00_PadVibrationPresetList.user"
+    },
+    {
+      "id": 12,
+      "class": "ace.user_data.ADVibrationPresetList",
+      "classHash": "0x424644a3",
+      "crc": "0xcdbc1b69",
+      "fields": {},
+      "userdataPath": "@Sound/ADVibration/UserData/04_00/Gimmick/Sound_gm_04_00_ADVibrationPresetList.user"
+    },
+    {
+      "id": 13,
+      "class": "app.snd_user_data.SoundVibrationTriggerListData",
+      "classHash": "0xdd35f005",
+      "crc": "0xc451127e",
+      "fields": {},
+      "userdataPath": "Sound/ADVibration/UserData/04_00/Gimmick/Sound_gm_04_00_VibrationTriggerListData.user"
+    },
+    {
+      "id": 14,
+      "class": "app.SoundVibrationContainer",
+      "classHash": "0x99774430",
+      "crc": "0x53d6cfcd",
+      "fields": {
+        "v0": 1,
+        "_VibrationData": {
+          "refInstanceId": 11
+        },
+        "_ADVibrationData": {
+          "refInstanceId": 12
+        },
+        "_VibTriggerList": {
+          "refInstanceId": 13
+        },
+        "_ForceValid": true
+      },
+      "userdataPath": null
+    }
+  ],
+  "diagnostics": {
+    "nativeDataInference": false,
+    "interpretedFields": [
+      {
+        "instanceId": 1,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 1,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 4,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 7,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 8,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 10,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 14,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      }
+    ]
+  },
+  "rszRawBase64": "UlNaABAAAAAJAAAADwAAAAQAAAAAAAAAVAAAAAAAAABgAwAAAAAAANAAAAAAAAAAAQAAAAIAAAADAAAABAAAAAYAAAAHAAAACAAAAAoAAAAOAAAAAAAAAAAAAAAXpALJ4h5M8kYwrN+n7e1PSHhb61FT4WJOCBfmSnlepTAuDHxZ7NGBmMmfZrauqAfe6msN8R+HxDp+7EGonqap49frTEn35ZqpYW0f/Y4LYid5lVc3r/Kdo0RGQmkbvM0F8DXdfhJRxDBEd5nNz9ZTAAAAAAkAAADj1+tMEAEAAAAAAAALAAAAJ3mVV14BAAAAAAAADAAAAKNERkIGAgAAAAAAAA0AAAAF8DXdrgIAAAAAAABTAG8AdQBuAGQALwBVAHMAZQByAEQAYQB0AGEALwAzADkAXwBTAGgAZQBsAGwALwBTAGgAZQBsAGwARABhAHQAYQAuAHUAcwBlAHIAAABTAG8AdQBuAGQALwBBAEQAVgBpAGIAcgBhAHQAaQBvAG4ALwBVAHMAZQByAEQAYQB0AGEALwAwADQAXwAwADAALwBHAGkAbQBtAGkAYwBrAC8AUwBvAHUAbgBkAF8AZwBtAF8AMAA0AF8AMAAwAF8AUABhAGQAVgBpAGIAcgBhAHQAaQBvAG4AUAByAGUAcwBlAHQATABpAHMAdAAuAHUAcwBlAHIAAABAAFMAbwB1AG4AZAAvAEEARABWAGkAYgByAGEAdABpAG8AbgAvAFUAcwBlAHIARABhAHQAYQAvADAANABfADAAMAAvAEcAaQBtAG0AaQBjAGsALwBTAG8AdQBuAGQAXwBnAG0AXwAwADQAXwAwADAAXwBBAEQAVgBpAGIAcgBhAHQAaQBvAG4AUAByAGUAcwBlAHQATABpAHMAdAAuAHUAcwBlAHIAAABTAG8AdQBuAGQALwBBAEQAVgBpAGIAcgBhAHQAaQBvAG4ALwBVAHMAZQByAEQAYQB0AGEALwAwADQAXwAwADAALwBHAGkAbQBtAGkAYwBrAC8AUwBvAHUAbgBkAF8AZwBtAF8AMAA0AF8AMAAwAF8AVgBpAGIAcgBhAHQAaQBvAG4AVAByAGkAZwBnAGUAcgBMAGkAcwB0AEQAYQB0AGEALgB1AHMAZQByAAAAAAAAAAAAFgAAAEcAbQA1ADcAOABfADAAMAAwAF8AQQB0AHQAYQBjAGsAUwBoAGUAbABsAAAACAAAAEcAaQBtAG0AaQBjAGsAAAABAQAAAACAvwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAAAABAAAAAAAAAAAAAAAAAAAAAQEAAEMAAABHAGEAbQBlAEQAZQBzAGkAZwBuAC8ARwBpAG0AbQBpAGMAawAvAEcAbQA1ADcAOAAvAEcAbQA1ADcAOABfADAAMAAwAC8AQwBvAGwAbABpAHMAaQBvAG4ALwBHAG0ANQA3ADgAXwAwADAAMABfAEEAdAB0AGEAYwBrAC4AcgBjAG8AbAAAAAEBAQAAAAAAAAABAAAABQAAAAAAAAAEAAAAAAAAAAEAAAAAAIA/AQEAAAEAAAAJAAAAAQAAAAsAAAAMAAAADQAAAAE="
+}

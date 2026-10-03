@@ -1,0 +1,176 @@
+{
+  "_format": "mhws_pfb_v1",
+  "version": 18,
+  "sourceSha256": "3287fd8b26e08f0ae5575c8aa02f4d29f349ce529e03fdfac5ed3bea3ff81bbd",
+  "schemaSha256": "cfe10514c482ee2856e16dddfc543b148f5320479c913d660f905e6ffb0b40ab",
+  "gameObjects": [
+    {
+      "objectTableIndex": 0,
+      "parentObjectTableIndex": -1,
+      "componentCount": 2,
+      "instanceId": 1,
+      "componentInstanceIds": [
+        2,
+        4
+      ],
+      "childObjectTableIndices": []
+    }
+  ],
+  "gameObjectReferences": [],
+  "resources": [],
+  "userdata": [
+    "GameDesign/NPC/Character/Main/NPC310_00_029/Package/NPC310_00_029_pkg.user"
+  ],
+  "objectTable": [
+    1,
+    2,
+    4
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "class": "",
+      "classHash": "0x00000000",
+      "crc": "0x00000000",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 1,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "NPC0000_0000_pkgTemplate",
+        "v1": "",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 2,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 3,
+      "class": "app.user_data.NpcPackage",
+      "classHash": "0x9b008e98",
+      "crc": "0xd11f0207",
+      "fields": {},
+      "userdataPath": "GameDesign/NPC/Character/Main/NPC310_00_029/Package/NPC310_00_029_pkg.user"
+    },
+    {
+      "id": 4,
+      "class": "app.NpcPackageHolder",
+      "classHash": "0xfd515fac",
+      "crc": "0xb4846e86",
+      "fields": {
+        "_Package": {
+          "refInstanceId": 3
+        }
+      },
+      "userdataPath": null
+    }
+  ],
+  "diagnostics": {
+    "nativeDataInference": false,
+    "interpretedFields": [
+      {
+        "instanceId": 1,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 1,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      }
+    ]
+  },
+  "rszRawBase64": "UlNaABAAAAADAAAABQAAAAEAAAAAAAAAPAAAAAAAAAAaAQAAAAAAAGoAAAAAAAAAAQAAAAIAAAAEAAAAAAAAAAAAAAAXpALJ4h5M8kYwrN+n7e1PmI4AmwcCH9GsX1H9hm6EtAAAAAAAAAMAAACYjgCbegAAAAAAAABHAGEAbQBlAEQAZQBzAGkAZwBuAC8ATgBQAEMALwBDAGgAYQByAGEAYwB0AGUAcgAvAE0AYQBpAG4ALwBOAFAAQwAzADEAMABfADAAMABfADAAMgA5AC8AUABhAGMAawBhAGcAZQAvAE4AUABDADMAMQAwAF8AMAAwAF8AMAAyADkAXwBwAGsAZwAuAHUAcwBlAHIAAAAAAAAAAAAAAAAAGQAAAE4AUABDADAAMAAwADAAXwAwADAAMAAwAF8AcABrAGcAVABlAG0AcABsAGEAdABlAAAAAAABAAAAAAABAQAAgL8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAAAABAAAAAAAAAAAAAAAAAAAAAwAAAA=="
+}

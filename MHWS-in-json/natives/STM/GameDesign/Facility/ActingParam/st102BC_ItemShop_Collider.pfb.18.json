@@ -1,0 +1,590 @@
+{
+  "_format": "mhws_pfb_v1",
+  "version": 18,
+  "sourceSha256": "cb15d6c35a63b159023fc371da7d9c82f30b32133c03d442e7c4688932490bf3",
+  "schemaSha256": "cfe10514c482ee2856e16dddfc543b148f5320479c913d660f905e6ffb0b40ab",
+  "gameObjects": [
+    {
+      "objectTableIndex": 0,
+      "parentObjectTableIndex": -1,
+      "componentCount": 9,
+      "instanceId": 1,
+      "componentInstanceIds": [
+        2,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        13,
+        20
+      ],
+      "childObjectTableIndices": []
+    }
+  ],
+  "gameObjectReferences": [],
+  "resources": [
+    "GameDesign/NPC/CommonData/Collision/NpcDummy.rcol",
+    "GameDesign/NPC/CommonData/Collision/NpcTalk.rcol",
+    "System/Collision/Filter/SensorPut/SensorPut_Npc.cfil"
+  ],
+  "userdata": [
+    "GameDesign/NPC/CommonData/Interact/Interact_NPCBase.user"
+  ],
+  "objectTable": [
+    1,
+    2,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    13,
+    20
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "class": "",
+      "classHash": "0x00000000",
+      "crc": "0x00000000",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 1,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "Forest_ItemShop_Collider",
+        "v1": "",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 2,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 3,
+      "class": "via.physics.RequestSetCollider.RequestSetGroup",
+      "classHash": "0x7c0c2e30",
+      "crc": "0x81d1ec59",
+      "fields": {
+        "v0": "GameDesign/NPC/CommonData/Collision/NpcDummy.rcol"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 4,
+      "class": "via.physics.RequestSetCollider.RequestSetGroup",
+      "classHash": "0x7c0c2e30",
+      "crc": "0x81d1ec59",
+      "fields": {
+        "v0": "GameDesign/NPC/CommonData/Collision/NpcDummy.rcol"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 5,
+      "class": "via.physics.RequestSetCollider.RequestSetGroup",
+      "classHash": "0x7c0c2e30",
+      "crc": "0x81d1ec59",
+      "fields": {
+        "v0": "GameDesign/NPC/CommonData/Collision/NpcTalk.rcol"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 6,
+      "class": "via.physics.RequestSetCollider",
+      "classHash": "0x669fc998",
+      "crc": "0x07a8aeb6",
+      "fields": {
+        "v0": 0,
+        "v1": 1,
+        "v2": [
+          ""
+        ],
+        "v3": [
+          [
+            3,
+            0,
+            0,
+            0
+          ],
+          [
+            4,
+            0,
+            0,
+            0
+          ],
+          [
+            5,
+            0,
+            0,
+            0
+          ]
+        ],
+        "v4": "",
+        "v5": [
+          4,
+          0,
+          0,
+          0
+        ],
+        "v6": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 7,
+      "class": "app.NpcTalkCollider",
+      "classHash": "0x71c2bb6b",
+      "crc": "0x72859860",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 8,
+      "class": "ace.ColliderPass",
+      "classHash": "0x03708104",
+      "crc": "0x96632d51",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 9,
+      "class": "app.HitController",
+      "classHash": "0xeb5b7848",
+      "crc": "0x62e15351",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 10,
+      "class": "app.ColliderSwitcher",
+      "classHash": "0xcde46068",
+      "crc": "0xa042d2e4",
+      "fields": {
+        "v0": 0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 11,
+      "class": "ace.GameMessageReceiver",
+      "classHash": "0xa070bc7f",
+      "crc": "0x7d7dd2a8",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 12,
+      "class": "app.user_data.InteractData",
+      "classHash": "0xfb218bbf",
+      "crc": "0xaaab36e6",
+      "fields": {},
+      "userdataPath": "GameDesign/NPC/CommonData/Interact/Interact_NPCBase.user"
+    },
+    {
+      "id": 13,
+      "class": "app.InteractController",
+      "classHash": "0x4e846ca3",
+      "crc": "0x94ae02a1",
+      "fields": {
+        "v0": 1,
+        "_Data": {
+          "refInstanceId": 12
+        }
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 14,
+      "class": "via.physics.SphereShape",
+      "classHash": "0xaffd38f9",
+      "crc": "0x8bd625cb",
+      "fields": {
+        "v0": [
+          255,
+          60,
+          242,
+          194,
+          23,
+          158,
+          41,
+          66,
+          238,
+          195,
+          249,
+          67,
+          0,
+          0,
+          0,
+          0,
+          203,
+          9,
+          235,
+          194,
+          125,
+          4,
+          56,
+          66,
+          186,
+          144,
+          251,
+          67,
+          0,
+          0,
+          0,
+          0
+        ],
+        "v1": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v2": {
+          "x": -119.31912994384766,
+          "y": 44.204383850097656,
+          "z": 501.3306884765625,
+          "w": 1.7999999523162842
+        }
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 15,
+      "class": "via.physics.FilterInfo",
+      "classHash": "0x0dd4a871",
+      "crc": "0xfdca9c46",
+      "fields": {
+        "v0": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v1": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v2": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v3": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v4": [
+          255,
+          255,
+          255,
+          255
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 16,
+      "class": "via.physics.UserData",
+      "classHash": "0xf767c93f",
+      "crc": "0x16593069",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 17,
+      "class": "app.ActBtnHitType.TYPE_Serializable",
+      "classHash": "0xf26883b8",
+      "crc": "0x56398378",
+      "fields": {
+        "_Value": -1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 18,
+      "class": "app.col_user_data.ActBtnParam",
+      "classHash": "0xe842447b",
+      "crc": "0xdb26f707",
+      "fields": {
+        "v0": "",
+        "v1": [
+          16,
+          0,
+          0,
+          0
+        ],
+        "v2": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "_HitType": {
+          "refInstanceId": 17
+        },
+        "_OwnRangeDegree": 0.0,
+        "STRUCT__OwnRangeDegreeRiding__HasValue": false,
+        "STRUCT__OwnRangeDegreeRiding__Value": 0.0,
+        "_TargetRangeDegree": 0.0,
+        "_UniqueIndex": 0,
+        "_FreeInt": 0,
+        "_FreeFloat": 0.0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 19,
+      "class": "via.physics.Collider",
+      "classHash": "0x15d3b4ec",
+      "crc": "0xd3ef349d",
+      "fields": {
+        "v0": 1,
+        "v1": 1,
+        "v2": [
+          14,
+          0,
+          0,
+          0
+        ],
+        "v3": [
+          15,
+          0,
+          0,
+          0
+        ],
+        "v4": [
+          18,
+          0,
+          0,
+          0
+        ],
+        "v5": "System/Collision/Filter/SensorPut/SensorPut_Npc.cfil",
+        "v6": "",
+        "v7": "",
+        "v8": ""
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 20,
+      "class": "via.physics.Colliders",
+      "classHash": "0x9ab154c4",
+      "crc": "0x78e9a853",
+      "fields": {
+        "v0": 1,
+        "v1": 1,
+        "v2": [
+          ""
+        ],
+        "v3": 1,
+        "v4": [
+          [
+            19,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "userdataPath": null
+    }
+  ],
+  "diagnostics": {
+    "nativeDataInference": false,
+    "interpretedFields": [
+      {
+        "instanceId": 1,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 1,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 6,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 7,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 9,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 10,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 13,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 14,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 19,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 19,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 20,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 20,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 20,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      }
+    ]
+  },
+  "rszRawBase64": "UlNaABAAAAAKAAAAFQAAAAEAAAAAAAAAWAAAAAAAAACeAQAAAAAAAA4BAAAAAAAAAQAAAAIAAAAGAAAABwAAAAgAAAAJAAAACgAAAAsAAAANAAAAFAAAAAAAAAAAAAAAF6QCyeIeTPJGMKzfp+3tTzAuDHxZ7NGBMC4MfFns0YEwLgx8WezRgZjJn2a2rqgHa7vCcWCYhXIEgXADUS1jlkh4W+tRU+FiaGDkzeTSQqB/vHCgqNJ9fb+LIfvmNquqo2yETqECrpT5OP2vyyXWi3Go1A1GnMr9P8ln92kwWRa4g2jyeIM5VntEQugH9ybb7LTTFZ0079PEVLGaU6jpeAAAAAAAAAAAAAAAAAAADAAAAL+LIfseAQAAAAAAAEcAYQBtAGUARABlAHMAaQBnAG4ALwBOAFAAQwAvAEMAbwBtAG0AbwBuAEQAYQB0AGEALwBJAG4AdABlAHIAYQBjAHQALwBJAG4AdABlAHIAYQBjAHQAXwBOAFAAQwBCAGEAcwBlAC4AdQBzAGUAcgAAAAAAAAAAAAAAAAAAAAAAGQAAAEYAbwByAGUAcwB0AF8ASQB0AGUAbQBTAGgAbwBwAF8AQwBvAGwAbABpAGQAZQByAAAAAAABAAAAAAABAQAAgL8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAAAABAAAAAAAAAAAAAAAAAAAAMgAAAEcAYQBtAGUARABlAHMAaQBnAG4ALwBOAFAAQwAvAEMAbwBtAG0AbwBuAEQAYQB0AGEALwBDAG8AbABsAGkAcwBpAG8AbgAvAE4AcABjAEQAdQBtAG0AeQAuAHIAYwBvAGwAAAAyAAAARwBhAG0AZQBEAGUAcwBpAGcAbgAvAE4AUABDAC8AQwBvAG0AbQBvAG4ARABhAHQAYQAvAEMAbwBsAGwAaQBzAGkAbwBuAC8ATgBwAGMARAB1AG0AbQB5AC4AcgBjAG8AbAAAADEAAABHAGEAbQBlAEQAZQBzAGkAZwBuAC8ATgBQAEMALwBDAG8AbQBtAG8AbgBEAGEAdABhAC8AQwBvAGwAbABpAHMAaQBvAG4ALwBOAHAAYwBUAGEAbABrAC4AcgBjAG8AbAAAAAABAQAAAAAAAAADAAAAAwAAAAQAAAAFAAAAAAAAAAQAAAAAAAAAAQEAAQwAAAAAAAAAAAAAAAAAAAD/PPLCF54pQu7D+UMAAAAAywnrwn0EOEK6kPtDAAAAAAAAAAAAAAAAAAAAAAAAAABlo+7CStEwQlSq+kNmZuY/AAAAAAAAAAAAAAAAAAAAAP//////////AQAAAAAAAAAQAAAAAAAAABEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEAAA4AAAAPAAAAEgAAADUAAABTAHkAcwB0AGUAbQAvAEMAbwBsAGwAaQBzAGkAbwBuAC8ARgBpAGwAdABlAHIALwBTAGUAbgBzAG8AcgBQAHUAdAAvAFMAZQBuAHMAbwByAFAAdQB0AF8ATgBwAGMALgBjAGYAaQBsAAAAAAAAAAAAAQAAAAAAAAABAAAAAAABAQEAAAAAAAAAAQAAAAEAAAATAAAA"
+}

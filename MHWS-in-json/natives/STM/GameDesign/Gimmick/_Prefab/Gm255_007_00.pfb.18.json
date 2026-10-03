@@ -1,0 +1,3761 @@
+{
+  "_format": "mhws_pfb_v1",
+  "version": 18,
+  "sourceSha256": "991c9671323c179898caff128c628911f8d0c566b895a00d14c0170962bf6f0a",
+  "schemaSha256": "cfe10514c482ee2856e16dddfc543b148f5320479c913d660f905e6ffb0b40ab",
+  "gameObjects": [
+    {
+      "objectTableIndex": 0,
+      "parentObjectTableIndex": -1,
+      "componentCount": 16,
+      "instanceId": 1,
+      "componentInstanceIds": [
+        2,
+        3,
+        8,
+        9,
+        10,
+        11,
+        14,
+        15,
+        16,
+        17,
+        19,
+        20,
+        21,
+        23,
+        25,
+        26
+      ],
+      "childObjectTableIndices": [
+        17
+      ]
+    },
+    {
+      "objectTableIndex": 17,
+      "parentObjectTableIndex": 0,
+      "componentCount": 2,
+      "instanceId": 27,
+      "componentInstanceIds": [
+        28,
+        29
+      ],
+      "childObjectTableIndices": [
+        20,
+        31
+      ]
+    },
+    {
+      "objectTableIndex": 20,
+      "parentObjectTableIndex": 17,
+      "componentCount": 2,
+      "instanceId": 30,
+      "componentInstanceIds": [
+        31,
+        32
+      ],
+      "childObjectTableIndices": [
+        23
+      ]
+    },
+    {
+      "objectTableIndex": 23,
+      "parentObjectTableIndex": 20,
+      "componentCount": 7,
+      "instanceId": 33,
+      "componentInstanceIds": [
+        34,
+        35,
+        53,
+        54,
+        55,
+        56,
+        57
+      ],
+      "childObjectTableIndices": []
+    },
+    {
+      "objectTableIndex": 31,
+      "parentObjectTableIndex": 17,
+      "componentCount": 2,
+      "instanceId": 58,
+      "componentInstanceIds": [
+        59,
+        60
+      ],
+      "childObjectTableIndices": [
+        34
+      ]
+    },
+    {
+      "objectTableIndex": 34,
+      "parentObjectTableIndex": 31,
+      "componentCount": 7,
+      "instanceId": 61,
+      "componentInstanceIds": [
+        62,
+        63,
+        81,
+        82,
+        83,
+        84,
+        85
+      ],
+      "childObjectTableIndices": []
+    }
+  ],
+  "gameObjectReferences": [],
+  "resources": [
+    "Art/Model/Item/it83/33/0000/it8333_0000_0.mesh",
+    "Art/Model/Item/it83/33/0000/it8333_0000_0_A.mdf2",
+    "GameDesign/Gimmick/Common/Collision/GmDummyCol.rcol",
+    "Art/VFX/EffectProvider/Props/gm/gm255/gm255_007/epvr_gm255_007.pfb",
+    "Art/Light/Light_Assets/IES/IES_st553_Candle_00.ies",
+    "Art/Light/Light_Assets/UserCurve/Blink/Blink_300_Candle_01.ucurve",
+    "Art/Light/Light_Assets/UserCurve/Delay/Delay_On_60_GenericLinear.ucurve",
+    "Art/Light/Light_Assets/UserCurve/Delay/Delay_Off_60_GenericLinear.ucurve",
+    "Art/Light/Light_Assets/UserCurve/TimelineAnim/Timeline_2400_Candle_00.ucurve"
+  ],
+  "userdata": [
+    "GameDesign/Gimmick/Gm255/Gm255/MiniComponent/Gm255_MiniComponentHolder.user",
+    "GameDesign/Gimmick/Gm255/Gm255_007_00/Gm255_007_00_CommonParam.user",
+    "Sound/UserData/40_Culling/Gimmick/Gimmick_Base_CullingSettings.user",
+    "Sound/UserData/43_SnowDepth/Gimmick/GimmickBase_SnowDepthGetterSettings.user"
+  ],
+  "objectTable": [
+    1,
+    2,
+    3,
+    8,
+    9,
+    10,
+    11,
+    14,
+    15,
+    16,
+    17,
+    19,
+    20,
+    21,
+    23,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    81,
+    82,
+    83,
+    84,
+    85
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "class": "",
+      "classHash": "0x00000000",
+      "crc": "0x00000000",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 1,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "Gm255_007_00",
+        "v1": "",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 2,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 3,
+      "class": "via.render.Mesh",
+      "classHash": "0xbe980941",
+      "crc": "0xfded2316",
+      "fields": {
+        "v0": [
+          15,
+          0,
+          0,
+          0
+        ],
+        "v1": 1,
+        "v2": "Art/Model/Item/it83/33/0000/it8333_0000_0.mesh",
+        "v3": "Art/Model/Item/it83/33/0000/it8333_0000_0_A.mdf2",
+        "v4": 0,
+        "v5": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v6": 0,
+        "v7": "00000000-0000-0000-0000-000000000000",
+        "v8": [
+          0,
+          0,
+          128,
+          62
+        ],
+        "v9": [
+          2,
+          0,
+          0,
+          0
+        ],
+        "v10": [
+          30,
+          0,
+          0,
+          0
+        ],
+        "v11": 2,
+        "v12": 2,
+        "v13": 2,
+        "v14": 2,
+        "v15": [
+          0,
+          1
+        ],
+        "v16": 0,
+        "v17": 1,
+        "v18": 1,
+        "v19": 0,
+        "v20": 0,
+        "v21": 0,
+        "v22": 1,
+        "v23": 1,
+        "v24": 0,
+        "v25": 1,
+        "v26": 1,
+        "v27": 1,
+        "v28": 0,
+        "v29": 0,
+        "v30": 0,
+        "v31": 0,
+        "v32": 0,
+        "v33": 0,
+        "v34": 0,
+        "v35": 0,
+        "v36": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v37": 1,
+        "v38": [
+          3,
+          0,
+          0,
+          0
+        ],
+        "v39": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v40": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v41": 0,
+        "v42": 0,
+        "v43": [],
+        "v44": 0,
+        "v45": 0,
+        "v46": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v47": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v48": 0,
+        "v49": [
+          10,
+          0,
+          0,
+          0
+        ],
+        "v50": 1,
+        "v51": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "v52": 0,
+        "v53": 0,
+        "v54": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v55": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v56": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v57": "00000000-0000-0000-0000-000000000000",
+        "v58": 0,
+        "v59": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "v60": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v61": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v62": 0,
+        "v63": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "v64": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "v65": 255,
+        "v66": 255,
+        "v67": 255,
+        "v68": 7,
+        "v69": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "v70": 0,
+        "v71": 1,
+        "v72": 0,
+        "v73": 0,
+        "v74": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v75": 1,
+        "v76": 0,
+        "v77": 1,
+        "v78": [],
+        "v79": 0,
+        "v80": 0,
+        "v81": 0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 4,
+      "class": "via.physics.RequestSetCollider.RequestSetGroup",
+      "classHash": "0x7c0c2e30",
+      "crc": "0x81d1ec59",
+      "fields": {
+        "v0": "GameDesign/Gimmick/Common/Collision/GmDummyCol.rcol"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 5,
+      "class": "via.physics.RequestSetCollider.RequestSetGroup",
+      "classHash": "0x7c0c2e30",
+      "crc": "0x81d1ec59",
+      "fields": {
+        "v0": "GameDesign/Gimmick/Common/Collision/GmDummyCol.rcol"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 6,
+      "class": "via.physics.RequestSetCollider.RequestSetGroup",
+      "classHash": "0x7c0c2e30",
+      "crc": "0x81d1ec59",
+      "fields": {
+        "v0": "GameDesign/Gimmick/Common/Collision/GmDummyCol.rcol"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 7,
+      "class": "via.physics.RequestSetCollider.RequestSetGroup",
+      "classHash": "0x7c0c2e30",
+      "crc": "0x81d1ec59",
+      "fields": {
+        "v0": "GameDesign/Gimmick/Common/Collision/GmDummyCol.rcol"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 8,
+      "class": "via.physics.RequestSetCollider",
+      "classHash": "0x669fc998",
+      "crc": "0x07a8aeb6",
+      "fields": {
+        "v0": 1,
+        "v1": 1,
+        "v2": [
+          ""
+        ],
+        "v3": [
+          [
+            4,
+            0,
+            0,
+            0
+          ],
+          [
+            5,
+            0,
+            0,
+            0
+          ],
+          [
+            6,
+            0,
+            0,
+            0
+          ],
+          [
+            7,
+            0,
+            0,
+            0
+          ]
+        ],
+        "v4": "",
+        "v5": [
+          4,
+          0,
+          0,
+          0
+        ],
+        "v6": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 9,
+      "class": "app.HitController",
+      "classHash": "0xeb5b7848",
+      "crc": "0x62e15351",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 10,
+      "class": "ace.ColliderPool",
+      "classHash": "0xe617084e",
+      "crc": "0xa55e794a",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 11,
+      "class": "app.ColliderSwitcher",
+      "classHash": "0xcde46068",
+      "crc": "0xa042d2e4",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 12,
+      "class": "ace.user_data.GimmickMiniComponentHolder",
+      "classHash": "0x19633f57",
+      "crc": "0xe09470cf",
+      "fields": {},
+      "userdataPath": "GameDesign/Gimmick/Gm255/Gm255/MiniComponent/Gm255_MiniComponentHolder.user"
+    },
+    {
+      "id": 13,
+      "class": "app.user_data.GimmickCommonParam",
+      "classHash": "0x1264c8d3",
+      "crc": "0x40b19986",
+      "fields": {},
+      "userdataPath": "GameDesign/Gimmick/Gm255/Gm255_007_00/Gm255_007_00_CommonParam.user"
+    },
+    {
+      "id": 14,
+      "class": "app.GimmickAssetHolder",
+      "classHash": "0x551282e2",
+      "crc": "0x9eacde80",
+      "fields": {
+        "v0": 1,
+        "_MiniComponentHolder": {
+          "refInstanceId": 12
+        },
+        "_CommonParam": {
+          "refInstanceId": 13
+        },
+        "_AaaUniqueParam": {
+          "refInstanceId": 0
+        },
+        "_BbbUniqueParam": {
+          "refInstanceId": 0
+        },
+        "_ShellList": {
+          "refInstanceId": 0
+        }
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 15,
+      "class": "ace.GameMessageReceiver",
+      "classHash": "0xa070bc7f",
+      "crc": "0x7d7dd2a8",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 16,
+      "class": "soundlib.SoundContainer",
+      "classHash": "0x1f6d61a9",
+      "crc": "0x620b8efd",
+      "fields": {
+        "v0": 1,
+        "_TriggerOnlyDrawSelf": false,
+        "_UserDataList": []
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 17,
+      "class": "app.GimmickPrepare",
+      "classHash": "0x9bf15ef4",
+      "crc": "0xbcccc7b7",
+      "fields": {
+        "v0": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 18,
+      "class": "via.Prefab",
+      "classHash": "0xf53c28f9",
+      "crc": "0xa0e05e19",
+      "fields": {
+        "v0": 1,
+        "v1": "Art/VFX/EffectProvider/Props/gm/gm255/gm255_007/epvr_gm255_007.pfb"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 19,
+      "class": "via.effect.script.ObjectEffectManager2",
+      "classHash": "0x2609fe06",
+      "crc": "0xf9681b0d",
+      "fields": {
+        "v0": 1,
+        "v1": false,
+        "v2": false,
+        "FilterParameterWLock": false,
+        "DataContainer": {
+          "refInstanceId": 18
+        },
+        "ExternalDataContainers": [],
+        "TargetGameObject": "Ref<00000000-0000-0000-0000-000000000000 => >",
+        "ExternalPropertys": [],
+        "disableVFXTriggerTrack": true,
+        "disableVFXRangeTrack": false,
+        "disableMotionJackCheck": true,
+        "_VFXTriggerTrackUseHighestWeight": false,
+        "_VFXRangeTrackUseHighestWeight": false,
+        "_StaticDataContainer": true,
+        "_DisableByEmptyDataContainer": false
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 20,
+      "class": "app.MeshSettingController",
+      "classHash": "0xa693d847",
+      "crc": "0xfef6d2a7",
+      "fields": {
+        "v0_Enabled": true,
+        "v1": false,
+        "v2": true,
+        "v3": false
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 21,
+      "class": "app.MeshSetting",
+      "classHash": "0xbc86cc1f",
+      "crc": "0xba0bb8e0",
+      "fields": {
+        "v0_Enabled": true,
+        "_PartsEnableNum": 0,
+        "_AlphaFade": 0,
+        "_VisibleOverall": true,
+        "_VisibleManager": false,
+        "_CCSPassThroughUpdateFrameCount": true,
+        "_MeshMaterialLOD": {
+          "refInstanceId": 0
+        },
+        "_WetBlend": 0.0,
+        "_WetBlendLimit": 1.0,
+        "_TopMaskFade": 0.0,
+        "_TopMaskFadeBias": 1.0,
+        "_GlobalTopMaskFade": 0.5,
+        "_TopMaskMapBlend": 0.0,
+        "_EmissiveIntensity": 1.0,
+        "_TopBlendVector": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+        },
+        "_TriPlanarColor": "FF808080",
+        "_DispType": 686504192,
+        "_HeatReceiverParamID": -1343808000,
+        "_GroundBlendBias": 1.0,
+        "_PassThroughLengthBias": 1.0,
+        "_ColorParam": "FFFFFFFF",
+        "_ColorIntensity": 1.0,
+        "_AlphaTestRef": 0.10000000149011612,
+        "_EmissivePower": 0.0,
+        "_WaveScrollSpeed": 0.0,
+        "_IceBlendRate": 1.0,
+        "_IceSDFBlendRate": 0.5,
+        "_IceNormalVector": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+        },
+        "_IceNormalBlend": 0.0,
+        "_EnvironmentGUID": 0,
+        "_ShaderTimerGUID": 0,
+        "_EditMaterialFlag": 0,
+        "_SimpleOrigin": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "_IsBurn": false,
+        "_ShellFurBaseScaleHandheld": 0.25,
+        "_ShadowCastType": 0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 22,
+      "class": "app.snd_user_data.SoundCullingSettingsApp",
+      "classHash": "0x2e397c1f",
+      "crc": "0x16734386",
+      "fields": {},
+      "userdataPath": "Sound/UserData/40_Culling/Gimmick/Gimmick_Base_CullingSettings.user"
+    },
+    {
+      "id": 23,
+      "class": "app.SoundCullingController",
+      "classHash": "0x7b1c7e24",
+      "crc": "0x958261b5",
+      "fields": {
+        "v0": 1,
+        "_Settings": {
+          "refInstanceId": 22
+        }
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 24,
+      "class": "app.snd_user_data.SoundSnowDepthGetterSettings",
+      "classHash": "0x808e3c9d",
+      "crc": "0x69d421dc",
+      "fields": {},
+      "userdataPath": "Sound/UserData/43_SnowDepth/Gimmick/GimmickBase_SnowDepthGetterSettings.user"
+    },
+    {
+      "id": 25,
+      "class": "app.SoundSnowDepthGetter",
+      "classHash": "0x984fa703",
+      "crc": "0x8f58822a",
+      "fields": {
+        "v0": 1,
+        "_Settings": {
+          "refInstanceId": 24
+        }
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 26,
+      "class": "app.Gm255",
+      "classHash": "0x9c92372d",
+      "crc": "0xa9c53b86",
+      "fields": {
+        "v0": 1,
+        "_VisualGameObjectRef": "Ref<00000000-0000-0000-0000-000000000000 => >"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 27,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "Light",
+        "v1": "",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 28,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 29,
+      "class": "app.AppLightController",
+      "classHash": "0x336c499a",
+      "crc": "0xab8d2c03",
+      "fields": {
+        "v0": 1,
+        "_Condition": 1,
+        "_IntensityZoneName": "",
+        "_InverseBlendRate": false,
+        "_ClampBlendRate": "Range(0, 1)"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 30,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "Default",
+        "v1": "",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 31,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.20000000298023224,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 32,
+      "class": "app.AppLightController",
+      "classHash": "0x336c499a",
+      "crc": "0xab8d2c03",
+      "fields": {
+        "v0": 1,
+        "_Condition": 8,
+        "_IntensityZoneName": "",
+        "_InverseBlendRate": false,
+        "_ClampBlendRate": "Range(0, 1)"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 33,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "Gm255_007_00_PointLight_00",
+        "v1": "",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 34,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.25,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": -0.7071068286895752,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.7071068286895752
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 0.9999999403953552,
+          "z": 0.9999999403953552,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 35,
+      "class": "via.render.PointLight",
+      "classHash": "0xb4370344",
+      "crc": "0xc32b06f7",
+      "fields": {
+        "v0": 1,
+        "v1": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v2": [
+          13,
+          0,
+          0,
+          0
+        ],
+        "v3": {
+          "x": 1.0,
+          "y": 0.43965718150138855,
+          "z": 0.13286831974983215,
+          "w": 0.0
+        },
+        "v4": 0,
+        "v5": [
+          0,
+          0,
+          200,
+          69
+        ],
+        "v6": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v7": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v9": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v10": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "v11": [
+          2,
+          0,
+          0,
+          0
+        ],
+        "v12": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "v13": [
+          3,
+          0,
+          0,
+          0
+        ],
+        "v14": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v15": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v16": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v17": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v18": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v19": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v20": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v21": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v22": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v23": 0,
+        "v24": [
+          0,
+          64,
+          28,
+          70
+        ],
+        "v25": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "v26": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v27": [
+          10,
+          215,
+          35,
+          60
+        ],
+        "v28": [
+          0,
+          0,
+          0,
+          63
+        ],
+        "v29": 1,
+        "v30": "Quadratic",
+        "v31": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v32": [
+          221,
+          88,
+          198,
+          65
+        ],
+        "v33": "Art/Light/Light_Assets/IES/IES_st553_Candle_00.ies",
+        "v34": [
+          205,
+          204,
+          204,
+          61
+        ],
+        "v35": 0,
+        "v36": 0,
+        "v37": 0,
+        "v38": [
+          3,
+          0,
+          0,
+          0
+        ],
+        "v39": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v40": [
+          205,
+          204,
+          204,
+          61
+        ],
+        "v41": [
+          10,
+          215,
+          35,
+          59
+        ],
+        "v42": [
+          130,
+          168,
+          251,
+          55
+        ],
+        "v43": [
+          82,
+          73,
+          157,
+          57
+        ],
+        "v44": [
+          205,
+          204,
+          204,
+          61
+        ],
+        "v45": [
+          0,
+          0,
+          200,
+          66
+        ],
+        "v46": 0,
+        "v47": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "v48": "",
+        "v49": 0,
+        "v50": 0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 36,
+      "class": "via.relib.light.LightActionDistanceAttenuation",
+      "classHash": "0xd0c4e2be",
+      "crc": "0xf7dec8dc",
+      "fields": {
+        "IsDistanceAttenuation": true,
+        "EaseType": 0,
+        "IsSpherePosition": false,
+        "SpherePosition": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "NearFadeOutStartDistance": -1.0,
+        "NearFadeOutEndDistance": 1000.0,
+        "FadeOutStartDistance": 120.0,
+        "FadeOutEndDistance": 20.0,
+        "IsImprovement": true
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 37,
+      "class": "via.relib.light.LightActionKillComponent",
+      "classHash": "0x62c69976",
+      "crc": "0xee2aca98",
+      "fields": {
+        "IsUpdatePerFrame": true
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 38,
+      "class": "via.relib.light.LightActionDistanceShadow",
+      "classHash": "0xec765be7",
+      "crc": "0x16ec4e7e",
+      "fields": {
+        "IsDistanceSwitchShadowEnable": false,
+        "ShadowSwitchtShadowEnableStartDistance": -1.0,
+        "ShadowSwitchtBackGroundShadowEnableStartDistance": -1.0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 39,
+      "class": "via.relib.light.LightActionControlAOEfficiency",
+      "classHash": "0x8e4d5b79",
+      "crc": "0x29bd114d",
+      "fields": {
+        "IsEnable": false,
+        "ShadowOffAOEfficiency": 1.0,
+        "ShadowOnAOEfficiency": 1.0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 40,
+      "class": "via.relib.light.LightDelayPlayer.DelayParam",
+      "classHash": "0x917c4788",
+      "crc": "0x12c2687b",
+      "fields": {
+        "EnableDelay": false,
+        "DelayUserCurve": "",
+        "_UseEmissiveDelayTracks": false,
+        "FrameScaleRange": "Range(1, 0)"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 41,
+      "class": "via.relib.light.LightDelayPlayer.DelayParam",
+      "classHash": "0x917c4788",
+      "crc": "0x12c2687b",
+      "fields": {
+        "EnableDelay": false,
+        "DelayUserCurve": "",
+        "_UseEmissiveDelayTracks": false,
+        "FrameScaleRange": "Range(1, 0)"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 42,
+      "class": "via.relib.light.LightDelayPlayer",
+      "classHash": "0x2f846015",
+      "crc": "0x37800ff1",
+      "fields": {
+        "PowerOn": {
+          "refInstanceId": 40
+        },
+        "PowerOff": {
+          "refInstanceId": 41
+        }
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 43,
+      "class": "via.relib.light.LightBlinkUserCurvePlayer",
+      "classHash": "0x6c226040",
+      "crc": "0x3a5e692d",
+      "fields": {
+        "BlinkUserCurve": "",
+        "_PlayType": 0,
+        "BlinkStartFrame": "Range(0, 0)",
+        "FrameScaleRange": "Range(1, 0)",
+        "IntensityScaleRange": "Range(1, 0)",
+        "IntensityRate": 1.0,
+        "LightColorCoef": 1.0,
+        "BlinklightColor": "FF000000",
+        "VolumetricScatteringIntensityCoef": 1.0,
+        "EmissiveColor": "FF000000",
+        "IsLoop": true,
+        "LightDelayPlayer": {
+          "refInstanceId": 42
+        },
+        "MaterialControllParamList": []
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 44,
+      "class": "via.relib.light.LightBlinkUserCurveVariationPlayer.VariationParam.LightColorControlParam",
+      "classHash": "0x36e83d18",
+      "crc": "0x5b59e27e",
+      "fields": {
+        "IsLightInitColor": true,
+        "LightInitColor": "FFFFFFFF"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 45,
+      "class": "via.relib.light.LightBlinkUserCurveVariationPlayer.VariationParam",
+      "classHash": "0x0e216e06",
+      "crc": "0x1a272eb3",
+      "fields": {
+        "BlinkStartFrame": "Range(0, 0)",
+        "FrameScaleRange": "Range(1, 0)",
+        "IntensityScaleRange": "Range(1, 0)",
+        "MaterialControllParamList": [],
+        "LightColorControl": {
+          "refInstanceId": 44
+        }
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 46,
+      "class": "via.relib.light.LightDelayPlayer.DelayParam",
+      "classHash": "0x917c4788",
+      "crc": "0x12c2687b",
+      "fields": {
+        "EnableDelay": true,
+        "DelayUserCurve": "Art/Light/Light_Assets/UserCurve/Delay/Delay_On_60_GenericLinear.ucurve",
+        "_UseEmissiveDelayTracks": false,
+        "FrameScaleRange": "Range(1, 0)"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 47,
+      "class": "via.relib.light.LightDelayPlayer.DelayParam",
+      "classHash": "0x917c4788",
+      "crc": "0x12c2687b",
+      "fields": {
+        "EnableDelay": true,
+        "DelayUserCurve": "Art/Light/Light_Assets/UserCurve/Delay/Delay_Off_60_GenericLinear.ucurve",
+        "_UseEmissiveDelayTracks": false,
+        "FrameScaleRange": "Range(1, 0)"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 48,
+      "class": "via.relib.light.LightDelayPlayer",
+      "classHash": "0x2f846015",
+      "crc": "0x37800ff1",
+      "fields": {
+        "PowerOn": {
+          "refInstanceId": 46
+        },
+        "PowerOff": {
+          "refInstanceId": 47
+        }
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 49,
+      "class": "via.relib.light.LightBlinkUserCurveVariationPlayer",
+      "classHash": "0x1d90e094",
+      "crc": "0x16e40f5f",
+      "fields": {
+        "BlinkUserCurve": "Art/Light/Light_Assets/UserCurve/Blink/Blink_300_Candle_01.ucurve",
+        "_PlayType": 3,
+        "IntensityRate": 1.0,
+        "LightColorCoef": 1.0,
+        "BlinklightColor": "FFFFFFFF",
+        "VolumetricScatteringIntensityCoef": 1.0,
+        "EmissiveColor": "FF000000",
+        "IsLoop": true,
+        "_VariationIndex": 0,
+        "VariationParamList": [
+          {
+            "refInstanceId": 45
+          }
+        ],
+        "LightDelayPlayer": {
+          "refInstanceId": 48
+        }
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 50,
+      "class": "via.relib.light.TimelineUserCurvePlayer.MaterialControllParam",
+      "classHash": "0x0f98a282",
+      "crc": "0x28404780",
+      "fields": {
+        "RefObj": "Ref<680c9284-c2e7-49da-89bc-78f086c8aa1b => >",
+        "MaterialName": [
+          "sm46_068_A_00_Mat__P_Env_BaseSimple"
+        ],
+        "VariableName": "Emissive_Intensity",
+        "_ParamType": 0,
+        "materialNameList": [],
+        "variableNameList": []
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 51,
+      "class": "via.relib.light.TimelineUserCurvePlayer.MaterialControllParam",
+      "classHash": "0x0f98a282",
+      "crc": "0x28404780",
+      "fields": {
+        "RefObj": "Ref<680c9284-c2e7-49da-89bc-78f086c8aa1b => >",
+        "MaterialName": [
+          "sm46_068_A_00_Mat__P_Env_BaseSimple"
+        ],
+        "VariableName": "Emissive_Color",
+        "_ParamType": 1,
+        "materialNameList": [],
+        "variableNameList": []
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 52,
+      "class": "via.relib.light.TimelineUserCurvePlayer",
+      "classHash": "0x9cf4692c",
+      "crc": "0xc9703460",
+      "fields": {
+        "IsLoop": true,
+        "TimelineAnimationUserCurve": "Art/Light/Light_Assets/UserCurve/TimelineAnim/Timeline_2400_Candle_00.ucurve",
+        "_TimelinePlayType": 0,
+        "RlinkRateStartAnimationFrame": 0.0,
+        "FrameScale": 1.0,
+        "MaterialControllParamList": [
+          {
+            "refInstanceId": 50
+          },
+          {
+            "refInstanceId": 51
+          }
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 53,
+      "class": "via.relib.light.ReLibLightBehavior",
+      "classHash": "0x3c58b4ff",
+      "crc": "0xa3e463e4",
+      "fields": {
+        "v0": 1,
+        "_LightActionUpdator": {
+          "refInstanceId": 36
+        },
+        "_DistanceAttenuation": {
+          "refInstanceId": 37
+        },
+        "_KillComponent": {
+          "refInstanceId": 38
+        },
+        "_LightActionDistanceShadow": {
+          "refInstanceId": 39
+        },
+        "MainPlayer": 2,
+        "GlobalParamIndex": -1,
+        "_IsCounterEV": false,
+        "BlinkUserCurvePlayer": {
+          "refInstanceId": 43
+        },
+        "BlinkUserCurveVariationPlayer": {
+          "refInstanceId": 49
+        },
+        "TimelineAnimation": {
+          "refInstanceId": 52
+        },
+        "_EventIntensityRate": 1.0,
+        "_EventEmissiveRate": 1.0,
+        "_IsEventIntensityRate": true,
+        "_EventIdentifyName": "sm46_068_00_A"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 54,
+      "class": "via.motion.ConstraintParent",
+      "classHash": "0xf53d7bfb",
+      "crc": "0xa283d368",
+      "fields": {
+        "v0_Enabled": false,
+        "v1_UpdateMode": 1,
+        "v2_UpdateTiming": 1,
+        "v3": "00000000-0000-0000-0000-000000000000",
+        "v4": "",
+        "v5": "",
+        "v6": "",
+        "v7": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v8": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v9": 1,
+        "v10": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 55,
+      "class": "app.AppLightController",
+      "classHash": "0x336c499a",
+      "crc": "0xab8d2c03",
+      "fields": {
+        "v0": 0,
+        "_Condition": 0,
+        "_IntensityZoneName": "",
+        "_InverseBlendRate": false,
+        "_ClampBlendRate": "Range(0, 1)"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 56,
+      "class": "app.LightLimitter",
+      "classHash": "0x36be6da7",
+      "crc": "0xc39c7943",
+      "fields": {
+        "v0": 0,
+        "_IsOptModeOnly": false,
+        "_LightEnable": false,
+        "_ShadowEnable": false,
+        "_DetailShadow": 1.0,
+        "_AOEfficeiency": 1.0,
+        "_ShadowCastFlag": 3,
+        "_OverrideLightParams": false,
+        "_LightParamCone": 30.0,
+        "_LightParamSpread": 10.0,
+        "_LightParamFalloff": 1.0,
+        "_IsEnableEventPlaying": false,
+        "_LightEnableEventPlaying": false,
+        "_ShadowEnableEventPlaying": false,
+        "_DetailShadowEventPlaying": 1.0,
+        "_AOEfficeiencyEventPlaying": 1.0,
+        "_ShadowCastFlagEventPlaying": 3,
+        "_OverrideLightParamsEventPlaying": false,
+        "_LightParamConeEventPlaying": 30.0,
+        "_LightParamSpreadEventPlaying": 10.0,
+        "_LightParamFalloffEventPlaying": 1.0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 57,
+      "class": "app.SyncLightBehaviorGlobalTime",
+      "classHash": "0xd56285de",
+      "crc": "0xc875c520",
+      "fields": {
+        "v0": 1,
+        "DisableSyncTime": false
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 58,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "ConcertCamera",
+        "v1": "",
+        "v2": 1,
+        "v3": 0,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 59,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.20000000298023224,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 60,
+      "class": "app.AppLightController",
+      "classHash": "0x336c499a",
+      "crc": "0xab8d2c03",
+      "fields": {
+        "v0": 1,
+        "_Condition": 16,
+        "_IntensityZoneName": "",
+        "_InverseBlendRate": false,
+        "_ClampBlendRate": "Range(0, 1)"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 61,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "Gm255_007_00_PointLight_00",
+        "v1": "",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 62,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.17856311798095703,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": -0.7071068286895752,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.7071068286895752
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 0.9999999403953552,
+          "z": 0.9999999403953552,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 63,
+      "class": "via.render.PointLight",
+      "classHash": "0xb4370344",
+      "crc": "0xc32b06f7",
+      "fields": {
+        "v0": 1,
+        "v1": [
+          0,
+          0,
+          22,
+          67
+        ],
+        "v2": [
+          13,
+          0,
+          0,
+          0
+        ],
+        "v3": {
+          "x": 1.0,
+          "y": 0.37075290083885193,
+          "z": 0.17064493894577026,
+          "w": 0.0
+        },
+        "v4": 0,
+        "v5": [
+          0,
+          0,
+          200,
+          69
+        ],
+        "v6": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v7": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v9": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v10": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "v11": [
+          2,
+          0,
+          0,
+          0
+        ],
+        "v12": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "v13": [
+          3,
+          0,
+          0,
+          0
+        ],
+        "v14": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v15": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v16": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v17": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v18": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v19": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v20": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v21": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v22": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v23": 0,
+        "v24": [
+          0,
+          192,
+          218,
+          69
+        ],
+        "v25": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "v26": [
+          0,
+          0,
+          128,
+          63
+        ],
+        "v27": [
+          10,
+          215,
+          35,
+          60
+        ],
+        "v28": [
+          205,
+          204,
+          76,
+          63
+        ],
+        "v29": 1,
+        "v30": "Default",
+        "v31": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v32": [
+          221,
+          88,
+          198,
+          65
+        ],
+        "v33": "Art/Light/Light_Assets/IES/IES_st553_Candle_00.ies",
+        "v34": [
+          205,
+          204,
+          204,
+          61
+        ],
+        "v35": 0,
+        "v36": 0,
+        "v37": 0,
+        "v38": [
+          3,
+          0,
+          0,
+          0
+        ],
+        "v39": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "v40": [
+          205,
+          204,
+          204,
+          61
+        ],
+        "v41": [
+          10,
+          215,
+          35,
+          59
+        ],
+        "v42": [
+          130,
+          168,
+          251,
+          55
+        ],
+        "v43": [
+          82,
+          73,
+          157,
+          57
+        ],
+        "v44": [
+          205,
+          204,
+          204,
+          61
+        ],
+        "v45": [
+          0,
+          0,
+          200,
+          66
+        ],
+        "v46": 0,
+        "v47": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "v48": "",
+        "v49": 0,
+        "v50": 0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 64,
+      "class": "via.relib.light.LightActionDistanceAttenuation",
+      "classHash": "0xd0c4e2be",
+      "crc": "0xf7dec8dc",
+      "fields": {
+        "IsDistanceAttenuation": true,
+        "EaseType": 0,
+        "IsSpherePosition": false,
+        "SpherePosition": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "NearFadeOutStartDistance": -1.0,
+        "NearFadeOutEndDistance": 1000.0,
+        "FadeOutStartDistance": 120.0,
+        "FadeOutEndDistance": 20.0,
+        "IsImprovement": true
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 65,
+      "class": "via.relib.light.LightActionKillComponent",
+      "classHash": "0x62c69976",
+      "crc": "0xee2aca98",
+      "fields": {
+        "IsUpdatePerFrame": true
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 66,
+      "class": "via.relib.light.LightActionDistanceShadow",
+      "classHash": "0xec765be7",
+      "crc": "0x16ec4e7e",
+      "fields": {
+        "IsDistanceSwitchShadowEnable": false,
+        "ShadowSwitchtShadowEnableStartDistance": -1.0,
+        "ShadowSwitchtBackGroundShadowEnableStartDistance": -1.0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 67,
+      "class": "via.relib.light.LightActionControlAOEfficiency",
+      "classHash": "0x8e4d5b79",
+      "crc": "0x29bd114d",
+      "fields": {
+        "IsEnable": false,
+        "ShadowOffAOEfficiency": 1.0,
+        "ShadowOnAOEfficiency": 1.0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 68,
+      "class": "via.relib.light.LightDelayPlayer.DelayParam",
+      "classHash": "0x917c4788",
+      "crc": "0x12c2687b",
+      "fields": {
+        "EnableDelay": false,
+        "DelayUserCurve": "",
+        "_UseEmissiveDelayTracks": false,
+        "FrameScaleRange": "Range(1, 0)"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 69,
+      "class": "via.relib.light.LightDelayPlayer.DelayParam",
+      "classHash": "0x917c4788",
+      "crc": "0x12c2687b",
+      "fields": {
+        "EnableDelay": false,
+        "DelayUserCurve": "",
+        "_UseEmissiveDelayTracks": false,
+        "FrameScaleRange": "Range(1, 0)"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 70,
+      "class": "via.relib.light.LightDelayPlayer",
+      "classHash": "0x2f846015",
+      "crc": "0x37800ff1",
+      "fields": {
+        "PowerOn": {
+          "refInstanceId": 68
+        },
+        "PowerOff": {
+          "refInstanceId": 69
+        }
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 71,
+      "class": "via.relib.light.LightBlinkUserCurvePlayer",
+      "classHash": "0x6c226040",
+      "crc": "0x3a5e692d",
+      "fields": {
+        "BlinkUserCurve": "",
+        "_PlayType": 0,
+        "BlinkStartFrame": "Range(0, 0)",
+        "FrameScaleRange": "Range(1, 0)",
+        "IntensityScaleRange": "Range(1, 0)",
+        "IntensityRate": 1.0,
+        "LightColorCoef": 1.0,
+        "BlinklightColor": "FF000000",
+        "VolumetricScatteringIntensityCoef": 1.0,
+        "EmissiveColor": "FF000000",
+        "IsLoop": true,
+        "LightDelayPlayer": {
+          "refInstanceId": 70
+        },
+        "MaterialControllParamList": []
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 72,
+      "class": "via.relib.light.LightBlinkUserCurveVariationPlayer.VariationParam.LightColorControlParam",
+      "classHash": "0x36e83d18",
+      "crc": "0x5b59e27e",
+      "fields": {
+        "IsLightInitColor": false,
+        "LightInitColor": "FFFFFFFF"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 73,
+      "class": "via.relib.light.LightBlinkUserCurveVariationPlayer.VariationParam",
+      "classHash": "0x0e216e06",
+      "crc": "0x1a272eb3",
+      "fields": {
+        "BlinkStartFrame": "Range(0, 0)",
+        "FrameScaleRange": "Range(0.5, 0)",
+        "IntensityScaleRange": "Range(1, 0)",
+        "MaterialControllParamList": [],
+        "LightColorControl": {
+          "refInstanceId": 72
+        }
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 74,
+      "class": "via.relib.light.LightDelayPlayer.DelayParam",
+      "classHash": "0x917c4788",
+      "crc": "0x12c2687b",
+      "fields": {
+        "EnableDelay": true,
+        "DelayUserCurve": "Art/Light/Light_Assets/UserCurve/Delay/Delay_On_60_GenericLinear.ucurve",
+        "_UseEmissiveDelayTracks": false,
+        "FrameScaleRange": "Range(1, 0)"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 75,
+      "class": "via.relib.light.LightDelayPlayer.DelayParam",
+      "classHash": "0x917c4788",
+      "crc": "0x12c2687b",
+      "fields": {
+        "EnableDelay": true,
+        "DelayUserCurve": "Art/Light/Light_Assets/UserCurve/Delay/Delay_Off_60_GenericLinear.ucurve",
+        "_UseEmissiveDelayTracks": false,
+        "FrameScaleRange": "Range(1, 0)"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 76,
+      "class": "via.relib.light.LightDelayPlayer",
+      "classHash": "0x2f846015",
+      "crc": "0x37800ff1",
+      "fields": {
+        "PowerOn": {
+          "refInstanceId": 74
+        },
+        "PowerOff": {
+          "refInstanceId": 75
+        }
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 77,
+      "class": "via.relib.light.LightBlinkUserCurveVariationPlayer",
+      "classHash": "0x1d90e094",
+      "crc": "0x16e40f5f",
+      "fields": {
+        "BlinkUserCurve": "Art/Light/Light_Assets/UserCurve/Blink/Blink_300_Candle_01.ucurve",
+        "_PlayType": 3,
+        "IntensityRate": 1.0,
+        "LightColorCoef": 1.0,
+        "BlinklightColor": "FFFFFFFF",
+        "VolumetricScatteringIntensityCoef": 1.0,
+        "EmissiveColor": "FF000000",
+        "IsLoop": true,
+        "_VariationIndex": 0,
+        "VariationParamList": [
+          {
+            "refInstanceId": 73
+          }
+        ],
+        "LightDelayPlayer": {
+          "refInstanceId": 76
+        }
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 78,
+      "class": "via.relib.light.TimelineUserCurvePlayer.MaterialControllParam",
+      "classHash": "0x0f98a282",
+      "crc": "0x28404780",
+      "fields": {
+        "RefObj": "Ref<680c9284-c2e7-49da-89bc-78f086c8aa1b => >",
+        "MaterialName": [
+          "sm46_068_A_00_Mat__P_Env_BaseSimple"
+        ],
+        "VariableName": "Emissive_Intensity",
+        "_ParamType": 0,
+        "materialNameList": [
+          "sm46_068_A_00_Mat__P_Env_BaseSimple"
+        ],
+        "variableNameList": [
+          "ColorParam",
+          "Emissive_Color",
+          "RayTrace_BaseColor",
+          "Wet_Roughness",
+          "Wet_Basecolor_Blend",
+          "RoughnessParam",
+          "MetalParam",
+          "TranslucentParam",
+          "Use_RimTranslucent",
+          "RimTrasnlucent_Power",
+          "RimTranslucent_NormalBlend",
+          "OcclusionParam",
+          "SSSParam",
+          "SSSProfile",
+          "Use_Basecolor_to_Emissive",
+          "Emissive_Power",
+          "Emissive_Intensity",
+          "UseCounterExposureEmit",
+          "CounterExposureEmit_Blend",
+          "UseBlackBody",
+          "BlackBody_Temparature",
+          "AlphaAdjust",
+          "AlphaTest_Ref",
+          "UseTempDither",
+          "UseAOSecondaryUV",
+          "AO_to_Cavity",
+          "BackFaceFlipNormal",
+          "DitherShadow",
+          "ChangeUV",
+          "HorizonFade",
+          "Use_AntiTranslucent_Diffuse",
+          "WetBlend",
+          "PassThrough",
+          "Dissolve",
+          "SandBlend",
+          "RayTrace_Emissive_Booster",
+          "Allover_Emissive_Intensity"
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 79,
+      "class": "via.relib.light.TimelineUserCurvePlayer.MaterialControllParam",
+      "classHash": "0x0f98a282",
+      "crc": "0x28404780",
+      "fields": {
+        "RefObj": "Ref<680c9284-c2e7-49da-89bc-78f086c8aa1b => >",
+        "MaterialName": [
+          "sm46_068_A_00_Mat__P_Env_BaseSimple"
+        ],
+        "VariableName": "Emissive_Color",
+        "_ParamType": 1,
+        "materialNameList": [
+          "sm46_068_A_00_Mat__P_Env_BaseSimple"
+        ],
+        "variableNameList": [
+          "ColorParam",
+          "Emissive_Color",
+          "RayTrace_BaseColor",
+          "Wet_Roughness",
+          "Wet_Basecolor_Blend",
+          "RoughnessParam",
+          "MetalParam",
+          "TranslucentParam",
+          "Use_RimTranslucent",
+          "RimTrasnlucent_Power",
+          "RimTranslucent_NormalBlend",
+          "OcclusionParam",
+          "SSSParam",
+          "SSSProfile",
+          "Use_Basecolor_to_Emissive",
+          "Emissive_Power",
+          "Emissive_Intensity",
+          "UseCounterExposureEmit",
+          "CounterExposureEmit_Blend",
+          "UseBlackBody",
+          "BlackBody_Temparature",
+          "AlphaAdjust",
+          "AlphaTest_Ref",
+          "UseTempDither",
+          "UseAOSecondaryUV",
+          "AO_to_Cavity",
+          "BackFaceFlipNormal",
+          "DitherShadow",
+          "ChangeUV",
+          "HorizonFade",
+          "Use_AntiTranslucent_Diffuse",
+          "WetBlend",
+          "PassThrough",
+          "Dissolve",
+          "SandBlend",
+          "RayTrace_Emissive_Booster",
+          "Allover_Emissive_Intensity"
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 80,
+      "class": "via.relib.light.TimelineUserCurvePlayer",
+      "classHash": "0x9cf4692c",
+      "crc": "0xc9703460",
+      "fields": {
+        "IsLoop": true,
+        "TimelineAnimationUserCurve": "",
+        "_TimelinePlayType": 0,
+        "RlinkRateStartAnimationFrame": 0.0,
+        "FrameScale": 1.0,
+        "MaterialControllParamList": [
+          {
+            "refInstanceId": 78
+          },
+          {
+            "refInstanceId": 79
+          }
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 81,
+      "class": "via.relib.light.ReLibLightBehavior",
+      "classHash": "0x3c58b4ff",
+      "crc": "0xa3e463e4",
+      "fields": {
+        "v0": 1,
+        "_LightActionUpdator": {
+          "refInstanceId": 64
+        },
+        "_DistanceAttenuation": {
+          "refInstanceId": 65
+        },
+        "_KillComponent": {
+          "refInstanceId": 66
+        },
+        "_LightActionDistanceShadow": {
+          "refInstanceId": 67
+        },
+        "MainPlayer": 2,
+        "GlobalParamIndex": -1,
+        "_IsCounterEV": false,
+        "BlinkUserCurvePlayer": {
+          "refInstanceId": 71
+        },
+        "BlinkUserCurveVariationPlayer": {
+          "refInstanceId": 77
+        },
+        "TimelineAnimation": {
+          "refInstanceId": 80
+        },
+        "_EventIntensityRate": 1.0,
+        "_EventEmissiveRate": 1.0,
+        "_IsEventIntensityRate": true,
+        "_EventIdentifyName": "sm46_068_00_A"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 82,
+      "class": "via.motion.ConstraintParent",
+      "classHash": "0xf53d7bfb",
+      "crc": "0xa283d368",
+      "fields": {
+        "v0_Enabled": false,
+        "v1_UpdateMode": 1,
+        "v2_UpdateTiming": 1,
+        "v3": "00000000-0000-0000-0000-000000000000",
+        "v4": "",
+        "v5": "",
+        "v6": "",
+        "v7": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v8": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v9": 1,
+        "v10": 1
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 83,
+      "class": "app.AppLightController",
+      "classHash": "0x336c499a",
+      "crc": "0xab8d2c03",
+      "fields": {
+        "v0": 0,
+        "_Condition": 0,
+        "_IntensityZoneName": "",
+        "_InverseBlendRate": false,
+        "_ClampBlendRate": "Range(0, 1)"
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 84,
+      "class": "app.LightLimitter",
+      "classHash": "0x36be6da7",
+      "crc": "0xc39c7943",
+      "fields": {
+        "v0": 0,
+        "_IsOptModeOnly": false,
+        "_LightEnable": false,
+        "_ShadowEnable": false,
+        "_DetailShadow": 1.0,
+        "_AOEfficeiency": 1.0,
+        "_ShadowCastFlag": 3,
+        "_OverrideLightParams": false,
+        "_LightParamCone": 30.0,
+        "_LightParamSpread": 10.0,
+        "_LightParamFalloff": 1.0,
+        "_IsEnableEventPlaying": false,
+        "_LightEnableEventPlaying": false,
+        "_ShadowEnableEventPlaying": false,
+        "_DetailShadowEventPlaying": 1.0,
+        "_AOEfficeiencyEventPlaying": 1.0,
+        "_ShadowCastFlagEventPlaying": 3,
+        "_OverrideLightParamsEventPlaying": false,
+        "_LightParamConeEventPlaying": 30.0,
+        "_LightParamSpreadEventPlaying": 10.0,
+        "_LightParamFalloffEventPlaying": 1.0
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 85,
+      "class": "app.SyncLightBehaviorGlobalTime",
+      "classHash": "0xd56285de",
+      "crc": "0xc875c520",
+      "fields": {
+        "v0": 1,
+        "DisableSyncTime": false
+      },
+      "userdataPath": null
+    }
+  ],
+  "diagnostics": {
+    "nativeDataInference": false,
+    "interpretedFields": [
+      {
+        "instanceId": 1,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 1,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "Guid"
+      },
+      {
+        "instanceId": 3,
+        "field": "v11",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v12",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v13",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v14",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v16",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v17",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v18",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v19",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v20",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v21",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v22",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v23",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v24",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v25",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v26",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v27",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v28",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v29",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v30",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v31",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v32",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v33",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v34",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v35",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v37",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v41",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v42",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v44",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v45",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v48",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v50",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v52",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v53",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v57",
+        "schemaType": "Data",
+        "interpretedType": "Guid"
+      },
+      {
+        "instanceId": 3,
+        "field": "v58",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v59",
+        "schemaType": "Data",
+        "interpretedType": "Vec2"
+      },
+      {
+        "instanceId": 3,
+        "field": "v62",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v63",
+        "schemaType": "Data",
+        "interpretedType": "Vec2"
+      },
+      {
+        "instanceId": 3,
+        "field": "v65",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v66",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v67",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v68",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v69",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v70",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v71",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v72",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v73",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v75",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v76",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v77",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v79",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v80",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 3,
+        "field": "v81",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 8,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 8,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 9,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 10,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 11,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 14,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 16,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 17,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 18,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 19,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 23,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 25,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 26,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 27,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 27,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 28,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 28,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 28,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 28,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 28,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 28,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 28,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 29,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 30,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 30,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 31,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 31,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 31,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 31,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 31,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 31,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 31,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 32,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 33,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 33,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 34,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 34,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 34,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 34,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 34,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 34,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 34,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 35,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 35,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 35,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 35,
+        "field": "v23",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 35,
+        "field": "v29",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 35,
+        "field": "v35",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 35,
+        "field": "v36",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 35,
+        "field": "v37",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 35,
+        "field": "v46",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 35,
+        "field": "v47",
+        "schemaType": "Data",
+        "interpretedType": "Vec2"
+      },
+      {
+        "instanceId": 35,
+        "field": "v49",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 35,
+        "field": "v50",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 53,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 54,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "Guid"
+      },
+      {
+        "instanceId": 54,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 54,
+        "field": "v8",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 54,
+        "field": "v9",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 54,
+        "field": "v10",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 55,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 56,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 57,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 58,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 58,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 59,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 59,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 59,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 59,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 59,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 59,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 59,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 60,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 61,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 61,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 62,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 62,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 62,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 62,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 62,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 62,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 62,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 63,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 63,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 63,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 63,
+        "field": "v23",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 63,
+        "field": "v29",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 63,
+        "field": "v35",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 63,
+        "field": "v36",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 63,
+        "field": "v37",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 63,
+        "field": "v46",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 63,
+        "field": "v47",
+        "schemaType": "Data",
+        "interpretedType": "Vec2"
+      },
+      {
+        "instanceId": 63,
+        "field": "v49",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 63,
+        "field": "v50",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 81,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 82,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "Guid"
+      },
+      {
+        "instanceId": 82,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 82,
+        "field": "v8",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 82,
+        "field": "v9",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 82,
+        "field": "v10",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 83,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 84,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 85,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      }
+    ]
+  },
+  "rszRawBase64": "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bwB1AGcAaABuAGUAcwBzAAAAFAAAAFcAZQB0AF8AQgBhAHMAZQBjAG8AbABvAHIAXwBCAGwAZQBuAGQAAAAPAAAAUgBvAHUAZwBoAG4AZQBzAHMAUABhAHIAYQBtAAAAAAALAAAATQBlAHQAYQBsAFAAYQByAGEAbQAAAAAAEQAAAFQAcgBhAG4AcwBsAHUAYwBlAG4AdABQAGEAcgBhAG0AAAAAABMAAABVAHMAZQBfAFIAaQBtAFQAcgBhAG4AcwBsAHUAYwBlAG4AdAAAAAAAFQAAAFIAaQBtAFQAcgBhAHMAbgBsAHUAYwBlAG4AdABfAFAAbwB3AGUAcgAAAAAAGwAAAFIAaQBtAFQAcgBhAG4AcwBsAHUAYwBlAG4AdABfAE4AbwByAG0AYQBsAEIAbABlAG4AZAAAAAAADwAAAE8AYwBjAGwAdQBzAGkAbwBuAFAAYQByAGEAbQAAAAAACQAAAFMAUwBTAFAAYQByAGEAbQAAAAAACwAAAFMAUwBTAFAAcgBvAGYAaQBsAGUAAAAAABoAAABVAHMAZQBfAEIAYQBzAGUAYwBvAGwAbwByAF8AdABvAF8ARQBtAGkAcwBzAGkAdgBlAAAADwAAAEUAbQBpAHMAcwBpAHYAZQBfAFAAbwB3AGUAcgAAAAAAEwAAAEUAbQBpAHMAcwBpAHYAZQBfAEkAbgB0AGUAbgBzAGkAdAB5AAAAAAAXAAAAVQBzAGUAQwBvAHUAbgB0AGUAcgBFAHgAcABvAHMAdQByAGUARQBtAGkAdAAAAAAAGgAAAEMAbwB1AG4AdABlAHIARQB4AHAAbwBzAHUAcgBlAEUAbQBpAHQAXwBCAGwAZQBuAGQAAAANAAAAVQBzAGUAQgBsAGEAYwBrAEIAbwBkAHkAAAAAABYAAABCAGwAYQBjAGsAQgBvAGQAeQBfAFQAZQBtAHAAYQByAGEAdAB1AHIAZQAAAAwAAABBAGwAcABoAGEAQQBkAGoAdQBzAHQAAAAOAAAAQQBsAHAAaABhAFQAZQBzAHQAXwBSAGUAZgAAAA4AAABVAHMAZQBUAGUAbQBwAEQAaQB0AGgAZQByAAAAEQAAAFUAcwBlAEEATwBTAGUAYwBvAG4AZABhAHIAeQBVAFYAAAAAAA0AAABBAE8AXwB0AG8AXwBDAGEAdgBpAHQAeQAAAAAAEwAAAEIAYQBjAGsARgBhAGMAZQBGAGwAaQBwAE4AbwByAG0AYQBsAAAAAAANAAAARABpAHQAaABlAHIAUwBoAGEAZABvAHcAAAAAAAkAAABDAGgAYQBuAGcAZQBVAFYAAAAAAAwAAABIAG8AcgBpAHoAbwBuAEYAYQBkAGUAAAAcAAAAVQBzAGUAXwBBAG4AdABpAFQAcgBhAG4AcwBsAHUAYwBlAG4AdABfAEQAaQBmAGYAdQBzAGUAAAAJAAAAVwBlAHQAQgBsAGUAbgBkAAAAAAAMAAAAUABhAHMAcwBUAGgAcgBvAHUAZwBoAAAACQAAAEQAaQBzAHMAbwBsAHYAZQAAAAAACgAAAFMAYQBuAGQAQgBsAGUAbgBkAAAAGgAAAFIAYQB5AFQAcgBhAGMAZQBfAEUAbQBpAHMAcwBpAHYAZQBfAEIAbwBvAHMAdABlAHIAAAAbAAAAQQBsAGwAbwB2AGUAcgBfAEUAbQBpAHMAcwBpAHYAZQBfAEkAbgB0AGUAbgBzAGkAdAB5AAAAAACEkgxo58LaSYm8ePCGyKobAQAAACQAAABzAG0ANAA2AF8AMAA2ADgAXwBBAF8AMAAwAF8ATQBhAHQAXwBfAFAAXwBFAG4AdgBfAEIAYQBzAGUAUwBpAG0AcABsAGUAAAAPAAAARQBtAGkAcwBzAGkAdgBlAF8AQwBvAGwAbwByAAAAAAABAAAAAQAAACQAAABzAG0ANAA2AF8AMAA2ADgAXwBBAF8AMAAwAF8ATQBhAHQAXwBfAFAAXwBFAG4AdgBfAEIAYQBzAGUAUwBpAG0AcABsAGUAAAAlAAAACwAAAEMAbwBsAG8AcgBQAGEAcgBhAG0AAAAAAA8AAABFAG0AaQBzAHMAaQB2AGUAXwBDAG8AbABvAHIAAAAAABMAAABSAGEAeQBUAHIAYQBjAGUAXwBCAGEAcwBlAEMAbwBsAG8AcgAAAAAADgAAAFcAZQB0AF8AUgBvAHUAZwBoAG4AZQBzAHMAAAAUAAAAVwBlAHQAXwBCAGEAcwBlAGMAbwBsAG8AcgBfAEIAbABlAG4AZAAAAA8AAABSAG8AdQBnAGgAbgBlAHMAcwBQAGEAcgBhAG0AAAAAAAsAAABNAGUAdABhAGwAUABhAHIAYQBtAAAAAAARAAAAVAByAGEAbgBzAGwAdQBjAGUAbgB0AFAAYQByAGEAbQAAAAAAEwAAAFUAcwBlAF8AUgBpAG0AVAByAGEAbgBzAGwAdQBjAGUAbgB0AAAAAAAVAAAAUgBpAG0AVAByAGEAcwBuAGwAdQBjAGUAbgB0AF8AUABvAHcAZQByAAAAAAAbAAAAUgBpAG0AVAByAGEAbgBzAGwAdQBjAGUAbgB0AF8ATgBvAHIAbQBhAGwAQgBsAGUAbgBkAAAAAAAPAAAATwBjAGMAbAB1AHMAaQBvAG4AUABhAHIAYQBtAAAAAAAJAAAAUwBTAFMAUABhAHIAYQBtAAAAAAALAAAAUwBTAFMAUAByAG8AZgBpAGwAZQAAAAAAGgAAAFUAcwBlAF8AQgBhAHMAZQBjAG8AbABvAHIAXwB0AG8AXwBFAG0AaQBzAHMAaQB2AGUAAAAPAAAARQBtAGkAcwBzAGkAdgBlAF8AUABvAHcAZQByAAAAAAATAAAARQBtAGkAcwBzAGkAdgBlAF8ASQBuAHQAZQBuAHMAaQB0AHkAAAAAABcAAABVAHMAZQBDAG8AdQBuAHQAZQByAEUAeABwAG8AcwB1AHIAZQBFAG0AaQB0AAAAAAAaAAAAQwBvAHUAbgB0AGUAcgBFAHgAcABvAHMAdQByAGUARQBtAGkAdABfAEIAbABlAG4AZAAAAA0AAABVAHMAZQBCAGwAYQBjAGsAQgBvAGQAeQAAAAAAFgAAAEIAbABhAGMAawBCAG8AZAB5AF8AVABlAG0AcABhAHIAYQB0AHUAcgBlAAAADAAAAEEAbABwAGgAYQBBAGQAagB1AHMAdAAAAA4AAABBAGwAcABoAGEAVABlAHMAdABfAFIAZQBmAAAADgAAAFUAcwBlAFQAZQBtAHAARABpAHQAaABlAHIAAAARAAAAVQBzAGUAQQBPAFMAZQBjAG8AbgBkAGEAcgB5AFUAVgAAAAAADQAAAEEATwBfAHQAbwBfAEMAYQB2AGkAdAB5AAAAAAATAAAAQgBhAGMAawBGAGEAYwBlAEYAbABpAHAATgBvAHIAbQBhAGwAAAAAAA0AAABEAGkAdABoAGUAcgBTAGgAYQBkAG8AdwAAAAAACQAAAEMAaABhAG4AZwBlAFUAVgAAAAAADAAAAEgAbwByAGkAegBvAG4ARgBhAGQAZQAAABwAAABVAHMAZQBfAEEAbgB0AGkAVAByAGEAbgBzAGwAdQBjAGUAbgB0AF8ARABpAGYAZgB1AHMAZQAAAAkAAABXAGUAdABCAGwAZQBuAGQAAAAAAAwAAABQAGEAcwBzAFQAaAByAG8AdQBnAGgAAAAJAAAARABpAHMAcwBvAGwAdgBlAAAAAAAKAAAAUwBhAG4AZABCAGwAZQBuAGQAAAAaAAAAUgBhAHkAVAByAGEAYwBlAF8ARQBtAGkAcwBzAGkAdgBlAF8AQgBvAG8AcwB0AGUAcgAAABsAAABBAGwAbABvAHYAZQByAF8ARQBtAGkAcwBzAGkAdgBlAF8ASQBuAHQAZQBuAHMAaQB0AHkAAAABAAAAAAAAAAAAAAAAAAAAgD8CAAAATgAAAE8AAAABAAAAQAAAAEEAAABCAAAAQwAAAAIAAAD/////AAAAAEcAAABNAAAAUAAAAAAAgD8AAIA/AQAAAA4AAABzAG0ANAA2AF8AMAA2ADgAXwAwADAAXwBBAAAAAAAAAAEAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgD8BAQAAAAAAAAEAAAAAAAAAAAAAAAAAgD8AAAAAAACAPwAAgD8DAAAAAAAAAAAA8EEAACBBAACAPwAAAAAAAIA/AACAPwMAAAAAAAAAAADwQQAAIEEAAIA/AQA="
+}

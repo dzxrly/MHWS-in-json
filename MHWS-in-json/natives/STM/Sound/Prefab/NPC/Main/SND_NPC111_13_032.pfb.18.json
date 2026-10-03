@@ -1,0 +1,246 @@
+{
+  "_format": "mhws_pfb_v1",
+  "version": 18,
+  "sourceSha256": "7a0888287cb7d869ae57528b2f4ea600b74488da0a72926d6663e7a4c6311a73",
+  "schemaSha256": "cfe10514c482ee2856e16dddfc543b148f5320479c913d660f905e6ffb0b40ab",
+  "gameObjects": [
+    {
+      "objectTableIndex": 0,
+      "parentObjectTableIndex": -1,
+      "componentCount": 2,
+      "instanceId": 1,
+      "componentInstanceIds": [
+        2,
+        9
+      ],
+      "childObjectTableIndices": []
+    }
+  ],
+  "gameObjectReferences": [],
+  "resources": [],
+  "userdata": [
+    "Sound/UserData/12_Bank/Dialogue/NPC/NPC111_13_032_BankListData.user",
+    "Sound/UserData/12_Bank/Dialogue/NPC/Common/NPC_Mob_All_Life_BankListData.user",
+    "Sound/UserData/12_Bank/Dialogue/NPC/Common/NPC_Mob_All_Talk_BankListData.user",
+    "Sound/UserData/13_Package/Dialogue/Dia_NPC/NPC111_13_032_Dia_PackageListData.user",
+    "Sound/UserData/13_Package/Dialogue/Life_Npc/Npc_Cmn/NPC_Mob_All_Life_SoundPackageListData.user",
+    "Sound/UserData/13_Package/Dialogue/Talk_Npc/Npc_Cmn/NPC_Mob_All_Talk_SoundPackageListData.user"
+  ],
+  "objectTable": [
+    1,
+    2,
+    9
+  ],
+  "instances": [
+    {
+      "id": 0,
+      "class": "",
+      "classHash": "0x00000000",
+      "crc": "0x00000000",
+      "fields": {},
+      "userdataPath": null
+    },
+    {
+      "id": 1,
+      "class": "via.GameObject",
+      "classHash": "0xc902a417",
+      "crc": "0xf24c1ee2",
+      "fields": {
+        "v0": "SND_NPC111_13_032",
+        "v1": "",
+        "v2": 1,
+        "v3": 1,
+        "v4": [
+          0,
+          0,
+          128,
+          191
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 2,
+      "class": "via.Transform",
+      "classHash": "0xdfac3046",
+      "crc": "0x4fededa7",
+      "fields": {
+        "v0": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 0.0
+        },
+        "v1": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        },
+        "v2": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.0
+        },
+        "v3": "",
+        "v4": 0,
+        "v5": 0,
+        "v6": 0,
+        "v7": 0,
+        "v8": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "userdataPath": null
+    },
+    {
+      "id": 3,
+      "class": "soundlib.SoundBankListData",
+      "classHash": "0x41d71261",
+      "crc": "0xc896447e",
+      "fields": {},
+      "userdataPath": "Sound/UserData/12_Bank/Dialogue/NPC/NPC111_13_032_BankListData.user"
+    },
+    {
+      "id": 4,
+      "class": "soundlib.SoundBankListData",
+      "classHash": "0x41d71261",
+      "crc": "0xc896447e",
+      "fields": {},
+      "userdataPath": "Sound/UserData/12_Bank/Dialogue/NPC/Common/NPC_Mob_All_Life_BankListData.user"
+    },
+    {
+      "id": 5,
+      "class": "soundlib.SoundBankListData",
+      "classHash": "0x41d71261",
+      "crc": "0xc896447e",
+      "fields": {},
+      "userdataPath": "Sound/UserData/12_Bank/Dialogue/NPC/Common/NPC_Mob_All_Talk_BankListData.user"
+    },
+    {
+      "id": 6,
+      "class": "soundlib.SoundPackageListData",
+      "classHash": "0x72ceb520",
+      "crc": "0xe47679a0",
+      "fields": {},
+      "userdataPath": "Sound/UserData/13_Package/Dialogue/Dia_NPC/NPC111_13_032_Dia_PackageListData.user"
+    },
+    {
+      "id": 7,
+      "class": "soundlib.SoundPackageListData",
+      "classHash": "0x72ceb520",
+      "crc": "0xe47679a0",
+      "fields": {},
+      "userdataPath": "Sound/UserData/13_Package/Dialogue/Life_Npc/Npc_Cmn/NPC_Mob_All_Life_SoundPackageListData.user"
+    },
+    {
+      "id": 8,
+      "class": "soundlib.SoundPackageListData",
+      "classHash": "0x72ceb520",
+      "crc": "0xe47679a0",
+      "fields": {},
+      "userdataPath": "Sound/UserData/13_Package/Dialogue/Talk_Npc/Npc_Cmn/NPC_Mob_All_Talk_SoundPackageListData.user"
+    },
+    {
+      "id": 9,
+      "class": "soundlib.SoundContainer",
+      "classHash": "0x1f6d61a9",
+      "crc": "0x620b8efd",
+      "fields": {
+        "v0": 1,
+        "_TriggerOnlyDrawSelf": false,
+        "_UserDataList": [
+          {
+            "refInstanceId": 3
+          },
+          {
+            "refInstanceId": 4
+          },
+          {
+            "refInstanceId": 5
+          },
+          {
+            "refInstanceId": 6
+          },
+          {
+            "refInstanceId": 7
+          },
+          {
+            "refInstanceId": 8
+          }
+        ]
+      },
+      "userdataPath": null
+    }
+  ],
+  "diagnostics": {
+    "nativeDataInference": false,
+    "interpretedFields": [
+      {
+        "instanceId": 1,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 1,
+        "field": "v3",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v1",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v2",
+        "schemaType": "Data",
+        "interpretedType": "Vec4"
+      },
+      {
+        "instanceId": 2,
+        "field": "v4",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v5",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v6",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 2,
+        "field": "v7",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      },
+      {
+        "instanceId": 9,
+        "field": "v0",
+        "schemaType": "Data",
+        "interpretedType": "U8"
+      }
+    ]
+  },
+  "rszRawBase64": "UlNaABAAAAADAAAACgAAAAYAAAAAAAAAPAAAAAAAAADQBAAAAAAAAJAAAAAAAAAAAQAAAAIAAAAJAAAAAAAAAAAAAAAXpALJ4h5M8kYwrN+n7e1PYRLXQX5ElshhEtdBfkSWyGES10F+RJbIILXOcqB5duQgtc5yoHl25CC1znKgeXbkqWFtH/2OC2IAAAAAAwAAAGES10HwAAAAAAAAAAQAAABhEtdBeAEAAAAAAAAFAAAAYRLXQRQCAAAAAAAABgAAACC1znKwAgAAAAAAAAcAAAAgtc5yVAMAAAAAAAAIAAAAILXOchIEAAAAAAAAUwBvAHUAbgBkAC8AVQBzAGUAcgBEAGEAdABhAC8AMQAyAF8AQgBhAG4AawAvAEQAaQBhAGwAbwBnAHUAZQAvAE4AUABDAC8ATgBQAEMAMQAxADEAXwAxADMAXwAwADMAMgBfAEIAYQBuAGsATABpAHMAdABEAGEAdABhAC4AdQBzAGUAcgAAAFMAbwB1AG4AZAAvAFUAcwBlAHIARABhAHQAYQAvADEAMgBfAEIAYQBuAGsALwBEAGkAYQBsAG8AZwB1AGUALwBOAFAAQwAvAEMAbwBtAG0AbwBuAC8ATgBQAEMAXwBNAG8AYgBfAEEAbABsAF8ATABpAGYAZQBfAEIAYQBuAGsATABpAHMAdABEAGEAdABhAC4AdQBzAGUAcgAAAFMAbwB1AG4AZAAvAFUAcwBlAHIARABhAHQAYQAvADEAMgBfAEIAYQBuAGsALwBEAGkAYQBsAG8AZwB1AGUALwBOAFAAQwAvAEMAbwBtAG0AbwBuAC8ATgBQAEMAXwBNAG8AYgBfAEEAbABsAF8AVABhAGwAawBfAEIAYQBuAGsATABpAHMAdABEAGEAdABhAC4AdQBzAGUAcgAAAFMAbwB1AG4AZAAvAFUAcwBlAHIARABhAHQAYQAvADEAMwBfAFAAYQBjAGsAYQBnAGUALwBEAGkAYQBsAG8AZwB1AGUALwBEAGkAYQBfAE4AUABDAC8ATgBQAEMAMQAxADEAXwAxADMAXwAwADMAMgBfAEQAaQBhAF8AUABhAGMAawBhAGcAZQBMAGkAcwB0AEQAYQB0AGEALgB1AHMAZQByAAAAUwBvAHUAbgBkAC8AVQBzAGUAcgBEAGEAdABhAC8AMQAzAF8AUABhAGMAawBhAGcAZQAvAEQAaQBhAGwAbwBnAHUAZQAvAEwAaQBmAGUAXwBOAHAAYwAvAE4AcABjAF8AQwBtAG4ALwBOAFAAQwBfAE0AbwBiAF8AQQBsAGwAXwBMAGkAZgBlAF8AUwBvAHUAbgBkAFAAYQBjAGsAYQBnAGUATABpAHMAdABEAGEAdABhAC4AdQBzAGUAcgAAAFMAbwB1AG4AZAAvAFUAcwBlAHIARABhAHQAYQAvADEAMwBfAFAAYQBjAGsAYQBnAGUALwBEAGkAYQBsAG8AZwB1AGUALwBUAGEAbABrAF8ATgBwAGMALwBOAHAAYwBfAEMAbQBuAC8ATgBQAEMAXwBNAG8AYgBfAEEAbABsAF8AVABhAGwAawBfAFMAbwB1AG4AZABQAGEAYwBrAGEAZwBlAEwAaQBzAHQARABhAHQAYQAuAHUAcwBlAHIAAAASAAAAUwBOAEQAXwBOAFAAQwAxADEAMQBfADEAMwBfADAAMwAyAAAAAQAAAAAAAQEAAIC/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgD8AAIA/AACAPwAAgD8AAAAAAQAAAAAAAAAAAAAAAAAAAAEAAAAGAAAAAwAAAAQAAAAFAAAABgAAAAcAAAAIAAAA"
+}
