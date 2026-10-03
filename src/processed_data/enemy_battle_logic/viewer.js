@@ -365,6 +365,14 @@ document.getElementById("fit").onclick = () => {
   if (layout) fit({ x: 0, y: 0, width: layout.width, height: layout.height });
 };
 document.getElementById("entry").onclick = () => focus(diagram.entry);
+const entryPoints = document.getElementById("entry-points");
+for (const entry of diagram.entryPoints.length ? diagram.entryPoints : [{target: diagram.entry, name: "模型当前入口"}]) {
+  const option = document.createElement("option");
+  option.value = entry.target;
+  option.textContent = entry.name || entry.kind;
+  entryPoints.append(option);
+}
+entryPoints.onchange = () => focus(entryPoints.value);
 document.getElementById("zoom-in").onclick = () => zoom(1.3);
 document.getElementById("zoom-out").onclick = () => zoom(1 / 1.3);
 viewport.addEventListener(

@@ -9,6 +9,9 @@ from .predicates import RuleRegistry, scalar
 from .resources import Resources, structure_signature, typed
 from .random_choice import choose_with_uint32, weighted_pool
 from .definitions import DEFAULT_TEMPLATE
+from .model_io import file_digest, load_model
+from .audit import combat_entry_recovered
+from .expressions import evaluate_expression, expression_unknown
 
 
 def build_chain(
@@ -17,7 +20,7 @@ def build_chain(
     registry = RuleRegistry.load(rules_path)
     if template_path is None:
         template_path = DEFAULT_TEMPLATE
-    model = json.loads(Path(template_path).read_text(encoding="utf-8"))
+    model = load_model(template_path)
     if model.get("schemaVersion") != 1 or model["profile"] != registry.data["profile"]:
         raise ValueError("表模板与判断规则的来源版本不匹配")
     metadata_status = "not_supplied"
@@ -25,14 +28,11 @@ def build_chain(
         metadata_path = Path(metadata_path)
         if metadata_path.suffix.lower() != ".json":
             raise ValueError("版本核对只接受元数据 JSON")
-        digest = hashlib.sha256()
-        with metadata_path.open("rb") as stream:
-            for chunk in iter(lambda: stream.read(4 * 1024 * 1024), b""):
-                digest.update(chunk)
-        if digest.hexdigest() != model["profile"]["metadataSha256"]:
+        if file_digest(metadata_path) != model["profile"]["metadataSha256"]:
             raise ValueError("当前元数据版本与固化规则不匹配，需要重新核实")
         metadata_status = "matched"
     resources = resources if resources is not None else Resources(natives)
+    resources.accessed.clear()
     definitions = model.get("resources") or {
         model["resource"]: {"structureSignature": model["structureSignature"]}
     }
@@ -43,16 +43,21 @@ def build_chain(
         if structure_signature(body, factories) != definition["structureSignature"]:
             raise ValueError("行为表结构与固化模板不匹配，必须重新核实原生控制流")
         sources[source] = body, factories
+    prefix = "app.Em" + model["enemyId"][2:9] + "_"
+    if not any(
+        body["_ExportBTableType"].startswith(prefix) for body, _ in sources.values()
+    ):
+        raise ValueError("怪物模型未绑定本怪物的行为资源，不能复制其他怪物的图")
     graph = deepcopy(model)
     table_ids = {table["tableGuid"] for table in graph["tables"]}
     if graph["entry"] not in table_ids or len(table_ids) != len(graph["tables"]):
         raise ValueError("表入口无效或表 GUID 重复")
     unknown_conditions = 0
     for table in graph["tables"]:
-        source = table.get("resource", model["resource"])
-        if source not in sources:
+        source = table.get("resource") or model.get("resource")
+        if source is not None and source not in sources:
             raise ValueError("子表引用未核实的资源")
-        body, factories = sources[source]
+        body, factories = sources[source] if source is not None else (None, None)
         node_ids = {node["id"] for node in table["nodes"]}
         if len(node_ids) != len(table["nodes"]) or table["entry"] not in node_ids:
             raise ValueError("节点重复或局部入口无效")
@@ -66,6 +71,8 @@ def build_chain(
                 raise ValueError("子表未固化，不能伪造调用关系")
             if "argumentIndex" not in node:
                 continue
+            if body is None:
+                raise ValueError("参数节点缺少经过核实的资源绑定")
             index = node["argumentIndex"]
             if type(index) is not int or not 0 <= index < len(body["_CommandArgArray"]):
                 raise ValueError("参数槽位无效")
@@ -124,14 +131,26 @@ def build_chain(
                     node["variableGuid"] = scalar(argument["_TargetVariableIndex"])
                     node["method"] = scalar(argument["_Method"])
                     node["value"] = scalar(argument["_Value"])
+    unknown_conditions = sum(
+        (
+            expression_unknown(node["expression"])
+            if "expression" in node
+            else node["predicate"]["status"] != "verified"
+        )
+        for table in graph["tables"]
+        for node in table["nodes"]
+        if node["kind"] == "condition"
+    )
     graph["rules"] = registry.data
-    graph["sourceHashes"] = dict(sorted(resources.hashes.items()))
+    graph["sourceHashes"] = {
+        source: resources.hashes[source] for source in sorted(resources.accessed)
+    }
     graph["metadataVerification"] = metadata_status
     graph["coverage"] = {
         "localTables": len(graph["tables"]),
         "nodes": sum(len(t["nodes"]) for t in graph["tables"]),
         "unknownConditions": unknown_conditions,
-        "globalCombatEntryRecovered": False,
+        "globalCombatEntryRecovered": combat_entry_recovered(graph),
         "weightedSelections": sum(
             n["kind"] == "weighted_random" for t in graph["tables"] for n in t["nodes"]
         ),
@@ -153,6 +172,7 @@ def trace_until_request(graph, context, *, position=None, max_steps=256):
     caller stack, keeping separate request and resume contexts.
     """
     registry = RuleRegistry(graph["rules"])
+    context = dict(context)
     tables = {t["tableGuid"]: t for t in graph["tables"]}
     if position is None:
         table_id = graph["entry"]
@@ -171,7 +191,11 @@ def trace_until_request(graph, context, *, position=None, max_steps=256):
         node = nodes[state]
         path.append({"table": table_id, "node": state, "kind": node["kind"]})
         if node["kind"] == "condition":
-            outcome = registry.evaluate(node["predicate"], context)
+            outcome = (
+                evaluate_expression(node["expression"], registry, context)
+                if "expression" in node
+                else registry.evaluate(node["predicate"], context)
+            )
             path[-1]["truth"] = outcome.truth
             if outcome.truth is None:
                 return {"status": "unknown", "reason": outcome.reason, "path": path}
@@ -208,13 +232,21 @@ def trace_until_request(graph, context, *, position=None, max_steps=256):
             )
             path[-1]["selection"] = state
         elif node["kind"] == "call":
-            stack.append({"table": table_id, "node": node["resume"]})
+            stack.append(
+                {
+                    "table": table_id,
+                    "node": node["resume"],
+                    **({"resultKey": node["resultKey"]} if "resultKey" in node else {}),
+                }
+            )
             table_id = node["targetTable"]
             state = tables[table_id]["entry"]
         elif node["kind"] == "return":
             if not stack:
                 return {"status": "completed", "path": path}
             position = stack.pop()
+            if "resultKey" in position:
+                context[position["resultKey"]] = node["value"]
             table_id, state = position["table"], position["node"]
         elif node["kind"] == "action":
             return {

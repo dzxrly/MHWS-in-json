@@ -1,5 +1,7 @@
 """Curate verified native semantics into data; never used by the build command."""
 
+from ..evidence import method_rows
+
 import json
 
 from ..metadata import Il2cppMetadata
@@ -11,7 +13,7 @@ def evidence(row):
 
 def main(work, metadata, output, profile):
     document = json.loads((work / "decompiled.json").read_text(encoding="utf-8"))
-    rows = document if isinstance(document, list) else document["methods"]
+    rows = method_rows(document)
     rules = []
     specs = [
         (

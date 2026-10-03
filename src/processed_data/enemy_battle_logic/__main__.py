@@ -11,7 +11,7 @@ from src.shared.text.catalog import TextSource
 
 def main():
     parser = argparse.ArgumentParser(
-        description="由固化模型和资源 JSON 构建已核实的局部行动逻辑，无 EXE 输入"
+        description="由语义模型构建怪物行动大图；--template 显式预览不参加发布"
     )
     root = Path(__file__).resolve().parents[3]
     parser.add_argument("--natives", type=Path, default=root / "MHWS-in-json/natives")
@@ -38,7 +38,9 @@ def main():
         rules_path=args.rules,
         text_db=TextSource.from_natives(args.natives).build(13),
     )
-    index = json.loads((args.output / INDEX_NAME).read_text(encoding="utf-8"))
+    from .validation import validate_bundle
+
+    index = validate_bundle(args.output, require_release=args.template is None)
     print(
         json.dumps(
             {

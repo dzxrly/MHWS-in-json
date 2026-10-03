@@ -18,7 +18,10 @@
 | `metadata.py` | 用 mmap 索引大体积 REFramework JSON，按需读取类型、继承字段和枚举 |
 | `native.py` | 只读 PE64，依据异常目录及方法地址确定函数边界，保留同地址的方法别名并校验原生字节 |
 | `manifest.py` | 按怪物与方法类别从当前元数据重新生成提取清单 |
-| `decompile.py` | 通过官方 PyGhidra 接口导入 EXE、限定反汇编范围、提取伪 C 和失败状态 |
+| `evidence.py` | 去重原生字节身份、地址别名和类型字段，保留每个类型的方法及参数上下文 |
+| `batch.py` | 将 34 个怪物及共同调度器的方法定位保存为 `.agents` 研究索引 |
+| `decompile.py`、`control_flow.py` | 通过官方 PyGhidra 接口提取伪 C、基本块、P-code、调用点和失败状态 |
+| `freeze.py` | 全量核对经审核语义模型、方法与动作请求覆盖；全部通过后才更新固化输入 |
 | `weights.py` | 解析已核实版本的静态初始化代码；97 个数组、320 对值只是常量覆盖，不代表 97 个选招点已恢复 |
 | `recipes/rules.py` | 固化通用条件及少数已核实的特殊条件 |
 | `recipes/em0001_local.py` | 在内存中构建雌火龙基础 4 子表，供上游配方合并，不输出正式基线文件 |
@@ -60,7 +63,7 @@ python -m sdk.enemy_logic_exporter --work-dir $work decompile --exe $exe --manif
 python -m sdk.enemy_logic_exporter verify --exe $exe --evidence "$work/continued-python.json"
 ```
 
-每个方法证据保存类型、完整方法名、VA 起止、原生字节 SHA-256、参数与字段、地址别名、反编译状态和伪 C。新输出还保存来源 profile。兼容本次研究的旧行数组，但固化前仍须核对来源 profile 与每段原生字节。
+每个方法证据保存类型、完整方法名、VA 起止、原生字节 SHA-256、参数与字段、地址别名、反编译状态和伪 C。schemaVersion=2 的研究索引将共同字节身份、地址别名和字段各保存一次，通过引用复用，但不能合并不同类型、参数布局或调用上下文。兼容旧行数组。基本块与 P-code 的状态为 `unreviewed_native_control_flow`，不能直接等同于动作图；固化前仍须逐个核实语义、来源 profile 与原生字节。
 
 3. **人工核实条件与状态机。** 阅读方法分支、状态编号和调用点，必要时对照反汇编。追踪 `_CommandArgArray` 字段偏移到资源参数索引、命令工厂类型、子表 GUID、动作 ID、参数变体、变量与计时器 GUID。参数数组顺序不能当作执行顺序。`table_<GUID>` 的编译状态与保存位置决定分支和继续执行的位置；动作请求与子表调用必须保存恢复位置。
 
@@ -75,9 +78,13 @@ python -m src.processed_data.enemy_battle_logic --template "$work/frozen/em0001.
 
 现有研究缓存可通过 `--work-dir .agents/enemy-action-tree` 复用。确认生成结果、版本身份和差异后，才将两个固化 JSON 更新到 `src/processed_data/enemy_battle_logic/models`。预览结果位于 `$work/preview/enemy_battle_logic`。不要将伪 C、EXE 或 Ghidra 缓存作为正式构建依赖。
 
-正式流水线由 `main.py` 调用 `export_processed`，再使用共享行动图导出器生成 `enemy_battle_logic/index.json` 和每个怪物的 `<enemyId>.json`、`<enemyId>.html`，经过校验后纳入 `PROCESSED_DATA`。`models` 中的 `em*.v*.json` 自动参与导出，同一怪物只能有一个正式模型；重复版本会阻止构建。未知节点可保留，连接缺失、来源版本冲突或 JSON/HTML 图数据不一致会阻止发布。CI 无需 EXE 或 Ghidra；未提供 IL2CPP 时标明 `not_supplied`，资源结构检查不能证明原生代码没有变化。
+正式流水线只交付 `enemy_battle_logic/index.html` 和各怪物的 `<enemyId>.html`，语义模型与图数据内嵌在离线页面中。Pages 和压缩包均使用这同一份输出，不另外发布研究索引、伪 C 或重复 JSON。同一怪物只能有一个正式模型；重复版本、来源冲突、断开的连接或图数据不一致会阻止发布。CI 无需 EXE 或 Ghidra；未提供 IL2CPP 时标明 `not_supplied`，资源结构检查不能证明原生代码没有变化。
 
-正式导出还覆盖 EnemyData 中基础编号小于 1000 的全部完整 ID，目前共 35 个，包含 1 个训练对象。无固化模型的对象导出 `enemy_battle_resource_catalog`，标记 `logicStatus=not_recovered`，不生成虚构行动树。清单将资源槽位、动作定义、通用判断绑定与原生控制流分开；已绑定通用判断不等于证明该参数在某个战斗入口会执行。默认分支的 Action 将同一份已校验 JSON/HTML 复制到 Pages，不在 CI 读取 EXE 或运行 SDK。后续维护者须逐个补充原生证据和配方，不能将资源清单的状态直接改成已恢复。
+正式范围是 EnemyData 中基础编号小于 1000 的完整 ID，排除训练靶 `EM0165_00_0`，当前为 34 个。全部怪物统一使用语义行动图；不得用资源清单、原生方法索引或整张未知表替代。默认构建必须同时具备 34 个模型、经过核实的 Combat 入口，以及 SDK 方法/动作请求位置与模型的覆盖核查。发现记录与摘要、版本必须一致；未进入模型的方法及未找到引用的资源要逐项说明证据和原因。这些静态验收只验证审核材料的一致性，不代替人工语义审核或游戏内验证。
+
+当前只有雌火龙局部模型，默认正式构建会明确拒绝缺少的 33 个模型。用显式 `--template` 可在 `.agents` 生成研究预览，预览不能通过正式发布检查。`freeze --all（从工作目录 reviewed 读取）` 只接收完整、经审核的语义输入，不会自动将方法清单转换成完整战斗逻辑。实际行动图从 Combat 进入、更新、BTable 切换、中断和恢复等事件入口开始；同一张图应保留条件、循环、调用、恢复位置及未知边界。
+
+原生研究索引只允许保存到 `.agents`。Git 中的正式模型只保留语义、资源绑定及最小原生证据，可以用 `evidenceCatalog` 复用共同证据，并通过带摘要的 `fragments` 拆分语义表。单个模型文件超过 10 MiB 提示审核，超过 25 MiB 拒绝读入；必须去重或分片，不能为缩小文件删除逻辑。旧的 34 个大型原生索引保存在 `.agents/enemy-logic-exporter/legacy-native-models`，不参与正式构建。
 
 ## 游戏更新后的维护顺序
 

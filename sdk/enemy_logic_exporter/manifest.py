@@ -5,9 +5,65 @@ import re
 
 from .metadata import Il2cppMetadata
 from .native import PE, address_catalog, digest
+from .evidence import pack_methods
+
+SCHEDULER_TYPES = {
+    "app.cEmAIState",
+    "app.cEmAIStateCombat",
+    "app.cEmAIStateCaution",
+    "app.cEmAIStateAreaMove",
+    "app.cEmAIStateDie",
+    "app.cEmAIInterruptDamage",
+    "app.cEmAIUpdateBTable",
+    "app.cMasterEnemyControllerEntity",
+    "app.cEnemyBTableManager",
+    "app.cEnemyControllerEntityBase",
+}
+
+
+def relevant_type(name, enemy):
+    return (
+        name in SCHEDULER_TYPES
+        or name == "app.cEnemyContext"
+        or name.startswith(
+            (
+                f"app.{enemy}_BTable",
+                "app.btable.EmCommonCommand.",
+                f"app.btable.{enemy}BTableCommand.",
+                "ace.btable.",
+            )
+        )
+        or any(
+            name == prefix or name.startswith(prefix + ".")
+            for prefix in (f"app.c{enemy}Extend", f"app.c{enemy.split('_')[0]}Extend")
+        )
+    )
+
+
+def discovery_types(metadata, enemy):
+    """Keep concrete contexts and walk declared parents instead of naming only Export."""
+    names = metadata._objects or metadata._offsets
+    selected_types = {
+        name for name in names if relevant_type(name, enemy) and "[]" not in name
+    }
+    pending = list(selected_types)
+    while pending:
+        name = pending.pop()
+        parent = (metadata.get(name) or {}).get("parent")
+        if (
+            parent in names
+            and parent not in selected_types
+            and parent != "System.Object"
+        ):
+            selected_types.add(parent)
+            pending.append(parent)
+    return sorted(selected_types)
 
 
 def selected(name, method, enemy, selection):
+    if selection == "all":
+        # Include parent, scheduler and special-command methods, not only Export.
+        return relevant_type(name, enemy) and "[]" not in name
     enemy_type = name.startswith(f"app.{enemy}_BTable_") and "<" not in name
     base_type = (
         name.startswith("app.btable.Em") or name.startswith("ace.btable.c")
@@ -65,15 +121,10 @@ def build_manifest(exe, metadata_path, enemy, selection, version, helpers=()):
     with Il2cppMetadata(metadata_path) as metadata, PE(exe) as pe:
         aliases = address_catalog(metadata)
         pe.method_starts = sorted(aliases)
-        for name in metadata._objects or metadata._offsets:
-            if not (
-                name.startswith((f"app.{enemy}_BTable_", "app.btable.Em", "ace.btable"))
-                or name == "app.cEnemyContext"
-            ):
-                continue
+        for name in discovery_types(metadata, enemy):
             info = metadata.get(name)
             for method, details in info.get("methods", {}).items():
-                if not selected(name, method, enemy, selection):
+                if selection != "all" and not selected(name, method, enemy, selection):
                     continue
                 address = int(details.get("function", "0"), 16)
                 if not address:
@@ -115,15 +166,9 @@ def build_manifest(exe, metadata_path, enemy, selection, version, helpers=()):
             "exeSha256": digest(exe),
             "metadataSha256": metadata.sha256,
         }
-    return {
-        "schemaVersion": 1,
-        "profile": profile,
-        "enemy": enemy,
-        "selection": selection,
-        "methods": rows,
-        "fields": fields,
-        "skipped": skipped,
-    }
+    return pack_methods(
+        rows, profile, enemy=enemy, selection=selection, fields=fields, skipped=skipped
+    )
 
 
 def method_row(pe, metadata, aliases, name, method, address, end):

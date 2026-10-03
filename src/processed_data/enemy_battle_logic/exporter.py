@@ -1,17 +1,23 @@
-"""Release export from frozen models and source JSON, with no native inputs."""
+"""Render semantic graphs; a preview cannot silently satisfy the release gate."""
 
-import json
 from pathlib import Path
 
 from .builder import build_chain
-from .definitions import INDEX_NAME, read_models
-from .validation import validate_catalog, validate_graph, validate_html
-from .viewer import render_html
-from .catalog import CATALOG_TYPE, bundle_names, enemies, resource_catalog
-from .predicates import RuleRegistry
+from .definitions import (
+    INDEX_NAME,
+    EXPECTED_ENEMY_IDS,
+    read_models,
+    output_names,
+    require_model_set,
+)
 from .resources import Resources
+from .validation import validate_graph, validate_html
+from .audit import validate_release_graph
+from .viewer import render_html
+from .index_viewer import render_index
+from .model_io import file_digest
 
-OUTPUT_NAMES = bundle_names(model_ids=[spec.enemy_id for spec in read_models()])
+OUTPUT_NAMES = output_names()
 
 
 def export_battle_logic(
@@ -21,88 +27,80 @@ def export_battle_logic(
     template_path=None,
     rules_path=None,
     metadata_path=None,
-    text_db=None,
+    text_db=None
 ):
     output_dir = Path(output_dir)
+    preview = template_path is not None
     specs = read_models(template_path=template_path)
-    specs = {spec.enemy_id: spec for spec in specs}
+    if not preview:
+        require_model_set(specs)
+        from config import SUPPORT_FILES
+        from src.shared.source.user3 import load_user3_table
+        from .definitions import TRAINING_ENEMY_ID
+        import re
+
+        live_ids = {
+            row["enemyId"]
+            for row in load_user3_table(Path(natives) / SUPPORT_FILES["enemy"])
+            if re.fullmatch(r"EM\d{4}_\d{2}_\d+", row.get("enemyId", ""))
+            and int(row["enemyId"][2:6]) < 1000
+            and row["enemyId"] != TRAINING_ENEMY_ID
+        }
+        if live_ids != set(EXPECTED_ENEMY_IDS):
+            raise ValueError("资源侧怪物范围与正式名单不匹配")
     resources = Resources(natives)
-    registry = RuleRegistry.load(rules_path)
-    results, records = [], []
-    targets = enemies(natives, text_db)
-    if set(specs) - {enemy["enemyId"] for enemy in targets}:
-        raise ValueError("固化模型包含 EnemyData 中不存在的大型怪物标识")
-    for enemy in targets:
-        enemy_id = enemy["enemyId"]
-        if template_path is not None and enemy_id not in specs:
-            continue
-        catalog = resource_catalog(enemy, resources, registry)
-        validate_catalog(catalog)
-        if enemy_id in specs:
-            spec = specs[enemy_id]
-            graph = build_chain(
-                natives,
-                spec.path,
-                rules_path=rules_path,
-                metadata_path=metadata_path,
-                resources=resources,
-            )
-            graph.update(
-                enemyName=enemy["enemyName"],
-                objectKind=enemy["objectKind"],
-                documentType="enemy_battle_logic",
-                logicStatus="partial",
-                resourceCatalog=catalog,
-            )
-            validate_graph(graph)
-            html = render_html(graph)
-            validate_html(html, graph)
-            json_name, html_name = spec.output_names
-            results.append((html_name, html))
-        else:
-            graph = dict(
-                schemaVersion=1,
-                documentType=CATALOG_TYPE,
-                enemyId=enemy_id,
-                enemyName=enemy["enemyName"],
-                objectKind=enemy["objectKind"],
-                logicStatus="not_recovered",
-                scope="原生控制流尚未恢复，不能由此推断行动逻辑树。",
-                rulesProfile=registry.data["profile"],
-                resourceCatalog=catalog,
-            )
-            json_name, html_name = f"enemy_battle_logic/{enemy_id}.json", None
-        results.append(
-            (json_name, json.dumps(graph, ensure_ascii=False, indent=2) + "\n")
+    records, results = [], []
+    metadata_digest = file_digest(metadata_path) if metadata_path is not None else None
+    names = {}
+    if text_db:
+        from config import SUPPORT_FILES
+        from src.shared.source.user3 import load_user3_table
+
+        names = {
+            row["enemyId"]: row.get("EnemyName", "")
+            for row in load_user3_table(Path(natives) / SUPPORT_FILES["enemy"])
+        }
+    for spec in specs:
+        graph = build_chain(
+            natives, spec.path, rules_path=rules_path, resources=resources
         )
+        if metadata_digest is not None:
+            if metadata_digest != graph["profile"]["metadataSha256"]:
+                raise ValueError("当前元数据版本与固化规则不匹配")
+            graph["metadataVerification"] = "matched"
+        graph.update(
+            documentType="enemy_battle_logic", logicStatus="recovered_with_boundaries"
+        )
+        graph["enemyName"] = (
+            (text_db.get(names.get(spec.enemy_id, "")) if text_db else None)
+            or graph.get("enemyName")
+            or ("雌火龙" if spec.enemy_id == "EM0001_00_0" else spec.enemy_id)
+        )
+        validate_graph(graph)
+        if not preview:
+            validate_release_graph(graph)
+        html = render_html(graph)
+        validate_html(html, graph)
+        name = spec.output_names[0]
+        results.append((name, html))
         records.append(
             dict(
-                enemyId=enemy_id,
-                json=Path(json_name).name,
-                html=Path(html_name).name if html_name else None,
-                enemyName=enemy["enemyName"],
-                objectKind=enemy["objectKind"],
+                enemyId=spec.enemy_id,
+                enemyName=graph["enemyName"],
+                html=Path(name).name,
                 logicStatus=graph["logicStatus"],
-                profile=graph.get("profile", graph.get("rulesProfile")),
-                coverage=graph.get("coverage"),
-                metadataVerification=graph.get("metadataVerification", "not_supplied"),
-                resourceSummary={
-                    key: catalog[key]
-                    for key in (
-                        "tableCount",
-                        "argumentCount",
-                        "actionBindings",
-                        "verifiedPredicates",
-                    )
-                },
+                profile=graph["profile"],
+                coverage=graph["coverage"],
             )
         )
-    index = dict(
-        schemaVersion=1,
-        scope="EnemyData 中基础编号小于 1000 的全部大型怪物及训练对象；明确区分局部控制流模型与尚未恢复控制流的资源清单。",
-        monsters=records,
-    )
-    results.append((INDEX_NAME, json.dumps(index, ensure_ascii=False, indent=2) + "\n"))
+    results.append((INDEX_NAME, render_index(records, release_ready=not preview)))
+    folder = output_dir / Path(INDEX_NAME).parent
+    if folder.exists() and any(
+        path.name not in {Path(name).name for name, _ in results}
+        for path in folder.iterdir()
+        if path.is_file()
+    ):
+        raise ValueError("行动图输出目录存在旧版或范围不一致的文件，请使用新的预览目录")
     for relative, content in results:
         path = output_dir / relative
         path.parent.mkdir(parents=True, exist_ok=True)

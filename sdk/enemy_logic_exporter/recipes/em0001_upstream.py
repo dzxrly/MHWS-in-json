@@ -1,5 +1,7 @@
 """Freeze freshly reviewed Combat selection plus its verified local prefixes."""
 
+from ..evidence import method_rows
+
 import json
 from copy import deepcopy
 import re
@@ -25,7 +27,7 @@ def main(work, natives, data, base_model):
 
     def read_rows(name):
         document = json.loads((work / name).read_text(encoding="utf-8"))
-        return document if isinstance(document, list) else document["methods"]
+        return method_rows(document)
 
     old = read_rows("decompiled.json")
     current = read_rows("continued-python.json")

@@ -1,5 +1,7 @@
 """Freeze four freshly verified local state machines, not historical EM166 graphs."""
 
+from ..evidence import method_rows
+
 from pathlib import Path
 import json
 import re
@@ -60,7 +62,7 @@ def call(state, target, resume):
 
 def build(work, natives, profile):
     document = json.loads((work / "decompiled.json").read_text(encoding="utf-8"))
-    rows = document if isinstance(document, list) else document["methods"]
+    rows = method_rows(document)
     definitions = [
         (
             "01313943_0939_4717_b2a4_28a6086cc2c5",

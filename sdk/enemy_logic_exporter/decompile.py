@@ -4,6 +4,8 @@ import json
 from pathlib import Path
 
 from .native import digest, verify_rows
+from .evidence import method_rows, pack_methods
+from .control_flow import high_function_evidence
 
 
 def extract(
@@ -20,7 +22,8 @@ def extract(
     profile = manifest["profile"]
     if digest(exe) != profile["exeSha256"]:
         raise ValueError("EXE does not match manifest")
-    rows = manifest["methods"][:limit] if limit is not None else manifest["methods"]
+    methods = method_rows(manifest)
+    rows = methods[:limit] if limit is not None else methods
     verify_rows(exe, rows)
     import pyghidra
     from jpype import JLong
@@ -88,6 +91,10 @@ def extract(
                         )
                         if result.getDecompiledFunction() is not None:
                             row["code"] = str(result.getDecompiledFunction().getC())
+                        if result.getHighFunction() is not None:
+                            row["controlFlow"] = high_function_evidence(
+                                result.getHighFunction()
+                            )
                     result_rows.append(row)
                     print(
                         "EXTRACTED",
@@ -102,7 +109,9 @@ def extract(
     Path(output).parent.mkdir(parents=True, exist_ok=True)
     Path(output).write_text(
         json.dumps(
-            {"profile": profile, "methods": result_rows}, ensure_ascii=False, indent=2
+            pack_methods(result_rows, profile),
+            ensure_ascii=False,
+            separators=(",", ":"),
         )
         + "\n",
         encoding="utf-8",

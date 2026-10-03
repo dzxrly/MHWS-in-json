@@ -4,7 +4,9 @@ from .viewer_labels import label
 
 
 def table_name(table, graph):
-    resource = table.get("resource", graph["resource"])
+    if table.get("name"):
+        return table["name"]
+    resource = table.get("resource") or graph["resource"]
     kind = resource.rsplit("_BTable_", 1)[-1].split(".", 1)[0]
     return f"{kind} · 子表 {table['tableIndex']}"
 
@@ -114,4 +116,8 @@ def combined_diagram(graph):
         },
         "details": details,
         "entry": node_id(graph["entry"], tables[graph["entry"]]["entry"]),
+        "entryPoints": [
+            dict(entry, target=node_id(entry["table"], entry["node"]))
+            for entry in graph.get("entryPoints", [])
+        ],
     }

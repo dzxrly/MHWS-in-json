@@ -54,8 +54,8 @@ def validate_outputs(
             elif path.name == SKILL_EFFECTS_OUTPUT_NAME:
                 validate_skill_effects(payload)
                 calculator_contracts.add(payload["sourceContract"]["id"])
-            if path.as_posix().endswith("/" + BATTLE_INDEX_NAME):
-                validate_battle_bundle(path.parent.parent)
+        if path.as_posix().endswith("/" + BATTLE_INDEX_NAME):
+            validate_battle_bundle(path.parent.parent)
         records.append(
             {
                 "path": relative,

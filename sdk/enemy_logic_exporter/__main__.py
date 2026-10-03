@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 
 from .native import digest, verify_rows
+from .evidence import method_rows
 
 ROOT = Path(__file__).resolve().parents[2]
 SUPPORTED_PROFILE = {
@@ -17,7 +18,7 @@ SUPPORTED_PROFILE = {
 
 def read_rows(path):
     document = json.loads(Path(path).read_text(encoding="utf-8"))
-    return document if isinstance(document, list) else document["methods"]
+    return method_rows(document)
 
 
 def write_json(path, value):
@@ -75,8 +76,18 @@ def parser():
     verify = commands.add_parser("verify", help="核对证据摘要与当前 EXE")
     verify.add_argument("--exe", type=Path, required=True)
     verify.add_argument("--evidence", type=Path, required=True)
+    index = commands.add_parser(
+        "index", help="去重的全怪物原生研究索引，只输出到 .agents"
+    )
+    index.add_argument("--exe", type=Path, required=True)
+    index.add_argument(
+        "--metadata", type=Path, default=ROOT / "src/data/il2cpp_dump.json"
+    )
+    index.add_argument("--version", required=True)
+    index.add_argument("--output", type=Path)
     freeze = commands.add_parser(
-        "freeze", help="执行已人工核实的 1.42.0.2 固化配方；默认输出到 .agents"
+        "freeze",
+        help="执行已人工核实的固化配方；全怪物必须提供语义模型，不能生成占位索引",
     )
     freeze.add_argument("--exe", type=Path, required=True)
     freeze.add_argument(
@@ -84,6 +95,11 @@ def parser():
     )
     freeze.add_argument("--natives", type=Path, default=ROOT / "MHWS-in-json/natives")
     freeze.add_argument("--output", type=Path)
+    freeze.add_argument(
+        "--all",
+        action="store_true",
+        help="核查工作目录 reviewed 中全部 34 个怪物的语义模型后固化",
+    )
     return result
 
 
@@ -138,9 +154,38 @@ def main():
         rows = read_rows(args.evidence)
         verify_rows(args.exe, rows, require_completed=True)
         print("VERIFIED", len(rows), "native method bodies")
+    elif args.command == "index":
+        from .batch import export_native_index
+
+        result = export_native_index(
+            args.exe,
+            args.metadata,
+            args.output or work / "native-index.v2.json",
+            args.version,
+        )
+        print(
+            "INDEXED",
+            len(result["methods"]),
+            "bindings",
+            len(result["nativeCode"]),
+            "unique code ranges",
+        )
     elif args.command == "freeze":
         from .recipes import rules, em0001_local, em0001_upstream
         from .weights import recover
+
+        if args.all:
+            from .freeze import freeze_reviewed_models
+
+            freeze_reviewed_models(
+                work / "reviewed",
+                args.output or ROOT / "src/processed_data/enemy_battle_logic/models",
+                args.exe,
+                args.metadata,
+                args.natives,
+                SUPPORTED_PROFILE,
+            )
+            return
 
         verify_profile(args.exe, args.metadata, SUPPORTED_PROFILE)
         for name in ("decompiled.json", "continued-python.json"):

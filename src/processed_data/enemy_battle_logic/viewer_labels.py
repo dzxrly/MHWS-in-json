@@ -7,6 +7,10 @@ from .random_choice import weighted_pool
 def label(node):
     kind = node["kind"]
     if kind == "condition":
+        if "expression" in node:
+            return node.get("summary", "条件表达式"), node.get(
+                "detail", "具体输入和判断结构见节点详情"
+            )
         predicate = node["predicate"]
         values = predicate.get("values", {})
         rule = predicate.get("kind")
@@ -62,6 +66,10 @@ def label(node):
     if kind == "call":
         return "调用子表", node["targetTable"] + "；返回后恢复节点 " + node["resume"]
     if kind == "mutation":
+        if node["effect"] not in ("set_float_value", "set_timer_state"):
+            return node.get("summary", "更新战斗状态"), node.get(
+                "reason", node["effect"]
+            )
         if node["effect"] == "set_float_value":
             return (
                 "修改行为变量：" + str(node["method"]),
