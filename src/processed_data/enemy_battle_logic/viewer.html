@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="icon" href="data:," />
+    <title>__TITLE__</title>
+    <style>
+      __CSS__
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <small>MONSTER BEHAVIOR MAP</small>
+        <h1>__TITLE__</h1>
+      </div>
+      <div class="counts">__COUNTS__</div>
+    </header>
+    <div class="scope">__SCOPE__</div>
+    <main>
+      <section class="map-panel">
+        <div class="toolbar">
+          <button id="fit">全图</button><button id="entry">定位入口</button
+          ><button id="zoom-in" aria-label="放大">＋</button
+          ><button id="zoom-out" aria-label="缩小">－</button
+          ><output id="zoom">100%</output
+          ><label
+            >定位子表
+            <select id="table"></select></label
+          ><label
+            >布局
+            <select id="direction">
+              <option value="DOWN">从上到下</option>
+              <option value="RIGHT">从左到右</option>
+            </select></label
+          ><button id="download">导出 SVG</button>
+        </div>
+        <div
+          id="viewport"
+          tabindex="0"
+          aria-label="怪物行动逻辑大图，可拖动和缩放"
+        >
+          <svg
+            id="map"
+            xmlns="http://www.w3.org/2000/svg"
+            role="img"
+            aria-label="全部已恢复子表的行动逻辑图"
+          >
+            <defs>
+              <marker
+                id="arrow"
+                viewBox="0 0 10 10"
+                refX="9"
+                refY="5"
+                markerWidth="7"
+                markerHeight="7"
+                orient="auto"
+              >
+                <path d="M0,0 L10,5 L0,10 z" fill="context-stroke" />
+              </marker>
+            </defs>
+            <g id="scene"></g>
+          </svg>
+          <div id="status" role="status">正在自动排列全部子表…</div>
+          <div class="gesture">拖动平移 · 滚轮缩放 · 点击节点查看参数</div>
+          <svg
+            id="minimap"
+            aria-label="全图缩略图"
+            xmlns="http://www.w3.org/2000/svg"
+          ></svg>
+        </div>
+        <div class="legend">
+          <span class="yes">● 条件成立</span><span class="no">● 条件不成立</span
+          ><span class="random">● 权重选择</span
+          ><span class="invoke">● 调用</span
+          ><span class="resume">┄ 保存的恢复位置</span
+          ><span class="unknown">● 未核实</span>
+        </div>
+      </section>
+      <aside>
+        <div class="aside-head">
+          <small id="node-table">节点详情</small>
+          <h2 id="node-title">选择一个节点</h2>
+        </div>
+        <p id="node-summary">
+          全图保留共享子表。虚线表示恢复位置，不能当作绕过子表或动作的直接执行路径。
+        </p>
+        <button id="call" hidden>定位被调用子表</button>
+        <details>
+          <summary>原始参数与证据</summary>
+          <pre id="detail"></pre>
+        </details>
+        <div class="limits">
+          <h3>阅读说明</h3>
+          <p>
+            当前显示全部已恢复的逻辑，未恢复部分保留未知节点。全局战斗入口仍未核实。
+          </p>
+          <p>
+            蓝色跨表连线从子表边框引出，标签标明调用节点。虚线只说明保存的恢复位置，不是绕过子表或动作的执行路径。
+          </p>
+          <p>
+            权重属于当前分支的候选选择，不是整场战斗的招式概率。距离使用命令单位，目标不保证始终是玩家。
+          </p>
+          <p>
+            共享子表结束后返回本次调用保存的位置。动作请求之后的执行与中断仍由游戏运行时负责。
+          </p>
+        </div>
+      </aside>
+    </main>
+    <footer>
+      离线布局：elkjs 0.11.1（EPL-2.0） · 程序库已嵌入本文件，无需联网 ·
+      __LICENSE__
+    </footer>
+    <script id="data" type="application/json">
+      __DATA__
+    </script>
+    <script>
+      __ELK__;
+    </script>
+    <script>
+      __JS__;
+    </script>
+  </body>
+</html>

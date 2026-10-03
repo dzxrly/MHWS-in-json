@@ -38,7 +38,7 @@ src/
   shared/          # Source cache, text references, RCOL parsing, and Excel utilities
   pipeline/        # Export coordination, packaging, validation, and publication
 tests/
-  database/  processed_data/  shared/  pipeline/  release/
+  database/  processed_data/  shared/  pipeline/  release/  sdk/
 ```
 
 Common source tables are read and normalized once per export. Database preparation keeps explicit message GUID references, including compound skill and material descriptions; localization fills those references for each language. Structural GUIDs remain identifiers. Text policies preserve the separate database and quest fallback rules. Action-value and mission workbooks reuse registered cell styles; the flat full-text workbook is streamed to Excel.
@@ -65,7 +65,6 @@ WeaponActionValues.xlsx
 ```text
 Bowgun_Custom.xlsx
 EnemyActionNames.xlsx
-EnemyActionLogic.html
 HeavyBowgun.xlsx
 LightBowgun.xlsx
 amulet_pool.json
@@ -73,13 +72,10 @@ damage_calculator.zh-Hans.json
 graphic_preset.xlsx
 skill_effects.zh-Hans.json
 skill_pool.json
+enemy_battle_logic/index.json
+enemy_battle_logic/EM0001_00_0.json
+enemy_battle_logic/EM0001_00_0.html
 ```
-
-`EnemyActionLogic.html` is one offline file with enemy and phase selectors. Each phase has a connected player-facing flowchart with concrete action names/types. Recovered state and distance branches are preserved; move parameter versions, request sites, execution states, and continuation contexts stay separate. Clicking a node traces its upstream conditions and normal follow-ups, with source IDs/addresses in collapsed details. Full EnemyData IDs below EM1000 are retained, with EM0165 marked as a training object. Missing phases and selection conditions remain unresolved. Resource argument order is never treated as a move sequence, and this version does not automatically recover complete native control flow or prove in-game behavior.
-
-Export it with `python -m src.processed_data.enemy_action_logic.exporter --output output/processed_data/EnemyActionLogic.html`. Repeat `--enemy EM0166_00_0` to restrict full IDs. `--evidence <file.json>` imports source-hash-bound native graphs; a previous exported HTML containing native evidence can also be reused. Full exports accept the same optional input through `MHWS_ENEMY_LOGIC_EVIDENCE`. No PDF or separate feature ZIP is generated. See the [Simplified Chinese README](docs/README.zh-Hans.md#怪物行动逻辑流程图) for the evidence contract and its limits.
-
-Active phase lists are detected generically. A small EM-specific compatibility registry also checks the exact phase commands for EM0078 (3 battle phases), EM0162 (4 quest battle phases), EM0164 and EM0166 (4 active phases each). EM0046 keeps regular combat plus its 3 swim-combat subphases. Reversible modes, anger, music phases, and action-internal stages are not automatically promoted to whole-battle phases. Unknown phase applicability of resource-only moves remains explicit; splitting diagrams does not recover their native selection logic.
 
 `damage_calculator.zh-Hans.json` retains monster part and scar GUIDs, normal and alternate meat tables, source vitality values, and player RCOL hit profiles with their exact request-set identities. The four hit rates are `_PartsBreakRate` and the tear/raw/old scar rates. The seven sharpness levels export separate physical and elemental rates from the enemy common table; hit profiles also retain the source sharpness and critical flags. Missing alternate meat references stay explicit as `null`. Items remain in this file; damage skill effects are exported only in `skill_effects.zh-Hans.json`. The full release validates both JSON files before publication. For standalone snapshots, run `python -m src.processed_data.damage_calculator.exporter --output .agents/damage_calculator.zh-Hans.json` and `python -m src.processed_data.skill_effects.exporter --output .agents/skill_effects.zh-Hans.json` from the project root.
 
@@ -88,6 +84,16 @@ The skill catalog retains every source skill identity, localized descriptions, l
 Damage schema version 10 retains PlayerStatus attack limits, exports shared Normal Lv1-3 ammunition levels, and includes distinct audited physical curves for elemental and pierce ammunition. Other curves retain their source reference without inferred points. Skill schema version 4 adds First Shot attack additions and its separate on-hit elemental multiplier, scoped to light/heavy bowgun projectiles with an explicit active condition. The multiplier applies before elemental flat additions and the unchanged cap; the condition belongs to the projectile, not its penetration index.
 
 `MHWS-in-json_<version>.zip` contains the shared source JSON. It is packaged once, separately from the language archives.
+
+## Project tools
+
+Project maintenance tools live under `sdk/`. Run `python -m sdk.il2cpp upload --dry-run` or `python -m sdk.il2cpp download` to prepare or retrieve the IL2CPP build data. GitHub operations use the existing `gh` authentication; temporary files stay under `.agents/il2cpp`.
+
+Offline battle-logic research uses `python -m sdk.enemy_logic_exporter --help`. Its [maintenance instructions](sdk/enemy_logic_exporter/AGENTS.md) describe source identity checks, selective native extraction and the reviewed game-version recipes. Reviewed inputs live in `src/processed_data/enemy_battle_logic/models`: the rules and the current upstream model are required release inputs. The initial four-table chain is an in-memory SDK intermediate and is not a separate production model.
+
+`python main.py`, including GitHub Actions, exports the model index and each monster's JSON/HTML under `processed_data/enemy_battle_logic`, validates the graph and embedded HTML, and includes them in `PROCESSED_DATA`. The standalone `python -m src.processed_data.enemy_battle_logic` uses the same exporter. Each offline HTML contains all recovered tables for one monster, bundled ELK layout, pan/zoom and source evidence. Currently only a partial Rathian model is available: 11 tables, 79 nodes, and unresolved branches. It does not represent complete battle AI or every monster.
+
+Production generation reads frozen models and resource JSON without EXE, Ghidra or SDK imports. CI checks model/rule version agreement and resource structure; absent IL2CPP metadata is recorded as `not_supplied`. These checks cannot detect a native-code-only game update. Recheck and update the frozen models through the SDK after game updates.
 
 ## Workbook notes
 

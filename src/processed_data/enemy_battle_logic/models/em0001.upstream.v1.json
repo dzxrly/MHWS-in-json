@@ -1,0 +1,885 @@
+{
+  "schemaVersion": 1,
+  "profile": {
+    "gameVersion": "1.42.0.2",
+    "exeSha256": "aa38eb46ae1f3c6c94fb2dd94af59b4665bd4c8ccee56bc36b88cf82397a5b4a",
+    "metadataSha256": "01ab8f96c9786f3707fc0fc0376eb2e34124eea2d61b749354cac6e124b323d1"
+  },
+  "resource": "STM/GameDesign/Enemy/Em0001/00/BTable/Em0001_00_BTable_CommonAttack.user.3.json",
+  "structureSignature": "940dd0d5de3cf88c240c49eb8fc0ec5e25fe32fb0e020bb603b2ca53cfc04d63",
+  "referenceResourceSha256": "c300410527a3d3e1964b9cbb4966ad404d2d241e6b0f3795ab06b74ba87247f9",
+  "enemyId": "EM0001_00_0",
+  "exportType": "app.Em0001_00_BTable_CommonAttack_Export",
+  "tables": [
+    {
+      "tableGuid": "01313943-0939-4717-b2a4-28a6086cc2c5",
+      "tableIndex": 76,
+      "entry": "0",
+      "nodes": [
+        {
+          "id": "0",
+          "kind": "condition",
+          "argumentIndex": 259,
+          "commandIndex": 11,
+          "true": "1",
+          "false": "11",
+          "expectedArgumentType": "app.btable.EmCommonCommand.cCheckAngleArg",
+          "expectedCommandType": "app.btable.EmCommonCommand.cCheckAngle"
+        },
+        {
+          "id": "1",
+          "kind": "condition",
+          "argumentIndex": 260,
+          "commandIndex": 10,
+          "true": "2",
+          "false": "10",
+          "expectedArgumentType": "app.btable.EmCommonCommand.cCheckDistanceArg",
+          "expectedCommandType": "app.btable.EmCommonCommand.cCheckDistance"
+        },
+        {
+          "id": "2",
+          "kind": "condition",
+          "argumentIndex": 261,
+          "commandIndex": 10,
+          "true": "3",
+          "false": "8",
+          "expectedArgumentType": "app.btable.EmCommonCommand.cCheckDistanceArg",
+          "expectedCommandType": "app.btable.EmCommonCommand.cCheckDistance"
+        },
+        {
+          "id": "3",
+          "kind": "condition",
+          "argumentIndex": 262,
+          "commandIndex": 104,
+          "true": "4",
+          "false": "6",
+          "expectedArgumentType": "ace.btable.cCheckTimerValueArg",
+          "expectedCommandType": "ace.btable.cCheckTimerValue"
+        },
+        {
+          "id": "4",
+          "kind": "action",
+          "argumentIndex": 263,
+          "commandIndex": 4,
+          "resume": "5",
+          "execution": "request_then_yield",
+          "expectedArgumentType": "app.btable.EmCommonCommand.cSelectActionArg",
+          "expectedCommandType": "app.btable.EmCommonCommand.cRequestAction"
+        },
+        {
+          "id": "5",
+          "kind": "mutation",
+          "argumentIndex": 264,
+          "commandIndex": 101,
+          "next": "return",
+          "effect": "set_timer_state",
+          "expectedArgumentType": "ace.btable.cSetTimerValueArg",
+          "expectedCommandType": "ace.btable.cSetTimerValue"
+        },
+        {
+          "id": "8",
+          "kind": "call",
+          "targetTable": "89725354-39c4-4df6-80eb-92d984990476",
+          "resume": "9",
+          "execution": "push_return_position_then_call"
+        },
+        {
+          "id": "6",
+          "kind": "return",
+          "value": false
+        },
+        {
+          "id": "9",
+          "kind": "return",
+          "value": false
+        },
+        {
+          "id": "10",
+          "kind": "return",
+          "value": false
+        },
+        {
+          "id": "11",
+          "kind": "return",
+          "value": false
+        },
+        {
+          "id": "return",
+          "kind": "return",
+          "value": false
+        }
+      ],
+      "evidence": {
+        "type": "app.Em0001_00_BTable_CommonAttack_Export",
+        "method": "table_01313943_0939_4717_b2a4_28a6086cc2c51080945",
+        "address": "0x1474f6aa0",
+        "end": "0x1474f6d6e",
+        "nativeSha256": "8d6c9497b6637c099d10ece32a4cacf4834be82a27167b0cc1ef9a42aca2185d"
+      },
+      "resource": "STM/GameDesign/Enemy/Em0001/00/BTable/Em0001_00_BTable_CommonAttack.user.3.json",
+      "flowStatus": "verified"
+    },
+    {
+      "tableGuid": "89725354-39c4-4df6-80eb-92d984990476",
+      "tableIndex": 48,
+      "entry": "0",
+      "nodes": [
+        {
+          "id": "0",
+          "kind": "condition",
+          "argumentIndex": 200,
+          "commandIndex": 104,
+          "true": "1",
+          "false": "6",
+          "expectedArgumentType": "ace.btable.cCheckTimerValueArg",
+          "expectedCommandType": "ace.btable.cCheckTimerValue"
+        },
+        {
+          "id": "1",
+          "kind": "condition",
+          "argumentIndex": 201,
+          "commandIndex": 11,
+          "true": "2",
+          "false": "5",
+          "expectedArgumentType": "app.btable.EmCommonCommand.cCheckAngleArg",
+          "expectedCommandType": "app.btable.EmCommonCommand.cCheckAngle"
+        },
+        {
+          "id": "2",
+          "kind": "action",
+          "argumentIndex": 202,
+          "commandIndex": 4,
+          "resume": "3",
+          "execution": "request_then_yield",
+          "expectedArgumentType": "app.btable.EmCommonCommand.cSelectActionArg",
+          "expectedCommandType": "app.btable.EmCommonCommand.cRequestAction"
+        },
+        {
+          "id": "3",
+          "kind": "call",
+          "targetTable": "9790fef1-99ef-430a-a05d-f9a41cc5c931",
+          "resume": "4",
+          "execution": "push_return_position_then_call"
+        },
+        {
+          "id": "4",
+          "kind": "mutation",
+          "argumentIndex": 203,
+          "commandIndex": 101,
+          "next": "return",
+          "effect": "set_timer_state",
+          "expectedArgumentType": "ace.btable.cSetTimerValueArg",
+          "expectedCommandType": "ace.btable.cSetTimerValue"
+        },
+        {
+          "id": "5",
+          "kind": "return",
+          "value": false
+        },
+        {
+          "id": "6",
+          "kind": "return",
+          "value": false
+        },
+        {
+          "id": "return",
+          "kind": "return",
+          "value": false
+        }
+      ],
+      "evidence": {
+        "type": "app.Em0001_00_BTable_CommonAttack_Export",
+        "method": "table_89725354_39c4_4df6_80eb_92d9849904761080919",
+        "address": "0x1474f45d0",
+        "end": "0x1474f4821",
+        "nativeSha256": "94882c4537d3cebfbe16e43455c9ffb510572b85592d775f1836432fbe1b3406"
+      },
+      "resource": "STM/GameDesign/Enemy/Em0001/00/BTable/Em0001_00_BTable_CommonAttack.user.3.json",
+      "flowStatus": "verified"
+    },
+    {
+      "tableGuid": "9790fef1-99ef-430a-a05d-f9a41cc5c931",
+      "tableIndex": 11,
+      "entry": "0",
+      "nodes": [
+        {
+          "id": "0",
+          "kind": "call",
+          "targetTable": "9a583948-5083-460e-b71a-952eeacdccec",
+          "resume": "1",
+          "execution": "push_return_position_then_call"
+        },
+        {
+          "id": "1",
+          "kind": "action",
+          "argumentIndex": 56,
+          "commandIndex": 4,
+          "resume": "2",
+          "execution": "request_then_yield",
+          "expectedArgumentType": "app.btable.EmCommonCommand.cSelectActionArg",
+          "expectedCommandType": "app.btable.EmCommonCommand.cRequestAction"
+        },
+        {
+          "id": "2",
+          "kind": "return",
+          "value": false
+        },
+        {
+          "id": "return",
+          "kind": "return",
+          "value": false
+        }
+      ],
+      "evidence": {
+        "type": "app.Em0001_00_BTable_CommonAttack_Export",
+        "method": "table_9790fef1_99ef_430a_a05d_f9a41cc5c9311080886",
+        "address": "0x1474eeae0",
+        "end": "0x1474eec68",
+        "nativeSha256": "a30200e2229c0a1cf48656c0a4e328a4f0e0560ae8ee021cd7cea21efaeccf77"
+      },
+      "resource": "STM/GameDesign/Enemy/Em0001/00/BTable/Em0001_00_BTable_CommonAttack.user.3.json",
+      "flowStatus": "verified"
+    },
+    {
+      "tableGuid": "9a583948-5083-460e-b71a-952eeacdccec",
+      "tableIndex": 70,
+      "entry": "0",
+      "nodes": [
+        {
+          "id": "0",
+          "kind": "condition",
+          "argumentIndex": 254,
+          "commandIndex": 14,
+          "true": "1",
+          "false": "2",
+          "expectedArgumentType": "app.btable.EmCommonCommand.cCheckStatusArg",
+          "expectedCommandType": "app.btable.EmCommonCommand.cCheckSelfStatus"
+        },
+        {
+          "id": "1",
+          "kind": "action",
+          "argumentIndex": 255,
+          "commandIndex": 4,
+          "resume": "2",
+          "execution": "request_then_yield",
+          "expectedArgumentType": "app.btable.EmCommonCommand.cSelectActionArg",
+          "expectedCommandType": "app.btable.EmCommonCommand.cRequestAction"
+        },
+        {
+          "id": "2",
+          "kind": "return",
+          "value": false
+        },
+        {
+          "id": "3",
+          "kind": "return",
+          "value": false
+        },
+        {
+          "id": "return",
+          "kind": "return",
+          "value": false
+        }
+      ],
+      "evidence": {
+        "type": "app.Em0001_00_BTable_CommonAttack_Export",
+        "method": "table_9a583948_5083_460e_b71a_952eeacdccec1080939",
+        "address": "0x1474f63d0",
+        "end": "0x1474f652b",
+        "nativeSha256": "145ef4375af5a218e8b0703fc98207f67f6932775ac106bef54a242f41a0c04f"
+      },
+      "resource": "STM/GameDesign/Enemy/Em0001/00/BTable/Em0001_00_BTable_CommonAttack.user.3.json",
+      "flowStatus": "verified"
+    },
+    {
+      "tableGuid": "e9ceca6d-c0fe-4f69-a34a-fb2b343c2f30",
+      "tableIndex": 1,
+      "entry": "0",
+      "nodes": [
+        {
+          "id": "0",
+          "kind": "call",
+          "targetTable": "9a583948-5083-460e-b71a-952eeacdccec",
+          "resume": "1",
+          "execution": "push_return_position_then_call"
+        },
+        {
+          "id": "1",
+          "kind": "action",
+          "argumentIndex": 0,
+          "commandIndex": 4,
+          "resume": "2",
+          "execution": "request_then_yield",
+          "expectedArgumentType": "app.btable.EmCommonCommand.cSelectActionArg",
+          "expectedCommandType": "app.btable.EmCommonCommand.cRequestAction"
+        },
+        {
+          "id": "2",
+          "kind": "return",
+          "value": false
+        }
+      ],
+      "resource": "STM/GameDesign/Enemy/Em0001/00/BTable/Em0001_00_BTable_CommonAttack.user.3.json",
+      "flowStatus": "verified",
+      "evidence": {
+        "type": "app.Em0001_00_BTable_CommonAttack_Export",
+        "method": "table_e9ceca6d_c0fe_4f69_a34a_fb2b343c2f301080876",
+        "address": "0x1474ecf50",
+        "end": "0x1474ed0cf",
+        "nativeSha256": "7e381d8df3f3e03c88f4412aecb868d6d75da2986238f230af6414b00968e1d5"
+      }
+    },
+    {
+      "tableGuid": "da0ded49-2d01-474c-86b1-084eeb02a403",
+      "tableIndex": 6,
+      "entry": "0",
+      "nodes": [
+        {
+          "id": "0",
+          "kind": "call",
+          "targetTable": "9a583948-5083-460e-b71a-952eeacdccec",
+          "resume": "1",
+          "execution": "push_return_position_then_call"
+        },
+        {
+          "id": "1",
+          "kind": "condition",
+          "argumentIndex": 21,
+          "commandIndex": 11,
+          "true": "2",
+          "false": "3",
+          "expectedArgumentType": "app.btable.EmCommonCommand.cCheckAngleArg",
+          "expectedCommandType": "app.btable.EmCommonCommand.cCheckAngle"
+        },
+        {
+          "id": "2",
+          "kind": "action",
+          "argumentIndex": 22,
+          "commandIndex": 4,
+          "resume": "3",
+          "execution": "request_then_yield",
+          "expectedArgumentType": "app.btable.EmCommonCommand.cSelectActionArg",
+          "expectedCommandType": "app.btable.EmCommonCommand.cRequestAction"
+        },
+        {
+          "id": "3",
+          "kind": "condition",
+          "argumentIndex": 23,
+          "commandIndex": 104,
+          "true": "5",
+          "false": "8",
+          "expectedArgumentType": "ace.btable.cCheckTimerValueArg",
+          "expectedCommandType": "ace.btable.cCheckTimerValue"
+        },
+        {
+          "id": "4",
+          "kind": "condition",
+          "argumentIndex": 23,
+          "commandIndex": 104,
+          "true": "5",
+          "false": "8",
+          "expectedArgumentType": "ace.btable.cCheckTimerValueArg",
+          "expectedCommandType": "ace.btable.cCheckTimerValue"
+        },
+        {
+          "id": "5",
+          "kind": "mutation",
+          "argumentIndex": 24,
+          "commandIndex": 100,
+          "next": "5a",
+          "effect": "set_float_value",
+          "expectedArgumentType": "ace.btable.cSetFloatValueArg",
+          "expectedCommandType": "ace.btable.cSetFloatValue"
+        },
+        {
+          "id": "5a",
+          "kind": "action",
+          "argumentIndex": 25,
+          "commandIndex": 4,
+          "resume": "7",
+          "execution": "request_then_yield",
+          "expectedArgumentType": "app.btable.EmCommonCommand.cSelectActionArg",
+          "expectedCommandType": "app.btable.EmCommonCommand.cRequestAction"
+        },
+        {
+          "id": "7",
+          "kind": "mutation",
+          "argumentIndex": 27,
+          "commandIndex": 100,
+          "next": "return",
+          "effect": "set_float_value",
+          "expectedArgumentType": "ace.btable.cSetFloatValueArg",
+          "expectedCommandType": "ace.btable.cSetFloatValue"
+        },
+        {
+          "id": "8",
+          "kind": "action",
+          "argumentIndex": 26,
+          "commandIndex": 4,
+          "resume": "9",
+          "execution": "request_then_yield",
+          "expectedArgumentType": "app.btable.EmCommonCommand.cSelectActionArg",
+          "expectedCommandType": "app.btable.EmCommonCommand.cRequestAction"
+        },
+        {
+          "id": "9",
+          "kind": "mutation",
+          "argumentIndex": 27,
+          "commandIndex": 100,
+          "next": "return",
+          "effect": "set_float_value",
+          "expectedArgumentType": "ace.btable.cSetFloatValueArg",
+          "expectedCommandType": "ace.btable.cSetFloatValue"
+        },
+        {
+          "id": "return",
+          "kind": "return",
+          "value": false
+        }
+      ],
+      "resource": "STM/GameDesign/Enemy/Em0001/00/BTable/Em0001_00_BTable_CommonAttack.user.3.json",
+      "flowStatus": "verified",
+      "evidence": {
+        "type": "app.Em0001_00_BTable_CommonAttack_Export",
+        "method": "table_da0ded49_2d01_474c_86b1_084eeb02a4031080881",
+        "address": "0x1474eda90",
+        "end": "0x1474edde4",
+        "nativeSha256": "91192e2fe610220f9397de831fbed025ae6ebbb47567ebfa476615d99c169e86"
+      }
+    },
+    {
+      "tableGuid": "9e629b5b-899c-4d39-91ab-8b0137ad3b17",
+      "tableIndex": 12,
+      "entry": "0",
+      "nodes": [
+        {
+          "id": "0",
+          "kind": "call",
+          "targetTable": "9a583948-5083-460e-b71a-952eeacdccec",
+          "resume": "1",
+          "execution": "push_return_position_then_call"
+        },
+        {
+          "id": "1",
+          "kind": "condition",
+          "argumentIndex": 57,
+          "commandIndex": 104,
+          "true": "2",
+          "false": "35",
+          "expectedArgumentType": "ace.btable.cCheckTimerValueArg",
+          "expectedCommandType": "ace.btable.cCheckTimerValue"
+        },
+        {
+          "id": "2",
+          "kind": "mutation",
+          "argumentIndex": 58,
+          "commandIndex": 101,
+          "next": "2a",
+          "effect": "set_timer_state",
+          "expectedArgumentType": "ace.btable.cSetTimerValueArg",
+          "expectedCommandType": "ace.btable.cSetTimerValue"
+        },
+        {
+          "id": "2a",
+          "kind": "condition",
+          "argumentIndex": 59,
+          "commandIndex": 10,
+          "true": "4",
+          "false": "18",
+          "expectedArgumentType": "app.btable.EmCommonCommand.cCheckDistanceArg",
+          "expectedCommandType": "app.btable.EmCommonCommand.cCheckDistance"
+        },
+        {
+          "id": "4",
+          "kind": "unknown",
+          "reason": "已定位破坏部位判断及后续分支，尚未固化其部位状态语义和后续动作链"
+        },
+        {
+          "id": "18",
+          "kind": "unknown",
+          "reason": "远距离分支进入另一项部位破坏判断；后续尚未固化"
+        },
+        {
+          "id": "35",
+          "kind": "return",
+          "value": false
+        },
+        {
+          "id": "36",
+          "kind": "return",
+          "value": false
+        }
+      ],
+      "resource": "STM/GameDesign/Enemy/Em0001/00/BTable/Em0001_00_BTable_CommonAttack.user.3.json",
+      "flowStatus": "partial",
+      "evidence": {
+        "type": "app.Em0001_00_BTable_CommonAttack_Export",
+        "method": "table_9e629b5b_899c_4d39_91ab_8b0137ad3b171080887",
+        "address": "0x1474eec70",
+        "end": "0x1474ef355",
+        "nativeSha256": "6ea1c3f74db477adfcd2dba050fc6d231a31d70655b70d781b5b44195185d7ac"
+      }
+    },
+    {
+      "tableGuid": "d122b442-0f8d-46db-b1e6-3cb4512101b4",
+      "tableIndex": 73,
+      "entry": "0",
+      "nodes": [
+        {
+          "id": "0",
+          "kind": "call",
+          "targetTable": "da0ded49-2d01-474c-86b1-084eeb02a403",
+          "resume": "1",
+          "execution": "push_return_position_then_call"
+        },
+        {
+          "id": "1",
+          "kind": "condition",
+          "argumentIndex": 256,
+          "commandIndex": 10,
+          "true": "2",
+          "false": "3",
+          "expectedArgumentType": "app.btable.EmCommonCommand.cCheckDistanceArg",
+          "expectedCommandType": "app.btable.EmCommonCommand.cCheckDistance"
+        },
+        {
+          "id": "2",
+          "kind": "call",
+          "targetTable": "01313943-0939-4717-b2a4-28a6086cc2c5",
+          "resume": "3",
+          "execution": "push_return_position_then_call"
+        },
+        {
+          "id": "3",
+          "kind": "return",
+          "value": false
+        },
+        {
+          "id": "4",
+          "kind": "return",
+          "value": false
+        }
+      ],
+      "resource": "STM/GameDesign/Enemy/Em0001/00/BTable/Em0001_00_BTable_CommonAttack.user.3.json",
+      "flowStatus": "verified",
+      "evidence": {
+        "type": "app.Em0001_00_BTable_CommonAttack_Export",
+        "method": "table_d122b442_0f8d_46db_b1e6_3cb4512101b41080942",
+        "address": "0x1474f6530",
+        "end": "0x1474f66fc",
+        "nativeSha256": "d4c20faab19a75483b6a1736bc546cafd34918ccf02d3dcb4c1a5756d015baa7"
+      }
+    },
+    {
+      "tableGuid": "7a51b9d2-5f55-4f7e-80bc-1be6efb668df",
+      "tableIndex": 7,
+      "entry": "0",
+      "nodes": [
+        {
+          "id": "0",
+          "kind": "unknown",
+          "reason": "已定位原生方法；此候选的局部控制流尚未固化"
+        }
+      ],
+      "resource": "STM/GameDesign/Enemy/Em0001/00/BTable/Em0001_00_BTable_CommonAttack.user.3.json",
+      "flowStatus": "partial",
+      "evidence": {
+        "type": "app.Em0001_00_BTable_CommonAttack_Export",
+        "method": "table_7a51b9d2_5f55_4f7e_80bc_1be6efb668df1080882",
+        "address": "0x1474eddf0",
+        "end": "0x1474ee1c3",
+        "nativeSha256": "0a5cde0349606c7ffeefbe0698862b3089267704145b7eaa4a10fce97786b9f6"
+      }
+    },
+    {
+      "tableGuid": "fbb8da52-56b9-4202-ba57-a1629d3872bd",
+      "tableIndex": 14,
+      "entry": "0",
+      "nodes": [
+        {
+          "id": "0",
+          "kind": "unknown",
+          "reason": "已定位原生方法；此候选的局部控制流尚未固化"
+        }
+      ],
+      "resource": "STM/GameDesign/Enemy/Em0001/00/BTable/Em0001_00_BTable_CommonAttack.user.3.json",
+      "flowStatus": "partial",
+      "evidence": {
+        "type": "app.Em0001_00_BTable_CommonAttack_Export",
+        "method": "table_fbb8da52_56b9_4202_ba57_a1629d3872bd1080889",
+        "address": "0x1474ef4f0",
+        "end": "0x1474ef704",
+        "nativeSha256": "5798aedb5b183d840347d42bd1702e55ba4ed638e7e9b2900f74a0fde7964c4b"
+      }
+    },
+    {
+      "tableGuid": "b5e627d9-d2c2-4c17-b361-0d365b2633ad",
+      "tableIndex": 69,
+      "entry": "0",
+      "nodes": [
+        {
+          "id": "0",
+          "kind": "condition",
+          "argumentIndex": 443,
+          "commandIndex": 14,
+          "true": "1",
+          "false": "0a",
+          "expectedArgumentType": "app.btable.EmCommonCommand.cCheckStatusArg",
+          "expectedCommandType": "app.btable.EmCommonCommand.cCheckSelfStatus"
+        },
+        {
+          "id": "0a",
+          "kind": "condition",
+          "argumentIndex": 447,
+          "commandIndex": 14,
+          "true": "9",
+          "false": "15",
+          "expectedArgumentType": "app.btable.EmCommonCommand.cCheckStatusArg",
+          "expectedCommandType": "app.btable.EmCommonCommand.cCheckSelfStatus"
+        },
+        {
+          "id": "1",
+          "kind": "weighted_random",
+          "argumentIndex": 444,
+          "candidates": [
+            {
+              "id": "2",
+              "weight": 10,
+              "nativeKey": 1515775908,
+              "targetTable": "fbb8da52-56b9-4202-ba57-a1629d3872bd"
+            },
+            {
+              "id": "4",
+              "weight": 70,
+              "nativeKey": 23877202,
+              "targetTable": "e9ceca6d-c0fe-4f69-a34a-fb2b343c2f30"
+            },
+            {
+              "id": "6",
+              "weight": 20,
+              "nativeKey": 3585961800,
+              "targetTable": "7a51b9d2-5f55-4f7e-80bc-1be6efb668df"
+            }
+          ],
+          "fallback": "2",
+          "staticPoolAddress": "0x1547ec588",
+          "weightEvidence": {
+            "type": "app.Em0001_00_BTable_Combat_Export",
+            "method": ".cctor1081024",
+            "address": "0x1468eb900",
+            "end": "0x1468f5f85",
+            "nativeSha256": "8003fa8fc05cc5de4ae86b264b766732056dddd24d2a1930a9a8bd8f40726069"
+          },
+          "eligibility": "runtime_skip_list_match",
+          "selection": "uint32_modulo_weight_sum",
+          "limits": [
+            "权重份额仅适用于进入此节点且候选筛选完成之后；不是无条件招式概率。",
+            "非空跳过列表须由运行时提供匹配结果，不能仅凭 GUID 推测原生字符串键。",
+            "记录选择键及设置运行时标记的副作用保留为证据，未模拟整个游戏状态。"
+          ],
+          "expectedArgumentType": "app.btable.EmCommonCommand.cSetSkipActionTblArg"
+        },
+        {
+          "id": "2",
+          "kind": "call",
+          "targetTable": "fbb8da52-56b9-4202-ba57-a1629d3872bd",
+          "resume": "3",
+          "execution": "push_return_position_then_call"
+        },
+        {
+          "id": "3",
+          "kind": "return",
+          "value": false
+        },
+        {
+          "id": "4",
+          "kind": "call",
+          "targetTable": "e9ceca6d-c0fe-4f69-a34a-fb2b343c2f30",
+          "resume": "5",
+          "execution": "push_return_position_then_call"
+        },
+        {
+          "id": "5",
+          "kind": "return",
+          "value": false
+        },
+        {
+          "id": "6",
+          "kind": "call",
+          "targetTable": "7a51b9d2-5f55-4f7e-80bc-1be6efb668df",
+          "resume": "7",
+          "execution": "push_return_position_then_call"
+        },
+        {
+          "id": "7",
+          "kind": "return",
+          "value": false
+        },
+        {
+          "id": "9",
+          "kind": "weighted_random",
+          "argumentIndex": 448,
+          "candidates": [
+            {
+              "id": "10",
+              "weight": 50,
+              "nativeKey": 23877202,
+              "targetTable": "e9ceca6d-c0fe-4f69-a34a-fb2b343c2f30"
+            },
+            {
+              "id": "12",
+              "weight": 50,
+              "nativeKey": 635722279,
+              "targetTable": "9e629b5b-899c-4d39-91ab-8b0137ad3b17"
+            }
+          ],
+          "fallback": "10",
+          "staticPoolAddress": "0x1547ec430",
+          "weightEvidence": {
+            "type": "app.Em0001_00_BTable_Combat_Export",
+            "method": ".cctor1081024",
+            "address": "0x1468eb900",
+            "end": "0x1468f5f85",
+            "nativeSha256": "8003fa8fc05cc5de4ae86b264b766732056dddd24d2a1930a9a8bd8f40726069"
+          },
+          "eligibility": "runtime_skip_list_match",
+          "selection": "uint32_modulo_weight_sum",
+          "limits": [
+            "权重份额仅适用于进入此节点且候选筛选完成之后；不是无条件招式概率。",
+            "非空跳过列表须由运行时提供匹配结果，不能仅凭 GUID 推测原生字符串键。",
+            "记录选择键及设置运行时标记的副作用保留为证据，未模拟整个游戏状态。"
+          ],
+          "expectedArgumentType": "app.btable.EmCommonCommand.cSetSkipActionTblArg"
+        },
+        {
+          "id": "10",
+          "kind": "call",
+          "targetTable": "e9ceca6d-c0fe-4f69-a34a-fb2b343c2f30",
+          "resume": "11",
+          "execution": "push_return_position_then_call"
+        },
+        {
+          "id": "11",
+          "kind": "return",
+          "value": false
+        },
+        {
+          "id": "12",
+          "kind": "call",
+          "targetTable": "9e629b5b-899c-4d39-91ab-8b0137ad3b17",
+          "resume": "13",
+          "execution": "push_return_position_then_call"
+        },
+        {
+          "id": "13",
+          "kind": "return",
+          "value": false
+        },
+        {
+          "id": "15",
+          "kind": "weighted_random",
+          "argumentIndex": 450,
+          "candidates": [
+            {
+              "id": "16",
+              "weight": 40,
+              "nativeKey": 23877202,
+              "targetTable": "e9ceca6d-c0fe-4f69-a34a-fb2b343c2f30"
+            },
+            {
+              "id": "18",
+              "weight": 35,
+              "nativeKey": 635722279,
+              "targetTable": "9e629b5b-899c-4d39-91ab-8b0137ad3b17"
+            },
+            {
+              "id": "20",
+              "weight": 25,
+              "nativeKey": 910315130,
+              "targetTable": "d122b442-0f8d-46db-b1e6-3cb4512101b4"
+            }
+          ],
+          "fallback": "16",
+          "staticPoolAddress": "0x1547ec530",
+          "weightEvidence": {
+            "type": "app.Em0001_00_BTable_Combat_Export",
+            "method": ".cctor1081024",
+            "address": "0x1468eb900",
+            "end": "0x1468f5f85",
+            "nativeSha256": "8003fa8fc05cc5de4ae86b264b766732056dddd24d2a1930a9a8bd8f40726069"
+          },
+          "eligibility": "runtime_skip_list_match",
+          "selection": "uint32_modulo_weight_sum",
+          "limits": [
+            "权重份额仅适用于进入此节点且候选筛选完成之后；不是无条件招式概率。",
+            "非空跳过列表须由运行时提供匹配结果，不能仅凭 GUID 推测原生字符串键。",
+            "记录选择键及设置运行时标记的副作用保留为证据，未模拟整个游戏状态。"
+          ],
+          "expectedArgumentType": "app.btable.EmCommonCommand.cSetSkipActionTblArg"
+        },
+        {
+          "id": "16",
+          "kind": "call",
+          "targetTable": "e9ceca6d-c0fe-4f69-a34a-fb2b343c2f30",
+          "resume": "17",
+          "execution": "push_return_position_then_call"
+        },
+        {
+          "id": "17",
+          "kind": "return",
+          "value": false
+        },
+        {
+          "id": "18",
+          "kind": "call",
+          "targetTable": "9e629b5b-899c-4d39-91ab-8b0137ad3b17",
+          "resume": "19",
+          "execution": "push_return_position_then_call"
+        },
+        {
+          "id": "19",
+          "kind": "return",
+          "value": false
+        },
+        {
+          "id": "20",
+          "kind": "call",
+          "targetTable": "d122b442-0f8d-46db-b1e6-3cb4512101b4",
+          "resume": "21",
+          "execution": "push_return_position_then_call"
+        },
+        {
+          "id": "21",
+          "kind": "return",
+          "value": false
+        }
+      ],
+      "resource": "STM/GameDesign/Enemy/Em0001/00/BTable/Em0001_00_BTable_Combat.user.3.json",
+      "flowStatus": "verified",
+      "evidence": {
+        "type": "app.Em0001_00_BTable_Combat_Export",
+        "method": "table_b5e627d9_d2c2_4c17_b361_0d365b2633ad1081016",
+        "address": "0x1468e72d0",
+        "end": "0x1468e8126",
+        "nativeSha256": "7a5a4b44049e8353e7d3176e0a8187b05b3f99ec0d9944249dc76631b3b3361b"
+      }
+    }
+  ],
+  "entry": "b5e627d9-d2c2-4c17-b361-0d365b2633ad",
+  "scope": "Combat 表内一个真实选招点及其局部调用链，非整场战斗总入口",
+  "limits": [
+    "已恢复一个选招点的疲劳、怒和通常分支；到达本选招点的全局入口仍未恢复。",
+    "正常执行路径：重启标记以节点 0 开始；终止标记和中断处理未展开。",
+    "动作请求之后保留恢复位置，实际动作执行和中断由游戏运行时负责。",
+    "部位破坏判断及两个候选仍保留明确未知节点；请求动作后的内部执行条件未展开。"
+  ],
+  "resources": {
+    "STM/GameDesign/Enemy/Em0001/00/BTable/Em0001_00_BTable_CommonAttack.user.3.json": {
+      "structureSignature": "940dd0d5de3cf88c240c49eb8fc0ec5e25fe32fb0e020bb603b2ca53cfc04d63"
+    },
+    "STM/GameDesign/Enemy/Em0001/00/BTable/Em0001_00_BTable_Combat.user.3.json": {
+      "structureSignature": "2e882d5212b7bd931fac2e86c800adfb17fbae16bb333450561e29b5603b6bb1"
+    }
+  },
+  "localEntry": "01313943-0939-4717-b2a4-28a6086cc2c5"
+}

@@ -8,10 +8,6 @@ from zipfile import ZipFile
 from xml.etree import ElementTree
 
 import openpyxl
-from src.processed_data.enemy_action_logic.exporter import (
-    OUTPUT_NAME as ENEMY_LOGIC_OUTPUT_NAME,
-    validate_document as validate_enemy_logic,
-)
 from src.processed_data.damage_calculator.exporter import (
     OUTPUT_NAME as DAMAGE_OUTPUT_NAME,
     validate_catalog,
@@ -19,6 +15,12 @@ from src.processed_data.damage_calculator.exporter import (
 from src.processed_data.skill_effects.exporter import (
     OUTPUT_NAME as SKILL_EFFECTS_OUTPUT_NAME,
     validate_catalog as validate_skill_effects,
+)
+from src.processed_data.enemy_battle_logic.definitions import (
+    INDEX_NAME as BATTLE_INDEX_NAME,
+)
+from src.processed_data.enemy_battle_logic.validation import (
+    validate_bundle as validate_battle_bundle,
 )
 
 
@@ -43,8 +45,6 @@ def validate_outputs(
             raise ValueError(f"Empty export: {relative}")
         if path.suffix == ".xlsx":
             _validate_workbook(path)
-        elif path.name == ENEMY_LOGIC_OUTPUT_NAME:
-            validate_enemy_logic(path)
         elif path.suffix == ".json":
             with path.open(encoding="utf-8") as handle:
                 payload = json.load(handle)
@@ -54,6 +54,8 @@ def validate_outputs(
             elif path.name == SKILL_EFFECTS_OUTPUT_NAME:
                 validate_skill_effects(payload)
                 calculator_contracts.add(payload["sourceContract"]["id"])
+            if path.as_posix().endswith("/" + BATTLE_INDEX_NAME):
+                validate_battle_bundle(path.parent.parent)
         records.append(
             {
                 "path": relative,
