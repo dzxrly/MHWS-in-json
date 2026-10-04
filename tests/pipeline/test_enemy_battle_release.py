@@ -31,6 +31,17 @@ DEFAULT_TEMPLATE = (
 )
 
 
+def _is_research_input(path, root):
+    path = path.resolve()
+    root = root.resolve()
+    return (
+        path.suffix.lower() == ".exe"
+        or path.name == "il2cpp_dump.json"
+        or path.is_relative_to(root / "sdk")
+        or path.is_relative_to(root / "MHWS-in-json")
+    )
+
+
 class BattleReleaseTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -44,12 +55,7 @@ class BattleReleaseTests(unittest.TestCase):
 
         def json_only(path, *args, **kwargs):
             mode = args[0] if args else kwargs.get("mode", "r")
-            if "r" in mode and (
-                path.suffix.lower() == ".exe"
-                or path.name == "il2cpp_dump.json"
-                or "sdk" in path.parts
-                or "MHWS-in-json" in path.parts
-            ):
+            if "r" in mode and _is_research_input(path, ROOT):
                 raise AssertionError(f"Production export read a research input: {path}")
             return original_open(path, *args, **kwargs)
 
@@ -63,6 +69,26 @@ class BattleReleaseTests(unittest.TestCase):
         )
         cls.graph = embedded_data(cls.html)["graph"]
 
+    def test_research_guard_ignores_checkout_ancestor_names(self):
+        for checkout_name in ("MHWS-in-json", "sdk"):
+            root = self.stage / checkout_name / checkout_name
+            for relative in (
+                "tests/fixtures/enemy_battle_logic/em0001.upstream.reference.v1.json",
+                "src/processed_data/enemy_battle_logic/models/em0001.v1.json",
+                "sdk-preview/graph.json",
+                "MHWS-in-json-preview/graph.json",
+            ):
+                with self.subTest(checkout=checkout_name, path=relative):
+                    self.assertFalse(_is_research_input(root / relative, root))
+            for relative in (
+                "sdk/data/models/em0001.v1.json",
+                "MHWS-in-json/em0001.user.3.json",
+                "MonsterHunterWilds.exe",
+                "src/data/il2cpp_dump.json",
+            ):
+                with self.subTest(checkout=checkout_name, path=relative):
+                    self.assertTrue(_is_research_input(root / relative, root))
+
     def test_preview_is_html_only_and_keeps_actual_flow(self):
         index = validate_bundle(self.processed, require_release=False)
         self.assertFalse(index["releaseReady"])
@@ -75,7 +101,9 @@ class BattleReleaseTests(unittest.TestCase):
         self.assertNotIn("行动逻辑待核实", self.html)
 
     def test_independent_candidate_slots_validate_their_actual_call_targets(self):
-        from sdk.enemy_logic_exporter.shared.models.validation import validate_graph as sdk_validate
+        from sdk.enemy_logic_exporter.shared.models.validation import (
+            validate_graph as sdk_validate,
+        )
 
         changed = deepcopy(self.graph)
         node = next(
@@ -103,7 +131,9 @@ class BattleReleaseTests(unittest.TestCase):
             node["candidates"][1]["nodeId"] = original["id"]
 
     def test_known_non_dispatch_records_cannot_invent_a_table_entry(self):
-        from sdk.enemy_logic_exporter.shared.models.validation import validate_graph as sdk_validate
+        from sdk.enemy_logic_exporter.shared.models.validation import (
+            validate_graph as sdk_validate,
+        )
 
         changed = deepcopy(self.graph)
         proof = dict(
