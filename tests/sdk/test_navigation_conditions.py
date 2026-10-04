@@ -2,13 +2,13 @@
 
 import unittest
 
-from sdk.enemy_logic_exporter.shared.expression_schema import expression_unknown
-from sdk.enemy_logic_exporter.shared.expressions import evaluate_expression
-from sdk.enemy_logic_exporter.shared.navigation_conditions import (
+from sdk.enemy_logic_exporter.shared.logic.expressions import expression_unknown
+from sdk.enemy_logic_exporter.shared.logic.expressions import evaluate_expression
+from sdk.enemy_logic_exporter.shared.logic.navigation_conditions import (
     recover_navigation_condition,
 )
-from sdk.enemy_logic_exporter.shared.predicates import RuleRegistry
-from sdk.enemy_logic_exporter.shared.profile import SUPPORTED_PROFILE
+from sdk.enemy_logic_exporter.shared.logic.predicates import RuleRegistry
+from sdk.enemy_logic_exporter.shared.config import SUPPORTED_PROFILE
 
 PREFIX = "app.btable.EmCommonCommand."
 

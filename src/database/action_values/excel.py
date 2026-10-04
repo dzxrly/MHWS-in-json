@@ -7,12 +7,13 @@ import math
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
-from src.shared.excel.palette import StylePalette
+from src.shared.excel.styles import StylePalette
 
 from src.database.action_values.build import (
-    ActionValueWorkbookData, LEADING_COLUMNS, RowGroup,
+    ActionValueWorkbookData,
+    LEADING_COLUMNS,
+    RowGroup,
 )
-
 
 HEADER_FILL = PatternFill("solid", fgColor="1F4E78")
 MAPPED_FILLS = (
@@ -67,8 +68,13 @@ FIXED_WIDTHS = {
 }
 
 WRAPPED_COLUMNS = {
-    "MappingName", "MappingIdentity", "MappingInternalName", "MappingCondition",
-    "MappingSource", "name", "keyName",
+    "MappingName",
+    "MappingIdentity",
+    "MappingInternalName",
+    "MappingCondition",
+    "MappingSource",
+    "name",
+    "keyName",
 }
 
 
@@ -166,8 +172,11 @@ def _style_sheet(
             409.0, max(21.0, 15.0 * wrapped_lines + 6.0)
         )
     column_styles = [
-        (index == name_column, header in CENTER_COLUMNS,
-         header in WRAPPED_COLUMNS or index == metadata_start - 1)
+        (
+            index == name_column,
+            header in CENTER_COLUMNS,
+            header in WRAPPED_COLUMNS or index == metadata_start - 1,
+        )
         for index, header in enumerate(columns, start=1)
     ]
     mapped_index = 0
@@ -187,7 +196,9 @@ def _style_sheet(
                 end_column=name_column,
             )
         action_cell = sheet.cell(group.start_row, name_column)
-        action_cell.font = Font(bold=True, color="9C5700" if group.unmapped else "1F1F1F")
+        action_cell.font = Font(
+            bold=True, color="9C5700" if group.unmapped else "1F1F1F"
+        )
         action_cell.alignment = Alignment(
             horizontal="center",
             vertical="center",
@@ -198,32 +209,53 @@ def _style_sheet(
 
 
 def _style_group(
-    sheet, group: RowGroup, styles: dict, color_index: int, column_styles: list,
+    sheet,
+    group: RowGroup,
+    styles: dict,
+    color_index: int,
+    column_styles: list,
 ) -> None:
     for row_index in range(group.start_row, group.end_row + 1):
         top, bottom = row_index == group.start_row, row_index == group.end_row
         for column_index, column_style in enumerate(column_styles, start=1):
-            sheet.cell(row_index, column_index).style = styles[(color_index, top, bottom, *column_style)]
+            sheet.cell(row_index, column_index).style = styles[
+                (color_index, top, bottom, *column_style)
+            ]
 
 
 def _body_styles(palette: StylePalette) -> dict:
     styles = {}
-    for color_index, (row_fill, action_fill) in enumerate(zip(
-        (*MAPPED_FILLS, UNMAPPED_FILL), (*MAPPED_ACTION_FILLS, UNMAPPED_ACTION_FILL),
-    )):
+    for color_index, (row_fill, action_fill) in enumerate(
+        zip(
+            (*MAPPED_FILLS, UNMAPPED_FILL),
+            (*MAPPED_ACTION_FILLS, UNMAPPED_ACTION_FILL),
+        )
+    ):
         for top in (False, True):
             for bottom in (False, True):
-                border = Border(left=VERTICAL_SIDE, right=VERTICAL_SIDE,
-                                top=GROUP_SIDE if top else Side(), bottom=GROUP_SIDE if bottom else Side())
+                border = Border(
+                    left=VERTICAL_SIDE,
+                    right=VERTICAL_SIDE,
+                    top=GROUP_SIDE if top else Side(),
+                    bottom=GROUP_SIDE if bottom else Side(),
+                )
                 for highlighted, centered, wrapped in (
-                    (False, False, False), (False, False, True),
-                    (False, True, False), (False, True, True), (True, False, True),
+                    (False, False, False),
+                    (False, False, True),
+                    (False, True, False),
+                    (False, True, True),
+                    (True, False, True),
                 ):
                     key = (color_index, top, bottom, highlighted, centered, wrapped)
                     styles[key] = palette.get(
-                        key, fill=action_fill if highlighted else row_fill, border=border,
-                        alignment=Alignment(horizontal="center" if centered else "left",
-                                            vertical="center", wrap_text=wrapped),
+                        key,
+                        fill=action_fill if highlighted else row_fill,
+                        border=border,
+                        alignment=Alignment(
+                            horizontal="center" if centered else "left",
+                            vertical="center",
+                            wrap_text=wrapped,
+                        ),
                     )
     return styles
 
@@ -238,7 +270,9 @@ def _set_column_widths(sheet, columns: tuple[str, ...]) -> None:
 
         width = max(10.0, _text_width(header) + 2.0)
         for row_index in range(3, last_sample_row + 1):
-            width = max(width, _text_width(sheet.cell(row_index, column_index).value) + 2.0)
+            width = max(
+                width, _text_width(sheet.cell(row_index, column_index).value) + 2.0
+            )
         sheet.column_dimensions[letter].width = min(width, 24.0)
 
 

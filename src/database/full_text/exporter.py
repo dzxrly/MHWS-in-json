@@ -7,7 +7,7 @@ from openpyxl.styles import Alignment, Font
 
 from config import FULL_TEXT_MAX_COLUMN_WIDTH, FULL_TEXT_WORKBOOK
 from src.shared.excel.cells import safe_cell, text_width
-from src.shared.excel.palette import StylePalette
+from src.shared.excel.styles import StylePalette
 from src.shared.text.catalog import TextDB
 
 REJECTED_TEXT_PREFIX = "[#Rejected#]"
@@ -17,7 +17,11 @@ def text_rows(text_db: TextDB) -> list[tuple[str, str]]:
     available, rejected, empty = [], [], []
     for guid, text in text_db.guid_text.items():
         if text_db.is_rejected(guid):
-            text = f"{REJECTED_TEXT_PREFIX} {text}" if text.strip() else REJECTED_TEXT_PREFIX
+            text = (
+                f"{REJECTED_TEXT_PREFIX} {text}"
+                if text.strip()
+                else REJECTED_TEXT_PREFIX
+            )
             rejected.append((guid, text))
         elif not text.strip():
             empty.append((guid, text))
@@ -37,7 +41,8 @@ def export_full_text(output_dir: Path, text_db: TextDB) -> Path:
     body = palette.get("body", alignment=alignment)
     for index, letter in enumerate(("A", "B")):
         sheet.column_dimensions[letter].width = min(
-            max(6.0, max((text_width(row[index]) for row in rows), default=0.0)), FULL_TEXT_MAX_COLUMN_WIDTH,
+            max(6.0, max((text_width(row[index]) for row in rows), default=0.0)),
+            FULL_TEXT_MAX_COLUMN_WIDTH,
         )
     header_cells = [WriteOnlyCell(sheet, value=value) for value in ("guid", "text")]
     for cell in header_cells:

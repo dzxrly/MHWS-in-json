@@ -1,5 +1,5 @@
 import unittest
-from sdk.enemy_logic_exporter.shared.leaf_conditions import recover_leaf
+from sdk.enemy_logic_exporter.shared.logic.commands import recover_leaf
 
 
 class Metadata:

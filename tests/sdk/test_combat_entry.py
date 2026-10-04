@@ -3,11 +3,14 @@
 from copy import deepcopy
 import unittest
 
-from sdk.enemy_logic_exporter.shared.combat_entry import build_combat_entries, receipt
-from sdk.enemy_logic_exporter.shared.expressions import evaluate_expression
-from sdk.enemy_logic_exporter.shared.expression_schema import validate_expression
-from sdk.enemy_logic_exporter.shared.predicates import RuleRegistry
-from sdk.enemy_logic_exporter.shared.profile import SUPPORTED_PROFILE
+from sdk.enemy_logic_exporter.shared.logic.combat_entry import (
+    build_combat_entries,
+    receipt,
+)
+from sdk.enemy_logic_exporter.shared.logic.expressions import evaluate_expression
+from sdk.enemy_logic_exporter.shared.logic.expressions import validate_expression
+from sdk.enemy_logic_exporter.shared.logic.predicates import RuleRegistry
+from sdk.enemy_logic_exporter.shared.config import SUPPORTED_PROFILE
 
 
 class CombatEntryTests(unittest.TestCase):

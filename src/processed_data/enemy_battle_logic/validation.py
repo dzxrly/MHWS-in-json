@@ -6,7 +6,7 @@ from pathlib import Path
 import re
 from .definitions import INDEX_NAME, EXPECTED_ENEMY_IDS, TRAINING_ENEMY_ID
 from .diagram import combined_diagram
-from .weights import weighted_pool
+from .weights import weighted_pool, candidate_node_id
 from .values import scalar
 from .expressions import validate_expression, expression_unknown
 from .action_names import validate_action_names
@@ -81,6 +81,20 @@ def validate_graph(graph):
         for value in graph["sourceHashes"].values()
     ):
         raise ValueError("行动图缺少资源来源证据")
+    for entry in graph.get("resourceNonDispatchEntries", []):
+        proof = entry.get("evidence", {})
+        validate_native_evidence(proof)
+        if (
+            entry.get("status") != "native_no_dispatch_verified"
+            or entry.get("resource") not in graph["sourceHashes"]
+            or entry.get("nativeType") != proof["type"]
+            or not proof["method"].startswith("updateTableInpl")
+            or entry.get("entryInstruction")
+            != dict(address=proof["address"], bytes="c3", mnemonic="ret")
+            or not re.fullmatch(r"[0-9a-f]{64}", entry.get("metadataTypeSha256", ""))
+            or "tableGuid" in entry
+        ):
+            raise ValueError("空调度记录缺少实际入口返回与资源来源证据")
     tables = {table["tableGuid"]: table for table in graph["tables"]}
     if (
         not tables
@@ -139,7 +153,7 @@ def validate_graph(graph):
                 if node["fallback"] not in nodes:
                     raise ValueError("行动图随机回退位置无效")
                 for candidate in node["candidates"]:
-                    target = nodes.get(candidate["id"], {})
+                    target = nodes.get(candidate_node_id(candidate), {})
                     if (
                         candidate["targetTable"] not in tables
                         or target.get("kind") != "call"

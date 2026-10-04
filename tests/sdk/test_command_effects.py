@@ -1,6 +1,6 @@
 import unittest
-from sdk.enemy_logic_exporter.shared.command_effects import recover_writes
-from sdk.enemy_logic_exporter.shared.command_annotations import annotate_effects
+from sdk.enemy_logic_exporter.shared.logic.commands import recover_writes
+from sdk.enemy_logic_exporter.shared.logic.commands import annotate_effects
 
 
 class Metadata:

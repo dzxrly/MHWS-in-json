@@ -21,7 +21,7 @@ from src.shared.amulets import AmuletCatalog
 from src.shared.languages import language_code
 from src.shared.source.repository import SourceRepository
 from src.shared.text.catalog import TextDB, TextSource
-from src.shared.timing import Timings
+from src.shared.log import Timings
 
 OUTPUT_NAMES = (
     "skill_pool.json",

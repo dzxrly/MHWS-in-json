@@ -4,7 +4,7 @@ import copy
 import unittest
 from unittest.mock import Mock
 
-from sdk.enemy_logic_exporter.shared.resources import (
+from sdk.enemy_logic_exporter.shared.resources.reader import (
     EMPTY_GUID,
     ActionBindingError,
     Resources,

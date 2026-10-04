@@ -1,7 +1,10 @@
+"""Export logging, file sizes and named timings for pipeline receipts."""
+
 from datetime import datetime
 from pathlib import Path
 import sys
 from time import perf_counter
+from contextlib import contextmanager
 
 _START = perf_counter()
 
@@ -51,3 +54,18 @@ def format_size(size: int) -> str:
         if value < 1024 or unit == units[-1]:
             return f"{value:.2f} {unit}"
         value /= 1024
+
+
+class Timings:
+    def __init__(self):
+        self.seconds: dict[str, float] = {}
+
+    @contextmanager
+    def measure(self, name: str):
+        started = perf_counter()
+        try:
+            yield
+        finally:
+            elapsed = perf_counter() - started
+            self.seconds[name] = elapsed
+            info(f"Timing {name}: {elapsed:.3f}s")

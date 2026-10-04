@@ -2,7 +2,7 @@
 
 from importlib import import_module
 
-from ..shared.scope import EXPECTED_ENEMY_IDS
+from ..shared.models.catalog import EXPECTED_ENEMY_IDS
 
 # EM0160_50's declared BTableList uses Em0160_00 Combat and a variant Repel.
 DECLARED_COMBAT_OWNERS = {"EM0160_50_0": "Em0160_00"}

@@ -21,7 +21,7 @@ def build_model(
     context=None
 ):
     """Extract this EM from its real slot/import closure and typed native calls."""
-    from ..shared.native_recipe import build_monster
+    from ..shared.models.native_recipe import build_monster
 
     return build_monster(
         ENEMY_ID,

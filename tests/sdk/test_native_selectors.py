@@ -9,7 +9,7 @@ from unittest.mock import Mock, patch
 @unittest.skipUnless(find_spec("capstone"), "离线原生测试需要 SDK 的 Capstone 依赖")
 class NativeSelectorTests(unittest.TestCase):
     def machine(self, hexadecimal):
-        from sdk.enemy_logic_exporter.shared.btable_machine import Machine
+        from sdk.enemy_logic_exporter.shared.logic.machine import Machine
 
         native = bytes.fromhex(hexadecimal)
         row = dict(
@@ -20,7 +20,7 @@ class NativeSelectorTests(unittest.TestCase):
         return Machine(row, native, None, {}, [], {}, {})
 
     def test_candidate_mapping_follows_nonconsecutive_native_pc_writes(self):
-        from sdk.enemy_logic_exporter.shared.selectors import _dispatch_pc
+        from sdk.enemy_logic_exporter.shared.logic.selectors import _dispatch_pc
 
         machine = self.machine(
             "83 f9 01 74 07 b8 12 00 00 00 eb 05 b8 04 00 00 00 "
@@ -35,7 +35,7 @@ class NativeSelectorTests(unittest.TestCase):
         )
 
     def test_unknown_runtime_branch_does_not_become_a_candidate(self):
-        from sdk.enemy_logic_exporter.shared.selectors import (
+        from sdk.enemy_logic_exporter.shared.logic.selectors import (
             _dispatch_pc,
             SelectorBoundary,
         )
@@ -48,7 +48,7 @@ class NativeSelectorTests(unittest.TestCase):
             _dispatch_pc(machine, 0x1000, selected_register="rcx", selected_index=1)
 
     def test_outer_pc_uses_the_actual_native_register(self):
-        from sdk.enemy_logic_exporter.shared.selectors import _dispatch_pc
+        from sdk.enemy_logic_exporter.shared.logic.selectors import _dispatch_pc
 
         machine = self.machine(
             "83 f9 01 74 07 bd 12 00 00 00 eb 05 bd 04 00 00 00 "
@@ -66,7 +66,7 @@ class NativeSelectorTests(unittest.TestCase):
         )
 
     def test_candidate_copy_is_executed_before_native_index_comparisons(self):
-        from sdk.enemy_logic_exporter.shared.selectors import _dispatch_pc
+        from sdk.enemy_logic_exporter.shared.logic.selectors import _dispatch_pc
 
         machine = self.machine(
             "48 63 d1 83 fa 02 74 07 b8 12 00 00 00 eb 05 b8 04 00 00 00 "
@@ -78,7 +78,7 @@ class NativeSelectorTests(unittest.TestCase):
         )
 
     def test_unknown_call_in_dispatch_keeps_the_boundary(self):
-        from sdk.enemy_logic_exporter.shared.selectors import (
+        from sdk.enemy_logic_exporter.shared.logic.selectors import (
             _dispatch_pc,
             SelectorBoundary,
         )
@@ -90,7 +90,7 @@ class NativeSelectorTests(unittest.TestCase):
             _dispatch_pc(machine, 0x1000, selected_register="rcx", selected_index=1)
 
     def test_per_candidate_arguments_follow_native_base_and_increment(self):
-        from sdk.enemy_logic_exporter.shared.selectors import _filter_arguments
+        from sdk.enemy_logic_exporter.shared.logic.selectors import _filter_arguments
 
         machine = self.machine("41 bd 30 01 00 00 4a 8b 44 e8 20 49 ff c5 c3")
         block = (
@@ -111,7 +111,7 @@ class NativeSelectorTests(unittest.TestCase):
         self.assertEqual(evidence["indexRegister"], "r13")
 
     def test_parameter_array_order_cannot_override_a_native_base_mismatch(self):
-        from sdk.enemy_logic_exporter.shared.selectors import (
+        from sdk.enemy_logic_exporter.shared.logic.selectors import (
             _filter_arguments,
             SelectorBoundary,
         )
@@ -134,8 +134,10 @@ class NativeSelectorTests(unittest.TestCase):
 
 
 class SelectorCandidateContractTests(unittest.TestCase):
-    def test_distinct_pool_slots_converging_on_one_node_remain_a_boundary(self):
-        from sdk.enemy_logic_exporter.shared.selectors import recover_selectors
+    def recover_shared_target(
+        self, keys=(11, 22), candidate_pcs=(5, 7), *, reviewed_child=True
+    ):
+        from sdk.enemy_logic_exporter.shared.logic.selectors import recover_selectors
 
         boundary = "boundary-0x1010"
         machine = Mock()
@@ -144,17 +146,21 @@ class SelectorCandidateContractTests(unittest.TestCase):
             boundary: {"id": boundary, "kind": "unknown", "nativeSite": "0x1010"},
             "child-call": {
                 "id": "child-call",
-                "kind": "call",
+                "kind": "call" if reviewed_child else "unknown",
                 "targetTable": "child",
                 "nativeContinuation": {"tableIndex": 0, "programCounter": 30},
             },
+            "fallback": {"id": "fallback", "kind": "return", "value": False},
         }
         machine.initial.side_effect = lambda pc: pc
         machine.walk.side_effect = lambda start, pc: (
             boundary if pc == 1 else "child-call"
         )
         machine.state.side_effect = lambda pc: "pc-" + str(pc)
-        machine.states = {"pc-5": "child-call", "pc-7": "child-call"}
+        machine.states = {
+            **{"pc-" + str(pc): "child-call" for pc in candidate_pcs},
+            "pc-9": "fallback",
+        }
         machine.build.side_effect = lambda: {
             "entry": boundary,
             "nodes": list(machine.nodes.values()),
@@ -162,20 +168,20 @@ class SelectorCandidateContractTests(unittest.TestCase):
         code = "lRam000000015488da28 + 0x24"
         pool = {
             "entries": [
-                {"nativeKey": 11, "weight": 35},
-                {"nativeKey": 22, "weight": 5},
+                {"nativeKey": keys[0], "weight": 35},
+                {"nativeKey": keys[1], "weight": 5},
             ],
             "initializerEvidence": {"type": "fixture", "method": ".cctor"},
         }
         skip_type = "app.btable.EmCommonCommand.cSetSkipActionTblArg"
         with (
             patch(
-                "sdk.enemy_logic_exporter.shared.selectors._outer_blocks",
-                return_value={1: code, 5: "", 7: "", 9: ""},
+                "sdk.enemy_logic_exporter.shared.logic.selectors._outer_blocks",
+                return_value={1: code, **{pc: "" for pc in candidate_pcs}, 9: ""},
             ),
-            patch("sdk.enemy_logic_exporter.shared.selectors._selection_form"),
+            patch("sdk.enemy_logic_exporter.shared.logic.selectors._selection_form"),
             patch(
-                "sdk.enemy_logic_exporter.shared.selectors._native_routes",
+                "sdk.enemy_logic_exporter.shared.logic.selectors._native_routes",
                 return_value=(
                     {
                         "start": 0x1050,
@@ -187,7 +193,7 @@ class SelectorCandidateContractTests(unittest.TestCase):
                 ),
             ),
             patch(
-                "sdk.enemy_logic_exporter.shared.selectors._filter_arguments",
+                "sdk.enemy_logic_exporter.shared.logic.selectors._filter_arguments",
                 return_value=(
                     "per_candidate",
                     [
@@ -198,28 +204,91 @@ class SelectorCandidateContractTests(unittest.TestCase):
                 ),
             ),
             patch(
-                "sdk.enemy_logic_exporter.shared.selectors._dispatch_pc",
-                side_effect=[9, 5, 7],
+                "sdk.enemy_logic_exporter.shared.logic.selectors._dispatch_pc",
+                side_effect=[9, *candidate_pcs],
             ),
         ):
             result, accepted, boundaries = recover_selectors(
                 machine, code, {"0x15488da28": pool}, {}
             )
+        return result, accepted, boundaries, machine
+
+    def test_convergent_slots_keep_ids_keys_weights_and_independent_filters(self):
+        for keys in ((11, 22), (22, 22)):
+            with self.subTest(keys=keys):
+                result, accepted, boundaries, _ = self.recover_shared_target(keys)
+                self.assertEqual(boundaries, [])
+                self.assertEqual(len(accepted), 1)
+                node = next(
+                    n for n in result["nodes"] if n["kind"] == "weighted_random"
+                )
+                candidates = node["candidates"]
+                self.assertEqual([c["id"] for c in candidates], ["slot:0", "slot:1"])
+                self.assertEqual(
+                    [c["nativeCandidateIndex"] for c in candidates], [0, 1]
+                )
+                self.assertEqual(
+                    [c["nodeId"] for c in candidates], ["child-call", "child-call"]
+                )
+                self.assertEqual([c["nativeKey"] for c in candidates], list(keys))
+                self.assertEqual([c["weight"] for c in candidates], [35, 5])
+                self.assertEqual(
+                    [c["nativeProgramCounter"] for c in candidates], [5, 7]
+                )
+                self.assertEqual(
+                    [c["skipArgumentIndex"] for c in candidates], [304, 305]
+                )
+                self.assertEqual(node["fallback"], "fallback")
+                self.assertEqual(sum(n["kind"] == "call" for n in result["nodes"]), 1)
+                convergence = accepted[0]["candidateDispatchConvergences"]["child-call"]
+                self.assertEqual([c["id"] for c in convergence], ["slot:0", "slot:1"])
+                self.assertEqual(
+                    [c["nativeProgramCounter"] for c in convergence], [5, 7]
+                )
+
+    def test_shared_native_pc_does_not_clone_the_call_or_invent_another_pc(self):
+        result, accepted, boundaries, _ = self.recover_shared_target(
+            candidate_pcs=(5, 5)
+        )
+        candidates = next(n for n in result["nodes"] if n["kind"] == "weighted_random")[
+            "candidates"
+        ]
+        self.assertEqual(boundaries, [])
+        self.assertEqual(accepted[0]["candidateStates"], [5, 5])
+        self.assertEqual([c["nativeProgramCounter"] for c in candidates], [5, 5])
+        self.assertEqual(
+            [c["nodeId"] for c in candidates], ["child-call", "child-call"]
+        )
+        self.assertEqual([c["id"] for c in candidates], ["slot:0", "slot:1"])
+        self.assertEqual(sum(n["kind"] == "call" for n in result["nodes"]), 1)
+
+    def test_filtering_one_slot_does_not_exclude_the_other_shared_target(self):
+        from sdk.enemy_logic_exporter.shared.logic.weights import choose_with_uint32
+        from sdk.enemy_logic_exporter.shared.logic.weights import weighted_pool
+
+        result, _, _, _ = self.recover_shared_target((22, 22))
+        candidates = next(n for n in result["nodes"] if n["kind"] == "weighted_random")[
+            "candidates"
+        ]
+        self.assertEqual(
+            weighted_pool(candidates, excluded=["slot:0"]),
+            [{"id": "slot:1", "weight": 5, "share": "1"}],
+        )
+        self.assertEqual(
+            choose_with_uint32(candidates, 0, excluded=["slot:0"]), "slot:1"
+        )
+        self.assertEqual(choose_with_uint32(candidates, 34), "slot:0")
+        self.assertEqual(choose_with_uint32(candidates, 35), "slot:1")
+
+    def test_unreviewed_child_keeps_its_boundary_despite_independent_slot_ids(self):
+        result, accepted, boundaries, machine = self.recover_shared_target(
+            reviewed_child=False
+        )
         self.assertEqual(accepted, [])
-        self.assertEqual(machine.nodes[boundary]["kind"], "unknown")
-        self.assertFalse(
-            any(node["kind"] == "weighted_random" for node in result["nodes"])
-        )
         self.assertEqual(len(boundaries), 1)
-        self.assertEqual(boundaries[0]["status"], "unreviewed_selector_boundary")
-        collision = boundaries[0]["candidateDispatchCollisions"]["child-call"]
-        self.assertEqual([candidate["nativeKey"] for candidate in collision], [11, 22])
-        self.assertEqual(
-            [candidate["nativeProgramCounter"] for candidate in collision], [5, 7]
-        )
-        self.assertEqual(
-            [candidate["skipArgumentIndex"] for candidate in collision], [304, 305]
-        )
+        self.assertIn("候选没有唯一子表调用", boundaries[0]["reason"])
+        self.assertEqual(machine.nodes["boundary-0x1010"]["kind"], "unknown")
+        self.assertFalse(any(n["kind"] == "weighted_random" for n in result["nodes"]))
 
 
 if __name__ == "__main__":

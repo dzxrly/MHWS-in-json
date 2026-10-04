@@ -3,7 +3,7 @@
 import importlib.util
 import unittest
 
-from sdk.enemy_logic_exporter.shared.requests import packed_request_stores
+from sdk.enemy_logic_exporter.shared.resources.requests import packed_request_stores
 
 
 @unittest.skipUnless(importlib.util.find_spec("capstone"), "需要离线 SDK 的 capstone")

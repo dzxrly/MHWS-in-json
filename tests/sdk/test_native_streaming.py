@@ -6,8 +6,8 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from sdk.enemy_logic_exporter.shared.evidence import pack_methods, method_rows
-from sdk.enemy_logic_exporter.shared.streaming import (
+from sdk.enemy_logic_exporter.shared.native.evidence import pack_methods, method_rows
+from sdk.enemy_logic_exporter.shared.native.streaming import (
     extract_cached,
     _read_cache,
     _write_cache,
@@ -56,9 +56,9 @@ class StreamingTests(unittest.TestCase):
                 encoding="utf8",
             )
             with patch(
-                "sdk.enemy_logic_exporter.shared.streaming.digest",
+                "sdk.enemy_logic_exporter.shared.native.streaming.digest",
                 return_value=profile["exeSha256"],
-            ), patch("sdk.enemy_logic_exporter.shared.streaming.verify_rows"):
+            ), patch("sdk.enemy_logic_exporter.shared.native.streaming.verify_rows"):
                 first = extract_cached(
                     manifest,
                     "fixture.exe",

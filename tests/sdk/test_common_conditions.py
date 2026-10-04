@@ -2,10 +2,10 @@
 
 import unittest
 
-from sdk.enemy_logic_exporter.shared.common_conditions import recover_condition
-from sdk.enemy_logic_exporter.shared.expressions import evaluate_expression
-from sdk.enemy_logic_exporter.shared.predicates import RuleRegistry
-from sdk.enemy_logic_exporter.shared.profile import SUPPORTED_PROFILE
+from sdk.enemy_logic_exporter.shared.logic.common_conditions import recover_condition
+from sdk.enemy_logic_exporter.shared.logic.expressions import evaluate_expression
+from sdk.enemy_logic_exporter.shared.logic.predicates import RuleRegistry
+from sdk.enemy_logic_exporter.shared.config import SUPPORTED_PROFILE
 
 PREFIX = "app.btable.EmCommonCommand."
 

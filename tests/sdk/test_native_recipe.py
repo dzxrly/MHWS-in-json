@@ -9,7 +9,9 @@ from unittest.mock import Mock, patch
 @unittest.skipUnless(find_spec("capstone"), "原生配方回归需要 Capstone")
 class NativeRecipeTests(unittest.TestCase):
     def context(self, native):
-        from sdk.enemy_logic_exporter.shared.native_recipe import NativeRecipeContext
+        from sdk.enemy_logic_exporter.shared.models.native_recipe import (
+            NativeRecipeContext,
+        )
 
         context = NativeRecipeContext.__new__(NativeRecipeContext)
         context.pe = None
@@ -46,7 +48,7 @@ class NativeRecipeTests(unittest.TestCase):
             self.context(native).dispatch_root(row, targets)
 
     def test_unreviewed_random_value_cannot_select_zero_branch(self):
-        from sdk.enemy_logic_exporter.shared.btable_machine import Machine
+        from sdk.enemy_logic_exporter.shared.logic.machine import Machine
 
         native = bytes.fromhex("e80000000085c07406b801000000c331c0c3")
         row = dict(
@@ -68,10 +70,116 @@ class NativeRecipeTests(unittest.TestCase):
         self.assertIn("unknown", kinds)
         self.assertNotIn("return", kinds)
 
+    def test_empty_dispatcher_requires_actual_immediate_void_return(self):
+        row = dict(
+            type="ActualOwner",
+            method="updateTableInpl123",
+            address="0x1000",
+            end="0x1004",
+            nativeSha256=hashlib.sha256(b"\xc3\xcc\xcc\xcc").hexdigest(),
+        )
+        context = self.context(b"\xc3\xcc\xcc\xcc")
+        method = dict(function="0x1000", returns=dict(type="System.Void"))
+        context.metadata = Mock()
+        context.metadata.get.return_value = dict(methods={row["method"]: method})
+        context.metadata.type_hash.return_value = "a" * 64
+        result = context.non_dispatch_entry(row)
+        self.assertEqual(result["status"], "native_no_dispatch_verified")
+        self.assertEqual(result["entryInstruction"]["bytes"], "c3")
+        self.assertNotIn("tableGuid", result)
+        method["function"] = "0x2000"
+        self.assertIsNone(context.non_dispatch_entry(row))
+        method["function"] = "0x1000"
+        method["returns"]["type"] = "System.Boolean"
+        self.assertIsNone(context.non_dispatch_entry(row))
+        method["returns"]["type"] = "System.Void"
+        context.native = lambda row: b"\x31\xc0\xc3"
+        self.assertIsNone(context.non_dispatch_entry(row))
+
 
 class SchedulerPresentationTests(unittest.TestCase):
+    def test_independent_slots_share_one_real_call_without_merging_filters(self):
+        from sdk.enemy_logic_exporter.shared.models.builder import trace_until_request
+        from sdk.enemy_logic_exporter.shared.models.native_recipe import (
+            local_identities,
+        )
+        from sdk.enemy_logic_exporter.shared.logic.predicates import RuleRegistry
+        from src.processed_data.enemy_battle_logic.diagram import combined_diagram
+
+        candidates = [
+            dict(
+                id=f"slot:{index}",
+                nodeId="call",
+                nativeCandidateIndex=index,
+                nativeKey=key,
+                targetTable="child",
+                weight=weight,
+                skipTableReferences=skips,
+            )
+            for index, key, weight, skips in (
+                (0, 4, 20, ["skip-first"]),
+                (1, 9, 80, []),
+            )
+        ]
+        root = dict(
+            tableGuid="root",
+            entry="choose",
+            name="root",
+            evidence={},
+            nodes=[
+                dict(
+                    id="choose",
+                    kind="weighted_random",
+                    filteringMode="per_candidate",
+                    candidates=candidates,
+                    fallback="end",
+                ),
+                dict(id="call", kind="call", targetTable="child", resume="end"),
+                dict(id="end", kind="return", value=False),
+            ],
+        )
+        graph = dict(
+            profile={},
+            entry="root",
+            rules=RuleRegistry.load().data,
+            tables=[
+                root,
+                dict(
+                    tableGuid="child",
+                    entry="end",
+                    name="child",
+                    evidence={},
+                    nodes=[dict(id="end", kind="return", value=True)],
+                ),
+            ],
+        )
+        result = trace_until_request(
+            graph,
+            dict(
+                candidate_skip_matches_current_action={"root:choose": {"slot:0": True}},
+                random_draws={"root:choose": 0},
+            ),
+        )
+        self.assertEqual(result["status"], "completed")
+        self.assertEqual(result["path"][0]["selection"], "slot:1")
+        self.assertEqual(result["path"][1]["node"], "call")
+        edges = [
+            edge
+            for edge in combined_diagram(graph)["layout"]["edges"]
+            if edge["role"] == "random"
+        ]
+        self.assertEqual([edge["targets"] for edge in edges], [["root/call"]] * 2)
+        self.assertEqual([edge["candidateId"] for edge in edges], ["slot:0", "slot:1"])
+        self.assertEqual([edge["text"] for edge in edges], ["权重 20", "权重 80"])
+        converted = local_identities(root)
+        self.assertEqual([c["id"] for c in candidates], ["slot:0", "slot:1"])
+        self.assertEqual([c["nodeId"] for c in candidates], ["1", "1"])
+        self.assertEqual(len(converted["nodes"]), 3)
+
     def test_request_site_coverage_cannot_hide_a_missing_alias_context(self):
-        from sdk.enemy_logic_exporter.shared.native_recipe import request_coverage
+        from sdk.enemy_logic_exporter.shared.models.native_recipe import (
+            request_coverage,
+        )
 
         binding = dict(
             resource="first",
@@ -101,8 +209,8 @@ class SchedulerPresentationTests(unittest.TestCase):
     def test_missing_serialized_action_parameter_keeps_request_and_resume_boundary(
         self,
     ):
-        from sdk.enemy_logic_exporter.shared.builder import bind_action_node
-        from sdk.enemy_logic_exporter.shared.resources import ActionBindingError
+        from sdk.enemy_logic_exporter.shared.models.builder import bind_action_node
+        from sdk.enemy_logic_exporter.shared.resources.reader import ActionBindingError
 
         resources, names = Mock(), Mock()
         resources.action.side_effect = ActionBindingError(
@@ -128,7 +236,7 @@ class SchedulerPresentationTests(unittest.TestCase):
     def test_equal_table_guids_keep_resource_context_and_leave_cached_records_intact(
         self,
     ):
-        from sdk.enemy_logic_exporter.shared.native_recipe import (
+        from sdk.enemy_logic_exporter.shared.models.native_recipe import (
             resource_table_identities,
         )
 
@@ -146,7 +254,7 @@ class SchedulerPresentationTests(unittest.TestCase):
         self.assertEqual(resource_table_identities(cached), result)
 
     def test_candidate_filters_require_their_own_source_binding_on_both_sides(self):
-        from sdk.enemy_logic_exporter.shared.validation import (
+        from sdk.enemy_logic_exporter.shared.models.validation import (
             validate_candidate_filters as sdk_validate,
         )
         from src.processed_data.enemy_battle_logic.validation import (
@@ -175,11 +283,11 @@ class SchedulerPresentationTests(unittest.TestCase):
                 validate(dict(node, candidates=[altered]), {"own-resource": "a" * 64})
 
     def test_each_candidate_filters_only_its_own_action_skip_list(self):
-        from sdk.enemy_logic_exporter.shared.builder import (
+        from sdk.enemy_logic_exporter.shared.models.builder import (
             trace_until_request,
             bind_skip_argument,
         )
-        from sdk.enemy_logic_exporter.shared.predicates import RuleRegistry
+        from sdk.enemy_logic_exporter.shared.logic.predicates import RuleRegistry
 
         node = dict(
             id="choose",

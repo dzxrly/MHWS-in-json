@@ -3,6 +3,24 @@
 from fractions import Fraction
 
 
+def candidate_node_id(candidate):
+    """Read a frozen candidate target independently from its pool slot identity."""
+    identity = candidate["id"]
+    target = candidate.get("nodeId", identity)
+    if (
+        not isinstance(identity, str)
+        or not identity
+        or not isinstance(target, str)
+        or not target
+    ):
+        raise ValueError("随机候选标识或调用节点无效")
+    if "nodeId" in candidate:
+        index = candidate.get("nativeCandidateIndex")
+        if type(index) is not int or index < 0 or identity != f"slot:{index}":
+            raise ValueError("随机候选槽位身份与原生索引不一致")
+    return target
+
+
 def weighted_pool(candidates, *, excluded=()):
     excluded = set(excluded)
     pool = []

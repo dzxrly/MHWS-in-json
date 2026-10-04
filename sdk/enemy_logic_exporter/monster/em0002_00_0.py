@@ -10,7 +10,7 @@ def extract(context):
 
 
 import re
-from ..shared.resources import typed
+from ..shared.resources.reader import typed
 
 
 def build_model(
@@ -26,7 +26,7 @@ def build_model(
 ):
     """Recover the declared closure, or the historical two-resource core."""
     if inventory_path is not None or context is not None:
-        from ..shared.native_recipe import build_monster
+        from ..shared.models.native_recipe import build_monster
 
         return build_monster(
             ENEMY_ID,
@@ -44,15 +44,16 @@ def build_model(
     from collections import defaultdict
     from pathlib import Path
 
-    from ..shared.btable_machine import Machine
-    from ..shared.evidence import method_rows
-    from ..shared.metadata import Il2cppMetadata
-    from ..shared.native import PE, digest, verify_rows
-    from ..shared.native_bindings import bind_native
-    from ..shared.profile import SUPPORTED_PROFILE
-    from ..shared.resources import Resources, structure_signature
-    from ..shared.semantic_recovery import _artifact
-    from ..shared.static_pools import native_initializer_pools
+    from ..shared.logic.machine import Machine
+    from ..shared.native.evidence import method_rows
+    from ..shared.native.metadata import Il2cppMetadata
+    from ..shared.native.pe import PE, verify_rows
+    from ..shared.native.evidence import digest
+    from ..shared.native.bindings import bind_native
+    from ..shared.config import SUPPORTED_PROFILE
+    from ..shared.resources.reader import Resources, structure_signature
+    from ..shared.workflow.semantic_recovery import _artifact
+    from ..shared.logic.static_pools import native_initializer_pools
 
     index_path, helper_path = Path(native_index), Path(helper_index)
     index = json.loads(index_path.read_text(encoding="utf8"))

@@ -10,8 +10,7 @@ from openpyxl.utils import get_column_letter
 
 from src.database.missions.build import MissionWorkbookData
 from src.shared.excel.cells import safe_cell
-from src.shared.excel.palette import StylePalette
-
+from src.shared.excel.styles import StylePalette
 
 HEADER_COLORS = {
     "mission": ("23466D", "345A81"),
@@ -87,14 +86,17 @@ def style_mission_workbook(workbook, data: MissionWorkbookData) -> None:
     group_starts = set()
     group_colors = {}
     for index, header in enumerate(data.headers, start=1):
-        if index == 1 or header.section != data.headers[index - 2].section or (
-            header.bottom is not None and header.top != data.headers[index - 2].top
+        if (
+            index == 1
+            or header.section != data.headers[index - 2].section
+            or (header.bottom is not None and header.top != data.headers[index - 2].top)
         ):
             group_starts.add(index)
-        if header.bottom is not None and (header.section, header.top) not in group_colors:
-            related = sum(
-                1 for section, _ in group_colors if section == header.section
-            )
+        if (
+            header.bottom is not None
+            and (header.section, header.top) not in group_colors
+        ):
+            related = sum(1 for section, _ in group_colors if section == header.section)
             group_colors[(header.section, header.top)] = related % 2
         top_color, bottom_color = HEADER_COLORS[header.section]
         if header.bottom is not None and group_colors[(header.section, header.top)] % 2:
@@ -106,23 +108,32 @@ def style_mission_workbook(workbook, data: MissionWorkbookData) -> None:
         for cell, color in ((top, top_color), (bottom, bottom_color)):
             cell.fill = PatternFill("solid", fgColor=color)
             cell.font = Font(bold=True, color="FFFFFF")
-            cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
-            cell.border = Border(left=SECTION_BORDER if index in group_starts else Side())
+            cell.alignment = Alignment(
+                horizontal="center", vertical="center", wrap_text=True
+            )
+            cell.border = Border(
+                left=SECTION_BORDER if index in group_starts else Side()
+            )
         letter = get_column_letter(index)
         width = COLUMN_WIDTHS.get(header.key, 18 if header.bottom else 14)
         sheet.column_dimensions[letter].width = width
 
     for index, header in enumerate(data.headers, start=1):
         if header.bottom is None:
-            sheet.merge_cells(start_row=1, start_column=index, end_row=2, end_column=index)
+            sheet.merge_cells(
+                start_row=1, start_column=index, end_row=2, end_column=index
+            )
         elif index in group_starts:
             end = index
             while end < len(data.headers) and (
-                data.headers[end].section, data.headers[end].top
+                data.headers[end].section,
+                data.headers[end].top,
             ) == (header.section, header.top):
                 end += 1
             if end > index:
-                sheet.merge_cells(start_row=1, start_column=index, end_row=1, end_column=end)
+                sheet.merge_cells(
+                    start_row=1, start_column=index, end_row=1, end_column=end
+                )
 
     styles = _body_styles(StylePalette(workbook, "mission"), data.headers, group_starts)
     for group_index, (first_row, last_row) in enumerate(data.groups):
@@ -138,10 +149,16 @@ def style_mission_workbook(workbook, data: MissionWorkbookData) -> None:
             for column_index, header in enumerate(data.headers, start=1):
                 column = header.key
                 cell = sheet.cell(row_index, column_index)
-                numeric = isinstance(cell.value, (int, float)) and not isinstance(cell.value, bool)
+                numeric = isinstance(cell.value, (int, float)) and not isinstance(
+                    cell.value, bool
+                )
                 cell.style = styles[
-                    header.section, group_index % 2, column_index in group_starts,
-                    row_index == last_row, column in WRAPPED_COLUMNS, numeric,
+                    header.section,
+                    group_index % 2,
+                    column_index in group_starts,
+                    row_index == last_row,
+                    column in WRAPPED_COLUMNS,
+                    numeric,
                 ]
         if row_count > 1:
             for column_index, header in enumerate(data.headers, start=1):
@@ -166,9 +183,12 @@ def _body_styles(palette: StylePalette, headers, group_starts: set[int]) -> dict
                 for numeric in (False, True):
                     key = (section, alternate, left, bottom, wrapped, numeric)
                     styles[key] = palette.get(
-                        key, fill=PatternFill("solid", fgColor=color),
-                        border=Border(left=SECTION_BORDER if left else Side(),
-                                      bottom=GROUP_BORDER if bottom else Side()),
+                        key,
+                        fill=PatternFill("solid", fgColor=color),
+                        border=Border(
+                            left=SECTION_BORDER if left else Side(),
+                            bottom=GROUP_BORDER if bottom else Side(),
+                        ),
                         alignment=BODY_ALIGNMENTS[wrapped, numeric],
                     )
     return styles
@@ -176,6 +196,11 @@ def _body_styles(palette: StylePalette, headers, group_starts: set[int]) -> dict
 
 def _wrapped_line_count(value: str, width: int) -> int:
     return sum(
-        max(1, ceil(sum(2 if east_asian_width(char) in "WF" else 1 for char in line) / width))
+        max(
+            1,
+            ceil(
+                sum(2 if east_asian_width(char) in "WF" else 1 for char in line) / width
+            ),
+        )
         for line in value.split("\n")
     )

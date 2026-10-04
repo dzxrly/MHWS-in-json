@@ -8,16 +8,16 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from sdk.enemy_logic_exporter.shared.predicates import RuleRegistry
-from sdk.enemy_logic_exporter.shared.builder import (
+from sdk.enemy_logic_exporter.shared.logic.predicates import RuleRegistry
+from sdk.enemy_logic_exporter.shared.models.builder import (
     build_chain,
     trace_until_request,
 )
-from sdk.enemy_logic_exporter.shared.random_choice import (
+from sdk.enemy_logic_exporter.shared.logic.weights import (
     choose_with_uint32,
     weighted_pool,
 )
-from sdk.enemy_logic_exporter.shared.timers import (
+from sdk.enemy_logic_exporter.shared.logic.timers import (
     TimerState,
     advance_timer,
     timer_operation,
@@ -440,7 +440,7 @@ class UpstreamTests(unittest.TestCase):
     def setUpClass(cls):
         cls.graph = build_chain(
             NATIVES,
-            ROOT / "sdk/enemy_logic_exporter/monster/models/em0001.upstream.v1.json",
+            ROOT / "sdk/enemy_logic_exporter/data/models/em0001.upstream.v1.json",
         )
         # Exercise this selection chain inside the expanded Combat entry model.
         cls.graph["entry"] = cls.graph["selectionEntry"]
@@ -541,8 +541,7 @@ class UpstreamTests(unittest.TestCase):
         with patch.object(Path, "open", checked):
             graph = build_chain(
                 NATIVES,
-                ROOT
-                / "sdk/enemy_logic_exporter/monster/models/em0001.upstream.v1.json",
+                ROOT / "sdk/enemy_logic_exporter/data/models/em0001.upstream.v1.json",
             )
         self.assertEqual(graph["coverage"]["resourceTables"], 2)
         self.assertEqual(graph["coverage"]["weightedSelections"], 15)

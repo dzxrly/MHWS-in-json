@@ -74,6 +74,65 @@ class BattleReleaseTests(unittest.TestCase):
         self.assertNotIn("enemy_native_model", self.html)
         self.assertNotIn("行动逻辑待核实", self.html)
 
+    def test_independent_candidate_slots_validate_their_actual_call_targets(self):
+        from sdk.enemy_logic_exporter.shared.models.validation import validate_graph as sdk_validate
+
+        changed = deepcopy(self.graph)
+        node = next(
+            n
+            for t in changed["tables"]
+            for n in t["nodes"]
+            if n["kind"] == "weighted_random"
+        )
+        original = deepcopy(node["candidates"][0])
+        node["candidates"] = [
+            dict(
+                original, id=f"slot:{i}", nodeId=original["id"], nativeCandidateIndex=i
+            )
+            for i in range(2)
+        ]
+        for validate in (sdk_validate, validate_graph):
+            validate(changed)
+            node["candidates"][1]["nativeCandidateIndex"] = 0
+            with self.assertRaisesRegex(ValueError, "槽位身份"):
+                validate(changed)
+            node["candidates"][1]["nativeCandidateIndex"] = 1
+            node["candidates"][1]["nodeId"] = node["id"]
+            with self.assertRaisesRegex(ValueError, "调用连接"):
+                validate(changed)
+            node["candidates"][1]["nodeId"] = original["id"]
+
+    def test_known_non_dispatch_records_cannot_invent_a_table_entry(self):
+        from sdk.enemy_logic_exporter.shared.models.validation import validate_graph as sdk_validate
+
+        changed = deepcopy(self.graph)
+        proof = dict(
+            type="Owner",
+            method="updateTableInpl123",
+            address="0x1000",
+            end="0x1001",
+            nativeSha256="a" * 64,
+        )
+        record = dict(
+            resource=next(iter(changed["sourceHashes"])),
+            nativeType="Owner",
+            status="native_no_dispatch_verified",
+            evidence=proof,
+            entryInstruction=dict(address="0x1000", bytes="c3", mnemonic="ret"),
+            metadataTypeSha256="b" * 64,
+        )
+        changed["resourceNonDispatchEntries"] = [record]
+        for validate in (sdk_validate, validate_graph):
+            validate(changed)
+            record["tableGuid"] = changed["entry"]
+            with self.assertRaisesRegex(ValueError, "空调度"):
+                validate(changed)
+            del record["tableGuid"]
+            record["entryInstruction"]["bytes"] = "90"
+            with self.assertRaisesRegex(ValueError, "空调度"):
+                validate(changed)
+            record["entryInstruction"]["bytes"] = "c3"
+
     def test_missing_monsters_reject_before_any_output(self):
         incomplete = read_models(template_path=DEFAULT_TEMPLATE)
         target = self.stage / "rejected"

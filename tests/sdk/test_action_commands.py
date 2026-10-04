@@ -3,7 +3,10 @@
 from copy import deepcopy
 import unittest
 
-from sdk.enemy_logic_exporter.shared.action_commands import receipt, request_details
+from sdk.enemy_logic_exporter.shared.logic.action_commands import (
+    receipt,
+    request_details,
+)
 
 
 class ActionCommandTests(unittest.TestCase):

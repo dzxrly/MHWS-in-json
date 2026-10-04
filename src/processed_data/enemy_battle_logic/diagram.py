@@ -1,6 +1,7 @@
 """Combine every recovered table into one compound directed graph for ELK."""
 
 from .viewer_labels import label
+from .weights import candidate_node_id
 
 
 def table_name(table, graph):
@@ -92,9 +93,15 @@ def combined_diagram(graph):
                 for candidate in node["candidates"]:
                     edge(
                         key,
-                        node_id(guid, candidate["id"]),
+                        node_id(guid, candidate_node_id(candidate)),
                         "random",
                         f"权重 {candidate['weight']}",
+                        candidateId=candidate["id"],
+                        **{
+                            name: candidate[name]
+                            for name in ("nativeCandidateIndex", "nativeKey")
+                            if name in candidate
+                        },
                     )
                 if "fallback" in node:
                     edge(key, node_id(guid, node["fallback"]), "fallback", "候选为空时")

@@ -8,7 +8,7 @@ import tempfile
 import unittest
 
 from sdk.enemy_logic_exporter.monster import get_monster, iter_monsters
-from sdk.enemy_logic_exporter.shared.extraction import ExtractionContext
+from sdk.enemy_logic_exporter.shared.workflow.extraction import ExtractionContext
 from src.processed_data.enemy_battle_logic.definitions import EXPECTED_ENEMY_IDS
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -53,7 +53,7 @@ class PackageBoundaryTests(unittest.TestCase):
             cases = (
                 (
                     "src",
-                    "from sdk.enemy_logic_exporter.monster import iter_monsters; assert len(iter_monsters()) == 34; from sdk.enemy_logic_exporter.shared.cli import parser; parser()",
+                    "from sdk.enemy_logic_exporter.monster import iter_monsters; assert len(iter_monsters()) == 34; from sdk.enemy_logic_exporter.shared.workflow.cli import parser; parser()",
                 ),
                 (
                     "sdk",

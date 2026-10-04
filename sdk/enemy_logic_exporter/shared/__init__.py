@@ -1,1 +1,1 @@
-"""Shared offline resource, metadata, native and semantic analysis."""
+"""Offline native, resource, logic, model and workflow implementations."""

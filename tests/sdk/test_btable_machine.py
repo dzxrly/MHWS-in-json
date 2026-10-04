@@ -9,7 +9,7 @@ from unittest.mock import patch
 @unittest.skipUnless(find_spec("capstone"), "离线原生测试需要 SDK 的 Capstone 依赖")
 class BTableMachineTests(unittest.TestCase):
     def machine(self, hexadecimal):
-        from sdk.enemy_logic_exporter.shared.btable_machine import Machine
+        from sdk.enemy_logic_exporter.shared.logic.machine import Machine
 
         native = bytes.fromhex(hexadecimal)
         row = dict(
@@ -23,6 +23,55 @@ class BTableMachineTests(unittest.TestCase):
         for code, expected in (("b8 01 00 00 00 c3", True), ("31 c0 c3", False)):
             result = self.machine(code).build()
             self.assertEqual([node["value"] for node in result["nodes"]], [expected])
+
+    def test_same_native_child_site_keeps_each_actual_target_and_saved_resume(self):
+        from sdk.enemy_logic_exporter.shared.native.bindings import pointer
+
+        machine = self.machine("e8 fb 0f 00 00 c3")
+        machine.targets[0x2000] = [
+            dict(row=dict(type="fixture"), tableGuid="child"),
+            dict(row=dict(type="other"), tableGuid="other-child"),
+        ]
+        keys = []
+        for pc in (3, 19, 45):
+            state = machine.initial(0)
+            state["saved"] = (93, pc)
+            key = machine.walk(0x1000, state)
+            keys.append(key)
+            self.assertEqual(machine.nodes[key]["kind"], "call")
+            self.assertEqual(machine.nodes[key]["nativeSite"], "0x1000")
+        self.assertEqual(len(set(keys)), 3)
+        for key, pc in zip(keys, (3, 19, 45)):
+            self.assertEqual(
+                machine.nodes[key]["nativeContinuation"],
+                dict(tableIndex=93, programCounter=pc),
+            )
+        state = machine.initial(0)
+        state["saved"] = (93, 3)
+        self.assertEqual(machine.walk(0x1000, state), keys[0])
+        state["regs"]["rdx"] = pointer(("import", "other"))
+        other_key = machine.walk(0x1000, state)
+        self.assertNotEqual(other_key, keys[0])
+        self.assertEqual(machine.nodes[other_key]["targetTable"], "other-child")
+
+    def test_changed_cached_command_context_stops_without_replacing_first_node(self):
+        machine = self.machine("e8 00 00 00 00 84 c0 74 06 b8 01 00 00 00 c3 31 c0 c3")
+        binding = dict(
+            commandType="fixture.cCheckOpaque",
+            commandIndex=0,
+            argumentIndex=0,
+            argumentType="fixture",
+        )
+        with patch.object(machine, "bind", return_value=binding):
+            first = machine.walk(0x1000, machine.initial(0))
+            same = machine.walk(0x1000, machine.initial(0))
+            changed = machine.initial(0)
+            changed["saved"] = (93, 19)
+            boundary = machine.walk(0x1000, changed)
+        self.assertEqual(first, same)
+        self.assertEqual(machine.nodes[first]["kind"], "condition")
+        self.assertEqual(machine.nodes[boundary]["kind"], "unknown")
+        self.assertNotIn("next", machine.nodes[boundary])
 
     def test_negation_sign_and_addition_carry_choose_native_branches(self):
         for code in (
@@ -98,7 +147,7 @@ class BTableMachineTests(unittest.TestCase):
             result = machine.build()
         nodes = {node["id"]: node for node in result["nodes"]}
         condition = nodes[result["entry"]]
-        from sdk.enemy_logic_exporter.shared.expressions import expression_unknown
+        from sdk.enemy_logic_exporter.shared.logic.expressions import expression_unknown
 
         self.assertTrue(expression_unknown(condition["expression"]))
         effect = nodes[condition["true"]]

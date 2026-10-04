@@ -1,7 +1,7 @@
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
 
-from src.shared.excel.style import apply_rare_style
+from src.shared.excel.styles import apply_rare_style
 
 HEADER_FILL = PatternFill("solid", fgColor="C65911")
 ALTERNATE_FILL = PatternFill("solid", fgColor="FFF4EC")
@@ -48,9 +48,7 @@ def _style_sheet(sheet) -> None:
     sheet.row_dimensions[1].height = 24
 
     headers = {
-        cell.value: cell.column
-        for cell in sheet[1]
-        if isinstance(cell.value, str)
+        cell.value: cell.column for cell in sheet[1] if isinstance(cell.value, str)
     }
     for cell in sheet[1]:
         cell.fill = HEADER_FILL

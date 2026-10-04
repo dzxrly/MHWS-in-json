@@ -4,8 +4,8 @@ import unittest
 from unittest.mock import Mock
 
 from sdk.enemy_logic_exporter.monster import em0160_50_0
-from sdk.enemy_logic_exporter.shared.extraction import ExtractionContext
-from sdk.enemy_logic_exporter.shared.resources import Resources
+from sdk.enemy_logic_exporter.shared.workflow.extraction import ExtractionContext
+from sdk.enemy_logic_exporter.shared.resources.reader import Resources
 
 
 class VariantResourceScopeTests(unittest.TestCase):

@@ -3,11 +3,10 @@ from pathlib import Path
 from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
 
-from src.shared.excel.style import apply_rare_style, style_workbook
+from src.shared.excel.styles import apply_rare_style, style_workbook
 from src.shared.excel.cells import safe_cell, sheet_name, text_width
 from src.shared.rarity import Rarity
 from src.shared.tables import columns as table_columns
-
 
 WorkbookFormatter = Callable[[Workbook], None]
 
@@ -42,7 +41,9 @@ def write_workbook(
                 widths[index] = max(widths[index], text_width(value))
             sheet.append(values)
         for index, width in enumerate(widths, start=1):
-            sheet.column_dimensions[get_column_letter(index)].width = min(width, max_width)
+            sheet.column_dimensions[get_column_letter(index)].width = min(
+                width, max_width
+            )
     if not formatter:
         style_workbook(workbook, max_width)
     for sheet, row, column, rarity in rarity_cells:

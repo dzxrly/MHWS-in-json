@@ -1,16 +1,12 @@
 """Freeze four freshly verified local state machines, not historical EM166 graphs."""
 
-from ..shared.evidence import method_rows
+from ..shared.native.evidence import evidence, method_rows
 
 from pathlib import Path
 import json
 import re
 
-from ..shared.resources import (
-    Resources,
-    typed,
-    structure_signature,
-)
+from ..shared.resources.reader import Resources, typed, structure_signature
 
 SOURCE = (
     "STM/GameDesign/Enemy/Em0001/00/BTable/Em0001_00_BTable_CommonAttack.user.3.json"
@@ -184,17 +180,8 @@ def build_local(work, natives, profile):
 
 """Freeze freshly reviewed Combat selection plus its verified local prefixes."""
 
-from ..shared.evidence import method_rows
 
-import json
 from copy import deepcopy
-import re
-
-from ..shared.resources import (
-    Resources,
-    typed,
-    structure_signature,
-)
 
 COMMON = (
     "STM/GameDesign/Enemy/Em0001/00/BTable/Em0001_00_BTable_CommonAttack.user.3.json"
@@ -202,12 +189,19 @@ COMMON = (
 COMBAT = COMMON.replace("CommonAttack", "Combat")
 
 
-def evidence(row):
-    return {k: row[k] for k in ("type", "method", "address", "end", "nativeSha256")}
+def build_upstream(work, natives, data, base_model, *, rules_path=None):
+    from ..shared.config import MODEL_DIR, RULES_PATH
 
-
-def build_upstream(work, natives, data, base_model):
-    DATA = data
+    data = Path(data)
+    rules_path = (
+        Path(rules_path)
+        if rules_path is not None
+        else (
+            RULES_PATH
+            if data.resolve() == MODEL_DIR.resolve()
+            else data / "rules.v1.json"
+        )
+    )
 
     def read_rows(name):
         document = json.loads((work / name).read_text(encoding="utf-8"))
@@ -427,10 +421,10 @@ def build_upstream(work, natives, data, base_model):
     model["limits"].append(
         "部位破坏判断及两个候选仍保留明确未知节点；请求动作后的内部执行条件未展开。"
     )
-    (DATA / "em0001.upstream.v1.json").write_text(
+    (data / "em0001.upstream.v1.json").write_text(
         json.dumps(model, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
-    rules = json.loads((DATA / "rules.v1.json").read_text(encoding="utf-8"))
+    rules = json.loads(rules_path.read_text(encoding="utf-8"))
     rule = next(r for r in rules["rules"] if r["kind"] == "self_status")
     rule["summary"] = (
         "自身状态分类检查；含站立状态、生命比例、部分 AI 状态及怒和疲劳状态"
@@ -462,7 +456,7 @@ def build_upstream(work, natives, data, base_model):
             and r["method"].startswith(("setValueTimer", "getValueTimer", "update"))
         ],
     )
-    (DATA / "rules.v1.json").write_text(
+    rules_path.write_text(
         json.dumps(rules, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
     print(
@@ -496,7 +490,7 @@ def build_model(
     context=None
 ):
     """Extract this EM from its real slot/import closure and typed native calls."""
-    from ..shared.native_recipe import build_monster
+    from ..shared.models.native_recipe import build_monster
 
     return build_monster(
         ENEMY_ID,

@@ -34,7 +34,7 @@ from src.shared.languages import language_code
 from src.shared.log import info
 from src.shared.source.repository import SourceRepository
 from src.shared.text.catalog import TextSource
-from src.shared.timing import Timings
+from src.shared.log import Timings
 
 
 def export_all() -> list[Path]:
