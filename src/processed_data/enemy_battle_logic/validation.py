@@ -1,20 +1,59 @@
-"""Validate frozen models and the HTML-only release bundle."""
+"""Validate rendered HTML against the frozen graph contract."""
 
 from html.parser import HTMLParser
 import json
 from pathlib import Path
 import re
-
 from .definitions import INDEX_NAME, EXPECTED_ENEMY_IDS, TRAINING_ENEMY_ID
 from .diagram import combined_diagram
-from .random_choice import weighted_pool
-from .audit import (
-    combat_entry_recovered,
-    validate_release_graph,
-    validate_native_evidence,
-)
+from .weights import weighted_pool
+from .values import scalar
 from .expressions import validate_expression, expression_unknown
 from .action_names import validate_action_names
+from .audit import (
+    validate_release_graph,
+    combat_entry_recovered,
+    validate_native_evidence,
+)
+
+
+def validate_candidate_filters(node, source_hashes):
+    mode = node.get("filteringMode")
+    if mode not in (None, "shared", "per_candidate"):
+        raise ValueError("随机候选筛选模式无效")
+    if mode != "per_candidate":
+        return
+    if "argumentIndex" in node:
+        raise ValueError("逐候选筛选不能绑定共同参数槽位")
+    for candidate in node["candidates"]:
+        index = candidate.get("skipArgumentIndex")
+        argument_type = candidate.get("skipArgumentType", "")
+        argument = candidate.get("skipArgument")
+        raw_references = (
+            scalar(argument.get("_SkipActionTblList"))
+            if isinstance(argument, dict)
+            else None
+        )
+        if (
+            type(index) is not int
+            or index < 0
+            or argument_type != candidate.get("expectedSkipArgumentType")
+            or not argument_type.endswith("cSetSkipActionTblArg")
+            or not isinstance(candidate.get("skipArgument"), dict)
+            or not isinstance(raw_references, list)
+            or not isinstance(candidate.get("skipTableReferences"), list)
+            or any(
+                not isinstance(value, str) for value in candidate["skipTableReferences"]
+            )
+            or candidate.get("skipSourceResource") not in source_hashes
+            or candidate.get("skipSourceBodyPointer")
+            != f"/_CommandArgArray/{index}/{argument_type}"
+        ):
+            raise ValueError("随机候选缺少独立跳过列表与来源绑定")
+        if candidate["skipTableReferences"] != [
+            scalar(value) for value in raw_references
+        ]:
+            raise ValueError("随机候选的跳过列表与所绑定参数不一致")
 
 
 def validate_graph(graph):
@@ -85,6 +124,10 @@ def validate_graph(graph):
                 node["targetTable"] not in tables or "resume" not in node
             ):
                 raise ValueError("行动图调用或恢复位置无效")
+            if node.get("dispatchTarget") is not None and (
+                node["kind"] != "mutation" or node["dispatchTarget"] not in tables
+            ):
+                raise ValueError("异步表请求指向缺失或无效目标")
             if node["kind"] == "action" and (
                 "resume" not in node or not node.get("action", {}).get("actionClass")
             ):
@@ -92,6 +135,7 @@ def validate_graph(graph):
             if node["kind"] == "weighted_random":
                 random_count += 1
                 weighted_pool(node["candidates"])
+                validate_candidate_filters(node, graph["sourceHashes"])
                 if node["fallback"] not in nodes:
                     raise ValueError("行动图随机回退位置无效")
                 for candidate in node["candidates"]:
@@ -216,6 +260,8 @@ def validate_bundle(processed_dir, *, require_release=True):
         html = (folder / item["html"]).read_text(encoding="utf-8")
         payload = embedded_data(html)
         document = payload.get("graph")
+        if not document or document.get("artifactKind") != "extracted_battle_graph":
+            raise ValueError("HTML 未使用 SDK 离线提取的图 JSON")
         if (
             document is None
             or any(

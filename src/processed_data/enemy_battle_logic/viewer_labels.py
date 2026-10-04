@@ -1,7 +1,7 @@
 """Self-contained HTML view of the verified local decision and continuation graph."""
 
-from .predicates import enum_number, scalar
-from .random_choice import weighted_pool
+from .values import enum_number, scalar
+from .weights import weighted_pool
 
 
 def label(node):
@@ -82,10 +82,25 @@ def label(node):
         )
     if kind == "weighted_random":
         shares = weighted_pool(node["candidates"])
+        filtering = (
+            "每个候选有独立跳过列表"
+            if node.get("filteringMode") == "per_candidate"
+            else "非空跳过列表需运行时核对"
+        )
         return (
             "进入本分支后按候选权重选择",
-            " / ".join(str(c["weight"]) for c in shares) + "；非空跳过列表需运行时核对",
+            " / ".join(str(c["weight"]) for c in shares) + "；" + filtering,
         )
     if kind == "unknown":
-        return "此处仍有未核实的逻辑", node["reason"]
-    return "本子表结束，返回调用方", "方法返回 false；不等同于招式执行失败"
+        return node.get("summary", "此处仍有未核实的逻辑"), node["reason"]
+    if kind == "return":
+        if node.get("returnType") == "void":
+            return "回调结束", "本次事件处理结束；表切换和继续执行由调度器处理"
+        value = "true" if node.get("value") else "false"
+        status = (
+            "原生结束标志已设置"
+            if node.get("tableEnded")
+            else "继续位置由调用方和保存栈决定"
+        )
+        return "返回调用方", f"方法返回 {value}；{status}；动作是否成功需另行判断"
+    return "结束当前流程", "后续由战斗调度器处理"

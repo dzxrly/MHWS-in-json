@@ -12,6 +12,7 @@ const colors = {
   next: "#7c8fa3",
   resume: "#7857ad",
   call: "#3476b8",
+  dispatch: "#b67b28",
   random: "#ad801f",
   fallback: "#ad801f",
 };
@@ -115,8 +116,10 @@ function inspect(id) {
     2,
   );
   const call = document.getElementById("call");
-  call.hidden = !detail.node.targetTable;
-  call.onclick = () => focus(groups.get(detail.node.targetTable).entry);
+  const target = detail.node.targetTable || detail.node.dispatchTarget;
+  call.hidden = !target;
+  call.textContent = detail.node.dispatchTarget ? "定位请求的行为表" : "定位调用子表";
+  call.onclick = () => focus(groups.get(target).entry);
 }
 function drawEdge(edge, ox, oy) {
   const color = colors[edge.role] || "#7c8fa3";
@@ -286,7 +289,7 @@ async function arrange() {
     const local = [];
     for (const group of input.children) {
       const edges = input.edges.filter(
-        (e) => e.role !== "call" && e.sources[0].startsWith(group.id + "/"),
+        (e) => !["call", "dispatch"].includes(e.role) && e.sources[0].startsWith(group.id + "/"),
       );
       local.push(
         await elk.layout({
@@ -301,11 +304,11 @@ async function arrange() {
       );
     }
     const cross = input.edges
-      .filter((e) => e.role === "call")
+      .filter((e) => ["call", "dispatch"].includes(e.role))
       .map((e) => {
         const source = e.sources[0].split("/"),
           target = e.targets[0].split("/");
-        const text = "节点 " + source[1] + " 调用 → 入口 " + target[1];
+        const text = "节点 " + source[1] + (e.role === "dispatch" ? " 请求切换 → 入口 " : " 调用 → 入口 ") + target[1];
         return {
           ...e,
           sources: [source[0]],

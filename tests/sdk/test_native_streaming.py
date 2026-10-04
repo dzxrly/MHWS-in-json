@@ -6,8 +6,12 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from sdk.enemy_logic_exporter.evidence import pack_methods, method_rows
-from sdk.enemy_logic_exporter.streaming import extract_cached, _read_cache, _write_cache
+from sdk.enemy_logic_exporter.shared.evidence import pack_methods, method_rows
+from sdk.enemy_logic_exporter.shared.streaming import (
+    extract_cached,
+    _read_cache,
+    _write_cache,
+)
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -52,9 +56,9 @@ class StreamingTests(unittest.TestCase):
                 encoding="utf8",
             )
             with patch(
-                "sdk.enemy_logic_exporter.streaming.digest",
+                "sdk.enemy_logic_exporter.shared.streaming.digest",
                 return_value=profile["exeSha256"],
-            ), patch("sdk.enemy_logic_exporter.streaming.verify_rows"):
+            ), patch("sdk.enemy_logic_exporter.shared.streaming.verify_rows"):
                 first = extract_cached(
                     manifest,
                     "fixture.exe",

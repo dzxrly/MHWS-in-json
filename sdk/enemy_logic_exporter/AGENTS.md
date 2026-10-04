@@ -1,6 +1,6 @@
 # 怪物行动逻辑提取与维护
 
-本目录是离线研究 SDK，代码统一使用 Python。它读取游戏 EXE 和匹配的 IL2CPP JSON，提取原生方法证据，再用人工核实过的配方固化语义与控制流。正式构建器位于 `src/processed_data/enemy_battle_logic`，只读取规则及资源 JSON，不能导入本 SDK，也不能要求玩家提供 EXE。
+本目录是离线研究 SDK，代码统一使用 Python。它读取游戏 EXE 和匹配的 IL2CPP JSON，提取原生方法证据，再用人工核实过的配方固化语义与控制流。公共分析代码位于 `shared/`，每个大型怪物（含独立变种，排除训练靶）在 `monster/<完整ID小写>.py` 有独立入口。SDK 与 `src` 之间只通过 JSON 文件交接，双方禁止导入或调用对方的代码。网页构建器位于 `src/processed_data/enemy_battle_logic`，只读取已解析的图 JSON，不能读取游戏资源、IL2CPP 或 EXE。
 
 ## 维护边界
 
@@ -15,23 +15,28 @@
 
 | 文件 | 职责 |
 |---|---|
-| `metadata.py` | 用 mmap 索引大体积 REFramework JSON，按需读取类型、继承字段和枚举 |
-| `native.py` | 只读 PE64，依据异常目录及方法地址确定函数边界，保留同地址的方法别名并校验原生字节 |
-| `manifest.py` | 按怪物与方法类别从当前元数据重新生成提取清单 |
-| `evidence.py` | 去重原生字节身份、地址别名和类型字段，保留每个类型的方法及参数上下文 |
-| `batch.py` | 将 34 个怪物及共同调度器的方法定位保存为 `.agents` 研究索引 |
-| `decompile.py`、`control_flow.py` | 通过官方 PyGhidra 接口提取伪 C、基本块、P-code、调用点和失败状态 |
-| `freeze.py` | 默认重新核对当前已维护的预览模型；`--all` 只在全部模型通过语义及覆盖检查后更新正式输入 |
-| `streaming.py` | 每份唯一原生代码保存一个压缩证据体；保留全部方法上下文，校验来源后支持续跑 |
-| `inventory.py`、`requests.py` | 核对实际 BTableList、导入闭包、资源主人、原生请求位置、动作 GUID 与参数变体 |
-| `full_run.py`、`workbench.py`、`native_viewer.py` | 全量运行、可浏览的动作目录和实际原生基本块研究图；不代替正式语义验收 |
-| `weights.py` | 解析已核实版本的静态初始化代码；97 个数组、320 对值只是常量覆盖，不代表 97 个选招点已恢复 |
-| `recipes/rules.py` | 固化通用条件及少数已核实的特殊条件 |
-| `recipes/em0001_local.py` | 在内存中构建雌火龙基础 4 子表，供上游配方合并，不输出正式基线文件 |
-| `recipes/em0001_upstream.py` | 固化一个 Combat 选招点及其局部调用链，并补充状态和计时器语义 |
-| `__main__.py` | CLI 及版本校验入口；`SUPPORTED_PROFILE` 是配方已核实的来源标识 |
+| `shared/metadata.py` | 用 mmap 索引大体积 REFramework JSON，按需读取类型、继承字段和枚举 |
+| `shared/native.py` | 只读 PE64，依据异常目录及方法地址确定函数边界，保留同地址的方法别名并校验原生字节 |
+| `shared/manifest.py` | 按怪物与方法类别从当前元数据重新生成提取清单 |
+| `shared/evidence.py` | 去重原生字节身份、地址别名和类型字段，保留每个类型的方法及参数上下文 |
+| `shared/batch.py` | 将 34 个怪物及共同调度器的方法定位保存为 `.agents` 研究索引 |
+| `shared/decompile.py`、`shared/control_flow.py` | 通过官方 PyGhidra 接口提取伪 C、基本块、P-code、调用点和失败状态 |
+| `shared/freeze.py` | 默认重新核对当前已维护的预览模型；`--all` 只在全部模型通过语义及覆盖检查后更新正式输入 |
+| `shared/streaming.py` | 每份唯一原生代码保存一个压缩证据体；保留全部方法上下文，校验来源后支持续跑 |
+| `shared/inventory.py`、`shared/requests.py` | 核对实际 BTableList、导入闭包、资源主人、原生请求位置、动作 GUID 与参数变体 |
+| `shared/full_run.py`、`shared/extraction.py` | 通过独立怪物模块提取资源闭包、全部原生方法上下文和已维护语义图；只输出 JSON，不构建网页 |
+| `shared/native_bindings.py`、`shared/semantic_recovery.py` | 从实际 x64 指令恢复调用参数、原生后继、比较、位置和状态写入；不使用丢失 SSA 身份的高层 P-code 偏移绑定参数 |
+| `shared/btable_machine.py`、`shared/common_conditions.py` | 按当前版本的真实指令追踪判断、动作让出、子表调用及准确恢复位置；公共条件只接受已核实的分类，缺少运行时输入保持未知 |
+| `shared/command_catalog.py`、`shared/leaf_conditions.py`、`shared/command_effects.py`、`shared/command_annotations.py` | 保留全部命令实现，按实际字段布局恢复窄范围比较与单项写入；局部写入不能代表命令全部副作用 |
+| `shared/static_pools.py` | 从原始初始化指令提取常量；静态 key 与权重不能直接转换成出招概率 |
+| `shared/weights.py` | 解析已核实版本的静态初始化代码；97 个数组、320 对值只是常量覆盖，不代表 97 个选招点已恢复 |
+| `shared/rules.py` | 固化通用条件及少数已核实的特殊条件 |
+| `monster/em0001_00_0.py` | 雌火龙独立入口，保留局部与上游配方，模型输入位于 `monster/models` |
+| `monster/em0002_00_0.py` | 火龙独立原生配方，核对 Combat/CommonAttack 的方法、选择器及动作请求覆盖；整场入口和部分条件仍在核查 |
+| `monster/em0166_00_0.py` | 独立入口与已核对的阶段应用分析；不能把其历史图用于其他怪物 |
+| `__main__.py`、`shared/cli.py` | 离线 CLI 入口；`shared/profile.py` 保存配方已核实的来源标识 |
 
-`manifest`、`decompile`、`verify` 可用于新版本研究。`freeze` 当前仅支持已核实的 **1.42.0.2** 配方；不是全怪物自动反编译器。当前模型有 46 个子表、408 个节点、15 个权重选择点；12 个局部流程完整恢复，另有 41 个未知流程节点。动作说明名绑定到资源、请求 GUID 与参数变体；实例 GUID 和基础 GUID 分别保留。项目已有 Shell 原名及注释按资源与 UID 保存，未核实触发关系时不绑定到具体动作。全局战斗入口、若干候选和部位判断仍未恢复，不能把页面命名或描述为完整战斗 AI。
+`manifest`、`decompile`、`verify` 可用于新版本研究。原生配方当前支持经过来源核对的 **1.42.0.2**。34 个独立模块均可通过 `build_model` 提取自身实际 BTableList、导入闭包和原生方法，公共机器追踪器不提供预先编造的怪物行为。当前 34 份已解析图合计覆盖 7,763 个原生方法上下文、8,171 个子表、103,964 个节点和 4,539 个权重选择点；仍保留 3,132 个未知流程节点、2,726 个未完整恢复条件和 854 个选择器边界。原先 46 表、408 节点的雌火龙图保留为固定回归样本。动作说明名绑定到资源、请求 GUID 与参数变体；实例 GUID 和基础 GUID 分别保留。Shell 原名及注释按资源与 UID 保存，未核实触发关系时不绑定到具体动作。全局 Combat 事件保持 partial，不能把导出成功描述为完整战斗 AI 已恢复。
 
 ## 环境与输入
 
@@ -74,26 +79,46 @@ python -m sdk.enemy_logic_exporter verify --exe $exe --evidence "$work/continued
 python -m sdk.enemy_logic_exporter --work-dir $work analyze --exe $exe --version 1.42.0.2 --ghidra $env:GHIDRA_INSTALL_DIR --output "$work/full-run/result" --cache-dir "$work/full-run/native"
 ```
 
-结果入口是 `result/index.html`，原生基本块图位于 `result/native-flow/index.html`，已审核模型预览位于 `result/semantic-preview/enemy_battle_logic`。页面、紧凑目录和运行回执打包为相邻的 `result.zip`，不包括原始证据缓存。原生图保留实际基本块后继、调用地址、同地址别名、已绑定动作位置及方法范围警告，按资源加载；其条件与状态含义仍属于待审核内容。必须同时查看 `run-result.json` 中的 `semanticRecovery`、`missingSemanticModels` 和 `releaseReady`，不能将完整批次退出成功写成全怪物语义恢复完成。
+结果只包含离线 JSON、运行回执与相邻 ZIP：`inventory.json`、`monster-scopes.json`、`action-requests.json`、`run-result.json` 及 `semantic-graphs/`。大型原生缓存不打包。必须查看 `semanticRecovery`、`missingSemanticModels` 和 `releaseReady`，不能将完整批次退出成功写成全怪物语义恢复完成。历史研究绘图器保留在 `.agents/player-battle-trees/refactor/legacy-renderers`，不再由 SDK 调用。
 
 3. **人工核实条件与状态机。** 阅读方法分支、状态编号和调用点，必要时对照反汇编。追踪 `_CommandArgArray` 字段偏移到资源参数索引、命令工厂类型、子表 GUID、动作 ID、参数变体、变量与计时器 GUID。参数数组顺序不能当作执行顺序。`table_<GUID>` 的编译状态与保存位置决定分支和继续执行的位置；动作请求与子表调用必须保存恢复位置。
 
+可在已有全量原生索引、命令实现缓存、资源清单和动作请求证据上运行 `recover`，逐个生成 34 个怪物的条件参数、动作名称、跨表调用、位置记录、状态写入和实现详情。命令工厂按实际类型查询，既覆盖 `app.btable.Em…BTableCommand`，也覆盖 `app.Em…BTableCommand`。导入字段必须是实际导出表类型，不能用偏移相同的静态随机字段覆盖。调用参数的索引及资源类型匹配与命令语义核查分别记录；空工厂、参数未唯一恢复及字段类型冲突保留边界。
+
+```powershell
+python -m sdk.enemy_logic_exporter recover --exe $exe --index "$work/full-run/native/index.json" --helpers "$work/per-monster/helpers/index.json" --inventory "$work/full-run/result/inventory.json" --requests "$work/full-run/result/action-requests.json" --output "$work/per-monster"
+```
+
+输出为 `commands/command-catalog.json`、按类型分片的命令实现 JSON，以及 `annotations/index.json` 和资源分片。每个怪物记录实际独立模块、资源闭包与原生方法上下文。命令与参数绑定、语义核查和整场战斗恢复分别记录。EM0166 阶段应用配方仍核对入口尾跳、Extend 方法、字节摘要与字段复制指令。结果中的 `semanticReviewComplete=false`、`releaseReady=false` 必须保留，不能将研究注释直接作为正式玩家图。
+
 4. **核实随机与运行时限制。** 静态数组中的 key 含义若未知就保留未知。核实候选排除、空集合回退、整数权重、随机整数取模及候选目标的连接。当前疲劳判断先于怒判断；普通分支权重 25 的路径先调用吐息子表，返回后再检查远距条件，不能直接说成 25% 概率后空翻。非空跳过列表缺少运行时信息时必须返回未知。
 
-5. **重新核对当前已维护的预览模型。** 默认 `freeze` 校验当前模型、规则、EXE/元数据摘要及模型中全部最小原生证据，再复制到预览固化目录；不会回退到旧的 11 子表配方。历史 `em0001_local` / `em0001_upstream` 配方仅用于对照。默认只将 `rules.v1.json` 和 `em0001.upstream.v1.json` 输出到工作目录 `frozen`，不会覆盖正式模板。配方是人工核实结论的编码，不能自动适配更新。
+5. **离线解析并核对玩家图。** SDK 的规则及未解析模型位于 `monster/models`。`extract --enemy EM0001_00_0` 通过该怪物模块读取解包 JSON、IL2CPP 与 EXE，核对来源和最小原生证据，输出含条件、动作身份、名称、续招及恢复位置的已解析图 JSON。缺少已维护模型时明确拒绝，不能生成占位图。`freeze` 同样只输出解析后的图；`freeze --all` 仍要求 34 个模型全部通过语义与覆盖检查。
+
+34 个怪物均可通过 `extract --index --helpers --inventory` 直接提取，无需在网页端绑定资源。索引、辅助实现和资源发现必须属于同一已核查版本；`--requests` 用独立动作请求清单检查覆盖。该方式仍保留未核实条件和 `semanticReviewComplete=false`，不能当作整场恢复完成。EM0160_50 的 BTableList 实际复用 Em0160_00 Combat，独立模块保留变种完整身份及其 Repel 资源；不能按编号前缀强求所有变种资源的主人。
+
+```powershell
+python -m sdk.enemy_logic_exporter extract --enemy EM0002_00_0 --exe $exe --index "$work/full-run/native/index.json" --helpers "$work/per-monster/helpers/index.json" --inventory "$work/full-run/result/inventory.json" --requests "$work/full-run/result/action-requests.json" --output "$work/extracted"
+python -m src.processed_data.enemy_battle_logic --template "$work/extracted/em0002_00_0.v1.json" --output "$work/preview"
+
+python -m sdk.enemy_logic_exporter extract-all --exe $exe --index "$work/full-run/native/index.json" --helpers "$work/per-monster/helpers/index.json" --inventory "$work/full-run/result/inventory.json" --requests "$work/full-run/result/action-requests.json" --output "$work/all-extracted"
+python -m src.processed_data.enemy_battle_logic --models "$work/all-extracted" --preview-all --output "$work/all-preview"
+```
 
 ```powershell
 python -m sdk.enemy_logic_exporter --work-dir $work freeze --exe $exe
-python -m src.processed_data.enemy_battle_logic --template "$work/frozen/em0001.upstream.v1.json" --rules "$work/frozen/rules.v1.json" --output "$work/preview"
+python -m src.processed_data.enemy_battle_logic --template "$work/frozen/em0001.upstream.v1.json" --output "$work/preview"
 ```
 
-现有研究缓存可通过 `--work-dir .agents/enemy-action-tree` 复用。确认生成结果、版本身份和差异后，才将两个固化 JSON 更新到 `src/processed_data/enemy_battle_logic/models`。预览结果位于 `$work/preview/enemy_battle_logic`。不要将伪 C、EXE 或 Ghidra 缓存作为正式构建依赖。
+现有研究缓存可通过 `--work-dir .agents/enemy-action-tree` 复用。确认生成结果、版本身份和差异后，将已解析的图 JSON 更新到 `src/processed_data/enemy_battle_logic/models`。该目录不保存待绑定模板或判断规则文件。预览结果位于 `$work/preview/enemy_battle_logic`。不要将伪 C、EXE 或 Ghidra 缓存作为正式构建依赖。
 
-正式流水线只交付 `enemy_battle_logic/index.html` 和各怪物的 `<enemyId>.html`，语义模型与图数据内嵌在离线页面中。Pages 和压缩包均使用这同一份输出，不另外发布研究索引、伪 C 或重复 JSON。同一怪物只能有一个正式模型；重复版本、来源冲突、断开的连接或图数据不一致会阻止发布。CI 无需 EXE 或 Ghidra；未提供 IL2CPP 时标明 `not_supplied`，资源结构检查不能证明原生代码没有变化。
+正式流水线只交付 `enemy_battle_logic/index.html` 和各怪物的 `<enemyId>.html`，语义模型与图数据内嵌在离线页面中。Pages 和压缩包均使用这同一份输出，不另外发布研究索引、伪 C 或重复 JSON。同一怪物只能有一个正式模型；重复版本、来源冲突、断开的连接或图数据不一致会阻止发布。CI 只读取已解析的图 JSON，不读取资源、IL2CPP、EXE，也不运行或安装 SDK。网页显示离线提取时记录的来源核对状态；CI 的 JSON 校验不能证明之后的游戏原生代码没有变化。
 
 正式范围是 EnemyData 中基础编号小于 1000 的完整 ID，排除训练靶 `EM0165_00_0`，当前为 34 个。全部怪物统一使用语义行动图；不得用资源清单、原生方法索引或整张未知表替代。默认构建必须同时具备 34 个模型、经过核实的 Combat 入口，以及 SDK 方法/动作请求位置与模型的覆盖核查。发现记录与摘要、版本必须一致；未进入模型的方法及未找到引用的资源要逐项说明证据和原因。这些静态验收只验证审核材料的一致性，不代替人工语义审核或游戏内验证。
 
-当前只有雌火龙局部模型，默认正式构建会明确拒绝缺少的 33 个模型。用显式 `--template` 可在 `.agents` 生成研究预览，预览不能通过正式发布检查。`freeze --all（从工作目录 reviewed 读取）` 只接收完整、经审核的语义输入，不会自动将方法清单转换成完整战斗逻辑。实际行动图从 Combat 进入、更新、BTable 切换、中断和恢复等事件入口开始；同一张图应保留条件、循环、调用、恢复位置及未知边界。
+当前网页模型目录已有 34 份实际提取的图 JSON，但全部仍是研究图；默认正式构建因战斗总入口和语义审核未完成而拒绝发布。用显式 `--template` 或 `--preview-all` 可在 `.agents` 生成研究预览，预览不能通过正式发布检查。`freeze --all（从工作目录 reviewed 读取）` 只接收完整、经审核的语义输入，不会自动将方法清单转换成完整战斗逻辑。图保留 Combat 进入、更新、BTable 切换、中断和恢复的实际已核实部分，异步请求只连接到等待调度的目标，不当作同步调用。未知命令的真实 void 调用方连续流可保留，但其副作用仍标未知；未恢复的 Boolean 不能伪造为 0 或整个命令的 opaque 运行时布尔输入。
+
+方法覆盖、原生字节位置覆盖和资源/类型/方法/命令/参数上下文覆盖分别记录。同址方法别名不能只靠地址 set 视为恢复完成；相同子表 GUID 出现在不同资源时保留独立图身份和 nativeTableGuid。非 Combat 的空声明资源不编造入口。逐候选跳过列表按各自参数槽绑定；多个真实池槽收敛到同一调用节点而当前候选契约不能表达时，保留原池和明确边界，不编造 PC、不合并不同筛选列表。真实动作 ID 与参数类名不同不代表绑定无效：核对唯一 GUID、所属参数槽及当前原生选择代码，保留两种类型及应用边界。缺少 ActionInfo 的已确认请求保留请求位置、原始身份和保存的恢复位置，不借用近似 GUID。
 
 原生研究索引只允许保存到 `.agents`。Git 中的正式模型只保留语义、资源绑定及最小原生证据，可以用 `evidenceCatalog` 复用共同证据，并通过带摘要的 `fragments` 拆分语义表。单个模型文件超过 10 MiB 提示审核，超过 25 MiB 拒绝读入；必须去重或分片，不能为缩小文件删除逻辑。旧的 34 个大型原生索引保存在 `.agents/enemy-logic-exporter/legacy-native-models`，不参与正式构建。
 

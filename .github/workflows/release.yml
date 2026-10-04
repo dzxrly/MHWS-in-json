@@ -45,7 +45,10 @@ jobs:
           $version = "$(Get-Date -AsUTC -Format 'yyyyMMdd-HHmmss')-$($env:GITHUB_SHA.Substring(0, 7))"
           "RELEASE_VERSION=$version" >> $env:GITHUB_ENV
 
-      - name: Export database and processed data
+      # Battle HTML reads only offline-extracted JSON committed under src models.
+      # Do not run the offline SDK, install its native-analysis dependencies,
+      # or provide EXE/IL2CPP/resource inputs to the battle HTML builder here.
+      - name: Export database and processed data (battle HTML from frozen JSON)
         run: python main.py
 
       - name: Build monster Pages from validated processed data

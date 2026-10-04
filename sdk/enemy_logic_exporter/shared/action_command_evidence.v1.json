@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "profile": {
+    "gameVersion": "1.42.0.2",
+    "exeSha256": "aa38eb46ae1f3c6c94fb2dd94af59b4665bd4c8ccee56bc36b88cf82397a5b4a",
+    "metadataSha256": "01ab8f96c9786f3707fc0fc0376eb2e34124eea2d61b749354cac6e124b323d1"
+  },
+  "commands": {
+    "app.btable.EmCommonCommand.cRequestAction": {
+      "type": "app.btable.EmCommonCommand.cRequestAction",
+      "method": "onExecute1236481",
+      "address": "0x144a20de0",
+      "end": "0x144a20f03",
+      "nativeSha256": "80284e182e212db68f8b6116e424355ed59f92b759b5f71725262cada3817a0a",
+      "returnType": "System.Void"
+    },
+    "app.btable.EmCommonCommand.cRequestActionSync": {
+      "type": "app.btable.EmCommonCommand.cRequestActionSync",
+      "method": "onExecute1236483",
+      "address": "0x144d2b630",
+      "end": "0x144d2b70d",
+      "nativeSha256": "e3c8afda9dc4cf328bbba84297a93e5d6201d026631879af5f9c5e97258d1ac9",
+      "returnType": "System.Void"
+    }
+  },
+  "layouts": {
+    "app.cEnemyBTableCommandWork": {
+      "<Accessor>k__BackingField": {
+        "type": "app.EnemyAccessor",
+        "offset": "0x28"
+      }
+    },
+    "app.cEnemyNetMemberInfo": {
+      "_HostMemberIndex": {
+        "type": "System.Int32",
+        "offset": "0x24"
+      },
+      "_SelfMemberIndex": {
+        "type": "System.Int32",
+        "offset": "0x20"
+      }
+    }
+  },
+  "semanticReviewComplete": false
+}

@@ -3,7 +3,7 @@
 import importlib.util
 import unittest
 
-from sdk.enemy_logic_exporter.requests import packed_request_stores
+from sdk.enemy_logic_exporter.shared.requests import packed_request_stores
 
 
 @unittest.skipUnless(importlib.util.find_spec("capstone"), "需要离线 SDK 的 capstone")
@@ -42,3 +42,17 @@ class RequestStoreTests(unittest.TestCase):
     def test_join_target_does_not_inherit_previous_constant(self):
         body = bytes.fromhex("4c89cb48b80400000038020000488983b0000000")
         self.assertEqual(packed_request_stores(body, 0x1000, block_starts=[0x100D]), [])
+
+    def test_operator_register_reused_after_request_preserves_prior_store(self):
+        # mov rdi,r9; mov qword [rdi+0xb0],4; mov rdi,rcx; ret.
+        # ReturnAreaCenter similarly reuses rdi for ReturnStack after its B0 store.
+        body = bytes.fromhex("4c89cf48c787b0000000040000004889cfc3")
+        result = packed_request_stores(body, 0x1000)
+        self.assertEqual(
+            [(r["address"], r["packedValue"]) for r in result], [("0x1003", 4)]
+        )
+
+    def test_back_edge_from_clobbered_alias_rejects_prior_store(self):
+        # The same store can be reached again after rdi became an unrelated object.
+        body = bytes.fromhex("4c89cf48c787b0000000040000004889cfebf0")
+        self.assertEqual(packed_request_stores(body, 0x1000), [])

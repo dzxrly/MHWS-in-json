@@ -4,11 +4,11 @@ from copy import deepcopy
 import json
 import unittest
 
-from sdk.enemy_logic_exporter.evidence import pack_methods, method_rows
-from sdk.enemy_logic_exporter.manifest import selected
-from src.processed_data.enemy_battle_logic.expressions import evaluate_expression
-from src.processed_data.enemy_battle_logic.predicates import RuleRegistry
-from src.processed_data.enemy_battle_logic.model_io import MODEL_LIMIT_BYTES, read_json
+from sdk.enemy_logic_exporter.shared.evidence import pack_methods, method_rows
+from sdk.enemy_logic_exporter.shared.manifest import selected
+from sdk.enemy_logic_exporter.shared.expressions import evaluate_expression
+from sdk.enemy_logic_exporter.shared.predicates import RuleRegistry
+from sdk.enemy_logic_exporter.shared.model_io import MODEL_LIMIT_BYTES, read_json
 from src.processed_data.enemy_battle_logic.audit import (
     validate_release_graph,
     discovery_digest,

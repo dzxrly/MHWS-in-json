@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "profile": {
+    "gameVersion": "1.42.0.2",
+    "exeSha256": "aa38eb46ae1f3c6c94fb2dd94af59b4665bd4c8ccee56bc36b88cf82397a5b4a",
+    "metadataSha256": "01ab8f96c9786f3707fc0fc0376eb2e34124eea2d61b749354cac6e124b323d1"
+  },
+  "evidence": {
+    "self_type": [
+      {
+        "type": "app.btable.EmCommonCommand.cCheckSelfType",
+        "method": "onExecute1236726",
+        "address": "0x1487d7950",
+        "end": "0x1487d7ac1",
+        "nativeSha256": "c5f000611e1d36cacfe33329348b11dc095d55ea1bf4ee2c8dbc6a9250e42d6c"
+      },
+      {
+        "type": "app.ActionGuideViewType",
+        "method": "getTYPEFromFixed408397",
+        "address": "0x14465caa0",
+        "end": "0x14465cac0",
+        "nativeSha256": "4eb4b5d087fb73f085a19de5ee8a9f3ba360d7604f1b09d370b347181ee9d366"
+      },
+      {
+        "type": "app.EnvironmentManager",
+        "method": "get_CurrentRank635618",
+        "address": "0x1490da3c0",
+        "end": "0x1490da473",
+        "nativeSha256": "16a4e04ce1a517a786a8b8407700410d06448f1ae1ac02851fb991174dcefb70"
+      },
+      {
+        "type": "ace.user_data.EnumMaker",
+        "method": "getEnumValue41979",
+        "address": "0x146bf8440",
+        "end": "0x146bf84e4",
+        "nativeSha256": "763387bdf153c5c184e447fdb710eb826bc534e09585310f77f0087a14fce882"
+      }
+    ],
+    "target_type": [
+      {
+        "type": "app.btable.EmCommonCommand.cCheckTargetType",
+        "method": "onExecute1236750",
+        "address": "0x148de8760",
+        "end": "0x148de89ce",
+        "nativeSha256": "38a4649a9df74d9025715eb4e33c035b81ff5bdd8faf4f02ced7a7a2f5005f29"
+      },
+      {
+        "type": "app.cEmModuleTarget",
+        "method": "getTarget544350",
+        "address": "0x1469caef0",
+        "end": "0x1469caf20",
+        "nativeSha256": "1119e147d3be68d51bb3ccfe90d309bc7c467f8cb8d75a22fbb7cd7d8d6bc488"
+      }
+    ],
+    "target_stun": [
+      {
+        "type": "app.btable.EmCommonCommand.cCheckTargetStatus",
+        "method": "onExecute1236646",
+        "address": "0x147915510",
+        "end": "0x1479155a0",
+        "nativeSha256": "d79812066eb8607fe2e681669a2138846b93d6740894274a5a4a0db03ba09481"
+      },
+      {
+        "type": "app.cEmModuleTarget",
+        "method": "getTarget544350",
+        "address": "0x1469caef0",
+        "end": "0x1469caf20",
+        "nativeSha256": "1119e147d3be68d51bb3ccfe90d309bc7c467f8cb8d75a22fbb7cd7d8d6bc488"
+      },
+      {
+        "type": "app.btable.EmCommonCommand.CheckStatus",
+        "method": "executeForTarget1236620",
+        "address": "0x146e4f3d0",
+        "end": "0x146e4f42f",
+        "nativeSha256": "2b52802696a8a7f557ab7d1223332a5c00a212368e57a27333eaa32837428ce7"
+      },
+      {
+        "type": "app.btable.EmCommonCommand.CheckStatus",
+        "method": "execute1236619",
+        "address": "0x146e4ee30",
+        "end": "0x146e4f3cf",
+        "nativeSha256": "04aaefeaa2a7925cbf9987b243975995b9b9bbb25a98fe0f696d84d2dccbd4fe"
+      },
+      {
+        "type": "app.btable.EmCommonCommand.CheckStatus",
+        "method": "execute_BadCondition1236622",
+        "address": "0x146e4f550",
+        "end": "0x146e4f918",
+        "nativeSha256": "5f6abe4ed2e75762c492d21cb7f18ad22c22b882c576f5dc70d1d51f8e8a0f3f"
+      },
+      {
+        "type": "app.HunterBadConditions.cHunterBadConditions",
+        "method": "get_Item494226",
+        "address": "0x14b10c050",
+        "end": "0x14b10c110",
+        "nativeSha256": "ff868f4c07f6658786e5dd309795341ac0303128b619b0074250ea8c590db305"
+      },
+      {
+        "type": "app.cEmModuleConditions",
+        "method": "isActive279723",
+        "address": "0x144918bd0",
+        "end": "0x144918d10",
+        "nativeSha256": "7e0535492ee1012b44c43156faa5a314c01a308e75b4287b934768646e7869d9"
+      }
+    ],
+    "break_parts": [
+      {
+        "type": "app.btable.EmCommonCommand.cCheckBreakParts",
+        "method": "onExecute1237067",
+        "address": "0x1459e3cb0",
+        "end": "0x1459e3d90",
+        "nativeSha256": "22da46c4760173cf09542895fb6b24dedd14d8b9130dce88f7e80176de1b9db0"
+      },
+      {
+        "type": "app.btable.EmCommonCommand.cSelectBreakPartsArg",
+        "method": "getBreakPartsIndex1237062",
+        "address": "0x1467587c0",
+        "end": "0x146758871",
+        "nativeSha256": "deeffe5a0b46770f533f9790c4da433d62891bc994d382f4abb50753bf590788"
+      },
+      {
+        "type": "app.user_data.EmParamParts",
+        "method": "getPartsBreakIndex579862",
+        "address": "0x1464237e0",
+        "end": "0x146423859",
+        "nativeSha256": "f5d7c8fc779982cf8c695225383bf354a9b34692f5fdce8dfd92d5485b855c5c"
+      }
+    ],
+    "unfair_active": [
+      {
+        "type": "app.btable.EmCommonCommand.cCheckUnfairRoutineActive",
+        "method": "onExecute1237081",
+        "address": "0x146758520",
+        "end": "0x146758678",
+        "nativeSha256": "017e9d05366d5d8c3e5f57e495492e261ef927e11f20ea264a87b504d9a7638b"
+      },
+      {
+        "type": "app.EnemyUtil",
+        "method": "checkTargetCharaUnfair869230",
+        "address": "0x145636f10",
+        "end": "0x145637808",
+        "nativeSha256": "7044671394e990c43a055e47f589e7e6841ec12a3d88f69a1c46e08af07b9163"
+      }
+    ]
+  }
+}

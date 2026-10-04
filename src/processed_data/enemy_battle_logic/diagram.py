@@ -79,6 +79,15 @@ def combined_diagram(graph):
             if node["kind"] == "call":
                 target = tables[node["targetTable"]]
                 edge(key, node_id(target["tableGuid"], target["entry"]), "call", "调用")
+            if node["kind"] == "mutation" and node.get("dispatchTarget"):
+                target = tables[node["dispatchTarget"]]
+                edge(
+                    key,
+                    node_id(target["tableGuid"], target["entry"]),
+                    "dispatch",
+                    "请求切换（等待调度）",
+                    asynchronous=True,
+                )
             if node["kind"] == "weighted_random":
                 for candidate in node["candidates"]:
                     edge(

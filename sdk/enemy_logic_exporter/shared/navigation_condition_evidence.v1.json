@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "profile": {
+    "gameVersion": "1.42.0.2",
+    "exeSha256": "aa38eb46ae1f3c6c94fb2dd94af59b4665bd4c8ccee56bc36b88cf82397a5b4a",
+    "metadataSha256": "01ab8f96c9786f3707fc0fc0376eb2e34124eea2d61b749354cac6e124b323d1"
+  },
+  "evidence": {
+    "destination_relation": [
+      {
+        "type": "app.btable.EmCommonCommand.cCheckDestinationRelation",
+        "method": "onExecute1237100",
+        "address": "0x147cb8e40",
+        "end": "0x147cb8ec5",
+        "nativeSha256": "a9b821d316d223cd546fbb251f802638e77180a1c45c782690c23c681de7e292"
+      },
+      {
+        "type": "app.EnemyUtil",
+        "method": "checkRelation869213",
+        "address": "0x1456355e0",
+        "end": "0x145635bc5",
+        "nativeSha256": "04805cd3b3332b07dd63eb0b836628920d0a96823a3dbd9fb6986982bec809cd"
+      },
+      {
+        "type": "native.helper",
+        "method": "attribute_bit_test",
+        "address": "0x14b10c220",
+        "end": "0x14b10c24a",
+        "nativeSha256": "6383eb1ef571c81029d584ac8075900252d7634c68b804afaf63c67aa1304292"
+      },
+      {
+        "type": "native.helper",
+        "method": "vec3_subtract",
+        "address": "0x14b10aa00",
+        "end": "0x14b10aa2e",
+        "nativeSha256": "c9e2f7b6ed40cb2ea69b45d44467fa25f3bb3f7c7471d21663f228fb19653809"
+      },
+      {
+        "type": "native.helper",
+        "method": "wall_attribute_copy",
+        "address": "0x1459dad30",
+        "end": "0x1459dad4b",
+        "nativeSha256": "a39da1d2111d16f5aeebbb17cd5bd4e3031d895ee8cae2529dbcecf60d3d0658"
+      }
+    ],
+    "unfair_active": [
+      {
+        "type": "app.btable.EmCommonCommand.cCheckUnfairRoutineActive",
+        "method": "onExecute1237081",
+        "address": "0x146758520",
+        "end": "0x146758678",
+        "nativeSha256": "017e9d05366d5d8c3e5f57e495492e261ef927e11f20ea264a87b504d9a7638b"
+      },
+      {
+        "type": "app.EnemyUtil",
+        "method": "checkTargetCharaUnfair869230",
+        "address": "0x145636f10",
+        "end": "0x145637808",
+        "nativeSha256": "7044671394e990c43a055e47f589e7e6841ec12a3d88f69a1c46e08af07b9163"
+      }
+    ],
+    "occluded": [
+      {
+        "type": "app.btable.EmCommonCommand.cCheckOccludedToDest",
+        "method": "onExecute1237038",
+        "address": "0x144748d80",
+        "end": "0x144748e78",
+        "nativeSha256": "37af4ac7d37d7dcab064ae1ec3c1261f7cd933ac6bdde9e55bc976ea6bcd62c5"
+      },
+      {
+        "type": "app.cEmModuleTarget",
+        "method": "checkOccluded544377",
+        "address": "0x1469cc4b0",
+        "end": "0x1469cc712",
+        "nativeSha256": "74d6d30a97e09e0b21622dff84cdd52f7199ff68d4aafdf0093c62ac49b637ba"
+      }
+    ]
+  },
+  "queryContracts": {
+    "destination_relation": {
+      "navigationQuery": {
+        "method": "app.VoxelDataManager.getDataInfoForNav",
+        "address": "0x14563bf40",
+        "position": "holder.Transform.Pos",
+        "nativeFloatArguments": [
+          50.0,
+          3.0
+        ],
+        "categoryByte": "Basic.Category==0 ? 2 : 4",
+        "nullableSingle": {
+          "hasValue": true,
+          "value": 2.5
+        },
+        "scope": "只命名已核实的原生参数，不把2.5/3/50解释成玩家高度阈值"
+      },
+      "wallQuery": {
+        "method": "app.VoxelDataManager.getWallInfoNearVector",
+        "address": "0x145507880",
+        "vector": "destination-self",
+        "dataInfo": "本次navigationQuery输出"
+      },
+      "wallLayout": {
+        "_Dist": "WALL_INFO._Data+0x00",
+        "_Attribute1": "WALL_INFO._Data+0x08",
+        "_MaskBits": "WALL_INFO._Data+0x10",
+        "_NaviAttribute": "WALL_INFO._Data+0x14"
+      },
+      "highFallback": {
+        "stageField": "app.cEmModuleArea._CurrentStageNo",
+        "stageValue": 0,
+        "areaField": "app.cEmModuleArea._CurrentAreaNo",
+        "areaValue": 2,
+        "rayType": {
+          "name": "TERRAIN_CHARACTER",
+          "value": 0
+        },
+        "componentTypeGlobal": "0x1547277c8",
+        "componentTypeStatus": "unknown",
+        "endpointDistanceOffset": 1.0,
+        "scope": "回退的组件身份与查询构造未完整核实，保留unknown"
+      },
+      "runtimeInputPolicy": "缺少原始字段/位值/查询输出时保持未知；禁止传入整个命令的最终布尔结果"
+    }
+  }
+}

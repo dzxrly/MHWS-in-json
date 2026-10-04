@@ -6,8 +6,8 @@ from pathlib import Path
 import unittest
 from unittest.mock import patch
 
-from sdk.enemy_logic_exporter.__main__ import ROOT, SUPPORTED_PROFILE, verify_profile
-from sdk.enemy_logic_exporter.manifest import selected
+from sdk.enemy_logic_exporter.shared.cli import ROOT, SUPPORTED_PROFILE, verify_profile
+from sdk.enemy_logic_exporter.shared.manifest import selected
 from sdk.il2cpp import upload_il2cpp
 from src.processed_data.enemy_battle_logic.diagram import combined_diagram, node_id
 from src.processed_data.enemy_battle_logic.viewer import render_html
@@ -15,7 +15,7 @@ from src.processed_data.enemy_battle_logic.viewer import render_html
 
 class SdkTests(unittest.TestCase):
     def test_offline_cli_registers_each_subcommand_once(self):
-        from sdk.enemy_logic_exporter.__main__ import parser
+        from sdk.enemy_logic_exporter.shared.cli import parser
 
         value = parser().parse_args(
             ["analyze", "--exe", "game.exe", "--version", "1.42.0.2"]
@@ -36,7 +36,7 @@ class SdkTests(unittest.TestCase):
 
     def test_version_mismatch_refuses_old_recipe(self):
         with patch(
-            "sdk.enemy_logic_exporter.__main__.digest", return_value="different"
+            "sdk.enemy_logic_exporter.shared.cli.digest", return_value="different"
         ):
             with self.assertRaisesRegex(ValueError, "Source version changed"):
                 verify_profile(Path("new.exe"), Path("new.json"), SUPPORTED_PROFILE)

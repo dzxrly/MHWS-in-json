@@ -46,7 +46,7 @@ def render_html(graph):
         "TITLE": escape(enemy + " · 行动逻辑大图"),
         "COUNTS": f"{coverage['localTables']} 个子表 · {coverage['nodes']} 个节点 · {coverage.get('weightedSelections', 0)} 个权重选择点",
         "SCOPE": escape(graph["scope"])
-        + f"。其中 {coverage.get('completeLocalTables', 0)} 个局部流程已核实，{coverage.get('unknownFlowNodes', 0)} 个节点仍未知。",
+        + f"。其中 {coverage.get('completeLocalTables', 0)} 个局部流程已核实，{coverage.get('unknownFlowNodes', 0)} 处后继与 {coverage.get('unknownConditions', 0)} 处条件仍待核实。",
         "CSS": (here / "viewer.css").read_text(encoding="utf-8"),
         "JS": (here / "viewer.js").read_text(encoding="utf-8"),
         "DATA": payload,

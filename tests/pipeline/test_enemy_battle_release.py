@@ -12,7 +12,6 @@ from zipfile import ZipFile
 from src.pipeline.package import zip_processed_output
 from src.pipeline.validation import validate_outputs
 from src.processed_data.enemy_battle_logic.definitions import (
-    DEFAULT_TEMPLATE,
     EXPECTED_ENEMY_IDS,
     read_models,
     output_names,
@@ -27,6 +26,9 @@ from src.processed_data.enemy_battle_logic.validation import (
 from src.processed_data.enemy_battle_logic.audit import validate_release_graph
 
 ROOT = Path(__file__).resolve().parents[2]
+DEFAULT_TEMPLATE = (
+    ROOT / "tests/fixtures/enemy_battle_logic/em0001.upstream.reference.v1.json"
+)
 
 
 class BattleReleaseTests(unittest.TestCase):
@@ -46,6 +48,7 @@ class BattleReleaseTests(unittest.TestCase):
                 path.suffix.lower() == ".exe"
                 or path.name == "il2cpp_dump.json"
                 or "sdk" in path.parts
+                or "MHWS-in-json" in path.parts
             ):
                 raise AssertionError(f"Production export read a research input: {path}")
             return original_open(path, *args, **kwargs)
@@ -53,7 +56,6 @@ class BattleReleaseTests(unittest.TestCase):
         with patch.object(Path, "open", json_only):
             cls.paths = export_battle_logic(
                 cls.processed,
-                ROOT / "MHWS-in-json/natives",
                 template_path=DEFAULT_TEMPLATE,
             )
         cls.html = (cls.processed / "enemy_battle_logic/EM0001_00_0.html").read_text(
@@ -80,7 +82,7 @@ class BattleReleaseTests(unittest.TestCase):
             return_value=incomplete,
         ):
             with self.assertRaisesRegex(ValueError, "缺少已恢复"):
-                export_battle_logic(target, ROOT / "MHWS-in-json/natives")
+                export_battle_logic(target)
         self.assertFalse(target.exists())
         self.assertEqual(len(EXPECTED_ENEMY_IDS), 34)
         self.assertNotIn("EM0165_00_0", EXPECTED_ENEMY_IDS)
@@ -142,7 +144,11 @@ class BattleReleaseTests(unittest.TestCase):
 
     def test_html_must_embed_same_graph_without_external_scripts(self):
         changed = deepcopy(self.graph)
-        changed["metadataVerification"] = "matched"
+        changed["metadataVerification"] = (
+            "not_supplied"
+            if self.graph["metadataVerification"] == "matched"
+            else "matched"
+        )
         with self.assertRaises(ValueError):
             validate_html(self.html, changed)
         with self.assertRaises(ValueError):

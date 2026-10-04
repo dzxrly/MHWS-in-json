@@ -1,7 +1,7 @@
 """Keep native successor graphs exact and avoid ambiguous action annotations."""
 
 import unittest
-from sdk.enemy_logic_exporter.native_viewer import compact_flow
+from sdk.enemy_logic_exporter.shared.native_flow import compact_flow
 
 
 class NativeViewerTests(unittest.TestCase):

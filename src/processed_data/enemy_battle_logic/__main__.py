@@ -1,53 +1,48 @@
-"""python -m src.processed_data.enemy_battle_logic --natives ... --output ..."""
+"""python -m src.processed_data.enemy_battle_logic --models ... --output ..."""
 
 import argparse
 import json
 from pathlib import Path
 
 from .exporter import export_battle_logic
-from .definitions import INDEX_NAME
-from src.shared.text.catalog import TextSource
+from .definitions import MODEL_DIR
+from .validation import validate_bundle
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="由语义模型构建怪物行动大图；--template 显式预览不参加发布"
+        description="从离线图 JSON 构建 HTML；无需资源、IL2CPP、EXE 或 SDK"
     )
     root = Path(__file__).resolve().parents[3]
-    parser.add_argument("--natives", type=Path, default=root / "MHWS-in-json/natives")
     parser.add_argument(
-        "--template",
-        type=Path,
-        help="指定单个固化模板；默认导出 models 中的全部正式模型",
+        "--models", type=Path, default=MODEL_DIR, help="SDK 离线提取的正式图目录"
+    )
+    parser.add_argument(
+        "--template", type=Path, help="显式预览单个已提取图，不参加发布"
     )
     parser.add_argument("--output", type=Path, default=root / "output/processed_data")
-    parser.add_argument("--rules", type=Path, help="待审核或已发布的固化规则 JSON")
-    metadata = root / "src/data/il2cpp_dump.json"
     parser.add_argument(
-        "--metadata",
-        type=Path,
-        default=metadata if metadata.exists() else None,
-        help="可选元数据 JSON；存在时核对固化规则的来源版本，不读取 EXE",
+        "--preview-all",
+        action="store_true",
+        help="显式预览目录内的研究图；保留未知标记，不通过正式发布验收",
     )
     args = parser.parse_args()
     paths = export_battle_logic(
         args.output,
-        args.natives,
+        models_dir=args.models,
         template_path=args.template,
-        metadata_path=args.metadata,
-        rules_path=args.rules,
-        text_db=TextSource.from_natives(args.natives).build(13),
+        research_preview=args.preview_all,
     )
-    from .validation import validate_bundle
-
-    index = validate_bundle(args.output, require_release=args.template is None)
+    index = validate_bundle(
+        args.output, require_release=args.template is None and not args.preview_all
+    )
     print(
         json.dumps(
-            {
-                "output": str(args.output.resolve()),
-                "files": [path.relative_to(args.output).as_posix() for path in paths],
-                "monsters": index["monsters"],
-            },
+            dict(
+                output=str(args.output.resolve()),
+                files=[path.relative_to(args.output).as_posix() for path in paths],
+                monsters=index["monsters"],
+            ),
             ensure_ascii=False,
         )
     )

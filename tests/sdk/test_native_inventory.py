@@ -3,8 +3,8 @@
 from pathlib import Path
 import unittest
 
-from sdk.enemy_logic_exporter.inventory import discover_inventory
-from sdk.enemy_logic_exporter.__main__ import SUPPORTED_PROFILE
+from sdk.enemy_logic_exporter.shared.inventory import discover_inventory
+from sdk.enemy_logic_exporter.shared.cli import SUPPORTED_PROFILE
 
 ROOT = Path(__file__).resolve().parents[2]
 

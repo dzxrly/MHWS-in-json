@@ -4,11 +4,11 @@ from copy import deepcopy
 from pathlib import Path
 import unittest
 
-from src.processed_data.enemy_battle_logic.builder import build_chain
+from sdk.enemy_logic_exporter.shared.builder import build_chain
 from src.processed_data.enemy_battle_logic.validation import validate_graph
 from src.processed_data.enemy_battle_logic.viewer import render_action_names
-from src.processed_data.enemy_battle_logic.action_names import action_identity
-from src.processed_data.enemy_battle_logic.resources import (
+from sdk.enemy_logic_exporter.shared.action_names import action_identity
+from sdk.enemy_logic_exporter.shared.resources import (
     Resources,
     typed,
     action_request_guid,

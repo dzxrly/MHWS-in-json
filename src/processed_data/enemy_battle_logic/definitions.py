@@ -7,48 +7,10 @@ import re
 from .model_io import load_model
 
 MODEL_DIR = Path(__file__).with_name("models")
-DEFAULT_TEMPLATE = MODEL_DIR / "em0001.upstream.v1.json"
-RULES_PATH = MODEL_DIR / "rules.v1.json"
+DEFAULT_TEMPLATE = MODEL_DIR / "em0001_00_0.v1.json"
 BUNDLE_DIR = "enemy_battle_logic"
 INDEX_NAME = f"{BUNDLE_DIR}/index.html"
-TRAINING_ENEMY_ID = "EM0165_00_0"
-# EnemyData snapshot. Keep variants separate and verify it against live resources.
-EXPECTED_ENEMY_IDS = (
-    "EM0001_00_0",
-    "EM0002_00_0",
-    "EM0002_50_0",
-    "EM0005_00_0",
-    "EM0008_00_0",
-    "EM0009_00_0",
-    "EM0021_00_0",
-    "EM0022_00_0",
-    "EM0046_00_0",
-    "EM0070_00_0",
-    "EM0071_00_0",
-    "EM0077_00_0",
-    "EM0078_00_0",
-    "EM0082_00_0",
-    "EM0100_51_0",
-    "EM0113_51_0",
-    "EM0150_00_0",
-    "EM0150_50_0",
-    "EM0151_00_0",
-    "EM0152_00_0",
-    "EM0153_00_0",
-    "EM0154_00_0",
-    "EM0155_00_0",
-    "EM0156_00_0",
-    "EM0157_00_0",
-    "EM0158_00_0",
-    "EM0159_00_0",
-    "EM0160_00_0",
-    "EM0160_50_0",
-    "EM0161_00_0",
-    "EM0162_00_0",
-    "EM0163_00_0",
-    "EM0164_50_0",
-    "EM0166_00_0",
-)
+from .scope import EXPECTED_ENEMY_IDS, TRAINING_ENEMY_ID
 
 
 @dataclass(frozen=True)
