@@ -17,14 +17,12 @@ def main():
     parser.add_argument(
         "--models", type=Path, default=MODEL_DIR, help="SDK 离线提取的正式图目录"
     )
-    parser.add_argument(
-        "--template", type=Path, help="显式预览单个已提取图，不参加发布"
-    )
+    parser.add_argument("--template", type=Path, help="单独导出一个已提取图")
     parser.add_argument("--output", type=Path, default=root / "output/processed_data")
     parser.add_argument(
         "--preview-all",
         action="store_true",
-        help="显式预览目录内的研究图；保留未知标记，不通过正式发布验收",
+        help="导出目录内的图，允许只包含部分怪物",
     )
     args = parser.parse_args()
     paths = export_battle_logic(

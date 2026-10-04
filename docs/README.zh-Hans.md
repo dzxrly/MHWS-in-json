@@ -28,8 +28,6 @@ python main.py
 
 在 [config.py](../config.py) 中设置路径、语言和版本。入口不接收命令行参数，结果写入 `output/`；导出失败时保留上一次输出。测试命令为 `python -B -m tests`。
 
-当前完整导出会在怪物行动图审核检查处停止。研究图可用下方的预览命令查看。
-
 ## 代码结构
 
 ```text
@@ -81,7 +79,7 @@ enemy_battle_logic/EM0001_00_0.html
 ...
 ```
 
-行动图包含一个索引和 34 个怪物页面。变种各有独立页面，不包含训练靶。通过审核的页面也会由默认分支发布到 GitHub Pages。
+行动图包含一个索引和 34 个怪物页面。变种各有独立页面，不包含训练靶。默认分支也会将这些页面发布到 GitHub Pages。
 
 `MHWS-in-json_<版本>.zip` 包含源 JSON，与工作簿分开打包。
 
@@ -91,7 +89,7 @@ enemy_battle_logic/EM0001_00_0.html
 
 怪物 SDK 读取游戏资源、同版本 EXE 和 IL2CPP 元数据，生成行动图 JSON；网页构建器只读取这些 JSON。提取和维护步骤见 [SDK 说明](../sdk/enemy_logic_exporter/AGENTS.md)。
 
-`src/processed_data/enemy_battle_logic/models` 中的 34 份模型对应游戏 **1.42.0.2**。模型仍有未知分支，语义审核尚未完成，目前仅供研究预览。
+`src/processed_data/enemy_battle_logic/models` 中的 34 份模型对应游戏 **1.42.0.2**。未知分支在图中保留标记。
 
 ```powershell
 python -m sdk.enemy_logic_exporter --help

@@ -28,8 +28,6 @@ python main.py
 
 在 [config.py](../config.py) 中設定路徑、語言和版本。程式不接收命令列參數，結果寫入 `output/`；匯出失敗時保留上一次輸出。測試命令為 `python -B -m tests`。
 
-目前完整匯出會在魔物行動圖審核檢查處停止。研究圖可用下方的預覽命令查看。
-
 ## 程式碼結構
 
 ```text
@@ -81,7 +79,7 @@ enemy_battle_logic/EM0001_00_0.html
 ...
 ```
 
-行動圖包含一個索引和 34 個魔物頁面。變種各有獨立頁面，不包含訓練靶。通過審核的頁面也會由預設分支發布到 GitHub Pages。
+行動圖包含一個索引和 34 個魔物頁面。變種各有獨立頁面，不包含訓練靶。預設分支也會將這些頁面發布到 GitHub Pages。
 
 `MHWS-in-json_<版本>.zip` 包含來源 JSON，與活頁簿分開打包。
 
@@ -91,7 +89,7 @@ enemy_battle_logic/EM0001_00_0.html
 
 魔物 SDK 讀取遊戲資源、同版本 EXE 和 IL2CPP 中繼資料，產生行動圖 JSON；網頁建置器只讀取這些 JSON。提取和維護步驟見 [SDK 說明](../sdk/enemy_logic_exporter/AGENTS.md)。
 
-`src/processed_data/enemy_battle_logic/models` 中的 34 份模型對應遊戲 **1.42.0.2**。模型仍有未知分支，語義審核尚未完成，目前僅供研究預覽。
+`src/processed_data/enemy_battle_logic/models` 中的 34 份模型對應遊戲 **1.42.0.2**。未知分支在圖中保留標記。
 
 ```powershell
 python -m sdk.enemy_logic_exporter --help

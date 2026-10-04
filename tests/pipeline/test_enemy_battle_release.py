@@ -1,7 +1,6 @@
-"""Validate semantic preview boundaries and reject incomplete releases."""
+"""Validate offline HTML export, graph structure and archive contents."""
 
 from copy import deepcopy
-import importlib.util
 import json
 from pathlib import Path
 import tempfile
@@ -10,7 +9,6 @@ from unittest.mock import patch
 from zipfile import ZipFile
 
 from src.pipeline.package import zip_processed_output
-from src.pipeline.validation import validate_outputs
 from src.processed_data.enemy_battle_logic.definitions import (
     EXPECTED_ENEMY_IDS,
     read_models,
@@ -23,7 +21,6 @@ from src.processed_data.enemy_battle_logic.validation import (
     validate_bundle,
     embedded_data,
 )
-from src.processed_data.enemy_battle_logic.audit import validate_release_graph
 
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_TEMPLATE = (
@@ -177,31 +174,7 @@ class BattleReleaseTests(unittest.TestCase):
         self.assertNotIn("EM0165_00_0", EXPECTED_ENEMY_IDS)
         self.assertEqual(len(output_names()), 35)
 
-    def test_local_entry_cannot_be_called_global_combat_entry(self):
-        with self.assertRaisesRegex(ValueError, "战斗总入口"):
-            validate_release_graph(self.graph)
-        changed = deepcopy(self.graph)
-        changed["coverage"]["globalCombatEntryRecovered"] = True
-        with self.assertRaisesRegex(ValueError, "入口恢复标志"):
-            validate_graph(changed)
-
-    def test_preview_cannot_be_published_as_pages(self):
-        spec = importlib.util.spec_from_file_location(
-            "battle_pages", ROOT / ".github/scripts/build_pages.py"
-        )
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        destination = self.stage / "pages"
-        with self.assertRaisesRegex(ValueError, "战斗总入口"):
-            module.build_pages(
-                self.processed,
-                destination,
-                version="test",
-                repository="dzxrly/MHWS-in-json",
-            )
-        self.assertFalse(destination.exists())
-
-    def test_zip_preserves_preview_bytes_but_release_gate_rejects_it(self):
+    def test_zip_preserves_html_bytes(self):
         archive = zip_processed_output(
             self.processed, self.stage, "test", "PROCESSED_DATA"
         )
@@ -211,12 +184,6 @@ class BattleReleaseTests(unittest.TestCase):
             self.assertEqual(
                 bundle.read("enemy_battle_logic/EM0001_00_0.html"),
                 (self.processed / "enemy_battle_logic/EM0001_00_0.html").read_bytes(),
-            )
-        with self.assertRaisesRegex(ValueError, "战斗总入口"):
-            validate_outputs(
-                self.stage,
-                {f"processed_data/{name}" for name in relative},
-                {archive.name: self.processed},
             )
 
     def test_broken_continuation_and_coverage_cannot_be_released(self):

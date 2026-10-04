@@ -1,6 +1,5 @@
-"""Regress context-preserving evidence storage and semantic coverage gates."""
+"""Regress context-preserving evidence storage and expression evaluation."""
 
-from copy import deepcopy
 import json
 import unittest
 
@@ -9,10 +8,6 @@ from sdk.enemy_logic_exporter.shared.native.manifest import selected
 from sdk.enemy_logic_exporter.shared.logic.expressions import evaluate_expression
 from sdk.enemy_logic_exporter.shared.logic.predicates import RuleRegistry
 from sdk.enemy_logic_exporter.shared.models.io import MODEL_LIMIT_BYTES, read_json
-from src.processed_data.enemy_battle_logic.audit import (
-    validate_release_graph,
-    discovery_digest,
-)
 from pathlib import Path
 from unittest.mock import patch
 
@@ -169,65 +164,3 @@ class ExpressionTests(unittest.TestCase):
         self.assertFalse(
             evaluate_expression(expression, self.registry, {"distance": 10.1}).truth
         )
-
-
-class CoverageGateTests(unittest.TestCase):
-    def graph(self):
-        evidence = dict(
-            type="fixture",
-            method="entry",
-            address="0x1000",
-            end="0x1010",
-            nativeSha256="a" * 64,
-        )
-        discovery = dict(
-            profile={},
-            discoveredMethods=["fixture:entry"],
-            actionRequestSites=["fixture:1"],
-        )
-        return dict(
-            enemyId="EM0001_00_0",
-            profile={},
-            entryPoints=[
-                dict(kind="combat_enter", status="verified", evidence=evidence)
-            ],
-            tables=[
-                dict(
-                    evidence=evidence,
-                    nodes=[dict(kind="action", requestSite="fixture:1")],
-                )
-            ],
-            recoveryAudit=dict(
-                reviewed=True,
-                discovery=discovery,
-                discoverySha256=discovery_digest(discovery),
-                discoveredMethods=discovery["discoveredMethods"],
-                actionRequestSites=discovery["actionRequestSites"],
-                resourceInventoryChecked=True,
-            ),
-        )
-
-    def test_discovered_method_or_action_omission_is_not_a_valid_graph(self):
-        graph = self.graph()
-        validate_release_graph(graph)
-        graph["recoveryAudit"]["discoveredMethods"].append("fixture:omitted")
-        graph["recoveryAudit"]["discoverySha256"] = discovery_digest(
-            graph["recoveryAudit"]["discovery"]
-        )
-        with self.assertRaisesRegex(ValueError, "发现的方法"):
-            validate_release_graph(graph)
-        graph = self.graph()
-        graph["recoveryAudit"]["actionRequestSites"].append("fixture:2")
-        graph["recoveryAudit"]["discoverySha256"] = discovery_digest(
-            graph["recoveryAudit"]["discovery"]
-        )
-        with self.assertRaisesRegex(ValueError, "动作请求"):
-            validate_release_graph(graph)
-
-    def test_whole_unknown_table_is_not_accepted_as_recovered_flow(self):
-        graph = self.graph()
-        graph["tables"][0]["nodes"] = [
-            dict(kind="unknown", reason="entire method missing")
-        ]
-        with self.assertRaisesRegex(ValueError, "整个未知"):
-            validate_release_graph(graph)

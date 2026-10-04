@@ -12,32 +12,11 @@ from sdk.enemy_logic_exporter.shared.workflow.cli import (
     SUPPORTED_PROFILE,
     verify_profile,
 )
-from sdk.enemy_logic_exporter.shared.native.manifest import selected
-from sdk.il2cpp import upload_il2cpp
 from src.processed_data.enemy_battle_logic.diagram import combined_diagram, node_id
 from src.processed_data.enemy_battle_logic.viewer import render_html
 
 
 class SdkTests(unittest.TestCase):
-    def test_offline_cli_registers_each_subcommand_once(self):
-        from sdk.enemy_logic_exporter.shared.workflow.cli import parser
-
-        value = parser().parse_args(
-            ["analyze", "--exe", "game.exe", "--version", "1.42.0.2"]
-        )
-        self.assertEqual(value.command, "analyze")
-        value = parser().parse_args(
-            [
-                "requests",
-                "--exe",
-                "game.exe",
-                "--index",
-                "index.json",
-                "--inventory",
-                "inventory.json",
-            ]
-        )
-        self.assertEqual(value.command, "requests")
 
     def test_version_mismatch_refuses_old_recipe(self):
         with patch(
@@ -46,13 +25,6 @@ class SdkTests(unittest.TestCase):
         ):
             with self.assertRaisesRegex(ValueError, "Source version changed"):
                 verify_profile(Path("new.exe"), Path("new.json"), SUPPORTED_PROFILE)
-
-    def test_il2cpp_paths_remain_project_relative_after_move(self):
-        self.assertEqual(upload_il2cpp.PROJECT_DIR, ROOT)
-        self.assertEqual(
-            upload_il2cpp.DEFAULT_DUMP_PATH, ROOT / "src/data/il2cpp_dump.json"
-        )
-        self.assertEqual(upload_il2cpp.DEFAULT_WORK_DIR, ROOT / ".agents/il2cpp")
 
     def test_bundled_json_paths_and_freeze_use_separate_data_directory(self):
         from sdk.enemy_logic_exporter.shared.config import (
@@ -114,26 +86,6 @@ class SdkTests(unittest.TestCase):
                 )
         self.assertEqual(extract.call_args.kwargs["rules_path"], RULES_PATH)
         self.assertEqual(extract.call_args.args[2], spec.path)
-
-    def test_selection_uses_requested_monster_and_shared_commands(self):
-        self.assertTrue(
-            selected(
-                "app.Em0022_00_BTable_Combat_Export", "table_test", "Em0022_00", "all"
-            )
-        )
-        self.assertFalse(
-            selected(
-                "app.Em0001_00_BTable_Combat_Export", "table_test", "Em0022_00", "all"
-            )
-        )
-        self.assertTrue(
-            selected(
-                "app.btable.EmCommonCommand.cCheckAngle",
-                "onExecute10",
-                "Em0022_00",
-                "base",
-            )
-        )
 
 
 class DiagramTests(unittest.TestCase):

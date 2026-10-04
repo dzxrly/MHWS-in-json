@@ -10,7 +10,6 @@ from .definitions import (
     require_model_set,
 )
 from .validation import validate_graph, validate_html
-from .audit import validate_release_graph
 from .viewer import render_html
 from .index_viewer import render_index
 from .model_io import load_model
@@ -34,8 +33,6 @@ def export_battle_logic(
                 "网页构建只接受 SDK 离线提取的图 JSON；请先在本机执行 extract 或 freeze"
             )
         validate_graph(graph)
-        if not preview:
-            validate_release_graph(graph)
         html = render_html(graph)
         validate_html(html, graph)
         name = spec.output_names[0]

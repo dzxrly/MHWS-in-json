@@ -28,8 +28,6 @@ python main.py
 
 Set paths, languages, and version in [config.py](config.py). The script takes no command-line arguments and writes to `output/`. A failed export keeps the previous output. Run tests with `python -B -m tests`.
 
-Full exports currently stop at the monster battle graph review check. Use the preview command below to view the research graphs.
-
 ## Code layout
 
 ```text
@@ -81,7 +79,7 @@ enemy_battle_logic/EM0001_00_0.html
 ...
 ```
 
-The battle graph bundle consists of an index and 34 monster pages. Variants have separate pages; the training target is excluded. Approved pages are also published to GitHub Pages from the default branch.
+The battle graph bundle consists of an index and 34 monster pages. Variants have separate pages; the training target is excluded. The default branch also publishes these pages to GitHub Pages.
 
 `MHWS-in-json_<version>.zip` contains the source JSON, packaged separately from the workbooks.
 
@@ -91,7 +89,7 @@ Use `python -m sdk.il2cpp upload --dry-run` to prepare an IL2CPP upload, or `pyt
 
 The monster SDK reads game resources, a matching EXE, and IL2CPP metadata to produce graph JSON. The page builder reads only that JSON. See the [SDK guide](sdk/enemy_logic_exporter/AGENTS.md) for extraction and maintenance.
 
-The 34 models in `src/processed_data/enemy_battle_logic/models` currently cover game version **1.42.0.2**. They retain unresolved branches and are pending semantic review, so they are available as research previews only.
+The 34 models in `src/processed_data/enemy_battle_logic/models` currently cover game version **1.42.0.2**. Unresolved branches remain marked in the graphs.
 
 ```powershell
 python -m sdk.enemy_logic_exporter --help

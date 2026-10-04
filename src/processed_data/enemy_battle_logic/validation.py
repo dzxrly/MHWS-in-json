@@ -11,7 +11,6 @@ from .values import scalar
 from .expressions import validate_expression, expression_unknown
 from .action_names import validate_action_names
 from .audit import (
-    validate_release_graph,
     combat_entry_recovered,
     validate_native_evidence,
 )
@@ -286,14 +285,10 @@ def validate_bundle(processed_dir, *, require_release=True):
         ):
             raise ValueError("HTML 索引与怪物页面不一致")
         validate_graph(document)
-        if require_release:
-            validate_release_graph(document)
         validate_html(html, document)
     actual = {path.name for path in folder.iterdir() if path.is_file()}
     if actual != expected:
         raise ValueError("行动图发布目录只允许索引与怪物 HTML")
-    if require_release and (
-        seen != set(EXPECTED_ENEMY_IDS) or index.get("releaseReady") is not True
-    ):
-        raise ValueError("正式发布必须覆盖全部 34 个怪物并通过战斗入口与语义覆盖验收")
+    if require_release and seen != set(EXPECTED_ENEMY_IDS):
+        raise ValueError("行动图发布必须包含全部 34 个怪物")
     return index

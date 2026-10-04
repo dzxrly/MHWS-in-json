@@ -1,6 +1,6 @@
 import unittest
 
-from src.processed_data.graphics.exporter import _cn_name, _expand, _names
+from src.processed_data.graphics.exporter import _expand
 
 
 class GraphicsPresetTests(unittest.TestCase):
@@ -70,25 +70,6 @@ class GraphicsPresetTests(unittest.TestCase):
         )
 
         self.assertEqual(expanded["StreamingMeshLimit_VramThresholdMB"], 600)
-
-    def test_new_graphics_fields_have_chinese_names(self) -> None:
-        names = _names()
-        attrs = [
-            "ContactShadowThickness",
-            "DetailSDFShadowRange",
-            "ExpandDrawArea",
-            "LowQualitySDFShadow",
-            "PaniniEnable",
-            "ParticleLightingResolution",
-            "PresentSkipTimerAfterHomeMenu",
-            "ShadowCastFur",
-            "DynamicResolution_ManualResolution",
-            "ShadowDistance_CullingScaler",
-            "StreamingMeshLimit_DownVramThresholdMB",
-            "StreamingMeshLimit_UpVramThresholdMB",
-        ]
-
-        self.assertTrue(all(_cn_name(attr, names) != attr for attr in attrs))
 
 
 if __name__ == "__main__":

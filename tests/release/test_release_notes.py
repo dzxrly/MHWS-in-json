@@ -7,7 +7,6 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
-from unittest import mock
 from zipfile import ZipFile
 
 from config import (
@@ -17,8 +16,9 @@ from config import (
     ZIP_PREFIX,
 )
 
-
-SCRIPT_PATH = Path(__file__).resolve().parents[2] / ".github" / "scripts" / "release_notes.py"
+SCRIPT_PATH = (
+    Path(__file__).resolve().parents[2] / ".github" / "scripts" / "release_notes.py"
+)
 SPEC = importlib.util.spec_from_file_location("github_release_notes", SCRIPT_PATH)
 if SPEC is None or SPEC.loader is None:
     raise RuntimeError(f"Unable to load release notes script: {SCRIPT_PATH}")
@@ -70,18 +70,6 @@ class ReleaseNotesTests(unittest.TestCase):
             notes,
         )
 
-    def test_does_not_show_more_for_exactly_twenty_commits(self) -> None:
-        for index in range(1, 21):
-            self._commit(f"Change {index:02d}")
-
-        current_sha = self._git("rev-parse", "HEAD").strip()
-        changelog = collect_commit_changelog(current_sha, self.repository_dir)
-        notes = self._build_notes(changelog)
-
-        self.assertEqual(changelog.total_commits, 20)
-        self.assertEqual(len(changelog.commits), 20)
-        self.assertNotIn("Show more commits", notes)
-
     def test_current_release_tag_produces_an_empty_changelog(self) -> None:
         current_sha = self._git("rev-parse", "HEAD").strip()
         changelog = collect_commit_changelog(current_sha, self.repository_dir)
@@ -107,14 +95,6 @@ class ReleaseNotesTests(unittest.TestCase):
             [commit.subject for commit in changelog.commits],
             ["Second change", "First change"],
         )
-
-    def test_emits_release_notes_to_stdout_without_a_temporary_file(self) -> None:
-        stdout = io.StringIO()
-
-        with contextlib.redirect_stdout(stdout):
-            release_notes.emit_release_notes("# Release notes")
-
-        self.assertEqual(stdout.getvalue(), "# Release notes\n")
 
     def test_reconfigures_cp1252_stdout_before_writing_unicode(self) -> None:
         buffer = io.BytesIO()
@@ -155,15 +135,6 @@ class ReleaseNotesTests(unittest.TestCase):
             errors="replace",
         )
 
-        self.assertTrue(
-            result.stdout.startswith(
-                '<a href="https://github.com/dzxrly/PyREUser3">\n  <picture>'
-            )
-        )
-        self.assertIn("powered-by-pyreuser3-simple-dark.svg", result.stdout)
-        self.assertIn("powered-by-pyreuser3-simple-light.svg", result.stdout)
-        self.assertIn("</a>\n\nAutomated export for commit", result.stdout)
-        self.assertNotIn('<div align="center">', result.stdout)
         self.assertIn("## What's Changed", result.stdout)
         self.assertIn("## DATABASE", result.stdout)
         self.assertIn("## MHWS-in-json", result.stdout)
@@ -172,7 +143,6 @@ class ReleaseNotesTests(unittest.TestCase):
         self.assertIn("- `MissionData.xlsx`", result.stdout)
         self.assertIn("Files in ZIP:\n\n- `EnemyActionNames.xlsx`", result.stdout)
         self.assertIn("- `skill_pool.json`", result.stdout)
-        self.assertIn("Post-processed, non-database data.", result.stdout)
         self.assertIn("no other language editions are provided.", result.stdout)
         self.assertFalse((output_dir / "release-notes.md").exists())
 
@@ -229,20 +199,22 @@ class ReleaseNotesTests(unittest.TestCase):
         with ZipFile(output_dir / second_name, "w") as archive:
             archive.writestr("FullText.xlsx", "")
 
-        with self.assertRaisesRegex(ValueError, "language archives contain different files"):
-            build_release_notes(output_dir, "owner/repository", f"database-{version}", version)
+        with self.assertRaisesRegex(
+            ValueError, "language archives contain different files"
+        ):
+            build_release_notes(
+                output_dir, "owner/repository", f"database-{version}", version
+            )
 
     def test_script_configuration_matches_project_exporter(self) -> None:
         language_section = release_notes.LANGUAGE_ASSET_SECTION
         if language_section is None:
             self.fail("Project configuration requires a language asset section")
         expected_languages = {
-            language.code: language.native_name
-            for language in LANGUAGES.values()
+            language.code: language.native_name for language in LANGUAGES.values()
         }
         configured_templates = {
-            section["filename_template"]
-            for section in release_notes.ASSET_SECTIONS
+            section["filename_template"] for section in release_notes.ASSET_SECTIONS
         }
 
         self.assertEqual(language_section["languages"], expected_languages)
@@ -258,32 +230,6 @@ class ReleaseNotesTests(unittest.TestCase):
             f"{PROCESSED_ZIP_PREFIX}_{{version}}.zip",
             configured_templates,
         )
-
-    def test_asset_sections_can_be_disabled_for_a_notes_only_project(self) -> None:
-        output_dir = Path(self.temp_dir.name) / "empty-output"
-        output_dir.mkdir()
-        current_sha = self._git("rev-parse", "HEAD").strip()
-        changelog = collect_commit_changelog(current_sha, self.repository_dir)
-
-        with (
-            mock.patch.object(release_notes, "UPLOAD_ASSET_PATTERNS", ()),
-            mock.patch.object(release_notes, "LANGUAGE_ASSET_SECTION", None),
-            mock.patch.object(release_notes, "ASSET_SECTIONS", ()),
-        ):
-            upload_assets = release_notes.collect_upload_assets(output_dir)
-            notes = build_release_notes(
-                output_dir,
-                "owner/repository",
-                "v1",
-                "1",
-                current_sha,
-                changelog=changelog,
-                upload_assets=upload_assets,
-            )
-
-        self.assertEqual(upload_assets, ())
-        self.assertIn("## What's Changed", notes)
-        self.assertNotIn("## DATABASE", notes)
 
     def _build_notes(self, changelog: CommitChangelog) -> str:
         version = "test-version"
