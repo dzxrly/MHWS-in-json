@@ -443,6 +443,8 @@ class UpstreamTests(unittest.TestCase):
             ROOT
             / "src/processed_data/enemy_battle_logic/models/em0001.upstream.v1.json",
         )
+        # Exercise this selection chain inside the expanded Combat entry model.
+        cls.graph["entry"] = cls.graph["selectionEntry"]
 
     def context(self, tired=False, angry=False):
         return {
@@ -527,7 +529,7 @@ class UpstreamTests(unittest.TestCase):
         )
         self.assertEqual(result["status"], "unknown")
         self.assertEqual(result["path"][-1]["node"], "18")
-        self.assertEqual(self.graph["coverage"]["unknownFlowNodes"], 4)
+        self.assertEqual(self.graph["coverage"]["unknownFlowNodes"], 41)
 
     def test_new_builder_still_reads_only_formal_and_resource_json(self):
         original = Path.open
@@ -544,7 +546,7 @@ class UpstreamTests(unittest.TestCase):
                 / "src/processed_data/enemy_battle_logic/models/em0001.upstream.v1.json",
             )
         self.assertEqual(graph["coverage"]["resourceTables"], 2)
-        self.assertEqual(graph["coverage"]["weightedSelections"], 3)
+        self.assertEqual(graph["coverage"]["weightedSelections"], 15)
 
 
 if __name__ == "__main__":

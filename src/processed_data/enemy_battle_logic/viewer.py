@@ -8,6 +8,28 @@ import re
 from .diagram import combined_diagram
 
 
+def render_action_names(graph):
+    catalog = graph.get("actionNameCatalog")
+    if not catalog:
+        return ""
+    rows = "".join(
+        "<tr>"
+        + "".join(
+            "<td>" + escape(str(row[key])) + "</td>"
+            for key in ("uniqueId", "name", "comment")
+        )
+        + "</tr>"
+        for row in catalog["shellCatalog"]
+    )
+    return (
+        '<details id="action-names"><summary>动作名称来源与原始名称目录</summary><p>'
+        + escape(catalog["boundary"])
+        + "</p><table><thead><tr><th>Shell UID</th><th>原名</th><th>原注释</th></tr></thead><tbody>"
+        + rows
+        + "</tbody></table></details>"
+    )
+
+
 def render_html(graph):
     here = Path(__file__).resolve().parent
     vendor = here / "vendor/elkjs"
@@ -28,6 +50,7 @@ def render_html(graph):
         "CSS": (here / "viewer.css").read_text(encoding="utf-8"),
         "JS": (here / "viewer.js").read_text(encoding="utf-8"),
         "DATA": payload,
+        "ACTION_NAMES": render_action_names(graph),
         "ELK": (vendor / "elk.bundled.js")
         .read_text(encoding="utf-8")
         .replace("</script", "<\\/script"),
@@ -37,7 +60,7 @@ def render_html(graph):
     }
     template = (here / "viewer.html").read_text(encoding="utf-8")
     return re.sub(
-        r"__(TITLE|COUNTS|SCOPE|CSS|JS|DATA|ELK|LICENSE)__",
+        r"__(TITLE|COUNTS|SCOPE|CSS|JS|DATA|ELK|LICENSE|ACTION_NAMES)__",
         lambda match: values[match[1]],
         template,
     )

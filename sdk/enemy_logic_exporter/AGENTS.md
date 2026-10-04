@@ -21,18 +21,21 @@
 | `evidence.py` | 去重原生字节身份、地址别名和类型字段，保留每个类型的方法及参数上下文 |
 | `batch.py` | 将 34 个怪物及共同调度器的方法定位保存为 `.agents` 研究索引 |
 | `decompile.py`、`control_flow.py` | 通过官方 PyGhidra 接口提取伪 C、基本块、P-code、调用点和失败状态 |
-| `freeze.py` | 全量核对经审核语义模型、方法与动作请求覆盖；全部通过后才更新固化输入 |
+| `freeze.py` | 默认重新核对当前已维护的预览模型；`--all` 只在全部模型通过语义及覆盖检查后更新正式输入 |
+| `streaming.py` | 每份唯一原生代码保存一个压缩证据体；保留全部方法上下文，校验来源后支持续跑 |
+| `inventory.py`、`requests.py` | 核对实际 BTableList、导入闭包、资源主人、原生请求位置、动作 GUID 与参数变体 |
+| `full_run.py`、`workbench.py`、`native_viewer.py` | 全量运行、可浏览的动作目录和实际原生基本块研究图；不代替正式语义验收 |
 | `weights.py` | 解析已核实版本的静态初始化代码；97 个数组、320 对值只是常量覆盖，不代表 97 个选招点已恢复 |
 | `recipes/rules.py` | 固化通用条件及少数已核实的特殊条件 |
 | `recipes/em0001_local.py` | 在内存中构建雌火龙基础 4 子表，供上游配方合并，不输出正式基线文件 |
 | `recipes/em0001_upstream.py` | 固化一个 Combat 选招点及其局部调用链，并补充状态和计时器语义 |
 | `__main__.py` | CLI 及版本校验入口；`SUPPORTED_PROFILE` 是配方已核实的来源标识 |
 
-`manifest`、`decompile`、`verify` 可用于新版本研究。`freeze` 当前仅支持已核实的 **1.42.0.2** 配方；不是全怪物自动反编译器。当前模型有 11 个子表、79 个节点、3 个权重选择点；8 个局部流程已恢复，另有 4 个未知节点。全局战斗入口、若干候选和部位判断仍未恢复，不能把页面命名或描述为完整战斗 AI。
+`manifest`、`decompile`、`verify` 可用于新版本研究。`freeze` 当前仅支持已核实的 **1.42.0.2** 配方；不是全怪物自动反编译器。当前模型有 46 个子表、408 个节点、15 个权重选择点；12 个局部流程完整恢复，另有 41 个未知流程节点。动作说明名绑定到资源、请求 GUID 与参数变体；实例 GUID 和基础 GUID 分别保留。项目已有 Shell 原名及注释按资源与 UID 保存，未核实触发关系时不绑定到具体动作。全局战斗入口、若干候选和部位判断仍未恢复，不能把页面命名或描述为完整战斗 AI。
 
 ## 环境与输入
 
-在项目根目录运行模块。Python 3、Ghidra 12.0.4、Ghidra 支持的 JDK 和 PyGhidra 3.0.2 已用于当前版本验证。JVM 是 Ghidra 自身的运行依赖，本项目不编写 Java 提取脚本。普通 JSON 构建无需安装这些研究依赖。
+在项目根目录运行模块。Python 3、Ghidra 12.0.4、Ghidra 支持的 JDK 和 PyGhidra 3.0.2、Capstone 5.0.6 已用于当前版本验证。JVM 是 Ghidra 自身的运行依赖，本项目不编写 Java 提取脚本。普通 JSON 构建无需安装这些研究依赖。
 
 ```powershell
 python -m pip install -r sdk/enemy_logic_exporter/requirements.txt
@@ -65,11 +68,19 @@ python -m sdk.enemy_logic_exporter verify --exe $exe --evidence "$work/continued
 
 每个方法证据保存类型、完整方法名、VA 起止、原生字节 SHA-256、参数与字段、地址别名、反编译状态和伪 C。schemaVersion=2 的研究索引将共同字节身份、地址别名和字段各保存一次，通过引用复用，但不能合并不同类型、参数布局或调用上下文。兼容旧行数组。基本块与 P-code 的状态为 `unreviewed_native_control_flow`，不能直接等同于动作图；固化前仍须逐个核实语义、来源 profile 与原生字节。
 
+完整批次使用 `analyze`，扫描全部 34 个大型怪物（排除训练靶），按实际 BTableList 和导入关系确定资源范围。它提取各行为表的全部 `table_` 和 `updateTableInpl` 方法，以原生字节身份去重、压缩并保存到 `.agents`，不会向 Git 写入大型原生 JSON。缓存续跑仍会核对 EXE、元数据、方法范围、原生字节与压缩体摘要。
+
+```powershell
+python -m sdk.enemy_logic_exporter --work-dir $work analyze --exe $exe --version 1.42.0.2 --ghidra $env:GHIDRA_INSTALL_DIR --output "$work/full-run/result" --cache-dir "$work/full-run/native"
+```
+
+结果入口是 `result/index.html`，原生基本块图位于 `result/native-flow/index.html`，已审核模型预览位于 `result/semantic-preview/enemy_battle_logic`。页面、紧凑目录和运行回执打包为相邻的 `result.zip`，不包括原始证据缓存。原生图保留实际基本块后继、调用地址、同地址别名、已绑定动作位置及方法范围警告，按资源加载；其条件与状态含义仍属于待审核内容。必须同时查看 `run-result.json` 中的 `semanticRecovery`、`missingSemanticModels` 和 `releaseReady`，不能将完整批次退出成功写成全怪物语义恢复完成。
+
 3. **人工核实条件与状态机。** 阅读方法分支、状态编号和调用点，必要时对照反汇编。追踪 `_CommandArgArray` 字段偏移到资源参数索引、命令工厂类型、子表 GUID、动作 ID、参数变体、变量与计时器 GUID。参数数组顺序不能当作执行顺序。`table_<GUID>` 的编译状态与保存位置决定分支和继续执行的位置；动作请求与子表调用必须保存恢复位置。
 
 4. **核实随机与运行时限制。** 静态数组中的 key 含义若未知就保留未知。核实候选排除、空集合回退、整数权重、随机整数取模及候选目标的连接。当前疲劳判断先于怒判断；普通分支权重 25 的路径先调用吐息子表，返回后再检查远距条件，不能直接说成 25% 概率后空翻。非空跳过列表缺少运行时信息时必须返回未知。
 
-5. **生成待审核的固化结果。** `freeze` 先校验已核实版本的 EXE/元数据摘要及两组证据，再固化规则、在内存中构建局部表并合并为上游模型。默认只将 `rules.v1.json` 和 `em0001.upstream.v1.json` 输出到工作目录 `frozen`，不会覆盖正式模板。配方是人工核实结论的编码，不能自动适配更新。
+5. **重新核对当前已维护的预览模型。** 默认 `freeze` 校验当前模型、规则、EXE/元数据摘要及模型中全部最小原生证据，再复制到预览固化目录；不会回退到旧的 11 子表配方。历史 `em0001_local` / `em0001_upstream` 配方仅用于对照。默认只将 `rules.v1.json` 和 `em0001.upstream.v1.json` 输出到工作目录 `frozen`，不会覆盖正式模板。配方是人工核实结论的编码，不能自动适配更新。
 
 ```powershell
 python -m sdk.enemy_logic_exporter --work-dir $work freeze --exe $exe

@@ -14,9 +14,11 @@ from .audit import (
     validate_native_evidence,
 )
 from .expressions import validate_expression, expression_unknown
+from .action_names import validate_action_names
 
 
 def validate_graph(graph):
+    validate_action_names(graph)
     if graph.get("documentType", "enemy_battle_logic") != "enemy_battle_logic":
         raise ValueError("正式图只接受语义行动模型，不能接受原生索引或资源清单")
     if graph.get("enemyId") == TRAINING_ENEMY_ID:

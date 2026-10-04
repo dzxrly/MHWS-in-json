@@ -14,6 +14,26 @@ from src.processed_data.enemy_battle_logic.viewer import render_html
 
 
 class SdkTests(unittest.TestCase):
+    def test_offline_cli_registers_each_subcommand_once(self):
+        from sdk.enemy_logic_exporter.__main__ import parser
+
+        value = parser().parse_args(
+            ["analyze", "--exe", "game.exe", "--version", "1.42.0.2"]
+        )
+        self.assertEqual(value.command, "analyze")
+        value = parser().parse_args(
+            [
+                "requests",
+                "--exe",
+                "game.exe",
+                "--index",
+                "index.json",
+                "--inventory",
+                "inventory.json",
+            ]
+        )
+        self.assertEqual(value.command, "requests")
+
     def test_version_mismatch_refuses_old_recipe(self):
         with patch(
             "sdk.enemy_logic_exporter.__main__.digest", return_value="different"

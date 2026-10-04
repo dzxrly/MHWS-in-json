@@ -18,6 +18,31 @@ from unittest.mock import patch
 
 
 class EvidenceTests(unittest.TestCase):
+    def test_btable_spelling_variants_and_interrupt_manager_are_discovered(self):
+        self.assertTrue(
+            selected(
+                "app.Em0152_00_Btable_Combat_Export", "table_guid", "Em0152_00", "all"
+            )
+        )
+        self.assertTrue(
+            selected(
+                "app.Em0001_00_Btable_Ride_Export",
+                "updateTableInpl",
+                "Em0001_00",
+                "base",
+            )
+        )
+        self.assertTrue(
+            selected(
+                "app.cEmAIStateManager", "onBeforePushInterrupt", "Em0001_00", "all"
+            )
+        )
+        self.assertFalse(
+            selected(
+                "app.Em0152_00_Btable_Combat_Export", "table_guid", "Em0001_00", "all"
+            )
+        )
+
     def test_shared_code_does_not_merge_different_type_contexts(self):
         base = dict(
             address="0x1000",

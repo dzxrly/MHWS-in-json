@@ -18,6 +18,7 @@ SCHEDULER_TYPES = {
     "app.cMasterEnemyControllerEntity",
     "app.cEnemyBTableManager",
     "app.cEnemyControllerEntityBase",
+    "app.cEmAIStateManager",
 }
 
 
@@ -25,6 +26,8 @@ def relevant_type(name, enemy):
     return (
         name in SCHEDULER_TYPES
         or name == "app.cEnemyContext"
+        or name.startswith(("app.cEmAIState", "app.cEmAIInterrupt"))
+        or name.casefold().startswith(f"app.{enemy}_btable".casefold())
         or name.startswith(
             (
                 f"app.{enemy}_BTable",
@@ -64,7 +67,10 @@ def selected(name, method, enemy, selection):
     if selection == "all":
         # Include parent, scheduler and special-command methods, not only Export.
         return relevant_type(name, enemy) and "[]" not in name
-    enemy_type = name.startswith(f"app.{enemy}_BTable_") and "<" not in name
+    enemy_type = (
+        name.casefold().startswith(f"app.{enemy}_btable_".casefold())
+        and "<" not in name
+    )
     base_type = (
         name.startswith("app.btable.Em") or name.startswith("ace.btable.c")
     ) and "<" not in name

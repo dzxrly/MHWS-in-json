@@ -60,8 +60,8 @@ def label(node):
     if kind == "action":
         action = node["action"]
         return (
-            "请求动作：" + action["actionClass"],
-            "参数变体：" + action["parameterVariantGuid"],
+            "请求动作：" + action.get("displayName", action["actionClass"]),
+            action["actionClass"] + "；参数变体：" + action["parameterVariantGuid"],
         )
     if kind == "call":
         return "调用子表", node["targetTable"] + "；返回后恢复节点 " + node["resume"]

@@ -73,6 +73,16 @@ def parser():
     decompile.add_argument("--output", type=Path)
     decompile.add_argument("--limit", type=int)
     decompile.add_argument("--timeout", type=int, default=30)
+    decompile.add_argument(
+        "--cache-dir", type=Path, help="在 .agents 按原生字节身份压缩缓存，支持续跑"
+    )
+    decompile.add_argument(
+        "--reuse",
+        type=Path,
+        action="append",
+        default=[],
+        help="复用已经校验且带控制流的研究证据",
+    )
     verify = commands.add_parser("verify", help="核对证据摘要与当前 EXE")
     verify.add_argument("--exe", type=Path, required=True)
     verify.add_argument("--evidence", type=Path, required=True)
@@ -85,6 +95,35 @@ def parser():
     )
     index.add_argument("--version", required=True)
     index.add_argument("--output", type=Path)
+    requests = commands.add_parser(
+        "requests", help="从压缩原生证据发现显式动作请求及参数变体；不推断完整控制流"
+    )
+    requests.add_argument("--index", type=Path, required=True)
+    requests.add_argument("--inventory", type=Path, required=True)
+    requests.add_argument("--exe", type=Path, required=True)
+    requests.add_argument(
+        "--metadata", type=Path, default=ROOT / "src/data/il2cpp_dump.json"
+    )
+    requests.add_argument("--natives", type=Path, default=ROOT / "MHWS-in-json/natives")
+    requests.add_argument("--output", type=Path)
+    analyze = commands.add_parser(
+        "analyze",
+        help="完整运行全部大型怪物的资源、原生证据及动作请求分析，保留语义发布验收",
+    )
+    analyze.add_argument("--exe", type=Path, required=True)
+    analyze.add_argument("--version", required=True)
+    analyze.add_argument(
+        "--metadata", type=Path, default=ROOT / "src/data/il2cpp_dump.json"
+    )
+    analyze.add_argument("--natives", type=Path, default=ROOT / "MHWS-in-json/natives")
+    analyze.add_argument(
+        "--ghidra", type=Path, default=os.environ.get("GHIDRA_INSTALL_DIR")
+    )
+    analyze.add_argument("--project-dir", type=Path)
+    analyze.add_argument("--project-name")
+    analyze.add_argument("--index", type=Path, help="复用来源摘要已匹配的全量索引")
+    analyze.add_argument("--cache-dir", type=Path)
+    analyze.add_argument("--output", type=Path)
     freeze = commands.add_parser(
         "freeze",
         help="执行已人工核实的固化配方；全怪物必须提供语义模型，不能生成占位索引",
@@ -140,6 +179,22 @@ def main():
                 "Supply --ghidra (or GHIDRA_INSTALL_DIR) and positive timeout/limit"
             )
         value = json.loads(args.manifest.read_text(encoding="utf-8"))
+        if args.cache_dir:
+            from .streaming import extract_cached
+
+            if args.limit is not None:
+                raise ValueError("全量缓存提取不接受 --limit，请提供所需范围的清单")
+            extract_cached(
+                value,
+                args.exe,
+                args.cache_dir,
+                args.project_dir or work / "ghidra-projects",
+                args.ghidra,
+                project_name=args.project_name,
+                timeout=args.timeout,
+                reuse=args.reuse,
+            )
+            return
         extract(
             value,
             args.exe,
@@ -170,9 +225,36 @@ def main():
             len(result["nativeCode"]),
             "unique code ranges",
         )
+    elif args.command == "analyze":
+        from .full_run import run_all
+
+        if not args.ghidra:
+            raise ValueError("完整离线分析需要 --ghidra")
+        run_all(
+            args.exe,
+            args.metadata,
+            args.natives,
+            args.output or work / "full-run",
+            args.version,
+            args.ghidra,
+            args.project_dir or work / "ghidra-projects",
+            project_name=args.project_name,
+            index_path=args.index,
+            cache_dir=args.cache_dir,
+        )
+    elif args.command == "requests":
+        from .requests import discover_requests
+
+        discover_requests(
+            args.index,
+            args.inventory,
+            args.exe,
+            args.metadata,
+            args.natives,
+            args.output or work / "action-requests.json",
+        )
     elif args.command == "freeze":
-        from .recipes import rules, em0001_local, em0001_upstream
-        from .weights import recover
+        from .freeze import freeze_current_preview
 
         if args.all:
             from .freeze import freeze_reviewed_models
@@ -187,19 +269,10 @@ def main():
             )
             return
 
-        verify_profile(args.exe, args.metadata, SUPPORTED_PROFILE)
-        for name in ("decompiled.json", "continued-python.json"):
-            verify_rows(args.exe, read_rows(work / name), require_completed=True)
         output = args.output or work / "frozen"
-        output.mkdir(parents=True, exist_ok=True)
-        # No files are frozen until all source identity/evidence checks pass.
-        write_json(
-            work / "recovered-weights.json",
-            recover(read_rows(work / "continued-python.json")),
+        freeze_current_preview(
+            output, args.exe, args.metadata, args.natives, SUPPORTED_PROFILE
         )
-        rules.main(work, args.metadata, output, SUPPORTED_PROFILE)
-        base_model = em0001_local.build(work, args.natives, SUPPORTED_PROFILE)
-        em0001_upstream.main(work, args.natives, output, base_model)
         print("FROZEN OUTPUT", output)
 
 

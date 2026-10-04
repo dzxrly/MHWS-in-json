@@ -6,6 +6,14 @@ from pathlib import Path, PurePosixPath
 
 from .predicates import scalar
 
+EMPTY_GUID = "00000000-0000-0000-0000-000000000000"
+
+
+def action_request_guid(record):
+    """Reviewed cID.ActionGuid getter: nonempty base GUID, otherwise instance GUID."""
+    base = record.get("_BaseActionGuid", EMPTY_GUID)
+    return record["_InstanceGuid"] if base.casefold() == EMPTY_GUID else base
+
 
 def typed(value):
     if not isinstance(value, dict) or len(value) != 1:
@@ -83,6 +91,25 @@ class Resources:
     def reference(self, wrapper):
         return self.resolve(typed(wrapper)[1]["path"])
 
+    def table_references(self, value, *, allow_missing=False):
+        if isinstance(value, dict):
+            for name, body in value.items():
+                if (
+                    name == "ace.btable.user_data.BTable"
+                    and isinstance(body, dict)
+                    and body.get("path")
+                ):
+                    try:
+                        yield self.resolve(body["path"])
+                    except FileNotFoundError:
+                        if not allow_missing:
+                            raise
+                else:
+                    yield from self.table_references(body, allow_missing=allow_missing)
+        elif isinstance(value, list):
+            for item in value:
+                yield from self.table_references(item, allow_missing=allow_missing)
+
     def factories(self, table):
         bank = self.read(self.reference(table["_OrderBank"]))
         result = []
@@ -119,6 +146,32 @@ class Resources:
             raise ValueError("计时器 GUID 无法唯一绑定")
         return matches[0]
 
+    def action_parameter_entry(self, source, guid, visited=()):
+        """Resolve serialized base-action placeholders along their declared owner link."""
+        source = self.resolve(source)
+        if source in visited:
+            raise ValueError("基础动作参数引用成环")
+        asset = self.read(source)
+        matches = [
+            (i, typed(r)[1])
+            for i, r in enumerate(asset["_ActionInfoList"])
+            if typed(r)[1]["_ActionGuid"].casefold() == str(guid).casefold()
+        ]
+        if len(matches) != 1:
+            raise ValueError("动作参数无法通过动作 GUID 唯一绑定")
+        index, info = matches[0]
+        base = asset.get("_BaseActionParam")
+        if (
+            base
+            and typed(base)[1].get("path")
+            and info.get("_IsBaseAction")
+            and not info.get("_OverrideOwnerAction")
+        ):
+            return self.action_parameter_entry(
+                self.reference(base), guid, (*visited, source)
+            )
+        return source, asset, index, info, [*visited, source]
+
     def action(self, table, argument):
         index = scalar(argument["_EditAssetIndex"])
         guid = scalar(argument["_EditActionGuid"])
@@ -142,20 +195,14 @@ class Resources:
         matches = [
             typed(r)[1]
             for r in records
-            if typed(r)[1]["_InstanceGuid"].casefold() == str(guid).casefold()
+            if action_request_guid(typed(r)[1]).casefold() == str(guid).casefold()
         ]
         if len(matches) != 1:
             raise ValueError(f"动作 GUID 无法唯一绑定：{guid}")
-        parameter_source = self.reference(asset["_ParamAsset"])
-        parameter_asset = self.read(parameter_source)
-        parameter_matches = [
-            (i, typed(r)[1])
-            for i, r in enumerate(parameter_asset["_ActionInfoList"])
-            if typed(r)[1]["_ActionGuid"].casefold() == str(guid).casefold()
-        ]
-        if len(parameter_matches) != 1:
-            raise ValueError("动作参数无法通过动作 GUID 唯一绑定")
-        parameter_index, info = parameter_matches[0]
+        declared_parameter_source = self.reference(asset["_ParamAsset"])
+        parameter_source, parameter_asset, parameter_index, info, parameter_chain = (
+            self.action_parameter_entry(declared_parameter_source, guid)
+        )
         if str(variant) == "00000000-0000-0000-0000-000000000000":
             selected = parameter_asset["_ActionClassList"][parameter_index]
             parameter_pointer = f"/_ActionClassList/{parameter_index}"
@@ -181,10 +228,19 @@ class Resources:
         return {
             "assetIndex": index,
             "actionGuid": guid,
+            "instanceActionGuid": matches[0]["_InstanceGuid"],
+            "actionGuidBinding": (
+                "instance_guid"
+                if matches[0].get("_BaseActionGuid", EMPTY_GUID).casefold()
+                == EMPTY_GUID
+                else "base_guid"
+            ),
             "parameterVariantGuid": variant,
             "actionClass": matches[0]["_Class"],
             "source": source,
             "parameterAsset": parameter_source,
+            "declaredParameterAsset": declared_parameter_source,
+            "parameterResolutionChain": parameter_chain,
             "parameterBodyPointer": parameter_pointer,
             "parameterInfo": info,
             "parameterType": parameter_type,

@@ -12,6 +12,7 @@ from .definitions import DEFAULT_TEMPLATE
 from .model_io import file_digest, load_model
 from .audit import combat_entry_recovered
 from .expressions import evaluate_expression, expression_unknown
+from .action_names import ActionNames
 
 
 def build_chain(
@@ -33,6 +34,9 @@ def build_chain(
         metadata_status = "matched"
     resources = resources if resources is not None else Resources(natives)
     resources.accessed.clear()
+    names = ActionNames(
+        resources, model["enemyId"], model.get("actionNameBindings", ())
+    )
     definitions = model.get("resources") or {
         model["resource"]: {"structureSignature": model["structureSignature"]}
     }
@@ -44,9 +48,36 @@ def build_chain(
             raise ValueError("行为表结构与固化模板不匹配，必须重新核实原生控制流")
         sources[source] = body, factories
     prefix = "app.Em" + model["enemyId"][2:9] + "_"
-    if not any(
+    own_export = any(
         body["_ExportBTableType"].startswith(prefix) for body, _ in sources.values()
-    ):
+    )
+    owner = "Em" + model["enemyId"][2:9]
+    list_path = f"STM/GameDesign/Enemy/{owner[:6]}/{owner[7:]}/BTable/{owner}_BTableList.user.3.json"
+    try:
+        listed = resources.read(list_path)
+    except FileNotFoundError:
+        listed = None
+    if listed is not None:
+        declared = set(resources.table_references(listed, allow_missing=True))
+        pending, visited = list(declared), set()
+        pending.sort(key=lambda source: source not in sources, reverse=True)
+        while set(sources) - declared and pending:
+            source = pending.pop()
+            if source in visited:
+                continue
+            visited.add(source)
+            imports = set(
+                resources.table_references(
+                    resources.read(source)["_ImportBTableList"], allow_missing=True
+                )
+            )
+            declared.update(imports)
+            pending.extend(imports - visited)
+        if set(sources) - declared:
+            raise ValueError(
+                "怪物模型使用了 BTableList 及导入资源之外的行为表，不能复制其他怪物的图"
+            )
+    elif not own_export:
         raise ValueError("怪物模型未绑定本怪物的行为资源，不能复制其他怪物的图")
     graph = deepcopy(model)
     table_ids = {table["tableGuid"] for table in graph["tables"]}
@@ -121,7 +152,7 @@ def build_chain(
                     )
                 unknown_conditions += node["predicate"]["status"] != "verified"
             elif node["kind"] == "action":
-                node["action"] = resources.action(body, argument)
+                node["action"] = names.bind(resources.action(body, argument))
             elif node["kind"] == "mutation":
                 if node["effect"] == "set_timer_state":
                     node["timerGuid"] = scalar(argument["_TargetVariableIndex"])
@@ -142,6 +173,7 @@ def build_chain(
         if node["kind"] == "condition"
     )
     graph["rules"] = registry.data
+    graph["actionNameCatalog"] = names.catalog()
     graph["sourceHashes"] = {
         source: resources.hashes[source] for source in sorted(resources.accessed)
     }

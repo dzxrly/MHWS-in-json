@@ -416,5 +416,82 @@
         "nativeSha256": "1d4b97901902e6c001fb528353510d149db7f01f9466516329cc330288943603"
       }
     ]
+  },
+  "actionGuidContract": {
+    "summary": "ActionID.cID.ActionGuid 与 onLoad 转换字典的键：_BaseActionGuid 非空时使用基础 GUID，否则使用 _InstanceGuid；参数通过请求 GUID 关联。保留实例 GUID 与基础 GUID 的区别。",
+    "emptyGuid": "00000000-0000-0000-0000-000000000000",
+    "fieldOffsets": {
+      "_InstanceGuid": "0x18",
+      "_BaseActionGuid": "0x28"
+    },
+    "evidence": [
+      {
+        "type": "ace.user_data.ActionID.cID",
+        "method": "get_ActionGuid245340",
+        "address": "0x1445a1500",
+        "end": "0x1445a15a7",
+        "nativeSha256": "dfd40bc8ed1f595c85f079bda24eeffae7ca2f5fcbe0700cae49353a935dbe27"
+      },
+      {
+        "type": "ace.user_data.ActionID.<>c",
+        "method": "<onLoad>b__19_11026471",
+        "address": "0x144e4a060",
+        "end": "0x144e4a112",
+        "nativeSha256": "d130c09e2647614964c5fb555bece5a9f0403bc4cffee9ecc69a3d2bb6d9653b"
+      }
+    ]
+  },
+  "actionParameterOwnershipContract": {
+    "summary": "基础动作占位记录标记 _IsBaseAction=true 且 _OverrideOwnerAction=false 时，沿声明的 _BaseActionParam 读取动作及参数变体；保留声明资产、实际资产与完整引用链。原生所有者字典与 getActualActionGuid/toBranchedParamIndex/applyParamCore 在非当前所有者时递归到基础参数。_OverrideSourceActionParamGuid 的逐字段覆盖不在此规则中合并。",
+    "fieldOffsets": {
+      "ActionParam._BaseActionParam": "0x48",
+      "ActionParam._OverrideOwnerActionDic": "0x50",
+      "cInfo._OverrideOwnerAction": "0x48",
+      "cInfo._IsBaseAction": "0x49"
+    },
+    "evidence": [
+      {
+        "type": "ace.user_data.ActionParam",
+        "method": "applyParamCore245935",
+        "address": "0x1451e3c90",
+        "end": "0x1451e3e2a",
+        "nativeSha256": "241d619ff2645fc76c1c7605b1d97678d7fb8575e7b0c48b805c035d06676977"
+      },
+      {
+        "type": "ace.user_data.ActionParam",
+        "method": "getActualActionGuid245937",
+        "address": "0x1451e3fe0",
+        "end": "0x1451e40ee",
+        "nativeSha256": "cd57954a657d7c80b025f9cb9b0166998f46986a5d3d9980ad71202cd8c4b42a"
+      },
+      {
+        "type": "ace.user_data.ActionParam",
+        "method": "toBranchedParamIndex245936",
+        "address": "0x1451e3e30",
+        "end": "0x1451e3fd3",
+        "nativeSha256": "f139b134a58c5dcfd6ec44d02f039e3bacd537906957523cbe24f51cef2c41c5"
+      },
+      {
+        "type": "ace.user_data.ActionParam",
+        "method": "updateOverrideActionDic245929",
+        "address": "0x1451e38f0",
+        "end": "0x1451e3a80",
+        "nativeSha256": "8b260d63997a9f49873633d0e58689e0676f623a88e64d8b94be856ce965fc87"
+      },
+      {
+        "type": "ace.user_data.ActionParam.<>c",
+        "method": "<updateOverrideActionDic>b__16_01026488",
+        "address": "0x14487b2a0",
+        "end": "0x14487b2c0",
+        "nativeSha256": "7b692148c6fb337f07d6c59d8ca8ac9d98d9478695e86fdb3697fba75ec85823"
+      },
+      {
+        "type": "ace.user_data.ActionParam.<>c",
+        "method": "<updateOverrideActionDic>b__16_11026489",
+        "address": "0x146229590",
+        "end": "0x1462295a0",
+        "nativeSha256": "2721a516318ff66db84048a89eee711b1ddd740169abff73a43d94d53a62a587"
+      }
+    ]
   }
 }
