@@ -31,11 +31,13 @@
 | `shared/workflow/full_run.py`、`shared/workflow/extraction.py` | 通过独立怪物模块提取资源闭包、全部原生方法上下文和已维护语义图；只输出 JSON，不构建网页 |
 | `shared/native/bindings.py`、`shared/workflow/semantic_recovery.py` | 从实际 x64 指令恢复调用参数、原生后继、比较、位置和状态写入；不使用丢失 SSA 身份的高层 P-code 偏移绑定参数 |
 | `shared/logic/machine.py`、`shared/logic/common_conditions.py` | 按当前版本的真实指令追踪判断、动作让出、子表调用及准确恢复位置；公共条件只接受已核实的分类，缺少运行时输入保持未知 |
+| `shared/logic/combat_position.py` | 恢复护雷颚龙、锁刃龙实际 Combat 入口调用链中的内联返回位置保存；逐方法及扩容 helper 核对字节，要求两条容量路径得到相同的调用和继续位置 |
 | `shared/logic/command_catalog.py`、`shared/logic/commands.py` | 保留全部命令实现，集中恢复窄范围字段比较、单项写入及参数注释；局部写入不能代表命令全部副作用 |
 | `shared/logic/static_pools.py` | 从原始初始化指令提取常量；静态 key 与权重不能直接转换成出招概率 |
 | `shared/logic/weights.py` | 校验整数权重、独立候选槽和调用目标，按已核实的取模与累积权重规则检查给定抽样值；不假设随机数生成器 |
 | `shared/logic/expressions.py`、`shared/logic/values.py` | 集中构造、校验和求值条件表达式，读取标量及枚举；缺少运行时输入保持未知 |
 | `shared/resources/action_names.py` | 绑定并校验准确的资源、动作 GUID、参数变体与说明名，保留 Shell 原名及来源 |
+| `shared/models/player_view.py` | 将已核实条件编译成玩家树的 JSON 判断与分支说明，保留动作身份、候选槽、调用和继续位置；不绘制 HTML |
 | `shared/models/catalog.py`、`shared/models/io.py`、`shared/models/validation.py` | 维护独立怪物范围、模型入口、大小限制与图结构校验 |
 | `shared/logic/rules.py` | 固化通用条件及少数已核实的特殊条件 |
 | `monster/em0001_00_0.py` | 雌火龙独立入口，保留局部与上游配方，模型输入位于 `data/models` |
@@ -43,7 +45,7 @@
 | `monster/em0166_00_0.py` | 独立入口与已核对的阶段应用分析；不能把其历史图用于其他怪物 |
 | `__main__.py`、`shared/workflow/cli.py` | 离线 CLI 入口；`shared/config.py` 保存配方已核实的来源标识 |
 
-`manifest`、`decompile`、`verify` 可用于新版本研究。原生配方当前支持经过来源核对的 **1.42.0.2**。34 个独立模块均可通过 `build_model` 提取自身实际 BTableList、导入闭包和原生方法，公共机器追踪器不提供预先编造的怪物行为。当前 34 份已解析图合计覆盖 7,763 个原生方法上下文、8,171 个子表、119,561 个节点和 4,554 个权重选择点；复用资源按其所在模型分别计数。仍保留 5,355 个未知流程节点、2,726 个含未知表达式的条件和 839 个选择器边界，无法确认等价的缓存上下文不继续展开。原先 46 表、408 节点的雌火龙图保留为固定回归样本。动作说明名绑定到资源、请求 GUID 与参数变体；实例 GUID 和基础 GUID 分别保留。Shell 原名及注释按资源与 UID 保存，未核实触发关系时不绑定到具体动作。全局 Combat 事件保持 partial，不能把导出成功描述为完整战斗 AI 已恢复。
+`manifest`、`decompile`、`verify` 可用于新版本研究。原生配方当前支持经过来源核对的 **1.42.0.2**。34 个独立模块均可通过 `build_model` 提取自身实际 BTableList、导入闭包和原生方法，公共机器追踪器不提供预先编造的怪物行为。当前 34 份已解析图合计覆盖 7,763 个原生方法上下文、8,171 个子表、119,299 个节点和 4,554 个权重选择点；复用资源按其所在模型分别计数。仍保留 4,656 个未知流程节点、2,720 个含未知表达式的条件和 839 个选择器边界，无法确认等价的缓存上下文不继续展开。原先 46 表、408 节点的雌火龙图保留为固定回归样本。动作说明名绑定到资源、请求 GUID 与参数变体；实例 GUID 和基础 GUID 分别保留。Shell 原名及注释按资源与 UID 保存，未核实触发关系时不绑定到具体动作。全局 Combat 事件保持 partial，不能把导出成功描述为完整战斗 AI 已恢复。
 
 ## 环境与输入
 
@@ -120,15 +122,26 @@ python -m src.processed_data.enemy_battle_logic --template "$work/frozen/em0001.
 
 现有研究缓存可通过 `--work-dir .agents/enemy-action-tree` 复用。确认生成结果、版本身份和差异后，将已解析的图 JSON 更新到 `src/processed_data/enemy_battle_logic/models`。该目录不保存待绑定模板或判断规则文件。预览结果位于 `$work/preview/enemy_battle_logic`。不要将伪 C、EXE 或 Ghidra 缓存作为正式构建依赖。
 
+已有解析模型可独立更新玩家展示字段，无需重新提取原生代码：
+
+```powershell
+python -m sdk.enemy_logic_exporter player-view --models src/processed_data/enemy_battle_logic/models --output "$work/player-models"
+python -m src.processed_data.enemy_battle_logic --models "$work/player-models" --output "$work/player-preview"
+```
+
+`playerView` 保存声明式条件、准确的分支与动作继续位置。网页默认直接绘制距离、角度和状态分支，内部检查压缩为可追溯的条件路径；动作请求后的恢复流程按需展开。接入未知的局部树保留在同一怪物页面，不伪造接入线。SDK 与网页端继续只通过 JSON 交接。动作说明名来自已绑定动作类的解释，不代表官方招式名或游戏内验证。
+
 正式流水线只交付 `enemy_battle_logic/index.html` 和各怪物的 `<enemyId>.html`，语义模型与图数据内嵌在离线页面中。Pages 和压缩包均使用这同一份输出，不另外发布研究索引、伪 C 或重复 JSON。同一怪物只能有一个正式模型；重复版本、来源冲突、断开的连接或图数据不一致会阻止发布。CI 只读取已解析的图 JSON，不读取资源、IL2CPP、EXE，也不运行或安装 SDK。网页显示离线提取时记录的来源核对状态；CI 的 JSON 校验不能证明之后的游戏原生代码没有变化。
 
-正式范围是 EnemyData 中基础编号小于 1000 的完整 ID，排除训练靶 `EM0165_00_0`，当前为 34 个。全部怪物统一使用语义行动图；不得用资源清单、原生方法索引或整张未知表替代。默认构建必须同时具备 34 个模型、经过核实的 Combat 入口，以及 SDK 方法/动作请求位置与模型的覆盖核查。发现记录与摘要、版本必须一致；未进入模型的方法及未找到引用的资源要逐项说明证据和原因。这些静态验收只验证审核材料的一致性，不代替人工语义审核或游戏内验证。
+正式范围是 EnemyData 中基础编号小于 1000 的完整 ID，排除训练靶 `EM0165_00_0`，当前为 34 个。全部怪物统一使用语义行动图；不得用资源清单或原生方法索引替代。默认构建校验 34 个模型、实际连接、方法/动作请求覆盖和 HTML 内容一致性；按用户已确认的发布范围保留 partial 图，不再以全部语义审核完成或完整 Combat 总入口作为网页发布前提。发现记录与摘要、版本必须一致。这些静态验收不代替人工语义审核或游戏内验证。
 
-当前网页模型目录已有 34 份实际提取的图 JSON，但全部仍是研究图；默认正式构建因战斗总入口和语义审核未完成而拒绝发布。用显式 `--template` 或 `--preview-all` 可在 `.agents` 生成研究预览，预览不能通过正式发布检查。`freeze --all（从工作目录 reviewed 读取）` 只接收完整、经审核的语义输入，不会自动将方法清单转换成完整战斗逻辑。图保留 Combat 进入、更新、BTable 切换、中断和恢复的实际已核实部分，异步请求只连接到等待调度的目标，不当作同步调用。未知命令的真实 void 调用方连续流可保留，但其副作用仍标未知；未恢复的 Boolean 不能伪造为 0 或整个命令的 opaque 运行时布尔输入。
+当前网页模型目录已有 34 份实际提取的 partial 图 JSON，未知分支和接入关系继续保留。显式 `--template` 或 `--preview-all` 可在 `.agents` 生成单个或部分怪物预览；默认全量构建仍要求全部 34 个身份及结构检查通过。`freeze --all（从工作目录 reviewed 读取）` 只接收完整、经审核的语义输入，不会自动将方法清单转换成完整战斗逻辑。图保留 Combat 进入、更新、BTable 切换、中断和恢复的实际已核实部分，异步请求只连接到等待调度的目标，不当作同步调用。未知命令的真实 void 调用方连续流可保留，但其副作用仍标未知；未恢复的 Boolean 不能伪造为 0 或整个命令的 opaque 运行时布尔输入。
 
 方法覆盖、原生字节位置覆盖和资源/类型/方法/命令/参数上下文覆盖分别记录。同址方法别名不能只靠地址 set 视为恢复完成；相同子表 GUID 出现在不同资源时保留独立图身份和 nativeTableGuid。非 Combat 的空声明资源不编造入口。当前元数据确认返回 Void、当前原生入口第一条指令为 ret 的空调度函数存入 resourceNonDispatchEntries，不为它补造子表入口；其他未恢复入口继续保留边界。逐候选跳过列表按各自参数槽绑定；新候选的 id 为实际池槽 slot:<nativeCandidateIndex>，nodeId 指向已核实的调用节点。多个槽可以汇入相同上下文的调用节点，各自保留 key、权重和筛选参数，不编造 PC 或合并权重。相同原生调用地址若参数、调用目标或实际保存位置不同，须保留独立语义节点，nativeSite 仍指向原指令；不能以同址为由覆盖恢复 PC 或复用其他路径的条件。旧 JSON 没有 nodeId 时，其 id 仍表示调用节点。真实动作 ID 与参数类名不同不代表绑定无效：核对唯一 GUID、所属参数槽及当前原生选择代码，保留两种类型及应用边界。缺少 ActionInfo 的已确认请求保留请求位置、原始身份和保存的恢复位置，不借用近似 GUID。
 
 本版以既有 EM0166 研究页的详细程度为目标，不继续扩展 Life 历史缓存、HIGH 物理命中或通用栈存储模拟。尚未核实的辅助方法、恢复位置和运行时条件保持未知；深入探索代码只留存在 .agents，不作为网页构建或正式 SDK 的依赖。
+
+护雷颚龙、锁刃龙及实际复用该 Combat 的护锁刃龙，使用 `data/evidence/combat_position_push.v1.json` 中逐份核对的两份 Combat 资源方法。内联保存只检查固定 POSITION 写入、正常扩容返回及准确子表调用，不推断游戏中的栈容量、异常、回调或不同缓存上下文等价性。纯返回位置分支和仍不明确的调用继续保留边界；该配方不表示完整 Combat 或整场战斗已恢复。
 
 原生研究索引只允许保存到 `.agents`。Git 中的正式模型只保留语义、资源绑定及最小原生证据，可以用 `evidenceCatalog` 复用共同证据，并通过带摘要的 `fragments` 拆分语义表。单个模型文件超过 10 MiB 提示审核，超过 25 MiB 拒绝读入；必须去重或分片，不能为缩小文件删除逻辑。旧的 34 个大型原生索引保存在 `.agents/enemy-logic-exporter/legacy-native-models`，不参与正式构建。
 

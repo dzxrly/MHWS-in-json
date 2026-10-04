@@ -1118,6 +1118,14 @@ class Machine:
             try:
                 address = self.step(ins, s)
             except Boundary as error:
+                from .combat_position import recover_entry_push
+
+                recovered = recover_entry_push(self, ins, s)
+                if recovered is not None:
+                    call_address, state, proof = recovered
+                    key = self.walk(call_address, state)
+                    self.nodes[key]["nativeContinuationRecovery"] = proof
+                    return key
                 return self.add_unknown(ins.address, str(error))
         return self.add_unknown(address, "本条路径超过有界追踪长度；需展开循环语义")
 

@@ -15,6 +15,7 @@ from .audit import combat_entry_recovered
 from ..logic.expressions import evaluate_expression, expression_unknown
 from ..resources.action_names import ActionNames
 from ..logic.common_conditions import recover_condition
+from .player_view import build_player_view
 
 
 def bind_skip_argument(body, index, expected_type, source):
@@ -297,6 +298,7 @@ def build_chain(
             t.get("flowStatus", "verified") == "verified" for t in graph["tables"]
         ),
     }
+    graph["playerView"] = build_player_view(graph)
     return graph
 
 

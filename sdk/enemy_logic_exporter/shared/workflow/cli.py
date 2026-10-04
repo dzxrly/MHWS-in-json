@@ -40,6 +40,11 @@ def parser():
         "--work-dir", type=Path, default=ROOT / ".agents/enemy-logic-exporter"
     )
     commands = result.add_subparsers(dest="command", required=True)
+    player = commands.add_parser(
+        "player-view", help="为已提取的图 JSON 整理玩家条件与路径，不重新提取原生数据"
+    )
+    player.add_argument("--models", type=Path, required=True)
+    player.add_argument("--output", type=Path, required=True)
     manifest = commands.add_parser(
         "manifest", help="从当前元数据重新定位方法并计算原生字节摘要"
     )
@@ -204,7 +209,11 @@ def parser():
 def main():
     args = parser().parse_args()
     work = args.work_dir.resolve()
-    if args.command == "manifest":
+    if args.command == "player-view":
+        from ..models.player_view import enrich_models
+
+        enrich_models(args.models, args.output)
+    elif args.command == "manifest":
         from ..native.manifest import build_manifest
 
         value = build_manifest(

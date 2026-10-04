@@ -7,6 +7,18 @@
   },
   "rules": [
     {
+      "commandType": "app.btable.Em0166_00BTableCommand.cCheckBattlePhase",
+      "argumentType": "app.btable.Em0166_00BTableCommand.cCheckBattlePhaseArg",
+      "kind": "battle_phase",
+      "scope": "EM0166_00",
+      "summary": "当前已应用战斗阶段等于指定阶段；工作与自身 Extend 必须有效且类型匹配",
+      "bindings": {"value": "_EditArg"},
+      "contextBinding": {"type": "app.cEm0166_00Extend", "field": "_CurrentPhase", "offset": "0x22c", "fieldType": "app.Em0166_00_Def.BATTLE_PHASE", "validTypeRequired": true},
+      "enumValues": {"PHASE_1": 0, "PHASE_2": 1, "PHASE_3": 2, "PHASE_4": 3, "PHASE_5": 4, "NO_USED": 4294967295},
+      "evidence": {"type": "app.btable.Em0166_00BTableCommand.cCheckBattlePhase", "method": "onExecute1234575", "address": "0x143ba54d0", "end": "0x143ba5510", "nativeSha256": "93a81ac8b65abe52a5726b1c1a9181de096142b123d96f6dfcf45ba07aacce9f"},
+      "review": {"nativeBytes": "4d85c07420498b4028488b4078488b40104885c0740f488b08488b09483b0dad2eb710740331c0c38b802c020000498b49103b41100f94c0c3cccccccccccccc", "argumentValuePath": "cCheckBattlePhaseArg+0x10 -> cEditFieldEnum+0x10", "comparison": "mov eax,[rax+0x22c]; mov rcx,[r9+0x10]; cmp eax,[rcx+0x10]; sete al", "guard": "r8 != null; Accessor.Self.Extend != null; exact Extend runtime type matches static type pointer", "boundary": "仅恢复当前阶段的相等判断，不代表阶段转换触发条件或整场战斗已恢复"}
+    },
+    {
       "commandType": "app.btable.EmCommonCommand.cCheckDistance",
       "argumentType": "app.btable.EmCommonCommand.cCheckDistanceArg",
       "kind": "distance",

@@ -1,7 +1,18 @@
+window.startTechnicalGraph = function () {
+if (window.technicalGraphStarted) return; window.technicalGraphStarted = true;
 "use strict";
 const { graph, diagram } = JSON.parse(
   document.getElementById("data").textContent,
 );
+if (graph.playerView) {
+  const tables = new Map(graph.tables.map(table => [table.tableGuid, table]));
+  for (const detail of Object.values(diagram.details)) {
+    const table = tables.get(detail.tableGuid);
+    detail.node = table.nodes.find(node => node.id === detail.localId);
+    detail.tableEvidence = table.evidence;
+    detail.profile = graph.profile;
+  }
+}
 const viewport = document.getElementById("viewport"),
   svg = document.getElementById("map"),
   scene = document.getElementById("scene"),
@@ -467,3 +478,5 @@ document.getElementById("download").onclick = () => {
 };
 new ResizeObserver(() => apply()).observe(viewport);
 arrange();
+
+};

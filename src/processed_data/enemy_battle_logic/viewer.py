@@ -38,17 +38,36 @@ def render_html(graph):
         graph["enemyId"], graph["enemyId"]
     )
     payload = json.dumps(
-        {"graph": graph, "diagram": combined_diagram(graph)},
+        {
+            "graph": graph,
+            "diagram": combined_diagram(
+                graph, compact_details=bool(graph.get("playerView"))
+            ),
+        },
         ensure_ascii=False,
         separators=(",", ":"),
     ).replace("<", "\\u003c")
     values = {
-        "TITLE": escape(enemy + " · 行动逻辑大图"),
-        "COUNTS": f"{coverage['localTables']} 个子表 · {coverage['nodes']} 个节点 · {coverage.get('weightedSelections', 0)} 个权重选择点",
-        "SCOPE": escape(graph["scope"])
-        + f"。其中 {coverage.get('completeLocalTables', 0)} 个局部流程已核实，{coverage.get('unknownFlowNodes', 0)} 处后继与 {coverage.get('unknownConditions', 0)} 处条件仍待核实。",
+        "TITLE": escape(
+            enemy + (" · 战斗行动树" if graph.get("playerView") else " · 行动逻辑大图")
+        ),
+        "COUNTS": (
+            "距离分支 · 角度分支 · 动作派生"
+            if graph.get("playerView")
+            else f"{coverage['localTables']} 个子表 · {coverage['nodes']} 个节点 · {coverage.get('weightedSelections', 0)} 个权重选择点"
+        ),
+        "SCOPE": (
+            "按已恢复的条件与连接展示战斗路径。未核实的判断和接入关系保留在树中，动作请求不等于一定成功出招。"
+            if graph.get("playerView")
+            else escape(graph["scope"])
+            + f"。其中 {coverage.get('completeLocalTables', 0)} 个局部流程已核实，{coverage.get('unknownFlowNodes', 0)} 处后继与 {coverage.get('unknownConditions', 0)} 处条件仍待核实。"
+        ),
         "CSS": (here / "viewer.css").read_text(encoding="utf-8"),
         "JS": (here / "viewer.js").read_text(encoding="utf-8"),
+        "PLAYER_ENGINE": (here / "player_engine.js").read_text(encoding="utf-8"),
+        "PLAYER_JS": (here / "player_viewer.js").read_text(encoding="utf-8"),
+        "PLAYER_HIDDEN": "" if graph.get("playerView") else "hidden",
+        "TECHNICAL_HIDDEN": "hidden" if graph.get("playerView") else "",
         "DATA": payload,
         "ACTION_NAMES": render_action_names(graph),
         "ELK": (vendor / "elk.bundled.js")
@@ -60,7 +79,7 @@ def render_html(graph):
     }
     template = (here / "viewer.html").read_text(encoding="utf-8")
     return re.sub(
-        r"__(TITLE|COUNTS|SCOPE|CSS|JS|DATA|ELK|LICENSE|ACTION_NAMES)__",
+        r"__(TITLE|COUNTS|SCOPE|CSS|JS|DATA|ELK|LICENSE|ACTION_NAMES|PLAYER_ENGINE|PLAYER_JS|PLAYER_HIDDEN|TECHNICAL_HIDDEN)__",
         lambda match: values[match[1]],
         template,
     )

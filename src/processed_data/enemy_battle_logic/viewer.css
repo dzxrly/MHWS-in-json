@@ -5,6 +5,28 @@
   --purple: #7857ad;
   --blue: #3476b8;
 }
+[hidden] { display: none !important; }
+.player-panel { margin: 18px auto; max-width: 1600px; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 22px; }
+.player-intro h2 { font-size: 21px; margin: 0 0 10px; }
+.player-intro p { max-width: 980px; line-height: 1.8; }
+.player-toolbar, .player-map-toolbar { display: flex; flex-wrap: wrap; gap: 9px; align-items: center; margin: 12px 0; }
+.player-map-toolbar output { color: var(--muted); font-size: 12px; }
+.player-note { font-size: 12px; line-height: 1.8; margin: 12px 0; }
+.player-tree-viewport { height: 66vh; min-height: 480px; border: 1px solid #d6e1eb; border-radius: 8px; background: #fafcfe; overflow: hidden; cursor: grab; touch-action: none; }
+.player-tree-viewport svg { width: 100%; height: 100%; display: block; }
+.player-svg-node { cursor: pointer; outline: none; }
+.player-svg-node.selected > rect, .player-svg-node:focus > rect { stroke: #3476b8; stroke-width: 3; }
+.player-svg-expand { cursor: pointer; }
+.player-selection:empty { display: none; }
+.player-selection { background: #f4f7fa; padding: 12px 16px; border-radius: 8px; margin-top: 12px; max-height: 400px; overflow: auto; }
+.player-selection h3 { margin: 0 0 8px; }
+.player-selection p { font-size: 12px; }
+.player-selection pre { font-size: 11px; max-height: 260px; overflow: auto; }
+.player-local-tree { border: 1px solid #d7dee7; padding: 12px; margin: 12px 0; border-radius: 8px; }
+.player-local-tree > summary { color: #61758a; }
+.player-local-tree .player-tree-viewport { min-height: 360px; height: 52vh; }
+@media (max-width: 700px) { .player-panel { margin: 10px; padding: 14px; } .player-map-toolbar { gap: 5px; } .player-map-toolbar button { font-size: 11px; padding: 7px; } }
+
 * {
   box-sizing: border-box;
 }

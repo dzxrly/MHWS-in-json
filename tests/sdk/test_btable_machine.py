@@ -8,6 +8,117 @@ from unittest.mock import patch
 
 @unittest.skipUnless(find_spec("capstone"), "离线原生测试需要 SDK 的 Capstone 依赖")
 class BTableMachineTests(unittest.TestCase):
+    def entry_push(self, *, conflicting_position=False):
+        from types import SimpleNamespace
+        from sdk.enemy_logic_exporter.shared.logic.machine import Machine
+        from sdk.enemy_logic_exporter.shared.native.bindings import pointer
+
+        # Actual reviewed EM0160 capacity branch, fixed POSITION writes and call.
+        native = bytes.fromhex(
+            "488b9e800000008b4318488b53108b4a1c39c873204863c8488d0c49"
+            "44896c8a2049b8000000000d0000004c89448a24ff431ceb724c8d5310"
+            "ffc0448d040941b9c7ffff7f4539c8450f42c885c941b804000000"
+            "450f45c14139c0440f4ec08b430848bafcffffffffffff7f4883c204"
+            "4c09d285c0490f48d24889f9e89d6d0602488b431048634b18488d0c49"
+            "44896c882048ba000000000d0000004889548824ff431c8b4318ffc0894318"
+            "c686c5000000014889f94c89fa4d89f04989f1e81a210000"
+        )
+        if conflicting_position:
+            native = native.replace(
+                bytes.fromhex("48ba000000000d000000"),
+                bytes.fromhex("48ba000000000e000000"),
+            )
+        row = dict(
+            type="fixture",
+            method="entry",
+            address="0x144ef8562",
+            end=hex(0x144EF8562 + len(native)),
+            nativeSha256=hashlib.sha256(native).hexdigest(),
+        )
+        helper = b"verified resize fixture"
+        machine = Machine(
+            row,
+            native,
+            SimpleNamespace(read=lambda *_: helper),
+            {},
+            [],
+            {0x144EFA740: []},
+            {},
+        )
+        state = machine.initial(0)
+        state["regs"].update(
+            rsi=pointer("operator"),
+            rbx=pointer("return_stack"),
+            r13=0,
+            rdi=pointer("thread"),
+            r15=pointer("export"),
+            r14=pointer("command_work"),
+        )
+        proof = dict(
+            profile=machine.registry.data["profile"],
+            methods=[row],
+            scope="fixture",
+            resizeHelper=dict(
+                address="0x146f5f380",
+                end="0x146f5f58f",
+                nativeSha256=hashlib.sha256(helper).hexdigest(),
+            ),
+        )
+        return machine, state, proof
+
+    def test_entry_push_retains_same_call_and_position_for_both_capacity_paths(self):
+        from sdk.enemy_logic_exporter.shared.logic.combat_position import (
+            recover_entry_push,
+        )
+        from sdk.enemy_logic_exporter.shared.native.bindings import pointer
+
+        machine, state, proof = self.entry_push()
+        with patch(
+            "sdk.enemy_logic_exporter.shared.logic.combat_position.evidence",
+            return_value=proof,
+        ):
+            result = recover_entry_push(machine, machine.ins[0x144EF8575], state)
+        address, recovered, receipt = result
+        self.assertEqual(address, 0x144EF8621)
+        self.assertEqual(recovered["saved"], (0, 13))
+        self.assertEqual(recovered["regs"]["rdx"], pointer("export"))
+        self.assertEqual(receipt["checkedStorageCases"], 4)
+        self.assertEqual(receipt["checkedReferenceTagCases"], 2)
+        self.assertEqual(len(receipt["positionWriteSites"]), 2)
+        self.assertFalse(
+            any(key[0].startswith("return_stack") for key in recovered["mem"])
+        )
+
+    def test_entry_push_rejects_different_continuation_on_growth_path(self):
+        from sdk.enemy_logic_exporter.shared.logic.combat_position import (
+            recover_entry_push,
+        )
+
+        machine, state, proof = self.entry_push(conflicting_position=True)
+        with patch(
+            "sdk.enemy_logic_exporter.shared.logic.combat_position.evidence",
+            return_value=proof,
+        ):
+            self.assertIsNone(
+                recover_entry_push(machine, machine.ins[0x144EF8575], state)
+            )
+
+    def test_entry_push_rejects_unreviewed_method_and_changed_helper(self):
+        from sdk.enemy_logic_exporter.shared.logic.combat_position import (
+            recover_entry_push,
+        )
+
+        machine, state, proof = self.entry_push()
+        self.assertIsNone(recover_entry_push(machine, machine.ins[0x144EF8575], state))
+        proof["resizeHelper"]["nativeSha256"] = "0" * 64
+        with patch(
+            "sdk.enemy_logic_exporter.shared.logic.combat_position.evidence",
+            return_value=proof,
+        ):
+            self.assertIsNone(
+                recover_entry_push(machine, machine.ins[0x144EF8575], state)
+            )
+
     def machine(self, hexadecimal):
         from sdk.enemy_logic_exporter.shared.logic.machine import Machine
 

@@ -16,7 +16,7 @@ def node_id(table_guid, local_id):
     return f"{table_guid}/{local_id}"
 
 
-def combined_diagram(graph):
+def combined_diagram(graph, *, compact_details=False):
     tables = {table["tableGuid"]: table for table in graph["tables"]}
     groups, edges, details = [], [], {}
 
@@ -63,6 +63,8 @@ def combined_diagram(graph):
                 tableEvidence=table["evidence"],
                 profile=graph["profile"],
             )
+            if compact_details:
+                details[key] = dict(table=name, tableGuid=guid, localId=node["id"])
             for role, text in (
                 ("true", "是"),
                 ("false", "否"),

@@ -10,6 +10,7 @@ from .weights import weighted_pool, candidate_node_id
 from .values import scalar
 from .expressions import validate_expression, expression_unknown
 from .action_names import validate_action_names
+from .player_contract import validate_player_view
 from .audit import (
     combat_entry_recovered,
     validate_native_evidence,
@@ -57,6 +58,7 @@ def validate_candidate_filters(node, source_hashes):
 
 def validate_graph(graph):
     validate_action_names(graph)
+    validate_player_view(graph)
     if graph.get("documentType", "enemy_battle_logic") != "enemy_battle_logic":
         raise ValueError("正式图只接受语义行动模型，不能接受原生索引或资源清单")
     if graph.get("enemyId") == TRAINING_ENEMY_ID:
@@ -246,7 +248,7 @@ def embedded_data(html, script_id="data"):
 def validate_html(html, document):
     payload = embedded_data(html)
     if payload.get("graph") != document or payload.get("diagram") != combined_diagram(
-        document
+        document, compact_details=bool(document.get("playerView"))
     ):
         raise ValueError("HTML 与行动模型的内容或连接不一致")
 

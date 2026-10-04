@@ -194,6 +194,12 @@ class RuleRegistry:
         state = required(required(context, "objects"), binding["type"])
         if state.get("valid") is False:
             return False
+        if kind == "battle_phase":
+            if (
+                required(context, "valid_command_work") is not True
+                or required(state, "valid") is not True
+            ):
+                raise MissingState("阶段判断需要有效命令工作及匹配类型的自身 Extend")
         actual = number(required(state, binding["field"]))
         if type(actual) is not int:
             raise MissingState("专用内部状态必须是整数")
@@ -208,7 +214,7 @@ class RuleRegistry:
             return actual == expected or actual == 5 and expected != 0
         if kind == "electric":
             return actual in (2, 3) if expected == 2 else actual == expected
-        if kind == "unique_state":
+        if kind in ("unique_state", "battle_phase"):
             return actual == expected
         if kind == "fang_count":
             compare = enum_number(values["compare"])

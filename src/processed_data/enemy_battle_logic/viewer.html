@@ -18,7 +18,16 @@
       <div class="counts">__COUNTS__</div>
     </header>
     <div class="scope">__SCOPE__</div>
-    <main>
+    <section id="player-panel" class="player-panel" __PLAYER_HIDDEN__>
+      <div class="player-intro"><h2>距离、角度如何决定动作</h2><p>沿着分支线读取条件，查看怪物在不同距离、方位和状态下可能请求的动作。默认展示第一次选招，动作后的派生与重新判断可在动作节点展开。</p></div>
+      <div class="player-toolbar">
+        <button id="technical-toggle">查看完整技术图</button>
+      </div>
+      <div id="player-tree" class="player-tree" aria-label="距离、角度与动作分支树"></div>
+      <div id="player-unattached"></div>
+      <p class="player-note">图中的距离为游戏判断值，按默认距离修正展示，尚未确认与米的换算；特殊状态的距离修正仍需核查。角度为相对指定方向的夹角。以目标是该玩家、怪物正在普通战斗中选招为情境。动作或状态变化后条件重新判断；候选权重不是整场战斗的出招概率。内部条件与未知分支仍保留在树中，点击节点可查看依据。</p>
+    </section>
+    <main id="technical-panel" __TECHNICAL_HIDDEN__>
       <section class="map-panel">
         <div class="toolbar">
           <button id="fit">全图</button><button id="entry">定位入口</button
@@ -123,5 +132,7 @@
     <script>
       __JS__;
     </script>
+    <script>__PLAYER_ENGINE__;</script>
+    <script>__PLAYER_JS__;</script>
   </body>
 </html>
