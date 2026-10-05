@@ -7,7 +7,18 @@ import json
 
 from capstone import CS_OP_MEM
 
-from ..config import EVIDENCE_DIR
+from ..config import (
+    ARRAY_ELEMENTS,
+    ARRAY_LENGTH,
+    EVIDENCE_DIR,
+    OPERATOR_EXPORT_JUMP,
+    POSITION_SIZE,
+    POSITION_TABLE,
+    STACK_ARRAY,
+    STACK_REFERENCE_TAG,
+    STACK_SIZE,
+    STACK_VERSION,
+)
 from ..native.bindings import add, pointer
 
 
@@ -19,12 +30,14 @@ def evidence():
 
 
 def recover_entry_push(machine, branch, original):
-    """Return the same typed call/continuation from both actual capacity paths."""
+    """Return the same typed call/continuation from both actual capacity paths.
+
+    The proof is structural: the matched instruction prefix, the verified resize
+    helper bytes and identical results on every storage case. The listed
+    methods are the originally reviewed samples, not a whitelist.
+    """
     proof = evidence()
-    if machine.registry.data["profile"] != proof["profile"] or not any(
-        all(machine.row.get(key) == value for key, value in row.items())
-        for row in proof["methods"]
-    ):
+    if machine.registry.data["profile"] != proof["profile"]:
         return None
     helper = proof["resizeHelper"]
     start, end = int(helper["address"], 16), int(helper["end"], 16)
@@ -44,11 +57,11 @@ def recover_entry_push(machine, branch, original):
         or len(prefix) != 4
         or [ins.mnemonic for ins in prefix] != ["mov", "mov", "mov", "cmp"]
         or machine.address(prefix[0], prefix[0].operands[1], original)
-        != pointer("return_stack", 0x18)
+        != pointer("return_stack", STACK_SIZE)
         or machine.address(prefix[1], prefix[1].operands[1], original)
-        != pointer("return_stack", 0x10)
+        != pointer("return_stack", STACK_ARRAY)
         or prefix[2].operands[1].type != CS_OP_MEM
-        or prefix[2].operands[1].mem.disp != 0x1C
+        or prefix[2].operands[1].mem.disp != ARRAY_LENGTH
     ):
         return None
     results = []
@@ -66,7 +79,7 @@ def recover_entry_push(machine, branch, original):
     state = copy.deepcopy(original)
     for register, value in zip(("rcx", "rdx", "r8", "r9"), arguments):
         state["regs"][register] = value
-    state["mem"][("operator", 0xC5, 1)] = 1
+    state["mem"][("operator", OPERATOR_EXPORT_JUMP, 1)] = 1
     state["saved"] = continuation
     state["flags"] = None
     receipt = dict(
@@ -88,11 +101,11 @@ def _trace_push(machine, address, original, used, capacity, reference, resize):
     state = copy.deepcopy(original)
     state["mem"].update(
         {
-            ("return_stack", 0x10, 8): pointer("return_stack_array"),
-            ("return_stack", 8, 4): reference,
-            ("return_stack", 0x18, 4): used,
-            ("return_stack", 0x1C, 4): 0,
-            ("return_stack_array", 0x1C, 4): capacity,
+            ("return_stack", STACK_ARRAY, 8): pointer("return_stack_array"),
+            ("return_stack", STACK_REFERENCE_TAG, 4): reference,
+            ("return_stack", STACK_SIZE, 4): used,
+            ("return_stack", STACK_VERSION, 4): 0,
+            ("return_stack_array", ARRAY_LENGTH, 4): capacity,
         }
     )
     continuation, committed, sites = None, False, []
@@ -105,7 +118,7 @@ def _trace_push(machine, address, original, used, capacity, reference, resize):
             if committed and event["target"] in machine.targets:
                 if any(value is None for value in event["arguments"][:4]):
                     return None
-                if machine.load(pointer("operator", 0xC5), 1, state) != 1:
+                if machine.load(pointer("operator", OPERATOR_EXPORT_JUMP), 1, state) != 1:
                     return None
                 return ins.address, event["arguments"][:4], continuation, sites
             if event["target"] != resize or continuation is not None:
@@ -123,15 +136,16 @@ def _trace_push(machine, address, original, used, capacity, reference, resize):
             address = machine.step(ins, state)
         except Boundary:
             return None
-        if destination == pointer("return_stack_array", 0x24 + used * 12):
-            location = add(destination, -4)
+        element = ARRAY_ELEMENTS + used * POSITION_SIZE
+        if destination == pointer("return_stack_array", element + POSITION_TABLE):
+            location = add(destination, -POSITION_TABLE)
             if not isinstance(machine.load(location, 4, state), int):
                 return None
             continuation = machine.position(location, state)
             if continuation is None:
                 return None
             sites.append(hex(ins.address))
-        if destination == pointer("return_stack", 0x18):
+        if destination == pointer("return_stack", STACK_SIZE):
             committed = (
                 continuation is not None
                 and machine.load(destination, 4, state) == used + 1

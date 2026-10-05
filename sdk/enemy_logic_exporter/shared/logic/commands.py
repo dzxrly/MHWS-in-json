@@ -10,6 +10,17 @@ from pathlib import Path
 from ..config import ROOT
 import re
 from ..native.evidence import evidence
+from ..config import (
+    COMMAND_WORK_ACCESSOR,
+    EDIT_FIELD_VALUE,
+    EXTEND_HOLDER,
+    extend_types,
+)
+
+# Ghidra pseudo-C spellings of the self-Extend holder chain and edit fields.
+ACCESSOR_FIELD = f"{COMMAND_WORK_ACCESSOR:#x}"
+HOLDER_FIELD = f"{EXTEND_HOLDER:#x}"
+VALUE_FIELD = rf"{EDIT_FIELD_VALUE:#x}\)"
 
 
 def annotate_effects(annotation, catalog):
@@ -100,7 +111,10 @@ def enrich_existing(annotations, catalog_path):
 
 
 OBJECT_FIELD = r"\*\((?:int|uint|char|undefined[148]) \*\)\((?P<{prefix}cast>\(longlong\))?(?P<{prefix}object>puVar\d+) \+ (?P<{prefix}offset>0x[0-9a-f]+)\)"
-EDIT_FIELD = r"\*\((?:int|uint|char|undefined[148]) \*\)\(\*\(longlong \*\)\(param_4 \+ (?P<argumentoffset>0x[0-9a-f]+)\) \+ 0x10\)"
+EDIT_FIELD = (
+    r"\*\((?:int|uint|char|undefined[148]) \*\)\(\*\(longlong \*\)\(param_4 \+ (?P<argumentoffset>0x[0-9a-f]+)\) \+ "
+    + VALUE_FIELD
+)
 
 
 def recover_writes(row, code, metadata):
@@ -109,18 +123,26 @@ def recover_writes(row, code, metadata):
         return []
     text = re.sub(r"\s+", " ", code.replace("\r", ""))
     holder = re.search(
-        r"(puVar\d+) = \*\(undefined8 \*\*\)\(\*\(longlong \*\)\(\*\(longlong \*\)\(param_3 \+ 0x28\) \+ 0x78\) \+ 0x10\)",
+        r"(puVar\d+) = \*\(undefined8 \*\*\)\(\*\(longlong \*\)\(\*\(longlong \*\)\(param_3 \+ "
+        + ACCESSOR_FIELD
+        + r"\) \+ "
+        + HOLDER_FIELD
+        + r"\) \+ "
+        + VALUE_FIELD,
         text,
     )
     if holder is None:
         holder = re.search(
-            r"(puVar\d+) = \*\(undefined8 \*\*\)\(\*\(longlong \*\)\(param_3\[5\] \+ 0x78\) \+ 0x10\)",
+            r"(puVar\d+) = \*\(undefined8 \*\*\)\(\*\(longlong \*\)\(param_3\[5\] \+ "
+            + HOLDER_FIELD
+            + r"\) \+ "
+            + VALUE_FIELD,
             text,
         )
     if holder is None:
         return []
     layouts = []
-    for name in [f"app.c{owner[1]}Extend", f"app.c{owner[1].split('_')[0]}Extend"]:
+    for name in extend_types(owner[1]):
         for field, definition in metadata.fields(name).items():
             if (
                 definition.get("offset_from_base")
@@ -215,7 +237,10 @@ def recover_writes(row, code, metadata):
 
 
 FIELD = r"\*\((?:int|uint|char) \*\)\((?P<bytecast>\(longlong\))?(?P<object>puVar\d+) \+ (?P<offset>0x[0-9a-f]+)\)"
-ARGUMENT = r"\*\((?:int|uint) \*\)\(\*\(longlong \*\)\(param_4 \+ (?P<argoffset>0x[0-9a-f]+)\) \+ 0x10\)"
+ARGUMENT = (
+    r"\*\((?:int|uint) \*\)\(\*\(longlong \*\)\(param_4 \+ (?P<argoffset>0x[0-9a-f]+)\) \+ "
+    + VALUE_FIELD
+)
 
 
 def recover_leaf(row, code, metadata):
@@ -231,12 +256,16 @@ def recover_leaf(row, code, metadata):
     ):
         return None
     # Only the standard self-Extend holder chain is admitted.
-    if "0x78" not in body or (
-        "param_3[5]" not in body and "param_3 + 0x28" not in body
+    if HOLDER_FIELD not in body or (
+        "param_3[5]" not in body and "param_3 + " + ACCESSOR_FIELD not in body
     ):
         return None
     holder = re.search(
-        r"(puVar\d+) = \*\(undefined8 \*\*\)\([^;]{0,220}?0x78[^;]{0,50}?0x10\)", body
+        r"(puVar\d+) = \*\(undefined8 \*\*\)\([^;]{0,220}?"
+        + HOLDER_FIELD
+        + r"[^;]{0,50}?"
+        + VALUE_FIELD,
+        body,
     )
     if holder is None:
         return None
@@ -257,7 +286,7 @@ def recover_leaf(row, code, metadata):
     ):
         return None
     offset = int(match["offset"], 16) * (1 if match["bytecast"] else 8)
-    types = [f"app.c{owner[1]}Extend", f"app.c{owner[1].split('_')[0]}Extend"]
+    types = extend_types(owner[1])
     choices = []
     for name in types:
         for field, definition in metadata.fields(name).items():

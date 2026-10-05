@@ -29,10 +29,45 @@ def file_digest(path):
     return digest.hexdigest()
 
 
+SHARED_VALUES_FORMAT = "shared-values-v1"
+
+
+def expand_shared_values(document):
+    """Resolve {"$": index} references of a published model's sharedValues."""
+    storage = document.get("storage")
+    if storage is None:
+        return document
+    if storage.get("format") != SHARED_VALUES_FORMAT:
+        raise ValueError("不支持的模型存储格式")
+    shared = document.get("sharedValues")
+    if not isinstance(shared, list):
+        raise ValueError("共享值表缺失")
+
+    def expand(value, depth=0):
+        if depth > 64:
+            raise ValueError("共享值引用层级过深")
+        if isinstance(value, dict):
+            if set(value) == {"$"}:
+                index = value["$"]
+                if type(index) is not int or not 0 <= index < len(shared):
+                    raise ValueError("共享值引用无效")
+                return expand(shared[index], depth + 1)
+            return {k: expand(v, depth) for k, v in value.items()}
+        if isinstance(value, list):
+            return [expand(v, depth) for v in value]
+        return value
+
+    return {
+        key: expand(value)
+        for key, value in document.items()
+        if key not in ("storage", "sharedValues")
+    }
+
+
 def load_model(path):
     """Resolve optional semantic fragments without leaving the model directory."""
     path = Path(path)
-    model = read_json(path)
+    model = expand_shared_values(read_json(path))
     if model.get("documentType") in (
         "enemy_native_model",
         "enemy_battle_resource_catalog",
@@ -47,7 +82,7 @@ def load_model(path):
             raise ValueError("模型分片不能越出模型目录")
         if file_digest(fragment) != reference["sha256"]:
             raise ValueError("模型分片摘要不匹配")
-        content = read_json(fragment)
+        content = expand_shared_values(read_json(fragment))
         if content.get("profile") != model.get("profile"):
             raise ValueError("模型分片来源版本不匹配")
         if content.get("enemyId", model.get("enemyId")) != model.get("enemyId"):

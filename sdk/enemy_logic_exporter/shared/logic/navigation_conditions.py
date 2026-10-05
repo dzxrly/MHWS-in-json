@@ -8,7 +8,12 @@ not a substitute for running the whole condition helper.
 import json
 from copy import deepcopy
 from functools import lru_cache
-from ..config import EVIDENCE_DIR
+from ..config import (
+    EVIDENCE_DIR,
+    COMMON_COMMAND_PREFIX,
+    CONDITION_FIELDS as FIELDS,
+    OCCLUSION_QUERY,
+)
 from .values import MissingState, enum_number
 from .expressions import runtime, compare, combined
 
@@ -38,7 +43,7 @@ def category(value, operator="eq"):
         "self_basic_category",
         value,
         operator,
-        source="cEnemyContext.Basic.Category（0x108→0x54）；0 BOSS、1 ZAKO、2 ANIMAL",
+        source=FIELDS["category"],
     )
 
 
@@ -50,30 +55,30 @@ def destination_relation(argument):
     prefix = [
         runtime(
             "self_target_context_valid",
-            "Accessor.TargetContext 存在（命令工作0x28→0x68）",
+            FIELDS["target_context_nav"],
         ),
         runtime(
             "destination_nav_query_succeeded",
-            "getDataInfoForNav（0x14563bf40）查询自身位置成功",
+            FIELDS["nav_query"],
         ),
         runtime(
             "self_target_module_valid",
-            "holder.Em.Target（0x40→0x100）非空；覆盖位置存在时仍检查",
+            FIELDS["target_module"],
         ),
         combined(
             "any",
             runtime(
                 "destination_override_has_value",
-                "命令复制的 Nullable<vec3>._HasValue；0x1547cabf0，不假定其运行时值",
+                FIELDS["override_position"],
             ),
             runtime(
                 "destination_target_position_has_value",
-                "Target.getTargetPosition(0, false)（0x1469cc720）的 Nullable 有值",
+                FIELDS["target_position"],
             ),
         ),
         runtime(
             "destination_wall_query_succeeded",
-            "getWallInfoNearVector（0x145507880）查询目标位移方向成功",
+            FIELDS["wall_query"],
         ),
         invert(bit("_NaviAttribute", 3)),
         compare(
@@ -113,17 +118,17 @@ def destination_relation(argument):
                 compare(
                     "self_current_area_no",
                     2,
-                    source="cEnemyContext.Area._CurrentAreaNo（0x1d8→0xe0）；不是AI状态",
+                    source=FIELDS["area_no"],
                 ),
                 compare(
                     "self_current_stage_no",
                     0,
-                    source="cEnemyContext.Area._CurrentStageNo（0x1d8→0x14）",
+                    source=FIELDS["stage_no"],
                 ),
                 combined("any", bit("_Attribute1", 7), bit("_MaskBits", 31)),
                 dict(
                     kind="unknown",
-                    reason="HIGH 物理回退要求本次 TERRAIN_CHARACTER 射线至少命中一个有效对象且包含全局0x1547277c8指定的有效组件；组件类型与查询构造仍未完整核实",
+                    reason=FIELDS["terrain_fallback"],
                 ),
             ),
         )
@@ -161,7 +166,7 @@ def unfair_guard():
     return combined(
         "all",
         runtime(
-            "self_target_context_valid", "Accessor.TargetContext 存在（0x28→0x68）"
+            "self_target_context_valid", FIELDS["target_context_unfair"]
         ),
         compare(
             "selected_target_key_type",
@@ -170,15 +175,15 @@ def unfair_guard():
         ),
         runtime(
             "selected_target_key_unique_high_bit_clear",
-            "所选 TARGET_ACCESS_KEY.UniqueIndex 的最高位为0；命令掩码0x80000000ffffffff",
+            FIELDS["unique_index_mask"],
         ),
         runtime(
             "selected_hunter_lookup_found",
-            "findHunterContext 返回非空对象（0x1484a3c10）",
+            FIELDS["hunter_lookup"],
         ),
         runtime(
             "selected_hunter_character_valid",
-            "返回对象0x18的HunterCharacter存在，且角色0x10对象非空",
+            FIELDS["hunter_character"],
         ),
         invert(
             runtime(
@@ -198,17 +203,17 @@ def unfair_guard():
                 compare(
                     "self_current_stage_no",
                     13,
-                    source="Area._CurrentStageNo（0x14）；原生命令最后参数=true",
+                    source=FIELDS["stage_no_unfair"],
                 ),
                 combined(
                     "all",
                     compare(
                         "self_current_stage_no",
                         10,
-                        source="Area._CurrentStageNo（0x14）",
+                        source=FIELDS["stage_no_short"],
                     ),
                     compare(
-                        "self_current_area_no", 4, source="Area._CurrentAreaNo（0xe0）"
+                        "self_current_area_no", 4, source=FIELDS["area_no_short"]
                     ),
                 ),
             )
@@ -243,7 +248,7 @@ def occlusion_hits(context):
                 raise MissingState("GIMMICK 命中缺少原生 UniqueIndex")
             special = context.get("occlusion_special_gimmick_unique_index")
             if type(special) is not int:
-                raise MissingState("缺少全局0x15480a9b0的特殊GIMMICK索引")
+                raise MissingState(FIELDS["special_gimmick_missing"])
             if hit["key_unique_index"] == special:
                 return True
             if type(hit.get("gimmick_lookup_found")) is not bool:
@@ -273,12 +278,12 @@ def recover_navigation_condition(node, profile):
     if profile != receipt()["profile"]:
         raise ValueError("导航条件配方与来源版本不匹配")
     command = node.get("commandType", node.get("expectedCommandType", ""))
-    if not command.startswith("app.btable.EmCommonCommand."):
+    if not command.startswith(COMMON_COMMAND_PREFIX):
         return None
     name = command.rsplit(".", 1)[-1]
     guard = runtime(
         "enemy_command_work_valid",
-        "命令工作存在且原生类型身份匹配 cEnemyBTableCommandWork",
+        FIELDS["command_work_valid_short"],
     )
     if name == "cCheckDestinationRelation":
         result = destination_relation(node["argument"])
@@ -324,7 +329,7 @@ def recover_navigation_condition(node, profile):
                     "occlusion_ray_length_squared",
                     2500.0,
                     "lt",
-                    source="getRayTargetBasePos(_This)/Nullable覆盖位置与getRayTargetBasePos(目标键)之差的 x²+y²+z²；常量0x14dc43cd0=2500",
+                    source=FIELDS["occlusion_length"],
                 ),
                 dict(
                     kind="predicate",
@@ -341,14 +346,14 @@ def recover_navigation_condition(node, profile):
             semanticEvidence=deepcopy(receipt()["evidence"]["occluded"]),
             detail="禁用遮挡检查的永久/持续标志均返回假；射线检测范围严格小于50的距离平方，命中物还需通过GIMMICK过滤。距离单位未核实。",
             queryContract=dict(
-                queryType="app.RAY_CAST_TYPE.TERRAIN_EM_SIGHT",
+                queryType=OCCLUSION_QUERY["queryType"],
                 queryTypeValue=33,
                 targetKeysAccepted=[0, 1, 2, 4, 5],
                 rayLengthSquaredLimit=2500.0,
                 comparison="strictly_less",
-                specialGimmickIndexGlobal="0x15480a9b0",
-                throughIdField="app.cEmModuleTarget._OccludedCheckThroughGmIDs (0x70)",
-                hitKeySource="app.TargetAccessKeyUtil.makeTargetAccessKey (0x14841eb30)",
+                specialGimmickIndexGlobal=OCCLUSION_QUERY["specialGimmickIndexGlobal"],
+                throughIdField=OCCLUSION_QUERY["throughIdField"],
+                hitKeySource=OCCLUSION_QUERY["hitKeySource"],
                 scope="只计算已知原始查询结果的分支；不模拟物理场景或读取_IsOccludedToDest作为命令结果",
             ),
         )

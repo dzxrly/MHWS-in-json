@@ -7,13 +7,16 @@ from ..native.metadata import Il2cppMetadata
 from .reader import Resources, typed, structure_signature
 from ..models.catalog import EXPECTED_ENEMY_IDS, TRAINING_ENEMY_ID
 from .action_names import ActionNames
+from ..config import (
+    BTABLE_RESOURCE_TYPE,
+)
 
 
 def table_references(resources, value):
     if isinstance(value, dict):
         for name, body in value.items():
             if (
-                name == "ace.btable.user_data.BTable"
+                name == BTABLE_RESOURCE_TYPE
                 and isinstance(body, dict)
                 and body.get("path")
             ):

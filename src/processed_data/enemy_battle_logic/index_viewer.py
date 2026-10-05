@@ -10,7 +10,7 @@ def render_index(records, *, release_ready=False):
         name, enemy_id = escape(record["enemyName"]), escape(record["enemyId"])
         status = "查看条件分支、候选动作和后续判断；待核查部分在图中标明。"
         cards.append(
-            f'<article data-search="{name} {enemy_id}"><h2>{name}</h2><p>{enemy_id}</p><p>{status}</p><a href="{record["html"]}">查看怪物战斗行动树</a></article>'
+            f'<article data-search="{name} {enemy_id}"><h2>{name}</h2><p>{enemy_id}</p><p>{status}</p><a href="{record["html"]}">查看怪物行为决策树</a></article>'
         )
     data = json.dumps(
         dict(schemaVersion=1, releaseReady=release_ready, monsters=records),

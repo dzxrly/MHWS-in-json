@@ -17,7 +17,10 @@ from ..logic.commands import annotate_effects
 from ..resources.reader import Resources, typed
 from ..logic.predicates import RuleRegistry
 from .extraction import extract_inventory
-from ..config import ROOT
+from ..config import (
+    OPERATOR_WORK_TYPE,
+    ROOT,
+)
 
 
 def command_binding(event, body, factories, registry):
@@ -175,7 +178,7 @@ def recover_all(
             raise ValueError("元数据来源不匹配")
         operator = {
             int(v["offset_from_base"], 16): k
-            for k, v in dump.fields("ace.btable.cOperatorWork").items()
+            for k, v in dump.fields(OPERATOR_WORK_TYPE).items()
             if v.get("offset_from_base") and "default" not in v
         }
         for name in by_type:

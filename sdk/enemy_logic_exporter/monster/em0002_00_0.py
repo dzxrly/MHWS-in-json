@@ -1,16 +1,25 @@
 """Offline analysis entry for EM0002_00_0; no inferred or placeholder graph."""
 
+import re
+from ..shared.resources.reader import typed
+
 ENEMY_ID = "EM0002_00_0"
 NATIVE_OWNER = "Em0002_00"
+
+# Version-specific native identities used by this recipe (game 1.42.0.2).
+COMBAT_EXPORT = "app.Em0002_00_BTable_Combat_Export"
+TABLE_METHOD_PREFIX = "table_"
+STATIC_INITIALIZER_PREFIX = ".cctor"
+# Ghidra pseudo-C spellings: pool weight (+0x24) and argument array (+0x18).
+POOL_WEIGHT_PATTERN = r"lRam0000000(1[0-9a-f]+) \+ 0x24"
+SKIP_ARGUMENT_PATTERN = r"\+ 0x18\) \+ (0x[0-9a-f]+|\d+)"
+ARGUMENT_ARRAY_ELEMENTS = 0x20
+ARGUMENT_ARRAY_STRIDE = 8
 
 
 def extract(context):
     """Select this monster's declared tables, imports and native method contexts."""
     return context.extract_enemy(ENEMY_ID, NATIVE_OWNER)
-
-
-import re
-from ..shared.resources.reader import typed
 
 
 def build_model(
@@ -73,13 +82,13 @@ def build_model(
     rows = [
         row
         for row in method_rows(index)
-        if row["type"] in sources and row["method"].startswith("table_")
+        if row["type"] in sources and row["method"].startswith(TABLE_METHOD_PREFIX)
     ]
     initializers = [
         row
         for row in method_rows(helpers)
-        if row["type"] == "app.Em0002_00_BTable_Combat_Export"
-        and row["method"].startswith(".cctor")
+        if row["type"] == COMBAT_EXPORT
+        and row["method"].startswith(STATIC_INITIALIZER_PREFIX)
     ]
     if len(initializers) != 1 or not rows:
         raise ValueError("火龙本体方法或静态初始化没有唯一来源")
@@ -263,15 +272,17 @@ def recover_selectors(machine, code, pools, body):
         for i, m in enumerate(cases)
     }
     for pc, block in blocks.items():
-        refs = set(re.findall(r"lRam0000000(1[0-9a-f]+) \+ 0x24", block))
+        refs = set(re.findall(POOL_WEIGHT_PATTERN, block))
         if len(refs) != 1:
             continue
         address = hex(int(next(iter(refs)), 16))
         pool = pools.get(address)
-        skip_offset = re.search(r"\+ 0x18\) \+ (0x[0-9a-f]+|\d+)", block)
+        skip_offset = re.search(SKIP_ARGUMENT_PATTERN, block)
         if not pool or not skip_offset:
             continue
-        argument_index = (int(skip_offset[1], 0) - 0x20) // 8
+        argument_index = (
+            int(skip_offset[1], 0) - ARGUMENT_ARRAY_ELEMENTS
+        ) // ARGUMENT_ARRAY_STRIDE
         argument_type, argument = typed(body["_CommandArgArray"][argument_index])
         if not argument_type.endswith("cSetSkipActionTblArg"):
             raise ValueError("selector filter argument type changed")

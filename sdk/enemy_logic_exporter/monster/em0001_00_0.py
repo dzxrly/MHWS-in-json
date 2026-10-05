@@ -2,6 +2,7 @@
 
 from ..shared.native.evidence import evidence, method_rows
 
+from copy import deepcopy
 from pathlib import Path
 import json
 import re
@@ -11,6 +12,43 @@ from ..shared.resources.reader import Resources, typed, structure_signature
 SOURCE = (
     "STM/GameDesign/Enemy/Em0001/00/BTable/Em0001_00_BTable_CommonAttack.user.3.json"
 )
+
+COMMON = SOURCE
+COMBAT = COMMON.replace("CommonAttack", "Combat")
+
+# Version-specific native identities used by this recipe (game 1.42.0.2).
+COMMON_ATTACK_EXPORT = "app.Em0001_00_BTable_CommonAttack_Export"
+TABLE_METHOD_PREFIX = "table_"
+# Reviewed CommonAttack tables, by GUID token of table_<GUID><suffix>.
+TABLE_76 = "01313943_0939_4717_b2a4_28a6086cc2c5"
+TABLE_48 = "897"
+TABLE_11 = "9790fef1_99ef_430a_a05d_f9a41cc5c931"
+TABLE_70 = "9a583948_5083_460e_b71a_952eeacdccec"
+COMBAT_SELECTOR_TABLE = "b5e627d9"
+# Ghidra labels of the six CommonAttack candidate tables, by table index.
+CANDIDATE_LABELS = {
+    1: "mhws_ff6884737bedd3d6",
+    6: "mhws_b27b122f6b524969",
+    7: "mhws_f333775b215b4806",
+    12: "mhws_7e79ff592c4e4b83",
+    14: "mhws_57cbe316ff24dec8",
+    73: "mhws_d4562df3f39c6b20",
+}
+# (selector state, skip argument, static pool VA, candidate tables, PCs).
+SELECTOR_POOLS = (
+    (1, 444, "0x1547ec588", [14, 1, 7], [2, 4, 6]),
+    (9, 448, "0x1547ec430", [1, 12], [10, 12]),
+    (15, 450, "0x1547ec530", [1, 12, 73], [16, 18, 20]),
+)
+# app.cEnemyContext.get_IsAngry / get_IsTired.
+STATUS_BINDINGS = {
+    "0": dict(contextKey="IsAngry", source="app.cEnemyContext.get_IsAngry"),
+    "1": dict(contextKey="IsTired", source="app.cEnemyContext.get_IsTired"),
+}
+STATUS_GETTERS = ("0x145cbd510", "0x145cc7880")
+SKIP_ACTION_ARGUMENT = "app.btable.EmCommonCommand.cSetSkipActionTblArg"
+VARIABLE_STORAGE = "ace.btable.cVariableStorage"
+TIMER_METHODS = ("setValueTimer", "getValueTimer", "update")
 
 
 def guard(state, argument, command, yes, no):
@@ -61,7 +99,7 @@ def build_local(work, natives, profile):
     rows = method_rows(document)
     definitions = [
         (
-            "01313943_0939_4717_b2a4_28a6086cc2c5",
+            TABLE_76,
             76,
             [
                 guard(0, 259, 11, 1, 11),
@@ -70,30 +108,30 @@ def build_local(work, natives, profile):
                 guard(3, 262, 104, 4, 6),
                 action(4, 263, 5),
                 timer(5, 264),
-                call(8, "897", 9),
+                call(8, TABLE_48, 9),
             ],
             [6, 9, 10, 11],
         ),
         (
-            "897",
+            TABLE_48,
             48,
             [
                 guard(0, 200, 104, 1, 6),
                 guard(1, 201, 11, 2, 5),
                 action(2, 202, 3),
-                call(3, "9790fef1_99ef_430a_a05d_f9a41cc5c931", 4),
+                call(3, TABLE_11, 4),
                 timer(4, 203),
             ],
             [5, 6],
         ),
         (
-            "9790fef1_99ef_430a_a05d_f9a41cc5c931",
+            TABLE_11,
             11,
-            [call(0, "9a583948_5083_460e_b71a_952eeacdccec", 1), action(1, 56, 2)],
+            [call(0, TABLE_70, 1), action(1, 56, 2)],
             [2],
         ),
         (
-            "9a583948_5083_460e_b71a_952eeacdccec",
+            TABLE_70,
             70,
             [guard(0, 254, 14, 1, 2), action(1, 255, 2)],
             [2, 3],
@@ -104,8 +142,8 @@ def build_local(work, natives, profile):
         matches = [
             r
             for r in rows
-            if r["type"] == "app.Em0001_00_BTable_CommonAttack_Export"
-            and r["method"].startswith("table_" + token)
+            if r["type"] == COMMON_ATTACK_EXPORT
+            and r["method"].startswith(TABLE_METHOD_PREFIX + token)
         ]
         assert len(matches) == 1, token
         row = matches[0]
@@ -119,8 +157,8 @@ def build_local(work, natives, profile):
         row = next(
             r
             for r in rows
-            if r["type"] == "app.Em0001_00_BTable_CommonAttack_Export"
-            and r["method"].startswith("table_" + token)
+            if r["type"] == COMMON_ATTACK_EXPORT
+            and r["method"].startswith(TABLE_METHOD_PREFIX + token)
         )
         for node in nodes:
             if node["kind"] == "call":
@@ -178,15 +216,7 @@ def build_local(work, natives, profile):
     return model
 
 
-"""Freeze freshly reviewed Combat selection plus its verified local prefixes."""
-
-
-from copy import deepcopy
-
-COMMON = (
-    "STM/GameDesign/Enemy/Em0001/00/BTable/Em0001_00_BTable_CommonAttack.user.3.json"
-)
-COMBAT = COMMON.replace("CommonAttack", "Combat")
+# Freeze freshly reviewed Combat selection plus its verified local prefixes.
 
 
 def build_upstream(work, natives, data, base_model, *, rules_path=None):
@@ -225,14 +255,7 @@ def build_upstream(work, natives, data, base_model, *, rules_path=None):
     )
     selected = {
         i: by_label[label]
-        for i, label in {
-            1: "mhws_ff6884737bedd3d6",
-            6: "mhws_b27b122f6b524969",
-            7: "mhws_f333775b215b4806",
-            12: "mhws_7e79ff592c4e4b83",
-            14: "mhws_57cbe316ff24dec8",
-            73: "mhws_d4562df3f39c6b20",
-        }.items()
+        for i, label in CANDIDATE_LABELS.items()
     }
     landing = "9a583948-5083-460e-b71a-952eeacdccec"
     far = "01313943-0939-4717-b2a4-28a6086cc2c5"
@@ -341,15 +364,14 @@ def build_upstream(work, natives, data, base_model, *, rules_path=None):
                 evidence=evidence(row),
             )
         )
-    combat = next(r for r in current if r["method"].startswith("table_b5e627d9"))
+    combat = next(
+        r
+        for r in current
+        if r["method"].startswith(TABLE_METHOD_PREFIX + COMBAT_SELECTOR_TABLE)
+    )
     combat_guid = guid(combat)
     nodes = [condition(0, 443, 14, 1, "0a"), condition("0a", 447, 14, 9, 15)]
-    pools = [
-        (1, 444, "0x1547ec588", [14, 1, 7], [2, 4, 6]),
-        (9, 448, "0x1547ec430", [1, 12], [10, 12]),
-        (15, 450, "0x1547ec530", [1, 12, 73], [16, 18, 20]),
-    ]
-    for state, arg, address, targets, pcs in pools:
+    for state, arg, address, targets, pcs in SELECTOR_POOLS:
         pool = weights["pools"][address]
         assert len(pool) == len(targets)
         candidates = [
@@ -406,7 +428,7 @@ def build_upstream(work, natives, data, base_model, *, rules_path=None):
                 if node["kind"] == "weighted_random":
                     assert (
                         node["expectedArgumentType"]
-                        == "app.btable.EmCommonCommand.cSetSkipActionTblArg"
+                        == SKIP_ACTION_ARGUMENT
                     )
                     # This is an inline compiled operator, not a command execution.
                     del node["commandIndex"]
@@ -429,12 +451,9 @@ def build_upstream(work, natives, data, base_model, *, rules_path=None):
     rule["summary"] = (
         "自身状态分类检查；含站立状态、生命比例、部分 AI 状态及怒和疲劳状态"
     )
-    rule["statusBindings"] = {
-        "0": dict(contextKey="IsAngry", source="app.cEnemyContext.get_IsAngry"),
-        "1": dict(contextKey="IsTired", source="app.cEnemyContext.get_IsTired"),
-    }
+    rule["statusBindings"] = {k: dict(v) for k, v in STATUS_BINDINGS.items()}
     rule["statusEvidence"] = [
-        evidence(r) for r in current if r["address"] in ("0x145cbd510", "0x145cc7880")
+        evidence(r) for r in current if r["address"] in STATUS_GETTERS
     ]
     rules["timerOperations"] = dict(
         setTypeMap={"0": 1, "1": 2, "2": 3},
@@ -452,8 +471,8 @@ def build_upstream(work, natives, data, base_model, *, rules_path=None):
         evidence=[
             evidence(r)
             for r in current
-            if r["type"] == "ace.btable.cVariableStorage"
-            and r["method"].startswith(("setValueTimer", "getValueTimer", "update"))
+            if r["type"] == VARIABLE_STORAGE
+            and r["method"].startswith(TIMER_METHODS)
         ],
     )
     rules_path.write_text(

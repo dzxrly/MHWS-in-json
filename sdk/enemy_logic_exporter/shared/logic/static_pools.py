@@ -3,20 +3,27 @@
 import re
 import hashlib
 from ..native.bindings import _transfer, memory_address, pointer, register, VOLATILE
-
-# Current-version slot for System.ValueTuple<UInt32, Int32>[] pool arrays.
-# The allocator receives the array length in r8 and the dimension count in r9.
-PACKED_POOL_ARRAY_TYPE_SLOT = 0x1547535A0
-ARRAY_ALLOCATOR = 0x14B030670
+from ..config import (
+    ARRAY_ELEMENTS,
+    FN_ARRAY_ALLOCATE,
+    FN_POOL_ARRAY_COPY,
+    FN_POOL_PAIR_CONSTRUCT,
+    FN_STATIC_REF_ACQUIRE,
+    FN_STATIC_REF_RELEASE,
+    POOL_ARRAY_COPY_LABEL,
+    POOL_ARRAY_TYPE_SLOT,
+    POOL_ELEMENT_TYPE,
+    POOL_PAIR_CONSTRUCT_LABELS,
+)
 
 
 def initializer_pools(record):
     text = record["code"].replace("\r", "")
     previous = 0
     pools = []
-    for match in re.finditer(r"FUN_143801f50\((0x[0-9a-f]+),", text):
+    for match in re.finditer(re.escape(POOL_ARRAY_COPY_LABEL) + r"\((0x[0-9a-f]+),", text):
         pairs = re.findall(
-            r"(?:FUN_143928820|func_0x000143928820|mhws_c49d22bf7e7e9cbe)\s*\(.*?,.*?,\s*(0x[0-9a-f]+|\d+),\s*(0x[0-9a-f]+|\d+)\s*\)\s*;",
+            r"(?:" + "|".join(POOL_PAIR_CONSTRUCT_LABELS) + r")\s*\(.*?,.*?,\s*(0x[0-9a-f]+|\d+),\s*(0x[0-9a-f]+|\d+)\s*\)\s*;",
             text[previous : match.start()],
             re.S,
         )
@@ -63,7 +70,7 @@ def native_initializer_pools(native, address, record, *, read_memory=None):
         for event in events:
             if event["kind"] != "call" or not event["direct"]:
                 continue
-            if event["target"] == 0x143928820:
+            if event["target"] == FN_POOL_PAIR_CONSTRUCT:
                 key, weight = event["arguments"][2:4]
                 if (
                     isinstance(key, int)
@@ -78,7 +85,7 @@ def native_initializer_pools(native, address, record, *, read_memory=None):
                     )
                 else:
                     pairs = []
-            elif event["target"] == 0x143801F50:
+            elif event["target"] == FN_POOL_ARRAY_COPY:
                 destination = event["arguments"][0]
                 if isinstance(destination, int) and pairs:
                     pools.append(
@@ -202,7 +209,7 @@ def _reference_assignment(instructions, start, values):
             return None
         if (
             block[-1].operands[0].type != CS_OP_IMM
-            or block[-1].operands[0].imm != 0x14B0099E0
+            or block[-1].operands[0].imm != FN_STATIC_REF_RELEASE
         ):
             return None
         branch_to_end = semantic_block[len(prefix) - 1]
@@ -214,7 +221,9 @@ def _reference_assignment(instructions, start, values):
     if any(ins.operands[0].type != CS_OP_IMM for ins in calls):
         return None
     if [ins.operands[0].imm for ins in calls] != (
-        [0x14B007BD0] if tail_release else [0x14B007BD0, 0x14B0099E0]
+        [FN_STATIC_REF_ACQUIRE]
+        if tail_release
+        else [FN_STATIC_REF_ACQUIRE, FN_STATIC_REF_RELEASE]
     ):
         return None
     atomic = next(ins for ins in block if ins.mnemonic == "lock cmpxchg")
@@ -311,8 +320,8 @@ def _packed_initializer_pools(instructions, record, read_memory):
                 assignmentSite=site,
                 arrayLength=length,
                 elementStride=8,
-                elementType="System.ValueTuple<System.UInt32,System.Int32>",
-                arrayTypeSlot=hex(PACKED_POOL_ARRAY_TYPE_SLOT),
+                elementType=POOL_ELEMENT_TYPE,
+                arrayTypeSlot=hex(POOL_ARRAY_TYPE_SLOT),
                 pairLayout="little-endian uint32 nativeKey followed by int32 nonnegative weight",
                 initializerEvidence=_initializer_evidence(record),
                 constantEvidence=list(definition["constantEvidence"].values()),
@@ -326,7 +335,7 @@ def _packed_initializer_pools(instructions, record, read_memory):
         definition = arrays.get(array[1])
         if definition is None:
             return
-        position = array[2] + offset - 0x20
+        position = array[2] + offset - ARRAY_ELEMENTS
         if position < 0 or position + size > definition["length"] * 8:
             definition["valid"] = False
             return
@@ -427,11 +436,11 @@ def _packed_initializer_pools(instructions, record, read_memory):
                     vector_store_handled = True
         for event in events:
             if event["kind"] == "call":
-                if event["direct"] and event["target"] == ARRAY_ALLOCATOR:
+                if event["direct"] and event["target"] == FN_ARRAY_ALLOCATE:
                     _, type_pointer, length, dimension, _ = event["arguments"]
                     if (
                         type_pointer
-                        == ("native_static_value", PACKED_POOL_ARRAY_TYPE_SLOT)
+                        == ("native_static_value", POOL_ARRAY_TYPE_SLOT)
                         and type(length) is int
                         and 0 < length <= 2048
                         and dimension == 1

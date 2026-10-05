@@ -103,12 +103,13 @@ class BTableMachineTests(unittest.TestCase):
                 recover_entry_push(machine, machine.ins[0x144EF8575], state)
             )
 
-    def test_entry_push_rejects_unreviewed_method_and_changed_helper(self):
+    def test_entry_push_rejects_unverified_resize_helper(self):
         from sdk.enemy_logic_exporter.shared.logic.combat_position import (
             recover_entry_push,
         )
 
         machine, state, proof = self.entry_push()
+        # The real evidence pins the game's helper bytes; the fixture differs.
         self.assertIsNone(recover_entry_push(machine, machine.ins[0x144EF8575], state))
         proof["resizeHelper"]["nativeSha256"] = "0" * 64
         with patch(
@@ -165,7 +166,7 @@ class BTableMachineTests(unittest.TestCase):
         self.assertNotEqual(other_key, keys[0])
         self.assertEqual(machine.nodes[other_key]["targetTable"], "other-child")
 
-    def test_changed_cached_command_context_stops_without_replacing_first_node(self):
+    def test_dead_context_difference_reuses_the_proven_command_node(self):
         machine = self.machine("e8 00 00 00 00 84 c0 74 06 b8 01 00 00 00 c3 31 c0 c3")
         binding = dict(
             commandType="fixture.cCheckOpaque",
@@ -175,14 +176,57 @@ class BTableMachineTests(unittest.TestCase):
         )
         with patch.object(machine, "bind", return_value=binding):
             first = machine.walk(0x1000, machine.initial(0))
-            same = machine.walk(0x1000, machine.initial(0))
-            changed = machine.initial(0)
+            changed = machine.initial(7)
+            changed["saved"] = (93, 19)
+            merged = machine.walk(0x1000, changed)
+        self.assertEqual(machine.nodes[first]["kind"], "condition")
+        self.assertEqual(merged, first)
+
+    def test_live_context_difference_stops_without_replacing_first_node(self):
+        import copy
+        from sdk.enemy_logic_exporter.shared.native.bindings import pointer
+
+        # The saved position differs and the later child call consumes it.
+        machine = self.machine("e8 00 00 00 00 48 89 da e8 f3 0f 00 00 c3")
+        machine.targets[0x2000] = [dict(row=dict(type="fixture"), tableGuid="child")]
+        binding = dict(
+            commandType="fixture.cCheckOpaque",
+            commandIndex=0,
+            argumentIndex=0,
+            argumentType="fixture",
+        )
+
+        def bind(event):
+            return binding if event["site"] == "0x1000" else None
+
+        with patch.object(machine, "bind", side_effect=bind):
+            state = machine.initial(0)
+            state["regs"]["rbx"] = pointer("export")
+            state["saved"] = (93, 3)
+            first = machine.walk(0x1000, state)
+            changed = copy.deepcopy(state)
             changed["saved"] = (93, 19)
             boundary = machine.walk(0x1000, changed)
-        self.assertEqual(first, same)
         self.assertEqual(machine.nodes[first]["kind"], "condition")
         self.assertEqual(machine.nodes[boundary]["kind"], "unknown")
         self.assertNotIn("next", machine.nodes[boundary])
+
+    def test_shared_call_instruction_keeps_one_node_per_argument_slot(self):
+        machine = self.machine("e8 00 00 00 00 84 c0 74 06 b8 01 00 00 00 c3 31 c0 c3")
+        keys = []
+        for index in (4, 9):
+            binding = dict(
+                commandType="fixture.cCheckOpaque",
+                commandIndex=0,
+                argumentIndex=index,
+                argumentType="fixture",
+            )
+            with patch.object(machine, "bind", return_value=binding):
+                keys.append(machine.walk(0x1000, machine.initial(0)))
+        self.assertEqual(keys, ["0x1000", "0x1000-variant-1"])
+        for key, index in zip(keys, (4, 9)):
+            self.assertEqual(machine.nodes[key]["argumentIndex"], index)
+            self.assertEqual(machine.nodes[key]["nativeSite"], "0x1000")
 
     def test_negation_sign_and_addition_carry_choose_native_branches(self):
         for code in (

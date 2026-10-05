@@ -18,14 +18,45 @@
       <div class="counts">__COUNTS__</div>
     </header>
     <div class="scope">__SCOPE__</div>
-    <section id="player-panel" class="player-panel" __PLAYER_HIDDEN__>
-      <div class="player-intro"><h2>距离、角度如何决定动作</h2><p>沿着分支线读取条件，查看怪物在不同距离、方位和状态下可能请求的动作。默认展示第一次选招，动作后的派生与重新判断可在动作节点展开。</p></div>
-      <div class="player-toolbar">
-        <button id="technical-toggle">查看完整技术图</button>
+    <section id="player-panel" class="player-stage" __PLAYER_HIDDEN__>
+      <div class="player-bar">
+        <div class="player-bar-row">
+          <input id="player-search" type="search" placeholder="搜索动作或条件，回车定位" aria-label="搜索动作或条件" />
+          <button id="player-search-next">定位</button>
+          <span class="player-bar-sep"></span>
+          <button id="player-expand">展开一层</button>
+          <button id="player-collapse">全部收起</button>
+          <button id="player-fit">全图</button>
+          <button id="player-zoom-in" aria-label="放大">＋</button>
+          <button id="player-zoom-out" aria-label="缩小">－</button>
+          <button id="player-export">导出 SVG</button>
+          <button id="player-details-toggle">详情</button>
+          <button id="technical-toggle">技术图</button>
+          <output id="player-status" role="status"></output>
+        </div>
+        <details id="player-scenario" class="player-scenario">
+          <summary>设定情境（距离、角度、怒/疲劳等）</summary>
+          <div id="player-inputs" class="player-inputs"></div>
+          <p class="player-note">选择后整棵树只保留符合情境的分支；“任意”表示保留全部分支。</p>
+        </details>
       </div>
-      <div id="player-tree" class="player-tree" aria-label="距离、角度与动作分支树"></div>
-      <div id="player-unattached"></div>
-      <p class="player-note">图中的距离为游戏判断值，按默认距离修正展示，尚未确认与米的换算；特殊状态的距离修正仍需核查。角度为相对指定方向的夹角。以目标是该玩家、怪物正在普通战斗中选招为情境。动作或状态变化后条件重新判断；候选权重不是整场战斗的出招概率。内部条件与未知分支仍保留在树中，点击节点可查看依据。</p>
+      <div class="player-body">
+        <div id="player-viewport" class="player-viewport" tabindex="0" aria-label="怪物完整行为决策树，可拖动和缩放">
+          <svg id="player-canvas" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="怪物完整行为决策树"><g id="player-scene"></g></svg>
+          <div class="player-legend">
+            <span class="k-condition">条件判断</span><span class="k-random">候选选择</span><span class="k-action">动作请求</span><span class="k-mutation">流程变化</span><span class="k-unknown">待核查</span><span class="k-ref">同前（已在别处展开）</span>
+          </div>
+        </div>
+        <aside id="player-details" class="player-details">
+          <div id="player-selection" class="player-selection"><h3>点击节点查看详情</h3><p>整棵树从怪物出发：先按 AI 状态请求的行为表分组，再展开每张表里的距离、角度和状态分支，直到动作请求。圆形按钮展开或收起分支。</p></div>
+          <div class="player-help">
+            <h3>阅读说明</h3>
+            <p>距离为游戏判断值，按默认距离修正展示，尚未确认与米的换算；角度为相对指定方向的夹角。</p>
+            <p>候选权重只描述当前分支内的抽签，不是整场战斗的出招概率。动作请求不保证一定成功执行。</p>
+            <p>“由 … 请求”列出切换到该行为表的 AI 状态或中断；触发这些状态的条件不在本表内。“接入位置待核查”的分支没有已证实的上游入口，因此不画接入线。</p>
+          </div>
+        </aside>
+      </div>
     </section>
     <main id="technical-panel" __TECHNICAL_HIDDEN__>
       <section class="map-panel">

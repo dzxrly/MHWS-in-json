@@ -49,15 +49,15 @@ def render_html(graph):
     ).replace("<", "\\u003c")
     values = {
         "TITLE": escape(
-            enemy + (" · 战斗行动树" if graph.get("playerView") else " · 行动逻辑大图")
+            enemy + (" · 行为决策树" if graph.get("playerView") else " · 行动逻辑大图")
         ),
         "COUNTS": (
-            "距离分支 · 角度分支 · 动作派生"
+            "行为表入口 · 距离 / 角度 / 状态分支 · 动作"
             if graph.get("playerView")
             else f"{coverage['localTables']} 个子表 · {coverage['nodes']} 个节点 · {coverage.get('weightedSelections', 0)} 个权重选择点"
         ),
         "SCOPE": (
-            "按已恢复的条件与连接展示战斗路径。未核实的判断和接入关系保留在树中，动作请求不等于一定成功出招。"
+            "整只怪物的行为在同一棵树中：先按请求的行为表分组，再展开距离、角度和状态分支直到动作。未核实的判断和接入关系保留在树中，动作请求不等于一定成功出招。"
             if graph.get("playerView")
             else escape(graph["scope"])
             + f"。其中 {coverage.get('completeLocalTables', 0)} 个局部流程已核实，{coverage.get('unknownFlowNodes', 0)} 处后继与 {coverage.get('unknownConditions', 0)} 处条件仍待核实。"

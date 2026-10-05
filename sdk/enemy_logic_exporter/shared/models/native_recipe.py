@@ -14,7 +14,13 @@ import re
 from ..native.evidence import evidence, method_rows, digest
 from ..native.metadata import Il2cppMetadata
 from ..native.pe import PE
-from ..config import SUPPORTED_PROFILE
+from ..config import (
+    FN_STACK_COOKIE_CHECK,
+    POSITION_ROW,
+    POSITION_TABLE,
+    SUPPORTED_PROFILE,
+    VOID_TYPE,
+)
 from ..resources.reader import Resources, structure_signature
 from .catalog import EXPECTED_ENEMY_IDS
 from ..workflow.semantic_recovery import _artifact
@@ -251,8 +257,8 @@ class NativeRecipeContext:
         )
         state["mem"].update(
             {
-                ("dispatch_position", 4, 4): 0,
-                ("dispatch_position", 8, 4): 0,
+                ("dispatch_position", POSITION_TABLE, 4): 0,
+                ("dispatch_position", POSITION_ROW, 4): 0,
                 ("stack", 0x28, 8): pointer("operator"),
             }
         )
@@ -281,7 +287,7 @@ class NativeRecipeContext:
                 if event["target"] in targets:
                     address = event["target"]
                     continue
-                if event["target"] != 0x14B1295F0:
+                if event["target"] != FN_STACK_COOKIE_CHECK:
                     break
                 state = machine.complete_call(state, event)
                 address += ins.size
@@ -305,7 +311,7 @@ class NativeRecipeContext:
         if (
             not method
             or int(method.get("function", "0"), 16) != int(row["address"], 16)
-            or method.get("returns", {}).get("type") != "System.Void"
+            or method.get("returns", {}).get("type") != VOID_TYPE
         ):
             return None
         return dict(
@@ -541,6 +547,9 @@ class NativeRecipeContext:
         from ..logic.combat_entry import attach_combat_entries
 
         attach_combat_entries(document, monster, self.metadata, self.pe)
+        from ..logic.scheduler_slots import scheduler_slots
+
+        document["schedulerSlots"] = scheduler_slots(document)
         return document
 
 

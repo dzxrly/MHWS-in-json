@@ -7,7 +7,19 @@ explicit target/parts queries, rather than assuming a command's final result.
 import json
 from copy import deepcopy
 from functools import lru_cache
-from ..config import EVIDENCE_DIR
+from ..config import (
+    BAD_CONDITION_LABELS,
+    EVIDENCE_DIR,
+    HUNTER_BAD_CONDITION_INDEX,
+    HUNTER_BAD_CONDITION_SOURCE,
+    HUNTER_STATUS_BITS,
+    HUNTER_STATUS_LABELS,
+    HUNTER_STATUS_SOURCE,
+    STATE_SIGN_LABELS,
+    STATE_SIGN_SOURCE,
+    COMMON_COMMAND_PREFIX,
+    CONDITION_FIELDS as FIELDS,
+)
 from ..resources.reader import typed
 from .expressions import runtime, compare, combined
 from .values import enum_number, scalar
@@ -21,11 +33,40 @@ def receipt():
     )
 
 
+def enum_name(value):
+    return str(scalar(value)).split("] ", 1)[-1]
+
+
+def _player_target_status(argument):
+    """Return the player branch of CheckStatus for a reviewed case, or None."""
+    category = enum_number(argument["_EditCategory"])
+    if category == 2:
+        name = enum_name(typed(argument["BadConditions"])[1]["_EditArg"])
+        if name == "STUN" or name not in HUNTER_BAD_CONDITION_INDEX:
+            return None
+        index = HUNTER_BAD_CONDITION_INDEX[name]
+        player = runtime(
+            "selected_hunter_bad_condition:" + name,
+            HUNTER_BAD_CONDITION_SOURCE.format(index=index),
+        )
+        return player, False, "当前目标处于" + BAD_CONDITION_LABELS.get(name, name)
+    if category == 3:
+        name = enum_name(typed(argument["Status"])[1]["_EditArg"])
+        if name not in HUNTER_STATUS_BITS:
+            return None
+        player = runtime(
+            "selected_hunter_status:" + name,
+            HUNTER_STATUS_SOURCE.format(bits="/".join(map(str, HUNTER_STATUS_BITS[name]))),
+        )
+        return player, False, HUNTER_STATUS_LABELS[name].replace("玩家", "当前目标（玩家）")
+    return None
+
+
 def recover_condition(node, profile, enemy_id, resources):
     if profile != receipt()["profile"]:
         raise ValueError("公共条件配方与来源版本不匹配")
     command = node.get("commandType", "")
-    if not command.startswith("app.btable.EmCommonCommand."):
+    if not command.startswith(COMMON_COMMAND_PREFIX):
         return None
     navigation = recover_navigation_condition(node, profile)
     if navigation is not None:
@@ -33,14 +74,14 @@ def recover_condition(node, profile, enemy_id, resources):
     argument = node["argument"]
     guard = runtime(
         "enemy_command_work_valid",
-        "cEnemyBTableCommandWork 存在且通过此命令的原生类型检查",
+        FIELDS["command_work_valid"],
     )
     self_valid = runtime(
         "self_target_context_valid",
-        "Accessor.TargetContext（命令工作偏移0x28，经0x68）存在",
+        FIELDS["target_context"],
     )
     selected = (
-        "cEmModuleTarget.getTarget(requireValid=True, slot=0)：状态不为1时返回无效键"
+        FIELDS["selected_target"]
     )
     key = command.rsplit(".", 1)[-1]
     extra = {}
@@ -62,7 +103,7 @@ def recover_condition(node, profile, enemy_id, resources):
             expression = compare(
                 "self_basic_legendary_id",
                 value,
-                source="cEnemyContext.Basic.LegendaryID（0x108→0x50）",
+                source=FIELDS["legendary_id"],
             )
             summary = "自身历战分类为 " + str(
                 scalar(typed(argument["LegendaryID"])[1]["_EditArg"])
@@ -85,7 +126,7 @@ def recover_condition(node, profile, enemy_id, resources):
                     kind="compare",
                     operator="eq",
                     left=runtime(
-                        "self_basic_enemy_id", "cEnemyContext.Basic.EmID（0x108→0x48）"
+                        "self_basic_enemy_id", FIELDS["enemy_id"]
                     ),
                     right=mapped,
                 ),
@@ -105,6 +146,52 @@ def recover_condition(node, profile, enemy_id, resources):
             "all", guard, compare("selected_target_key_type", 0, source=selected)
         )
         summary = "当前有效目标是玩家"
+    elif key == "cCheckTargetType" and enum_number(argument["_EditCategory"]) == 3:
+        evidence = "target_type"
+        expression = combined(
+            "all", guard, compare("selected_target_key_type", 2, source=selected)
+        )
+        summary = "当前有效目标是随从"
+    elif key == "cCheckTargetType" and enum_number(argument["_EditCategory"]) == 1:
+        evidence = "target_type_enemy"
+        name = enum_name(typed(argument["Enemy"])[1]["_EditArg"])
+        expression = combined(
+            "all",
+            guard,
+            compare("selected_target_key_type", 1, source=selected),
+            dict(
+                kind="unknown",
+                reason="目标怪物 Context 的启用与类型比较 helper 尚未逐项固化",
+            ),
+        )
+        summary = "当前有效目标是怪物 " + name
+        extra["detail"] = "目标键必须是怪物；目标为玩家时此判断为假。"
+    elif key == "cCheckTargetStatus" and _player_target_status(argument):
+        evidence = "target_status"
+        player, enemy_known, summary = _player_target_status(argument)
+        player = combined(
+            "all",
+            compare("selected_target_key_type", 0, source=selected),
+            runtime(
+                "selected_hunter_context_valid",
+                "由选中键查询玩家 Context 且其角色模块存在",
+            ),
+            player,
+        )
+        enemy = combined(
+            "all",
+            compare("selected_target_key_type", 1, source=selected),
+            dict(kind="unknown", reason="目标为怪物时的状态映射尚未逐项固化"),
+        )
+        expression = combined("all", guard, combined("any", player, enemy))
+        extra["detail"] = "目标为玩家时读取玩家状态；目标为怪物时的分支保留未知。"
+    elif key == "cCheckStateSignTyoe":
+        evidence = "state_sign"
+        name = enum_name(argument["_EditArg"])
+        expression = combined(
+            "all", guard, compare("self_state_sign", name, source=STATE_SIGN_SOURCE)
+        )
+        summary = "状态信号：" + STATE_SIGN_LABELS.get(name, name)
     elif key == "cCheckTargetStatus":
         if (
             enum_number(argument["_EditCategory"]) != 2
@@ -121,7 +208,7 @@ def recover_condition(node, profile, enemy_id, resources):
             ),
             runtime(
                 "selected_hunter_stun_active",
-                "cHunterBadConditions._Stun（0x40）._IsActive（0x2f） != 0",
+                FIELDS["hunter_stun"],
             ),
         )
         enemy = combined(
@@ -129,14 +216,14 @@ def recover_condition(node, profile, enemy_id, resources):
             compare("selected_target_key_type", 1, source=selected),
             runtime(
                 "selected_enemy_context_enabled",
-                "选中怪物 Context 存在且其启用标志（0x308→0x27）为真",
+                FIELDS["enemy_enabled"],
             ),
             combined(
                 "any",
                 compare(
                     "selected_enemy_condition_state:15",
                     1,
-                    source="cEmModuleConditions._Conditions[15]._State（0xb0→数组项→0x58）",
+                    source=FIELDS["enemy_condition_15"],
                 ),
                 compare(
                     "selected_enemy_condition_state:16",
@@ -166,7 +253,7 @@ def recover_condition(node, profile, enemy_id, resources):
                 ),
                 right=runtime(
                     "self_parts_break_index_count",
-                    "cEnemyContext.Parts 的破坏索引数量（0x128→0x8c）",
+                    FIELDS["parts_break_count"],
                 ),
             ),
             runtime(
@@ -177,7 +264,7 @@ def recover_condition(node, profile, enemy_id, resources):
                 lookup + ":break_count",
                 0,
                 "gt",
-                source="匹配破坏记录的 _BreakCount（0x18）",
+                source=FIELDS["parts_record_break_count"],
             ),
         )
         summary = "指定部位的破坏次数 > 0"

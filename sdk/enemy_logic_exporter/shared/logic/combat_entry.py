@@ -10,7 +10,17 @@ from copy import deepcopy
 from functools import lru_cache
 import hashlib
 import json
-from ..config import EVIDENCE_DIR, SUPPORTED_PROFILE
+from ..config import (
+    COMBAT_FIELDS as FIELDS,
+    COMBAT_HELPER_METHODS as HELPER_METHODS,
+    COMBAT_METHODS as METHODS,
+    COMBAT_MINICOMPONENTS,
+    COMBAT_NATIVE_TARGETS as NATIVE_TARGETS,
+    COMBAT_STATE_SIGN_COMPONENT_WRITES,
+    COMBAT_STATE_SIGN_COMPONENTS,
+    EVIDENCE_DIR,
+    SUPPORTED_PROFILE,
+)
 from .expressions import combined, compare, runtime
 
 
@@ -168,38 +178,38 @@ def build_combat_entries(model, monster):
         )
 
     manager = _raw(
-        "controller_exists", "cEmAIState._EntityHolders(0x28)._Master(0x20) != null"
+        "controller_exists", FIELDS["controller_exists"]
     )
     done_combat = _raw(
         "done_combat_begin",
-        "cEnemyContext._FlagArray[DONE_COMBAT_BEGIN_ACTION=0]，0x308→数组0x20",
+        FIELDS["done_combat_begin"],
     )
     done_combat_em = _raw(
         "done_combat_em_begin",
-        "cEnemyContext._FlagArray[DONE_COMBAT_EM_BEGIN_ACTION=1]，0x308→数组0x21",
+        FIELDS["done_combat_em_begin"],
     )
     sign_exists = _raw(
         "state_sign_exists",
-        "cEnemyContext.BTable._ExistBTableArray[STATE_SIGN=25]，0x120→0x18→0x39",
+        FIELDS["state_sign_exists"],
     )
     begin_required = combined(
         "all", _not(done_combat), _not(done_combat_em), sign_exists
     )
     initial_phase_guard = combined(
         "any",
-        _eq("previous_ai_state", 5, "AIStateManager._PrevAIStateID(0xe8)：PREDATOR=5"),
+        _eq("previous_ai_state", 5, FIELDS["previous_ai_predator"]),
         combined(
             "all",
             _eq(
                 "previous_ai_state",
                 -1,
-                "AIStateManager._PrevAIStateID(0xe8)：INVALID=-1",
+                FIELDS["previous_ai_invalid"],
             ),
-            _not(_raw("any_interrupt", "AIStateManager._AnyInterruptResult(0x103)")),
+            _not(_raw("any_interrupt", FIELDS["any_interrupt"])),
         ),
         _raw(
             "lead_interrupt_exists",
-            "AIStateManager._ExistInterruptResult[LEAD=5]，0xd0→数组0x25",
+            FIELDS["lead_interrupt_exists"],
         ),
     )
     evidence = receipt()["methods"]
@@ -224,14 +234,14 @@ def build_combat_entries(model, monster):
         table(
             "combat-request-" + slot.lower() + "-direct",
             "排队切换 " + slot + "：先处理恢复请求与跳表",
-            "requestChangeBTable578130",
+            METHODS["request_change"],
             [
                 _boundary(
                     "wait_policy",
-                    "调用方先计算 isWaitUntilActionEndBTable；该方法检查重启、反应事件、故事表和位集等上下文，也可能清除 ReactionGm+0x13 标志。完整等待策略尚未固化，不能将未知结果设成固定立即切换",
+                    f"调用方先计算 isWaitUntilActionEndBTable；该方法检查重启、反应事件、故事表和位集等上下文，也可能清除 {FIELDS['wait_policy_flag']} 标志。完整等待策略尚未固化，不能将未知结果设成固定立即切换",
                     "resume_pending",
                     nativeEvidence=deepcopy(
-                        evidence["isWaitUntilActionEndBTable592376"]
+                        evidence[METHODS["wait_until_action_end"]]
                     ),
                     callerScope=True,
                 ),
@@ -240,7 +250,7 @@ def build_combat_entries(model, monster):
                     "存在跳表恢复请求？",
                     _raw(
                         "jump_resume_requested",
-                        "cEmAIUpdateBTable._IsRequestJumpBTableResume(0x68)",
+                        FIELDS["jump_resume_requested"],
                     ),
                     "same_main",
                     "queue",
@@ -251,7 +261,7 @@ def build_combat_entries(model, monster):
                     _eq(
                         "scheduler_current_main_slot",
                         receipt()["enums"]["app.EnemyDef.BTABLE_ID"][slot],
-                        "cEmAIUpdateBTable._CurrentMainBTable.ID(0x50)",
+                        FIELDS["current_main_slot"],
                     ),
                     "end",
                     "clear_resume",
@@ -261,7 +271,7 @@ def build_combat_entries(model, monster):
                     "取消本次跳表恢复请求",
                     "queue",
                     "set_runtime_field",
-                    field="cEmAIUpdateBTable._IsRequestJumpBTableResume(0x68)",
+                    field=FIELDS["jump_resume_requested"],
                     value=False,
                 ),
                 queue("queue", slot, "jump_valid"),
@@ -270,7 +280,7 @@ def build_combat_entries(model, monster):
                     "当前跳表管理器有效？",
                     _raw(
                         "jump_manager_valid",
-                        "cManager.get_Valid(JumpBTableManager=0x40)",
+                        FIELDS["jump_manager_valid"],
                     ),
                     "clear_jump",
                     "end",
@@ -281,18 +291,18 @@ def build_combat_entries(model, monster):
                     "end",
                     "clear_jump_manager",
                     fields={"_CurrentJumpBTable.ID": -1},
-                    nativeTarget="0x1454bcc60",
+                    nativeTarget=NATIVE_TARGETS["clear_jump"],
                     reason="setupTable(null,false,true,false)；此操作不把主表恢复到根",
                 ),
                 _end(),
             ],
-            extra_evidence=("isWaitUntilActionEndBTable592376", "get_Valid330442"),
+            extra_evidence=(METHODS["wait_until_action_end"], METHODS["manager_valid"]),
         )
 
     table(
         "combat-request-verify",
         "核对当前槽后请求 Combat",
-        "requestChangeBTableVerify592391",
+        METHODS["request_verify"],
         [
             _condition(
                 "same_slot",
@@ -300,7 +310,7 @@ def build_combat_entries(model, monster):
                 _eq(
                     "current_btable_slot",
                     1,
-                    "cEnemyContext.BTable._CurrentBTableID(0x14)；COMBAT=1",
+                    FIELDS["current_btable_slot"],
                 ),
                 "clear_pending",
                 "queue",
@@ -322,14 +332,14 @@ def build_combat_entries(model, monster):
             _end(),
         ],
         extra_evidence=(
-            "isWaitUntilActionEndBTable592376",
-            "requestChangeBTable578130",
+            METHODS["wait_until_action_end"],
+            METHODS["request_change"],
         ),
     )
     table(
         "combat-change-begin",
         "选择战斗开始提示或持续战斗",
-        "changeState577113",
+        METHODS["change_state"],
         [
             _condition(
                 "begin",
@@ -344,7 +354,7 @@ def build_combat_entries(model, monster):
                 "状态提示类型设为 COMBAT_BEGIN",
                 "phase_begin",
                 "set_runtime_field",
-                field="cEnemyContext.StateSignActionType(0x358)",
+                field=FIELDS["state_sign_type"],
                 value=5,
             ),
             _effect(
@@ -352,7 +362,7 @@ def build_combat_entries(model, monster):
                 "Combat 阶段设为 BEGIN",
                 "end",
                 "set_runtime_field",
-                field="cEmAIStateCombat._State(0x3c)",
+                field=FIELDS["combat_state"],
                 value=0,
             ),
             dict(
@@ -367,25 +377,21 @@ def build_combat_entries(model, monster):
                 "Combat 阶段设为 UPDATE",
                 "end",
                 "set_runtime_field",
-                field="cEmAIStateCombat._State(0x3c)",
+                field=FIELDS["combat_state"],
                 value=1,
             ),
             _end(),
         ],
         extra_evidence=(
-            "requestChangeBTable578130",
-            "isWaitUntilActionEndBTable592376",
+            METHODS["request_change"],
+            METHODS["wait_until_action_end"],
         ),
     )
-    activation = {
-        "MiniCompUpdator_BeforeBTableOnce(0x70)": [0, 1],
-        "MiniCompUpdator_CtrlUpdate(0x68)": [12, 14, 63, 9],
-        "MiniCompUpdator_AfterBTableOnce(0x78)": [8],
-    }
+    activation = deepcopy(COMBAT_MINICOMPONENTS)
     table(
         "combat-enter",
         "进入战斗：初始化、阶段选择及探测器",
-        "onEnter577109",
+        METHODS["on_enter"],
         [
             _effect(
                 "activate",
@@ -405,8 +411,8 @@ def build_combat_entries(model, monster):
                 "将目标子区域设为当前子区域",
                 "manager",
                 "native_helper_call",
-                nativeTarget="0x143acf150",
-                method="app.cEmModuleArea.setTargetAreaChidl_CurrentAreaChild276490",
+                nativeTarget=NATIVE_TARGETS["area_target"],
+                method=HELPER_METHODS["area_target"],
             ),
             _condition("manager", "主控制器存在？", manager, "reset_flags", "end"),
             _effect(
@@ -415,21 +421,15 @@ def build_combat_entries(model, monster):
                 "schedule",
                 "set_runtime_fields",
                 fields={
-                    "Combat.IsHidingSkillLost(0xfa)": False,
-                    "Combat.IsReservedResetDest(0x11)": False,
+                    FIELDS["hiding_skill_lost"]: False,
+                    FIELDS["reserved_reset_dest"]: False,
                 },
             ),
             _boundary(
                 "schedule",
                 "按区域迁移类别、下一个中断及当前调度重新计算区域迁移，并可能变更调度类别和发送同步包；这些 helper 的完整副作用尚未逐项恢复",
                 "initial_phase",
-                nativeTargets=[
-                    "0x1467148a0",
-                    "0x1467140e0",
-                    "0x146713810",
-                    "0x146368d60",
-                    "0x14635f4e0",
-                ],
+                nativeTargets=list(NATIVE_TARGETS["area_schedule"]),
             ),
             _condition(
                 "initial_phase",
@@ -451,13 +451,13 @@ def build_combat_entries(model, monster):
                     "all",
                     combined(
                         "any",
-                        _raw("send_detector", "Combat._IsSendDetector(0xf9)"),
-                        _raw("auto_send_detector", "Combat._IsAutoSendDetector(0xfb)"),
+                        _raw("send_detector", FIELDS["send_detector"]),
+                        _raw("auto_send_detector", FIELDS["auto_send_detector"]),
                     ),
                     _not(
                         _raw(
                             "disable_send_detector",
-                            "Combat._IsDisableSendDetector(0xfc)",
+                            FIELDS["disable_send_detector"],
                         )
                     ),
                 ),
@@ -468,7 +468,7 @@ def build_combat_entries(model, monster):
                 "detector_event",
                 "构造并提交 Combat 探测器事件；事件对象与接收方完整行为尚未恢复",
                 "clear_detector",
-                nativeTargets=["0x147bf9d90", "0x1493dda70", "0x148d0cae0"],
+                nativeTargets=list(NATIVE_TARGETS["detector_event"]),
             ),
             _effect(
                 "clear_detector",
@@ -476,18 +476,18 @@ def build_combat_entries(model, monster):
                 "end",
                 "set_runtime_fields",
                 fields={
-                    "Combat._IsSendDetector(0xf9)": False,
-                    "Combat._IsDisableSendDetector(0xfc)": False,
+                    FIELDS["send_detector"]: False,
+                    FIELDS["disable_send_detector"]: False,
                 },
             ),
             _end(),
         ],
-        extra_evidence=("changeState577113",),
+        extra_evidence=(METHODS["change_state"],),
     )
     table(
         "combat-return-interrupt",
         "从中断返回：重新选择战斗阶段",
-        "onReturnInterrupt577105",
+        METHODS["on_return_interrupt"],
         [
             _condition("manager", "主控制器存在？", manager, "choose", "end"),
             dict(
@@ -499,12 +499,12 @@ def build_combat_entries(model, monster):
             ),
             _end(),
         ],
-        extra_evidence=("changeState577113",),
+        extra_evidence=(METHODS["change_state"],),
     )
     table(
         "combat-restart",
         "重启 Combat 回调",
-        "onRestart577106",
+        METHODS["on_restart"],
         [
             _effect(
                 "activate",
@@ -533,20 +533,20 @@ def build_combat_entries(model, monster):
                 "Combat 阶段设为 UPDATE",
                 "end",
                 "set_runtime_field",
-                field="cEmAIStateCombat._State(0x3c)",
+                field=FIELDS["combat_state"],
                 value=1,
             ),
             _end(),
         ],
         extra_evidence=(
-            "requestChangeBTable578130",
-            "isWaitUntilActionEndBTable592376",
+            METHODS["request_change"],
+            METHODS["wait_until_action_end"],
         ),
     )
     table(
         "combat-table-end",
         "行为表结束：检查中断权限后继续 Combat",
-        "onBTableEnd577108",
+        METHODS["on_table_end"],
         [
             _condition(
                 "interrupt",
@@ -564,18 +564,18 @@ def build_combat_entries(model, monster):
                 "刷新每个目标的烟雾状态",
                 "phase",
                 "native_helper_call",
-                nativeTarget="0x147bf8ad0",
-                method="app.cEmModuleCombat.refreshEveryTargetStateInSmoke544906",
+                nativeTarget=NATIVE_TARGETS["smoke"],
+                method=HELPER_METHODS["smoke"],
             ),
             _condition(
                 "phase",
                 "阶段为 UPDATE，或 BEGIN 阶段结束的是 STATE_SIGN？",
                 combined(
                     "any",
-                    _eq("phase", 1, "Combat._State(0x3c)，UPDATE=1"),
+                    _eq("phase", 1, FIELDS["combat_state_update"]),
                     combined(
                         "all",
-                        _eq("phase", 0, "Combat._State(0x3c)，BEGIN=0"),
+                        _eq("phase", 0, FIELDS["combat_state_begin"]),
                         _eq(
                             "ended_btable_slot",
                             25,
@@ -597,17 +597,17 @@ def build_combat_entries(model, monster):
                 "Combat 阶段设为 UPDATE",
                 "end",
                 "set_runtime_field",
-                field="cEmAIStateCombat._State(0x3c)",
+                field=FIELDS["combat_state"],
                 value=1,
             ),
             _end(),
         ],
-        extra_evidence=("isHigherInterruptAcceptChangeState578225",),
+        extra_evidence=(METHODS["higher_interrupt"],),
     )
     table(
         "combat-table-change",
         "STATE_SIGN 开始执行时记录开战完成标志",
-        "onBTableChange577107",
+        METHODS["on_table_change"],
         [
             _condition(
                 "slot",
@@ -634,8 +634,8 @@ def build_combat_entries(model, monster):
                 "启用 CtrlUpdate 组件72",
                 "end",
                 "activate_minicomponents",
-                componentIds={"MiniCompUpdator_CtrlUpdate(0x68)": [72]},
-                reason="原生内联检查组件存在后，按组件当前激活状态写入0x27与0x26；组件内部功能尚未恢复",
+                componentIds=deepcopy(COMBAT_STATE_SIGN_COMPONENTS),
+                reason=f"原生内联检查组件存在后，按组件当前激活状态写入{COMBAT_STATE_SIGN_COMPONENT_WRITES}；组件内部功能尚未恢复",
             ),
             _end(),
         ],
@@ -653,7 +653,7 @@ def build_combat_entries(model, monster):
         current = "_Current" + channel.title() + "BTable"
         pending = "_Request" + channel.title() + "BTable"
         needs_update = _raw(
-            "btable_request_update", "cEnemyContext.BTable._IsReuqestUpdateBTable(0x11)"
+            "btable_request_update", FIELDS["btable_request_update"]
         )
         pending_exists = relation("pending_slot", -1, "ne", pending + ".ID；NONE=-1")
         resource_refresh = combined(
@@ -680,8 +680,8 @@ def build_combat_entries(model, monster):
                 relation("current_slot", 41, "ne", current + ".ID；STORY=41"),
             ),
         )
-        manager_export = raw("manager_export", "cManager._IsExportTable(0x49)")
-        operator_exists = raw("operator_exists", "cManager._OperatorWork(0x10) != null")
+        manager_export = raw("manager_export", FIELDS["manager_export"])
+        operator_exists = raw("operator_exists", FIELDS["operator_exists"])
         manager_valid = combined(
             "any",
             manager_export,
@@ -692,7 +692,7 @@ def build_combat_entries(model, monster):
                     "operator_table_count",
                     0,
                     "ne",
-                    "OperatorWork+0x48 所指表的0x18计数；get_Valid 的真实分支",
+                    FIELDS["operator_table_count"],
                 ),
             ),
         )
@@ -700,11 +700,11 @@ def build_combat_entries(model, monster):
             kind="compare",
             operator="eq",
             left=runtime(
-                prefix + "saved_table", "OperatorWork 当前保存位置 Table，0xa0"
+                prefix + "saved_table", FIELDS["saved_table"]
             ),
             right=runtime(
                 prefix + "export_root_index",
-                "get_IsTableRoot 原生比较 ExportRuntimeBTable+0x30 的实际整数；未把字段名称推定为根表编号",
+                FIELDS["export_root_index"],
             ),
         )
         at_root = combined(
@@ -720,7 +720,7 @@ def build_combat_entries(model, monster):
                         relation(
                             "saved_table",
                             0,
-                            source="OperatorWork 当前保存位置 Table，0xa0",
+                            source=FIELDS["saved_table"],
                         ),
                         root_index,
                     ),
@@ -728,11 +728,11 @@ def build_combat_entries(model, monster):
                 combined(
                     "all",
                     _not(manager_export),
-                    relation("saved_table", 0, "le", "普通表当前保存位置 Table，0xa0"),
+                    relation("saved_table", 0, "le", FIELDS["saved_table_plain"]),
                 ),
             ),
-            relation("saved_pc", 0, "le", "OperatorWork 当前保存位置 PC，0xa4"),
-            relation("saved_command", 0, "le", "OperatorWork 当前保存位置命令，0xa8"),
+            relation("saved_pc", 0, "le", FIELDS["saved_pc"]),
+            relation("saved_command", 0, "le", FIELDS["saved_command"]),
         )
         nodes = [
             _effect(
@@ -777,7 +777,7 @@ def build_combat_entries(model, monster):
                 "请求的行为资源可用且通过基础/覆盖资源筛选？",
                 dict(
                     kind="unknown",
-                    reason="STORY 使用 _OverrideBTableFromStory(0x30)；其他槽按 IsEnableOverrideNew 位集及实际资源启用状态选择基础/覆盖表。资源 GUID 比较和启用 helper 尚未完全固化",
+                    reason=FIELDS["override_story"],
                 ),
                 "install",
                 "blocked",
@@ -809,11 +809,11 @@ def build_combat_entries(model, monster):
                     "any",
                     _raw(
                         "permanent_disable_btable",
-                        "cEnemyContext._PermanentFlag(0x2e8) bit0",
+                        FIELDS["permanent_disable_btable"],
                     ),
                     _raw(
                         "continue_disable_btable",
-                        "cEnemyContext._ContinueFlag(0x2d8).check(DISABLE_BTABLE_UPDATE=0)",
+                        FIELDS["continue_disable_btable"],
                     ),
                 ),
                 "end",
@@ -856,15 +856,15 @@ def build_combat_entries(model, monster):
                 "ended",
                 "update_btable_manager",
                 channel=channel,
-                nativeEvidence=deepcopy(evidence["updateTable330454"]),
-                reason="Export 模式经虚表 updateTableInpl 执行；结束标志由导出方法状态和 OperatorWork+0xc6决定。普通模式使用单独的命令循环",
+                nativeEvidence=deepcopy(evidence[METHODS["update_table"]]),
+                reason=FIELDS["execute_reason"],
             ),
             _condition(
                 "ended",
                 "该管理器的真实 IsTableEnd 标志为真？",
                 raw(
                     "manager_table_end",
-                    "cManager.<IsTableEnd>k__BackingField(0x4a)，在 updateTable 执行之后读取",
+                    FIELDS["manager_table_end"],
                 ),
                 "end_callback",
                 "end",
@@ -884,12 +884,12 @@ def build_combat_entries(model, monster):
         table(
             "combat-scheduler-" + channel,
             ("跳表" if channel == "jump" else "主表") + "请求、等待与执行",
-            "updateBTable578143",
+            METHODS["update_btable"],
             nodes,
             extra_evidence=(
-                "get_Valid330442",
-                "get_IsTableRoot578098",
-                "updateTable330454",
+                METHODS["manager_valid"],
+                METHODS["table_root"],
+                METHODS["update_table"],
             ),
         )
 
@@ -898,14 +898,14 @@ def build_combat_entries(model, monster):
     table(
         "combat-scheduler-update",
         "逐帧调度：跳表优先及保存位置恢复",
-        "update578140",
+        METHODS["update"],
         [
             _condition(
                 "enabled",
                 "本帧允许 BTable 更新？",
                 _raw(
                     "need_btable_update",
-                    "cEmAIUpdateBTable._IsNeedUpdate(0x69)；活跃中断可由 checkUpdateExecute 将其清零",
+                    FIELDS["need_btable_update"],
                 ),
                 "resume_requested",
                 "end",
@@ -915,7 +915,7 @@ def build_combat_entries(model, monster):
                 "已请求从跳表恢复？",
                 _raw(
                     "jump_resume_requested",
-                    "cEmAIUpdateBTable._IsRequestJumpBTableResume(0x68)",
+                    FIELDS["jump_resume_requested"],
                 ),
                 "restore",
                 "jump_update",
@@ -924,12 +924,7 @@ def build_combat_entries(model, monster):
                 "restore",
                 "先通知主表槽变化，清除跳表及其目标备份，再恢复主表保存的 table/PC/命令位置；原生 export 与普通表恢复路径不同，尚未全部接到已恢复节点",
                 "end",
-                nativeTargets=[
-                    "0x1490c5770",
-                    "0x1454bd490",
-                    "0x1469cbe60",
-                    "0x1454bd9c0",
-                ],
+                nativeTargets=list(NATIVE_TARGETS["restore"]),
                 resumeScope="saved_main_table_position",
                 freshRoot=False,
             ),
@@ -945,7 +940,7 @@ def build_combat_entries(model, monster):
                 "跳表管理器仍有效？",
                 _raw(
                     "jump_manager_valid",
-                    "cManager.get_Valid(JumpBTableManager=0x40)；true 时本帧不更新主表",
+                    FIELDS["jump_manager_active"],
                 ),
                 "end",
                 "main_update",
@@ -960,10 +955,10 @@ def build_combat_entries(model, monster):
             _end(),
         ],
         extra_evidence=(
-            "updateBTable578143",
-            "resumeJumpBTable578134",
-            "updateTable330454",
-            "checkUpdateExecute578139",
+            METHODS["update_btable"],
+            METHODS["resume_jump"],
+            METHODS["update_table"],
+            METHODS["check_update"],
         ),
     )
     entries = [
@@ -976,31 +971,31 @@ def build_combat_entries(model, monster):
             evidence=deepcopy(evidence[method]),
         )
         for kind, name, identity, method in [
-            ("combat_enter", "进入 Combat", "combat-enter", "onEnter577109"),
+            ("combat_enter", "进入 Combat", "combat-enter", METHODS["on_enter"]),
             (
                 "resume",
                 "从中断返回 Combat",
                 "combat-return-interrupt",
-                "onReturnInterrupt577105",
+                METHODS["on_return_interrupt"],
             ),
-            ("resume", "重启 Combat", "combat-restart", "onRestart577106"),
+            ("resume", "重启 Combat", "combat-restart", METHODS["on_restart"]),
             (
                 "combat_update",
                 "逐帧更新主表/跳表",
                 "combat-scheduler-update",
-                "update578140",
+                METHODS["update"],
             ),
             (
                 "combat_update",
                 "Combat 收到行为表结束回调",
                 "combat-table-end",
-                "onBTableEnd577108",
+                METHODS["on_table_end"],
             ),
             (
                 "combat_update",
                 "Combat 收到槽变化回调",
                 "combat-table-change",
-                "onBTableChange577107",
+                METHODS["on_table_change"],
             ),
         ]
     ]
