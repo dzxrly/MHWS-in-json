@@ -306,8 +306,12 @@
   // ------------------------------------------------------------ scenario inputs
   function inputLabel(option) { return option.label ?? String(option.value); }
   const box = $("player-inputs");
+  // Timers and table variables can be numerous; keep them in a sub-section.
+  const extra = html("details", undefined, "player-inputs-extra"), extraBox = html("div", undefined, "player-inputs");
+  extra.append(html("summary", "计时器与行为表变量"), extraBox);
   for (const [key, field] of Object.entries(view.inputs || {})) {
     if (!field.options?.length) continue;
+    const target = field.group === "timer" || field.group === "variable" ? extraBox : box;
     const label = html("label"), select = html("select");
     label.append(field.label || key, select);
     select.append(new Option("任意", ""));
@@ -318,9 +322,10 @@
       matches = []; lastQuery = "";
       build(); draw(); fit();
     };
-    box.append(label);
+    target.append(label);
   }
-  if (!box.children.length) $("player-scenario").hidden = true;
+  if (extraBox.children.length) box.after(extra);
+  if (!box.children.length && !extraBox.children.length) $("player-scenario").hidden = true;
 
   // ------------------------------------------------------------ toolbar & gestures
   function fit() {

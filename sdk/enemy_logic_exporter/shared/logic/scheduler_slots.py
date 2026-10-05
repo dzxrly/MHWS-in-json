@@ -24,6 +24,8 @@ from ..config import (
 )
 
 EVIDENCE_PATH = EVIDENCE_DIR / "scheduler_slots.v1.json"
+# A slot added by a game update keeps its raw name here until it is reviewed.
+UNCLASSIFIED_GROUP = "未分类行为表"
 ARGUMENT_REGISTERS = {
     "r8": {"r8", "r8d", "r8w", "r8b"},
 }
@@ -173,7 +175,9 @@ def scheduler_slots(model):
             dict(
                 slot=slot,
                 label=SLOT_LABELS.get(slot, slot),
-                group=groups.get(slot, "非战斗与生态"),
+                group=groups.get(
+                    slot, "非战斗与生态" if slot in SLOT_LABELS else UNCLASSIFIED_GROUP
+                ),
                 resource=binding["resource"],
                 dispatchTarget=binding.get("dispatchTarget"),
                 requestedBy=deepcopy(requested),

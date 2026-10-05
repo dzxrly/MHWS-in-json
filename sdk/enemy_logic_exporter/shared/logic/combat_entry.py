@@ -13,7 +13,7 @@ import json
 from ..config import (
     COMBAT_FIELDS as FIELDS,
     COMBAT_HELPER_METHODS as HELPER_METHODS,
-    COMBAT_METHODS as METHODS,
+    COMBAT_METHODS,
     COMBAT_MINICOMPONENTS,
     COMBAT_NATIVE_TARGETS as NATIVE_TARGETS,
     COMBAT_STATE_SIGN_COMPONENT_WRITES,
@@ -22,6 +22,7 @@ from ..config import (
     SUPPORTED_PROFILE,
 )
 from .expressions import combined, compare, runtime
+from ..native.symbols import method_stem
 
 
 @lru_cache(maxsize=1)
@@ -29,6 +30,19 @@ def receipt():
     return json.loads(
         (EVIDENCE_DIR / "combat_entry_evidence.v1.json").read_text(encoding="utf8")
     )
+
+
+def _suffixed_methods():
+    """Map COMBAT_METHODS stems to this version's suffixed evidence keys."""
+    keys = {}
+    for key, row in receipt()["methods"].items():
+        keys.setdefault((row["type"], method_stem(key)), []).append(key)
+    result = {}
+    for role, identity in COMBAT_METHODS.items():
+        if len(keys.get(identity, [])) != 1:
+            raise ValueError("共享 Combat 证据中的方法无法唯一对应：" + ".".join(identity))
+        result[role] = keys[identity][0]
+    return result
 
 
 def verify_sources(profile, metadata, pe):
@@ -127,6 +141,7 @@ def build_combat_entries(model, monster):
         or monster["enemyId"] != model["enemyId"]
     ):
         raise ValueError("共享 Combat 入口的怪物或来源版本不匹配")
+    METHODS = _suffixed_methods()
     tables = {table["tableGuid"]: table for table in model["tables"]}
     bindings = {}
     for slot, source in monster["slots"].items():

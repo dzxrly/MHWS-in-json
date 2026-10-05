@@ -1,6 +1,6 @@
 # 怪物行动逻辑提取与维护
 
-本目录是离线研究 SDK，代码统一使用 Python。它读取游戏 EXE 和匹配的 IL2CPP JSON，提取原生方法证据，再用人工核实过的配方固化语义与控制流。公共分析代码位于 `shared/`，按原生证据、游戏资源、语义恢复、模型构建和离线流程分组；JSON 文件统一放在 `data/`。每个大型怪物（含独立变种，排除训练靶）在 `monster/<完整ID小写>.py` 有独立入口。SDK 与 `src` 之间只通过 JSON 文件交接，双方禁止导入或调用对方的代码。网页构建器位于 `src/processed_data/enemy_battle_logic`，只读取已解析的图 JSON，不能读取游戏资源、IL2CPP 或 EXE。
+本目录是离线研究 SDK，代码统一使用 Python。它读取游戏 EXE 和匹配的 IL2CPP JSON，提取原生方法证据，再用人工核实过的配方固化语义与控制流。公共分析代码位于 `shared/`，按原生证据、游戏资源、语义恢复、模型构建和离线流程分组；JSON 文件统一放在 `data/`。每个大型怪物（含独立变种，排除训练靶）在 `monster/<完整ID小写>.py` 有独立入口；名单本身是数据（`data/roster.v1.json`），由 `roster` 从 EnemyData 与 BTableList 生成。SDK 与 `src` 之间只通过 JSON 文件交接，双方禁止导入或调用对方的代码。网页构建器位于 `src/processed_data/enemy_battle_logic`，只读取已解析的图 JSON，不能读取游戏资源、IL2CPP 或 EXE。
 
 ## 维护边界
 
@@ -19,7 +19,12 @@
 
 | 文件 | 职责 |
 |---|---|
-| `shared/config.py` | 集中保存路径、来源 profile 及全部版本相关常量：原生函数与全局地址、结构偏移、IL2CPP 类型/方法/字段名、字段说明标签、规则整理表、调度槽标签与分组、发布时删除的研究字段。`shared` 中的模块只从这里取这些值 |
+| `shared/config.py` | 集中保存路径、版本无关的符号定义（`SYMBOL_SPECS`）、结构偏移、IL2CPP 类型/方法/字段名、字段说明标签、规则整理表、调度槽标签与分组、发布时删除的研究字段；函数地址与核对常量从当前 `data/profiles/<版本>.json` 读取，不写字面地址。`shared` 中的模块只从这里取这些值 |
+| `shared/native/symbols.py` | 把符号解析为当前构建的地址：IL2CPP 方法按类型、去掉数字后缀的方法名及参数类型定位；无名 helper 按屏蔽重定位后的开头字节特征定位，可再限定为具名锚点方法的直接被调方；全局与常量作为“人工核对”值随 profile 传递。为每个函数计算与重定位无关的规范化摘要 |
+| `shared/workflow/version_update.py` | `resolve-symbols` 生成新版本 profile 并报告移动、代码变化与需复核项；`migrate-evidence` 按类型与方法名在新构建中重新定位全部证据行，只有规范化摘要不变的行才自动改写地址、范围、字节摘要与方法后缀 |
+| `shared/models/roster.py` | 生成并比较大型怪物名单（含变种实际复用的 Combat 主人）；`new-monster` 为名单新增的怪物生成独立入口模块，不覆盖已有配方 |
+| `shared/resources/variables.py` | 索引全部 BTableVariable 定义（计时器、浮点、布尔），模型以 `variableCatalog` 记录本怪物判断读取的变量及其初始值与来源 |
+| `shared/models/uncertainty.py` | `uncertainty` 统计玩家战斗树中在全部玩家输入已知时仍无法判定的条件，按命令排序，作为后续规则工作的依据 |
 | `shared/native/metadata.py` | 用 mmap 索引大体积 REFramework JSON，按需读取类型、继承字段和枚举 |
 | `shared/native/pe.py` | 只读 PE64，依据异常目录及方法地址确定函数边界，保留同地址的方法别名并校验原生字节 |
 | `shared/native/manifest.py` | 按怪物与方法类别从当前元数据重新生成提取清单 |
@@ -33,7 +38,7 @@
 | `shared/native/bindings.py`、`shared/workflow/semantic_recovery.py` | 从实际 x64 指令恢复调用参数、原生后继、比较、位置和状态写入；不使用丢失 SSA 身份的高层 P-code 偏移绑定参数 |
 | `shared/logic/machine.py`、`shared/logic/common_conditions.py` | 按当前版本的真实指令追踪判断、动作让出、子表调用及准确恢复位置；同一调用指令按目标与参数槽保留独立节点，不同机器状态只有在隔离重放得到相同语义子图时才复用节点；公共条件只接受已核实的分类（任务等级、历战分类、目标为玩家/随从/怪物、目标玩家的异常状态与倒地/被击飞、状态信号、部位破坏、导航与遮挡等），缺少运行时输入保持未知 |
 | `shared/logic/combat_position.py` | 恢复行为表中内联的 `Stack<POSITION>.Push` 返回位置保存；核对扩容 helper 字节，要求全部容量与引用标记路径得到相同的调用和继续位置，不按方法白名单限制 |
-| `shared/logic/command_catalog.py`、`shared/logic/commands.py` | 保留全部命令实现，集中恢复窄范围字段比较、单项写入及参数注释；局部写入不能代表命令全部副作用 |
+| `shared/logic/command_catalog.py`、`shared/logic/commands.py` | 保留全部命令实现，集中恢复窄范围字段比较、单项写入及参数注释；局部写入不能代表命令全部副作用。怪物专用命令若只是“自身 Extend 字段 与 参数/0 比较”（两种书写顺序、十六或十进制偏移均可），提取时由原生配方恢复为 `leafRules`，条件改写为该字段的比较 |
 | `shared/logic/static_pools.py` | 从原始初始化指令提取常量；静态 key 与权重不能直接转换成出招概率 |
 | `shared/logic/weights.py` | 校验整数权重、独立候选槽和调用目标，按已核实的取模与累积权重规则检查给定抽样值；不假设随机数生成器 |
 | `shared/logic/expressions.py`、`shared/logic/values.py` | 集中构造、校验和求值条件表达式，读取标量及枚举；缺少运行时输入保持未知 |
@@ -48,11 +53,19 @@
 | `shared/logic/scheduler_slots.py` | 扫描 `cEmAIState*`/`cEmAIInterrupt*`/控制器方法中对 `requestChangeBTable`、`requestJumpBTable`、`requestChangeBTableVerify` 的直接调用，只接受请求前、同方法内未跨调用的立即数槽参数；专用中断按 `EnemyDef..cctor` 的初始化字节映射 `UNIQUE_00/01`。结果写入 `data/evidence/scheduler_slots.v1.json`，模型以 `schedulerSlots` 记录每个槽由哪些状态请求 |
 | `__main__.py`、`shared/workflow/cli.py` | 离线 CLI 入口 |
 
-`manifest`、`decompile`、`verify` 可用于新版本研究。原生配方当前支持经过来源核对的 **1.42.0.2**。34 个独立模块均可通过 `build_model` 提取自身实际 BTableList、导入闭包和原生方法，公共机器追踪器不提供预先编造的怪物行为。当前 34 份已解析图合计覆盖 7,763 个原生方法上下文、8,171 个子表、120,637 个节点和 4,988 个权重选择点；复用资源按其所在模型分别计数。仍保留 1,946 个未知流程节点、2,617 个含未知表达式的条件和 405 个选择器边界；同一调用位置的不同机器状态只有在隔离重放得到相同语义子图时才复用节点，否则保留边界。原先 46 表、408 节点的雌火龙图保留为固定回归样本。动作说明名绑定到资源、请求 GUID 与参数变体；实例 GUID 和基础 GUID 分别保留。Shell 原名及注释按资源与 UID 保存，未核实触发关系时不绑定到具体动作。全局 Combat 事件保持 partial，不能把导出成功描述为完整战斗 AI 已恢复。
+`manifest`、`decompile`、`verify` 可用于新版本研究。原生配方当前支持经过来源核对的 **1.42.0.2**（`config.ACTIVE_GAME_VERSION`）。34 个独立模块均可通过 `build_model` 提取自身实际 BTableList、导入闭包和原生方法，公共机器追踪器不提供预先编造的怪物行为。当前 34 份已解析图合计覆盖 7,763 个原生方法上下文、8,171 个子表、120,637 个节点和 4,988 个权重选择点；复用资源按其所在模型分别计数。仍保留 1,946 个未知流程节点、2,415 个含未知表达式的条件和 405 个选择器边界；玩家战斗树中在全部玩家输入已知时仍无法判定的条件为 1,183 个（`uncertainty` 统计），另有 316 个随机分支按概率展示；同一调用位置的不同机器状态只有在隔离重放得到相同语义子图时才复用节点，否则保留边界。原先 46 表、408 节点的雌火龙图保留为固定回归样本。动作说明名绑定到资源、请求 GUID 与参数变体；实例 GUID 和基础 GUID 分别保留。Shell 原名及注释按资源与 UID 保存，未核实触发关系时不绑定到具体动作。全局 Combat 事件保持 partial，不能把导出成功描述为完整战斗 AI 已恢复。
 
 ## 版本相关常量
 
-`shared` 下的原生地址、结构偏移和游戏内部类型/方法/字段名统一放在 `shared/config.py`；`monster/<id>.py` 中只属于该怪物配方的地址与内部名放在文件头部的全局常量。游戏更新后先逐项核对这两处，再运行回归；只替换版本号或摘要不能证明常量仍然有效。
+`shared` 下的结构偏移和游戏内部类型/方法/字段名统一放在 `shared/config.py`；函数地址不再写成字面量，而是由 `SYMBOL_SPECS` 声明、按版本解析到 `data/profiles/<版本>.json`。`monster/<id>.py` 中只属于该怪物配方的地址与内部名放在文件头部的全局常量，游戏更新后需人工核对。只替换版本号或摘要不能证明常量仍然有效。
+
+## 游戏更新与扩展
+
+1. **地址变化**：`resolve-symbols --exe <新EXE> --metadata <新dump> --version <新版本>` 以当前 profile 为基线生成新 profile，报告 `moved`（地址移动）、`changed`（规范化代码变化，需复核语义）和 `review`（人工核对常量）。任何符号无法唯一定位都会失败，不会沿用旧地址。
+2. **证据迁移**：`migrate-evidence --exe <新EXE> --metadata <新dump> --profile data/profiles/<新版本>.json` 先只报告；加 `--apply` 后，规范化摘要不变的证据行自动更新到新地址与方法后缀，并为新 profile 记录摘要；有任何待复核行的文件保持不动，命令以非零码退出。
+3. 复核通过后把 `config.ACTIVE_GAME_VERSION` 改为新版本，重新生成 `scheduler-slots` 证据和 `roster`，再提取、对比与发布。
+4. **新怪物/变种**：`roster --write` 更新名单并报告 `added`、`removed`、`ownerChanged` 与 `missingModules`；对每个新增 ID 运行 `new-monster --enemy <ID>` 生成入口，再提取。网页端名单由 `publish` 一并写入 `models/roster.json`，不需要改代码。
+5. **已有怪物的新逻辑**：新子表、导入与动作请求随 BTableList 和原生索引自动纳入；形如“自身 Extend 字段比较”的新专用命令会被自动恢复为 `leafRules`；其他新命令先表现为未知条件或未知命令节点。用 `uncertainty --models <完整模型目录>` 找出影响最大的命令，再按“核实原生语义 → 写入规则/公共条件 → 在 `player_view.py` 编译为玩家输入”的顺序补充。新出现的行为表槽若不在 `SLOT_LABELS` 中，会以原始槽名归入“未分类行为表”组，提醒补充名称与分组。
 
 ## 环境与输入
 
@@ -143,7 +156,7 @@ python -m sdk.enemy_logic_exporter publish --models "$work/player-models"
 python -m src.processed_data.enemy_battle_logic --output "$work/player-preview"
 ```
 
-`playerView` 保存声明式条件、准确的分支与动作继续位置。入口按 `schedulerSlots` 分组：普通战斗选招之外，每个行为表槽（受击、闪光、骑乘、状态提示等）都是独立入口并列出请求它的 AI 状态或中断；没有已证实上游的局部树单独归入“接入位置待核查”组，不伪造接入线。命令上下文、目标模块与目标玩家有效性在“目标是该玩家、正在战斗”的情境中作为显式情境输入，不再让每个条件都显示为未知。网页把整只怪物画成同一棵可交互树：怪物 → 分组 → 行为表 → 条件分支 → 动作，节点就地展开或收起，内部检查保留为小节点，相同判断状态只在首次出现处展开，其他位置显示“同前”并可跳转；顶部可搜索动作/条件、按距离角度和怒/疲劳等设定情境。SDK 与网页端继续只通过 JSON 交接。动作说明名来自已绑定动作类的解释，不代表官方招式名或游戏内验证。
+`playerView` 保存声明式条件、准确的分支与动作继续位置。情境（`scenario`）明确写出：单人或作为主机的玩家是当前目标，怪物处于战斗 AI 状态、没有待切换状态与覆盖普通姿态的专用状态，行为表动作请求未被屏蔽；这些都是可见的情境输入，不是隐含假设。计时器检查按 `variableCatalog` 的初始值作为“计时器到期”输入，布尔变量比较作为“行为表布尔变量”输入，`leafRules` 恢复的专用字段作为“专用状态 <字段>”输入（枚举字段显示枚举名），地形高低与遮挡判定作为单个布尔输入，随机余数分支标为“随机”类别并给出按均匀分布估算的比例（随机源分布未核实）。入口按 `schedulerSlots` 分组：普通战斗选招之外，每个行为表槽（受击、闪光、骑乘、状态提示等）都是独立入口并列出请求它的 AI 状态或中断；没有已证实上游的局部树单独归入“接入位置待核查”组，不伪造接入线。命令上下文、目标模块与目标玩家有效性在“目标是该玩家、正在战斗”的情境中作为显式情境输入，不再让每个条件都显示为未知。网页把整只怪物画成同一棵可交互树：怪物 → 分组 → 行为表 → 条件分支 → 动作，节点就地展开或收起，内部检查保留为小节点，相同判断状态只在首次出现处展开，其他位置显示“同前”并可跳转；顶部可搜索动作/条件、按距离角度和怒/疲劳等设定情境。SDK 与网页端继续只通过 JSON 交接。动作说明名来自已绑定动作类的解释，不代表官方招式名或游戏内验证。
 
 正式流水线只交付 `enemy_battle_logic/index.html` 和各怪物的 `<enemyId>.html`，语义模型与图数据内嵌在离线页面中。Pages 和压缩包均使用这同一份输出，不另外发布研究索引、伪 C 或重复 JSON。同一怪物只能有一个正式模型；重复版本、来源冲突、断开的连接或图数据不一致会阻止发布。CI 只读取已解析的图 JSON，不读取资源、IL2CPP、EXE，也不运行或安装 SDK。网页显示离线提取时记录的来源核对状态；CI 的 JSON 校验不能证明之后的游戏原生代码没有变化。
 

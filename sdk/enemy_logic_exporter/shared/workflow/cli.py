@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 from ..native.evidence import digest, method_rows
 from ..native.pe import verify_rows
-from ..config import ROOT, MODEL_DIR, SUPPORTED_PROFILE
+from ..config import ACTIVE_PROFILE_PATH, ROOT, MODEL_DIR, SUPPORTED_PROFILE
 
 MODEL_DIR_WEB = ROOT / "src/processed_data/enemy_battle_logic/models"
 from ...monster import get_monster
@@ -47,6 +47,38 @@ def parser():
     )
     player.add_argument("--models", type=Path, required=True)
     player.add_argument("--output", type=Path, required=True)
+    uncertainty = commands.add_parser(
+        "uncertainty", help="统计玩家战斗树中在全部玩家输入已知时仍无法判定的条件"
+    )
+    uncertainty.add_argument("--models", type=Path, required=True)
+    uncertainty.add_argument("--top", type=int, default=30)
+    roster = commands.add_parser(
+        "roster", help="从 EnemyData 与 BTableList 重新生成大型怪物名单并报告新增/移除"
+    )
+    roster.add_argument("--natives", type=Path, default=ROOT / "MHWS-in-json/natives")
+    roster.add_argument("--write", action="store_true")
+    scaffold = commands.add_parser("new-monster", help="为名单中的新怪物生成独立入口模块")
+    scaffold.add_argument("--enemy", required=True)
+    resolve = commands.add_parser(
+        "resolve-symbols", help="按符号定义为新版本 EXE/元数据生成 data/profiles/<版本>.json"
+    )
+    resolve.add_argument("--exe", type=Path, required=True)
+    resolve.add_argument(
+        "--metadata", type=Path, default=ROOT / "src/data/il2cpp_dump.json"
+    )
+    resolve.add_argument("--version", required=True)
+    resolve.add_argument("--previous", type=Path, default=ACTIVE_PROFILE_PATH)
+    resolve.add_argument("--output", type=Path)
+    migrate = commands.add_parser(
+        "migrate-evidence", help="把规范化代码未变的证据行迁移到新版本，其余列入人工复核"
+    )
+    migrate.add_argument("--exe", type=Path, required=True)
+    migrate.add_argument(
+        "--metadata", type=Path, default=ROOT / "src/data/il2cpp_dump.json"
+    )
+    migrate.add_argument("--previous", type=Path, default=ACTIVE_PROFILE_PATH)
+    migrate.add_argument("--profile", type=Path, required=True)
+    migrate.add_argument("--apply", action="store_true")
     publish = commands.add_parser(
         "publish", help="把 .agents 中的完整研究模型写成网页使用的精简模型"
     )
@@ -227,6 +259,48 @@ def main():
         from ..models.player_view import enrich_models
 
         enrich_models(args.models, args.output)
+    elif args.command == "uncertainty":
+        from ..models.uncertainty import uncertainty_report
+
+        print(
+            json.dumps(
+                uncertainty_report(args.models, args.top), ensure_ascii=False, indent=2
+            )
+        )
+    elif args.command == "roster":
+        from ..models.roster import ROSTER_PATH, build_roster, load_roster, roster_changes
+        from ..resources.reader import Resources
+
+        new = build_roster(Resources(args.natives))
+        changes = roster_changes(load_roster(), new)
+        if args.write:
+            write_json(ROSTER_PATH, new)
+        print(json.dumps(changes, ensure_ascii=False, indent=2))
+    elif args.command == "new-monster":
+        from ..models.roster import scaffold_monster
+
+        print(scaffold_monster(args.enemy))
+    elif args.command == "resolve-symbols":
+        from .version_update import resolve_profile
+
+        print(
+            json.dumps(
+                resolve_profile(
+                    args.exe, args.metadata, args.version, args.previous, args.output
+                ),
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
+    elif args.command == "migrate-evidence":
+        from .version_update import migrate_evidence
+
+        report = migrate_evidence(
+            args.exe, args.metadata, args.previous, args.profile, apply=args.apply
+        )
+        print(json.dumps(report, ensure_ascii=False, indent=2))
+        if report["review"]:
+            raise SystemExit(1)
     elif args.command == "publish":
         from ..models.publish import publish_models
 

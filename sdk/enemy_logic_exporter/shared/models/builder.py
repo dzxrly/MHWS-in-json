@@ -15,6 +15,7 @@ from .audit import combat_entry_recovered
 from ..logic.expressions import evaluate_expression, expression_unknown
 from ..resources.action_names import ActionNames
 from ..logic.common_conditions import recover_condition
+from ..logic.commands import leaf_expression
 from .player_view import build_player_view
 
 
@@ -188,6 +189,15 @@ def build_chain(
                     raise ValueError("随机回退位置缺失")
                 continue
             if "argumentIndex" not in node:
+                leaf = model.get("leafRules", {}).get(node.get("expectedCommandType"))
+                if node["kind"] == "condition" and leaf and not leaf["argumentField"]:
+                    expression = leaf_expression(leaf)
+                    if expression is not None:
+                        node.update(
+                            expression=expression,
+                            semanticStatus=leaf["semanticStatus"],
+                            semanticEvidence=deepcopy(leaf["evidence"]),
+                        )
                 continue
             if body is None:
                 raise ValueError("参数节点缺少经过核实的资源绑定")
@@ -220,6 +230,15 @@ def build_chain(
                     )
                     if recovered is not None:
                         node.update(recovered)
+                    leaf = model.get("leafRules", {}).get(command_type)
+                    if recovered is None and leaf and leaf["argumentType"] in (None, argument_type):
+                        expression = leaf_expression(leaf, argument)
+                        if expression is not None:
+                            node.update(
+                                expression=expression,
+                                semanticStatus=leaf["semanticStatus"],
+                                semanticEvidence=deepcopy(leaf["evidence"]),
+                            )
                 if node["predicate"].get("kind") == "timer":
                     node["timer"] = resources.timer(
                         body, node["predicate"]["values"]["variable"]
