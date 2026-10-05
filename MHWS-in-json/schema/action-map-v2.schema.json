@@ -209,6 +209,17 @@
             "initializerType": {"type": "string", "minLength": 1}
           }
         },
+        "motionGroup": {
+          "type": "object",
+          "required": ["groupSetId", "groupBankId", "groupId", "side", "listIndex", "groupMemberCount", "sourcePath"],
+          "properties": {
+            "groupSetId": {"type": "integer", "minimum": 0}, "groupBankId": {"type": "integer", "minimum": 1},
+            "groupId": {"type": "integer", "minimum": 0},
+            "side": {"enum": ["L", "R"]}, "listIndex": {"type": "integer", "minimum": 0},
+            "groupMemberCount": {"type": "integer", "minimum": 1},
+            "sourcePath": {"type": "string", "minLength": 1}
+          }
+        },
         "constructorChain": {
           "type": "array", "minItems": 1,
           "items": {
