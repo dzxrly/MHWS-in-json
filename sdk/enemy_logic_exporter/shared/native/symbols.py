@@ -10,10 +10,13 @@ version into ``data/profiles/<version>.json``:
 * ``Reviewed`` - a global or constant carried from the previous profile and
   flagged for manual review whenever the build changes.
 
-Every function also gets a relocation-insensitive ``normalizedSha256``: call
-and jump targets become offsets inside the function or ``EXT``, RIP-relative
-displacements become ``REL``. Equal normalized digests mean the same code
-modulo layout, which lets evidence rows move to a new build automatically.
+Every function also gets a relocation-insensitive ``normalizedSha256`` over
+its whole body: internal branch targets become offsets, external call/jump
+targets become stable identities (a named method's type, suffix-free name and
+parameter types; otherwise the callee's own one-level digest), and RIP-relative
+displacements become ``REL``. Equal digests mean the same code and the same
+callees modulo layout, which lets evidence rows move to a new build. Static
+data and jump-table contents behind ``REL`` are not covered.
 """
 
 from dataclasses import dataclass
@@ -40,6 +43,9 @@ class Reviewed:
 
 
 PATTERN_LENGTHS = (24, 40, 64, 96, 128)
+# Version of the normalized-digest rules; digests of different schemes never
+# compare equal, so profiles from an older scheme must be regenerated.
+DIGEST_SCHEME = 2
 RIP_RELATIVE = re.compile(r"rip ([+-]) 0x[0-9a-f]+")
 
 
@@ -80,13 +86,40 @@ def direct_callees(pe, start):
     }
 
 
-def normalized_digest(pe, start, end=None):
+class CallNames:
+    """Stable, version-independent identities of external call targets."""
+
+    def __init__(self, pe, metadata, catalog):
+        self.pe, self.metadata, self.catalog = pe, metadata, catalog
+        self.cache = {}
+
+    def __call__(self, address):
+        if address not in self.cache:
+            aliases = self.catalog.get(address)
+            if aliases:
+                names = []
+                for owner, method in aliases:
+                    details = (self.metadata.get(owner) or {}).get("methods", {}).get(method, {})
+                    params = ",".join(p.get("type", "") for p in details.get("params", []))
+                    names.append(f"{owner}.{method_stem(method)}({params})")
+                self.cache[address] = "M:" + "|".join(sorted(set(names)))
+            else:
+                # An unnamed callee is identified by its own body, one level deep.
+                self.cache[address] = "H:" + normalized_digest(self.pe, address)[:16]
+        return self.cache[address]
+
+
+def normalized_digest(pe, start, end=None, names=None):
+    """``names`` maps external targets to identities; without it they read EXT."""
     body, end = instructions(pe, start, end)
     lines = []
     for ins in body:
         target = _branch_target(ins)
         if target is not None:
-            operand = f"+{target - start:#x}" if start <= target < end else "EXT"
+            if start <= target < end:
+                operand = f"+{target - start:#x}"
+            else:
+                operand = names(target) if names is not None else "EXT"
         else:
             operand = RIP_RELATIVE.sub(r"rip \1 REL", ins.op_str)
         lines.append(f"{ins.mnemonic} {operand}")
@@ -152,13 +185,13 @@ def find_method(metadata, spec):
     return name, int(details["function"], 16)
 
 
-def _function_record(pe, address, **extra):
+def _function_record(pe, address, names=None, **extra):
     end = pe.end(address)
     return dict(
         address=hex(address),
         end=hex(end),
         nativeSha256=native_digest(pe, address, end),
-        normalizedSha256=normalized_digest(pe, address, end),
+        normalizedSha256=normalized_digest(pe, address, end, names),
         **extra,
     )
 
@@ -181,7 +214,7 @@ def _unique_pattern(pe, address, spec, resolved):
     raise ValueError(f"无法为辅助函数生成唯一特征：{address:#x}")
 
 
-def resolve_symbols(specs, metadata, pe, previous, profile):
+def resolve_symbols(specs, metadata, pe, previous, profile, names=None):
     """Resolve all specs; ``previous`` is the last reviewed profile document."""
     old = previous.get("symbols", {})
     resolved, report = {}, dict(moved=[], changed=[], review=[])
@@ -191,14 +224,14 @@ def resolve_symbols(specs, metadata, pe, previous, profile):
         before = old.get(name, {})
         if isinstance(spec, Method):
             method, address = find_method(metadata, spec)
-            record = _function_record(pe, address, type=spec.type, method=method)
+            record = _function_record(pe, address, names, type=spec.type, method=method)
         elif isinstance(spec, Helper):
             candidates = _helper_candidates(pe, spec, before.get("pattern"), resolved)
             if len(candidates) != 1:
                 raise ValueError(f"辅助函数特征不唯一或失效：{name}（{len(candidates)}）")
             address = candidates[0]
             record = _function_record(
-                pe, address, pattern=_unique_pattern(pe, address, spec, resolved)
+                pe, address, names, pattern=_unique_pattern(pe, address, spec, resolved)
             )
         else:
             if "value" not in before:
@@ -208,7 +241,9 @@ def resolve_symbols(specs, metadata, pe, previous, profile):
                 report["review"].append(name)
         if before.get("address") not in (None, record.get("address")):
             report["moved"].append(name)
-        if before.get("normalizedSha256") not in (None, record.get("normalizedSha256")):
+        if previous.get("digestScheme") == DIGEST_SCHEME and before.get(
+            "normalizedSha256"
+        ) not in (None, record.get("normalizedSha256")):
             report["changed"].append(name)
         resolved[name] = record
     return resolved, report

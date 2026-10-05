@@ -51,6 +51,43 @@ class NormalizedDigestTests(unittest.TestCase):
             normalized_digest(first, 0x1000), normalized_digest(third, 0x1000)
         )
 
+    def test_named_callees_are_part_of_the_digest(self):
+        from sdk.enemy_logic_exporter.shared.native.symbols import normalized_digest
+
+        # Same bytes shape, call targets 0x1ffb and 0x72b5 in the two builds.
+        first = FakePE(0x1000, "8b0500100000e8f00f0000c3")
+        second = FakePE(0x5000, "8b0534120000e8aa220000c3")
+        same = {0x1ffb: "M:app.A.f()", 0x72b5: "M:app.A.f()"}.get
+        moved = {0x1ffb: "M:app.A.f()", 0x72b5: "M:app.B.g()"}.get
+        self.assertEqual(
+            normalized_digest(first, 0x1000, names=same),
+            normalized_digest(second, 0x5000, names=same),
+        )
+        self.assertNotEqual(
+            normalized_digest(first, 0x1000, names=moved),
+            normalized_digest(second, 0x5000, names=moved),
+        )
+
+    def test_migration_compares_the_whole_function_not_the_row_prefix(self):
+        from sdk.enemy_logic_exporter.shared.native.symbols import normalized_digest
+        from sdk.enemy_logic_exporter.shared.workflow.version_update import _same_function
+
+        names = lambda address: "M:app.A.f()"
+        original = FakePE(0x1000, "8b0500100000e8f00f0000c3")
+        # The evidence row covers only the first instruction.
+        old = dict(
+            functionLength=12,
+            rowLength=6,
+            normalizedSha256=normalized_digest(original, 0x1000, 0x100C, names),
+        )
+        self.assertTrue(_same_function(original, 0x1000, old, names))
+        # The tail after the row changed: mov eax,1 instead of the call.
+        changed = FakePE(0x1000, "8b0500100000b801000000c3")
+        self.assertFalse(_same_function(changed, 0x1000, old, names))
+        # The function grew: an extra nop after ret.
+        grown = FakePE(0x1000, "8b0500100000e8f00f0000c390")
+        self.assertFalse(_same_function(grown, 0x1000, old, names))
+
 
 class SymbolTests(unittest.TestCase):
     def test_methods_resolve_by_name_without_suffix_and_by_parameters(self):

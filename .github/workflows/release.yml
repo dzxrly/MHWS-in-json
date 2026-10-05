@@ -1,11 +1,20 @@
 name: Build database release and monster Pages
 
+# Pull requests only validate (tests and a full export). Releases and Pages are
+# published after a merge, i.e. a push to the default branch, or by a manual
+# run on the default branch.
 on:
   push:
+    branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: write
+
+env:
+  PUBLISH: ${{ github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
 
 jobs:
   release:
@@ -52,16 +61,17 @@ jobs:
         run: python main.py
 
       - name: Build monster Pages from validated processed data
-        if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+        if: env.PUBLISH == 'true'
         run: python .github/scripts/build_pages.py --output .agents/pages --version "${{ env.RELEASE_VERSION }}" --repository "${{ github.repository }}"
 
       - name: Upload GitHub Pages artifact
-        if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+        if: env.PUBLISH == 'true'
         uses: actions/upload-pages-artifact@v4
         with:
           path: .agents/pages
 
       - name: Publish release
+        if: env.PUBLISH == 'true'
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
@@ -88,7 +98,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
   deploy-pages:
-    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
     needs: release
     runs-on: ubuntu-latest
     permissions:
