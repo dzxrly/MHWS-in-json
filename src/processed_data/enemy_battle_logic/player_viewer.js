@@ -11,7 +11,7 @@
   const sources = new Map();
   for (const table of graph.tables) for (const node of table.nodes) sources.set(`${table.tableGuid}/${node.id}`, { table, node });
 
-  const NODE_W = 236, GAP_X = 178, GAP_Y = 14, LINE = 18, INITIAL_BUDGET = 150, INITIAL_DEPTH = 5;
+  const NODE_W = 236, GAP_X = 178, GAP_Y = 14, LINE = 18, SUB_LINE = 15, INITIAL_BUDGET = 150, INITIAL_DEPTH = 5;
   const fills = { root: "#14273c", group: "#dfe8f1", entry: "#d9ecf7", condition: "#edf7f0", action: "#e8f2fc", weighted_random: "#fff6de", mutation: "#f3eefb", unknown: "#fff0e7", return: "#f0f3f7", loop: "#f0f3f7", ref: "#f1f3f6" };
   const badges = { condition: "条件判断", weighted_random: "候选选择", action: "动作请求", mutation: "战斗流程变化", unknown: "逻辑待核查", return: "返回 / 本轮结束", loop: "回到此前判断", ref: "同前 · 已在别处展开" };
 
@@ -56,7 +56,8 @@
     if (node.compact) node.title = "内部检查";
     const lines = wrap(node.title, 15);
     node.lines = lines;
-    node.h = node.compact ? 30 : 30 + lines.length * LINE + (node.subtitle ? LINE : 0);
+    node.subLines = node.subtitle && !node.compact ? wrap(node.subtitle, 18) : [];
+    node.h = node.compact ? 30 : 30 + lines.length * LINE + node.subLines.length * SUB_LINE;
     return node;
   }
   function recordNode(state, label, parent, extra = {}) {
@@ -65,8 +66,9 @@
     if (shown.has(key)) {
       return make("ref", rec.presentation?.title || rec.title, { label, parent, refKey: key, record: rec, state, ...extra });
     }
-    const node = make(kind, rec.presentation?.title || rec.title, { label, parent, record: rec, state, stateKey: key, ...extra });
-    if (rec.kind === "action" && rec.nameStatus === "unresolved") node.subtitle = "动作名称待核查";
+    // Actions without a reviewed explanation are titled by their ActionID class.
+    const subtitle = kind !== "action" ? undefined : rec.nameStatus === "unresolved" ? "内部动作类名 · 暂无中文说明" : rec.technicalName;
+    const node = make(kind, rec.presentation?.title || rec.title, { label, parent, record: rec, state, stateKey: key, subtitle, ...extra });
     shown.set(key, node);
     return node;
   }
@@ -210,7 +212,11 @@
       node.lines.forEach((line, i) => text.append(svg("tspan", { x: 12, dy: i ? LINE : 0 }, line)));
       g.append(text);
     }
-    if (node.subtitle) g.append(svg("text", { x: 12, y: 38 + node.lines.length * LINE, "font-size": "11", fill: dark ? "#cfdeec" : "#7a8899" }, node.subtitle));
+    if (node.subLines.length) {
+      const text = svg("text", { x: 12, y: 38 + node.lines.length * LINE, "font-size": "11", fill: dark ? "#cfdeec" : "#7a8899" });
+      node.subLines.forEach((line, i) => text.append(svg("tspan", { x: 12, dy: i ? SUB_LINE : 0 }, line)));
+      g.append(text);
+    }
     if (expandable(node)) {
       const t = svg("g", { class: "pt-toggle", transform: `translate(${NODE_W} ${node.h / 2})`, role: "button", "aria-label": node.expanded ? "收起分支" : "展开分支" });
       t.append(svg("circle", { r: 10 }), svg("text", { y: 5 }, node.expanded ? "−" : "+"));
@@ -258,6 +264,10 @@
     }
     const rec = node.record;
     if (rec) {
+      if (rec.kind === "action" && rec.technicalName) {
+        selection.append(html("p", "内部动作类名：" + rec.technicalName));
+        if (rec.nameStatus === "unresolved") selection.append(html("p", "游戏资源中没有该动作的中文名，这里直接显示 ActionID 中的类名；同一类有多套参数时以“分支参数 n”区分。"));
+      }
       if (rec.presentation?.compact) selection.append(html("p", "此检查会影响分支选择，具体内部条件仍需核查。"));
       if (rec.afterAction) selection.append(html("p", "动作或状态变化后，这里的条件需要重新判断。"));
       if (rec.kind === "weighted_random") selection.append(html("p", "候选权重只描述本次抽签，不是整场战斗的出招概率。"));
@@ -292,7 +302,7 @@
       const queue = [root]; let visited = 0;
       while (queue.length && visited < 6000) {
         const node = queue.shift(); visited++;
-        if (node !== root && (node.title.includes(query) || (node.label || "").includes(query))) matches.push(node);
+        if (node !== root && [node.title, node.label, node.subtitle].some(text => (text || "").toLowerCase().includes(query.toLowerCase()))) matches.push(node);
         if (expandable(node) && node.kind !== "ref") for (const child of children(node)) queue.push(child);
       }
     }

@@ -35,6 +35,46 @@ class PlayerTreeTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "继续位置"):
             validate_player_view(graph)
 
+    def test_unexplained_actions_are_named_by_class_and_parameter_set(self):
+        from sdk.enemy_logic_exporter.shared.models.player_view import technical_action_names
+
+        own = "STM/GameDesign/Enemy/Em0002/50/Action/Em0002_50_ActionID.user.3.json"
+        base = own.replace("50", "00")
+
+        def action(guid, cls, source=own, variant="0", pointer="/_ActionClassList/3"):
+            selection = "branched" if "Branched" in pointer else "default"
+            return dict(
+                kind="action",
+                action=dict(
+                    source=source,
+                    actionGuid=guid,
+                    parameterVariantGuid=variant,
+                    actionClass=cls,
+                    parameterClass=cls,
+                    parameterSelection=selection,
+                    parameterBodyPointer=pointer,
+                ),
+            )
+
+        nodes = [
+            action("a", "cDash"),
+            action("a", "cDash", variant="v", pointer="/_BranchedParamsList/3/_Params/1"),
+            action("b", "cGlide", source=base),
+            action("c1234567x", "cTwin"),
+            action("d7654321x", "cTwin"),
+        ]
+        names = technical_action_names(dict(enemyId="EM0002_50_0", tables=[dict(nodes=nodes)]))
+        self.assertEqual(
+            sorted(names.values()),
+            [
+                "cDash",
+                "cDash · 分支参数 2",
+                "cGlide · Em0002_00 动作表",
+                "cTwin · c1234567",
+                "cTwin · d7654321",
+            ],
+        )
+
     def test_distance_bands_keep_equality_separate(self):
         values = [choice["value"] for choice in distance_intervals([8, 11])["options"]]
         self.assertIn(dict(min=8.0, max=8.0, minClosed=True, maxClosed=True), values)
