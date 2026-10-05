@@ -4,6 +4,7 @@ No control-flow edge is inferred here. Calls and their saved return positions
 remain explicit, and inputs describe one selection snapshot, not a game loop.
 """
 
+from collections import Counter
 import hashlib
 import json
 from pathlib import Path
@@ -72,6 +73,49 @@ def ref(table, node):
     return f"{table}/{node}"
 
 
+def technical_action_name(action):
+    """The ActionID class name, told apart from its other parameter sets.
+
+    The resources name no action in Chinese and no branched parameter set, so
+    a branched set is numbered by its position in ``_BranchedParamsList``.
+    """
+    parts = [action["actionClass"]]
+    if action.get("parameterClass", action["actionClass"]) != action["actionClass"]:
+        parts.append("参数类 " + action["parameterClass"])
+    if action.get("parameterSelection") == "branched":
+        index = action["parameterBodyPointer"].rsplit("/", 1)[-1]
+        parts.append(f"分支参数 {int(index) + 1}")
+    return " · ".join(parts)
+
+
+def action_key(action):
+    return (action["source"], action["actionGuid"], action["parameterVariantGuid"])
+
+
+def technical_action_names(graph):
+    """One distinct technical name per action identity of this monster.
+
+    A variant may request actions from another monster's ActionID table, and
+    an ActionID table may list one class twice; both are spelled out.
+    """
+    own = graph.get("enemyId", "")[: len("EM0000_00")].casefold()
+    names = {}
+    for table in graph["tables"]:
+        for node in table["nodes"]:
+            if node["kind"] == "action":
+                action = node["action"]
+                name = technical_action_name(action)
+                owner = action["source"].rsplit("/", 1)[-1].split("_ActionID")[0]
+                if owner.casefold() != own:
+                    name += f" · {owner} 动作表"
+                names[action_key(action)] = name
+    counts = Counter(names.values())
+    return {
+        key: name if counts[name] == 1 else f"{name} · {key[1][:8]}"
+        for key, name in names.items()
+    }
+
+
 def unknown(reason):
     return dict(op="unknown", reason=reason)
 
@@ -121,21 +165,7 @@ class PlayerCompiler:
             for leaf in graph.get("leafRules", {}).values()
         }
         self.rules = {r["commandType"]: r for r in graph["rules"]["rules"]}
-        identities = sorted(
-            {
-                (
-                    n["action"]["source"],
-                    n["action"]["actionGuid"],
-                    n["action"]["parameterVariantGuid"],
-                )
-                for t in graph["tables"]
-                for n in t["nodes"]
-                if n["kind"] == "action"
-            }
-        )
-        self.action_numbers = {
-            identity: index + 1 for index, identity in enumerate(identities)
-        }
+        self.technical_names = technical_action_names(graph)
 
     def boolean(self, key, label):
         self.inputs.setdefault(
@@ -576,12 +606,9 @@ class PlayerCompiler:
             name = action.get("displayName", "")
             if name == action["actionClass"]:
                 name = CLASS_EXPLANATIONS.get(name)
-            identity = (
-                action["source"],
-                action["actionGuid"],
-                action["parameterVariantGuid"],
-            )
-            result["title"] = name or f"未命名动作 {self.action_numbers[identity]:02d}"
+            technical = self.technical_names[action_key(action)]
+            result["title"] = name or technical
+            result["technicalName"] = technical
             result["nameStatus"] = "explanatory" if name else "unresolved"
             result["identity"] = [
                 action["source"],
