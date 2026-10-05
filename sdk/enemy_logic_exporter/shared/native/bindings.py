@@ -5,6 +5,13 @@ Use actual machine registers, stack writes and the Microsoft x64 ABI instead.
 """
 
 from collections import deque
+from ..config import (
+    ARRAY_ELEMENTS,
+    EXPORT_ARGUMENTS,
+    EXPORT_COMMANDS,
+    POSITION_TABLE,
+    REFERENCE_ARRAY_STRIDE,
+)
 
 VOLATILE = {"rax", "rcx", "rdx", "r8", "r9", "r10", "r11"}
 
@@ -65,18 +72,21 @@ def dereference(value):
         return None
     _, owner, offset = value
     if owner == "export":
-        if offset == 0x10:
+        if offset == EXPORT_COMMANDS:
             return pointer("commands")
-        if offset == 0x18:
+        if offset == EXPORT_ARGUMENTS:
             return pointer("arguments")
         return ("export_field", offset)
     if (
         owner in {"commands", "arguments"}
-        and offset >= 0x20
-        and (offset - 0x20) % 8 == 0
+        and offset >= ARRAY_ELEMENTS
+        and (offset - ARRAY_ELEMENTS) % REFERENCE_ARRAY_STRIDE == 0
     ):
         return pointer(
-            ("command" if owner == "commands" else "argument", (offset - 0x20) // 8)
+            (
+                "command" if owner == "commands" else "argument",
+                (offset - ARRAY_ELEMENTS) // REFERENCE_ARRAY_STRIDE,
+            )
         )
     if isinstance(owner, tuple) and owner[0] == "command" and offset == 0:
         return pointer(("command_vtable", owner[1]))
@@ -154,7 +164,7 @@ def _transfer(instructions, incoming, *, collect=False):
                 positions = {}
                 for index, arg in enumerate(args + [fifth]):
                     if isinstance(arg, tuple) and arg[:2] == ("pointer", "stack"):
-                        packed = values.get(("stack", arg[2] + 4, 8))
+                        packed = values.get(("stack", arg[2] + POSITION_TABLE, 8))
                         if isinstance(packed, int):
                             positions[index] = dict(
                                 tableIndex=packed & 0xFFFFFFFF,

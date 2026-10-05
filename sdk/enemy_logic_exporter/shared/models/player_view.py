@@ -12,6 +12,27 @@ from ..logic.predicates import RuleRegistry
 from ..logic.expressions import expression_unknown
 from ..logic.weights import candidate_node_id
 from ..resources.action_names import CLASS_EXPLANATIONS
+from ..config import (
+    BAD_CONDITION_LABELS,
+    HUNTER_STATUS_LABELS,
+    SLOT_GROUPS,
+    STATE_SIGN_LABELS,
+    EM0166_BATTLE_PHASE_COMMAND,
+    UNFAIR_ACTIVE_FIELD,
+)
+
+
+UNATTACHED_GROUP = "接入位置待核查的局部分支"
+# Validity preconditions that hold whenever this monster is fighting the player
+# it targets; they are scenario inputs, never hidden assumptions.
+SCENARIO_GUARDS = {
+    "enemy_command_work_valid": "怪物的行为表命令上下文有效",
+    "self_target_context_valid": "怪物的目标模块有效",
+    "selected_hunter_context_valid": "当前目标玩家的角色有效",
+    "selected_hunter_lookup_found": "能查到当前目标玩家",
+    "selected_hunter_character_valid": "当前目标玩家的角色有效",
+}
+HIDDEN_GUARDS = {"ordinary_combat_snapshot", *SCENARIO_GUARDS}
 
 
 def ref(table, node):
@@ -206,6 +227,26 @@ class PlayerCompiler:
                 "self_basic_legendary_id": ("legendary_id", "怪物历战分类"),
             }
             key = operand.get("key")
+            if operand.get("kind") == "runtime" and key in SCENARIO_GUARDS:
+                return comparison(key, "eq", True)
+            if operand.get("kind") == "runtime" and str(key).startswith(
+                ("selected_hunter_bad_condition:", "selected_hunter_status:")
+            ):
+                name = key.split(":", 1)[1]
+                label = BAD_CONDITION_LABELS.get(name)
+                return self.boolean(
+                    key,
+                    "玩家处于" + label if label else HUNTER_STATUS_LABELS.get(name, name),
+                )
+            if key == "self_state_sign" and right.get("kind") == "constant":
+                self.inputs.setdefault(key, dict(label="当前状态信号", options=[]))
+                option = dict(
+                    label=STATE_SIGN_LABELS.get(right["value"], right["value"]),
+                    value=right["value"],
+                )
+                if option not in self.inputs[key]["options"]:
+                    self.inputs[key]["options"].append(option)
+                return comparison(key, expression.get("operator", "eq"), right["value"])
             if (
                 operand.get("kind") == "runtime"
                 and key in keys
@@ -240,7 +281,14 @@ class PlayerCompiler:
             if key == "ordinary_combat_snapshot":
                 return "仍是本次普通战斗选招"
             if key == "selected_target_key_type":
-                return "当前目标是玩家"
+                return {0: "当前目标是玩家", 1: "当前目标是怪物", 2: "当前目标是随从"}.get(
+                    value, "当前目标类型为 " + str(value)
+                ) if expression["operator"] == "eq" else "当前目标不是玩家"
+            if key in SCENARIO_GUARDS:
+                return SCENARIO_GUARDS[key]
+            if key == "self_state_sign":
+                text = STATE_SIGN_LABELS.get(value, value)
+                return ("状态信号：" if expression["operator"] == "eq" else "状态信号不是：") + text
             label = self.inputs.get(key, {}).get("label", "距离")
             if key == "distance_horizontal":
                 label = "玩家与怪物的水平距离"
@@ -268,7 +316,7 @@ class PlayerCompiler:
             items = [
                 self.describe(x)
                 for x in expression["items"]
-                if x.get("key") != "ordinary_combat_snapshot"
+                if x.get("key") not in HIDDEN_GUARDS
             ]
             items = list(dict.fromkeys(items))
             if len(items) == 1:
@@ -285,7 +333,7 @@ class PlayerCompiler:
             if condition["op"] == "all"
             else [condition]
         )
-        shown = [p for p in parts if p.get("key") != "ordinary_combat_snapshot"]
+        shown = [p for p in parts if p.get("key") not in HIDDEN_GUARDS]
         comparisons = [p for p in shown if p["op"] == "compare"]
         keys = {p["key"] for p in comparisons}
         category = (
@@ -328,7 +376,7 @@ class PlayerCompiler:
             title=title,
             trueLabel=true_label,
             falseLabel=false_label,
-            snapshotGuard=len(shown) != len(parts),
+            snapshotGuard=any(p.get("key") == "ordinary_combat_snapshot" for p in parts),
             compact=category == "internal",
         )
 
@@ -410,14 +458,7 @@ class PlayerCompiler:
             )
             if (
                 effect == "write_context_field"
-                and node.get("nativeField")
-                == "app.cEmModuleUnfair.<IsActiveUnfairRoutine>k__BackingField"
-            ):
-                result["invalidateSnapshot"] = False
-            if (
-                effect == "write_context_field"
-                and node.get("nativeField")
-                == "app.cEmModuleUnfair.<IsActiveUnfairRoutine>k__BackingField"
+                and node.get("nativeField") == UNFAIR_ACTIVE_FIELD
             ):
                 result["invalidateSnapshot"] = False
             if node.get("dispatchTarget"):
@@ -476,33 +517,63 @@ def build_player_view(graph):
     tables = {t["tableGuid"]: t for t in graph["tables"]}
     local = graph.get("localBattleEntry", graph["entry"])
     main = ref(local, tables[local]["entry"])
-    connected = reachable(nodes, main)
     entries = [
         dict(
             id=main,
             label="普通战斗选招",
             relation="local_verified",
+            slot="COMBAT",
+            group=SLOT_GROUPS[0][0],
             note="从本怪物已恢复的 Combat 选招入口开始；进入战斗的全部过程仍有未知部分。",
         )
     ]
+    # Each further slot is queued by the listed AI states or interrupts; the
+    # trigger conditions of those owners stay outside the local BTable.
+    order = [slot for _, slots in SLOT_GROUPS for slot in slots]
+    for slot in sorted(
+        graph.get("schedulerSlots", []),
+        key=lambda s: order.index(s["slot"]) if s["slot"] in order else len(order),
+    ):
+        target = slot.get("dispatchTarget")
+        if slot["slot"] == "COMBAT" or target not in tables:
+            continue
+        owners = sorted({r["owner"].rsplit(".", 1)[-1] for r in slot["requestedBy"]})
+        entries.append(
+            dict(
+                id=ref(target, tables[target]["entry"]),
+                label=slot["label"],
+                relation="scheduler_slot",
+                slot=slot["slot"],
+                group=slot["group"],
+                requestedBy=owners,
+                note=(
+                    "由 " + "、".join(owners) + " 请求切换到此行为表；触发这些状态的条件不在本表内。"
+                    if owners
+                    else "未找到请求此槽的 AI 状态或中断。"
+                ),
+            )
+        )
+    covered = set()
+    for entry in entries:
+        covered.update(reachable(nodes, entry["id"]))
+    connected = reachable(nodes, main)
     # A native dispatcher entry proves a local entry, not its upstream scheduling.
     for source, entry in graph.get("resourceEntries", {}).items():
         if "_CommonAttack." not in source or entry.get("tableGuid") not in tables:
             continue
         t = tables[entry["tableGuid"]]
         key = ref(t["tableGuid"], t["entry"])
-        if key not in connected:
+        if key not in covered:
             entries.append(
                 dict(
                     id=key,
                     label="普通攻击局部入口（接入位置待核查）",
                     relation="unknown",
+                    group=UNATTACHED_GROUP,
                     note="该局部入口来自本资源调度器。不能据此断言普通战斗会在当前条件下进入这里。",
                 )
             )
-    covered = set(connected)
-    for entry in entries[1:]:
-        covered.update(reachable(nodes, entry["id"]))
+            covered.update(reachable(nodes, key))
     incoming = {target for n in nodes.values() for target in successors(n)}
     candidates = [
         t
@@ -531,6 +602,7 @@ def build_player_view(graph):
                 id=key,
                 label="局部分支：" + "、".join(names[:2]) + "（接入待核查）",
                 relation="unknown",
+                group=UNATTACHED_GROUP,
                 note="保留已恢复的本地条件与动作；上游入口尚未接通。",
             )
         )
@@ -545,12 +617,15 @@ def build_player_view(graph):
             )
         )
         field["numericRange"] = dict(min=0, max=180 if field.get("angle") else None)
-        field["numericRange"] = dict(min=0, max=180 if field.get("angle") else None)
     return dict(
         schemaVersion=1,
         scenario=dict(
             label="当前目标是该玩家，怪物正在普通战斗中选招",
-            inputs=dict(selected_target_key_type=0, ordinary_combat_snapshot=True),
+            inputs=dict(
+                selected_target_key_type=0,
+                ordinary_combat_snapshot=True,
+                **{key: True for key in SCENARIO_GUARDS},
+            ),
         ),
         inputs=compiler.inputs,
         entries=entries,
@@ -558,7 +633,8 @@ def build_player_view(graph):
         coverage=dict(
             connectedNodes=len(connected),
             connectedActions=sum(nodes[k]["kind"] == "action" for k in connected),
-            unattachedEntries=len(entries) - 1,
+            slotEntries=sum(e["relation"] == "scheduler_slot" for e in entries),
+            unattachedEntries=sum(e["relation"] == "unknown" for e in entries),
         ),
         limits=[
             "初始条件只筛选第一次选招。动作执行或等待后，后续条件需要重新判断。",
@@ -577,6 +653,8 @@ def enrich_models(models, output):
         raise ValueError("没有已提取的怪物图 JSON")
     for path in paths:
         graph = json.loads(path.read_text(encoding="utf8"))
+        if graph.get("storage"):
+            raise ValueError("玩家视图需要 .agents 中的完整研究模型，不能读取已发布的精简模型")
         if graph.get("artifactKind") != "extracted_battle_graph":
             raise ValueError("玩家视图只接受已提取的语义图")
         registry = RuleRegistry.load()
@@ -586,8 +664,7 @@ def enrich_models(models, output):
             for node in table["nodes"]:
                 if (
                     node["kind"] == "condition"
-                    and node.get("commandType")
-                    == "app.btable.Em0166_00BTableCommand.cCheckBattlePhase"
+                    and node.get("commandType") == EM0166_BATTLE_PHASE_COMMAND
                 ):
                     if graph["enemyId"] != "EM0166_00_0":
                         raise ValueError("EM166 阶段配方不能用于其他怪物")

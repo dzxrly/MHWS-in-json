@@ -5,40 +5,38 @@ import re
 from .metadata import Il2cppMetadata
 from .pe import PE, address_catalog
 from .evidence import digest, pack_methods
+from ..config import (
+    BOOLEAN_COMMAND_FUNC,
+    COMMON_COMMAND_PREFIX,
+    ENEMY_CONTEXT_TYPE,
+    MANIFEST_RUNTIME_TYPES,
+    MANIFEST_SCHEDULER_TYPES,
+    MANIFEST_STATE_PREFIXES,
+    VARIABLE_STORAGE_TYPE,
+    extend_types,
+)
 
-SCHEDULER_TYPES = {
-    "app.cEmAIState",
-    "app.cEmAIStateCombat",
-    "app.cEmAIStateCaution",
-    "app.cEmAIStateAreaMove",
-    "app.cEmAIStateDie",
-    "app.cEmAIInterruptDamage",
-    "app.cEmAIUpdateBTable",
-    "app.cMasterEnemyControllerEntity",
-    "app.cEnemyBTableManager",
-    "app.cEnemyControllerEntityBase",
-    "app.cEmAIStateManager",
-}
+SCHEDULER_TYPES = set(MANIFEST_SCHEDULER_TYPES)
 
 
 def relevant_type(name, enemy):
     return (
         name in SCHEDULER_TYPES
-        or name == "app.cEnemyContext"
-        or name.startswith(("app.cEmAIState", "app.cEmAIInterrupt"))
+        or name == ENEMY_CONTEXT_TYPE
+        or name.startswith(MANIFEST_STATE_PREFIXES)
         or name.casefold().startswith(f"app.{enemy}_btable".casefold())
         or name.startswith(
             (
                 f"app.{enemy}_BTable",
                 f"app.{enemy}BTableCommand.",
-                "app.btable.EmCommonCommand.",
+                COMMON_COMMAND_PREFIX,
                 f"app.btable.{enemy}BTableCommand.",
                 "ace.btable.",
             )
         )
         or any(
             name == prefix or name.startswith(prefix + ".")
-            for prefix in (f"app.c{enemy}Extend", f"app.c{enemy.split('_')[0]}Extend")
+            for prefix in extend_types(enemy)
         )
     )
 
@@ -74,10 +72,7 @@ def selected(name, method, enemy, selection):
     base_type = (
         name.startswith("app.btable.Em") or name.startswith("ace.btable.c")
     ) and "<" not in name
-    base_type |= (
-        name
-        == "ace.btable.cCommandFunc`2<app.btable.EmCommonCommand.cCheckDistanceArg,System.Boolean>"
-    )
+    base_type |= name == BOOLEAN_COMMAND_FUNC
     if selection == "base":
         return (base_type or enemy_type) and (
             enemy_type
@@ -110,7 +105,7 @@ def selected(name, method, enemy, selection):
                     "Init",
                 )
             )
-            or name == "ace.btable.cVariableStorage"
+            or name == VARIABLE_STORAGE_TYPE
             and method.startswith("update")
         )
     return (
@@ -158,14 +153,7 @@ def build_manifest(exe, metadata_path, enemy, selection, version, helpers=()):
                     pe, metadata, aliases, name, method, address, pe.end(address)
                 )
             )
-        for name in (
-            "ace.btable.cVariableStorage",
-            "ace.btable.cVariableStorage.cRuntimeTimer",
-            "ace.btable.user_data.BTableVariable.TimerValueInfo",
-            "app.cEnemyBTableCommandWork",
-            "app.cEnemyBTableOperatorWork",
-            "app.btable.EmCommonCommand.cCheckStatusStatusArg.CONDITION_TYPE",
-        ):
+        for name in MANIFEST_RUNTIME_TYPES:
             fields[name] = metadata.fields(name)
         profile = {
             "gameVersion": version,

@@ -5,28 +5,9 @@ import json
 import re
 from pathlib import Path, PurePosixPath
 from ..logic.values import scalar
+from ..config import PARAMETER_SELECTION_EVIDENCE
 
 EMPTY_GUID = "00000000-0000-0000-0000-000000000000"
-
-# The native selector passes a uniquely owned default or branched _ActionClass to the
-# requested action's applyActionParam virtual method without a class-name test.
-# This proves parameter selection, not all fields that the action will apply.
-PARAMETER_SELECTION_EVIDENCE = (
-    {
-        "type": "ace.user_data.ActionParam",
-        "method": "toBranchedParamIndex245936",
-        "address": "0x1451e3e30",
-        "end": "0x1451e3fd3",
-        "nativeSha256": "f139b134a58c5dcfd6ec44d02f039e3bacd537906957523cbe24f51cef2c41c5",
-    },
-    {
-        "type": "ace.user_data.ActionParam",
-        "method": "applyParamCore245935",
-        "address": "0x1451e3c90",
-        "end": "0x1451e3e2a",
-        "nativeSha256": "241d619ff2645fc76c1c7605b1d97678d7fb8575e7b0c48b805c035d06676977",
-    },
-)
 
 
 class ActionBindingError(ValueError):

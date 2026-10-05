@@ -156,6 +156,50 @@ class CommonConditionTests(unittest.TestCase):
         del context[lookup + "break_count"]
         self.assertIsNone(self.evaluate(node, context))
 
+    def test_player_ailment_and_down_status_read_the_hunter_fields(self):
+        sleep = self.bind(
+            "cCheckTargetStatus",
+            {
+                "_EditCategory": "[2] BAD_CONDITION",
+                "BadConditions": {"condition": {"_EditArg": "[2] SLEEP"}},
+            },
+        )
+        player = dict(
+            enemy_command_work_valid=True,
+            selected_target_key_type=0,
+            selected_hunter_context_valid=True,
+        )
+        self.assertIsNone(self.evaluate(sleep, player))
+        key = "selected_hunter_bad_condition:SLEEP"
+        self.assertTrue(self.evaluate(sleep, dict(player, **{key: True})))
+        self.assertFalse(self.evaluate(sleep, dict(player, **{key: False})))
+        # A monster target keeps its unreviewed branch unknown.
+        self.assertIsNone(
+            self.evaluate(sleep, dict(player, selected_target_key_type=1))
+        )
+        down = self.bind(
+            "cCheckTargetStatus",
+            {
+                "_EditCategory": "[3] STATUS",
+                "Status": {"status": {"_EditArg": "[52] DOWN_PL"}},
+            },
+        )
+        key = "selected_hunter_status:DOWN_PL"
+        self.assertTrue(self.evaluate(down, dict(player, **{key: True})))
+
+    def test_state_sign_compares_the_mapped_sign_name(self):
+        node = self.bind(
+            "cCheckStateSignTyoe", {"_EditArg": "[353142784] ANGRY_BEGIN"}
+        )
+        context = dict(enemy_command_work_valid=True)
+        self.assertIsNone(self.evaluate(node, context))
+        self.assertTrue(
+            self.evaluate(node, dict(context, self_state_sign="ANGRY_BEGIN"))
+        )
+        self.assertFalse(
+            self.evaluate(node, dict(context, self_state_sign="COMBAT_BEGIN"))
+        )
+
     def test_unreviewed_cases_and_changed_profile_are_rejected(self):
         self.assertIsNone(
             self.bind("cCheckSelfType", {"_EditCategory": "[7] REWARD_RANK"})
@@ -165,9 +209,12 @@ class CommonConditionTests(unittest.TestCase):
                 "cCheckTargetStatus",
                 {
                     "_EditCategory": "[2] BAD_CONDITION",
-                    "BadConditions": {"condition": {"_EditArg": "[3] SLEEP"}},
+                    "BadConditions": {"condition": {"_EditArg": "[15] SCAR_DOWN"}},
                 },
             )
+        )
+        self.assertIsNone(
+            self.bind("cCheckTargetStatus", {"_EditCategory": "[7] DANGER_LEVEL"})
         )
         with self.assertRaisesRegex(ValueError, "来源版本"):
             recover_condition({}, {}, "EM0002_00_0", ResourcesFixture())

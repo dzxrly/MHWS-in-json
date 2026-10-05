@@ -6,7 +6,10 @@ vector arithmetic, target selection, or the game loop bit for bit.
 
 import json
 from pathlib import Path
-from ..config import RULES_PATH
+from ..config import (
+    ENEMY_CONTEXT_TYPE,
+    RULES_PATH,
+)
 from .values import scalar, enum_number, MissingState, Outcome, number, required
 
 
@@ -152,7 +155,7 @@ class RuleRegistry:
                 )
                 if status is None:
                     raise MissingState("此状态子分类尚未固化")
-                state = required(required(context, "objects"), "app.cEnemyContext")
+                state = required(required(context, "objects"), ENEMY_CONTEXT_TYPE)
                 value = required(state, status["contextKey"])
                 if type(value) is not bool:
                     raise MissingState("怒或疲劳输入须是原生 getter 的最终布尔结果")
@@ -161,7 +164,7 @@ class RuleRegistry:
                 ratio = number(required(context, "self_health_ratio"))
                 return ratio <= number(values["health"]) / 100
             if category == 1:
-                state = required(required(context, "objects"), "app.cEnemyContext")
+                state = required(required(context, "objects"), ENEMY_CONTEXT_TYPE)
                 holder = values["stand"]
                 holder_type = enum_number(holder["STRUCT__Value_Type"])
                 expected = number(holder["STRUCT__Value_Value"])

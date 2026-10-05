@@ -13,6 +13,45 @@ from ..workflow.semantic_recovery import command_binding
 from .predicates import RuleRegistry
 from .values import enum_number
 from .common_conditions import receipt
+from ..config import (
+    ARRAY_LENGTH,
+    CALLBACK_COUNT,
+    CALLBACK_METHOD,
+    CALLBACK_TARGET,
+    COMMAND_WORK_RANDOM,
+    EXPORT_RUNTIME_ROOT,
+    FN_POSITION_STACK_PUSH,
+    GLOBAL_TABLE_ENTRY_ZERO,
+    INLINE_PUSH_CALLS,
+    MACHINE_TRANSPARENT_CALLS,
+    NO_ARGUMENT_TYPES,
+    OBJECT_VTABLE_FROM_INTERFACE,
+    OPERATOR_CLASS,
+    OPERATOR_EXPORT_END,
+    OPERATOR_EXPORT_JUMP,
+    OPERATOR_POSITION,
+    OPERATOR_POSITION_CALLBACK,
+    OPERATOR_POSITION_ROW,
+    OPERATOR_POSITION_STACK,
+    OPERATOR_RANDOM_STATE,
+    OPERATOR_REQUEST_COMMAND,
+    POSITION_ROW,
+    POSITION_SIZE,
+    POSITION_TABLE,
+    RANDOM_DRAW_SOURCE,
+    RANDOM_TYPE_COMMAND,
+    RANDOM_TYPE_COMMAND_EVIDENCE,
+    RUNTIME_DATA_START,
+    STACK_ARRAY,
+    STACK_REFERENCE_TAG,
+    STACK_SIZE,
+    STACK_VERSION,
+    UNFAIR_ACTIVE_FIELD,
+    UNFAIR_ACTIVE_OFFSET,
+    UNFAIR_ROUTINE_COMMAND,
+    VOID_TYPE,
+    ARRAY_ELEMENTS,
+)
 
 VOLATILE = {"rax", "rcx", "rdx", "r8", "r9", "r10", "r11"}
 
@@ -43,15 +82,53 @@ class Machine:
         self.command_evidence = {}
         self.action_entries = {}
         self.event_contexts = {}
+        self.proofs = {}
+        self.proof_depth = 0
 
-    def reusable_event(self, event, state, bound=None):
-        """Reuse an address cache only for the same tracked native context."""
-        context = (event["target"], event["arguments"], bound, state)
+    def event_key(self, event, state, bound=None):
+        """Return the semantic node key of one call context, or None.
+
+        The compiler can share one call instruction between several PCs with
+        different argument slots; each target/argument identity keeps its own
+        node. A later machine state reuses a node only when replaying both
+        states from the call yields the same semantic subgraph, which proves
+        that every differing register, stack slot or field is dead there.
+        """
         site = event["site"]
-        if site not in self.event_contexts:
-            self.event_contexts[site] = copy.deepcopy(context)
-            return True
-        return self.event_contexts[site] == context
+        identity = (event["target"], event["arguments"], bound)
+        variants = self.event_contexts.setdefault(site, [])
+        for index, (known, known_state) in enumerate(variants):
+            if known == identity:
+                key = site if index == 0 else f"{site}-variant-{index}"
+                if known_state == state or self.equivalent(
+                    int(site, 16), (site, index), known_state, state
+                ):
+                    return key
+                return None
+        variants.append((copy.deepcopy(identity), copy.deepcopy(state)))
+        index = len(variants) - 1
+        return site if index == 0 else f"{site}-variant-{index}"
+
+    def equivalent(self, address, variant, known, state):
+        if self.proof_depth >= 2:
+            return False
+        key = variant, repr(state)
+        if key not in self.proofs:
+            if variant not in self.proofs:
+                self.proofs[variant] = self.replay(address, known)
+            self.proofs[key] = self.proofs[variant] == self.replay(address, state)
+        return self.proofs[key]
+
+    def replay(self, address, state):
+        """Walk one state in an isolated copy; pending PCs stay unresolved keys."""
+        probe = copy.copy(self)
+        probe.nodes, probe.states, probe.pending = {}, {}, []
+        probe.required_tables, probe.event_contexts = set(), {}
+        probe.action_entries, probe.proofs = {}, {}
+        probe.proof_depth = self.proof_depth + 1
+        probe.last_request = probe.last_resume_trace = None
+        entry = probe.walk(address, copy.deepcopy(state))
+        return entry, probe.nodes, probe.required_tables
 
     def command_return(self, bound):
         """Use the matched actual onExecute identity, including inherited bodies."""
@@ -76,10 +153,10 @@ class Machine:
                 "rsp": pointer("stack"),
             },
             mem={
-                ("operator", 0xA8, 4): pc,
-                ("operator", 0xC5, 1): 0,
-                ("operator", 0xC6, 1): 0,
-                ("operator", 0xD8, 4): 0,
+                ("operator", OPERATOR_POSITION_ROW, 4): pc,
+                ("operator", OPERATOR_EXPORT_JUMP, 1): 0,
+                ("operator", OPERATOR_EXPORT_END, 1): 0,
+                ("operator", OPERATOR_RANDOM_STATE, 4): 0,
             },
             flags=None,
             saved=None,
@@ -99,9 +176,9 @@ class Machine:
 
     def load(self, address, size, s):
         if isinstance(address, int):
-            if address == 0x1547370B0:
+            if address == GLOBAL_TABLE_ENTRY_ZERO:
                 return 0
-            if address >= 0x154000000:
+            if address >= RUNTIME_DATA_START:
                 return None
             # PE bytes are used only for switch offsets and compile-time data.
             try:
@@ -121,28 +198,28 @@ class Machine:
                 if offset == start and size == width:
                     return value
         if owner == "export":
-            if offset == 0x30:
+            if offset == EXPORT_RUNTIME_ROOT:
                 return 0xABCDEF
             if offset in self.imports:
                 return pointer(("import", self.imports[offset]))
             return dereference(address) if size == 8 else None
         if owner == "operator":
-            if offset == 0:
+            if offset == OPERATOR_CLASS:
                 return pointer("operator_class")
-            if offset == 0x80:
+            if offset == OPERATOR_POSITION_STACK:
                 return pointer("return_stack")
-            if offset == 0xA0:
+            if offset == OPERATOR_POSITION:
                 return 0xABCDEF
             return None
         if owner == "operator_class" and offset == 0:
             # The native method is evaluated under its declared valid
             # cEmOperatorWork precondition; no game runtime memory is read.
             return 0
-        if owner == "command_work" and offset == 0x10:
+        if owner == "command_work" and offset == COMMAND_WORK_RANDOM:
             return pointer("random_holder")
         if owner == "random_holder" and offset == 0:
             return pointer("random_instance")
-        if owner == "random_instance" and offset == -0x18:
+        if owner == "random_instance" and offset == OBJECT_VTABLE_FROM_INTERFACE:
             return pointer("random_vtable")
         if owner == "random_vtable" and offset == 0:
             return ("random_generator",)
@@ -264,7 +341,7 @@ class Machine:
         target = event["target"]
         if isinstance(target, tuple) and target[0] == "command_method":
             factory = self.factories[target[1]]
-            if factory.get("_ArgumentType") in ("", "ace.btable.cCommandArgumentNone"):
+            if factory.get("_ArgumentType") in NO_ARGUMENT_TYPES:
                 try:
                     predicate = self.registry.bind(factory["_OrderType"], "", {})
                 except ValueError as error:
@@ -301,8 +378,8 @@ class Machine:
     def position(self, p, s):
         if not isinstance(p, tuple) or p[0] != "pointer":
             return None
-        table = self.load(add(p, 4), 4, s)
-        pc = self.load(add(p, 8), 4, s)
+        table = self.load(add(p, POSITION_TABLE), 4, s)
+        pc = self.load(add(p, POSITION_ROW), 4, s)
         return (table, pc) if isinstance(table, int) and isinstance(pc, int) else None
 
     def add_unknown(self, site, reason):
@@ -320,10 +397,11 @@ class Machine:
         return key
 
     def branch_node(self, event, bound, s, after):
-        key = event["site"]
-        if not self.reusable_event(event, s, bound):
+        site = event["site"]
+        key = self.event_key(event, s, bound)
+        if key is None:
             return self.add_unknown(
-                int(key, 16),
+                int(site, 16),
                 "同一原生判断位置的参数或机器上下文不同；尚不能证明复用已有后继等价",
             )
         if key in self.nodes:
@@ -331,7 +409,7 @@ class Machine:
         node = dict(
             id=key,
             kind="condition",
-            nativeSite=key,
+            nativeSite=site,
             argumentIndex=bound.get("argumentIndex"),
             commandIndex=bound["commandIndex"],
             expectedCommandType=bound["commandType"],
@@ -355,7 +433,7 @@ class Machine:
         node["false"] = self.walk(after, self.complete_call(s, event, 0))
         if (
             bound["commandType"]
-            == "app.btable.EmCommonCommand.cCheckUnfairRoutineActive"
+            == UNFAIR_ROUTINE_COMMAND
         ):
             node["expression"] = dict(
                 kind="unknown",
@@ -370,10 +448,10 @@ class Machine:
                 kind="mutation",
                 effect="write_context_field",
                 summary="启动不公平行为流程",
-                nativeField="app.cEmModuleUnfair.<IsActiveUnfairRoutine>k__BackingField",
-                nativeOffset="0x44",
+                nativeField=UNFAIR_ACTIVE_FIELD,
+                nativeOffset=UNFAIR_ACTIVE_OFFSET,
                 nativeValue=True,
-                nativeSite=key,
+                nativeSite=site,
                 evidence=copy.deepcopy(receipt()["evidence"]["unfair_active"][0]),
                 next=node["true"],
             )
@@ -415,15 +493,19 @@ class Machine:
                 state = copy.deepcopy(original)
                 state["mem"].update(
                     {
-                        ("return_stack", 0x10, 8): pointer("return_stack_array"),
-                        ("return_stack", 8, 4): reference,
-                        ("return_stack", 0x18, 4): used,
-                        ("return_stack", 0x1C, 4): 0,
-                        ("return_stack_array", 0x1C, 4): capacity,
-                        ("operator", 0x40, 8): pointer("position_callbacks"),
-                        ("position_callbacks", 0x10, 4): callbacks,
-                        ("position_callbacks", 0x18, 8): 0,
-                        ("position_callbacks", 0x20, 8): ("position_callback",),
+                        ("return_stack", STACK_ARRAY, 8): pointer("return_stack_array"),
+                        ("return_stack", STACK_REFERENCE_TAG, 4): reference,
+                        ("return_stack", STACK_SIZE, 4): used,
+                        ("return_stack", STACK_VERSION, 4): 0,
+                        ("return_stack_array", ARRAY_LENGTH, 4): capacity,
+                        ("operator", OPERATOR_POSITION_CALLBACK, 8): pointer(
+                            "position_callbacks"
+                        ),
+                        ("position_callbacks", CALLBACK_COUNT, 4): callbacks,
+                        ("position_callbacks", CALLBACK_TARGET, 8): 0,
+                        ("position_callbacks", CALLBACK_METHOD, 8): (
+                            "position_callback",
+                        ),
                     }
                 )
                 self.last_request = None
@@ -452,16 +534,15 @@ class Machine:
                 break
             if ins.mnemonic == "call":
                 e = self.event(ins, s)
-                if e["target"] == 0x1450DC570:
+                if e["target"] == FN_POSITION_STACK_PUSH:
                     return self.position(e["arguments"][2], s)
                 if self.bind(e):
                     break
-                if inline_stack and e["target"] not in {
-                    0x147739590,
-                    0x146F5F380,
-                    0x14B1295F0,
-                    ("position_callback",),
-                }:
+                if (
+                    inline_stack
+                    and e["target"] not in INLINE_PUSH_CALLS
+                    and e["target"] != ("position_callback",)
+                ):
                     break
                 s = self.complete_call(s, e, None)
                 address += ins.size
@@ -473,7 +554,7 @@ class Machine:
                         and ins.operands[0].type == CS_OP_MEM
                     ):
                         destination = self.address(ins, ins.operands[0], s)
-                        if destination == ("pointer", "operator", 0xB0):
+                        if destination == pointer("operator", OPERATOR_REQUEST_COMMAND):
                             value = self.read(ins, ins.operands[1], s)
                             self.last_request = dict(
                                 site=hex(ins.address), packedValue=value
@@ -487,16 +568,17 @@ class Machine:
                                 isinstance(destination, tuple)
                                 and destination[:2] == ("pointer", "return_stack_array")
                                 and op.size == 8
-                                and (destination[2] - 0x24) % 12 == 0
+                                and (destination[2] - ARRAY_ELEMENTS - POSITION_TABLE)
+                                % POSITION_SIZE
+                                == 0
                             ):
-                                position = self.position(add(destination, -4), s)
-                                root = self.load(add(destination, -4), 4, s)
+                                start = add(destination, -POSITION_TABLE)
+                                position = self.position(start, s)
+                                root = self.load(start, 4, s)
                                 if position is not None and isinstance(root, int):
                                     candidate = position
-                            if candidate is not None and destination == (
-                                "pointer",
-                                "return_stack",
-                                0x18,
+                            if candidate is not None and destination == pointer(
+                                "return_stack", STACK_SIZE
                             ):
                                 return candidate
                 except Boundary:
@@ -693,7 +775,7 @@ class Machine:
                         int(self.row["address"], 16), "返回值未能从当前原生指令唯一恢复"
                     )
                 value = value & 0xFF
-                ended = self.load(pointer("operator", 0xC6), 1, s)
+                ended = self.load(pointer("operator", OPERATOR_EXPORT_END), 1, s)
                 key = "return-" + str(bool(value)).lower() + "-end-" + str(ended)
                 self.nodes.setdefault(
                     key,
@@ -714,33 +796,33 @@ class Machine:
             if ins.mnemonic == "call":
                 e = self.event(ins, s)
                 if e["target"] == ("random_generator",):
-                    if not self.reusable_event(e, s):
+                    key = self.event_key(e, s)
+                    if key is None:
                         return self.add_unknown(
                             address,
                             "同一随机调用位置的机器上下文不同；尚不能证明复用已有后继等价",
                         )
                     if self.random_modulus is None:
-                        if e["site"] in self.nodes:
-                            return e["site"]
-                        self.nodes[e["site"]] = dict(
-                            id=e["site"],
+                        if key in self.nodes:
+                            return key
+                        self.nodes[key] = dict(
+                            id=key,
                             kind="mutation",
                             effect="draw_random_integer",
                             summary="更新随机数状态",
                             nativeSite=e["site"],
                         )
-                        self.nodes[e["site"]]["next"] = self.walk(
+                        self.nodes[key]["next"] = self.walk(
                             address + ins.size, self.complete_call(s, e, None)
                         )
-                        return e["site"]
-                    key = e["site"]
+                        return key
                     if key in self.nodes:
                         return key
                     self.nodes[key] = dict(
                         id=key,
                         kind="unknown",
                         reason="正在核实随机余数分支",
-                        nativeSite=key,
+                        nativeSite=e["site"],
                     )
                     choices = [
                         self.walk(address + ins.size, self.complete_call(s, e, value))
@@ -761,7 +843,7 @@ class Machine:
                                 effect="random_result_selection",
                                 summary=f"本次随机余数落在 {low}–{high}",
                                 next=target,
-                                nativeSite=key,
+                                nativeSite=e["site"],
                             )
                         else:
                             self.nodes[nid] = dict(
@@ -776,13 +858,13 @@ class Machine:
                                         kind="runtime",
                                         key=f"random_uint32_mod_{self.random_modulus}:"
                                         + key,
-                                        source="cCommandWork.Random（匹配元数据偏移0x10）在该原生调用位置返回的整数余数",
+                                        source=RANDOM_DRAW_SOURCE,
                                     ),
                                     right=dict(kind="constant", value=high),
                                 ),
                                 true=target,
                                 false=key + "-range-" + str(i + 1),
-                                nativeSite=key,
+                                nativeSite=e["site"],
                             )
                     return key
                 bound = self.bind(e)
@@ -804,11 +886,11 @@ class Machine:
                 if bound and (
                     bound.get("argumentIndex") is not None
                     or self.factories[bound["commandIndex"]].get("_ArgumentType")
-                    in ("", "ace.btable.cCommandArgumentNone")
+                    in NO_ARGUMENT_TYPES
                 ):
                     command = bound["commandType"].split(".")[-1]
-                    key = e["site"]
-                    if not self.reusable_event(e, s, bound):
+                    key = self.event_key(e, s, bound)
+                    if key is None:
                         return self.add_unknown(
                             address,
                             "同一原生命令位置的参数、保存位置或机器上下文不同；尚不能证明复用已有后继等价",
@@ -837,12 +919,12 @@ class Machine:
                         commandIndex=bound["commandIndex"],
                         expectedCommandType=bound["commandType"],
                         expectedArgumentType=bound.get("argumentType", ""),
-                        nativeSite=key,
+                        nativeSite=e["site"],
                     )
                     if command in {"cRequestAction", "cRequestActionSync"}:
                         if (
                             command == "cRequestActionSync"
-                            and self.command_return(bound) != "System.Void"
+                            and self.command_return(bound) != VOID_TYPE
                         ):
                             return self.add_unknown(
                                 address, "同步动作请求必须先由匹配元数据核实 void 返回"
@@ -864,9 +946,9 @@ class Machine:
                             ),
                             execution="request_then_yield",
                             requestSite=(
-                                self.last_request["site"] if self.last_request else key
+                                self.last_request["site"] if self.last_request else e["site"]
                             ),
-                            callSite=key,
+                            callSite=e["site"],
                             nativeRequestPosition=self.last_request,
                             nativeResumeRecovery=copy.deepcopy(self.last_resume_trace),
                         )
@@ -888,7 +970,7 @@ class Machine:
                                 expression=copy.deepcopy(detail["requestGuard"]),
                                 true=key,
                                 false=suppressed,
-                                nativeSite=key,
+                                nativeSite=e["site"],
                                 semanticEvidence=copy.deepcopy(
                                     detail["semanticEvidence"]
                                 ),
@@ -900,7 +982,7 @@ class Machine:
                                 summary="本次未发出动作请求；行为表仍保存继续位置并让出",
                                 reason="原生命令返回 void；调用方无条件写请求位置并保存继续位置，不能按假造的成功布尔选择路径",
                                 next=self.state(resume[1]),
-                                nativeSite=key,
+                                nativeSite=e["site"],
                                 execution="request_suppressed_then_yield",
                                 nativeContinuation=dict(
                                     tableIndex=resume[0], programCounter=resume[1]
@@ -921,7 +1003,7 @@ class Machine:
                                     ),
                                     true=key,
                                     false=actor_skip,
-                                    nativeSite=key,
+                                    nativeSite=e["site"],
                                     semanticEvidence=copy.deepcopy(
                                         detail["semanticEvidence"]
                                     ),
@@ -932,7 +1014,7 @@ class Machine:
                                     effect="record_request_without_actor_helper",
                                     summary="已登记请求并清除请求标志；当前网络归属跳过 actor 请求 helper，行为表保存继续位置并让出",
                                     next=self.state(resume[1]),
-                                    nativeSite=key,
+                                    nativeSite=e["site"],
                                     execution="request_actor_helper_skipped_then_yield",
                                     requestEffects=copy.deepcopy(
                                         detail["requestEffects"]
@@ -991,11 +1073,11 @@ class Machine:
                                 ),
                                 true=yes,
                                 false=no,
-                                nativeSite=key,
+                                nativeSite=e["site"],
                             )
                             self.nodes[key]["next"] = result_key
                         return key
-                    if bound["commandType"] == "ace.btable.cCommandRandamRandomType":
+                    if bound["commandType"] == RANDOM_TYPE_COMMAND:
                         value = enum_number(bound["argument"]["_EditType"])
                         self.nodes[key] = dict(
                             id=key,
@@ -1004,13 +1086,7 @@ class Machine:
                             effect="read_random_selection_mode",
                             value=value,
                             summary="读取资源中指定的随机选择方式",
-                            semanticEvidence=dict(
-                                type="ace.btable.cCommandRandamRandomType",
-                                method="onExecute1028270",
-                                address="0x1445a25f0",
-                                end="0x1445a2600",
-                                nativeSha256="8ba94aab93435a2d65e9266143de140bcb34b90369a6894a304afc0d3952c2ee",
-                            ),
+                            semanticEvidence=dict(RANDOM_TYPE_COMMAND_EVIDENCE),
                             next=self.walk(
                                 address + ins.size, self.complete_call(s, e, value)
                             ),
@@ -1018,7 +1094,7 @@ class Machine:
                         return key
                     if command.startswith("cCheck") or command.startswith("cCompare"):
                         return self.branch_node(e, bound, s, address + ins.size)
-                    if self.command_return(bound) == "System.Void":
+                    if self.command_return(bound) == VOID_TYPE:
                         evidence = copy.deepcopy(
                             self.command_evidence[bound["commandType"]]
                         )
@@ -1026,12 +1102,12 @@ class Machine:
                             id=key,
                             kind="unknown",
                             reason="已绑定 void 命令，内部副作用尚未核实：" + command,
-                            nativeSite=key,
+                            nativeSite=e["site"],
                             commandType=bound["commandType"],
                             expectedCommandType=bound["commandType"],
                             semanticEvidence=evidence,
                             implementationBoundary="unknown_void_command_effects",
-                            returnType="System.Void",
+                            returnType=VOID_TYPE,
                             continuationStatus="native_caller_continuation",
                         )
                         if bound.get("argumentIndex") is not None:
@@ -1044,7 +1120,7 @@ class Machine:
                     return self.add_unknown(
                         address, "已绑定命令需逐项核实其作用：" + command
                     )
-                if e["target"] == 0x1450DC570:
+                if e["target"] == FN_POSITION_STACK_PUSH:
                     s["saved"] = self.position(e["arguments"][2], s)
                 if isinstance(e["target"], int) and e["target"] in self.targets:
                     candidates = self.targets[e["target"]]
@@ -1103,12 +1179,7 @@ class Machine:
                     return key
                 # Shared position/security helpers are transparent here. Other
                 # direct calls stop: no guessed side effect can advance the tree.
-                if e["target"] not in {
-                    0x147739590,
-                    0x1450DC570,
-                    0x1450DC510,
-                    0x14B1295F0,
-                }:
+                if e["target"] not in MACHINE_TRANSPARENT_CALLS:
                     return self.add_unknown(
                         address, "辅助调用的作用尚未核实：" + str(e["target"])
                     )

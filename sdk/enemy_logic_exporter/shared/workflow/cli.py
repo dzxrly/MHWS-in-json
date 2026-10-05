@@ -7,6 +7,8 @@ from pathlib import Path
 from ..native.evidence import digest, method_rows
 from ..native.pe import verify_rows
 from ..config import ROOT, MODEL_DIR, SUPPORTED_PROFILE
+
+MODEL_DIR_WEB = ROOT / "src/processed_data/enemy_battle_logic/models"
 from ...monster import get_monster
 
 
@@ -45,6 +47,18 @@ def parser():
     )
     player.add_argument("--models", type=Path, required=True)
     player.add_argument("--output", type=Path, required=True)
+    publish = commands.add_parser(
+        "publish", help="把 .agents 中的完整研究模型写成网页使用的精简模型"
+    )
+    publish.add_argument("--models", type=Path, required=True)
+    publish.add_argument("--output", type=Path, default=MODEL_DIR_WEB)
+    slots = commands.add_parser(
+        "scheduler-slots", help="从 EXE 恢复 AI 状态/中断请求的行为表槽并写入证据"
+    )
+    slots.add_argument("--exe", type=Path, required=True)
+    slots.add_argument(
+        "--metadata", type=Path, default=ROOT / "src/data/il2cpp_dump.json"
+    )
     manifest = commands.add_parser(
         "manifest", help="从当前元数据重新定位方法并计算原生字节摘要"
     )
@@ -213,6 +227,24 @@ def main():
         from ..models.player_view import enrich_models
 
         enrich_models(args.models, args.output)
+    elif args.command == "publish":
+        from ..models.publish import publish_models
+
+        for row in publish_models(args.models, args.output):
+            print(json.dumps(row, ensure_ascii=False))
+    elif args.command == "scheduler-slots":
+        from ..logic.scheduler_slots import write_slot_evidence
+
+        value = write_slot_evidence(args.exe, args.metadata)
+        print(
+            json.dumps(
+                {
+                    "requests": len(value["requests"]),
+                    "boundaries": len(value["boundaries"]),
+                    "scannedMethods": value["scannedMethods"],
+                }
+            )
+        )
     elif args.command == "manifest":
         from ..native.manifest import build_manifest
 

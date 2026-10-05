@@ -8,6 +8,23 @@ Unsupported filtering/dispatch forms retain their native boundary.
 
 import re
 from ..resources.reader import typed
+from ..config import (
+    ARRAY_ELEMENTS,
+    ARRAY_LENGTH,
+    EXPORT_ARGUMENTS,
+    OPERATOR_EXPORT_END,
+    OPERATOR_POSITION_ROW,
+    OPERATOR_RANDOM_SELECTED,
+    POOL_KEY,
+    POOL_WEIGHT,
+    REFERENCE_ARRAY_STRIDE,
+)
+
+# Ghidra pseudo-C spellings of the argument array and pool weight fields.
+ARGUMENTS_FIELD = rf"\+ {EXPORT_ARGUMENTS:#x}\)"
+ARGUMENT_SLOT = ARGUMENTS_FIELD + rf" \+ {ARRAY_ELEMENTS:#x}"
+POOL_WEIGHT_TEXT = f" + {POOL_WEIGHT:#x}"
+POOL_WEIGHT_PATTERN = re.escape(POOL_WEIGHT_TEXT)
 
 
 class SelectorBoundary(ValueError):
@@ -55,7 +72,7 @@ def _dispatch_pc(
             instruction.mnemonic == "cmp"
             and operands
             and operands[0].type == CS_OP_MEM
-            and operands[0].mem.disp == 0xC6
+            and operands[0].mem.disp == OPERATOR_EXPORT_END
         ):
             value = state["regs"].get(pc_register)
             if type(value) is int:
@@ -97,7 +114,7 @@ def _native_routes(machine, pool_address):
             len(following) >= 2
             and following[0].mnemonic == "cmp"
             and following[0].operands[0].type == CS_OP_MEM
-            and following[0].operands[0].mem.disp == 0x1C
+            and following[0].operands[0].mem.disp == ARRAY_LENGTH
             and following[1].mnemonic == "jle"
             and following[1].operands[0].type == CS_OP_IMM
         ):
@@ -129,15 +146,15 @@ def _native_routes(machine, pool_address):
             for item in following
             if item.mnemonic == "mov"
             and item.operands[0].type == CS_OP_MEM
-            and item.operands[0].mem.disp == 0xDC
+            and item.operands[0].mem.disp == OPERATOR_RANDOM_SELECTED
         ]
         keys = [
             item
             for item in following
             if item.mnemonic == "mov"
             and item.operands[1].type == CS_OP_MEM
-            and item.operands[1].mem.disp == 0x20
-            and item.operands[1].mem.scale == 8
+            and item.operands[1].mem.disp == ARRAY_ELEMENTS
+            and item.operands[1].mem.scale == REFERENCE_ARRAY_STRIDE
             and item.operands[1].mem.index
         ]
         if len(stores) != 1 or len(keys) != 1:
@@ -186,7 +203,7 @@ def _native_routes(machine, pool_address):
         if item.mnemonic == "mov"
         and item.operands[0].type == CS_OP_REG
         and item.operands[1].type == CS_OP_MEM
-        and item.operands[1].mem.disp == 0xA8
+        and item.operands[1].mem.disp == OPERATOR_POSITION_ROW
         and not item.operands[1].mem.index
         and item.operands[0].size == 4
     }
@@ -206,12 +223,12 @@ def _filter_arguments(machine, block, pool, route, body):
 
     from ..native.bindings import register
 
-    dynamic = set(re.findall(r"\+ 0x18\) \+ 0x20 \+ (\w+) \* 8", block))
+    dynamic = set(re.findall(ARGUMENT_SLOT + r" \+ (\w+) \* 8", block))
     if dynamic:
         if len(dynamic) != 1:
             raise SelectorBoundary("候选跳过参数存在多个动态索引")
         variable = next(iter(dynamic))
-        prefix = block[: block.index(" + 0x24")]
+        prefix = block[: block.index(POOL_WEIGHT_TEXT)]
         bases = set(
             int(value, 0)
             for value in re.findall(
@@ -220,7 +237,7 @@ def _filter_arguments(machine, block, pool, route, body):
         )
         if len(bases) != 1 or not re.search(
             rf"\b{re.escape(variable)} = {re.escape(variable)} \+ 1;",
-            prefix + block[block.index(" + 0x24") : block.index(" % ")],
+            prefix + block[block.index(POOL_WEIGHT_TEXT) : block.index(" % ")],
         ):
             raise SelectorBoundary("逐候选参数的常量基址及递增循环尚未核实")
         base = next(iter(bases))
@@ -233,8 +250,8 @@ def _filter_arguments(machine, block, pool, route, body):
             for operand in instruction.operands:
                 if not (
                     operand.type == CS_OP_MEM
-                    and operand.mem.disp == 0x20
-                    and operand.mem.scale == 8
+                    and operand.mem.disp == ARRAY_ELEMENTS
+                    and operand.mem.scale == REFERENCE_ARRAY_STRIDE
                     and operand.mem.index
                 ):
                     continue
@@ -281,14 +298,14 @@ def _filter_arguments(machine, block, pool, route, body):
     else:
         offsets = set(
             int(value, 0)
-            for value in re.findall(r"\+ 0x18\) \+ (0x[0-9a-f]+|\d+)", block)
+            for value in re.findall(ARGUMENTS_FIELD + r" \+ (0x[0-9a-f]+|\d+)", block)
         )
         if len(offsets) != 1:
             raise SelectorBoundary("动态参数或筛选索引需要专项核查")
         offset = next(iter(offsets))
-        if offset < 0x20 or (offset - 0x20) % 8:
+        if offset < ARRAY_ELEMENTS or (offset - ARRAY_ELEMENTS) % REFERENCE_ARRAY_STRIDE:
             raise SelectorBoundary("跳过参数的原生偏移不匹配参数数组布局")
-        indices = [(offset - 0x20) // 8]
+        indices = [(offset - ARRAY_ELEMENTS) // REFERENCE_ARRAY_STRIDE]
         mode = "shared"
         filter_evidence = dict(argumentOffset=hex(offset))
     arguments = []
@@ -306,9 +323,9 @@ def _selection_form(block, address, code):
     """Require the observed uint32/modulo/strict-weight selection form."""
     pool = f"lRam0000000{address:x}"
     required = (
-        rf"{pool} \+ 0x1c",
-        rf"{pool} \+ 0x24",
-        rf"{pool} \+ 0x20",
+        rf"{pool} \+ {ARRAY_LENGTH:#x}",
+        rf"{pool} \+ {POOL_WEIGHT:#x}",
+        rf"{pool} \+ {POOL_KEY:#x}",
         r"& 0xffffffff\) % \(ulonglong\)",
     )
     if any(re.search(pattern, block) is None for pattern in required):
@@ -344,7 +361,7 @@ def recover_selectors(machine, code, pools, body):
     blocks = _outer_blocks(code)
     evidence, boundaries = [], []
     for pc, block in blocks.items():
-        references = set(re.findall(r"lRam0000000(1[0-9a-f]+) \+ 0x24", block))
+        references = set(re.findall(r"lRam0000000(1[0-9a-f]+)" + POOL_WEIGHT_PATTERN, block))
         if not references:
             continue
         boundary = machine.walk(start, machine.initial(pc))

@@ -3,7 +3,11 @@
 from copy import deepcopy
 from functools import lru_cache
 import json
-from ..config import EVIDENCE_DIR
+from ..config import (
+    EVIDENCE_DIR,
+    CONDITION_FIELDS as FIELDS,
+    REQUEST_EFFECTS,
+)
 from .expressions import combined, runtime
 
 
@@ -40,13 +44,13 @@ def request_details(command, profile, command_evidence=None, metadata=None):
         "all",
         runtime(
             "enemy_command_work_valid",
-            "命令工作存在且原生类型检查为 cEnemyBTableCommandWork",
+            FIELDS["command_work_valid_request"],
         ),
         dict(
             kind="not",
             item=runtime(
                 "btable_request_action_mask",
-                "Accessor._Context._Em.BTable._IsBTableRequestActionMask；0x28→0x68→0x40→0x120→0x13",
+                FIELDS["request_mask"],
             ),
         ),
     )
@@ -57,16 +61,8 @@ def request_details(command, profile, command_evidence=None, metadata=None):
             "synchronous" if command.endswith("cRequestActionSync") else "normal"
         ),
         requestEffects=[
-            dict(
-                field="cEnemyContext._FlagArray[WAITING_REQUEST_ACTION_RANDOM_OPERATOR=14]",
-                value=False,
-                offset="0x308→0x2e",
-            ),
-            dict(
-                field="cEnemyContext._FlagArray[NO_REQUEST_ACTION=50]",
-                value=False,
-                offset="0x308→0x52",
-            ),
+            dict(field=field, value=False, offset=offset)
+            for field, offset in REQUEST_EFFECTS
         ],
         implementationBoundary="动作请求 helper 的全部网络、同步、请求历史和动作执行副作用尚未全部恢复；本节点不保证请求成功或动作在游戏中完成",
     )
@@ -78,7 +74,7 @@ def request_details(command, profile, command_evidence=None, metadata=None):
                     kind="not",
                     item=runtime(
                         "request_actor_net_info_exists",
-                        "请求 actor 的 Context._Em.NetInfo(0xf0) != null",
+                        FIELDS["actor_net_info"],
                     ),
                 ),
                 dict(
@@ -86,7 +82,7 @@ def request_details(command, profile, command_evidence=None, metadata=None):
                     operator="eq",
                     left=runtime(
                         "request_actor_host_member_index",
-                        "请求 actor 的 NetInfo._HostMemberIndex(+0x24)",
+                        FIELDS["actor_host_index"],
                     ),
                     right=dict(kind="constant", value=-1),
                 ),
@@ -95,11 +91,11 @@ def request_details(command, profile, command_evidence=None, metadata=None):
                     operator="eq",
                     left=runtime(
                         "request_actor_host_member_index",
-                        "请求 actor 的 NetInfo._HostMemberIndex(+0x24)",
+                        FIELDS["actor_host_index"],
                     ),
                     right=runtime(
                         "request_actor_self_member_index",
-                        "请求 actor 的 NetInfo._SelfMemberIndex(+0x20)",
+                        FIELDS["actor_self_index"],
                     ),
                 ),
             ],

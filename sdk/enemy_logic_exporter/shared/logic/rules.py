@@ -3,112 +3,25 @@
 from ..native.evidence import evidence, method_rows
 import json
 from ..native.metadata import Il2cppMetadata
+from ..config import (
+    AI_STATE_ENUM,
+    BOOLEAN_COMMAND_FUNC,
+    CHECK_STATUS_METHOD_PREFIXES,
+    CHECK_STATUS_TYPE,
+    COMMAND_RESULT_ENUM,
+    COMMAND_RESULT_TYPE,
+    DISTANCE_MODIFIER_FIELDS,
+    RANDOM_OPERATOR_TYPE,
+    RULE_SPECS,
+    SET_TIMER_TYPE,
+)
 
 
 def main(work, metadata, output, profile):
     document = json.loads((work / "decompiled.json").read_text(encoding="utf-8"))
     rows = method_rows(document)
     rules = []
-    specs = [
-        (
-            "app.btable.EmCommonCommand.cCheckDistance",
-            "distance",
-            "通用",
-            "命令距离：XZ/XYZ 使用严格近远比较；Y 轴使用高度比较",
-            {
-                "threshold": 0x10,
-                "compare": 0x18,
-                "height": 0x20,
-                "axis": 0x28,
-                "base": 0x30,
-            },
-            None,
-            None,
-        ),
-        (
-            "app.btable.EmCommonCommand.cCheckAngle",
-            "angle",
-            "通用",
-            "相对指定方向的夹角 ≤ 角度宽度 / 2；包含边界",
-            {"base": 0x10, "width": 0x18, "option": 0x20, "option2": 0x28},
-            None,
-            None,
-        ),
-        (
-            "ace.btable.cCheckTimerValue",
-            "timer",
-            "通用",
-            "指定计时器的剩余值 ≤ 0",
-            {"variable": 0x18},
-            None,
-            None,
-        ),
-        (
-            "ace.btable.cCompareBoolValue",
-            "variable_bool",
-            "通用",
-            "变量布尔值与指定值相等",
-            {"variable": 0x18, "value": 0x20},
-            None,
-            None,
-        ),
-        (
-            "app.btable.Em0021_00BTableCommand.cCheckMushroomType",
-            "mushroom",
-            "专用",
-            "蘑菇类型相等，或当前类型为 5 且要求类型不为 0",
-            {"value": 0x10},
-            "app.cEm0021_00Extend",
-            0x98,
-        ),
-        (
-            "app.btable.Em0021_00BTableCommand.cCheckCatchMushroom",
-            "catch_mushroom",
-            "专用",
-            "拿取物品内部值属于 0、1、2、3、4、5、7",
-            {},
-            "app.cEm0021_00Extend",
-            0xA0,
-        ),
-        (
-            "app.btable.Em0022_00BTableCommand.cCheckBreakFangCount",
-            "fang_count",
-            "专用",
-            "断牙数量：比较类型 0 为 ≥，1 为 ≤，2 为 =",
-            {"compare": 0x10, "value": 0x18},
-            "app.cEm0022_00Extend",
-            0x70,
-        ),
-        (
-            "app.btable.Em0046_00BTableCommand.cCheckElectricLevel",
-            "electric",
-            "专用",
-            "要求电力等级 2 时接受内部值 2 或 3；其余等级使用相等比较",
-            {"value": 0x10},
-            "app.cEm0046_00Extend",
-            0x108,
-        ),
-        (
-            "app.btable.Em0071_00BTableCommand.cCheckStateType",
-            "unique_state",
-            "专用",
-            "专用内部状态相等；不将其解释为全局战斗阶段",
-            {"value": 0x10},
-            "app.cEm0071_00Extend",
-            0xEC,
-        ),
-    ]
-    specs.append(
-        (
-            "app.btable.EmCommonCommand.cCheckSelfStatus",
-            "self_status",
-            "通用",
-            "自身状态分类检查；已核实站立状态、生命比例和部分 AI 状态",
-            {"category": 0x18, "stand": 0x20, "health": 0x38, "ai": 0x40},
-            None,
-            None,
-        )
-    )
+    specs = RULE_SPECS
     with Il2cppMetadata(metadata) as m:
         for (
             type_name,
@@ -169,52 +82,34 @@ def main(work, metadata, output, profile):
                 rules[-1]["relatedEvidence"] = [
                     evidence(r)
                     for r in rows
-                    if r["type"] == "app.btable.EmCommonCommand.CheckStatus"
+                    if r["type"] == CHECK_STATUS_TYPE
                     and any(
                         r["method"].startswith(prefix)
-                        for prefix in (
-                            "execute123",
-                            "execute_StandState",
-                            "execute_Health",
-                            "execute_AIState",
-                        )
+                        for prefix in CHECK_STATUS_METHOD_PREFIXES
                     )
                 ]
             if kind == "distance":
-                for type_name, field_name, offset in [
-                    ("app.cEmAIStateManager", "_CurrentAIStateID", 0xFC),
-                    ("app.cEmAIStateManager", "_NextAIStateID", 0xEC),
-                    (
-                        "app.cEmModuleCombatEm",
-                        "<CombatRangeScale>k__BackingField",
-                        0x14,
-                    ),
-                    (
-                        "app.cEmModuleCombatEm",
-                        "<CombatRangeOffset>k__BackingField",
-                        0xB8,
-                    ),
-                ]:
+                for type_name, field_name, offset in DISTANCE_MODIFIER_FIELDS:
                     assert (
                         int(m.fields(type_name)[field_name]["offset_from_base"], 16)
                         == offset
                     )
                 rules[-1]["distanceModifiers"] = {
                     "triggerAIState": 3,
-                    "aiStateEnum": m.enum("app.EnemyDef.AI_STATE_ID")[1],
-                    "stateType": "app.cEmAIStateManager",
-                    "currentField": "_CurrentAIStateID",
-                    "pendingField": "_NextAIStateID",
-                    "moduleType": "app.cEmModuleCombatEm",
-                    "scaleField": "<CombatRangeScale>k__BackingField",
-                    "offsetField": "<CombatRangeOffset>k__BackingField",
+                    "aiStateEnum": m.enum(AI_STATE_ENUM)[1],
+                    "stateType": DISTANCE_MODIFIER_FIELDS[0][0],
+                    "currentField": DISTANCE_MODIFIER_FIELDS[0][1],
+                    "pendingField": DISTANCE_MODIFIER_FIELDS[1][1],
+                    "moduleType": DISTANCE_MODIFIER_FIELDS[2][0],
+                    "scaleField": DISTANCE_MODIFIER_FIELDS[2][1],
+                    "offsetField": DISTANCE_MODIFIER_FIELDS[3][1],
                     "defaultScale": 1.0,
                     "defaultOffset": 0.0,
                 }
         command_result = {
-            "type": "ace.btable.COMMAND_RESULT",
-            "fields": m.fields("ace.btable.COMMAND_RESULT"),
-            "resultType": m.enum("ace.btable.BTableDef.COMMAND_RESULT_TYPE")[1],
+            "type": COMMAND_RESULT_TYPE,
+            "fields": m.fields(COMMAND_RESULT_TYPE),
+            "resultType": m.enum(COMMAND_RESULT_ENUM)[1],
         }
         command_result["booleanFlagMeaning"] = (
             "布尔 cCommandFunc 的 Flag 为 onExecute 的真假；此结论不推广到所有返回类型。"
@@ -223,8 +118,7 @@ def main(work, metadata, output, profile):
             next(
                 r
                 for r in rows
-                if r["type"]
-                == "ace.btable.cCommandFunc`2<app.btable.EmCommonCommand.cCheckDistanceArg,System.Boolean>"
+                if r["type"] == BOOLEAN_COMMAND_FUNC
                 and r["method"].startswith("execute")
             )
         )
@@ -239,14 +133,14 @@ def main(work, metadata, output, profile):
                 "kind": "weighted_random",
                 "summary": "从已筛选候选中按整数权重抽签；随机值低 32 位对总权重取模。候选排除及重复抑制依赖运行时记忆。",
                 "evidence": evidence(
-                    next(r for r in rows if r["type"] == "ace.btable.cOperatorRandom")
+                    next(r for r in rows if r["type"] == RANDOM_OPERATOR_TYPE)
                 ),
             },
             {
                 "kind": "set_timer",
                 "summary": "设置类型 0、1、2 分别传给变量存储状态 1、2、3；不从此调用推断默认时长。",
                 "evidence": evidence(
-                    next(r for r in rows if r["type"] == "ace.btable.cSetTimerValue")
+                    next(r for r in rows if r["type"] == SET_TIMER_TYPE)
                 ),
             },
         ],

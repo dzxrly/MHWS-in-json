@@ -8,7 +8,16 @@ from pathlib import Path
 from ..native.evidence import evidence_key, method_rows
 from ..native.pe import PE, verify_rows
 from ..native.metadata import Il2cppMetadata
-from ..config import SUPPORTED_PROFILE, ROOT
+from ..config import (
+    EXPORT_COMMAND_POSITION_TYPE,
+    OPERATOR_PREV_COMMAND_POSITION,
+    OPERATOR_REQUEST_COMMAND,
+    OPERATOR_WORK_TYPE,
+    REQUEST_ACTION_COMMANDS,
+    ROOT,
+    SELECT_ACTION_ARGUMENT,
+    SUPPORTED_PROFILE,
+)
 from .reader import Resources, typed
 from .action_names import ActionNames
 
@@ -185,7 +194,7 @@ def packed_request_stores(native, address, *, block_starts=()):
         elif (
             destination.type == CS_OP_MEM
             and destination.size == 8
-            and destination.mem.disp == 0xB0
+            and destination.mem.disp == OPERATOR_REQUEST_COMMAND
             and not destination.mem.index
             and (
                 register(instruction, destination.mem.base)
@@ -225,9 +234,9 @@ def discover_requests(native_index, inventory, exe, metadata, natives, output):
     with Il2cppMetadata(Path(metadata)) as metadata_data:
         if metadata_data.sha256 != index["profile"]["metadataSha256"]:
             raise ValueError("元数据来源版本不匹配")
-        operator = metadata_data.fields("ace.btable.cOperatorWork")
-        position = metadata_data.fields("ace.btable.BTableDef.EXPORT_COMMAND_POSITION")
-        if int(operator["PrevCommandPosition"]["offset_from_base"], 16) != 0xAC:
+        operator = metadata_data.fields(OPERATOR_WORK_TYPE)
+        position = metadata_data.fields(EXPORT_COMMAND_POSITION_TYPE)
+        if int(operator["PrevCommandPosition"]["offset_from_base"], 16) != OPERATOR_PREV_COMMAND_POSITION:
             raise ValueError("原生请求位置字段偏移已改变")
         if (
             int(position["CommandNum"]["offset_from_fieldptr"], 16) != 4
@@ -261,7 +270,7 @@ def discover_requests(native_index, inventory, exe, metadata, natives, output):
                 code = data.get("code", "").replace("\r", "")
                 data = dict(
                     completed=data["completed"],
-                    hasPositionStore="+ 0xb0)" in code,
+                    hasPositionStore=f"+ {OPERATOR_REQUEST_COMMAND:#x})" in code,
                     blockStarts=[
                         int(b["start"], 16)
                         for b in data.get("controlFlow", {}).get("blocks", [])
@@ -314,13 +323,10 @@ def discover_requests(native_index, inventory, exe, metadata, natives, output):
                 factory = factories[command]
                 arg_type, arg = typed(body["_CommandArgArray"][argument])
                 if (
-                    arg_type != "app.btable.EmCommonCommand.cSelectActionArg"
+                    arg_type != SELECT_ACTION_ARGUMENT
                     or factory["_ArgumentType"] != arg_type
                     or factory["_OrderType"]
-                    not in {
-                        "app.btable.EmCommonCommand.cRequestAction",
-                        "app.btable.EmCommonCommand.cRequestActionSync",
-                    }
+                    not in set(REQUEST_ACTION_COMMANDS)
                 ):
                     boundaries.append(
                         dict(

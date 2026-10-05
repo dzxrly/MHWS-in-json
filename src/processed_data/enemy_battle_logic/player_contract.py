@@ -94,6 +94,7 @@ def validate_player_view(graph):
     for entry in view["entries"]:
         if entry.get("id") not in nodes or entry.get("relation") not in (
             "local_verified",
+            "scheduler_slot",
             "unknown",
         ):
             raise ValueError("玩家入口缺少来源或接入状态")
