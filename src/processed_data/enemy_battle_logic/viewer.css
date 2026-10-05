@@ -17,6 +17,8 @@
 .player-inputs { display: flex; flex-wrap: wrap; gap: 10px 18px; margin-top: 10px; }
 .player-inputs label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted); }
 .player-inputs select { min-width: 150px; max-width: 260px; padding: 5px; font: inherit; font-size: 13px; }
+.player-inputs-extra { margin-top: 10px; }
+.player-inputs-extra > summary { cursor: pointer; font-size: 12px; color: var(--muted); }
 .player-note { font-size: 12px; line-height: 1.7; color: var(--muted); margin: 8px 0 0; }
 .player-body { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr) 340px; min-height: 0; }
 .player-body.no-details { grid-template-columns: minmax(0, 1fr) 0; }

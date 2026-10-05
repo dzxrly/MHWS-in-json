@@ -95,8 +95,11 @@ def share_values(model):
     return body
 
 
-def publish_models(source, output):
-    """Publish every extracted model in ``source`` into ``output``."""
+def publish_models(source, output, *, complete=True):
+    """Publish every extracted model in ``source`` into ``output``.
+
+    ``complete`` requires a model for every roster entry, as a release does.
+    """
     source, output = Path(source), Path(output)
     paths = sorted(source.glob("em*.v*.json"))
     if not paths:
@@ -120,4 +123,14 @@ def publish_models(source, output):
                 publishedBytes=len(content.encode()),
             )
         )
+    from .roster import PUBLISHED_ROSTER_NAME, published_roster
+
+    roster = published_roster()
+    published = {r["model"].split(".")[0].upper() for r in results}
+    missing = sorted(set(roster["enemyIds"]) - published)
+    (output / PUBLISHED_ROSTER_NAME).write_text(
+        json.dumps(roster, ensure_ascii=False, indent=2) + "\n", encoding="utf8"
+    )
+    if complete and missing:
+        raise ValueError("名单中的怪物缺少可发布模型：" + "、".join(missing))
     return results

@@ -69,7 +69,7 @@ def validate_player_view(graph):
             display = node.get("presentation", {})
             if (
                 display.get("category")
-                not in ("distance", "angle", "phase", "state", "internal")
+                not in ("distance", "angle", "phase", "state", "internal", "random")
                 or any(
                     not isinstance(display.get(k), str) or not display[k]
                     for k in ("title", "trueLabel", "falseLabel")

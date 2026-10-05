@@ -4,6 +4,7 @@ No control-flow edge is inferred here. Calls and their saved return positions
 remain explicit, and inputs describe one selection snapshot, not a game loop.
 """
 
+import hashlib
 import json
 from pathlib import Path
 
@@ -31,8 +32,40 @@ SCENARIO_GUARDS = {
     "selected_hunter_context_valid": "当前目标玩家的角色有效",
     "selected_hunter_lookup_found": "能查到当前目标玩家",
     "selected_hunter_character_valid": "当前目标玩家的角色有效",
+    "self_extend_valid": "怪物自身的专用扩展对象有效",
 }
-HIDDEN_GUARDS = {"ordinary_combat_snapshot", *SCENARIO_GUARDS}
+def extend_field_label(key):
+    """"extend:app.cEm0082_00Extend.<IsTengen>k__BackingField" -> "IsTengen"."""
+    field = key.rsplit(".", 1)[-1]
+    return field.replace("k__BackingField", "").strip("<>_") or field
+
+
+# Verified monster rules whose context binding names one Extend field.
+CONTEXT_RULE_KINDS = ("unique_state", "mushroom", "catch_mushroom", "electric", "fang_count")
+
+
+# Facts of a solo (or host) player fighting this monster in ordinary combat.
+# Each is a scenario input with a stated meaning, never a silent assumption.
+SCENARIO_FACTS = {
+    "btable_request_action_mask": "行为表动作请求未被屏蔽",
+    "request_actor_net_info_exists": "单人游戏或本机为主机（动作请求不经网络转交）",
+}
+SCENARIO_VALUES = dict(
+    btable_request_action_mask=False,
+    request_actor_net_info_exists=False,
+    posture_override_active=False,
+    ai_state_current=2,
+    ai_state_pending=-1,
+)
+# CheckStatus.execute_AIState: resource AI_TYPE -> app.EnemyDef.AI_STATE_ID.
+AI_STATE_SELECTORS = {0: 1, 1: 2, 2: 3, 3: 6, 9: 7, 11: 4, 13: 10}
+# Reviewed checks over live scene or part state; players see one input each.
+SCENE_INPUTS = {
+    "cCheckDestinationRelation": "destination_relation",
+    "cCheckOccludedToDest": "target_occluded",
+    "cCheckBreakParts": "break_parts",
+}
+HIDDEN_GUARDS = {"ordinary_combat_snapshot", *SCENARIO_GUARDS, *SCENARIO_FACTS}
 
 
 def ref(table, node):
@@ -82,6 +115,11 @@ class PlayerCompiler:
         self.graph = graph
         self.inputs = {}
         self.thresholds = {}
+        self.timers = graph.get("variableCatalog", {})
+        self.extend_enums = {
+            f"extend:{leaf['contextType']}.{leaf['contextField']}": leaf.get("enumValues") or {}
+            for leaf in graph.get("leafRules", {}).values()
+        }
         self.rules = {r["commandType"]: r for r in graph["rules"]["rules"]}
         identities = sorted(
             {
@@ -174,9 +212,11 @@ class PlayerCompiler:
             category = enum_number(values["category"])
             if category == 3:
                 status = enum_number(scalar(predicate["argument"]["Status"]))
-                selected = {0: ("angry", "愤怒状态"), 1: ("tired", "疲劳状态")}.get(
-                    status
-                )
+                selected = {
+                    0: ("angry", "愤怒状态"),
+                    1: ("tired", "疲劳状态"),
+                    3: ("depletion", "力竭状态"),
+                }.get(status)
                 if selected:
                     return self.boolean(*selected)
             if category == 1:
@@ -188,11 +228,24 @@ class PlayerCompiler:
                         "普通姿态",
                         [dict(label="地面", value=0), dict(label="飞行", value=1)],
                     )
+                    # The native check first rejects a unique or extra state that
+                    # overrides the stand state; the scenario states its absence.
                     return dict(
                         op="all",
                         items=[
                             comparison("posture", "eq", state),
-                            unknown("仍需确认没有覆盖普通姿态的特殊状态"),
+                            comparison("posture_override_active", "eq", False),
+                        ],
+                    )
+            if category == 5:
+                selector = enum_number(values["ai"])
+                target = AI_STATE_SELECTORS.get(selector)
+                if target is not None:
+                    return dict(
+                        op="any",
+                        items=[
+                            comparison("ai_state_current", "eq", target),
+                            comparison("ai_state_pending", "eq", target),
                         ],
                     )
             if category == 4:
@@ -201,7 +254,72 @@ class PlayerCompiler:
                     dict(label="生命值百分比", number=True, min=0, max=100, unit="%"),
                 )
                 return comparison("health_percent", "le", float(values["health"]))
+        if kind in CONTEXT_RULE_KINDS and predicate.get("contextBinding"):
+            return self.context_rule(kind, values, predicate["contextBinding"])
+        if kind == "variable_bool":
+            guid = str(values["variable"])
+            default = self.timers.get(guid, {}).get("default")
+            key = "variable:" + guid
+            self.inputs.setdefault(
+                key,
+                dict(
+                    label="行为表布尔变量"
+                    + (f"（初始值 {'是' if default else '否'}）" if isinstance(default, bool) else ""),
+                    group="variable",
+                    options=[dict(label="是", value=True), dict(label="否", value=False)],
+                ),
+            )
+            expected = values["value"]
+            if type(expected) is not bool:
+                return unknown("布尔变量的期望值不是布尔值")
+            return comparison(key, "eq", expected)
+        if kind == "timer":
+            guid = str(values["variable"])
+            timer = self.timers.get(guid, {})
+            default = timer.get("default")
+            label = "计时器到期" + (f"（初始值 {default:g}）" if isinstance(default, (int, float)) else "")
+            self.inputs.setdefault(
+                "timer:" + guid,
+                dict(
+                    label=label,
+                    group="timer",
+                    options=[dict(label="是", value=True), dict(label="否", value=False)],
+                ),
+            )
+            return comparison("timer:" + guid, "eq", True)
         return unknown("此处需要额外的战斗状态或计时器信息")
+
+    def context_rule(self, kind, values, binding):
+        """Verified monster rules over one Extend field (see predicates.py)."""
+        key = f"extend:{binding['type']}.{binding['field']}"
+        label = "专用状态 " + extend_field_label(key)
+        number = enum_number if kind != "fang_count" else (lambda v: v)
+        expected = number(values["value"]) if "value" in values else None
+        self.inputs.setdefault(key, dict(label=label, options=[]))
+
+        def option(value):
+            entry = dict(label=str(value), value=value)
+            if entry not in self.inputs[key]["options"]:
+                self.inputs[key]["options"].append(entry)
+            return comparison(key, "eq", value)
+
+        if kind == "catch_mushroom":
+            return dict(op="any", items=[option(v) for v in (0, 1, 2, 3, 4, 5, 7)])
+        if kind == "mushroom":
+            items = [option(expected)]
+            if expected != 0:
+                items.append(option(5))
+            return dict(op="any", items=items) if len(items) > 1 else items[0]
+        if kind == "electric" and expected == 2:
+            return dict(op="any", items=[option(2), option(3)])
+        if kind == "fang_count":
+            compare = enum_number(values["compare"])
+            operator = {0: "ge", 1: "le", 2: "eq"}.get(compare)
+            if operator is None:
+                return unknown("不支持的断牙数量比较")
+            self.inputs[key] = dict(label=label, number=True, min=0, max=None)
+            return comparison(key, operator, expected)
+        return option(expected)
 
     def expression(self, expression):
         kind = expression["kind"]
@@ -229,6 +347,24 @@ class PlayerCompiler:
             key = operand.get("key")
             if operand.get("kind") == "runtime" and key in SCENARIO_GUARDS:
                 return comparison(key, "eq", True)
+            if operand.get("kind") == "runtime" and key in SCENARIO_FACTS:
+                return comparison(key, "eq", True)
+            if str(key).startswith("extend:") and right.get("kind") == "constant":
+                label = "专用状态 " + extend_field_label(key)
+                if kind == "runtime":
+                    return self.boolean(key, label)
+                names = self.extend_enums.get(key, {})
+                self.inputs.setdefault(key, dict(label=label, options=[]))
+                value = right["value"]
+                option = dict(
+                    label=next((n for n, v in names.items() if v == value), str(value)),
+                    value=value,
+                )
+                if option not in self.inputs[key]["options"]:
+                    self.inputs[key]["options"].append(option)
+                return comparison(key, expression.get("operator", "eq"), value)
+            if str(key).startswith("random_uint32_mod_") and right.get("kind") == "constant":
+                return comparison(key, expression.get("operator", "eq"), right["value"])
             if operand.get("kind") == "runtime" and str(key).startswith(
                 ("selected_hunter_bad_condition:", "selected_hunter_status:")
             ):
@@ -266,6 +402,16 @@ class PlayerCompiler:
         return unknown("此处需要尚未提供或尚未核实的内部条件")
 
     def condition(self, node):
+        command = str(
+            node.get("commandType") or node.get("expectedCommandType") or ""
+        ).rsplit(".", 1)[-1]
+        if command in SCENE_INPUTS and node.get("semanticEvidence") and node.get("summary"):
+            # Reviewed checks over live scene/part state: the player sees one
+            # input per distinct resource argument, labelled by the SDK summary.
+            identity = json.dumps(node.get("argument", {}), ensure_ascii=False, sort_keys=True)
+            key = SCENE_INPUTS[command] + ":" + hashlib.sha1(identity.encode()).hexdigest()[:12]
+            result = self.boolean(key, node["summary"])
+            return result, self.describe(result)
         result = (
             self.expression(node["expression"])
             if "expression" in node
@@ -286,6 +432,26 @@ class PlayerCompiler:
                 ) if expression["operator"] == "eq" else "当前目标不是玩家"
             if key in SCENARIO_GUARDS:
                 return SCENARIO_GUARDS[key]
+            if str(key).startswith("extend:") and key in self.inputs:
+                option = next(
+                    (o["label"] for o in self.inputs[key].get("options", []) if o["value"] == value),
+                    str(value),
+                )
+                if type(value) is bool:
+                    return self.inputs[key]["label"] + ("成立" if value == (expression["operator"] == "eq") else "不成立")
+                symbol = {"lt": "<", "le": "≤", "gt": ">", "ge": "≥", "eq": "=", "ne": "≠"}[
+                    expression["operator"]
+                ]
+                return f"{self.inputs[key]['label']} {symbol} {option}"
+            if key in SCENARIO_FACTS:
+                return SCENARIO_FACTS[key]
+            if key == "posture_override_active":
+                return "没有覆盖普通姿态的专用状态"
+            if key in ("ai_state_current", "ai_state_pending"):
+                return ("当前" if key == "ai_state_current" else "待切换") + f" AI 状态为 {value}"
+            if str(key).startswith("random_uint32_mod_"):
+                modulus = int(key.split(":", 1)[0].rsplit("_", 1)[-1])
+                return f"随机整数 % {modulus} ≤ {value}"
             if key == "self_state_sign":
                 text = STATE_SIGN_LABELS.get(value, value)
                 return ("状态信号：" if expression["operator"] == "eq" else "状态信号不是：") + text
@@ -336,6 +502,19 @@ class PlayerCompiler:
         shown = [p for p in parts if p.get("key") not in HIDDEN_GUARDS]
         comparisons = [p for p in shown if p["op"] == "compare"]
         keys = {p["key"] for p in comparisons}
+        random_keys = [k for k in keys if str(k).startswith("random_uint32_mod_")]
+        if random_keys and len(comparisons) == 1 and comparisons[0]["operator"] == "le":
+            test = comparisons[0]
+            modulus = int(test["key"].split(":", 1)[0].rsplit("_", 1)[-1])
+            hit = min(max(int(test["value"]) + 1, 0), modulus)
+            return dict(
+                category="random",
+                title="随机分支",
+                trueLabel=f"随机命中（按均匀分布约 {hit * 100 // modulus}%）",
+                falseLabel=f"未命中（约 {100 - hit * 100 // modulus}%）",
+                snapshotGuard=False,
+                compact=False,
+            )
         category = (
             "distance"
             if "distance_horizontal" in keys
@@ -620,11 +799,12 @@ def build_player_view(graph):
     return dict(
         schemaVersion=1,
         scenario=dict(
-            label="当前目标是该玩家，怪物正在普通战斗中选招",
+            label="单人或作为主机的玩家是怪物的当前目标；怪物处于战斗 AI 状态、没有待切换状态和覆盖普通姿态的专用状态，行为表动作请求未被屏蔽",
             inputs=dict(
                 selected_target_key_type=0,
                 ordinary_combat_snapshot=True,
                 **{key: True for key in SCENARIO_GUARDS},
+                **SCENARIO_VALUES,
             ),
         ),
         inputs=compiler.inputs,

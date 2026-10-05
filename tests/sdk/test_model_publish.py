@@ -78,7 +78,10 @@ class ModelPublishTests(unittest.TestCase):
             source, output = Path(folder, "source"), Path(folder, "out")
             source.mkdir()
             (source / "em0002_00_0.v1.json").write_text(json.dumps(model()))
-            rows = publish_models(source, output)
+            rows = publish_models(source, output, complete=False)
             self.assertLess(rows[0]["publishedBytes"], rows[0]["sourceBytes"])
+            self.assertTrue((output / "roster.json").exists())
+            with self.assertRaisesRegex(ValueError, "缺少可发布模型"):
+                publish_models(source, Path(folder, "strict"))
             with self.assertRaisesRegex(ValueError, "完整研究模型"):
-                publish_models(output, Path(folder, "again"))
+                publish_models(output, Path(folder, "again"), complete=False)

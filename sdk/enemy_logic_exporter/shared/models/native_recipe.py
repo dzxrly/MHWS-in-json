@@ -24,6 +24,7 @@ from ..config import (
 from ..resources.reader import Resources, structure_signature
 from .catalog import EXPECTED_ENEMY_IDS
 from ..workflow.semantic_recovery import _artifact
+from ..logic.predicates import RuleRegistry
 
 
 def local_identities(result):
@@ -140,6 +141,7 @@ class NativeRecipeContext:
             self.helper_rows[row["type"]].append(row)
         self.native_cache, self.record_cache, self.pool_cache = {}, {}, {}
         self.command_cache = {}
+        self.leaf_cache = {}
         self.stack = ExitStack()
 
     def __enter__(self):
@@ -322,6 +324,30 @@ class NativeRecipeContext:
             entryInstruction=dict(address=row["address"], bytes="c3", mnemonic="ret"),
             metadataTypeSha256=self.metadata.type_hash(row["type"]),
         )
+
+    def command_leaf(self, command_type):
+        """A recovered "Extend field OP argument" rule for the actual implementation."""
+        from ..logic.commands import recover_leaf
+
+        if command_type not in self.leaf_cache:
+            current, visited, found = command_type, set(), None
+            while current and current not in visited:
+                visited.add(current)
+                rows = [
+                    r for r in self.helper_rows[current] if r["method"].startswith("onExecute")
+                ]
+                if rows:
+                    if len(rows) == 1:
+                        code = _artifact(self.helper_path, self.helpers, rows[0])["code"]
+                        found = recover_leaf(rows[0], code, self.metadata)
+                        if found is not None:
+                            found["enumType"], found["enumValues"] = self.metadata.enum(
+                                found["contextFieldType"]
+                            )
+                    break
+                current = (self.metadata.get(current) or {}).get("parent")
+            self.leaf_cache[command_type] = found
+        return self.leaf_cache[command_type]
 
     def command_evidence(self, command_type):
         """Resolve inherited implementations while retaining their native owner."""
@@ -538,6 +564,21 @@ class NativeRecipeContext:
             document["requestCoverage"] = request_coverage(
                 tables, self.requests["actionRequestBindings"], set(sources.values())
             )
+        registry = RuleRegistry.load()
+        leaf_rules = {}
+        for table in tables:
+            for node in table["nodes"]:
+                command = node.get("expectedCommandType")
+                if (
+                    node["kind"] == "condition"
+                    and command
+                    and command not in registry.by_command
+                    and command not in leaf_rules
+                ):
+                    leaf = self.command_leaf(command)
+                    if leaf is not None:
+                        leaf_rules[command] = leaf
+        document["leafRules"] = leaf_rules
         document["methodCoverage"] = dict(
             expected=len(records),
             recovered=len(tables),
@@ -550,6 +591,9 @@ class NativeRecipeContext:
         from ..logic.scheduler_slots import scheduler_slots
 
         document["schedulerSlots"] = scheduler_slots(document)
+        from ..resources.variables import referenced_variables
+
+        document["variableCatalog"] = referenced_variables(document, self.resources)
         return document
 
 

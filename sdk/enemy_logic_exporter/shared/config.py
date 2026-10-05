@@ -1,12 +1,17 @@
 """Bundled paths, reviewed source identity and version-specific native constants.
 
-Every address, structure offset and IL2CPP type/method/field name below belongs
-to the reviewed game version in SUPPORTED_PROFILE. After a game update, review
-this file against the new EXE and metadata; replacing the profile digests alone
-never proves that an address, offset or method suffix is still valid.
+Native functions are declared as version-independent symbols (SYMBOL_SPECS)
+and resolved per build into data/profiles/<gameVersion>.json by the
+``resolve-symbols`` command; constants below read their addresses from the
+active profile. Structure offsets and IL2CPP names below still belong to the
+reviewed version: after a game update, re-resolve the profile, migrate the
+evidence and review what changed. Replacing digests alone proves nothing.
 """
 
+import json
 from pathlib import Path
+
+from .native.symbols import Helper, Method, Reviewed
 
 # --------------------------------------------------------------------- paths
 
@@ -15,29 +20,55 @@ DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 EVIDENCE_DIR = DATA_DIR / "evidence"
 MODEL_DIR = DATA_DIR / "models"
 RULES_PATH = DATA_DIR / "rules.v1.json"
+ROSTER_PATH = DATA_DIR / "roster.v1.json"
+MONSTER_MODULE_DIR = Path(__file__).resolve().parents[1] / "monster"
+
+# Publication scope: EnemyData IDs below this base number, minus exclusions.
+LARGE_ENEMY_MAX_BASE = 1000
+TRAINING_ENEMY_ID = "EM0165_00_0"
+EXCLUDED_ENEMY_IDS = (TRAINING_ENEMY_ID,)
 
 
-# ------------------------------------------------------------ source profile
+# ---------------------------------------------- active build profile
 
-SUPPORTED_PROFILE = {
-    "gameVersion": "1.42.0.2",
-    "exeSha256": "aa38eb46ae1f3c6c94fb2dd94af59b4665bd4c8ccee56bc36b88cf82397a5b4a",
-    "metadataSha256": "01ab8f96c9786f3707fc0fc0376eb2e34124eea2d61b749354cac6e124b323d1",
-}
+# Switching game versions means resolving a new profile and changing this.
+ACTIVE_GAME_VERSION = "1.42.0.2"
+PROFILE_DIR = DATA_DIR / "profiles"
+ACTIVE_PROFILE_PATH = PROFILE_DIR / f"{ACTIVE_GAME_VERSION}.json"
+ACTIVE_PROFILE = json.loads(ACTIVE_PROFILE_PATH.read_text(encoding="utf-8"))
+SUPPORTED_PROFILE = dict(ACTIVE_PROFILE["profile"])
+SYMBOLS = ACTIVE_PROFILE["symbols"]
+
+
+def symbol(name):
+    """Resolved virtual address of a function symbol in the active build."""
+    return int(SYMBOLS[name]["address"], 16)
+
+
+def symbol_value(name):
+    """Reviewed constant carried by the active profile."""
+    return SYMBOLS[name]["value"]
+
+
+def symbol_evidence(name):
+    record = SYMBOLS[name]
+    return {k: record[k] for k in ("type", "method", "address", "end", "nativeSha256")}
+
+
+def symbol_name(name):
+    record = SYMBOLS[name]
+    return record["type"] + "." + record["method"]
 
 
 # --------------------------------------------------- native functions (VA)
 
 # Stack-cookie check emitted in every frame; it has no BTable semantics.
-FN_STACK_COOKIE_CHECK = 0x14B1295F0
-# ace.btable.cOperatorWork.setCurrentPosition233780
-FN_SET_CURRENT_POSITION = 0x147739590
-# System.Collections.Generic.Stack`1<ace.btable.BTableDef.POSITION>.Push233552
-FN_POSITION_STACK_PUSH = 0x1450DC570
-# System.Collections.Generic.Stack`1<ace.btable.BTableDef.POSITION>.TryPop233551
-FN_POSITION_STACK_TRY_POP = 0x1450DC510
+FN_STACK_COOKIE_CHECK = symbol("stack_cookie_check")
+FN_SET_CURRENT_POSITION = symbol("set_current_position")
+FN_POSITION_STACK_PUSH = symbol("position_stack_push")
+FN_POSITION_STACK_TRY_POP = symbol("position_stack_try_pop")
 # POSITION[] growth helper reached from inlined Stack.Push.
-FN_POSITION_ARRAY_RESIZE = 0x146F5F380
+FN_POSITION_ARRAY_RESIZE = symbol("position_array_resize")
 
 # Calls that only save positions or check the stack cookie inside table code.
 MACHINE_TRANSPARENT_CALLS = frozenset(
@@ -54,25 +85,27 @@ INLINE_PUSH_CALLS = frozenset(
 )
 
 # Static field read on table entry; the reviewed table path treats it as 0.
-GLOBAL_TABLE_ENTRY_ZERO = 0x1547370B0
+GLOBAL_TABLE_ENTRY_ZERO = int(symbol_value("global_table_entry_zero"), 16)
 # Runtime-initialized data starts here; the PE image holds no value for it.
-RUNTIME_DATA_START = 0x154000000
+RUNTIME_DATA_START = int(symbol_value("runtime_data_start"), 16)
 
 # Static weighted-pool initializers in <Export>..cctor.
-FN_POOL_PAIR_CONSTRUCT = 0x143928820
-FN_POOL_ARRAY_COPY = 0x143801F50
+FN_POOL_PAIR_CONSTRUCT = symbol("pool_pair_construct")
+FN_POOL_ARRAY_COPY = symbol("pool_array_copy")
 # The allocator receives the array length in r8 and the dimension count in r9.
-FN_ARRAY_ALLOCATE = 0x14B030670
-FN_STATIC_REF_ACQUIRE = 0x14B007BD0
-FN_STATIC_REF_RELEASE = 0x14B0099E0
+FN_ARRAY_ALLOCATE = symbol("array_allocate")
+FN_STATIC_REF_ACQUIRE = symbol("static_ref_acquire")
+FN_STATIC_REF_RELEASE = symbol("static_ref_release")
 # Type slot of System.ValueTuple<UInt32, Int32>[] pool arrays.
-POOL_ARRAY_TYPE_SLOT = 0x1547535A0
+POOL_ARRAY_TYPE_SLOT = int(symbol_value("pool_array_type_slot"), 16)
+# Ghidra spellings of the two pool helpers in cached pseudo-C; the mhws_ label
+# was assigned by the earlier research project.
 POOL_PAIR_CONSTRUCT_LABELS = (
-    "FUN_143928820",
-    "func_0x000143928820",
+    f"FUN_{FN_POOL_PAIR_CONSTRUCT:x}",
+    f"func_0x{FN_POOL_PAIR_CONSTRUCT:012x}",
     "mhws_c49d22bf7e7e9cbe",
 )
-POOL_ARRAY_COPY_LABEL = "FUN_143801f50"
+POOL_ARRAY_COPY_LABEL = f"FUN_{FN_POOL_ARRAY_COPY:x}"
 
 
 # ------------------------------------------------------- structure layouts
@@ -157,83 +190,67 @@ def extend_types(owner):
 NO_ARGUMENT_TYPES = ("", "ace.btable.cCommandArgumentNone")
 
 # Native evidence of the random-type command read by the machine.
-RANDOM_TYPE_COMMAND_EVIDENCE = dict(
-    type=RANDOM_TYPE_COMMAND,
-    method="onExecute1028270",
-    address="0x1445a25f0",
-    end="0x1445a2600",
-    nativeSha256="8ba94aab93435a2d65e9266143de140bcb34b90369a6894a304afc0d3952c2ee",
-)
+RANDOM_TYPE_COMMAND_EVIDENCE = symbol_evidence("random_type_execute")
 
 # The native selector passes a uniquely owned default or branched _ActionClass
 # to the requested action's applyActionParam virtual method.
 PARAMETER_SELECTION_EVIDENCE = (
-    {
-        "type": "ace.user_data.ActionParam",
-        "method": "toBranchedParamIndex245936",
-        "address": "0x1451e3e30",
-        "end": "0x1451e3fd3",
-        "nativeSha256": "f139b134a58c5dcfd6ec44d02f039e3bacd537906957523cbe24f51cef2c41c5",
-    },
-    {
-        "type": "ace.user_data.ActionParam",
-        "method": "applyParamCore245935",
-        "address": "0x1451e3c90",
-        "end": "0x1451e3e2a",
-        "nativeSha256": "241d619ff2645fc76c1c7605b1d97678d7fb8575e7b0c48b805c035d06676977",
-    },
+    symbol_evidence("action_param_branch"),
+    symbol_evidence("action_param_apply"),
 )
 
 
 # -------------------------------------------- shared Combat callback recipe
 
+# (type, method name without the version-specific numeric suffix); the
+# suffixed keys come from data/evidence/combat_entry_evidence.v1.json.
 COMBAT_METHODS = dict(
-    request_change="requestChangeBTable578130",
-    request_verify="requestChangeBTableVerify592391",
-    change_state="changeState577113",
-    on_enter="onEnter577109",
-    on_return_interrupt="onReturnInterrupt577105",
-    on_restart="onRestart577106",
-    on_table_end="onBTableEnd577108",
-    on_table_change="onBTableChange577107",
-    update_btable="updateBTable578143",
-    update="update578140",
-    wait_until_action_end="isWaitUntilActionEndBTable592376",
-    manager_valid="get_Valid330442",
-    table_root="get_IsTableRoot578098",
-    update_table="updateTable330454",
-    resume_jump="resumeJumpBTable578134",
-    check_update="checkUpdateExecute578139",
-    higher_interrupt="isHigherInterruptAcceptChangeState578225",
+    request_change=("app.cEmAIUpdateBTable", "requestChangeBTable"),
+    request_verify=("app.cMasterEnemyControllerEntity", "requestChangeBTableVerify"),
+    change_state=("app.cEmAIStateCombat", "changeState"),
+    on_enter=("app.cEmAIStateCombat", "onEnter"),
+    on_return_interrupt=("app.cEmAIStateCombat", "onReturnInterrupt"),
+    on_restart=("app.cEmAIStateCombat", "onRestart"),
+    on_table_end=("app.cEmAIStateCombat", "onBTableEnd"),
+    on_table_change=("app.cEmAIStateCombat", "onBTableChange"),
+    update_btable=("app.cEmAIUpdateBTable", "updateBTable"),
+    update=("app.cEmAIUpdateBTable", "update"),
+    wait_until_action_end=("app.cMasterEnemyControllerEntity", "isWaitUntilActionEndBTable"),
+    manager_valid=("ace.btable.cManager", "get_Valid"),
+    table_root=("app.cEnemyBTableManager", "get_IsTableRoot"),
+    update_table=("ace.btable.cManager", "updateTable"),
+    resume_jump=("app.cEmAIUpdateBTable", "resumeJumpBTable"),
+    check_update=("app.cEmAIUpdateBTable", "checkUpdateExecute"),
+    higher_interrupt=("app.cEmAIStateManager", "isHigherInterruptAcceptChangeState"),
 )
 
 COMBAT_NATIVE_TARGETS = dict(
-    # ace.btable.cManager.setupTable330447
-    clear_jump="0x1454bcc60",
-    # app.cEmModuleArea.setTargetAreaChidl_CurrentAreaChild276490
-    area_target="0x143acf150",
-    # mcEnemyAreaMoveCoordinator checkDetachedScheduleCategory/recalcScheule/
-    # changeScheduleCategory, an unnamed helper and EnemyUtil.Net.sendPacket.
-    area_schedule=(
-        "0x1467148a0",
-        "0x1467140e0",
-        "0x146713810",
-        "0x146368d60",
-        "0x14635f4e0",
+    clear_jump=hex(symbol("manager_setup_table")),
+    area_target=hex(symbol("area_target_child")),
+    area_schedule=tuple(
+        hex(symbol(name))
+        for name in (
+            "area_check_detached",
+            "area_recalc_schedule",
+            "area_change_category",
+            "area_schedule_helper",
+            "net_send_packet",
+        )
     ),
-    # cEmModuleCombat.fetchHighestHateTarget_Random,
-    # cEnemyNoticeCombatDetectorAttribute..ctor, cEmModuleDetector.register.
-    detector_event=("0x147bf9d90", "0x1493dda70", "0x148d0cae0"),
-    # app.cEmModuleCombat.refreshEveryTargetStateInSmoke544906
-    smoke="0x147bf8ad0",
-    # cEmAIUpdateBTable.resumeJumpBTable, cManager.clear,
-    # cEmModuleTarget.setTargetResume and an unnamed restore helper.
-    restore=("0x1490c5770", "0x1454bd490", "0x1469cbe60", "0x1454bd9c0"),
+    detector_event=tuple(
+        hex(symbol(name))
+        for name in ("fetch_hate_target", "detector_attribute_ctor", "detector_register")
+    ),
+    smoke=hex(symbol("refresh_smoke")),
+    restore=tuple(
+        hex(symbol(name))
+        for name in ("resume_jump_btable", "manager_clear", "target_resume", "restore_helper")
+    ),
 )
 
 COMBAT_HELPER_METHODS = dict(
-    area_target="app.cEmModuleArea.setTargetAreaChidl_CurrentAreaChild276490",
-    smoke="app.cEmModuleCombat.refreshEveryTargetStateInSmoke544906",
+    area_target=symbol_name("area_target_child"),
+    smoke=symbol_name("refresh_smoke"),
 )
 
 # Native field labels shown with each runtime key; they include the offsets
@@ -313,17 +330,17 @@ CONDITION_FIELDS = dict(
     stage_no_short="Area._CurrentStageNo（0x14）",
     stage_no_unfair="Area._CurrentStageNo（0x14）；原生命令最后参数=true",
     area_no_short="Area._CurrentAreaNo（0xe0）",
-    nav_query="getDataInfoForNav（0x14563bf40）查询自身位置成功",
+    nav_query=f"getDataInfoForNav（{symbol('nav_data_info'):#x}）查询自身位置成功",
     target_module="holder.Em.Target（0x40→0x100）非空；覆盖位置存在时仍检查",
-    override_position="命令复制的 Nullable<vec3>._HasValue；0x1547cabf0，不假定其运行时值",
-    target_position="Target.getTargetPosition(0, false)（0x1469cc720）的 Nullable 有值",
-    wall_query="getWallInfoNearVector（0x145507880）查询目标位移方向成功",
-    terrain_fallback="HIGH 物理回退要求本次 TERRAIN_CHARACTER 射线至少命中一个有效对象且包含全局0x1547277c8指定的有效组件；组件类型与查询构造仍未完整核实",
+    override_position=f"命令复制的 Nullable<vec3>._HasValue；{symbol_value('destination_override_global')}，不假定其运行时值",
+    target_position=f"Target.getTargetPosition(0, false)（{symbol('target_position'):#x}）的 Nullable 有值",
+    wall_query=f"getWallInfoNearVector（{symbol('wall_info_near'):#x}）查询目标位移方向成功",
+    terrain_fallback=f"HIGH 物理回退要求本次 TERRAIN_CHARACTER 射线至少命中一个有效对象且包含全局{symbol_value('terrain_component_global')}指定的有效组件；组件类型与查询构造仍未完整核实",
     unique_index_mask="所选 TARGET_ACCESS_KEY.UniqueIndex 的最高位为0；命令掩码0x80000000ffffffff",
-    hunter_lookup="findHunterContext 返回非空对象（0x1484a3c10）",
+    hunter_lookup=f"findHunterContext 返回非空对象（{symbol('player_manage_info'):#x}）",
     hunter_character="返回对象0x18的HunterCharacter存在，且角色0x10对象非空",
-    occlusion_length="getRayTargetBasePos(_This)/Nullable覆盖位置与getRayTargetBasePos(目标键)之差的 x²+y²+z²；常量0x14dc43cd0=2500",
-    special_gimmick_missing="缺少全局0x15480a9b0的特殊GIMMICK索引",
+    occlusion_length=f"getRayTargetBasePos(_This)/Nullable覆盖位置与getRayTargetBasePos(目标键)之差的 x²+y²+z²；常量{symbol_value('occlusion_length_constant')}=2500",
+    special_gimmick_missing=f"缺少全局{symbol_value('special_gimmick_global')}的特殊GIMMICK索引",
     request_mask="Accessor._Context._Em.BTable._IsBTableRequestActionMask；0x28→0x68→0x40→0x120→0x13",
     actor_net_info="请求 actor 的 Context._Em.NetInfo(0xf0) != null",
     actor_host_index="请求 actor 的 NetInfo._HostMemberIndex(+0x24)",
@@ -334,9 +351,9 @@ RANDOM_DRAW_SOURCE = "cCommandWork.Random（匹配元数据偏移0x10）在该�
 
 OCCLUSION_QUERY = dict(
     queryType="app.RAY_CAST_TYPE.TERRAIN_EM_SIGHT",
-    specialGimmickIndexGlobal="0x15480a9b0",
+    specialGimmickIndexGlobal=symbol_value("special_gimmick_global"),
     throughIdField="app.cEmModuleTarget._OccludedCheckThroughGmIDs (0x70)",
-    hitKeySource="app.TargetAccessKeyUtil.makeTargetAccessKey (0x14841eb30)",
+    hitKeySource=f"app.TargetAccessKeyUtil.makeTargetAccessKey ({symbol('make_target_key'):#x})",
 )
 
 REQUEST_EFFECTS = (
@@ -495,13 +512,12 @@ MANIFEST_RUNTIME_TYPES = (
 # Methods that queue a BTable slot. The slot (app.EnemyDef.BTABLE_ID) is the
 # third native argument (r8d) of each of them.
 SLOT_REQUEST_METHODS = {
-    0x1490C5680: ("app.cEmAIUpdateBTable", "requestChangeBTable578130", "change"),
-    0x1490C56F0: ("app.cEmAIUpdateBTable", "requestJumpBTable578131", "jump"),
-    0x1499F1110: (
-        "app.cMasterEnemyControllerEntity",
-        "requestChangeBTableVerify592391",
-        "change_verify",
-    ),
+    symbol(name): (SYMBOLS[name]["type"], SYMBOLS[name]["method"], mode)
+    for name, mode in (
+        ("request_change_btable", "change"),
+        ("request_jump_btable", "jump"),
+        ("request_change_btable_verify", "change_verify"),
+    )
 }
 SLOT_REQUEST_ARGUMENT = "r8"
 BTABLE_SLOT_ENUM = "app.EnemyDef.BTABLE_ID"
@@ -517,17 +533,18 @@ SLOT_REQUEST_FORWARDERS = ("app.cMasterEnemyControllerEntity",)
 
 # cEmAIInterruptUnique.requestUniqueBTable reads cEnemyContext+0x35c and maps it
 # through app.EnemyDef's static int[3]. Its .cctor writes [-1, 0x22, 0x23].
-UNIQUE_SLOT_REQUESTER = ("app.cEmAIInterruptUnique", "requestUniqueBTable577693")
+UNIQUE_SLOT_REQUESTER = (
+    SYMBOLS["request_unique_btable"]["type"],
+    SYMBOLS["request_unique_btable"]["method"],
+)
+_UNIQUE_TABLE = symbol_value("unique_slot_table")
 UNIQUE_SLOT_TABLE = dict(
-    owner="app.EnemyDef",
-    method=".cctor758120",
-    site=0x14A2B56B2,
-    bytes=(
-        "41b8030000004889f141b901000000c5f877e8a7afd7004889c7"
-        "48b8ffffffff2200000048894720c747282300000048393dd88a5d0a"
-    ),
-    global_address="0x15488e1c0",
-    values=(-1, 0x22, 0x23),
+    owner=SYMBOLS["enemy_def_cctor"]["type"],
+    method=SYMBOLS["enemy_def_cctor"]["method"],
+    site=int(_UNIQUE_TABLE["site"], 16),
+    bytes=_UNIQUE_TABLE["bytes"],
+    global_address=_UNIQUE_TABLE["globalAddress"],
+    values=tuple(_UNIQUE_TABLE["values"]),
     contextField="cEnemyContext+0x35c",
 )
 
@@ -700,3 +717,80 @@ RESEARCH_ONLY_NODE_FIELDS = (
 PREDICATE_DUPLICATE_FIELDS = ("argument", "commandType", "argumentType")
 # Repeated JSON values at least this long are stored once and referenced.
 SHARED_VALUE_MIN_BYTES = 48
+
+
+# ------------------------------------------------- version-independent symbols
+
+
+POSITION_TYPE = "ace.btable.BTableDef.POSITION"
+POSITION_STACK = "System.Collections.Generic.Stack`1<ace.btable.BTableDef.POSITION>"
+# Every native identity the SDK relies on. ``resolve-symbols`` turns these into
+# data/profiles/<gameVersion>.json for each build; code reads addresses from the
+# active profile, never from literals.
+SYMBOL_SPECS = {
+    "set_current_position": Method(
+        "ace.btable.cOperatorWork", "setCurrentPosition", (POSITION_TYPE,)
+    ),
+    "position_stack_push": Method(POSITION_STACK, "Push"),
+    "position_stack_try_pop": Method(POSITION_STACK, "TryPop"),
+    "request_change_btable": Method("app.cEmAIUpdateBTable", "requestChangeBTable"),
+    "request_jump_btable": Method("app.cEmAIUpdateBTable", "requestJumpBTable"),
+    "request_change_btable_verify": Method(
+        "app.cMasterEnemyControllerEntity", "requestChangeBTableVerify"
+    ),
+    "request_unique_btable": Method("app.cEmAIInterruptUnique", "requestUniqueBTable"),
+    "enemy_def_cctor": Method("app.EnemyDef", ".cctor"),
+    "combat_on_enter": Method("app.cEmAIStateCombat", "onEnter"),
+    "random_type_execute": Method("ace.btable.cCommandRandamRandomType", "onExecute"),
+    "action_param_branch": Method("ace.user_data.ActionParam", "toBranchedParamIndex"),
+    "action_param_apply": Method("ace.user_data.ActionParam", "applyParamCore"),
+    "manager_setup_table": Method("ace.btable.cManager", "setupTable"),
+    "manager_clear": Method("ace.btable.cManager", "clear"),
+    "resume_jump_btable": Method("app.cEmAIUpdateBTable", "resumeJumpBTable"),
+    "area_target_child": Method(
+        "app.cEmModuleArea", "setTargetAreaChidl_CurrentAreaChild"
+    ),
+    "area_check_detached": Method(
+        "app.mcEnemyAreaMoveCoordinator", "checkDetachedScheduleCategory"
+    ),
+    "area_recalc_schedule": Method("app.mcEnemyAreaMoveCoordinator", "recalcScheule"),
+    "area_change_category": Method(
+        "app.mcEnemyAreaMoveCoordinator", "changeScheduleCategory"
+    ),
+    "net_send_packet": Method("app.EnemyUtil.Net", "sendPacket"),
+    "fetch_hate_target": Method("app.cEmModuleCombat", "fetchHighestHateTarget_Random"),
+    "detector_attribute_ctor": Method(
+        "app.cEnemyNoticeCombatDetectorAttribute",
+        ".ctor",
+        ("app.cEnemyContextHolder", "app.TARGET_ACCESS_KEY"),
+    ),
+    "detector_register": Method("app.cEmModuleDetector", "register"),
+    "refresh_smoke": Method("app.cEmModuleCombat", "refreshEveryTargetStateInSmoke"),
+    "target_resume": Method("app.cEmModuleTarget", "setTargetResume"),
+    "target_position": Method("app.cEmModuleTarget", "getTargetPosition"),
+    "nav_data_info": Method("app.VoxelDataManager", "getDataInfoForNav"),
+    "wall_info_near": Method("app.VoxelDataManager", "getWallInfoNearVector"),
+    "player_manage_info": Method("app.TargetAccessKeyUtil", "getPlayerManageInfo"),
+    "make_target_key": Method(
+        "app.TargetAccessKeyUtil", "makeTargetAccessKey", ("via.GameObject",)
+    ),
+    "stack_cookie_check": Helper(),
+    "position_array_resize": Helper(
+        anchors=("position_stack_push",), exclude=("stack_cookie_check",)
+    ),
+    "pool_pair_construct": Helper(),
+    "pool_array_copy": Helper(),
+    "array_allocate": Helper(),
+    "static_ref_acquire": Helper(),
+    "static_ref_release": Helper(),
+    "area_schedule_helper": Helper(anchors=("combat_on_enter",)),
+    "restore_helper": Helper(),
+    "global_table_entry_zero": Reviewed("表入口读取的静态字段；已核实路径中视为 0"),
+    "runtime_data_start": Reviewed("运行时初始化数据起点；PE 映像中没有其值"),
+    "pool_array_type_slot": Reviewed("ValueTuple<UInt32, Int32>[] 静态池数组的类型槽"),
+    "unique_slot_table": Reviewed("EnemyDef..cctor 写入专用中断槽映射的指令位置与字节"),
+    "destination_override_global": Reviewed("命令复制的 Nullable<vec3> 覆盖位置全局"),
+    "terrain_component_global": Reviewed("HIGH 物理回退要求的有效组件全局"),
+    "occlusion_length_constant": Reviewed("遮挡射线长度平方阈值常量"),
+    "special_gimmick_global": Reviewed("遮挡检查的特殊 GIMMICK 索引全局"),
+}

@@ -236,7 +236,8 @@ def recover_writes(row, code, metadata):
     return effects
 
 
-FIELD = r"\*\((?:int|uint|char) \*\)\((?P<bytecast>\(longlong\))?(?P<object>puVar\d+) \+ (?P<offset>0x[0-9a-f]+)\)"
+FIELD = r"\*\((?:int|uint|char) \*\)\((?P<bytecast>\(longlong\))?(?P<object>puVar\d+) \+ (?P<offset>0x[0-9a-f]+|\d+)\)"
+MIRRORED = {"==": "==", "!=": "!=", "<=": ">=", ">=": "<=", "<": ">", ">": "<"}
 ARGUMENT = (
     r"\*\((?:int|uint) \*\)\(\*\(longlong \*\)\(param_4 \+ (?P<argoffset>0x[0-9a-f]+)\) \+ "
     + VALUE_FIELD
@@ -276,16 +277,26 @@ def recover_leaf(row, code, metadata):
         + r"|0|'\\0')\);",
         body,
     )
+    operator = match["operator"] if match else None
+    if match is None:
+        # Ghidra may print "argument OP field"; mirror the operator so the
+        # recovered rule always reads "field OP argument".
+        match = re.search(
+            ARGUMENT + r" (?P<operator>==|!=|<=|>=|<|>) " + FIELD + r"\);", body
+        )
+        operator = match and MIRRORED[match["operator"]]
     if match is None or match["object"] != holder[1]:
         return None
     # Reject additional comparisons on the same data field object, except the
     # repeated value in CONCAT's unused upper bits.
-    comparisons = list(re.finditer(FIELD + r" (?:==|!=|<=|>=|<|>) ", body))
+    comparisons = list(re.finditer(FIELD + r" (?:==|!=|<=|>=|<|>) ", body)) + list(
+        re.finditer(r" (?:==|!=|<=|>=|<|>) " + FIELD, body)
+    )
     if len(comparisons) != 1 or not re.search(
         r"return CONCAT(?:31|71)\([^;]+", body[: match.end()]
     ):
         return None
-    offset = int(match["offset"], 16) * (1 if match["bytecast"] else 8)
+    offset = int(match["offset"], 0) * (1 if match["bytecast"] else 8)
     types = extend_types(owner[1])
     choices = []
     for name in types:
@@ -323,7 +334,7 @@ def recover_leaf(row, code, metadata):
         contextField=field,
         contextFieldType=definition["type"],
         contextOffset=hex(offset),
-        operator=match["operator"],
+        operator=operator,
         argumentField=arg_field,
         constant=0 if not arg_field else None,
         guard="原生工作与自身 Extend 对象有效，且通过原生类型检查",
@@ -331,3 +342,38 @@ def recover_leaf(row, code, metadata):
         nativeExpression=match[0][:-2],
         semanticStatus="native_leaf_comparison_recovered",
     )
+
+
+LEAF_OPERATORS = {"==": "eq", "!=": "ne", "<=": "le", ">=": "ge", "<": "lt", ">": "gt"}
+
+
+def leaf_expression(leaf, argument=None):
+    """Condition over the monster's own Extend field from a recovered leaf rule."""
+    from .expressions import combined, compare, runtime
+    from .values import enum_number, scalar
+
+    key = f"extend:{leaf['contextType']}.{leaf['contextField']}"
+    source = (
+        f"{leaf['contextType']}.{leaf['contextField']}（{leaf['contextOffset']}）"
+    )
+    guard = combined(
+        "all",
+        runtime("enemy_command_work_valid", "命令工作存在且原生类型检查通过"),
+        runtime("self_extend_valid", "自身 Extend 对象存在且原生类型检查通过"),
+    )
+    operator = LEAF_OPERATORS[leaf["operator"]]
+    if leaf["argumentField"]:
+        if argument is None or leaf["argumentField"] not in argument:
+            return None
+        raw = scalar(argument[leaf["argumentField"]])
+        value = enum_number(raw) if isinstance(raw, str) else raw
+        if type(value) not in (int, float, bool):
+            return None
+        test = compare(key, value, operator, source=source)
+    elif leaf["contextFieldType"] == "System.Boolean" and operator in ("eq", "ne"):
+        test = runtime(key, source)
+        if operator == "eq":
+            test = dict(kind="not", item=test)
+    else:
+        test = compare(key, leaf["constant"], operator, source=source)
+    return combined("all", guard, test)
