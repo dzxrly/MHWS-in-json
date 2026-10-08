@@ -10,148 +10,121 @@
     </style>
   </head>
   <body>
-    <header>
-      <div>
-        <small>MONSTER BEHAVIOR MAP</small>
-        <h1>__TITLE__</h1>
-      </div>
-      <div class="counts">__COUNTS__</div>
+    <header class="top">
+      <a class="back" href="index.html">← 全部怪物</a>
+      <h1>__NAME__</h1>
+      <span class="meta">__META__</span>
     </header>
-    <div class="scope">__SCOPE__</div>
-    <section id="player-panel" class="player-stage" __PLAYER_HIDDEN__>
-      <div class="player-bar">
-        <div class="player-bar-row">
-          <input id="player-search" type="search" placeholder="搜索动作或条件，回车定位" aria-label="搜索动作或条件" />
-          <button id="player-search-next">定位</button>
-          <span class="player-bar-sep"></span>
-          <button id="player-expand">展开一层</button>
-          <button id="player-collapse">全部收起</button>
-          <button id="player-fit">全图</button>
-          <button id="player-zoom-in" aria-label="放大">＋</button>
-          <button id="player-zoom-out" aria-label="缩小">－</button>
-          <button id="player-export">导出 SVG</button>
-          <button id="player-details-toggle">详情</button>
-          <button id="technical-toggle">技术图</button>
+    <div class="stage" id="stage">
+      <section id="player-panel" class="player" __PLAYER_HIDDEN__>
+        <div class="bar">
+          <div class="bar-group search">
+            <input id="player-search" type="search" placeholder="搜索动作或条件" aria-label="搜索动作或条件" />
+            <button id="player-search-next">查找</button>
+          </div>
+          <div class="bar-group">
+            <button id="player-expand">展开一层</button>
+            <button id="player-collapse">全部收起</button>
+          </div>
+          <div class="bar-group">
+            <button id="player-fit">适应窗口</button>
+            <button id="player-zoom-out" aria-label="缩小">−</button>
+            <button id="player-zoom-in" aria-label="放大">+</button>
+          </div>
           <output id="player-status" role="status"></output>
+          <div class="bar-group end">
+            <button id="player-details-toggle">详情</button>
+            <button id="technical-toggle">技术视图</button>
+            <button id="player-export">导出 SVG</button>
+          </div>
         </div>
-        <details id="player-scenario" class="player-scenario">
-          <summary>设定情境（距离、角度、怒/疲劳等）</summary>
-          <div id="player-inputs" class="player-inputs"></div>
-          <p class="player-note">选择后整棵树只保留符合情境的分支；“任意”表示保留全部分支。</p>
+        <details id="player-scenario" class="scenario">
+          <summary>按情境筛选</summary>
+          <div id="player-inputs" class="inputs"></div>
+          <p class="hint">选定后只保留符合条件的分支；“任意”表示不限。</p>
         </details>
-      </div>
-      <div class="player-body">
-        <div id="player-viewport" class="player-viewport" tabindex="0" aria-label="怪物完整行为决策树，可拖动和缩放">
-          <svg id="player-canvas" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="怪物完整行为决策树"><g id="player-scene"></g></svg>
-          <div class="player-legend">
-            <span class="k-condition">条件判断</span><span class="k-random">候选选择</span><span class="k-action">动作请求</span><span class="k-mutation">流程变化</span><span class="k-unknown">待核查</span><span class="k-ref">同前（已在别处展开）</span>
+        <div class="player-body">
+          <div id="player-viewport" class="canvas" tabindex="0" aria-label="怪物行动决策树，可拖动和缩放">
+            <svg id="player-canvas" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="怪物行动决策树"><g id="player-scene"></g></svg>
+            <div class="legend">
+              <span class="k-condition">条件</span><span class="k-weighted_random">抽选</span><span class="k-action">动作</span><span class="k-mutation">状态变化</span><span class="k-unknown">待核查</span><span class="k-ref">别处已展开</span>
+            </div>
           </div>
+          <aside id="player-details" class="side">
+            <div id="player-selection" class="selection">
+              <h3>点击节点查看详情</h3>
+              <p class="hint">点圆钮或双击节点展开、收起分支。</p>
+            </div>
+            <details class="help" open>
+              <summary>怎么读这棵树</summary>
+              <ul>
+                <li>从怪物出发，先按行为表分组，再按距离、角度、状态逐层分支，末端是动作。</li>
+                <li>距离是游戏内部单位，还没有换算成米。</li>
+                <li>权重只在同一次抽选的候选之间比较，不是整场战斗的出招概率。</li>
+                <li>请求动作不等于一定出招，还要看当时的游戏状态。</li>
+                <li>虚线框表示同一判断已在别处展开；“待核查”是还没确认的逻辑。</li>
+              </ul>
+            </details>
+          </aside>
         </div>
-        <aside id="player-details" class="player-details">
-          <div id="player-selection" class="player-selection"><h3>点击节点查看详情</h3><p>整棵树从怪物出发：先按 AI 状态请求的行为表分组，再展开每张表里的距离、角度和状态分支，直到动作请求。圆形按钮展开或收起分支。</p></div>
-          <div class="player-help">
-            <h3>阅读说明</h3>
-            <p>距离为游戏判断值，按默认距离修正展示，尚未确认与米的换算；角度为相对指定方向的夹角。</p>
-            <p>候选权重只描述当前分支内的抽签，不是整场战斗的出招概率。动作请求不保证一定成功执行。</p>
-            <p>“由 … 请求”列出切换到该行为表的 AI 状态或中断；触发这些状态的条件不在本表内。“接入位置待核查”的分支没有已证实的上游入口，因此不画接入线。</p>
+      </section>
+      <section id="technical-panel" class="technical" __TECHNICAL_HIDDEN__>
+        <div class="bar">
+          <div class="bar-group">
+            <button id="fit">适应窗口</button><button id="entry">回到入口</button
+            ><button id="zoom-out" aria-label="缩小">−</button><button id="zoom-in" aria-label="放大">+</button
+            ><output id="zoom">100%</output>
           </div>
-        </aside>
-      </div>
-    </section>
-    <main id="technical-panel" __TECHNICAL_HIDDEN__>
-      <section class="map-panel">
-        <div class="toolbar">
-          <button id="fit">全图</button><button id="entry">定位入口</button
-          ><button id="zoom-in" aria-label="放大">＋</button
-          ><button id="zoom-out" aria-label="缩小">－</button
-          ><output id="zoom">100%</output
-          ><label>入口与事件<select id="entry-points"></select></label
-          ><label
-            >定位子表
-            <select id="table"></select></label
-          ><label
-            >布局
-            <select id="direction">
+          <label>入口<select id="entry-points"></select></label>
+          <label>子表<select id="table"></select></label>
+          <label
+            >方向<select id="direction">
               <option value="DOWN">从上到下</option>
               <option value="RIGHT">从左到右</option>
             </select></label
-          ><button id="download">导出 SVG</button>
-        </div>
-        <div
-          id="viewport"
-          tabindex="0"
-          aria-label="怪物行动逻辑大图，可拖动和缩放"
-        >
-          <svg
-            id="map"
-            xmlns="http://www.w3.org/2000/svg"
-            role="img"
-            aria-label="全部已恢复子表的行动逻辑图"
           >
-            <defs>
-              <marker
-                id="arrow"
-                viewBox="0 0 10 10"
-                refX="9"
-                refY="5"
-                markerWidth="7"
-                markerHeight="7"
-                orient="auto"
-              >
-                <path d="M0,0 L10,5 L0,10 z" fill="context-stroke" />
-              </marker>
-            </defs>
-            <g id="scene"></g>
-          </svg>
-          <div id="status" role="status">正在自动排列全部子表…</div>
-          <div class="gesture">拖动平移 · 滚轮缩放 · 点击节点查看参数</div>
-          <svg
-            id="minimap"
-            aria-label="全图缩略图"
-            xmlns="http://www.w3.org/2000/svg"
-          ></svg>
+          <div class="bar-group end"><button id="download">导出 SVG</button><button id="technical-back" hidden>返回决策树</button></div>
         </div>
-        <div class="legend">
-          <span class="yes">● 条件成立</span><span class="no">● 条件不成立</span
-          ><span class="random">● 权重选择</span
-          ><span class="invoke">● 调用</span
-          ><span class="resume">┄ 保存的恢复位置</span
-          ><span class="unknown">● 未核实</span>
+        <div class="technical-body">
+          <div id="viewport" class="canvas dotted" tabindex="0" aria-label="怪物行动逻辑原始流程图，可拖动和缩放">
+            <svg id="map" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="全部已恢复子表的流程图">
+              <defs>
+                <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                  <path d="M0,0 L10,5 L0,10 z" fill="context-stroke" />
+                </marker>
+              </defs>
+              <g id="scene"></g>
+            </svg>
+            <div id="status" role="status">正在排列子表…</div>
+            <svg id="minimap" aria-label="全图缩略图" xmlns="http://www.w3.org/2000/svg"></svg>
+            <div class="legend tech">
+              <span class="yes">成立</span><span class="no">不成立</span><span class="random">权重选择</span><span class="invoke">调用</span><span class="resume">恢复位置</span><span class="unknown">未核实</span>
+            </div>
+          </div>
+          <aside class="side">
+            <small id="node-table" class="kicker">节点详情</small>
+            <h3 id="node-title">选择一个节点</h3>
+            <p id="node-summary" class="hint">这里按游戏行为表的原始结构画出全部子表，适合对照数据核查。</p>
+            <button id="call" hidden>定位被调用子表</button>
+            <details>
+              <summary>原始参数与证据</summary>
+              <pre id="detail"></pre>
+            </details>
+            <details class="help" open>
+              <summary>说明</summary>
+              <ul>
+                <li>__SCOPE__</li>
+                <li>蓝线是跨表调用，虚线是调用结束后的恢复位置，不是直接跳转。</li>
+                <li>权重只在当前抽选内有效；距离是游戏内部单位，目标不一定是玩家。</li>
+              </ul>
+            </details>
+          </aside>
         </div>
       </section>
-      <aside>
-        <div class="aside-head">
-          <small id="node-table">节点详情</small>
-          <h2 id="node-title">选择一个节点</h2>
-        </div>
-        <p id="node-summary">
-          全图保留共享子表。虚线表示恢复位置，不能当作绕过子表或动作的直接执行路径。
-        </p>
-        <button id="call" hidden>定位被调用子表</button>
-        <details>
-          <summary>原始参数与证据</summary>
-          <pre id="detail"></pre>
-        </details>
-        <div class="limits">
-          <h3>阅读说明</h3>
-          <p>
-            当前显示模型中的全部逻辑，未恢复部分保留在图内。已核实的战斗入口和事件可从入口列表定位；范围见页面上方说明。
-          </p>
-          <p>
-            蓝色跨表连线从子表边框引出，标签标明调用节点。虚线只说明保存的恢复位置，不是绕过子表或动作的执行路径。
-          </p>
-          <p>
-            权重属于当前分支的候选选择，不是整场战斗的招式概率。距离使用命令单位，目标不保证始终是玩家。
-          </p>
-          <p>
-            共享子表结束后返回本次调用保存的位置。动作请求之后的执行与中断仍由游戏运行时负责。
-          </p>
-        </div>
-      </aside>
-    </main>
-    <footer>
+    </div>
+    <footer class="foot">
       __ACTION_NAMES__
-      离线布局：elkjs 0.11.1（EPL-2.0） · 程序库已嵌入本文件，无需联网 ·
+      <span>离线单文件页面，布局库 elkjs 0.11.1（EPL-2.0）已内嵌。</span>
       __LICENSE__
     </footer>
     <script id="data" type="application/json">
