@@ -37,6 +37,7 @@ def export_battle_logic(
         validate_html(html, graph)
         name = spec.output_names[0]
         results.append((name, html))
+        view = graph.get("playerView") or {}
         records.append(
             dict(
                 enemyId=spec.enemy_id,
@@ -45,6 +46,18 @@ def export_battle_logic(
                 logicStatus=graph.get("logicStatus", "recovered_with_boundaries"),
                 profile=graph["profile"],
                 coverage=graph["coverage"],
+                # Homepage summary only; validate_bundle ignores these keys.
+                behaviorTables=sum(
+                    entry.get("relation") != "unknown"
+                    for entry in view.get("entries", [])
+                ),
+                actions=len(
+                    {
+                        node.get("technicalName") or node["title"]
+                        for node in view.get("nodes", {}).values()
+                        if node["kind"] == "action"
+                    }
+                ),
             )
         )
     results.append((INDEX_NAME, render_index(records, release_ready=not preview)))

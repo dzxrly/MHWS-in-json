@@ -81,9 +81,9 @@
     const next = (key, extras = {}) => ({ ...state, key, ...extras });
     for (let count = 0; count < 128; count++) {
       const node = view.nodes[state.key];
-      if (!node) return { title: "此处的连接尚未恢复", kind: "unknown", children: [], sourceRef: state.key };
+      if (!node) return { title: "后续连接尚未恢复", kind: "unknown", children: [], sourceRef: state.key };
       const signature = JSON.stringify([state.key, state.stack, state.afterAction, state.inputs]);
-      if (state.seen.includes(signature)) return { title: "回到此前判断，形成循环", kind: "loop", sourceRef: node.sourceRef, children: [] };
+      if (state.seen.includes(signature)) return { title: "回到前面的判断（循环）", kind: "loop", sourceRef: node.sourceRef, children: [] };
       state.seen.push(signature);
       if (node.kind === "call") {
         via.push({ sourceRef: node.sourceRef, kind: "call" });
@@ -113,7 +113,7 @@
           if (truth !== null && truth !== value) continue;
           if (state.assumptions[token] !== undefined && state.assumptions[token] !== value) continue;
           let label = node.presentation ? node.presentation[value ? "trueLabel" : "falseLabel"] : value ? "满足" : "不满足";
-          if (!value && state.afterAction && node.presentation?.snapshotGuard) label += "，或选招状态已变化";
+          if (!value && state.afterAction && node.presentation?.snapshotGuard) label += "，或状态已变";
           const inputs = restrict(node.condition, value, state.inputs, view.inputs || {});
           if (Object.entries(state.assumptions).some(([previous, expected]) => {
             const actual = evaluate(JSON.parse(previous)[0], inputs);
@@ -122,20 +122,20 @@
           record.children.push({ label, role: branch, state: next(node[branch], { inputs, assumptions: { ...state.assumptions, [token]: value } }) });
         }
       } else if (node.kind === "weighted_random") {
-        record.children = node.candidates.map(candidate => ({ label: `候选权重 ${candidate.weight}${candidate.filteringUnknown ? " · 能否入选待确认" : ""}`, slot: candidate.id, state: next(candidate.target) }));
-        if (node.fallback && node.candidates.some(c => c.filteringUnknown)) record.children.push({ label: "候选全部被排除时", state: next(node.fallback) });
-        if (!node.candidates.length && node.fallback) record.children.push({ label: "没有候选，进入回退流程", state: next(node.fallback) });
+        record.children = node.candidates.map(candidate => ({ label: `权重 ${candidate.weight}${candidate.filteringUnknown ? "（可能被排除）" : ""}`, slot: candidate.id, state: next(candidate.target) }));
+        if (node.fallback && node.candidates.some(c => c.filteringUnknown)) record.children.push({ label: "候选全被排除时", state: next(node.fallback) });
+        if (!node.candidates.length && node.fallback) record.children.push({ label: "没有候选时", state: next(node.fallback) });
       } else if (node.kind === "action") {
-        record.children.push({ label: "动作请求后恢复执行，条件重新判断", role: "resume", state: next(node.resume, { inputs: {}, assumptions: {}, afterAction: true }) });
+        record.children.push({ label: "动作结束后继续", role: "resume", state: next(node.resume, { inputs: {}, assumptions: {}, afterAction: true }) });
       } else if (node.kind === "mutation" || node.kind === "unknown") {
         const extras = node.invalidateSnapshot ? { inputs: {}, assumptions: {}, afterAction: true } : {};
-        if (node.next) record.children.push({ label: node.invalidateSnapshot ? "继续流程，相关状态待确认" : "随后", state: next(node.next, extras) });
-        if (node.resume) record.children.push({ label: "动作身份待核查；恢复后按保存位置继续", role: "resume", state: next(node.resume, { inputs: {}, assumptions: {}, afterAction: true }) });
-        if (node.dispatch) record.children.push({ label: "等待调度后，可能切换至此流程", state: next(node.dispatch, { inputs: {}, assumptions: {}, afterAction: true, stack: [] }) });
+        if (node.next) record.children.push({ label: node.invalidateSnapshot ? "随后（状态可能已变）" : "随后", state: next(node.next, extras) });
+        if (node.resume) record.children.push({ label: "动作未识别，结束后继续", role: "resume", state: next(node.resume, { inputs: {}, assumptions: {}, afterAction: true }) });
+        if (node.dispatch) record.children.push({ label: "之后可能切换到", state: next(node.dispatch, { inputs: {}, assumptions: {}, afterAction: true, stack: [] }) });
       }
       return record;
     }
-    return { title: "此段调用或循环过深，需核查继续位置", kind: "unknown", sourceRef: state.key, children: [] };
+    return { title: "调用层级过深，未继续展开", kind: "unknown", sourceRef: state.key, children: [] };
   }
   root.BattlePlayer = Object.freeze({ compare, evaluate, initial, step });
 })(typeof window === "undefined" ? globalThis : window);

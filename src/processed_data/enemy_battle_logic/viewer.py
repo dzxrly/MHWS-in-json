@@ -22,7 +22,7 @@ def render_action_names(graph):
         for row in catalog["shellCatalog"]
     )
     return (
-        '<details id="action-names"><summary>动作名称来源与原始名称目录</summary><p>'
+        '<details id="action-names"><summary>动作名称对照表</summary><p>'
         + escape(catalog["boundary"])
         + "</p><table><thead><tr><th>Shell UID</th><th>原名</th><th>原注释</th></tr></thead><tbody>"
         + rows
@@ -34,6 +34,7 @@ def render_html(graph):
     here = Path(__file__).resolve().parent
     vendor = here / "vendor/elkjs"
     coverage = graph["coverage"]
+    game_version = graph.get("profile", {}).get("gameVersion")
     enemy = graph.get("enemyName") or {"EM0001_00_0": "雌火龙"}.get(
         graph["enemyId"], graph["enemyId"]
     )
@@ -48,19 +49,16 @@ def render_html(graph):
         separators=(",", ":"),
     ).replace("<", "\\u003c")
     values = {
-        "TITLE": escape(
-            enemy + (" · 行为决策树" if graph.get("playerView") else " · 行动逻辑大图")
-        ),
-        "COUNTS": (
-            "行为表入口 · 距离 / 角度 / 状态分支 · 动作"
-            if graph.get("playerView")
-            else f"{coverage['localTables']} 个子表 · {coverage['nodes']} 个节点 · {coverage.get('weightedSelections', 0)} 个权重选择点"
+        "TITLE": escape(enemy + " · 行动逻辑"),
+        "NAME": escape(enemy),
+        "META": escape(
+            graph["enemyId"] + (f" · 游戏版本 {game_version}" if game_version else "")
         ),
         "SCOPE": (
-            "整只怪物的行为在同一棵树中：先按请求的行为表分组，再展开距离、角度和状态分支直到动作。未核实的判断和接入关系保留在树中，动作请求不等于一定成功出招。"
-            if graph.get("playerView")
-            else escape(graph["scope"])
-            + f"。其中 {coverage.get('completeLocalTables', 0)} 个局部流程已核实，{coverage.get('unknownFlowNodes', 0)} 处后继与 {coverage.get('unknownConditions', 0)} 处条件仍待核实。"
+            f"共 {coverage['localTables']} 个子表、{coverage['nodes']} 个节点，"
+            f"其中 {coverage.get('completeLocalTables', 0)} 个子表的流程已核实；"
+            f"{coverage.get('unknownFlowNodes', 0)} 处后继、"
+            f"{coverage.get('unknownConditions', 0)} 处条件待核查。"
         ),
         "CSS": (here / "viewer.css").read_text(encoding="utf-8"),
         "JS": (here / "viewer.js").read_text(encoding="utf-8"),
@@ -73,13 +71,13 @@ def render_html(graph):
         "ELK": (vendor / "elk.bundled.js")
         .read_text(encoding="utf-8")
         .replace("</script", "<\\/script"),
-        "LICENSE": "<details><summary>开源许可证</summary><pre>"
+        "LICENSE": "<details><summary>elkjs 许可证</summary><pre>"
         + escape((vendor / "LICENSE.md").read_text(encoding="utf-8"))
         + "</pre></details>",
     }
     template = (here / "viewer.html").read_text(encoding="utf-8")
     return re.sub(
-        r"__(TITLE|COUNTS|SCOPE|CSS|JS|DATA|ELK|LICENSE|ACTION_NAMES|PLAYER_ENGINE|PLAYER_JS|PLAYER_HIDDEN|TECHNICAL_HIDDEN)__",
+        r"__(TITLE|NAME|META|SCOPE|CSS|JS|DATA|ELK|LICENSE|ACTION_NAMES|PLAYER_ENGINE|PLAYER_JS|PLAYER_HIDDEN|TECHNICAL_HIDDEN)__",
         lambda match: values[match[1]],
         template,
     )
