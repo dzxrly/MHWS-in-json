@@ -46,12 +46,20 @@ def _outer_blocks(code):
 
 
 def _dispatch_pc(
-    machine, address, *, selected_register=None, selected_index=None, pc_register="rax"
+    machine,
+    address,
+    *,
+    selected_register=None,
+    selected_index=None,
+    selected_memory=None,
+    pc_register="rax",
 ):
     """Evaluate actual index branches up to the next C6/dispatcher guard.
 
     Other runtime registers are unknown, so any branch depending on them stops
     this recovery.  Unknown pointer loads/writes do not grant a runtime state.
+    ``selected_memory`` names the register that points at the chosen packed
+    candidate when the compiler compares its index in memory directly.
     """
     from capstone import CS_OP_MEM, CS_OP_REG
 
@@ -63,6 +71,9 @@ def _dispatch_pc(
     state["mem"] = {}
     if selected_register is not None:
         state["regs"][selected_register] = selected_index
+    if selected_memory is not None:
+        state["regs"][selected_memory] = pointer("selected_candidate")
+        state["mem"][("selected_candidate", 0, 4)] = selected_index
     for _ in range(192):
         instruction = machine.ins.get(address)
         if instruction is None:
@@ -136,7 +147,8 @@ def _native_routes(machine, pool_address):
                 ):
                     fallbacks.append(total.operands[0].imm)
                     break
-                if total.mnemonic not in {"mov", "cmp", "test"}:
+                # mov and lea leave the flags of the total-weight compare intact.
+                if total.mnemonic not in {"mov", "lea", "cmp", "test"}:
                     break
                 if total.mnemonic in {"cmp", "test"}:
                     comparison = total
@@ -159,6 +171,38 @@ def _native_routes(machine, pool_address):
         ]
         if len(stores) != 1 or len(keys) != 1:
             continue
+        # With few candidates the compiler compares the chosen packed entry's
+        # index in memory (cmp dword ptr [reg], imm) instead of loading it.
+        direct = [
+            item
+            for item in following
+            if item.mnemonic == "cmp"
+            and len(item.operands) == 2
+            and item.operands[0].type == CS_OP_MEM
+            and item.operands[0].size == 4
+            and item.operands[0].mem.disp == 0
+            and not item.operands[0].mem.index
+            and item.reg_name(item.operands[0].mem.base) not in {"rip", "rsp"}
+            and item.operands[1].type == CS_OP_IMM
+        ]
+        if len(direct) == 1:
+            base = register(direct[0], direct[0].operands[0].mem.base)
+            between = instructions[number : instructions.index(direct[0])]
+            if not any(
+                item.operands
+                and item.operands[0].type == CS_OP_REG
+                and register(item, item.operands[0].reg) == base
+                for item in between
+            ):
+                selections.append(
+                    dict(
+                        start=direct[0].address,
+                        selectedMemory=base,
+                        selectedIndexCompare=hex(direct[0].address),
+                        previousKeyStore=hex(stores[0].address),
+                    )
+                )
+                continue
         index_loads = [
             item
             for item in instructions[max(0, number - 8) : number]
@@ -395,7 +439,8 @@ def recover_selectors(machine, code, pools, body):
                 _dispatch_pc(
                     machine,
                     route["start"],
-                    selected_register=route["selectedRegister"],
+                    selected_register=route.get("selectedRegister"),
+                    selected_memory=route.get("selectedMemory"),
                     selected_index=number,
                     pc_register=route["programCounterRegister"],
                 )
@@ -416,6 +461,13 @@ def recover_selectors(machine, code, pools, body):
                 entry = machine.walk(start, machine.initial(candidate_pc))
                 selected = machine.nodes[entry]
                 if selected["kind"] != "call" or not selected.get("nativeContinuation"):
+                    record["candidateNode"] = dict(
+                        nativeCandidateIndex=number,
+                        nativeProgramCounter=candidate_pc,
+                        kind=selected["kind"],
+                        reason=selected.get("reason"),
+                        nativeSite=selected.get("nativeSite"),
+                    )
                     raise SelectorBoundary("候选没有唯一子表调用及准确保存恢复位置")
                 candidates.append(
                     dict(

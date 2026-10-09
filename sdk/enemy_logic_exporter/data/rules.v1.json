@@ -128,6 +128,80 @@
       }
     },
     {
+      "commandType": "ace.btable.cCompareFloatValue",
+      "argumentType": "ace.btable.cCompareFloatValueArg",
+      "kind": "variable_float",
+      "scope": "通用",
+      "summary": "行为表浮点变量与指定值比较；相等/不等按绝对差小于 0.001 判断",
+      "bindings": {
+        "variable": "_SourceValue",
+        "compare": "_CompareType",
+        "value": "_TargetValue"
+      },
+      "contextBinding": null,
+      "evidence": {
+        "type": "ace.btable.cCompareFloatValue",
+        "method": "onExecute1028236",
+        "address": "0x14988ac50",
+        "end": "0x14988acd3",
+        "nativeSha256": "d9067ad56b447114623e5f2cca98108e279b0cb871c428a532262fb0e45e5891"
+      },
+      "relatedEvidence": [
+        {
+          "type": "ace.btable.BTableUtil",
+          "method": "checkCompare1028044",
+          "address": "0x14bc11440",
+          "end": "0x14bc114b4",
+          "nativeSha256": "4d575f454bdac6fbf3f6d1c7a3c90c8620f6f9a6b035069d2db8739ed060d2c6"
+        }
+      ],
+      "compareSemantics": {
+        "EQUAL": "abs(v-t) < 0.001",
+        "NOT_EQUAL": "abs(v-t) >= 0.001",
+        "GREATER": "v > t",
+        "LESS": "v < t",
+        "GREATER_OR_EQUAL": "v >= t",
+        "LESS_OR_EQUAL": "v <= t"
+      },
+      "equalityTolerance": 0.001
+    },
+    {
+      "commandType": "app.btable.Em0078_00BTableCommand.cCheckPhase",
+      "argumentType": "app.btable.Em0078_00BTableCommand.cCheckPhaseArg",
+      "kind": "phase_after_area_move",
+      "scope": "EM0078_00",
+      "summary": "阶段相等；_Phase 为 FINAL 而区域移动未结束时按 MIDFIELD 判断",
+      "bindings": {
+        "value": "_EditArg"
+      },
+      "contextBinding": {
+        "type": "app.cEm0078_00Extend",
+        "field": "_Phase",
+        "offset": "0x2e8",
+        "fieldType": "app.Em0078_00_Def.PHASE",
+        "flagField": "_IsFinishAreaMove",
+        "flagOffset": "0x345",
+        "validTypeRequired": true
+      },
+      "enumValues": {
+        "EARLY": 0,
+        "MIDFIELD": 1,
+        "FINAL": 2
+      },
+      "evidence": {
+        "type": "app.btable.Em0078_00BTableCommand.cCheckPhase",
+        "method": "onExecute1233924",
+        "address": "0x143ba5250",
+        "end": "0x143ba52b6",
+        "nativeSha256": "e94b66a22eea66a4ea3a49f5057cbfeb7fe87b53c7f488fca12eba002dca971f"
+      },
+      "review": {
+        "comparison": "mov eax,[rcx+0x2e8]; cmp eax,2; jne A; cmp byte [rcx+0x345],0; je B; A: cmp eax,[arg+0x10]; B: cmp [arg+0x10],1; sete al",
+        "guard": "r8 != null; Accessor.Self.Extend != null; exact Extend runtime type matches static type pointer",
+        "boundary": "只恢复阶段比较本身，不代表阶段转换或区域移动的触发条件"
+      }
+    },
+    {
       "commandType": "app.btable.Em0021_00BTableCommand.cCheckMushroomType",
       "argumentType": "app.btable.Em0021_00BTableCommand.cCheckMushroomTypeArg",
       "kind": "mushroom",

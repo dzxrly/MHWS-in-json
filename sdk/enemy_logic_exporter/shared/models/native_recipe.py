@@ -15,9 +15,11 @@ from ..native.evidence import evidence, method_rows, digest
 from ..native.metadata import Il2cppMetadata
 from ..native.pe import PE
 from ..config import (
+    EXTRA_STATE_ENUM,
     FN_STACK_COOKIE_CHECK,
     POSITION_ROW,
     POSITION_TABLE,
+    STAND_STATE_ENUM,
     SUPPORTED_PROFILE,
     VOID_TYPE,
 )
@@ -339,7 +341,7 @@ class NativeRecipeContext:
                 if rows:
                     if len(rows) == 1:
                         code = _artifact(self.helper_path, self.helpers, rows[0])["code"]
-                        found = recover_leaf(rows[0], code, self.metadata)
+                        found = recover_leaf(rows[0], code, self.metadata, self.pe)
                         if found is not None:
                             found["enumType"], found["enumValues"] = self.metadata.enum(
                                 found["contextFieldType"]
@@ -348,6 +350,29 @@ class NativeRecipeContext:
                 current = (self.metadata.get(current) or {}).get("parent")
             self.leaf_cache[command_type] = found
         return self.leaf_cache[command_type]
+
+    def stand_states(self, enemy_id):
+        """Enum names of the three stand-state layers, values as int32.
+
+        The unique layer is the species' UNIQUE_STATE_Fixed; resources store
+        those values as signed Int32 while metadata spells them unsigned.
+        """
+
+        def signed(values):
+            return {
+                name: value - (1 << 32) if value & 0x80000000 else value
+                for name, value in values.items()
+                if name != "NONE" and type(value) is int
+            }
+
+        species = "Em" + enemy_id[2:6]
+        return dict(
+            common=signed(self.metadata.enum(STAND_STATE_ENUM)[1]),
+            extra=signed(self.metadata.enum(EXTRA_STATE_ENUM)[1]),
+            unique=signed(
+                self.metadata.enum(f"app.{species}Def.UNIQUE_STATE_Fixed")[1]
+            ),
+        )
 
     def command_evidence(self, command_type):
         """Resolve inherited implementations while retaining their native owner."""
@@ -579,6 +604,7 @@ class NativeRecipeContext:
                     if leaf is not None:
                         leaf_rules[command] = leaf
         document["leafRules"] = leaf_rules
+        document["standStates"] = self.stand_states(enemy_id)
         document["methodCoverage"] = dict(
             expected=len(records),
             recovered=len(tables),

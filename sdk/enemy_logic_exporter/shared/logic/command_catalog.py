@@ -6,7 +6,7 @@ from ..native.evidence import method_rows, digest
 from ..native.metadata import Il2cppMetadata
 from ..workflow.semantic_recovery import _artifact
 from .commands import recover_leaf, recover_writes
-from ...monster.em0166_00_0 import recover_phase_apply
+from .monster_rules import hooks
 from .static_pools import native_initializer_pools
 from ..native.pe import PE, verify_rows
 import hashlib
@@ -65,7 +65,8 @@ def export_commands(helper_index, metadata, output, *, exe, inventory=None):
                     if not record["rangeBoundaryWarnings"]
                     else []
                 )
-                record["recoveredWrites"].extend(recover_phase_apply(row, dump, pe))
+                for recover in hooks("recover_command_effects"):
+                    record["recoveredWrites"].extend(recover(row, dump, pe))
                 commands.setdefault(row["type"], []).append(record)
             elif row["method"].startswith(".cctor"):
                 start, end = int(row["address"], 16), int(row["end"], 16)

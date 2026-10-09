@@ -15,6 +15,7 @@ from .values import enum_number
 from .common_conditions import receipt
 from ..config import (
     ARRAY_LENGTH,
+    BOOLEAN_TYPE,
     CALLBACK_COUNT,
     CALLBACK_METHOD,
     CALLBACK_TARGET,
@@ -765,6 +766,86 @@ class Machine:
             s["regs"].pop(register(ins, reg), None)
         return nxt
 
+    def position_callback_branch(self, branch, s):
+        """Prove that the OnChangedCurrnetPosition null check converges.
+
+        The caller tests the operator's position-change delegate list before
+        pushing a return position. A null list, an empty list and one static
+        callback must all reach the same semantic node; the callback bodies
+        are notifications whose side effects stay unreviewed.
+        """
+        if branch.mnemonic not in ("je", "jne") or branch.operands[0].type != CS_OP_IMM:
+            return None
+        if not hasattr(self, "order"):
+            self.order = list(self.ins)
+            self.index = {address: n for n, address in enumerate(self.order)}
+        number = self.index[branch.address]
+        test = self.ins[self.order[number - 1]]
+        if (
+            test.mnemonic != "test"
+            or len(test.operands) != 2
+            or test.operands[0].type != CS_OP_REG
+            or test.operands[0].reg != test.operands[1].reg
+            or test.operands[0].size != 8
+        ):
+            return None
+        name = register(test, test.operands[0].reg)
+        source = None
+        for address in reversed(self.order[max(0, number - 14) : number - 1]):
+            ins = self.ins[address]
+            if ins.mnemonic.startswith(("j", "call", "ret")):
+                return None
+            _, writes = ins.regs_access()
+            if name not in {register(ins, reg) for reg in writes}:
+                continue
+            op = ins.operands
+            if (
+                ins.mnemonic == "mov"
+                and op[1].type == CS_OP_MEM
+                and op[1].mem.disp == OPERATOR_POSITION_CALLBACK
+                and not op[1].mem.index
+                and s["regs"].get(register(ins, op[1].mem.base)) == pointer("operator")
+            ):
+                source = ins
+            break
+        if source is None:
+            return None
+        taken = branch.operands[0].imm
+        following = branch.address + branch.size
+        empty, listed = (
+            (taken, following) if branch.mnemonic == "je" else (following, taken)
+        )
+        keys = []
+        for count in (None, 0, 1):
+            state = copy.deepcopy(s)
+            state["flags"] = None
+            if count is None:
+                state["regs"][name] = 0
+                keys.append(self.walk(empty, state))
+                continue
+            state["regs"][name] = pointer("position_callbacks")
+            state["mem"].update(
+                {
+                    ("position_callbacks", CALLBACK_COUNT, 4): count,
+                    ("position_callbacks", CALLBACK_TARGET, 8): 0,
+                    ("position_callbacks", CALLBACK_METHOD, 8): ("position_callback",),
+                }
+            )
+            keys.append(self.walk(listed, state))
+        if any(key != keys[0] for key in keys[1:]) or keys[0].startswith("boundary-"):
+            return None
+        self.nodes[keys[0]].setdefault(
+            "nativePositionCallbackRecovery",
+            dict(
+                kind="position_change_callback_convergence",
+                nullCheck=hex(branch.address),
+                listLoad=hex(source.address),
+                checkedCases=["null", "empty", "one_static_callback"],
+                callbackSideEffects="unreviewed",
+            ),
+        )
+        return keys[0]
+
     def walk(self, address, s):
         seen = set()
         for _ in range(4000):
@@ -1092,7 +1173,14 @@ class Machine:
                             ),
                         )
                         return key
-                    if command.startswith("cCheck") or command.startswith("cCompare"):
+                    if (
+                        command.startswith("cCheck")
+                        or command.startswith("cCompare")
+                        or (
+                            command.startswith("cIs")
+                            and self.command_return(bound) == BOOLEAN_TYPE
+                        )
+                    ):
                         return self.branch_node(e, bound, s, address + ins.size)
                     if self.command_return(bound) == VOID_TYPE:
                         evidence = copy.deepcopy(
@@ -1179,7 +1267,11 @@ class Machine:
                     return key
                 # Shared position/security helpers are transparent here. Other
                 # direct calls stop: no guessed side effect can advance the tree.
-                if e["target"] not in MACHINE_TRANSPARENT_CALLS:
+                # A position-change notification exists only in the fixture of
+                # position_callback_branch, which proves path convergence.
+                if e["target"] not in MACHINE_TRANSPARENT_CALLS and e["target"] != (
+                    "position_callback",
+                ):
                     return self.add_unknown(
                         address, "辅助调用的作用尚未核实：" + str(e["target"])
                     )
@@ -1196,6 +1288,9 @@ class Machine:
                     call_address, state, proof = recovered
                     key = self.walk(call_address, state)
                     self.nodes[key]["nativeContinuationRecovery"] = proof
+                    return key
+                key = self.position_callback_branch(ins, s)
+                if key is not None:
                     return key
                 return self.add_unknown(ins.address, str(error))
         return self.add_unknown(address, "本条路径超过有界追踪长度；需展开循环语义")

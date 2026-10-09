@@ -142,12 +142,31 @@ def _reference_assignment(instructions, start, values):
     array = values.get(register(first, source.reg))
     if not isinstance(destination, int) or not _is_array(array):
         return None
-    sequence = instructions[start + 1 : start + 32]
+    # The compiler may schedule register-only constant loads for the next
+    # pool between the compare and its branch; they run on both paths.
+    begin = start + 1
+    interleaved = {}
+    while begin < len(instructions):
+        ins = instructions[begin]
+        if not (
+            ins.mnemonic in ("mov", "movabs")
+            and len(ins.operands) == 2
+            and ins.operands[0].type == CS_OP_REG
+            and ins.operands[0].size == 8
+            and ins.operands[1].type == CS_OP_IMM
+            and register(ins, ins.operands[0].reg) != register(first, source.reg)
+        ):
+            break
+        interleaved[register(ins, ins.operands[0].reg)] = ins.operands[1].imm & (
+            (1 << 64) - 1
+        )
+        begin += 1
+    sequence = instructions[begin : begin + 31]
     if not sequence or sequence[0].mnemonic not in ("je", "jz"):
         return None
     end_address = sequence[0].operands[0].imm
     block = []
-    for index in range(start + 1, min(start + 33, len(instructions))):
+    for index in range(begin, min(begin + 32, len(instructions))):
         ins = instructions[index]
         if ins.address == end_address:
             break
@@ -266,6 +285,7 @@ def _reference_assignment(instructions, start, values):
         array=array,
         assignmentSite=hex(atomic.address),
         written=written,
+        interleaved={k: v for k, v in interleaved.items() if k not in written},
     )
 
 
@@ -358,6 +378,14 @@ def _packed_initializer_pools(instructions, record, read_memory):
             )
             for key in assignment["written"] | VOLATILE:
                 values.pop(key, None)
+            # The slow path calls helpers; only nonvolatile registers survive.
+            values.update(
+                {
+                    key: value
+                    for key, value in assignment["interleaved"].items()
+                    if key not in VOLATILE
+                }
+            )
             vectors.clear()
             index = assignment["nextIndex"]
             continue

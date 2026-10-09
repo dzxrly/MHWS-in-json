@@ -107,6 +107,16 @@ POOL_PAIR_CONSTRUCT_LABELS = (
 )
 POOL_ARRAY_COPY_LABEL = f"FUN_{FN_POOL_ARRAY_COPY:x}"
 
+# Runtime "object class derives from class" test used before Extend casts.
+FN_CLASS_HIERARCHY_CHECK = symbol("class_hierarchy_check")
+CLASS_HIERARCHY_CHECK_LABELS = (
+    f"FUN_{FN_CLASS_HIERARCHY_CHECK:x}",
+    f"func_0x{FN_CLASS_HIERARCHY_CHECK:012x}",
+)
+# cEmModuleUniqueLeveledValue.getLevel(category) -> Nullable<UInt32>.
+FN_UNIQUE_LEVEL = symbol("unique_leveled_value_get_level")
+UNIQUE_LEVEL_LABELS = (f"FUN_{FN_UNIQUE_LEVEL:x}", f"func_0x{FN_UNIQUE_LEVEL:012x}")
+
 
 # ------------------------------------------------------- structure layouts
 
@@ -158,6 +168,17 @@ EDIT_FIELD_VALUE = 0x10
 # Command work -> accessor (param_3[5]) -> self Extend holder -> value.
 COMMAND_WORK_ACCESSOR = 0x28
 EXTEND_HOLDER = 0x78
+# Accessor -> target context (0x68) -> cEnemyContext (0x40).
+ACCESSOR_TARGET_CONTEXT = 0x68
+TARGET_CONTEXT_ENEMY = 0x40
+# Extend base fields read by unique-state commands and getters.
+EXTEND_BASE_TYPE = "app.cEnemyExtendBase"
+EXTEND_ACCESSOR_FIELD = "_Accessor"
+EXTEND_UNIQUE_STATE_FIELD = "_UniqueStateFixedID"
+UNIQUE_LEVELED_MODULE_FIELD = "UniqueLeveledValue"
+# Stand-state layers read by CheckStatus.execute_StandState.
+STAND_STATE_ENUM = "app.CharacterDef.STAND_STATE"
+EXTRA_STATE_ENUM = "app.EnemyDef.EXTRA_STATE"
 
 
 # -------------------------------------------------------- IL2CPP identities
@@ -177,9 +198,9 @@ RANDOM_TYPE_COMMAND = "ace.btable.cCommandRandamRandomType"
 UNFAIR_ROUTINE_COMMAND = "app.btable.EmCommonCommand.cCheckUnfairRoutineActive"
 UNFAIR_ACTIVE_FIELD = "app.cEmModuleUnfair.<IsActiveUnfairRoutine>k__BackingField"
 UNFAIR_ACTIVE_OFFSET = "0x44"
-EM0166_BATTLE_PHASE_COMMAND = "app.btable.Em0166_00BTableCommand.cCheckBattlePhase"
 POOL_ELEMENT_TYPE = "System.ValueTuple<System.UInt32,System.Int32>"
 VOID_TYPE = "System.Void"
+BOOLEAN_TYPE = "System.Boolean"
 
 
 def extend_types(owner):
@@ -365,6 +386,7 @@ REQUEST_EFFECTS = (
 # ------------------------------------------------------ rule curation specs
 
 # (command, kind, scope, summary, argument offsets, context type, offset)
+# Common commands only; monster commands declare RULE_SPECS in monster/<id>.py.
 RULE_SPECS = (
     (
         "app.btable.EmCommonCommand.cCheckDistance",
@@ -401,51 +423,6 @@ RULE_SPECS = (
         {"variable": 0x18, "value": 0x20},
         None,
         None,
-    ),
-    (
-        "app.btable.Em0021_00BTableCommand.cCheckMushroomType",
-        "mushroom",
-        "专用",
-        "蘑菇类型相等，或当前类型为 5 且要求类型不为 0",
-        {"value": 0x10},
-        "app.cEm0021_00Extend",
-        0x98,
-    ),
-    (
-        "app.btable.Em0021_00BTableCommand.cCheckCatchMushroom",
-        "catch_mushroom",
-        "专用",
-        "拿取物品内部值属于 0、1、2、3、4、5、7",
-        {},
-        "app.cEm0021_00Extend",
-        0xA0,
-    ),
-    (
-        "app.btable.Em0022_00BTableCommand.cCheckBreakFangCount",
-        "fang_count",
-        "专用",
-        "断牙数量：比较类型 0 为 ≥，1 为 ≤，2 为 =",
-        {"compare": 0x10, "value": 0x18},
-        "app.cEm0022_00Extend",
-        0x70,
-    ),
-    (
-        "app.btable.Em0046_00BTableCommand.cCheckElectricLevel",
-        "electric",
-        "专用",
-        "要求电力等级 2 时接受内部值 2 或 3；其余等级使用相等比较",
-        {"value": 0x10},
-        "app.cEm0046_00Extend",
-        0x108,
-    ),
-    (
-        "app.btable.Em0071_00BTableCommand.cCheckStateType",
-        "unique_state",
-        "专用",
-        "专用内部状态相等；不将其解释为全局战斗阶段",
-        {"value": 0x10},
-        "app.cEm0071_00Extend",
-        0xEC,
     ),
     (
         "app.btable.EmCommonCommand.cCheckSelfStatus",
@@ -693,12 +670,13 @@ STATE_SIGN_LABELS = dict(
 # Published models keep what the web builder renders and validates. Research
 # provenance stays in the full models under .agents.
 PUBLISHED_STORAGE_FORMAT = "shared-values-v1"
-RESEARCH_ONLY_MODEL_FIELDS = ("selectionRecovery",)
+RESEARCH_ONLY_MODEL_FIELDS = ("selectionRecovery", "standStates")
 RESEARCH_ONLY_NODE_FIELDS = (
     "nativeNodeIdentity",
     "nativeSite",
     "nativeContinuation",
     "nativeContinuationRecovery",
+    "nativePositionCallbackRecovery",
     "nativeRequestPosition",
     "nativeResumeRecovery",
     "nativeBinding",
@@ -774,6 +752,12 @@ SYMBOL_SPECS = {
     "make_target_key": Method(
         "app.TargetAccessKeyUtil", "makeTargetAccessKey", ("via.GameObject",)
     ),
+    "unique_leveled_value_get_level": Method(
+        "app.cEmModuleUniqueLeveledValue", "getLevel", ("System.Int32",)
+    ),
+    "check_angle_execute": Method(
+        "app.btable.EmCommonCommand.cCheckAngle", "onExecute"
+    ),
     "stack_cookie_check": Helper(),
     "position_array_resize": Helper(
         anchors=("position_stack_push",), exclude=("stack_cookie_check",)
@@ -784,6 +768,7 @@ SYMBOL_SPECS = {
     "static_ref_acquire": Helper(),
     "static_ref_release": Helper(),
     "area_schedule_helper": Helper(anchors=("combat_on_enter",)),
+    "class_hierarchy_check": Helper(anchors=("check_angle_execute",)),
     "restore_helper": Helper(),
     "global_table_entry_zero": Reviewed("表入口读取的静态字段；已核实路径中视为 0"),
     "runtime_data_start": Reviewed("运行时初始化数据起点；PE 映像中没有其值"),
