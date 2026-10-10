@@ -18,12 +18,12 @@ from ..logic.monster_rules import hooks, rule_kind
 from ..resources.action_names import CLASS_EXPLANATIONS
 from ..config import (
     BAD_CONDITION_LABELS,
+    ENEMY_TARGET_STATUS,
     HUNTER_STATUS_LABELS,
     SLOT_GROUPS,
     STATE_SIGN_LABELS,
     UNFAIR_ACTIVE_FIELD,
 )
-
 
 UNATTACHED_GROUP = "接入位置待核查的局部分支"
 # Validity preconditions that hold whenever this monster is fighting the player
@@ -35,11 +35,27 @@ SCENARIO_GUARDS = {
     "selected_hunter_lookup_found": "能查到当前目标玩家",
     "selected_hunter_character_valid": "当前目标玩家的角色有效",
     "self_extend_valid": "怪物自身的专用扩展对象有效",
+    "selected_enemy_context_ready": "目标为怪物时，其 Context 已完成初始化",
 }
+
+
+def field_path_label(path):
+    """ "Lead.<Egg>k__BackingField._IsTargetUnfiar" -> "Lead.Egg.IsTargetUnfiar"."""
+    return ".".join(
+        part.replace("k__BackingField", "").strip("<>_") or part
+        for part in path.split(".")
+    )
+
+
 def extend_field_label(key):
-    """"extend:app.cEm0082_00Extend.<IsTengen>k__BackingField" -> "IsTengen"."""
-    field = key.rsplit(".", 1)[-1]
-    return field.replace("k__BackingField", "").strip("<>_") or field
+    """ "extend:app.cEm0082_00Extend.<IsTengen>k__BackingField" -> "IsTengen".
+
+    A field path after the Extend type keeps every part:
+    "extend:app.cEm0158_00Extend._FireTimer._IsTimeOut" -> "FireTimer.IsTimeOut".
+    """
+
+    match = re.match(r"extend:app\.[^.]*Extend\.(.+)$", key)
+    return field_path_label(match[1] if match else key.rsplit(".", 1)[-1])
 
 
 # Facts of a solo (or host) player fighting this monster in ordinary combat.
@@ -168,6 +184,52 @@ def distance_intervals(thresholds, *, maximum=None, unit="游戏距离值"):
     return dict(unit=unit, options=result)
 
 
+# Lowest finite bound of a signed input's first band; the browser engine
+# compares bands with finite minima only.
+SIGNED_FLOOR = -1e6
+
+
+def signed_intervals(thresholds, *, unit="游戏距离值"):
+    """Like distance_intervals, over negative and positive boundaries."""
+    points = sorted({0.0, *(float(v) for v in thresholds)})
+    result = [
+        dict(
+            id=f"band:below:{points[0]:g}",
+            label=f"小于 {points[0]:g}",
+            value=dict(
+                min=SIGNED_FLOOR, max=points[0], minClosed=True, maxClosed=False
+            ),
+        )
+    ]
+    for index, point in enumerate(points):
+        result.append(
+            dict(
+                id=f"point:{point:g}",
+                label=f"恰好 {point:g}",
+                value=dict(min=point, max=point, minClosed=True, maxClosed=True),
+            )
+        )
+        end = points[index + 1] if index + 1 < len(points) else None
+        result.append(
+            dict(
+                id=f"band:{point:g}:{end}",
+                label=(
+                    f"{point:g} ～ {end:g}（不含边界）"
+                    if end is not None
+                    else f"大于 {point:g}"
+                ),
+                value=dict(min=point, max=end, minClosed=False, maxClosed=False),
+            )
+        )
+    return dict(unit=unit, options=result)
+
+
+# cCheckDistance axes other than XZ, measured from the monster itself.
+DISTANCE_3D = "distance_3d"
+HEIGHT_DIFFERENCE = "height_difference"
+DISTANCE_KEYS = ("distance_horizontal", DISTANCE_3D, HEIGHT_DIFFERENCE)
+
+
 class PlayerCompiler:
     def __init__(self, graph):
         self.graph = graph
@@ -175,9 +237,22 @@ class PlayerCompiler:
         self.thresholds = {}
         self.timers = graph.get("variableCatalog", {})
         self.extend_enums = {
-            f"extend:{leaf['contextType']}.{leaf['contextField']}": leaf.get("enumValues") or {}
+            (
+                f"context:{leaf['contextField']}"
+                if leaf.get("kind") == "context_field"
+                else f"extend:{leaf['contextType']}.{leaf['contextField']}"
+            ): dict(leaf.get("enumValues") or {})
             for leaf in graph.get("leafRules", {}).values()
+            if leaf.get("kind") != "formula"
         }
+        for leaf in graph.get("leafRules", {}).values():
+            for key, names in (leaf.get("inputEnums") or {}).items():
+                self.extend_enums.setdefault(key, {}).update(names)
+        # Enum names declared by monster-module condition recipes.
+        for table in graph["tables"]:
+            for node in table["nodes"]:
+                for key, names in (node.get("inputEnums") or {}).items():
+                    self.extend_enums.setdefault(key, {}).update(names)
         self.rules = {r["commandType"]: r for r in graph["rules"]["rules"]}
         self.technical_names = technical_action_names(graph)
         self.stand_states = graph.get("standStates", {})
@@ -188,6 +263,8 @@ class PlayerCompiler:
         }
         # Enemy enum value -> ID name, as spelled by cCheckSelfType resources.
         self.enemy_names = {}
+        # EM ID -> official monster name from EnemyText messages.
+        self.enemy_display = dict(graph.get("enemyNames") or {})
         # Destination result conditions -> the cSetDest resource argument.
         self.destinations = {}
         self.table = None
@@ -243,7 +320,7 @@ class PlayerCompiler:
             return handler["compile"](self, predicate, values)
         if kind == "distance":
             axis, base = enum_number(values["axis"]), enum_number(values["base"])
-            if axis != 0 or base != 0:
+            if base != 0 or axis not in (0, 1, 2):
                 return unknown("此处还需要高度、空间距离或小队中心位置")
             modifiers = self.rules[predicate["commandType"]].get(
                 "distanceModifiers", {}
@@ -255,7 +332,39 @@ class PlayerCompiler:
                 float(values["threshold"]) * modifiers["defaultScale"]
                 + modifiers["defaultOffset"]
             )
+            if axis == 2:
+                # Y: height = target.y - self.y; HIGH h > t, LOW -h > t,
+                # IN_SIDE |h| < t (cCheckDistance.onExecute).
+                key = HEIGHT_DIFFERENCE
+                self.inputs.setdefault(
+                    key, dict(label="玩家相对怪物的高度差（玩家较高为正）", signed=True)
+                )
+                height = enum_number(values["height"])
+                if height not in (0, 1, 2):
+                    return unknown("此高度比较尚未支持")
+                bounds = {0: (threshold,), 1: (-threshold,)}.get(
+                    height, (-threshold, threshold)
+                )
+                self.thresholds.setdefault(key, set()).update(bounds)
+                test = {
+                    0: comparison(key, "gt", threshold),
+                    1: comparison(key, "lt", -threshold),
+                    2: dict(
+                        op="all",
+                        items=[
+                            comparison(key, "gt", -threshold),
+                            comparison(key, "lt", threshold),
+                        ],
+                    ),
+                }[height]
+                return dict(
+                    op="all",
+                    items=[comparison("ordinary_combat_snapshot", "eq", True), test],
+                )
             key = "distance_horizontal"
+            if axis == 1:
+                key = DISTANCE_3D
+                self.inputs.setdefault(key, dict(label="玩家与怪物的三维距离"))
             self.thresholds.setdefault(key, set()).add(threshold)
             operator = "lt" if enum_number(values["compare"]) == 0 else "gt"
             if enum_number(values["compare"]) not in (0, 1):
@@ -337,6 +446,21 @@ class PlayerCompiler:
                             comparison("ai_state_pending", "eq", target),
                         ],
                     )
+            if category == 15:
+                # execute: cEnemyContext.Hostility.<IsHostility>k__BackingField.
+                return self.boolean(
+                    "self_hostility", "怪物的敌对标志（Hostility.IsHostility）成立"
+                )
+            if category == 17:
+                # execute_GroundMaterial: ground material queried below the monster.
+                material = scalar(predicate["argument"]["GroundMaterial"])
+                name = str(material).split("] ", 1)[-1]
+                return self.boolean(
+                    f"self_ground_material:{name}", f"怪物脚下的地面材质为 {name}"
+                )
+            if category == 18:
+                # execute: EnemyUtil.IsArenaQuest on this monster's manage info.
+                return self.boolean("arena_quest", "当前任务是竞技场任务")
             if category == 4:
                 self.inputs.setdefault(
                     "health_percent",
@@ -453,18 +577,49 @@ class PlayerCompiler:
                 "selected_hunter_stun_active": ("hunter_stunned", "玩家眩晕"),
                 "environment_current_rank": ("quest_rank", "任务等级"),
                 "self_basic_legendary_id": ("legendary_id", "怪物历战分类"),
+                "self_current_stage_no": (
+                    "self_current_stage_no",
+                    "怪物所在地图 Area._CurrentStageNo",
+                ),
+                "self_current_area_no": (
+                    "self_current_area_no",
+                    "怪物所在区域 Area._CurrentAreaNo",
+                ),
             }
             key = operand.get("key")
             if operand.get("kind") == "runtime" and key in SCENARIO_GUARDS:
                 return comparison(key, "eq", True)
             if operand.get("kind") == "runtime" and key in SCENARIO_FACTS:
                 return comparison(key, "eq", True)
-            if str(key).startswith("extend:") and right.get("kind") == "constant":
-                label = "专用状态 " + extend_field_label(key)
+            target_status = {k: label for k, _, label in ENEMY_TARGET_STATUS.values()}
+            if operand.get("kind") == "runtime" and key in target_status:
+                return self.boolean(key, "目标怪物处于" + target_status[key])
+            if key in SCENARIO_VALUES and right.get("kind") == "constant":
+                # AI state / interrupt fields the scenario fixes for combat.
+                return comparison(key, expression.get("operator", "eq"), right["value"])
+            if (
+                str(key).startswith(("extend:", "context:"))
+                and right.get("kind") == "constant"
+            ):
+                label = (
+                    "专用状态 " + extend_field_label(key)
+                    if key.startswith("extend:")
+                    else "怪物状态 " + field_path_label(key.split(":", 1)[1])
+                )
                 if kind == "runtime":
                     return self.boolean(key, label)
                 names = self.extend_enums.get(key, {})
-                self.inputs.setdefault(key, dict(label=label, options=[]))
+                # A small named enum lists every state, not only those tested.
+                listed = (
+                    [
+                        dict(label=name, value=value)
+                        for name, value in sorted(names.items(), key=lambda i: i[1])
+                        if name != "MAX"
+                    ]
+                    if len(names) <= 16
+                    else []
+                )
+                self.inputs.setdefault(key, dict(label=label, options=listed))
                 value = right["value"]
                 option = dict(
                     label=next((n for n, v in names.items() if v == value), str(value)),
@@ -482,6 +637,18 @@ class PlayerCompiler:
             ):
                 # HasValue and equal: the effective posture is that unique state.
                 return self.posture(2, right["value"])
+            if key == "gimmick_reaction_type" and right.get("kind") == "constant":
+                self.inputs.setdefault(
+                    key,
+                    dict(
+                        label="正在反应的机关类型",
+                        options=[dict(label="没有反应对象", value="NONE")],
+                    ),
+                )
+                option = dict(label=right["value"], value=right["value"])
+                if option not in self.inputs[key]["options"]:
+                    self.inputs[key]["options"].append(option)
+                return comparison(key, expression.get("operator", "eq"), right["value"])
             if str(key).startswith("unique_level:") and right.get("kind") == "constant":
                 category = int(key.split(":", 1)[1])
                 name = self.unique_levels.get(category) or str(category)
@@ -559,7 +726,8 @@ class PlayerCompiler:
         if not (
             index.startswith("enemy_enum_index:")
             and missing["right"] == dict(kind="constant", value=-1)
-            and same["left"].get("key") == "self_basic_enemy_id"
+            and same["left"].get("key")
+            in ("self_basic_enemy_id", "selected_enemy_basic_em_id")
             and same["right"].get("key") == index
             and missing.get("operator", "eq") == same.get("operator", "eq") == "eq"
         ):
@@ -567,17 +735,27 @@ class PlayerCompiler:
         name = self.enemy_names.get(int(index.split(":", 1)[1]))
         if name is None:
             return None
+        if same["left"]["key"] == "selected_enemy_basic_em_id":
+            # CheckType.execute_Enemy on the selected target's context.
+            self.inputs.setdefault(
+                "selected_enemy_id", dict(label="当前目标怪物", options=[])
+            )
+            option = dict(label=self.enemy_display.get(name, name), value=name)
+            if option not in self.inputs["selected_enemy_id"]["options"]:
+                self.inputs["selected_enemy_id"]["options"].append(option)
+            return comparison("selected_enemy_id", "eq", name)
         return comparison("self_enemy_id", "eq", name)
 
     def condition(self, node):
         command = str(
             node.get("commandType") or node.get("expectedCommandType") or ""
         ).rsplit(".", 1)[-1]
-        if command in SCENE_INPUTS and node.get("semanticEvidence") and node.get("summary"):
+        scene = SCENE_INPUTS.get(command) or node.get("sceneInput")
+        if scene and node.get("semanticEvidence") and node.get("summary"):
             # Reviewed checks over live scene/part state: the player sees one
             # input per distinct resource argument, labelled by the SDK summary.
             identity = json.dumps(node.get("argument", {}), ensure_ascii=False, sort_keys=True)
-            key = SCENE_INPUTS[command] + ":" + hashlib.sha1(identity.encode()).hexdigest()[:12]
+            key = scene + ":" + hashlib.sha1(identity.encode()).hexdigest()[:12]
             result = self.boolean(key, node["summary"])
             return result, self.describe(result)
         result = (
@@ -600,7 +778,7 @@ class PlayerCompiler:
                 ) if expression["operator"] == "eq" else "当前目标不是玩家"
             if key in SCENARIO_GUARDS:
                 return SCENARIO_GUARDS[key]
-            if str(key).startswith("extend:") and key in self.inputs:
+            if str(key).startswith(("extend:", "context:")) and key in self.inputs:
                 option = next(
                     (o["label"] for o in self.inputs[key].get("options", []) if o["value"] == value),
                     str(value),
@@ -640,7 +818,7 @@ class PlayerCompiler:
             if key == "self_enemy_id":
                 return (
                     "本怪物是 " if expression["operator"] == "eq" else "本怪物不是 "
-                ) + value
+                ) + self.enemy_display.get(value, value)
             option = next(
                 (
                     o["label"]
@@ -695,7 +873,7 @@ class PlayerCompiler:
             )
         category = (
             "distance"
-            if "distance_horizontal" in keys
+            if keys & set(DISTANCE_KEYS)
             else (
                 "angle"
                 if any(k.startswith("angle_") for k in keys)
@@ -751,6 +929,9 @@ class PlayerCompiler:
             result["executionGuard"] = node.get("summary", "").startswith(
                 ("有效命令工作", "当前 actor")
             )
+            if result["presentation"]["compact"]:
+                # What this internal check reads, for the node and its panel.
+                result["checks"] = checked_subject(node)
         elif kind == "action":
             action = node["action"]
             name = action.get("displayName", "")
@@ -841,6 +1022,16 @@ class PlayerCompiler:
                     note="动作请求与保存的继续位置已恢复，具体动作参数尚未对应。",
                 )
         return result
+
+
+def checked_subject(node):
+    """A short name of what a condition node checks, from its own source."""
+    command = str(node.get("commandType") or node.get("expectedCommandType") or "")
+    name = command.rsplit(".", 1)[-1]
+    summary = node.get("summary") or ""
+    if summary and summary != name:
+        return summary if not name else f"{summary}（{name}）"
+    return name or "未命名的内部判断"
 
 
 def successors(node):
@@ -965,6 +1156,12 @@ def build_player_view(graph):
         covered.update(branch)
     for key, thresholds in compiler.thresholds.items():
         field = compiler.inputs.setdefault(key, dict(label="水平距离"))
+        if field.get("signed"):
+            field.update(
+                signed_intervals(thresholds, unit=field.get("unit", "游戏距离值"))
+            )
+            field["numericRange"] = dict(min=SIGNED_FLOOR, max=None)
+            continue
         field.update(
             distance_intervals(
                 thresholds,
@@ -984,6 +1181,9 @@ def build_player_view(graph):
                 **{key: True for key in SCENARIO_GUARDS},
                 **SCENARIO_VALUES,
             ),
+            # Standing assumptions kept after an action; the other inputs
+            # describe one selection snapshot and are cleared by the engine.
+            persistent=sorted({"self_enemy_id", *SCENARIO_GUARDS, *SCENARIO_FACTS}),
         ),
         inputs=compiler.inputs,
         entries=entries,

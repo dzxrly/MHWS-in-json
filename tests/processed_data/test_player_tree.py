@@ -1,40 +1,19 @@
 """Regress interval boundaries, call contexts and first-selection-only input."""
 
-import json
 from pathlib import Path
 import shutil
 import subprocess
 import unittest
 
 from sdk.enemy_logic_exporter.shared.models.player_view import (
-    build_player_view,
     distance_intervals,
     PlayerCompiler,
 )
-from src.processed_data.enemy_battle_logic.player_contract import validate_player_view
 
 ROOT = Path(__file__).resolve().parents[2]
 
 
 class PlayerTreeTests(unittest.TestCase):
-    def test_sdk_projection_preserves_native_references_and_candidate_slots(self):
-        graph = json.loads(
-            (
-                ROOT
-                / "tests/fixtures/enemy_battle_logic/em0001.upstream.reference.v1.json"
-            ).read_text(encoding="utf8")
-        )
-        graph["playerView"] = build_player_view(graph)
-        validate_player_view(graph)
-        key, node = next(
-            (k, n)
-            for k, n in graph["playerView"]["nodes"].items()
-            if n["kind"] == "action"
-        )
-        node["resume"] = key
-        with self.assertRaisesRegex(ValueError, "继续位置"):
-            validate_player_view(graph)
-
     def test_unexplained_actions_are_named_by_class_and_parameter_set(self):
         from sdk.enemy_logic_exporter.shared.models.player_view import technical_action_names
 
@@ -268,6 +247,24 @@ const checked=step(view,initial(view,{id:'beforeWrite'},{d:5}));
 const afterWrite=step(view,checked.children[0].state);
 assert.equal(afterWrite.children.length,2);
 assert.equal(afterWrite.afterAction,false);
+// Standing scenario facts survive an action, so a settled internal check
+// after it passes through; snapshot inputs are still cleared.
+const guard={op:'compare',key:'solo',operator:'eq',value:true};
+const settledView={nodes:{
+  act:{kind:'action',sourceRef:'act',title:'A',resume:'check'},
+  check:{kind:'condition',sourceRef:'check',checks:'单人',condition:guard,presentation:{compact:true},true:'dist',false:'done'},
+  dist:{kind:'condition',sourceRef:'dist',condition:{op:'compare',key:'d',operator:'lt',value:10},true:'done',false:'done'},
+  done:{kind:'return',sourceRef:'done'},
+},scenario:{inputs:{solo:true},persistent:['solo']}};
+const acted=step(settledView,initial(settledView,{id:'act'},{d:5}));
+const resumed=step(settledView,acted.children[0].state);
+assert.equal(resumed.sourceRef,'dist');
+assert.equal(resumed.truth,null);
+assert.deepEqual(resumed.via.map(v=>[v.kind,v.truth]),[['check',true]]);
+// An unsettled internal check stays a visible branch point.
+settledView.scenario.persistent=[];
+const actedAgain=step(settledView,initial(settledView,{id:'act'},{d:5}));
+assert.equal(step(settledView,actedAgain.children[0].state).sourceRef,'check');
 console.log('player engine boundaries and continuations passed');
 """
         result = subprocess.run(

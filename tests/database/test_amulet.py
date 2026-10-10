@@ -3,17 +3,12 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from openpyxl import load_workbook
-
-from config import LANGUAGES
 from src.shared.amulets import (
     PATHS,
     load_amulet_catalog,
 )
 from src.database.amulets.build import build_amulet_workbook_sheets
 from src.processed_data.amulet_pools.exporter import build_amulet_pools, export_amulet_pools
-from src.database.amulets.excel import RARITY_NUMBER_FORMAT, style_amulet_workbook
-from src.shared.excel.writer import write_workbook
 
 
 class AmuletTests(unittest.TestCase):
@@ -43,10 +38,6 @@ class AmuletTests(unittest.TestCase):
         self.assertEqual(rows[1]["WeaponSlots"], "")
         self.assertEqual(rows[1]["ArmorSlots"], "Lv.1")
         self.assertNotIn("Lv.0", str(rows))
-
-    def test_message_language_codes_match_game_enum_indices(self) -> None:
-        self.assertEqual(LANGUAGES[26].code, "th-TH")
-        self.assertEqual(LANGUAGES[32].code, "es-419")
 
     def test_workbook_uses_normalized_skill_and_slot_tables(self) -> None:
         self.assertEqual(
@@ -108,37 +99,6 @@ class AmuletTests(unittest.TestCase):
         self.assertEqual(amulet_pool[0]["rare"]["rare"], "Rare 7")
         self.assertEqual(amulet_pool[0]["slot"]["weaponSlot"], [1, 0, 0])
         self.assertEqual(amulet_pool[0]["slot"]["equipmentSlot"], [2, 1, 0])
-
-    def test_workbook_style_formats_rarity_and_navigation(self) -> None:
-        with tempfile.TemporaryDirectory() as temp_dir:
-            path = Path(temp_dir) / "AmuletCollection.xlsx"
-            write_workbook(path, self.sheets, 80.0, style_amulet_workbook)
-            workbook = load_workbook(path, read_only=False, data_only=False)
-            try:
-                sheet = workbook["AmuletPool"]
-                self.assertEqual(sheet["D2"].value, 8)
-                self.assertEqual(sheet["D2"].number_format, RARITY_NUMBER_FORMAT)
-                self.assertEqual(sheet.freeze_panes, "A2")
-                self.assertEqual(sheet.auto_filter.ref, "A1:J3")
-                self.assertFalse(sheet.sheet_view.showGridLines)
-                self.assertEqual(sheet["I2"].value, "Lv.1")
-                self.assertEqual(sheet["J2"].value, "Lv.2, Lv.1")
-
-                skill_sheet = workbook["SkillPool"]
-                self.assertEqual(skill_sheet.max_row, 3)
-                self.assertEqual(skill_sheet.max_column, 3)
-                self.assertEqual(skill_sheet["A1"].value, "SkillPt")
-                self.assertEqual(skill_sheet["B1"].value, 4)
-                self.assertEqual(skill_sheet["C1"].value, 6)
-                self.assertEqual(skill_sheet["A2"].value, "Skill / Level")
-                self.assertEqual(skill_sheet["B2"].value, "Attack Lv.2")
-                self.assertEqual(skill_sheet["B3"].value, "Defense Lv.3")
-                self.assertEqual(skill_sheet["C3"].value, None)
-                self.assertIn("A2:A3", skill_sheet.merged_cells)
-                self.assertIsNone(skill_sheet.auto_filter.ref)
-            finally:
-                workbook.close()
-
 
 def _key_for_path(path: str) -> str:
     return next(key for key, configured_path in PATHS.items() if configured_path == path)

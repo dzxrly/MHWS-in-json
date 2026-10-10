@@ -2,7 +2,6 @@
 
 import copy
 from functools import lru_cache
-import hashlib
 import json
 
 from capstone import CS_OP_MEM
@@ -11,6 +10,7 @@ from ..config import (
     ARRAY_ELEMENTS,
     ARRAY_LENGTH,
     EVIDENCE_DIR,
+    FN_POSITION_ARRAY_RESIZE,
     OPERATOR_EXPORT_JUMP,
     POSITION_SIZE,
     POSITION_TABLE,
@@ -40,12 +40,9 @@ def recover_entry_push(machine, branch, original):
     if machine.registry.data["profile"] != proof["profile"]:
         return None
     helper = proof["resizeHelper"]
-    start, end = int(helper["address"], 16), int(helper["end"], 16)
-    if (
-        machine.pe is None
-        or hashlib.sha256(machine.pe.read(start, end - start)).hexdigest()
-        != helper["nativeSha256"]
-    ):
+    start = int(helper["address"], 16)
+    # The helper must be the profile's resolved position_array_resize.
+    if machine.pe is None or start != FN_POSITION_ARRAY_RESIZE:
         return None
     instructions = list(machine.ins.values())
     index = next(

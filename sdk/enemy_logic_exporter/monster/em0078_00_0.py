@@ -3,6 +3,33 @@
 ENEMY_ID = "EM0078_00_0"
 NATIVE_OWNER = "Em0078_00"
 
+# cCheckUnusedHill (game 1.42.0.2): cEm0078_00Extend _Phase (+0x2e8) is
+# MIDFIELD and _IsUnusedHill (+0x341) is true.
+FIELD_CHECKS = {
+    "app.btable.Em0078_00BTableCommand.cCheckUnusedHill": dict(
+        spec=("all", ("extend:_Phase", "==", 1), ("extend:_IsUnusedHill",)),
+        extend="app.cEm0078_00Extend",
+        evidence=[
+            dict(
+                type="app.btable.Em0078_00BTableCommand.cCheckUnusedHill",
+                method="onExecute1233936",
+                address="0x144d29ad0",
+                end="0x144d29b10",
+            )
+        ],
+        summary="Phase 为 MIDFIELD 且 IsUnusedHill 成立",
+        enums={"extend:_Phase": {"EARLY": 0, "MIDFIELD": 1, "FINAL": 2}},
+    ),
+}
+
+
+def recover_condition(node, enemy_id, resources):
+    """Reviewed field-comparison commands of this monster (FIELD_CHECKS)."""
+    from ..shared.logic.field_checks import declared_condition
+
+    return declared_condition(FIELD_CHECKS, node)
+
+
 # cCheckPhase (game 1.42.0.2, onExecute 0x143ba5250..0x143ba52b6): when
 # cEm0078_00Extend._Phase (0x2e8) is FINAL and _IsFinishAreaMove (0x345) is
 # false, the argument is compared with MIDFIELD; otherwise with _Phase. The

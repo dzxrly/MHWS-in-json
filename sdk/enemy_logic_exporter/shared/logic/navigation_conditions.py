@@ -15,8 +15,7 @@ from ..config import (
     OCCLUSION_QUERY,
 )
 from .values import MissingState, enum_number
-from .expressions import runtime, compare, combined
-
+from .expressions import runtime, compare, combined, invert
 
 @lru_cache(maxsize=1)
 def receipt():
@@ -25,10 +24,6 @@ def receipt():
             encoding="utf8"
         )
     )
-
-
-def invert(item):
-    return dict(kind="not", item=item)
 
 
 def bit(member, index):

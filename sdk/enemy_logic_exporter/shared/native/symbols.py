@@ -190,7 +190,6 @@ def _function_record(pe, address, names=None, **extra):
     return dict(
         address=hex(address),
         end=hex(end),
-        nativeSha256=native_digest(pe, address, end),
         normalizedSha256=normalized_digest(pe, address, end, names),
         **extra,
     )
@@ -253,7 +252,7 @@ def evidence_rows(value, found=None):
     """Every native evidence row nested anywhere in a JSON document."""
     found = [] if found is None else found
     if isinstance(value, dict):
-        if {"type", "method", "address", "end", "nativeSha256"} <= set(value):
+        if {"type", "method", "address", "end"} <= set(value):
             found.append(value)
         for item in value.values():
             evidence_rows(item, found)

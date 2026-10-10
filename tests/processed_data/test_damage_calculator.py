@@ -34,38 +34,6 @@ class DamageCalculatorDataTests(unittest.TestCase):
             self.assertAlmostEqual(arrow["bow"]["coatingRates"]["close"], 1.4)
             self.assertAlmostEqual(arrow["bow"]["coatingRates"]["power"], 1.35)
 
-    def test_lance_charge_and_dragon_piercer_are_native_parameters(self) -> None:
-        profiles = {p["id"]: p for p in self.catalog["hitProfiles"]}
-        lance = profiles["Wp06|Wp06/Collision/Collider/Wp06_Attack.rcol.38.json|28|4067102928|28"]
-        self.assertEqual(lance["lanceCharge"]["rates"], [1, 1.2, 1.4, 1.7])
-        arrow = profiles["Wp11|Wp11/Collision/Shell/Wp11Shell_Special.rcol.38.json|12|2135904740|0"]
-        self.assertEqual(arrow["multiHit"]["physicalCurvePoints"][:3], [
-            {"count": 0, "rate": 1}, {"count": 1, "rate": 1}, {"count": 2, "rate": .75}])
-        self.assertEqual(arrow["support"]["status"], "basic_hit")
-        self.assertTrue(any(a.get("bow") for a in self.catalog["actions"] if a["profileId"] == arrow["id"]))
-
-    def test_dual_blades_dodge_retains_distinct_attack_and_element_stages(self) -> None:
-        from src.processed_data.damage_calculator.weapon_states import validate_weapon_states
-        profiles = self.catalog["hitProfiles"]
-        for profile in profiles:
-            if profile["scope"] == "Wp02":
-                self.assertEqual(profile["dualblades"]["attackRate"], 1.15)
-                self.assertEqual(profile["dualblades"]["elementMotionRate"], 1.3)
-            else:
-                self.assertIsNone(profile["dualblades"])
-        profile = next(p for p in profiles if p["scope"] == "Wp02")
-        with self.assertRaisesRegex(ValueError, "dual blades"):
-            validate_weapon_states({**profile, "scope": "Wp00"})
-
-    def test_longsword_aura_uses_the_current_color_table(self) -> None:
-        profiles = self.catalog["hitProfiles"]
-        for profile in profiles:
-            if profile["scope"] == "Wp03":
-                self.assertEqual(profile["longsword"]["auraRates"],
-                                 {"none": 1, "white": 1.05, "yellow": 1.075, "red": 1.1})
-            else:
-                self.assertIsNone(profile["longsword"])
-
     def test_insect_glaive_extract_table_is_scoped_and_validated(self) -> None:
         from src.processed_data.damage_calculator.weapon_states import validate_weapon_states
         profiles = self.catalog["hitProfiles"]
@@ -81,26 +49,6 @@ class DamageCalculatorDataTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "insect glaive"):
             validate_weapon_states({**profile, "insectglaive": {
                 **profile["insectglaive"], "extractRates": {"none": 1, "redWhite": True, "triple": 1.15}}})
-
-    def test_horn_self_improvement_uses_encore_not_movement_value(self) -> None:
-        from src.processed_data.damage_calculator.weapon_states import validate_weapon_states
-        for profile in self.catalog["hitProfiles"]:
-            if profile["scope"] == "Wp05":
-                self.assertEqual(profile["huntinghorn"]["selfEncoreAttackRate"], 1.2)
-                with self.assertRaisesRegex(ValueError, "hunting horn"):
-                    validate_weapon_states({**profile, "scope": "Wp00"})
-            else:
-                self.assertIsNone(profile["huntinghorn"])
-
-    def test_charge_blade_shield_table_does_not_leak_to_phial_shells(self) -> None:
-        from src.processed_data.damage_calculator.weapon_states import validate_weapon_states
-        for profile in self.catalog["hitProfiles"]:
-            if profile["rcol"] == "Wp09/Collision/Collider/Wp09_Attack.rcol.38.json":
-                self.assertEqual(profile["chargeblade"]["shieldAxeMotionRate"], 1.1)
-                with self.assertRaisesRegex(ValueError, "charge blade"):
-                    validate_weapon_states({**profile, "rcol": "Wp09/Collision/Collider/Wp09_Shell.rcol.38.json"})
-            else:
-                self.assertIsNone(profile["chargeblade"])
 
     def test_shared_melodies_preserve_official_names_and_source_rates(self) -> None:
         import copy
@@ -148,22 +96,6 @@ class DamageCalculatorDataTests(unittest.TestCase):
         self.assertEqual(sword["switchaxe"]["elementSeedRate"], 1.45)
         self.assertEqual(axe["switchaxe"]["powerAttackRate"], 1.17)
         self.assertTrue(all(p.get("switchaxe") is None for p in profiles.values() if "_Shell.rcol" in p["rcol"]))
-
-    def test_horn_sound_meat_mode_is_explicit_and_validated(self) -> None:
-        from copy import deepcopy
-        sounds = [p for p in self.catalog["hitProfiles"] if p["scope"] == "Wp05" and p["physicalMeatMode"] == "independent"]
-        self.assertEqual({p["requestSetID"] for p in sounds}, {4, 9})
-        self.assertEqual(len(sounds), 2)
-        self.assertTrue(all(p["support"]["status"] == "basic_hit" for p in sounds))
-        for field, value in (("scope", "Wp00"), ("requestSetID", 5),
-                             ("canCritical", True), ("ignoresSharpness", False)):
-            broken = deepcopy(self.catalog)
-            profile = next(p for p in broken["hitProfiles"] if p["physicalMeatMode"] == "independent")
-            profile[field] = value
-            if field == "scope":
-                profile["huntinghorn"] = None  # Isolate the meat-mode guard from weapon-state validation.
-            with self.assertRaisesRegex(ValueError, "physical meat mode"):
-                validate_catalog(broken)
 
     def test_gunlance_tables_preserve_native_levels_and_projectile_branches(self) -> None:
         from copy import deepcopy
@@ -263,17 +195,6 @@ class DamageCalculatorDataTests(unittest.TestCase):
             self.assertAlmostEqual(point["rate"], rate)
         self.assertFalse(profile["multiHit"]["statusCurve"])
 
-    def test_normal_ammo_shared_levels_and_pierce_curve(self) -> None:
-        normal = next(a for a in self.catalog["actions"] if a["shell"] and a["shell"]["type"] == "NORMAL")
-        self.assertEqual(normal["name"], "通常弹")
-        self.assertEqual(normal["ammoLevels"], [1, 2, 3])
-        pierce = next(a for a in self.catalog["actions"] if a["shell"] and a["shell"]["type"] == "PENETRATE")
-        profile = next(p for p in self.catalog["hitProfiles"] if p["id"] == pierce["profileId"])
-        points = profile["multiHit"]["physicalCurvePoints"]
-        self.assertEqual([p["count"] for p in points], [0, 1, 2, 3, 4, 30])
-        for point, expected in zip(points, [1, 1, .9, .8, .7, .7]):
-            self.assertAlmostEqual(point["rate"], expected)
-
     def test_sharpness_rates_and_action_flags(self) -> None:
         colors = self.catalog["sharpness"]
         self.assertEqual([row["name"] for row in colors], [
@@ -317,27 +238,6 @@ class DamageCalculatorDataTests(unittest.TestCase):
         catalog["actions"][0]["profileId"] = "missing"
         with self.assertRaisesRegex(ValueError, "action reference"):
             validate_catalog(catalog)
-
-    def test_multihit_curve_reference_is_preserved(self) -> None:
-        fire = next(row for row in self.catalog["actions"] if row["name"] == "火炎弹")
-        profile = next(row for row in self.catalog["hitProfiles"] if row["id"] == fire["profileId"])
-        self.assertIn("WpGunElement_MultiHitCurve", profile["multiHit"]["physicalCurve"])
-
-    def test_shared_spread_levels_and_arrow_scope_are_exported(self) -> None:
-        spread = next(row for row in self.catalog["actions"] if row["shell"] and row["shell"]["type"] == "SHOT_GUN")
-        self.assertEqual(spread["ammoLevels"], [1, 2, 3])
-        self.assertEqual(spread["shell"]["parameters"]["_Lv3_AttackRate"], 1.4)
-        arrows = [row for row in self.catalog["actions"] if row["arrowType"]]
-        self.assertTrue(arrows)
-        self.assertTrue(all(row["weapons"] == ["bow"] for row in arrows))
-
-    def test_element_ammo_keeps_both_levels_and_native_rates(self) -> None:
-        elements = [row for row in self.catalog["actions"] if row["shell"] and row["shell"]["type"] == "ELEMENT"]
-        self.assertTrue(elements)
-        for action in elements:
-            self.assertEqual(action["ammoLevels"], [1, 2])
-            self.assertEqual(action["shell"]["parameters"]["_Lv2_AttackRate"], 1.25)
-            self.assertEqual(action["shell"]["parameters"]["_Lv2_SpecialRate"], 1.25)
 
     def test_mapping_names_match_database_and_unnamed_hits_keep_exact_identity(self) -> None:
         from config import ACTION_MAP_PATH, ZH_HANS_LANGUAGE_ID

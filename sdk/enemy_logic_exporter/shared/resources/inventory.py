@@ -5,7 +5,8 @@ import hashlib
 import json
 from ..native.metadata import Il2cppMetadata
 from .reader import Resources, typed, structure_signature
-from ..models.catalog import EXPECTED_ENEMY_IDS, TRAINING_ENEMY_ID
+from ..config import TRAINING_ENEMY_ID
+from ..models.catalog import EXPECTED_ENEMY_IDS
 from .action_names import ActionNames
 from ..config import (
     BTABLE_RESOURCE_TYPE,

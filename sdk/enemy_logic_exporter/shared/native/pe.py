@@ -120,10 +120,12 @@ def verify_rows(exe, rows, *, require_completed=False):
         for row in rows:
             start, end = int(row["address"], 16), int(row["end"], 16)
             size = end - start
-            body = pe.read(start, size) if 0 < size <= 200000 else b""
-            if (
-                len(body) != size
-                or hashlib.sha256(body).hexdigest() != row["nativeSha256"]
+            body = pe.read(start, size) if 0 < size <= 0x200000 else b""
+            # The active profile pins the EXE; rows from older caches may
+            # still carry a byte digest, which is then checked as well.
+            if len(body) != size or (
+                "nativeSha256" in row
+                and hashlib.sha256(body).hexdigest() != row["nativeSha256"]
             ):
                 raise ValueError(
                     f"Native evidence mismatch: {row['type']}.{row['method']}"

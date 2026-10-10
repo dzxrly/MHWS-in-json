@@ -8,12 +8,8 @@ from ..native.evidence import method_rows, pack_methods, digest
 from ..resources.inventory import discover_inventory
 from ..resources.requests import discover_requests
 from ..native.streaming import extract_cached
-from ..models.catalog import read_models, EXPECTED_ENEMY_IDS
-from .extraction import extract_inventory, extract_model
-from ..native.pe import verify_rows
-from .freeze import native_evidence
-from ..models.validation import validate_graph
-from ..models.audit import validate_release_graph
+from ..models.catalog import EXPECTED_ENEMY_IDS
+from .extraction import extract_inventory
 from ..config import ROOT
 
 
@@ -141,31 +137,6 @@ def run_all(
             preview_dir,
         )
         model_results = receipt["semanticModels"]
-    for spec in (() if helper_index is not None else read_models()):
-        graph = extract_model(spec.enemy_id, natives, spec.path, metadata_path=metadata)
-        if graph["profile"] != index["profile"]:
-            raise ValueError("正式语义模型来源与全量运行版本不匹配")
-        graph["metadataVerification"] = "matched"
-        validate_graph(graph)
-        verify_rows(exe, native_evidence(graph))
-        graph["nativeVerification"] = "matched"
-        (preview_dir / spec.path.name).write_text(
-            json.dumps(graph, ensure_ascii=False, indent=2) + "\n", encoding="utf8"
-        )
-        try:
-            validate_release_graph(graph)
-            eligible, reason = True, ""
-        except ValueError as error:
-            eligible, reason = False, str(error)
-        model_results.append(
-            dict(
-                enemyId=spec.enemy_id,
-                model=spec.path.relative_to(root).as_posix(),
-                coverage=graph["coverage"],
-                releaseEligible=eligible,
-                reason=reason,
-            )
-        )
     available = {r["enemyId"] for r in model_results}
     result = dict(
         profile=index["profile"],

@@ -15,6 +15,7 @@ from src.processed_data.enemy_battle_logic.definitions import (
     output_names,
 )
 from src.processed_data.enemy_battle_logic.exporter import export_battle_logic
+from src.processed_data.enemy_battle_logic.model_io import load_model
 from src.processed_data.enemy_battle_logic.validation import (
     validate_graph,
     validate_html,
@@ -24,7 +25,7 @@ from src.processed_data.enemy_battle_logic.validation import (
 
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_TEMPLATE = (
-    ROOT / "tests/fixtures/enemy_battle_logic/em0001.upstream.reference.v1.json"
+    ROOT / "src/processed_data/enemy_battle_logic/models/em0001_00_0.v1.json"
 )
 
 
@@ -70,7 +71,7 @@ class BattleReleaseTests(unittest.TestCase):
         for checkout_name in ("MHWS-in-json", "sdk"):
             root = self.stage / checkout_name / checkout_name
             for relative in (
-                "tests/fixtures/enemy_battle_logic/em0001.upstream.reference.v1.json",
+                "src/processed_data/enemy_battle_logic/models/em0001_00_0.v1.json",
                 "src/processed_data/enemy_battle_logic/models/em0001.v1.json",
                 "sdk-preview/graph.json",
                 "MHWS-in-json-preview/graph.json",
@@ -90,9 +91,10 @@ class BattleReleaseTests(unittest.TestCase):
         index = validate_bundle(self.processed, require_release=False)
         self.assertFalse(index["releaseReady"])
         self.assertEqual({p.suffix for p in self.paths}, {".html"})
-        self.assertEqual(self.graph["coverage"]["localTables"], 46)
-        self.assertEqual(self.graph["coverage"]["nodes"], 408)
-        self.assertEqual(self.graph["coverage"]["unknownFlowNodes"], 41)
+        self.assertEqual(
+            self.graph["coverage"],
+            load_model(DEFAULT_TEMPLATE)["coverage"],
+        )
         self.assertEqual(len(index["monsters"]), 1)
         self.assertNotIn("enemy_native_model", self.html)
         self.assertNotIn("行动逻辑待核实", self.html)
@@ -103,6 +105,8 @@ class BattleReleaseTests(unittest.TestCase):
         )
 
         changed = deepcopy(self.graph)
+        # Only the graph's candidate slots are under test, not the player view.
+        changed.pop("playerView", None)
         node = next(
             n
             for t in changed["tables"]
@@ -110,10 +114,9 @@ class BattleReleaseTests(unittest.TestCase):
             if n["kind"] == "weighted_random"
         )
         original = deepcopy(node["candidates"][0])
+        target = original.get("nodeId", original["id"])
         node["candidates"] = [
-            dict(
-                original, id=f"slot:{i}", nodeId=original["id"], nativeCandidateIndex=i
-            )
+            dict(original, id=f"slot:{i}", nodeId=target, nativeCandidateIndex=i)
             for i in range(2)
         ]
         for validate in (sdk_validate, validate_graph):
@@ -125,7 +128,7 @@ class BattleReleaseTests(unittest.TestCase):
             node["candidates"][1]["nodeId"] = node["id"]
             with self.assertRaisesRegex(ValueError, "调用连接"):
                 validate(changed)
-            node["candidates"][1]["nodeId"] = original["id"]
+            node["candidates"][1]["nodeId"] = target
 
     def test_known_non_dispatch_records_cannot_invent_a_table_entry(self):
         from sdk.enemy_logic_exporter.shared.models.validation import (
@@ -138,15 +141,13 @@ class BattleReleaseTests(unittest.TestCase):
             method="updateTableInpl123",
             address="0x1000",
             end="0x1001",
-            nativeSha256="a" * 64,
         )
         record = dict(
-            resource=next(iter(changed["sourceHashes"])),
+            resource=changed["sources"][0],
             nativeType="Owner",
             status="native_no_dispatch_verified",
             evidence=proof,
             entryInstruction=dict(address="0x1000", bytes="c3", mnemonic="ret"),
-            metadataTypeSha256="b" * 64,
         )
         changed["resourceNonDispatchEntries"] = [record]
         for validate in (sdk_validate, validate_graph):
@@ -191,7 +192,8 @@ class BattleReleaseTests(unittest.TestCase):
         next(n for t in broken["tables"] for n in t["nodes"] if n["kind"] == "call")[
             "resume"
         ] = "missing-node"
-        with self.assertRaisesRegex(ValueError, "缺失节点"):
+        # The player view, built from the same flow, may notice it first.
+        with self.assertRaisesRegex(ValueError, "缺失节点|继续位置"):
             validate_graph(broken)
         incorrect = deepcopy(self.graph)
         incorrect["coverage"]["nodes"] += 1

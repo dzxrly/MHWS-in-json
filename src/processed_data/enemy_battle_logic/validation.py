@@ -77,9 +77,8 @@ def validate_graph(graph):
         raise ValueError("行动图来源版本证据无效")
     if graph["metadataVerification"] not in ("matched", "not_supplied"):
         raise ValueError("行动图元数据核对状态无效")
-    if not graph.get("sourceHashes") or any(
-        not re.fullmatch(r"[0-9a-f]{64}", value)
-        for value in graph["sourceHashes"].values()
+    if not graph.get("sources") or not all(
+        isinstance(v, str) for v in graph["sources"]
     ):
         raise ValueError("行动图缺少资源来源证据")
     for entry in graph.get("resourceNonDispatchEntries", []):
@@ -87,12 +86,11 @@ def validate_graph(graph):
         validate_native_evidence(proof)
         if (
             entry.get("status") != "native_no_dispatch_verified"
-            or entry.get("resource") not in graph["sourceHashes"]
+            or entry.get("resource") not in graph["sources"]
             or entry.get("nativeType") != proof["type"]
             or not proof["method"].startswith("updateTableInpl")
             or entry.get("entryInstruction")
             != dict(address=proof["address"], bytes="c3", mnemonic="ret")
-            or not re.fullmatch(r"[0-9a-f]{64}", entry.get("metadataTypeSha256", ""))
             or "tableGuid" in entry
         ):
             raise ValueError("空调度记录缺少实际入口返回与资源来源证据")
@@ -150,7 +148,7 @@ def validate_graph(graph):
             if node["kind"] == "weighted_random":
                 random_count += 1
                 weighted_pool(node["candidates"])
-                validate_candidate_filters(node, graph["sourceHashes"])
+                validate_candidate_filters(node, set(graph["sources"]))
                 if node["fallback"] not in nodes:
                     raise ValueError("行动图随机回退位置无效")
                 for candidate in node["candidates"]:

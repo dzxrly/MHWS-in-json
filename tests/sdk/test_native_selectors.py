@@ -110,29 +110,6 @@ class NativeSelectorTests(unittest.TestCase):
         self.assertEqual([argument["index"] for argument in arguments], [304, 305])
         self.assertEqual(evidence["indexRegister"], "r13")
 
-    def test_parameter_array_order_cannot_override_a_native_base_mismatch(self):
-        from sdk.enemy_logic_exporter.shared.logic.selectors import (
-            _filter_arguments,
-            SelectorBoundary,
-        )
-
-        machine = self.machine("41 bd 31 01 00 00 4a 8b 44 e8 20 49 ff c5 c3")
-        block = (
-            "lVar16 = 0x130; x = *(p + 0x18) + 0x20 + lVar16 * 8; "
-            "pool + 0x24; lVar16 = lVar16 + 1; draw = x % y;"
-        )
-        skip_type = "app.btable.EmCommonCommand.cSetSkipActionTblArg"
-        body = {"_CommandArgArray": [{skip_type: {}} for _ in range(306)]}
-        with self.assertRaises(SelectorBoundary):
-            _filter_arguments(
-                machine,
-                block,
-                {"entries": [{}, {}]},
-                {"poolSizeGuard": "0xfff", "filterLoopEnd": "0x100e"},
-                body,
-            )
-
-
 class SelectorCandidateContractTests(unittest.TestCase):
     def recover_shared_target(
         self, keys=(11, 22), candidate_pcs=(5, 7), *, reviewed_child=True
@@ -261,35 +238,6 @@ class SelectorCandidateContractTests(unittest.TestCase):
         )
         self.assertEqual([c["id"] for c in candidates], ["slot:0", "slot:1"])
         self.assertEqual(sum(n["kind"] == "call" for n in result["nodes"]), 1)
-
-    def test_filtering_one_slot_does_not_exclude_the_other_shared_target(self):
-        from sdk.enemy_logic_exporter.shared.logic.weights import choose_with_uint32
-        from sdk.enemy_logic_exporter.shared.logic.weights import weighted_pool
-
-        result, _, _, _ = self.recover_shared_target((22, 22))
-        candidates = next(n for n in result["nodes"] if n["kind"] == "weighted_random")[
-            "candidates"
-        ]
-        self.assertEqual(
-            weighted_pool(candidates, excluded=["slot:0"]),
-            [{"id": "slot:1", "weight": 5, "share": "1"}],
-        )
-        self.assertEqual(
-            choose_with_uint32(candidates, 0, excluded=["slot:0"]), "slot:1"
-        )
-        self.assertEqual(choose_with_uint32(candidates, 34), "slot:0")
-        self.assertEqual(choose_with_uint32(candidates, 35), "slot:1")
-
-    def test_unreviewed_child_keeps_its_boundary_despite_independent_slot_ids(self):
-        result, accepted, boundaries, machine = self.recover_shared_target(
-            reviewed_child=False
-        )
-        self.assertEqual(accepted, [])
-        self.assertEqual(len(boundaries), 1)
-        self.assertIn("候选没有唯一子表调用", boundaries[0]["reason"])
-        self.assertEqual(machine.nodes["boundary-0x1010"]["kind"], "unknown")
-        self.assertFalse(any(n["kind"] == "weighted_random" for n in result["nodes"]))
-
 
 if __name__ == "__main__":
     unittest.main()

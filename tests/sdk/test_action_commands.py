@@ -38,7 +38,7 @@ class ActionCommandTests(unittest.TestCase):
     def test_wrong_implementation_or_version_cannot_use_guard_recipe(self):
         command = "app.btable.EmCommonCommand.cRequestActionSync"
         proof = deepcopy(receipt()["commands"][command])
-        proof["nativeSha256"] = "0" * 64
+        proof["address"] = "0x140000000"
         with self.assertRaises(ValueError):
             request_details(command, receipt()["profile"], proof)
         with self.assertRaises(ValueError):

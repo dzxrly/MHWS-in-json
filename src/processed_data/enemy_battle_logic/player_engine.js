@@ -75,6 +75,11 @@
     }
     result[key] = domain; return result;
   }
+  // Standing scenario assumptions survive an action; snapshot inputs do not.
+  function standing(view, inputs) {
+    const keys = view.scenario?.persistent || [];
+    return Object.fromEntries(keys.filter(key => key in inputs).map(key => [key, inputs[key]]));
+  }
   function step(view, supplied) {
     let state = { ...supplied, stack: supplied.stack.slice(), seen: supplied.seen.slice(), assumptions: { ...supplied.assumptions } };
     const via = [];
@@ -99,8 +104,17 @@
       if (node.kind === "mutation" && node.next && !node.dispatch) {
         via.push({ sourceRef: node.sourceRef, kind: "mutation", title: node.title, invalidateSnapshot: node.invalidateSnapshot });
         const stable = Object.fromEntries(Object.entries(state.assumptions).filter(([token]) => JSON.parse(token)[1] === null));
-        state = next(node.next, node.invalidateSnapshot ? { inputs: {}, assumptions: {}, afterAction: true } : { assumptions: stable });
+        state = next(node.next, node.invalidateSnapshot ? { inputs: standing(view, state.inputs), assumptions: {}, afterAction: true } : { assumptions: stable });
         continue;
+      }
+      if (node.kind === "condition" && node.presentation?.compact) {
+        // A settled internal check is not a branch point: pass through it.
+        const settled = evaluate(node.condition, state.inputs);
+        if (settled !== null) {
+          via.push({ sourceRef: node.sourceRef, kind: "check", title: node.checks || node.title, truth: settled });
+          state = next(node[settled ? "true" : "false"]);
+          continue;
+        }
       }
       const record = { ...node, key: state.key, afterAction: state.afterAction, via, children: [] };
       if (node.kind === "condition") {
@@ -126,12 +140,12 @@
         if (node.fallback && node.candidates.some(c => c.filteringUnknown)) record.children.push({ label: "候选全被排除时", state: next(node.fallback) });
         if (!node.candidates.length && node.fallback) record.children.push({ label: "没有候选时", state: next(node.fallback) });
       } else if (node.kind === "action") {
-        record.children.push({ label: "动作结束后继续", role: "resume", state: next(node.resume, { inputs: {}, assumptions: {}, afterAction: true }) });
+        record.children.push({ label: "动作结束后继续", role: "resume", state: next(node.resume, { inputs: standing(view, state.inputs), assumptions: {}, afterAction: true }) });
       } else if (node.kind === "mutation" || node.kind === "unknown") {
-        const extras = node.invalidateSnapshot ? { inputs: {}, assumptions: {}, afterAction: true } : {};
+        const extras = node.invalidateSnapshot ? { inputs: standing(view, state.inputs), assumptions: {}, afterAction: true } : {};
         if (node.next) record.children.push({ label: node.invalidateSnapshot ? "随后（状态可能已变）" : "随后", state: next(node.next, extras) });
-        if (node.resume) record.children.push({ label: "动作未识别，结束后继续", role: "resume", state: next(node.resume, { inputs: {}, assumptions: {}, afterAction: true }) });
-        if (node.dispatch) record.children.push({ label: "之后可能切换到", state: next(node.dispatch, { inputs: {}, assumptions: {}, afterAction: true, stack: [] }) });
+        if (node.resume) record.children.push({ label: "动作未识别，结束后继续", role: "resume", state: next(node.resume, { inputs: standing(view, state.inputs), assumptions: {}, afterAction: true }) });
+        if (node.dispatch) record.children.push({ label: "之后可能切换到", state: next(node.dispatch, { inputs: standing(view, state.inputs), assumptions: {}, afterAction: true, stack: [] }) });
       }
       return record;
     }

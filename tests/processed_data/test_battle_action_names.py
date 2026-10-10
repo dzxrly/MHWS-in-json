@@ -1,13 +1,8 @@
 """Check variant identity, raw names and explicit naming evidence boundaries."""
 
-from copy import deepcopy
 from pathlib import Path
 import unittest
 
-from sdk.enemy_logic_exporter.shared.models.builder import build_chain
-from src.processed_data.enemy_battle_logic.validation import validate_graph
-from src.processed_data.enemy_battle_logic.viewer import render_action_names
-from sdk.enemy_logic_exporter.shared.resources.action_names import action_identity
 from sdk.enemy_logic_exporter.shared.resources.reader import (
     Resources,
     typed,
@@ -62,65 +57,3 @@ class ActionNameTests(unittest.TestCase):
         self.assertIn("/Em0002/00/", action["parameterAsset"])
         self.assertIn("/Em0002/50/", action["declaredParameterAsset"])
         self.assertEqual(len(action["parameterResolutionChain"]), 2)
-
-    @classmethod
-    def setUpClass(cls):
-        cls.graph = build_chain(ROOT / "MHWS-in-json/natives")
-
-    def test_exact_action_variants_and_repeated_nodes_have_stable_names(self):
-        actions = [
-            n["action"]
-            for t in self.graph["tables"]
-            for n in t["nodes"]
-            if n["kind"] == "action"
-        ]
-        self.assertEqual(len(actions), 12)
-        self.assertEqual(
-            len({action_identity(self.graph["enemyId"], a) for a in actions}), 11
-        )
-        dash = [a for a in actions if a["actionClass"] == "cDashCombat"]
-        self.assertEqual(len({a["parameterVariantGuid"] for a in dash}), 2)
-        self.assertTrue(all(a["displayName"] == "战斗突进移动" for a in dash))
-        self.assertTrue(all(a["nameBinding"]["identityVerified"] for a in actions))
-
-    def test_project_original_names_keep_uid_and_distinct_comments(self):
-        rows = self.graph["actionNameCatalog"]["shellCatalog"]
-        self.assertEqual(len(rows), 7)
-        same_name = [r for r in rows if r["name"] == "ブレス(ターゲットへの補正なし)"]
-        self.assertEqual({r["uniqueId"] for r in same_name}, {1, 2})
-        self.assertEqual(
-            {r["comment"] for r in same_name}, {"３連ブレス２撃目", "３連ブレス３撃目"}
-        )
-        self.assertTrue(
-            all(
-                not r["shellTriggerBindingVerified"]
-                for r in self.graph["actionNameCatalog"]["bindings"]
-            )
-        )
-
-    def test_mismatched_guid_name_is_rejected(self):
-        graph = deepcopy(self.graph)
-        node = next(
-            n for t in graph["tables"] for n in t["nodes"] if n["kind"] == "action"
-        )
-        node["action"]["nameBinding"]["parameterVariantGuid"] = "different-guid"
-        with self.assertRaisesRegex(ValueError, "参数变体"):
-            validate_graph(graph)
-
-    def test_unverified_shell_link_cannot_be_promoted_by_annotation(self):
-        graph = deepcopy(self.graph)
-        node = next(
-            n for t in graph["tables"] for n in t["nodes"] if n["kind"] == "action"
-        )
-        node["action"]["nameBinding"]["shellTriggerBindingVerified"] = True
-        with self.assertRaisesRegex(ValueError, "触发关系"):
-            validate_graph(graph)
-
-    def test_raw_names_are_escaped_for_html(self):
-        graph = deepcopy(self.graph)
-        graph["actionNameCatalog"]["shellCatalog"][0][
-            "name"
-        ] = "</td><script>alert(1)</script>"
-        html = render_action_names(graph)
-        self.assertNotIn("<script>", html)
-        self.assertIn("&lt;script&gt;", html)

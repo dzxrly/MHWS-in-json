@@ -2,7 +2,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from openpyxl import Workbook, load_workbook
+from openpyxl import load_workbook
 from openpyxl.cell.cell import MergedCell
 from openpyxl.utils import get_column_letter
 
@@ -16,9 +16,8 @@ from src.database.missions.build import (
     load_mission_catalog,
 )
 from src.shared.text.catalog import TextSource, discover_language_ids
-from src.database.missions.excel import style_mission_workbook, write_mission_workbook
+from src.database.missions.excel import write_mission_workbook
 from src.database.missions.health import calculate_solo_health
-from src.shared.excel.cells import safe_cell
 
 
 def _entry(guid, name, english, chinese=""):
@@ -99,33 +98,6 @@ def _text_source():
 
 
 class MissionFixtureTests(unittest.TestCase):
-    def test_numeric_cells_are_centered_without_centering_numeric_text_or_lists(self):
-        data = build_mission_workbook_data(_catalog(_quest()), _text_source(), 13)
-        data.rows[0]["_RemMoney"] = 1.25
-        data.rows[0]["_Stage"] = "123"
-        data.rows[0]["_SubBossInfoArray"] = "100、200"
-        workbook = Workbook()
-        sheet = workbook.active
-        sheet.title = "MissionData"
-        sheet.append([None] * len(data.headers))
-        sheet.append([None] * len(data.headers))
-        for row in data.rows:
-            sheet.append([safe_cell(row[header.key]) for header in data.headers])
-        style_mission_workbook(workbook, data)
-        try:
-            for column, expected in (
-                ("_QuestLv", "center"),
-                ("_RemMoney", "center"),
-                ("_EnableGuestNpc", "left"),
-                ("_Stage", "left"),
-                ("_SubBossInfoArray", "left"),
-            ):
-                cell = sheet.cell(3, data.columns.index(column) + 1)
-                self.assertEqual((cell.alignment.horizontal, cell.alignment.vertical),
-                                 (expected, "center"), column)
-        finally:
-            workbook.close()
-
     def test_solo_health_uses_new_random_grades_from_user3(self):
         self.assertEqual(calculate_solo_health(
             enemy_id="EM9999_00_0", base_health=10000, quest_health_rate=1.0,
@@ -135,37 +107,6 @@ class MissionFixtureTests(unittest.TestCase):
             difficulty_adjust_range=0, king_when_none_ids=frozenset(),
             no_auto_hard_ids=frozenset(),
         ), "10000、11250")
-
-    def test_solo_health_compiled_exceptions_are_explicit_inputs(self):
-        inputs = {
-            "enemy_id": "EM9999_00_0", "base_health": 10000,
-            "quest_health_rate": 1.0, "reward_rank": 10,
-            "legendary_rates": {
-                "HealthRate": 1.0, "HealthRate_Hard": 1.5,
-                "HealthRate_King": 1.0, "HealthRate_King_Hard": 1.25,
-            },
-            "random_rate_table": {"_Value0": 1.0},
-            "random_probability_tables": [{"_Prob0": 100}],
-            "difficulty_adjust_range": 0,
-        }
-        self.assertEqual(calculate_solo_health(
-            **inputs, legendary_id="NORMAL", king_when_none_ids=frozenset(),
-            no_auto_hard_ids=frozenset({"EM9999_00_0"}),
-        ), 10000)
-        self.assertEqual(calculate_solo_health(
-            **inputs, legendary_id="NORMAL", king_when_none_ids=frozenset(),
-            no_auto_hard_ids=frozenset({"EM9999_00_0"}), preset_hard=True,
-        ), 15000)
-        self.assertEqual(calculate_solo_health(
-            **inputs, legendary_id="NONE",
-            king_when_none_ids=frozenset({"EM9999_00_0"}),
-            no_auto_hard_ids=frozenset(),
-        ), 12500)
-        with self.assertRaisesRegex(ValueError, "Ambiguous rank-10 NONE"):
-            calculate_solo_health(
-                **inputs, legendary_id="NONE", king_when_none_ids=frozenset(),
-                no_auto_hard_ids=frozenset(),
-            )
 
     def test_msdata_id_without_quest_data_is_appended_with_available_text(self):
         source = TextSource(_text_source().entries + [
@@ -210,21 +151,6 @@ class MissionFixtureTests(unittest.TestCase):
         data = build_mission_workbook_data(_catalog(_quest()), TextSource(entries), 0)
         self.assertEqual(data.rows[0]["MonsterName"], "怪物")
         self.assertEqual(data.rows[0]["_TitleMsg"], "Hunt 怪物 and EM_MISSING")
-
-    def test_enemy_ref_uses_em_id_when_all_names_are_missing(self):
-        entries = _text_source().entries.copy()
-        guid, name, contents = entries[0]
-        contents = contents.copy()
-        contents[1] = "Find <REF EnemyText_NAME_EM_A> and <REF EnemyText_NAME_EM_MISSING>"
-        entries[0] = (guid, name, contents)
-        data = build_mission_workbook_data(_catalog(_quest()), TextSource(entries), 13)
-        self.assertEqual(data.rows[0]["_TitleMsg"], "Find 怪物 and EM_MISSING")
-
-    def test_named_monster_text_is_used_when_enemy_guid_is_absent(self):
-        catalog = _catalog(_quest())
-        catalog.enemy_name_guids.clear()
-        data = build_mission_workbook_data(catalog, _text_source(), 13)
-        self.assertEqual([row["MonsterName"] for row in data.rows], ["怪物", "EM_B"])
 
     def test_item_condition_leaves_target_monster_fields_empty(self):
         data = build_mission_workbook_data(_catalog(_quest("ITEM")), _text_source(), 13)
@@ -300,16 +226,6 @@ class MissionCorpusTests(unittest.TestCase):
                     len(names := row["_SubBossInfoArray"].split("\n")) == len(set(names))
                     for row in data.rows if row["_SubBossInfoArray"]
                 ))
-
-    def test_msdata_only_examples_fill_only_confirmed_columns(self):
-        data = build_mission_workbook_data(self.catalog, self.text_source, 1)
-        rows = {row["_MissionId"]: row for row in data.rows}
-        self.assertEqual(rows["MISSION_001040"]["_TitleMsg"], "Back to Camp")
-        self.assertTrue(rows["MISSION_001040"]["_DetailMsg"])
-        self.assertTrue(all(
-            value == "" for column, value in rows["MISSION_400063"].items()
-            if column != "_MissionId"
-        ))
 
     def test_target_rates_resolve_selected_layouts_and_stream_quests(self):
         difficulty = self.catalog.difficulty

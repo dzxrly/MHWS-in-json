@@ -11,6 +11,13 @@ PREFIX = "app.btable.EmCommonCommand."
 
 
 class ResourcesFixture:
+
+    def part_name(self, parts_type):
+        return {"[1] LEFT_WING": "左翼"}[parts_type]
+
+    def enemy_name(self, enemy_id):
+        raise ValueError(enemy_id)
+
     def read(self, path):
         return {
             "_PartsBreakArray": {

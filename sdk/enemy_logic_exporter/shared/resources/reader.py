@@ -102,7 +102,7 @@ class Resources:
         return self.resolve(typed(wrapper)[1]["path"])
 
     def large_enemy_ids(self):
-        from ..models.catalog import TRAINING_ENEMY_ID
+        from ..config import TRAINING_ENEMY_ID
 
         source = "STM/GameDesign/Common/Enemy/EnemyData.user.3.json"
         identities = []
@@ -123,27 +123,48 @@ class Resources:
         if len(matches) != 1:
             raise ValueError("EnemyData 无法唯一绑定怪物名称：" + enemy_id)
         source = self.resolve("STM/GameDesign/Text/Excel_Data/EnemyText.msg.23.json")
-        self.accessed.add(source)
-        raw = self.paths[source.casefold()].read_bytes()
-        self.hashes[source] = hashlib.sha256(raw).hexdigest()
-        messages = json.loads(raw)
-        columns = [
-            i for i, value in enumerate(messages["languages"]) if value == language
-        ]
-        rows = [
-            v
-            for v in messages["entries"]
-            if v["guid"].casefold() == matches[0]["_EnemyName"].casefold()
-        ]
-        if len(columns) != 1 or len(rows) != 1 or not rows[0]["content"][columns[0]]:
+        text = self.message(source, guid=matches[0]["_EnemyName"], language=language)
+        if not text:
             raise ValueError("游戏消息的怪物名称或语言列无法唯一绑定")
         return dict(
-            displayName=rows[0]["content"][columns[0]],
-            guid=rows[0]["guid"],
+            displayName=text,
+            guid=matches[0]["_EnemyName"],
             languageId=language,
             source=source,
             enemyDataSource=data_source,
         )
+
+    def message(self, source, *, name=None, guid=None, language=13):
+        """One official message text by entry name or GUID; None when absent or empty."""
+        source = self.resolve(source)
+        self.accessed.add(source)
+        if source not in self.cache:
+            raw = self.paths[source.casefold()].read_bytes()
+            self.cache[source] = json.loads(raw)
+            self.hashes[source] = hashlib.sha256(raw).hexdigest()
+        messages = self.cache[source]
+        columns = [i for i, v in enumerate(messages["languages"]) if v == language]
+        if len(columns) != 1:
+            raise ValueError("游戏消息的语言列无法唯一绑定")
+        rows = [
+            v
+            for v in messages["entries"]
+            if (name is not None and v["name"] == name)
+            or (guid is not None and v["guid"].casefold() == guid.casefold())
+        ]
+        return rows[0]["content"][columns[0]] or None if len(rows) == 1 else None
+
+    def part_name(self, parts_type, *, language=13):
+        """Official EnemyPartsTypeName text for "[value] NAME"; the enum name otherwise."""
+        value, _, name = str(parts_type).partition("] ")
+        value = value.lstrip("[")
+        key = "EnemyPartsTypeName_" + value.replace("-", "m", 1)
+        text = self.message(
+            "STM/GameDesign/Text/Excel_Data/EnemyPartsTypeName.msg.23.json",
+            name=key,
+            language=language,
+        )
+        return text or name or str(parts_type)
 
     def table_references(self, value, *, allow_missing=False):
         if isinstance(value, dict):

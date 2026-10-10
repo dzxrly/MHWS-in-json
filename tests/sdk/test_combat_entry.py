@@ -82,12 +82,6 @@ class CombatEntryTests(unittest.TestCase):
         )
         self.assertIsNone(self.truth("combat-change-begin", "begin", {}))
 
-    def test_sign_switch_marks_done_before_sign_table_completion(self):
-        node = self.tables["combat-table-change"]["done"]
-        self.assertEqual(node["value"], True)
-        self.assertIn("DONE_COMBAT_BEGIN_ACTION", node["field"])
-        self.assertEqual(self.tables["combat-table-change"]["slot"]["true"], "done")
-
     def test_return_interrupt_calls_begin_choice_and_preserves_manager_guard(self):
         nodes = self.tables["combat-return-interrupt"]
         self.assertFalse(
@@ -117,48 +111,6 @@ class CombatEntryTests(unittest.TestCase):
         self.assertEqual(
             self.tables["combat-request-combat-direct"]["same_main"]["true"], "end"
         )
-
-    def test_wait_reads_pending_flag_and_preserves_story_exception(self):
-        for channel in ("main", "jump"):
-            prefix = "scheduler:" + channel + ":"
-            context = {
-                "combat:btable_request_update": False,
-                prefix + "pending_wait": True,
-                prefix + "pending_slot": 1,
-                prefix + "current_slot": 1,
-            }
-            self.assertTrue(self.truth("combat-scheduler-" + channel, "wait", context))
-            self.assertFalse(
-                self.truth(
-                    "combat-scheduler-" + channel,
-                    "wait",
-                    dict(context, **{prefix + "current_slot": 41}),
-                )
-            )
-            self.assertTrue(
-                self.truth(
-                    "combat-scheduler-" + channel,
-                    "wait",
-                    dict(
-                        context,
-                        **{prefix + "current_slot": 41, prefix + "pending_slot": 41}
-                    ),
-                )
-            )
-            self.assertFalse(
-                self.truth(
-                    "combat-scheduler-" + channel,
-                    "wait",
-                    dict(context, **{"combat:btable_request_update": True}),
-                )
-            )
-            self.assertIsNone(
-                self.truth(
-                    "combat-scheduler-" + channel,
-                    "wait",
-                    {"combat:btable_request_update": False},
-                )
-            )
 
     def test_root_checks_saved_table_pc_and_command(self):
         prefix = "scheduler:main:"

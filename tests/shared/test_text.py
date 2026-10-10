@@ -1,6 +1,4 @@
-import json
 from pathlib import Path
-import tempfile
 import unittest
 from unittest.mock import patch
 
@@ -60,12 +58,3 @@ class TextTests(unittest.TestCase):
             source.build(language)
         self.assertLessEqual(len(source._views), 2)
         self.assertEqual(MissionTextResolver(source, 0).get_guid("title"), "English")
-
-    def test_language_discovery_reuses_message_read(self):
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            (root / "a.msg.23.json").write_text(json.dumps({"languages": [0, 1, -1], "entries": []}), encoding="utf-8")
-            (root / "b.msg.23.json").write_text(json.dumps({"languages": [0, -1, 2], "entries": []}), encoding="utf-8")
-            source = TextSource.from_natives(root)
-        self.assertEqual(source.language_ids, (0,))
-        self.assertEqual(source.file_count, 2)

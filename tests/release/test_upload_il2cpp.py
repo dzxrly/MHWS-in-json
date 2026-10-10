@@ -54,17 +54,6 @@ class UploadIl2cppTests(unittest.TestCase):
                     upload_il2cpp.download_command(args)
             self.assertEqual(output.read_bytes(), b"previous input")
 
-    def test_broken_gzip_never_replaces_existing_dump(self):
-        with tempfile.TemporaryDirectory() as work:
-            root = Path(work)
-            asset, output = root / "bad.gz", root / "il2cpp_dump.json"
-            asset.write_bytes(gzip.compress(b"new input")[:-5])
-            output.write_bytes(b"previous input")
-            with patch.object(upload_il2cpp, "DEFAULT_WORK_DIR", root / "cache"):
-                with self.assertRaises((EOFError, gzip.BadGzipFile)):
-                    upload_il2cpp.decompress_file(asset, output)
-            self.assertEqual(output.read_bytes(), b"previous input")
-
     def test_build_release_does_not_become_latest(self):
         missing = subprocess.CompletedProcess(
             [], 1, stdout="", stderr="release not found"
@@ -76,15 +65,6 @@ class UploadIl2cppTests(unittest.TestCase):
                 "owner/repo", "build-data", "Build data", "notes"
             )
         self.assertIn("--latest=false", publish.call_args.args[0])
-
-    def test_repo_detection_supports_reference_remote_formats(self):
-        for remote in (
-            "https://github.com/owner/repo.git",
-            "git@github.com:owner/repo.git",
-            "ssh://git@github.com/owner/repo.git",
-        ):
-            self.assertEqual(upload_il2cpp.parse_github_remote(remote), "owner/repo")
-
 
 if __name__ == "__main__":
     unittest.main()

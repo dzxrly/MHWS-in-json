@@ -3,6 +3,31 @@
 ENEMY_ID = "EM0157_00_0"
 NATIVE_OWNER = "Em0157_00"
 
+# cCheckVeilCladTimer (game 1.42.0.2): cEm0157_00Extend _AllVeilPurgeTimer
+# (ace.TIMER at +0xb8) has _IsTimeOut (+0xc6).
+FIELD_CHECKS = {
+    "app.Em0157_00BTableCommand.cCheckVeilCladTimer": dict(
+        spec=("extend:_AllVeilPurgeTimer._IsTimeOut",),
+        extend="app.cEm0157_00Extend",
+        evidence=[
+            dict(
+                type="app.Em0157_00BTableCommand.cCheckVeilCladTimer",
+                method="onExecute1146696",
+                address="0x145317460",
+                end="0x1453174b0",
+            )
+        ],
+        summary="AllVeilPurgeTimer 已超时",
+    ),
+}
+
+
+def recover_condition(node, enemy_id, resources):
+    """Reviewed field-comparison commands of this monster (FIELD_CHECKS)."""
+    from ..shared.logic.field_checks import declared_condition
+
+    return declared_condition(FIELD_CHECKS, node)
+
 
 def extract(context):
     """Select this monster's declared tables, imports and native method contexts."""

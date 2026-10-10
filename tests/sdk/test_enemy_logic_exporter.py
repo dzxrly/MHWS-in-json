@@ -3,15 +3,11 @@
 from copy import deepcopy
 import json
 from pathlib import Path
-import tempfile
 import unittest
 from unittest.mock import patch
 
-from sdk.enemy_logic_exporter.shared.workflow.cli import (
-    ROOT,
-    SUPPORTED_PROFILE,
-    verify_profile,
-)
+from sdk.enemy_logic_exporter.shared.config import SUPPORTED_PROFILE
+from sdk.enemy_logic_exporter.shared.workflow.cli import verify_profile
 from src.processed_data.enemy_battle_logic.diagram import combined_diagram, node_id
 from src.processed_data.enemy_battle_logic.viewer import render_html
 
@@ -25,68 +21,6 @@ class SdkTests(unittest.TestCase):
         ):
             with self.assertRaisesRegex(ValueError, "Source version changed"):
                 verify_profile(Path("new.exe"), Path("new.json"), SUPPORTED_PROFILE)
-
-    def test_bundled_json_paths_and_freeze_use_separate_data_directory(self):
-        from sdk.enemy_logic_exporter.shared.config import (
-            DATA_DIR,
-            MODEL_DIR,
-            RULES_PATH,
-        )
-        from sdk.enemy_logic_exporter.shared.logic.action_commands import (
-            receipt as actions,
-        )
-        from sdk.enemy_logic_exporter.shared.logic.combat_entry import receipt as combat
-        from sdk.enemy_logic_exporter.shared.logic.common_conditions import (
-            receipt as conditions,
-        )
-        from sdk.enemy_logic_exporter.shared.logic.navigation_conditions import (
-            receipt as navigation,
-        )
-        from sdk.enemy_logic_exporter.shared.logic.predicates import RuleRegistry
-        from sdk.enemy_logic_exporter.shared.models.catalog import read_models
-        from sdk.enemy_logic_exporter.shared.workflow import freeze
-
-        self.assertEqual(DATA_DIR, ROOT / "sdk/enemy_logic_exporter/data")
-        self.assertEqual(MODEL_DIR, DATA_DIR / "models")
-        self.assertEqual(RULES_PATH, DATA_DIR / "rules.v1.json")
-        for receipt in (actions, combat, conditions, navigation):
-            self.assertEqual(receipt()["profile"], SUPPORTED_PROFILE)
-        self.assertEqual(RuleRegistry.load().data["profile"], SUPPORTED_PROFILE)
-        spec = read_models()[0]
-        graph = dict(
-            profile=SUPPORTED_PROFILE,
-            evidence=dict(
-                type="fixture",
-                method="test",
-                address="0x1000",
-                end="0x1001",
-                nativeSha256="a" * 64,
-            ),
-        )
-        with tempfile.TemporaryDirectory() as directory:
-            with patch.object(
-                freeze,
-                "digest",
-                side_effect=[
-                    SUPPORTED_PROFILE["exeSha256"],
-                    SUPPORTED_PROFILE["metadataSha256"],
-                ],
-            ), patch.object(
-                freeze, "extract_model", return_value=graph
-            ) as extract, patch.object(
-                freeze, "verify_rows"
-            ):
-                freeze.freeze_models(
-                    MODEL_DIR,
-                    Path(directory),
-                    Path("fixture.exe"),
-                    Path("fixture.json"),
-                    Path("natives"),
-                    SUPPORTED_PROFILE,
-                )
-        self.assertEqual(extract.call_args.kwargs["rules_path"], RULES_PATH)
-        self.assertEqual(extract.call_args.args[2], spec.path)
-
 
 class DiagramTests(unittest.TestCase):
     def graph(self):

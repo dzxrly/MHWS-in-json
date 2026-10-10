@@ -3,6 +3,37 @@
 ENEMY_ID = "EM0046_00_0"
 NATIVE_OWNER = "Em0046_00"
 
+# cIsSwimCombatPhase (game 1.42.0.2): cEm0046_00Extend
+# _DoneSwimCombatPhaseEndAction (+0x116) is false and _IsSwimCombatPhase
+# (+0x10e) is true.
+FIELD_CHECKS = {
+    "app.btable.Em0046_00BTableCommand.cIsSwimCombatPhase": dict(
+        spec=(
+            "all",
+            ("not", ("extend:_DoneSwimCombatPhaseEndAction",)),
+            ("extend:_IsSwimCombatPhase",),
+        ),
+        extend="app.cEm0046_00Extend",
+        evidence=[
+            dict(
+                type="app.btable.Em0046_00BTableCommand.cIsSwimCombatPhase",
+                method="onExecute1233781",
+                address="0x144195220",
+                end="0x144195270",
+            )
+        ],
+        summary="IsSwimCombatPhase 成立且 DoneSwimCombatPhaseEndAction 不成立",
+    ),
+}
+
+
+def recover_condition(node, enemy_id, resources):
+    """Reviewed field-comparison commands of this monster (FIELD_CHECKS)."""
+    from ..shared.logic.field_checks import declared_condition
+
+    return declared_condition(FIELD_CHECKS, node)
+
+
 # Verified Extend rule of this monster (game 1.42.0.2); the record lives in
 # data/rules.v1.json, the offsets below are checked by the curation command.
 EXTEND_TYPE = "app.cEm0046_00Extend"

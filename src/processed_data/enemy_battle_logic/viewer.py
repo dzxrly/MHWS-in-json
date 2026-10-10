@@ -35,9 +35,7 @@ def render_html(graph):
     vendor = here / "vendor/elkjs"
     coverage = graph["coverage"]
     game_version = graph.get("profile", {}).get("gameVersion")
-    enemy = graph.get("enemyName") or {"EM0001_00_0": "雌火龙"}.get(
-        graph["enemyId"], graph["enemyId"]
-    )
+    enemy = graph.get("enemyName") or graph["enemyId"]
     payload = json.dumps(
         {
             "graph": graph,
