@@ -811,7 +811,8 @@ def _join(names):
 
 
 def _signed(value, size):
-    if type(value) is int and size == 4 and value & 0x80000000:
+    # Only raw unsigned spellings are converted; -1 stays -1.
+    if type(value) is int and size == 4 and 0x80000000 <= value <= 0xFFFFFFFF:
         return value - (1 << 32)
     return value
 
@@ -830,6 +831,26 @@ def _expression(sym, namer):
         return combined("all" if kind == "and" else "any", *items)
     if kind == "not":
         return invert(_expression(sym[1], namer))
+    if kind == "unknown":
+        return dict(kind="unknown", reason=sym[1])
+    if kind == "bool_bit":
+        # Bit 0 of a byte read is the truth of a Boolean field (x64 recognizer).
+        named = namer.leaf(sym[1])
+        if named is None or named[0] != "key" or named[2] != "System.Boolean":
+            raise Unsupported("非布尔字段的位测试")
+        return runtime(named[1], named[1].split(":", 1)[-1] + " 为真")
+    if kind == "isa":
+        # Runtime class-hierarchy test of an object's class (x64 recognizer).
+        klass, key = sym[1], None
+        if klass[0] == "load" and klass[1] == 8 and klass[3] == 0:
+            # The class is read as *object or, like the exact check, **object.
+            inner = klass[2]
+            if inner[0] == "load" and inner[1] == 8 and inner[3] == 0:
+                key = namer.guard(inner[2])
+            key = key or namer.guard(inner)
+        if key is None or sym[2][0] != "global":
+            raise Unsupported("未知对象的类继承检查")
+        return runtime(key, "原生类继承检查通过")
     if kind != "cmp":
         raise Unsupported("非比较叶子")
     operator, left, right = sym[1], sym[2], sym[3]
@@ -856,6 +877,9 @@ def _expression(sym, namer):
     for a, b, op in ((left, right, operator), (right, left, mirrored[operator])):
         if b == ("const", 0) and op in ("==", "!="):
             key = namer.guard(a)
+            if key is None and hasattr(namer, "exists"):
+                # Null check of another object field (x64 recognizer).
+                key = namer.exists(a)
             if key is not None:
                 test = runtime(key, "对象存在")
                 return test if op == "!=" else invert(test)
@@ -954,9 +978,12 @@ def instantiate(formula, argument):
     if not isinstance(formula, dict):
         return formula
     if formula.get("kind") == "argument":
-        if argument is None or formula["field"] not in argument:
+        # "a|b": fields sharing one offset; the resource serializes only the
+        # instance field, so exactly one of them must be present.
+        present = [f for f in formula["field"].split("|") if f in (argument or {})]
+        if len(present) != 1:
             return None
-        raw = scalar(argument[formula["field"]])
+        raw = scalar(argument[present[0]])
         value = enum_number(raw) if isinstance(raw, str) else raw
         if type(value) not in (int, float, bool):
             return None

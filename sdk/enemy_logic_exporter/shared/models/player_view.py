@@ -19,6 +19,7 @@ from ..resources.action_names import CLASS_EXPLANATIONS
 from ..config import (
     BAD_CONDITION_LABELS,
     ENEMY_TARGET_STATUS,
+    EXISTS_SUFFIX,
     HUNTER_STATUS_LABELS,
     SLOT_GROUPS,
     STATE_SIGN_LABELS,
@@ -94,6 +95,51 @@ POSTURE_NAMES = {
     "common": {0: "地面", 1: "飞行", 2: "墙面"},
     "extra": {0: "潜地", 1: "天花板", 2: "柱子", 3: "游泳"},
 }
+# CheckStatus.execute_StandState: the unique layer wins over the extra layer,
+# which wins over the common stand state.
+POSTURE_HINT = (
+    "游戏按优先级合成当前姿态：怪物处于本怪物专用的状态时，以专用状态为准；"
+    "没有专用状态时，看潜地、天花板等额外状态；两者都没有时，才是地面、飞行等普通站立状态。"
+    "标有“专用姿态”的选项是本怪物独有的状态，按游戏内部枚举名显示。"
+)
+# Hints for inputs whose label has to keep an internal name or number.
+INPUT_HINTS = {
+    "self_current_stage_no": "游戏内部字段 Area._CurrentStageNo 的编号，没有对应的官方名称。",
+    "self_current_area_no": "游戏内部字段 Area._CurrentAreaNo 的编号，没有对应的官方名称。",
+    "self_hostility": "游戏内部字段 Hostility.IsHostility。",
+    "self_state_sign": "怪物内部的状态信号（StateSign），同一时刻只有一个。",
+    "ai_interrupt_next": "已经请求、尚未切换过去的 AI 中断。",
+    "gimmick_reaction_type": "选项为游戏内部的机关类型枚举名。",
+    "distance_horizontal": "游戏内的判断值，与米的换算尚未确认。",
+    "distance_3d": "游戏内的判断值，与米的换算尚未确认。",
+}
+INPUT_HINT_PREFIXES = {
+    "context:": "游戏内部字段 cEnemyContext.{path}，没有官方中文名，按原字段名显示。",
+    "extend:": "本怪物专用数据 {type} 的字段 {path}，没有官方中文名，按原字段名显示。",
+    "unique_level:": "本怪物专用等级值的类别，按游戏内部枚举名显示。",
+    "destination_found:": "括号内是移动目的地类别的内部枚举名；表示在当前场景中能否找到这一类目的地。",
+    "ai_interrupt_exists:": "该中断已经生成、正在等待处理。",
+}
+
+
+def input_hints(inputs):
+    """Explain the inputs whose labels keep an internal name or number."""
+    for key, field in inputs.items():
+        if field.get("hint"):
+            continue
+        hint = INPUT_HINTS.get(key)
+        for prefix, text in INPUT_HINT_PREFIXES.items():
+            if hint is None and key.startswith(prefix):
+                rest = key[len(prefix) :].removesuffix(EXISTS_SUFFIX)
+                owner, _, path = rest.partition("Extend.")
+                hint = text.format(
+                    path=rest if prefix == "context:" else path,
+                    type=owner + "Extend",
+                )
+        if hint:
+            field["hint"] = hint
+
+
 # Reviewed checks over live scene or part state; players see one input each.
 SCENE_INPUTS = {
     "cCheckDestinationRelation": "destination_relation",
@@ -300,7 +346,7 @@ class PlayerCompiler:
             label = ("专用姿态 " if name == "unique" else "") + (raw or str(value))
         option = dict(label=label, value=f"{name}:{value}")
         field = self.inputs.setdefault(
-            "posture", dict(label="当前姿态（专用 > 额外 > 普通）", options=[])
+            "posture", dict(label="当前姿态", hint=POSTURE_HINT, options=[])
         )
         if option not in field["options"]:
             field["options"].append(option)
@@ -318,6 +364,29 @@ class PlayerCompiler:
 
     def choices(self, key, label, options):
         self.inputs.setdefault(key, dict(label=label, options=options))
+
+    def variable_name(self, guid):
+        """The resource's export name, else the GUID prefix that tells inputs apart."""
+        return self.timers.get(guid, {}).get("name") or guid[:8]
+
+    def variable_hint(self, guid):
+        record = self.timers.get(guid, {})
+        kind = dict(timer="计时器", float="浮点变量", bool="布尔变量").get(
+            record.get("kind"), "变量"
+        )
+        parts = [f"行为表{kind}，GUID {guid}。"]
+        if not record.get("name"):
+            parts.append("资源没有给它命名，标签用 GUID 前 8 位区分。")
+        default = record.get("default")
+        if isinstance(default, bool):
+            parts.append(f"初始值为{'是' if default else '否'}。")
+        elif isinstance(default, (int, float)):
+            parts.append(f"初始值 {default:g}。")
+        if record.get("life"):
+            parts.append(f"生命周期 {record['life']}。")
+        if record.get("kind") == "timer":
+            parts.append("计时的时间单位尚未核实。")
+        return "".join(parts)
 
     def predicate(self, predicate):
         if predicate.get("status") != "verified":
@@ -346,7 +415,12 @@ class PlayerCompiler:
                 # IN_SIDE |h| < t (cCheckDistance.onExecute).
                 key = HEIGHT_DIFFERENCE
                 self.inputs.setdefault(
-                    key, dict(label="玩家相对怪物的高度差（玩家较高为正）", signed=True)
+                    key,
+                    dict(
+                        label="玩家相对怪物的高度差",
+                        hint="玩家比怪物高时为正数，比怪物低时为负数。",
+                        signed=True,
+                    ),
                 )
                 height = enum_number(values["height"])
                 if height not in (0, 1, 2):
@@ -457,9 +531,7 @@ class PlayerCompiler:
                     )
             if category == 15:
                 # execute: cEnemyContext.Hostility.<IsHostility>k__BackingField.
-                return self.boolean(
-                    "self_hostility", "怪物的敌对标志（Hostility.IsHostility）成立"
-                )
+                return self.boolean("self_hostility", "怪物处于敌对状态")
             if category == 17:
                 # execute_GroundMaterial: ground material queried below the monster.
                 material = scalar(predicate["argument"]["GroundMaterial"])
@@ -482,15 +554,17 @@ class PlayerCompiler:
             return self.context_option(key, enum_number(values["value"]))
         if kind == "variable_bool":
             guid = str(values["variable"])
-            default = self.timers.get(guid, {}).get("default")
             key = "variable:" + guid
             self.inputs.setdefault(
                 key,
                 dict(
-                    label="行为表布尔变量"
-                    + (f"（初始值 {'是' if default else '否'}）" if isinstance(default, bool) else ""),
+                    label="行为表布尔变量 " + self.variable_name(guid),
+                    hint=self.variable_hint(guid),
                     group="variable",
-                    options=[dict(label="是", value=True), dict(label="否", value=False)],
+                    options=[
+                        dict(label="是", value=True),
+                        dict(label="否", value=False),
+                    ],
                 ),
             )
             expected = values["value"]
@@ -499,17 +573,12 @@ class PlayerCompiler:
             return comparison(key, "eq", expected)
         if kind == "variable_float":
             guid = str(values["variable"])
-            default = self.timers.get(guid, {}).get("default")
             key = "float:" + guid
             self.inputs.setdefault(
                 key,
                 dict(
-                    label="行为表浮点变量"
-                    + (
-                        f"（初始值 {default:g}）"
-                        if isinstance(default, (int, float))
-                        else ""
-                    ),
+                    label="行为表浮点变量 " + self.variable_name(guid),
+                    hint=self.variable_hint(guid),
                     group="variable",
                     unit="数值",
                 ),
@@ -532,15 +601,16 @@ class PlayerCompiler:
             return comparison(key, operator, target)
         if kind == "timer":
             guid = str(values["variable"])
-            timer = self.timers.get(guid, {})
-            default = timer.get("default")
-            label = "计时器到期" + (f"（初始值 {default:g}）" if isinstance(default, (int, float)) else "")
             self.inputs.setdefault(
                 "timer:" + guid,
                 dict(
-                    label=label,
+                    label=f"计时器 {self.variable_name(guid)} 已到期",
+                    hint=self.variable_hint(guid),
                     group="timer",
-                    options=[dict(label="是", value=True), dict(label="否", value=False)],
+                    options=[
+                        dict(label="是", value=True),
+                        dict(label="否", value=False),
+                    ],
                 ),
             )
             return comparison("timer:" + guid, "eq", True)
@@ -586,14 +656,8 @@ class PlayerCompiler:
                 "selected_hunter_stun_active": ("hunter_stunned", "玩家眩晕"),
                 "environment_current_rank": ("quest_rank", "任务等级"),
                 "self_basic_legendary_id": ("legendary_id", "怪物历战分类"),
-                "self_current_stage_no": (
-                    "self_current_stage_no",
-                    "怪物所在地图 Area._CurrentStageNo",
-                ),
-                "self_current_area_no": (
-                    "self_current_area_no",
-                    "怪物所在区域 Area._CurrentAreaNo",
-                ),
+                "self_current_stage_no": ("self_current_stage_no", "怪物所在地图编号"),
+                "self_current_area_no": ("self_current_area_no", "怪物所在区域编号"),
             }
             key = operand.get("key")
             if operand.get("kind") == "runtime" and key in SCENARIO_GUARDS:
@@ -610,11 +674,15 @@ class PlayerCompiler:
                 str(key).startswith(("extend:", "context:"))
                 and right.get("kind") == "constant"
             ):
+                path, exists = key, key.endswith(EXISTS_SUFFIX)
+                if exists:
+                    # A null check of an object field (x64 recognizer).
+                    path = key[: -len(EXISTS_SUFFIX)]
                 label = (
-                    "专用状态 " + extend_field_label(key)
+                    "专用状态 " + extend_field_label(path)
                     if key.startswith("extend:")
-                    else "怪物状态 " + field_path_label(key.split(":", 1)[1])
-                )
+                    else "怪物状态 " + field_path_label(path.split(":", 1)[1])
+                ) + (" 对象存在" if exists else "")
                 if kind == "runtime":
                     return self.boolean(key, label)
                 names = self.extend_enums.get(key, {})
@@ -716,7 +784,8 @@ class PlayerCompiler:
                     self.inputs.setdefault(
                         mapped,
                         dict(
-                            label="当前目标类型（任意＝情境默认的玩家）",
+                            label="当前目标类型",
+                            hint="选“任意”时沿用情境的默认设定：怪物的目标是玩家。改成怪物、随从等，可查看针对其他目标的分支。",
                             options=[
                                 dict(label=name, value=value)
                                 for value, name in TARGET_KEY_CATEGORIES.items()
@@ -850,7 +919,9 @@ class PlayerCompiler:
                 None,
             )
             if option is not None and expression["operator"] in ("eq", "ne"):
-                return f"{label}{'：' if expression['operator'] == 'eq' else '不是 '}{option}"
+                # A space only before internal (ASCII) names: "不是飞行", "不是 NONE".
+                negated = "不是" + (" " if str(option)[:1].isascii() else "")
+                return f"{label}{'：' if expression['operator'] == 'eq' else negated}{option}"
             return (
                 f"{label} {operator} {value:g}"
                 if isinstance(value, (int, float))
@@ -1192,6 +1263,7 @@ def build_player_view(graph):
             )
         )
         field["numericRange"] = dict(min=0, max=180 if field.get("angle") else None)
+    input_hints(compiler.inputs)
     return dict(
         schemaVersion=1,
         scenario=dict(

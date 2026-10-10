@@ -10,13 +10,11 @@ from .monster_rules import hooks
 from .static_pools import native_initializer_pools
 from ..native.pe import PE, verify_rows
 import hashlib
-from ..config import ROOT
-
+from ..config import in_agents
 
 def export_commands(helper_index, metadata, output, *, exe, inventory=None):
     output = Path(output).resolve()
-    root = ROOT
-    if not output.is_relative_to(root / ".agents"):
+    if not in_agents(output):
         raise ValueError("命令原生证据只允许写入 .agents")
     index_path = Path(helper_index)
     index = json.loads(index_path.read_text(encoding="utf8"))

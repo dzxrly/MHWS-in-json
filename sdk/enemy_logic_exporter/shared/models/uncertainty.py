@@ -102,3 +102,55 @@ def uncertainty_report(models_dir, top=30):
         monsters=monsters,
         topCommands=commands.most_common(top),
     )
+
+
+def _unknown_reasons(expression, out):
+    kind = expression.get("kind")
+    if kind == "unknown":
+        out.add(expression.get("reason", ""))
+    elif kind == "predicate" and expression["predicate"].get("status") != "verified":
+        out.add("规则未核实：" + str(expression["predicate"].get("status")))
+    elif kind in ("all", "any"):
+        for item in expression["items"]:
+            _unknown_reasons(item, out)
+    elif kind == "not":
+        _unknown_reasons(expression["item"], out)
+
+
+def unknown_census(models_dir, top=40):
+    """Group every condition with an unknown part by command and by reason.
+
+    Unlike ``uncertainty_report`` this covers all tables (ecology, other
+    monsters, unattached parts), so it shows the largest classes to work on.
+    The total equals the summed ``coverage.unknownConditions``.
+    """
+    from ..logic.expressions import expression_unknown
+
+    commands, reasons, total = Counter(), Counter(), 0
+    for path in sorted(Path(models_dir).glob("em*.v*.json")):
+        model = json.loads(path.read_text(encoding="utf8"))
+        if model.get("storage"):
+            raise ValueError("分类统计需要 .agents 中的完整研究模型")
+        for table in model["tables"]:
+            for node in table["nodes"]:
+                if node["kind"] != "condition":
+                    continue
+                expression = node.get("expression")
+                if expression is None:
+                    if node["predicate"].get("status") == "verified":
+                        continue
+                    found = {"规则未核实：" + str(node["predicate"].get("status"))}
+                elif expression_unknown(expression):
+                    found = set()
+                    _unknown_reasons(expression, found)
+                else:
+                    continue
+                total += 1
+                command = node.get("commandType") or node.get("expectedCommandType")
+                commands[str(command or "（命令外的流程条件）").rsplit(".", 1)[-1]] += 1
+                reasons.update(reason[:80] for reason in found)
+    return dict(
+        unknownConditions=total,
+        topCommands=commands.most_common(top),
+        topReasons=reasons.most_common(top),
+    )
