@@ -447,6 +447,13 @@ def _context_path(metadata, path, last):
     return names, owner
 
 
+# The command-work existence and exact-type check that opens most bodies.
+WORK_GUARD = (
+    r"param_3 (?:==|!=) \(undefined8 \*\)0x0"
+    r"|\*\(longlong \*\)\*param_3 (?:==|!=) _DAT_[0-9a-f]+"
+)
+
+
 def recover_context_leaf(row, code, metadata):
     """A command that only compares one cEnemyContext module field.
 
@@ -488,6 +495,15 @@ def recover_context_leaf(row, code, metadata):
             body,
         )
     if match is None:
+        return None
+    # Canonical shape only: besides the work guard, the one read (or its
+    # assignment) and the matched return, the body may hold no other read or
+    # comparison; an extra condition would otherwise be silently dropped.
+    rest = body.replace(match[0], "")
+    if assigned:
+        rest = rest.replace(assigned[0], "")
+    rest = re.sub(WORK_GUARD, "", rest)
+    if re.search(r"\*\(|==|!=|<=|>=|(?<![<])<(?![<=])|(?<![>])>(?![>=])", rest):
         return None
     resolved = _context_path(metadata, read["path"], read["last"])
     if resolved is None:

@@ -26,6 +26,15 @@ from ..config import (
 )
 
 UNATTACHED_GROUP = "接入位置待核查的局部分支"
+# app.TARGET_ACCESS_KEY.CATEGORY values compared by target checks.
+TARGET_KEY_CATEGORIES = {
+    0: "玩家",
+    1: "怪物",
+    2: "随从",
+    3: "PORTER",
+    4: "GIMMICK",
+    5: "NPC",
+}
 # Validity preconditions that hold whenever this monster is fighting the player
 # it targets; they are scenario inputs, never hidden assumptions.
 SCENARIO_GUARDS = {
@@ -701,6 +710,19 @@ class PlayerCompiler:
                 mapped, label = keys[key]
                 if mapped == "hunter_stunned":
                     self.boolean(mapped, label)
+                elif mapped == "selected_target_key_type":
+                    # The scenario defaults the target to the player; the
+                    # input lets other-monster and companion branches be read.
+                    self.inputs.setdefault(
+                        mapped,
+                        dict(
+                            label="当前目标类型（任意＝情境默认的玩家）",
+                            options=[
+                                dict(label=name, value=value)
+                                for value, name in TARGET_KEY_CATEGORIES.items()
+                            ],
+                        ),
+                    )
                 elif label:
                     self.inputs.setdefault(mapped, dict(label=label, options=[]))
                     option = dict(label=str(right["value"]), value=right["value"])
@@ -773,9 +795,9 @@ class PlayerCompiler:
             if key == "ordinary_combat_snapshot":
                 return "仍是本次普通战斗选招"
             if key == "selected_target_key_type":
-                return {0: "当前目标是玩家", 1: "当前目标是怪物", 2: "当前目标是随从"}.get(
-                    value, "当前目标类型为 " + str(value)
-                ) if expression["operator"] == "eq" else "当前目标不是玩家"
+                name = TARGET_KEY_CATEGORIES.get(value, str(value))
+                verb = "是" if expression["operator"] == "eq" else "不是"
+                return f"当前目标{verb}{name}"
             if key in SCENARIO_GUARDS:
                 return SCENARIO_GUARDS[key]
             if str(key).startswith(("extend:", "context:")) and key in self.inputs:

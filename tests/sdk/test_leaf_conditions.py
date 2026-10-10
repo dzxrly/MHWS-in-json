@@ -231,6 +231,15 @@ class ContextFieldTests(unittest.TestCase):
             )
         )
 
+    def test_extra_branch_conditions_are_not_dropped(self):
+        from sdk.enemy_logic_exporter.shared.logic.commands import recover_context_leaf
+
+        extra = self.code.replace(
+            "== _DAT_15471e840))",
+            "== _DAT_15471e840) && (*(int *)(*(longlong *)(param_4 + 0x18) + 0x10) == 2))",
+        )
+        self.assertIsNone(recover_context_leaf(self.row, extra, self.Metadata()))
+
 
 class FieldFormulaTests(unittest.TestCase):
     HEAD = "undefined8 f(undefined8 param_1,undefined8 param_2,undefined8 *param_3)\n"

@@ -341,11 +341,12 @@ class NativeRecipeContext:
                 if rows:
                     if len(rows) == 1:
                         code = _artifact(self.helper_path, self.helpers, rows[0])["code"]
-                        found = recover_leaf(
-                            rows[0], code, self.metadata, self.pe
-                        ) or recover_context_leaf(rows[0], code, self.metadata)
-                        found = found or recover_formula_leaf(
-                            rows[0], code, self.metadata
+                        # The formula keeps every path condition; the
+                        # single-read context recognizer is only a fallback.
+                        found = (
+                            recover_leaf(rows[0], code, self.metadata, self.pe)
+                            or recover_formula_leaf(rows[0], code, self.metadata)
+                            or recover_context_leaf(rows[0], code, self.metadata)
                         )
                         if found is not None and found.get("contextFieldType"):
                             found["enumType"], found["enumValues"] = self.metadata.enum(
