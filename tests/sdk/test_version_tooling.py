@@ -6,7 +6,6 @@ import unittest
 from sdk.enemy_logic_exporter.shared.models.uncertainty import evaluate
 from sdk.enemy_logic_exporter.shared.native.symbols import (
     Method,
-    evidence_rows,
     find_method,
     method_stem,
 )
@@ -107,12 +106,6 @@ class SymbolTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "无法唯一定位"):
             find_method(metadata, Method("app.T", "setCurrentPosition"))
 
-    def test_evidence_rows_are_found_anywhere_in_a_document(self):
-        row = dict(type="a", method="m1", address="0x1", end="0x2", nativeSha256="0")
-        document = dict(methods={"m1": row}, rules=[dict(evidence=dict(row))])
-        self.assertEqual(len(evidence_rows(document)), 2)
-
-
 class RosterTests(unittest.TestCase):
     def test_combat_owner_and_exclusions_come_from_the_resources(self):
         from sdk.enemy_logic_exporter.shared.models.roster import build_roster
@@ -172,27 +165,3 @@ class LeafRuleTests(unittest.TestCase):
             constant=None,
         )
         return {**base, **extra}
-
-    def test_argument_leaf_compares_the_extend_field_with_the_resource_value(self):
-        from sdk.enemy_logic_exporter.shared.logic.commands import leaf_expression
-        from sdk.enemy_logic_exporter.shared.logic.expressions import evaluate_expression
-        from sdk.enemy_logic_exporter.shared.logic.predicates import RuleRegistry
-
-        expression = leaf_expression(self.leaf(), {"_ChoicePhase": "[2] PHASE_2"})
-        context = dict(enemy_command_work_valid=True, self_extend_valid=True)
-        key = "extend:app.cEm0162_00Extend._QuestPhase"
-        registry = RuleRegistry.load()
-        self.assertTrue(evaluate_expression(expression, registry, dict(context, **{key: 3})).truth)
-        self.assertFalse(evaluate_expression(expression, registry, dict(context, **{key: 1})).truth)
-        self.assertIsNone(leaf_expression(self.leaf(), {}))
-
-    def test_boolean_leaf_without_argument_reads_the_field_itself(self):
-        from sdk.enemy_logic_exporter.shared.logic.commands import leaf_expression
-
-        leaf = self.leaf(
-            contextFieldType="System.Boolean", operator="==", argumentField=None
-        )
-        leaf["constant"] = 0
-        test = leaf_expression(leaf)["items"][1]
-        self.assertEqual(test["kind"], "not")
-        self.assertEqual(test["item"]["key"], "extend:app.cEm0162_00Extend._QuestPhase")

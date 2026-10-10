@@ -1,6 +1,6 @@
 # 怪物行动逻辑提取与维护
 
-本目录是离线研究 SDK，代码统一使用 Python。它读取游戏 EXE 和匹配的 IL2CPP JSON，提取原生方法证据，再用人工核实过的配方固化语义与控制流。公共分析代码位于 `shared/`，按原生证据、游戏资源、语义恢复、模型构建和离线流程分组；JSON 文件统一放在 `data/`。每个大型怪物（含独立变种，排除训练靶）在 `monster/<完整ID小写>.py` 有独立入口。与单只怪物强相关的常量和处理代码只放在它自己的模块里，例如专用命令的字段、偏移、枚举含义、阶段与状态规则和原生配方；`shared/` 只放共通逻辑，以及向怪物模块分派的接口（`shared/logic/monster_rules.py`），不写任何怪物编号或专用常量；名单本身是数据（`data/roster.v1.json`），由 `roster` 从 EnemyData 与 BTableList 生成。SDK 与 `src` 之间只通过 JSON 文件交接，双方禁止导入或调用对方的代码。网页构建器位于 `src/processed_data/enemy_battle_logic`，只读取已解析的图 JSON，不能读取游戏资源、IL2CPP 或 EXE。
+本目录是离线研究 SDK，代码统一使用 Python。它读取游戏 EXE 和匹配的 IL2CPP JSON，提取原生方法证据，再用人工核实过的配方固化语义与控制流。公共分析代码位于 `shared/`，按原生证据、游戏资源、语义恢复、模型构建和离线流程分组；JSON 文件统一放在 `data/`。每个大型怪物（含独立变种，排除训练靶）在 `monster/<完整ID小写>.py` 有独立入口。与单只怪物强相关的常量和处理代码只放在它自己的模块里，例如专用命令的字段、偏移、枚举含义、阶段与状态规则和原生配方；`shared/` 只放共通逻辑，以及向怪物模块分派的接口（`shared/logic/monster_rules.py`），不写任何怪物编号或专用常量；名单本身是数据（`data/roster.v1.json`），由 `roster` 从 EnemyData 与 BTableList 生成。大多数怪物的判断都能由共通规则和自动恢复的 `leafRules` 覆盖，它们的模块只是调用共通配方的薄入口，这是正常的；只有出现必须人工核实的专用命令、阶段或状态时，才在该怪物模块中加入常量和处理函数，并通过 `monster_rules.py` 的钩子接入。SDK 与 `src` 之间只通过 JSON 文件交接，双方禁止导入或调用对方的代码。网页构建器位于 `src/processed_data/enemy_battle_logic`，只读取已解析的图 JSON，不能读取游戏资源、IL2CPP 或 EXE。
 
 ## 维护边界
 
@@ -8,7 +8,9 @@
 - 调试代码、反编译结果、Ghidra 项目、截图及测试输出统一放在项目根目录 `.agents`。默认工作目录是 `.agents/enemy-logic-exporter`。
 - 不复制 EXE 或完整 IL2CPP dump 到 Git；不提交 `.agents` 中的证据缓存。
 - EM166 的历史图与原始分析只能作为对照，不能作为其他怪物图的节点、连接或判断依据。
-- 原生地址、参数索引、字段偏移、静态权重地址、方法名后缀均与游戏版本相关。更新后不能仅替换版本号或 SHA-256 以绕过检查。
+- 原生地址、参数索引、字段偏移、静态权重地址、方法名后缀均与游戏版本相关。更新后不能仅替换版本号或摘要以绕过检查。
+- 证据行以“类型 + 方法名 + 起止地址”标识（`config.EVIDENCE_KEYS`），按当前 EXE 的原生字节核对；代码和 `data/` 中的 JSON 不逐行保存 SHA-256。EXE/元数据摘要只记录在 profile，`.agents` 缓存的内容寻址摘要保留在缓存内部。
+- 怪物名、部位名、gimmick 等专有名称使用游戏消息（`*.msg.23.json`，简体中文列）中的官方文本，由 `Resources.message`、`enemy_name`、`part_name` 读取；找不到对应条目时显示原始类名或枚举名，不自行翻译。
 - 保留用户已有暂存改动；本目录的迁移或维护不自动授权提交、推送或发布。
 
 ## 构建思路（先读这一节）
@@ -48,8 +50,8 @@
 
 `player_view.py` 把研究模型编译成 `playerView`：
 
-- **情境（scenario）**：把“单人或主机玩家是目标、怪物处于战斗 AI、没有待处理或已存在的诱导/骑乘/登场/退场中断、动作请求未被屏蔽、本模型的怪物身份”等前提写成显式输入（`SCENARIO_GUARDS`/`SCENARIO_FACTS`/`SCENARIO_VALUES`、`self_enemy_id`），而不是让每个条件都显示未知。自身状态检查中的 LEAD/ENTRY/EXIT/RIDE 读取 `AIStateManager._NextAIInterruptID` 或 `_ExistInterruptResult[id]`，不是 AI 状态；共享 Combat 中的 ENEMY 判断按模型自身 ID 定值。
-- **玩家输入**：距离、角度、怒、疲劳、当前姿态、计时器到期（`variableCatalog` 初始值）、行为表布尔与浮点变量、专用 Extend 字段、专用等级值、地形与遮挡（`SCENE_INPUTS`）、导航目的地能否设置等，网页上可直接设定。当前姿态把 `CheckStatus.execute_StandState` 的三层合成一个输入：专用状态（`EmXXXXDef.UNIQUE_STATE_Fixed`）优先于额外状态（`EnemyDef.EXTRA_STATE`），额外状态优先于普通站立状态；`EnemyCharacter.doLateUpdateEnd` 每帧把 Extend 的专用状态复制到 `cEnemyContext.UniqueStateFixedID`，因此专用命令和自身状态检查使用同一输入。模型以 `standStates` 记录三层枚举名（研究字段，发布时删除）。浮点变量的相等/不等按绝对差小于 0.001 判断（`rules.v1.json` 的 `equalityTolerance`）。
+- **情境（scenario）**：把“单人或主机玩家是目标、怪物处于战斗 AI、没有待处理或已存在的诱导/骑乘/登场/退场中断、动作请求未被屏蔽、本模型的怪物身份”等前提写成显式输入（`SCENARIO_GUARDS`/`SCENARIO_FACTS`/`SCENARIO_VALUES`、`self_enemy_id`），而不是让每个条件都显示未知。自身状态检查中的 LEAD/ENTRY/EXIT/RIDE 读取 `AIStateManager._NextAIInterruptID` 或 `_ExistInterruptResult[id]`，不是 AI 状态；共享 Combat 中的 ENEMY 判断按模型自身 ID 定值。情境输入（`persistent`）在动作让出后继续保留，网页引擎不会在续招处把它们重置为未知。
+- **玩家输入**：距离、角度、怒、疲劳、当前姿态、计时器到期（`variableCatalog` 初始值）、行为表布尔与浮点变量、专用 Extend 字段、专用等级值、地形与遮挡（`SCENE_INPUTS`）、导航目的地能否设置等，网页上可直接设定。距离判断区分水平距离、三维距离（axis 1）与高度差（axis 2，带符号）；怪物专用状态字段经 `commands.recover_context_leaf` 识别为“怪物状态 <路径>”；另有 gimmick 反应类型、骑乘部位（官方部位名）、敌对状态、地面材质、竞技场任务，以及怪物模块经 `recover_condition` 声明的场景输入（每个资源参数一个键，如冻峰龙的腿关节方位）。已确定为真的内部检查只作为节点上的“已通过检查”说明，不再阻断路径。当前姿态把 `CheckStatus.execute_StandState` 的三层合成一个输入：专用状态（`EmXXXXDef.UNIQUE_STATE_Fixed`）优先于额外状态（`EnemyDef.EXTRA_STATE`），额外状态优先于普通站立状态；`EnemyCharacter.doLateUpdateEnd` 每帧把 Extend 的专用状态复制到 `cEnemyContext.UniqueStateFixedID`，因此专用命令和自身状态检查使用同一输入。模型以 `standStates` 记录三层枚举名（研究字段，发布时删除）。浮点变量的相等/不等按绝对差小于 0.001 判断（`rules.v1.json` 的 `equalityTolerance`）。
 - 剩下在全部输入已知后仍无法判定的条件才是“不确定”。`uncertainty` 命令统计这类条件并按命令排序——它是决定下一步该核实哪条命令的依据，也是衡量改动效果的指标（改动前后都要跑）。
 
 降低不确定性的固定顺序：`uncertainty` 找出影响最大的命令 → 阅读反编译/反汇编核实其原生语义 → 写成规则、公共条件或可自动恢复的模式 → 在 `player_view.py` 中编译为情境或玩家输入 → 重新提取并对比统计。不能为了减少未知而把未核实的判断写成固定值。
@@ -69,7 +71,7 @@
 ### 必须坚持的原则
 
 1. **不编造**：没有证据的连接、条件、入口和概率保持未知或边界；partial 就写 partial。
-2. **证据可复现**：每个结论绑定版本 profile、方法身份和字节摘要；版本不符时拒绝运行，而不是降级使用旧数据。
+2. **证据可复现**：每个结论绑定版本 profile 与方法身份，并能对当前 EXE 重新核对原生字节；版本不符时拒绝运行，而不是降级使用旧数据。
 3. **可度量**：每次改动前后对比未知流程节点、不确定条件、随机分支、模型大小等统计；纯重构必须得到逐字节一致的模型。
 4. **常量集中**：版本相关的地址、偏移、内部名只放在 `shared/config.py`、profile 或 `monster/<id>.py` 文件头部。
 5. **通用优先**：先寻找可自动识别的模式（如 Extend 字段比较、立即数槽参数），再为单个怪物写配方；单个怪物的历史图（如 EM0166）不能当作其他怪物的依据。
@@ -78,7 +80,7 @@
 
 `shared/native` 负责只读 PE、元数据及原生证据；`shared/resources` 负责资源发现、参数和动作身份；`shared/logic` 负责已核实的条件、命令与机器追踪；`shared/models` 负责图构建、JSON 读写和覆盖校验；`shared/workflow` 负责 CLI 与离线批次调度。各组只保留具体实现，不提供旧路径兼容包装。`shared/config.py` 集中定义项目根目录、数据路径、来源 profile 以及全部版本相关常量（见“版本相关常量”），资源定位不依赖当前工作目录。
 
-`data/evidence` 保存配方的 JSON 证据（含 `scheduler_slots.v1.json` 调度槽证据），`data/rules.v1.json` 保存已核实规则，`data/models` 保存待解析语义输入。`shared` 和 `monster` 只保存 Python 代码，研究运行生成的缓存继续放在项目根目录 `.agents`。
+`data/evidence` 保存配方的 JSON 证据（含 `scheduler_slots.v1.json` 调度槽证据），`data/rules.v1.json` 保存已核实规则。`shared` 和 `monster` 只保存 Python 代码，研究运行生成的缓存继续放在项目根目录 `.agents`。
 
 | 文件 | 职责 |
 |---|---|
@@ -94,7 +96,7 @@
 | `shared/native/evidence.py` | 去重原生字节身份、地址别名和类型字段，保留每个类型的方法及参数上下文 |
 | `shared/workflow/batch.py` | 将 34 个怪物及共同调度器的方法定位保存为 `.agents` 研究索引 |
 | `shared/native/decompile.py`、`shared/native/control_flow.py` | 通过官方 PyGhidra 接口提取伪 C、基本块、P-code、调用点和失败状态 |
-| `shared/workflow/freeze.py` | 默认重新核对当前已维护的预览模型；`--all` 只在全部模型通过语义及覆盖检查后更新正式输入 |
+| `shared/workflow/freeze.py` | `extract` 使用的单怪物提取：调用怪物模块的 `build_model`，核对 EXE 版本及模型中全部原生证据行的字节 |
 | `shared/native/streaming.py` | 每份唯一原生代码保存一个压缩证据体；保留全部方法上下文，校验来源后支持续跑 |
 | `shared/resources/inventory.py`、`shared/resources/requests.py` | 核对实际 BTableList、导入闭包、资源主人、原生请求位置、动作 GUID 与参数变体 |
 | `shared/workflow/full_run.py`、`shared/workflow/extraction.py` | 通过独立怪物模块提取资源闭包、全部原生方法上下文和已维护语义图；只输出 JSON，不构建网页 |
@@ -111,15 +113,19 @@
 | `shared/models/publish.py` | 从完整研究模型生成 Git 中的网页模型：删除研究字段、以 `sharedValues` 共享重复值并核对可完整还原（见“发布模型”） |
 | `shared/models/catalog.py`、`shared/models/io.py`、`shared/models/validation.py` | 维护独立怪物范围、模型入口、大小限制与图结构校验；`io.py` 在读取时展开已发布模型的共享值 |
 | `shared/logic/rules.py` | 固化通用条件及少数已核实的特殊条件 |
-| `shared/logic/monster_rules.py` | 汇总怪物模块声明的专用内容并分派，自身不含怪物常量。`RULE_KINDS`（`{kind: dict(compile=..., evaluate=...)}`）由 `player_view.py` 编译成玩家条件，由 `predicates.py` 求值；`RULE_SPECS` 交给规则整理命令；`recover_command_effects(row, metadata, pe)` 交给命令实现目录；`prepare_player_graph(graph, registry)` 在生成玩家视图前调用。规则记录本身仍是 JSON，统一放在 `data/rules.v1.json`，便于证据迁移 |
+| `shared/logic/field_checks.py` | 由怪物模块声明的“字段比较组合”配方：布尔字段、整数/枚举字段与常量比较，经 all/any/not 组合；字段可为 `extend:`（本怪物 Extend）、`context:`（cEnemyContext 下路径）或情境中已有的键（如 AI 状态、`self_current_area_no`）。模块只需写 `FIELD_CHECKS` 表并在 `recover_condition` 中调用 `declared_condition`，本文件不含怪物常量 |
+| `shared/logic/monster_rules.py` | 汇总怪物模块声明的专用内容并分派，自身不含怪物常量。`RULE_KINDS`（`{kind: dict(compile=..., evaluate=...)}`）由 `player_view.py` 编译成玩家条件，由 `predicates.py` 求值；`RULE_SPECS` 交给规则整理命令；`recover_command_effects(row, metadata, pe)` 交给命令实现目录；`prepare_player_graph(graph, registry)` 在生成玩家视图前调用；`recover_condition(node, enemy_id, resources)` 恢复非公共前缀的专用条件（无参数命令以空参数调用），可附带 `sceneInput`，或以 `inputEnums` 为专用状态输入提供枚举名。规则记录本身仍是 JSON，统一放在 `data/rules.v1.json`，便于证据迁移 |
 | `monster/em0021_00_0.py`、`em0022_00_0.py`、`em0046_00_0.py`、`em0071_00_0.py`、`em0078_00_0.py` | 各怪物专用判断的常量与处理代码：桃毛兽王蘑菇类型与拿取物品、雪狮子王断牙数、海龙电力等级、黑蚀龙内部状态（只声明整理表，求值用共通的字段相等）、巨戟龙阶段（区域移动结束前 FINAL 按 MIDFIELD 判断） |
-| `monster/em0001_00_0.py` | 雌火龙独立入口，保留局部与上游配方，模型输入位于 `data/models` |
+| `monster/em0001_00_0.py`、`em0022_00_0.py`、`em0046_00_0.py`、`em0078_00_0.py`、`em0152_00_0.py`、`em0155_00_0.py`、`em0157_00_0.py`、`em0163_00_0.py` 的 `FIELD_CHECKS` | 逐条按反编译核实的字段组合配方，例如雌火龙蛋诱导前提、所在地图/区域（巢穴、投掷雪球）、海龙游泳战斗阶段、巨戟龙 IsUnusedHill、EnchantType、各计时器的启用与超时 |
+| `monster/em0158_00_0.py` | 狱焰蛸缠绕状态：`_BodyWrapState`、各触手 `_TentacleWrapInfos[<CHECK_TYPE>].State`、缠油/着火计时器 `_IsTimeOut`、`checkFireAnyTentacle()` 与 `checkLostTentacleCount()`，经 `recover_condition` 作为专用状态输入（含无参数命令） |
+| `monster/em0164_50_0.py` | 白炽龙两条内联 Extend 方法的无参数命令：`isRequestChangeBattlePhase()` 与 `isRampagePartsState(HEAD)` |
+| `monster/em0162_00_0.py` | 冻峰龙专用判断：腿关节方位与水平距离（腿以 `LF/RF/LB/RB` 原枚举名显示）、部位破坏索引（`TAIL_LOST/HEAD/CORE_WAIST/CORE_MAIN`），经 `recover_condition` 作为情境输入 |
 | `monster/em0002_00_0.py` | 火龙独立原生配方，核对 Combat/CommonAttack 的方法、选择器及动作请求覆盖；整场入口和部分条件仍在核查 |
-| `monster/em0166_00_0.py` | 独立入口、已核对的阶段应用分析（`recover_command_effects`）及当前战斗阶段判断（`battle_phase`，`prepare_player_graph` 拒绝用于其他怪物）；不能把其历史图用于其他怪物 |
+| `monster/em0166_00_0.py` | 游星欧米茄独立入口、已核对的阶段应用分析（`recover_command_effects`）及当前战斗阶段判断（`battle_phase`，`prepare_player_graph` 拒绝用于其他怪物）；不能把其历史图用于其他怪物 |
 | `shared/logic/scheduler_slots.py` | 扫描 `cEmAIState*`/`cEmAIInterrupt*`/控制器方法中对 `requestChangeBTable`、`requestJumpBTable`、`requestChangeBTableVerify` 的直接调用，只接受请求前、同方法内未跨调用的立即数槽参数；专用中断按 `EnemyDef..cctor` 的初始化字节映射 `UNIQUE_00/01`。结果写入 `data/evidence/scheduler_slots.v1.json`，模型以 `schedulerSlots` 记录每个槽由哪些状态请求 |
 | `__main__.py`、`shared/workflow/cli.py` | 离线 CLI 入口 |
 
-`manifest`、`decompile`、`verify` 可用于新版本研究。原生配方当前支持经过来源核对的 **1.42.0.2**（`config.ACTIVE_GAME_VERSION`）。34 个独立模块均可通过 `build_model` 提取自身实际 BTableList、导入闭包和原生方法，公共机器追踪器不提供预先编造的怪物行为。当前 34 份已解析图合计覆盖 7,763 个原生方法上下文、8,171 个子表、123,246 个节点和 5,325 个权重选择点；复用资源按其所在模型分别计数。仍保留 1,347 个未知流程节点、1,954 个含未知表达式的条件和 68 个选择器边界；玩家战斗树中在全部玩家输入已知时仍无法判定的条件为 675 个（`uncertainty` 统计），另有 330 个随机分支按概率展示；同一调用位置的不同机器状态只有在隔离重放得到相同语义子图时才复用节点，否则保留边界。原先 46 表、408 节点的雌火龙图保留为固定回归样本。动作说明名绑定到资源、请求 GUID 与参数变体；实例 GUID 和基础 GUID 分别保留。Shell 原名及注释按资源与 UID 保存，未核实触发关系时不绑定到具体动作。全局 Combat 事件保持 partial，不能把导出成功描述为完整战斗 AI 已恢复。
+`manifest`、`decompile`、`verify` 可用于新版本研究。原生配方当前支持经过来源核对的 **1.42.0.2**（`config.ACTIVE_GAME_VERSION`）。34 个独立模块均可通过 `build_model` 提取自身实际 BTableList、导入闭包和原生方法，公共机器追踪器不提供预先编造的怪物行为。当前 34 份已解析图合计覆盖 7,763 个原生方法上下文、8,171 个子表、123,246 个节点和 5,325 个权重选择点；复用资源按其所在模型分别计数。仍保留 1,347 个未知流程节点、1,584 个含未知表达式的条件和 68 个选择器边界；玩家战斗树中在全部玩家输入已知时仍无法判定的条件为 215 个（`uncertainty` 统计），另有 330 个随机分支按概率展示；同一调用位置的不同机器状态只有在隔离重放得到相同语义子图时才复用节点，否则保留边界。动作说明名绑定到资源、请求 GUID 与参数变体；实例 GUID 和基础 GUID 分别保留。Shell 原名及注释按资源与 UID 保存，未核实触发关系时不绑定到具体动作。全局 Combat 事件保持 partial，不能把导出成功描述为完整战斗 AI 已恢复。
 
 ## 版本相关常量
 
@@ -156,7 +162,7 @@ python -m sdk.enemy_logic_exporter --work-dir $work manifest --exe $exe --versio
 python -m sdk.enemy_logic_exporter --work-dir $work manifest --exe $exe --version 1.42.0.2 --enemy Em0001_00 --selection upstream --helper 0x140196660 --helper 0x143928820 --helper 0x145cbd510 --helper 0x145cc7880 --output "$work/upstream-manifest.json"
 ```
 
-这些 helper 地址只适用于本配方的已核实版本。后续版本应从当前调用点重新定位 helper，再传入 `--helper`，不能原样照抄。其他怪物可指定如 `--enemy Em0022_00 --selection all`，其输出仍需人工核实，不能直接交给雌火龙配方。
+这些 helper 地址只适用于本配方的已核实版本。后续版本应从当前调用点重新定位 helper，再传入 `--helper`，不能原样照抄。其他怪物可指定如 `--enemy Em0022_00 --selection all`，其输出仍需人工核实，不能直接当作已核实配方。
 
    调度槽证据随版本更新重新生成，并检查 `boundaries` 中只剩转发参数的包装方法：
 
@@ -172,7 +178,7 @@ python -m sdk.enemy_logic_exporter --work-dir $work decompile --exe $exe --manif
 python -m sdk.enemy_logic_exporter verify --exe $exe --evidence "$work/continued-python.json"
 ```
 
-每个方法证据保存类型、完整方法名、VA 起止、原生字节 SHA-256、参数与字段、地址别名、反编译状态和伪 C。schemaVersion=2 的研究索引将共同字节身份、地址别名和字段各保存一次，通过引用复用，但不能合并不同类型、参数布局或调用上下文。兼容旧行数组。基本块与 P-code 的状态为 `unreviewed_native_control_flow`，不能直接等同于动作图；固化前仍须逐个核实语义、来源 profile 与原生字节。
+`.agents` 中的反编译证据保存类型、完整方法名、VA 起止、原生字节摘要、参数与字段、地址别名、反编译状态和伪 C。schemaVersion=2 的研究索引将共同字节身份、地址别名和字段各保存一次，通过引用复用，但不能合并不同类型、参数布局或调用上下文。兼容旧行数组。基本块与 P-code 的状态为 `unreviewed_native_control_flow`，不能直接等同于动作图；固化前仍须逐个核实语义、来源 profile 与原生字节。
 
 完整批次使用 `analyze`，扫描全部 34 个大型怪物（排除训练靶），按实际 BTableList 和导入关系确定资源范围。它提取各行为表的全部 `table_` 和 `updateTableInpl` 方法，以原生字节身份去重、压缩并保存到 `.agents`，不会向 Git 写入大型原生 JSON。缓存续跑仍会核对 EXE、元数据、方法范围、原生字节与压缩体摘要。
 
@@ -195,7 +201,7 @@ python -m sdk.enemy_logic_exporter recover --exe $exe --index "$work/full-run/na
 
 4. **核实随机与运行时限制。** 静态数组中的 key 含义若未知就保留未知。核实候选排除、空集合回退、整数权重、随机整数取模及候选目标的连接。当前疲劳判断先于怒判断；普通分支权重 25 的路径先调用吐息子表，返回后再检查远距条件，不能直接说成 25% 概率后空翻。非空跳过列表缺少运行时信息时必须返回未知。
 
-5. **离线解析并核对玩家图。** SDK 的规则位于 `data/rules.v1.json`，未解析模型位于 `data/models`。`extract --enemy EM0001_00_0` 通过该怪物模块读取解包 JSON、IL2CPP 与 EXE，核对来源和最小原生证据，输出含条件、动作身份、名称、续招及恢复位置的已解析图 JSON。缺少已维护模型时明确拒绝，不能生成占位图。`freeze` 同样只输出解析后的图；`freeze --all` 仍要求 34 个模型全部通过语义与覆盖检查。
+5. **离线解析并核对玩家图。** SDK 的规则位于 `data/rules.v1.json`。`extract --enemy <ID>` 通过该怪物模块读取解包 JSON、IL2CPP 与 EXE，核对来源和最小原生证据，输出含条件、动作身份、名称、续招及恢复位置的已解析图 JSON。怪物模块没有 `build_model` 时明确拒绝，不能生成占位图。
 
 34 个怪物均可通过 `extract --index --helpers --inventory` 直接提取，无需在网页端绑定资源。索引、辅助实现和资源发现必须属于同一已核查版本；`--requests` 用独立动作请求清单检查覆盖。该方式仍保留未核实条件和 `semanticReviewComplete=false`，不能当作整场恢复完成。EM0160_50 的 BTableList 实际复用 Em0160_00 Combat，独立模块保留变种完整身份及其 Repel 资源；不能按编号前缀强求所有变种资源的主人。
 
@@ -205,11 +211,6 @@ python -m src.processed_data.enemy_battle_logic --template "$work/extracted/em00
 
 python -m sdk.enemy_logic_exporter extract-all --exe $exe --index "$work/full-run/native/index.json" --helpers "$work/per-monster/helpers/index.json" --inventory "$work/full-run/result/inventory.json" --requests "$work/full-run/result/action-requests.json" --output "$work/all-extracted"
 python -m src.processed_data.enemy_battle_logic --models "$work/all-extracted" --preview-all --output "$work/all-preview"
-```
-
-```powershell
-python -m sdk.enemy_logic_exporter --work-dir $work freeze --exe $exe
-python -m src.processed_data.enemy_battle_logic --template "$work/frozen/em0001.upstream.v1.json" --output "$work/preview"
 ```
 
 现有研究缓存可通过 `--work-dir .agents/enemy-action-tree` 复用。确认生成结果、版本身份和差异后，用 `publish` 把 `.agents` 中的完整研究模型写成网页模型并更新 `src/processed_data/enemy_battle_logic/models`（见下文“发布模型”）。该目录不保存待绑定模板或判断规则文件。预览结果位于 `$work/preview/enemy_battle_logic`。不要将伪 C、EXE 或 Ghidra 缓存作为正式构建依赖。
@@ -228,7 +229,7 @@ python -m src.processed_data.enemy_battle_logic --output "$work/player-preview"
 
 正式范围是 EnemyData 中基础编号小于 1000 的完整 ID，排除训练靶 `EM0165_00_0`，当前为 34 个。全部怪物统一使用语义行动图；不得用资源清单或原生方法索引替代。默认构建校验 34 个模型、实际连接、方法/动作请求覆盖和 HTML 内容一致性；按用户已确认的发布范围保留 partial 图，不再以全部语义审核完成或完整 Combat 总入口作为网页发布前提。发现记录与摘要、版本必须一致。这些静态验收不代替人工语义审核或游戏内验证。
 
-当前网页模型目录已有 34 份实际提取的 partial 图 JSON，均为 `publish` 生成的精简格式，未知分支和接入关系继续保留。显式 `--template` 或 `--preview-all` 可在 `.agents` 生成单个或部分怪物预览；默认全量构建仍要求全部 34 个身份及结构检查通过。`freeze --all（从工作目录 reviewed 读取）` 只接收完整、经审核的语义输入，不会自动将方法清单转换成完整战斗逻辑。图保留 Combat 进入、更新、BTable 切换、中断和恢复的实际已核实部分，异步请求只连接到等待调度的目标，不当作同步调用。未知命令的真实 void 调用方连续流可保留，但其副作用仍标未知；未恢复的 Boolean 不能伪造为 0 或整个命令的 opaque 运行时布尔输入。
+当前网页模型目录已有 34 份实际提取的 partial 图 JSON，均为 `publish` 生成的精简格式，未知分支和接入关系继续保留。显式 `--template` 或 `--preview-all` 可在 `.agents` 生成单个或部分怪物预览；默认全量构建仍要求全部 34 个身份及结构检查通过。图保留 Combat 进入、更新、BTable 切换、中断和恢复的实际已核实部分，异步请求只连接到等待调度的目标，不当作同步调用。未知命令的真实 void 调用方连续流可保留，但其副作用仍标未知；未恢复的 Boolean 不能伪造为 0 或整个命令的 opaque 运行时布尔输入。
 
 方法覆盖、原生字节位置覆盖和资源/类型/方法/命令/参数上下文覆盖分别记录。同址方法别名不能只靠地址 set 视为恢复完成；相同子表 GUID 出现在不同资源时保留独立图身份和 nativeTableGuid。非 Combat 的空声明资源不编造入口。当前元数据确认返回 Void、当前原生入口第一条指令为 ret 的空调度函数存入 resourceNonDispatchEntries，不为它补造子表入口；其他未恢复入口继续保留边界。逐候选跳过列表按各自参数槽绑定；新候选的 id 为实际池槽 slot:<nativeCandidateIndex>，nodeId 指向已核实的调用节点。多个槽可以汇入相同上下文的调用节点，各自保留 key、权重和筛选参数，不编造 PC 或合并权重。相同原生调用地址若参数、调用目标或实际保存位置不同，须保留独立语义节点（节点名为 `<地址>-variant-N`），完整研究模型中的 nativeSite 仍指向原指令；不能以同址为由覆盖恢复 PC 或复用其他路径的条件。旧 JSON 没有 nodeId 时，其 id 仍表示调用节点。真实动作 ID 与参数类名不同不代表绑定无效：核对唯一 GUID、所属参数槽及当前原生选择代码，保留两种类型及应用边界。缺少 ActionInfo 的已确认请求保留请求位置、原始身份和保存的恢复位置，不借用近似 GUID。
 

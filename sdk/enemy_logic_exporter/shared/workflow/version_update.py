@@ -21,7 +21,6 @@ from ..native.symbols import (
     evidence_rows,
     masked_pattern,
     method_stem,
-    native_digest,
     normalized_digest,
     resolve_symbols,
     scan_pattern,
@@ -171,7 +170,6 @@ def migrate_evidence(exe, metadata_path, previous_path, profile_path, *, apply=F
                     method=name,
                     address=hex(address),
                     end=hex(end),
-                    nativeSha256=native_digest(pe, address, end),
                 )
                 if all(row[k] == v for k, v in updated.items()):
                     report["unchanged"] += 1

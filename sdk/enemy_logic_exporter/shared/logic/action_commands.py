@@ -28,7 +28,7 @@ def request_details(command, profile, command_evidence=None, metadata=None):
         return None
     if any(
         command_evidence.get(key) != row[key]
-        for key in ("type", "method", "address", "end", "nativeSha256")
+        for key in ("type", "method", "address", "end")
     ):
         raise ValueError("动作请求实现与已核实的原生命令身份不匹配")
     if metadata is not None:

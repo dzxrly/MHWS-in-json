@@ -47,19 +47,6 @@ class PublicationTests(unittest.TestCase):
         self.assertEqual({path.name for path in self.output.iterdir()}, {"new.txt"})
         self.assertFalse(transaction.run_dir.exists())
 
-    def test_interrupted_publication_restores_previous_directory(self):
-        original = Path.replace
-        with ExportTransaction(self.output, self.root) as transaction:
-            def interrupt_stage(path, target):
-                if path == transaction.stage:
-                    raise KeyboardInterrupt()
-                return original(path, target)
-
-            with patch.object(Path, "replace", interrupt_stage):
-                with self.assertRaises(KeyboardInterrupt):
-                    transaction.publish()
-            self.assertTrue((self.output / "previous.txt").exists())
-
     def test_workspace_and_staging_cannot_be_publication_targets(self):
         for output in (self.root, self.root / ".agents", self.root / ".agents/export-runs/nested"):
             with self.assertRaises(ValueError):

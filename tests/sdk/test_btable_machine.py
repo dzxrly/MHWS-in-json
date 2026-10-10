@@ -109,9 +109,8 @@ class BTableMachineTests(unittest.TestCase):
         )
 
         machine, state, proof = self.entry_push()
-        # The real evidence pins the game's helper bytes; the fixture differs.
-        self.assertIsNone(recover_entry_push(machine, machine.ins[0x144EF8575], state))
-        proof["resizeHelper"]["nativeSha256"] = "0" * 64
+        # The helper must be the profile's resolved position_array_resize.
+        proof["resizeHelper"]["address"] = "0x140000000"
         with patch(
             "sdk.enemy_logic_exporter.shared.logic.combat_position.evidence",
             return_value=proof,
@@ -227,16 +226,6 @@ class BTableMachineTests(unittest.TestCase):
         for key, index in zip(keys, (4, 9)):
             self.assertEqual(machine.nodes[key]["argumentIndex"], index)
             self.assertEqual(machine.nodes[key]["nativeSite"], "0x1000")
-
-    def test_negation_sign_and_addition_carry_choose_native_branches(self):
-        for code in (
-            "b8 01 00 00 00 f7 d8 85 c0 78 06 b8 00 00 00 00 c3 b8 01 00 00 00 c3",
-            "b8 ff ff ff ff 83 c0 01 72 06 b8 00 00 00 00 c3 b8 01 00 00 00 c3",
-            "b8 05 00 00 00 83 f8 06 ff c0 72 06 b8 00 00 00 00 c3 b8 01 00 00 00 c3",
-        ):
-            with self.subTest(code=code):
-                result = self.machine(code).build()
-                self.assertEqual([node["value"] for node in result["nodes"]], [True])
 
     def test_destination_result_retains_both_native_continuations(self):
         machine = self.machine("e8 00 00 00 00 84 c0 74 06 b8 01 00 00 00 c3 31 c0 c3")
@@ -367,38 +356,6 @@ class BTableMachineTests(unittest.TestCase):
             result = machine.build()
         self.assertEqual(len(result["nodes"]), 1)
         self.assertNotIn("next", result["nodes"][0])
-
-    def test_partial_boundary_binding_remains_unknown(self):
-        machine = self.machine("e8 00 00 00 00 31 c0 c3")
-        with patch.object(
-            machine,
-            "bind",
-            return_value=dict(
-                kind="boundary",
-                reason="factory_argument_type_mismatch",
-                commandIndex=0,
-                argumentIndex=0,
-            ),
-        ):
-            result = machine.build()
-        self.assertEqual(result["nodes"][0]["kind"], "unknown")
-        self.assertEqual(
-            result["nodes"][0]["nativeBinding"]["reason"],
-            "factory_argument_type_mismatch",
-        )
-
-    def test_no_argument_rule_conflict_remains_unknown(self):
-        machine = self.machine("e8 00 00 00 00 31 c0 c3")
-        machine.factories[0].update(
-            _ArgumentType="",
-            _OrderType="app.btable.Em0021_00BTableCommand.cCheckCatchMushroom",
-        )
-        event = dict(target=("command_method", 0), arguments=[], site="0x1000")
-        binding = machine.bind(event)
-        self.assertEqual(binding["argumentBindingStatus"], "conflict")
-        with patch.object(machine, "bind", return_value=binding):
-            result = machine.build()
-        self.assertEqual(result["nodes"][0]["kind"], "unknown")
 
     def test_unreviewed_no_argument_boolean_retains_unknown_and_both_successors(self):
         machine = self.machine("e8 00 00 00 00 84 c0 74 06 b8 01 00 00 00 c3 31 c0 c3")

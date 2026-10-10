@@ -198,8 +198,7 @@ def build_model(
                         else " · 共享方法别名"
                     ),
                     evidence={
-                        key: row[key]
-                        for key in ("type", "method", "address", "end", "nativeSha256")
+                        key: row[key] for key in ("type", "method", "address", "end")
                     },
                     nativeType=row["type"],
                     nativeMethod=row["method"],
@@ -216,9 +215,10 @@ def build_model(
         documentType="enemy_battle_logic",
         profile=profile,
         enemyId=ENEMY_ID,
-        enemyName="火龙",
+        enemyName=ENEMY_ID,
+        bindEnemyNameFromResources=True,
         entry="b5ab3e58-ebb9-4196-94c3-30b2df1ded6c",
-        scope="火龙 Combat 与 CommonAttack 的真实条件、选招及保存恢复位置；整场事件仍在核查",
+        scope="Combat 与 CommonAttack 的真实条件、选招及保存恢复位置；整场事件仍在核查",
         limits=[
             "匹配版本的静态恢复，未在游戏中验证",
             "导航内部、尚未核实的条件及整场调度保留边界",

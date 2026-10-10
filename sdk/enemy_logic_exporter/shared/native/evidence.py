@@ -79,6 +79,4 @@ def digest(path):
 
 
 def evidence(row):
-    return {
-        key: row[key] for key in ("type", "method", "address", "end", "nativeSha256")
-    }
+    return {key: row[key] for key in ("type", "method", "address", "end")}

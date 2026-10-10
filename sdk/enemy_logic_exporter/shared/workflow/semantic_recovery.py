@@ -391,10 +391,7 @@ def recover_all(
                                     + str(event["fallthrough"]),
                                 )
                             )
-                item = {
-                    k: row[k]
-                    for k in ("type", "method", "address", "end", "nativeSha256")
-                }
+                item = {k: row[k] for k in ("type", "method", "address", "end")}
                 item.update(
                     dataflowStatus=recovered["status"],
                     annotations=annotations,

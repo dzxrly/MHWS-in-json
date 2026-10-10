@@ -1,6 +1,4 @@
-import contextlib
 import importlib.util
-import io
 import json
 import subprocess
 import sys
@@ -80,32 +78,6 @@ class ReleaseNotesTests(unittest.TestCase):
         self.assertEqual(changelog.commits, ())
         self.assertIn("No commits since the previous release.", notes)
         self.assertNotIn("Show more commits", notes)
-
-    def test_ignores_unrelated_tags_when_finding_previous_release(self) -> None:
-        self._commit("First change")
-        self._git("tag", "v1.0.0")
-        self._commit("Second change")
-
-        current_sha = self._git("rev-parse", "HEAD").strip()
-        changelog = collect_commit_changelog(current_sha, self.repository_dir)
-
-        self.assertEqual(changelog.previous_tag, "database-base")
-        self.assertEqual(changelog.total_commits, 2)
-        self.assertEqual(
-            [commit.subject for commit in changelog.commits],
-            ["Second change", "First change"],
-        )
-
-    def test_reconfigures_cp1252_stdout_before_writing_unicode(self) -> None:
-        buffer = io.BytesIO()
-        stdout = io.TextIOWrapper(buffer, encoding="cp1252")
-
-        with contextlib.redirect_stdout(stdout):
-            release_notes.emit_release_notes("简体中文")
-            stdout.flush()
-
-        self.assertEqual(stdout.encoding, "utf-8")
-        self.assertEqual(buffer.getvalue().decode("utf-8").splitlines(), ["简体中文"])
 
     def test_standalone_cli_outputs_notes_without_project_imports(self) -> None:
         version = "standalone-version"

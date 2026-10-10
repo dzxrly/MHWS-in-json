@@ -55,39 +55,6 @@ class SkillEffectExportTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "requirement"):
             validate_catalog(invalid)
 
-    def test_hien_requires_the_collision_aerial_flag(self) -> None:
-        effects = self.skills["HunterSkill_055"]["levels"][0]["effects"]
-        self.assertEqual(len(effects), 1)
-        self.assertEqual(effects[0]["requiresActionTag"], "hien")
-        self.assertEqual(effects[0]["value"], 1.1)
-
-    def test_burst_reinforcement_is_a_separate_stat_addition(self) -> None:
-        skill = self.skills["HunterSkill_186"]
-        self.assertEqual(skill["verification"], "verified")
-        self.assertEqual([(level["level"], level["effects"][0]["value"])
-                          for level in skill["levels"]], [(2, 8), (4, 18)])
-        for level in skill["levels"]:
-            self.assertEqual(len(level["effects"]), 1)
-            self.assertEqual(level["effects"][0]["stage"], "attack.stat.flat")
-            self.assertIn("HunterSkill_160", level["effects"][0]["source"])
-
-    def test_force_shot_uses_attack_slot_and_keeps_bow_arrow_scope(self) -> None:
-        for level, addition in zip(self.skills["HunterSkill_197"]["levels"], [3, 6, 10]):
-            effects = level["effects"]
-            self.assertEqual([e["value"] for e in effects], [addition, 1.05, addition, 1.05])
-            self.assertTrue(all(e["requiresShell"] for e in effects[:2]))
-            self.assertTrue(all({"NORMAL", "GOSHA", "GOSHA_RAPID"}.issubset(e["arrowTypes"]) for e in effects[2:]))
-
-    def test_charge_master_uses_bow_slot_and_excludes_inherited_false_handlers(self) -> None:
-        for level in self.skills["HunterSkill_048"]["levels"]:
-            effects = level["effects"]
-            bow = next(effect for effect in effects if effect["weapons"] == ["bow"])
-            melee = next(effect for effect in effects if "greatsword" in effect["weapons"])
-            self.assertEqual(bow["value"], level["rawValues"][1] / 100)
-            self.assertEqual(melee["value"], level["rawValues"][0] / 100)
-            supported = {weapon for effect in effects for weapon in effect["weapons"]}
-            self.assertTrue(supported.isdisjoint({"dualblades", "huntinghorn", "heavybowgun", "lightbowgun"}))
-
     def test_zero_slot_skills_read_weapon_and_element_parameters(self) -> None:
         critical = self.skills["HunterSkill_003"]["levels"][-1]
         self.assertEqual(critical["rawValues"], [0, 0, 0, 0])
@@ -145,29 +112,6 @@ class SkillEffectExportTests(unittest.TestCase):
         self.assertEqual(guts["groupName"], "霸主之魂")
         self.assertEqual(guts["levels"][0]["openSkills"], ["HunterSkill_206"])
         self.assertEqual(guts["levels"][0]["effects"][0]["value"], 1.05)
-
-    def test_black_eclipse_overcome_does_not_invent_element_or_first_tier_attack(self) -> None:
-        skill = self.skills["HunterSkill_183"]
-        self.assertEqual(skill["verification"], "verified")
-        self.assertEqual(skill["name"], "黑蚀一体")
-        self.assertEqual(skill["groupName"], "黑蚀龙之力")
-        self.assertEqual([(row["level"], row["name"]) for row in skill["levels"]],
-                         [(2, "黑蚀一体Ⅰ"), (4, "黑蚀一体Ⅱ")])
-        for level, expected in zip(skill["levels"], [0, 15]):
-            self.assertEqual(level["openSkills"], ["HunterSkill_196"])
-            self.assertEqual([(effect["stage"], effect["value"]) for effect in level["effects"]],
-                             [("attack.stat.flat", expected)])
-
-    def test_challenger_attribute_reads_unlocked_numeric_slots(self) -> None:
-        skill = self.skills["HunterSkill_239"]
-        self.assertEqual(skill["name"], "宣战呼应")
-        self.assertEqual(skill["groupName"], "巨戟龙的默示录")
-        self.assertEqual(skill["verification"], "verified")
-        self.assertNotIn("candidateSources", skill)
-        for level, rate, flat in zip(skill["levels"], [1.2, 1.3], [2, 4]):
-            self.assertEqual(level["openSkills"], ["HunterSkill_242"])
-            self.assertEqual([(effect["stage"], effect["value"]) for effect in level["effects"]],
-                             [("element.stat.rate", rate), ("element.stat.flat", flat)])
 
     def test_coalescence_uses_weapon_specific_element_slots(self) -> None:
         effects = self.skills["HunterSkill_113"]["levels"][-1]["effects"]

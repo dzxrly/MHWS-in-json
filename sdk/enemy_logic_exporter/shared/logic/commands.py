@@ -236,8 +236,7 @@ def recover_writes(row, code, metadata):
                 value=value,
                 nativeExpression=match[0],
                 evidence={
-                    key: row[key]
-                    for key in ("type", "method", "address", "end", "nativeSha256")
+                    key: row[key] for key in ("type", "method", "address", "end")
                 },
                 semanticStatus="individual_native_field_write_recovered",
                 guard="执行到原生实现的该写入分支；对象有效性、类型检查、其他条件与副作用保留在实现中",
@@ -369,6 +368,10 @@ def recover_leaf(row, code, metadata, pe=None):
             for n, f, definition in reversed(choices)
         }.values()
     )
+    if len(choices) > 1:
+        # The dump gives static fields offsets in their own storage, which can
+        # coincide with instance fields; statics are UPPER_SNAKE constants.
+        choices = [c for c in choices if not re.fullmatch(r"[A-Z][A-Z0-9_]*", c[1])]
     if len(choices) != 1:
         return None
     context_type, field, definition = choices[0]
@@ -407,6 +410,111 @@ def recover_leaf(row, code, metadata, pe=None):
         evidence=evidence(row),
         nativeExpression=re.sub(r"\)?;$", "", match[0]),
         semanticStatus="native_leaf_comparison_recovered",
+    )
+
+
+CONTEXT_ROOT = (
+    r"\*\(longlong \*\)\(\*\(longlong \*\)\(param_3\[5\] \+ "
+    + f"{ACCESSOR_TARGET_CONTEXT:#x}"
+    + r"\) \+ "
+    + f"{TARGET_CONTEXT_ENEMY:#x}"
+    + r"\)"
+)
+CONTEXT_READ = (
+    r"\*\((?P<cast>int|uint|char) \*\)\((?P<path>(?:\*\(longlong \*\)\()*"
+    + CONTEXT_ROOT
+    + r"(?: \+ (?:0x[0-9a-f]+|\d+)\))*) \+ (?P<last>0x[0-9a-f]+|\d+)\)"
+)
+
+
+def _context_path(metadata, path, last):
+    """Resolve cEnemyContext -> module ... -> field by metadata offsets."""
+    offsets = [int(v, 0) for v in re.findall(r"\+ (0x[0-9a-f]+|\d+)\)", path)][2:]
+    owner, names = ENEMY_CONTEXT_TYPE, []
+    for offset in offsets + [int(last, 0)]:
+        fields = [
+            (name, definition)
+            for name, definition in metadata.fields(owner).items()
+            if name != "Null"
+            and "default" not in definition
+            and definition.get("offset_from_base") == hex(offset)
+        ]
+        if len(fields) != 1:
+            return None
+        name, definition = fields[0]
+        names.append(name)
+        owner = definition["type"]
+    return names, owner
+
+
+def recover_context_leaf(row, code, metadata):
+    """A command that only compares one cEnemyContext module field.
+
+    The read follows Accessor -> target context -> cEnemyContext and then
+    pointer fields resolved by the matched metadata; the comparison is with
+    one resource argument field or a constant, with no helper calls.
+    """
+    # Ghidra wraps long expressions; drop spaces it leaves around parentheses.
+    text = re.sub(r"\s+", " ", code.replace("\r", ""))
+    text = re.sub(r"\*\) \(", "*)(", re.sub(r"\s+\)", ")", text))
+    body = text[text.find("{") :]
+    if re.search(CALL, body) or "switch" in body or "else" in body:
+        return None
+    reads = list(re.finditer(CONTEXT_READ, body))
+    if len(reads) != 1:
+        return None
+    read = reads[0]
+    right = r"(?P<right>" + ARGUMENT + r"|(?P<constant>" + CONSTANT + r"))"
+    match = None
+    assigned = re.search(
+        r"(iVar\d+|uVar\d+|cVar\d+) = " + re.escape(read[0]) + ";", body
+    )
+    if assigned:
+        match = re.search(
+            r"return CONCAT[37]1\([^;]*?,\s*"
+            + assigned[1]
+            + r" (?P<operator>==|!=|<=|>=|<|>) "
+            + right
+            + r"\);",
+            body,
+        )
+    else:
+        match = re.search(
+            r"return (?:CONCAT[37]1\([^;]*?,\s*)?"
+            + re.escape(read[0])
+            + r" (?P<operator>==|!=|<=|>=|<|>) "
+            + right
+            + r"\)?;",
+            body,
+        )
+    if match is None:
+        return None
+    resolved = _context_path(metadata, read["path"], read["last"])
+    if resolved is None:
+        return None
+    names, field_type = resolved
+    argument_type = argument_field = None
+    if match["argoffset"]:
+        argument_type, argument_field = _argument_field(
+            metadata, row, match["argoffset"]
+        )
+        if argument_field is None:
+            return None
+    return dict(
+        kind="context_field",
+        commandType=row["type"],
+        argumentType=argument_type,
+        contextType=ENEMY_CONTEXT_TYPE,
+        contextField=".".join(names),
+        contextFieldType=field_type,
+        contextOffset=None,
+        operator=match["operator"],
+        argumentField=argument_field,
+        constant=None if argument_field else int(match["constant"], 0),
+        guard="原生工作有效，且通过命令工作类型检查",
+        evidence=evidence(row),
+        nativeExpression=match[0],
+        semanticStatus="native_context_field_comparison_recovered",
     )
 
 
@@ -642,6 +750,10 @@ def leaf_expression(leaf, argument=None):
             guard = runtime(
                 "enemy_command_work_valid", "命令工作存在且原生类型检查通过"
             )
+    elif leaf.get("kind") == "context_field":
+        key = f"context:{leaf['contextField']}"
+        source = f"cEnemyContext.{leaf['contextField']}"
+        guard = runtime("enemy_command_work_valid", "命令工作存在且原生类型检查通过")
     operator = LEAF_OPERATORS[leaf["operator"]]
     if leaf["argumentField"]:
         if argument is None or leaf["argumentField"] not in argument:

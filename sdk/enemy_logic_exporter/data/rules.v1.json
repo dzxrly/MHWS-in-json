@@ -15,7 +15,7 @@
       "bindings": {"value": "_EditArg"},
       "contextBinding": {"type": "app.cEm0166_00Extend", "field": "_CurrentPhase", "offset": "0x22c", "fieldType": "app.Em0166_00_Def.BATTLE_PHASE", "validTypeRequired": true},
       "enumValues": {"PHASE_1": 0, "PHASE_2": 1, "PHASE_3": 2, "PHASE_4": 3, "PHASE_5": 4, "NO_USED": 4294967295},
-      "evidence": {"type": "app.btable.Em0166_00BTableCommand.cCheckBattlePhase", "method": "onExecute1234575", "address": "0x143ba54d0", "end": "0x143ba5510", "nativeSha256": "93a81ac8b65abe52a5726b1c1a9181de096142b123d96f6dfcf45ba07aacce9f"},
+      "evidence": {"type": "app.btable.Em0166_00BTableCommand.cCheckBattlePhase", "method": "onExecute1234575", "address": "0x143ba54d0", "end": "0x143ba5510"},
       "review": {"nativeBytes": "4d85c07420498b4028488b4078488b40104885c0740f488b08488b09483b0dad2eb710740331c0c38b802c020000498b49103b41100f94c0c3cccccccccccccc", "argumentValuePath": "cCheckBattlePhaseArg+0x10 -> cEditFieldEnum+0x10", "comparison": "mov eax,[rax+0x22c]; mov rcx,[r9+0x10]; cmp eax,[rcx+0x10]; sete al", "guard": "r8 != null; Accessor.Self.Extend != null; exact Extend runtime type matches static type pointer", "boundary": "仅恢复当前阶段的相等判断，不代表阶段转换触发条件或整场战斗已恢复"}
     },
     {
@@ -36,8 +36,7 @@
         "type": "app.btable.EmCommonCommand.cCheckDistance",
         "method": "onExecute1236784",
         "address": "0x149ae2450",
-        "end": "0x149ae271b",
-        "nativeSha256": "7068b4410c7e7a66ee312f5084b9b807bbea720a80205815b5e2dedefffea063"
+        "end": "0x149ae271b"
       },
       "distanceModifiers": {
         "triggerAIState": 3,
@@ -86,8 +85,7 @@
         "type": "app.btable.EmCommonCommand.cCheckAngle",
         "method": "onExecute1236786",
         "address": "0x149d9b590",
-        "end": "0x149d9bc90",
-        "nativeSha256": "e3da73914aee8242250ffc7b0d01e1b33c2b19b3c6e9e876b964db5ef64b8d8c"
+        "end": "0x149d9bc90"
       }
     },
     {
@@ -104,8 +102,7 @@
         "type": "ace.btable.cCheckTimerValue",
         "method": "onExecute1028243",
         "address": "0x149ec0720",
-        "end": "0x149ec0786",
-        "nativeSha256": "dd5e1ab8e0ab8f0d46f2b3dd0bd11232e26d6cb6b14c25044df8c92a2c4cb35a"
+        "end": "0x149ec0786"
       }
     },
     {
@@ -123,8 +120,7 @@
         "type": "ace.btable.cCompareBoolValue",
         "method": "onExecute1028224",
         "address": "0x1492ada80",
-        "end": "0x1492adaec",
-        "nativeSha256": "bf4f629869a86e73e6b9e91aa2bb624b90ba7ac0f5c77f9940bb347d36b2dea1"
+        "end": "0x1492adaec"
       }
     },
     {
@@ -143,16 +139,14 @@
         "type": "ace.btable.cCompareFloatValue",
         "method": "onExecute1028236",
         "address": "0x14988ac50",
-        "end": "0x14988acd3",
-        "nativeSha256": "d9067ad56b447114623e5f2cca98108e279b0cb871c428a532262fb0e45e5891"
+        "end": "0x14988acd3"
       },
       "relatedEvidence": [
         {
           "type": "ace.btable.BTableUtil",
           "method": "checkCompare1028044",
           "address": "0x14bc11440",
-          "end": "0x14bc114b4",
-          "nativeSha256": "4d575f454bdac6fbf3f6d1c7a3c90c8620f6f9a6b035069d2db8739ed060d2c6"
+          "end": "0x14bc114b4"
         }
       ],
       "compareSemantics": {
@@ -192,8 +186,7 @@
         "type": "app.btable.Em0078_00BTableCommand.cCheckPhase",
         "method": "onExecute1233924",
         "address": "0x143ba5250",
-        "end": "0x143ba52b6",
-        "nativeSha256": "e94b66a22eea66a4ea3a49f5057cbfeb7fe87b53c7f488fca12eba002dca971f"
+        "end": "0x143ba52b6"
       },
       "review": {
         "comparison": "mov eax,[rcx+0x2e8]; cmp eax,2; jne A; cmp byte [rcx+0x345],0; je B; A: cmp eax,[arg+0x10]; B: cmp [arg+0x10],1; sete al",
@@ -219,8 +212,7 @@
         "type": "app.btable.Em0021_00BTableCommand.cCheckMushroomType",
         "method": "onExecute1233671",
         "address": "0x148b2e740",
-        "end": "0x148b2e7a0",
-        "nativeSha256": "60a19de39794d0144782fd8ede80943b9665aa35c59b65a239dc89508cc54db5"
+        "end": "0x148b2e7a0"
       }
     },
     {
@@ -239,8 +231,7 @@
         "type": "app.btable.Em0021_00BTableCommand.cCheckCatchMushroom",
         "method": "onExecute1233683",
         "address": "0x1494fe120",
-        "end": "0x1494fe170",
-        "nativeSha256": "5edc2986c78328b1df03eb7ac409303f80f55b9799b6b9c8300d855a4545e4c3"
+        "end": "0x1494fe170"
       }
     },
     {
@@ -262,8 +253,7 @@
         "type": "app.btable.Em0022_00BTableCommand.cCheckBreakFangCount",
         "method": "onExecute1233719",
         "address": "0x1450a7910",
-        "end": "0x1450a7970",
-        "nativeSha256": "1496a204cb26fcea0b60ba250e151e9ad2335a2ea0214fc14a7592ce3e84a872"
+        "end": "0x1450a7970"
       }
     },
     {
@@ -284,8 +274,7 @@
         "type": "app.btable.Em0046_00BTableCommand.cCheckElectricLevel",
         "method": "onExecute1233739",
         "address": "0x147612180",
-        "end": "0x1476121e0",
-        "nativeSha256": "f2a738e30457ee02ad5efb77ee3785039b389ab97eb179cdba50748a5946f858"
+        "end": "0x1476121e0"
       }
     },
     {
@@ -306,8 +295,7 @@
         "type": "app.btable.Em0071_00BTableCommand.cCheckStateType",
         "method": "onExecute1233894",
         "address": "0x147f8a280",
-        "end": "0x147f8a2d0",
-        "nativeSha256": "665f8745534107e2889e2d3fa960934513ef16bbb5fe21b951e502a60c177118"
+        "end": "0x147f8a2d0"
       }
     },
     {
@@ -327,37 +315,44 @@
         "type": "app.btable.EmCommonCommand.cCheckSelfStatus",
         "method": "onExecute1236644",
         "address": "0x147614fd0",
-        "end": "0x14761503d",
-        "nativeSha256": "8a8ca8ad4d12ad2f84c404660b64dacc841e2a160f0644b087ac8047a8e7d479"
+        "end": "0x14761503d"
       },
       "relatedEvidence": [
         {
           "type": "app.btable.EmCommonCommand.CheckStatus",
           "method": "execute1236619",
           "address": "0x146e4ee30",
-          "end": "0x146e4f3cf",
-          "nativeSha256": "04aaefeaa2a7925cbf9987b243975995b9b9bbb25a98fe0f696d84d2dccbd4fe"
+          "end": "0x146e4f3cf"
         },
         {
           "type": "app.btable.EmCommonCommand.CheckStatus",
           "method": "execute_AIState1236625",
           "address": "0x146e4fcd0",
-          "end": "0x146e4ff79",
-          "nativeSha256": "99e18d767f082852f18870ddeff4b07a838770751ca2a54a6ed7affe206f4e33"
+          "end": "0x146e4ff79"
         },
         {
           "type": "app.btable.EmCommonCommand.CheckStatus",
           "method": "execute_Health1236624",
           "address": "0x146e4fbf0",
-          "end": "0x146e4fcc8",
-          "nativeSha256": "217a70164d2468239e72ed2c2fa47537ae422bd5240c5c988775d34b59d14e37"
+          "end": "0x146e4fcc8"
         },
         {
           "type": "app.btable.EmCommonCommand.CheckStatus",
           "method": "execute_StandState1236621",
           "address": "0x146e4f430",
-          "end": "0x146e4f548",
-          "nativeSha256": "ec4507142779096be0d8572aeb1b810ee5457e462a2d30349ae44ea3eab92496"
+          "end": "0x146e4f548"
+        },
+        {
+          "type": "app.btable.EmCommonCommand.CheckStatus",
+          "method": "execute_GroundMaterial1236637",
+          "address": "0x146e50860",
+          "end": "0x146e509e0"
+        },
+        {
+          "type": "app.EnemyUtil",
+          "method": "IsArenaQuest869239",
+          "address": "0x145637bd0",
+          "end": "0x145637c40"
         }
       ],
       "statusBindings": {
@@ -375,15 +370,13 @@
           "type": "app.cEnemyContext",
           "method": "get_IsAngry721269",
           "address": "0x145cbd510",
-          "end": "0x145cbd57b",
-          "nativeSha256": "5dd71af53d335709ef61ff4751edb1ed0e82e1350c792b94475ecb26f3cbd9dc"
+          "end": "0x145cbd57b"
         },
         {
           "type": "app.cEnemyContext",
           "method": "get_IsTired721270",
           "address": "0x145cc7880",
-          "end": "0x145cc78eb",
-          "nativeSha256": "63525876f52f784770654b013c5b7bf73fc947c5004cba33145cf9a2d5bfc596"
+          "end": "0x145cc78eb"
         }
       ]
     }
@@ -423,8 +416,7 @@
       "type": "ace.btable.cCommandFunc`2<app.btable.EmCommonCommand.cCheckDistanceArg,System.Boolean>",
       "method": "execute1236781",
       "address": "0x1496939d0",
-      "end": "0x149693a48",
-      "nativeSha256": "7e981e48a37268f21c6e729f8484a21d546371583b20f4e549d1e7b6fcaa3ef2"
+      "end": "0x149693a48"
     }
   },
   "operatorSemantics": [
@@ -435,8 +427,7 @@
         "type": "ace.btable.cOperatorRandom",
         "method": "onExecute1028369",
         "address": "0x144e4b000",
-        "end": "0x144e4b324",
-        "nativeSha256": "170c1c3ef692bd79e46d6388bc41740e7f0216a4b810fb03386538f8b5104e49"
+        "end": "0x144e4b324"
       }
     },
     {
@@ -446,8 +437,7 @@
         "type": "ace.btable.cSetTimerValue",
         "method": "onExecute1028216",
         "address": "0x148c42f20",
-        "end": "0x148c43004",
-        "nativeSha256": "097ccc71dacf4951626ed5db300c354d307d22e2e0774091ce7a1201432c9584"
+        "end": "0x148c43004"
       }
     }
   ],
@@ -484,22 +474,19 @@
         "type": "ace.btable.cVariableStorage",
         "method": "getValueTimer231669",
         "address": "0x1488fb7c0",
-        "end": "0x1488fb879",
-        "nativeSha256": "9dc81ffba03656b49ffdfe06a02aca87df472b889f5e8e9ff03231fa7798e9f6"
+        "end": "0x1488fb879"
       },
       {
         "type": "ace.btable.cVariableStorage",
         "method": "setValueTimer231672",
         "address": "0x1488fbae0",
-        "end": "0x1488fbc76",
-        "nativeSha256": "1263f4ab944708465aec1dc7c494ada63b562acbfe23cc528bb12700f39c0443"
+        "end": "0x1488fbc76"
       },
       {
         "type": "ace.btable.cVariableStorage",
         "method": "update231673",
         "address": "0x1488fbc80",
-        "end": "0x1488fbdcd",
-        "nativeSha256": "1d4b97901902e6c001fb528353510d149db7f01f9466516329cc330288943603"
+        "end": "0x1488fbdcd"
       }
     ]
   },
@@ -515,15 +502,13 @@
         "type": "ace.user_data.ActionID.cID",
         "method": "get_ActionGuid245340",
         "address": "0x1445a1500",
-        "end": "0x1445a15a7",
-        "nativeSha256": "dfd40bc8ed1f595c85f079bda24eeffae7ca2f5fcbe0700cae49353a935dbe27"
+        "end": "0x1445a15a7"
       },
       {
         "type": "ace.user_data.ActionID.<>c",
         "method": "<onLoad>b__19_11026471",
         "address": "0x144e4a060",
-        "end": "0x144e4a112",
-        "nativeSha256": "d130c09e2647614964c5fb555bece5a9f0403bc4cffee9ecc69a3d2bb6d9653b"
+        "end": "0x144e4a112"
       }
     ]
   },
@@ -540,43 +525,37 @@
         "type": "ace.user_data.ActionParam",
         "method": "applyParamCore245935",
         "address": "0x1451e3c90",
-        "end": "0x1451e3e2a",
-        "nativeSha256": "241d619ff2645fc76c1c7605b1d97678d7fb8575e7b0c48b805c035d06676977"
+        "end": "0x1451e3e2a"
       },
       {
         "type": "ace.user_data.ActionParam",
         "method": "getActualActionGuid245937",
         "address": "0x1451e3fe0",
-        "end": "0x1451e40ee",
-        "nativeSha256": "cd57954a657d7c80b025f9cb9b0166998f46986a5d3d9980ad71202cd8c4b42a"
+        "end": "0x1451e40ee"
       },
       {
         "type": "ace.user_data.ActionParam",
         "method": "toBranchedParamIndex245936",
         "address": "0x1451e3e30",
-        "end": "0x1451e3fd3",
-        "nativeSha256": "f139b134a58c5dcfd6ec44d02f039e3bacd537906957523cbe24f51cef2c41c5"
+        "end": "0x1451e3fd3"
       },
       {
         "type": "ace.user_data.ActionParam",
         "method": "updateOverrideActionDic245929",
         "address": "0x1451e38f0",
-        "end": "0x1451e3a80",
-        "nativeSha256": "8b260d63997a9f49873633d0e58689e0676f623a88e64d8b94be856ce965fc87"
+        "end": "0x1451e3a80"
       },
       {
         "type": "ace.user_data.ActionParam.<>c",
         "method": "<updateOverrideActionDic>b__16_01026488",
         "address": "0x14487b2a0",
-        "end": "0x14487b2c0",
-        "nativeSha256": "7b692148c6fb337f07d6c59d8ca8ac9d98d9478695e86fdb3697fba75ec85823"
+        "end": "0x14487b2c0"
       },
       {
         "type": "ace.user_data.ActionParam.<>c",
         "method": "<updateOverrideActionDic>b__16_11026489",
         "address": "0x146229590",
-        "end": "0x1462295a0",
-        "nativeSha256": "2721a516318ff66db84048a89eee711b1ddd740169abff73a43d94d53a62a587"
+        "end": "0x1462295a0"
       }
     ]
   }

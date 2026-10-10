@@ -161,7 +161,8 @@ class NativeRecipeContext:
         self.stack.close()
 
     def native(self, row):
-        key = row["address"], row["end"], row["nativeSha256"]
+        # The profile pins the EXE; cache rows may still carry a byte digest.
+        key = row["address"], row["end"], row.get("nativeSha256")
         if key not in self.native_cache:
             start, end = int(row["address"], 16), int(row["end"], 16)
             data = (
@@ -171,7 +172,8 @@ class NativeRecipeContext:
             )
             if (
                 len(data) != end - start
-                or hashlib.sha256(data).hexdigest() != row["nativeSha256"]
+                or "nativeSha256" in row
+                and hashlib.sha256(data).hexdigest() != row["nativeSha256"]
             ):
                 raise ValueError("原生字节不匹配：" + row["type"] + ":" + row["method"])
             self.native_cache[key] = data
@@ -324,12 +326,11 @@ class NativeRecipeContext:
             reason="当前调度函数入口第一条指令直接返回，没有执行行为子表分派",
             evidence=evidence(row),
             entryInstruction=dict(address=row["address"], bytes="c3", mnemonic="ret"),
-            metadataTypeSha256=self.metadata.type_hash(row["type"]),
         )
 
     def command_leaf(self, command_type):
         """A recovered "Extend field OP argument" rule for the actual implementation."""
-        from ..logic.commands import recover_leaf
+        from ..logic.commands import recover_context_leaf, recover_leaf
 
         if command_type not in self.leaf_cache:
             current, visited, found = command_type, set(), None
@@ -341,7 +342,9 @@ class NativeRecipeContext:
                 if rows:
                     if len(rows) == 1:
                         code = _artifact(self.helper_path, self.helpers, rows[0])["code"]
-                        found = recover_leaf(rows[0], code, self.metadata, self.pe)
+                        found = recover_leaf(
+                            rows[0], code, self.metadata, self.pe
+                        ) or recover_context_leaf(rows[0], code, self.metadata)
                         if found is not None:
                             found["enumType"], found["enumValues"] = self.metadata.enum(
                                 found["contextFieldType"]

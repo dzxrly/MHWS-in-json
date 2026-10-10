@@ -1,14 +1,13 @@
 """Bind frozen control flow to resource values. No native binary is read here."""
 
 from copy import deepcopy
-import hashlib
 import json
+import re
 from pathlib import Path
 from ..logic.predicates import RuleRegistry
 from ..logic.values import scalar
 from ..resources.reader import Resources, ActionBindingError, structure_signature, typed
 from ..logic.weights import choose_with_uint32, weighted_pool, candidate_node_id
-from .catalog import DEFAULT_TEMPLATE
 from ..native.evidence import digest
 from .io import load_model
 from .audit import combat_entry_recovered
@@ -53,6 +52,17 @@ def bind_action_node(node, body, argument, resources, names):
     return None
 
 
+def referenced_enemy_names(graph, resources):
+    """Official names of the EM IDs that resource arguments compare against."""
+    names = {}
+    for found in sorted(set(re.findall(r"\] (EM\d{4}_\d{2}_\d)", json.dumps(graph)))):
+        try:
+            names[found] = resources.enemy_name(found)["displayName"]
+        except ValueError:
+            pass
+    return names
+
+
 def build_chain(
     natives,
     template_path=None,
@@ -66,7 +76,9 @@ def build_chain(
     if model is not None and template_path is not None:
         raise ValueError("只能指定内存模型或模型 JSON 文件之一")
     if model is None:
-        model = load_model(template_path or DEFAULT_TEMPLATE)
+        if template_path is None:
+            raise ValueError("需要怪物模块原生配方生成的模型或模型 JSON 文件")
+        model = load_model(template_path)
     else:
         model = deepcopy(model)
     if model.get("schemaVersion") != 1 or model["profile"] != registry.data["profile"]:
@@ -130,6 +142,7 @@ def build_chain(
     if model.get("bindEnemyNameFromResources"):
         graph["enemyNameBinding"] = resources.enemy_name(model["enemyId"])
         graph["enemyName"] = graph["enemyNameBinding"]["displayName"]
+    graph["enemyNames"] = referenced_enemy_names(graph, resources)
     table_ids = {table["tableGuid"] for table in graph["tables"]}
     if graph["entry"] not in table_ids or len(table_ids) != len(graph["tables"]):
         raise ValueError("表入口无效或表 GUID 重复")
@@ -190,7 +203,29 @@ def build_chain(
                 continue
             if "argumentIndex" not in node:
                 leaf = model.get("leafRules", {}).get(node.get("expectedCommandType"))
-                if node["kind"] == "condition" and leaf and not leaf["argumentField"]:
+                recovered = None
+                if (
+                    node["kind"] == "condition"
+                    and node.get("expectedCommandType")
+                    and expression_unknown(node.get("expression", dict(kind="unknown")))
+                ):
+                    # Parameterless commands: the same reviewed recipes, no argument.
+                    recovered = recover_condition(
+                        dict(
+                            node, commandType=node["expectedCommandType"], argument={}
+                        ),
+                        model["profile"],
+                        model["enemyId"],
+                        resources,
+                    )
+                    if recovered is not None:
+                        node.update(recovered)
+                if (
+                    recovered is None
+                    and node["kind"] == "condition"
+                    and leaf
+                    and not leaf["argumentField"]
+                ):
                     expression = leaf_expression(leaf)
                     if expression is not None:
                         node.update(
@@ -297,9 +332,7 @@ def build_chain(
         boundaries=action_binding_boundaries,
     )
     graph["actionNameCatalog"] = names.catalog()
-    graph["sourceHashes"] = {
-        source: resources.hashes[source] for source in sorted(resources.accessed)
-    }
+    graph["sources"] = sorted(resources.accessed)
     graph["metadataVerification"] = metadata_status
     graph["coverage"] = {
         "localTables": len(graph["tables"]),

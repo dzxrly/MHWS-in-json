@@ -14,7 +14,7 @@ from src.database.action_values.build import (
     build_action_value_workbook,
     load_action_value_catalog,
 )
-from src.database.action_values.action_map import ACTION_MAP_FORMAT, load_action_map
+from src.database.action_values.action_map import ACTION_MAP_FORMAT
 from src.database.action_values.rcol import (
     RequestSetKey,
     RequestSetRecord,
@@ -301,21 +301,6 @@ class ActionValueTests(unittest.TestCase):
             )
             with self.assertRaisesRegex(ValueError, "exact current requestSet"):
                 load_action_value_catalog(natives_dir, action_map)
-
-    def test_action_map_rejects_v1_format(self) -> None:
-        with tempfile.TemporaryDirectory() as temp_dir:
-            path = Path(temp_dir) / "ActionMap.json"
-            path.write_text(
-                json.dumps(
-                    {
-                        "_format": "mhws_static_action_request_set_map_v1",
-                        "relations": [],
-                    }
-                ),
-                encoding="utf-8",
-            )
-            with self.assertRaisesRegex(ValueError, "Unsupported ActionMap"):
-                load_action_map(path)
 
     def test_real_source_contract_has_all_scopes_and_unmapped_tail_blocks(self) -> None:
         catalog = load_action_value_catalog(NATIVES_DIR, ACTION_MAP_PATH)

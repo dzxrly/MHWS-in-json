@@ -9,6 +9,9 @@ Shared code holds no monster constants. A module in ``monster/`` may declare:
 - ``RULE_SPECS``: curation tuples in the RULE_SPECS format of config.py.
 - ``recover_command_effects(row, metadata, pe)``: reviewed native writes.
 - ``prepare_player_graph(graph, registry)``: checks before the player view.
+- ``recover_condition(node, enemy_id, resources)``: reviewed conditions of
+  its own commands (not the common prefix); may add ``sceneInput`` or
+  ``inputEnums`` ({input key: {enum name: value}}) for the player view.
 """
 
 from functools import lru_cache

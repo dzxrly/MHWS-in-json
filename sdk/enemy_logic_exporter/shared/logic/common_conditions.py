@@ -37,6 +37,17 @@ def enum_name(value):
     return str(scalar(value)).split("] ", 1)[-1]
 
 
+def _enemy_label(resources, value):
+    """Official monster name for an Enemy enum value, else its enum name."""
+    name = enum_name(value)
+    if resources is not None:
+        try:
+            return resources.enemy_name(name)["displayName"]
+        except ValueError:
+            pass
+    return name
+
+
 def _player_target_status(argument):
     """Return the player branch of CheckStatus for a reviewed case, or None."""
     category = enum_number(argument["_EditCategory"])
@@ -62,11 +73,34 @@ def _player_target_status(argument):
     return None
 
 
+def _part_name(resources, enemy_id, guid):
+    """The official name (or _PartsType name) of one EmParamParts part."""
+    owner = "Em" + enemy_id[2:9]
+    path = f"STM/GameDesign/Enemy/{owner[:6]}/{owner[7:]}/Data/{owner}_Param_Parts.user.3.json"
+    try:
+        body = resources.read(path)
+    except FileNotFoundError:
+        return None
+    matches = [
+        typed(item)[1]
+        for item in typed(body["_PartsArray"])[1]["_DataArray"]
+        if typed(item)[1]["_InstanceGuid"] == guid
+    ]
+    return resources.part_name(matches[0]["_PartsType"]) if len(matches) == 1 else None
+
+
 def recover_condition(node, profile, enemy_id, resources):
     if profile != receipt()["profile"]:
         raise ValueError("公共条件配方与来源版本不匹配")
     command = node.get("commandType", "")
     if not command.startswith(COMMON_COMMAND_PREFIX):
+        # Monster-specific commands are reviewed in their own monster modules.
+        from .monster_rules import hooks
+
+        for recover in hooks("recover_condition"):
+            recovered = recover(node, enemy_id, resources)
+            if recovered is not None:
+                return recovered
         return None
     navigation = recover_navigation_condition(node, profile)
     if navigation is not None:
@@ -98,6 +132,11 @@ def recover_condition(node, profile, enemy_id, resources):
                 source="EnvironmentManager.get_CurrentRank 的实际返回值；资源等级经 getTYPEFromFixed 校验",
             )
             summary = f"当前任务等级为 {value}"
+        elif category == 5:
+            # Basic.RoleID (+0x4c) == the resource RoleID; compared by enum name.
+            name = enum_name(typed(argument["RoleID"])[1]["_EditArg"])
+            expression = compare("self_basic_role_id", name, source=FIELDS["role_id"])
+            summary = "自身 RoleID 为 " + name
         elif category == 6:
             value = enum_number(typed(argument["LegendaryID"])[1]["_EditArg"])
             expression = compare(
@@ -131,8 +170,8 @@ def recover_condition(node, profile, enemy_id, resources):
                     right=mapped,
                 ),
             )
-            summary = "自身怪物类型匹配 " + str(
-                scalar(typed(argument["Enemy"])[1]["_EditArg"])
+            summary = "自身怪物类型匹配 " + _enemy_label(
+                resources, typed(argument["Enemy"])[1]["_EditArg"]
             )
             extra["detail"] = (
                 "资源枚举先映射为 Enemy ID；映射为 -1 时此原生判断返回真。不能仅凭本页怪物 ID 把分支裁掉。"
@@ -154,7 +193,7 @@ def recover_condition(node, profile, enemy_id, resources):
         summary = "当前有效目标是随从"
     elif key == "cCheckTargetType" and enum_number(argument["_EditCategory"]) == 1:
         evidence = "target_type_enemy"
-        name = enum_name(typed(argument["Enemy"])[1]["_EditArg"])
+        name = _enemy_label(resources, typed(argument["Enemy"])[1]["_EditArg"])
         expression = combined(
             "all",
             guard,
@@ -234,6 +273,52 @@ def recover_condition(node, profile, enemy_id, resources):
         )
         expression = combined("all", guard, combined("any", player, enemy))
         summary = "当前目标处于眩晕状态"
+    elif key == "cCheckGimmickReactionType":
+        evidence = "gimmick_reaction"
+        name = enum_name(argument["_EditType"])
+        # ReactionGm.TargetReactableGmInterface.get_ReactionType() == argument;
+        # no reacting gimmick returns false, written as the value NONE.
+        expression = combined(
+            "all",
+            guard,
+            compare(
+                "gimmick_reaction_type",
+                name,
+                source="cEmModuleReactionGm.TargetReactableGmInterface.get_ReactionType()；对象为空时记为 NONE",
+            ),
+        )
+        summary = "正在反应的机关类型为 " + name
+    elif key == "cCheckObstacleClimbHeight":
+        evidence = "obstacle_climb_height"
+        # cEnemyContext.Obstacle (+0x1f0): ObstacleType (+0x68) == STEP_UP_WALL
+        # and StepClimbHeight (+0x80) > the .rdata constant 20.0 (1.42.0.2).
+        expression = combined(
+            "all",
+            guard,
+            self_valid,
+            runtime(
+                "self_obstacle_step_up_wall_climb",
+                "cEnemyContext.Obstacle.ObstacleType == STEP_UP_WALL 且 StepClimbHeight > 20.0",
+            ),
+        )
+        summary = "前方障碍为 STEP_UP_WALL 且 StepClimbHeight > 20"
+        extra["sceneInput"] = "obstacle_climb_height"
+    elif key == "cCheckRidingParts":
+        evidence = "riding_parts"
+        guid = scalar(argument["_EditPartsGuid"])
+        # EmParamParts.getPartsIndex(guid) -> cEmModuleRide._RidePartsInfos
+        # entry; true when its Rider key is set (category != -1, index >= 0).
+        expression = combined(
+            "all",
+            guard,
+            runtime(
+                f"riding_part:{guid}",
+                "该部位的 cEmModuleRide.cInfo.Rider 类别不为 -1 且索引 ≥ 0",
+            ),
+        )
+        name = _part_name(resources, enemy_id, guid) or guid[:8]
+        summary = f"有骑乘者骑在{name}上"
+        extra["sceneInput"] = "riding_part"
     elif key == "cCheckBreakParts" and enum_number(argument["_EditType"]) == 0:
         evidence = "break_parts"
         guid = scalar(argument["_EditBreakPartsGuid"])
@@ -285,13 +370,7 @@ def recover_condition(node, profile, enemy_id, resources):
             if len(matches) != 1:
                 return None
             index, definition = matches[0]
-            part = str(definition["_PartsType"]).split("] ", 1)[-1]
-            name = {
-                "LEFT_WING": "左翼",
-                "RIGHT_WING": "右翼",
-                "HEAD": "头部",
-                "TAIL": "尾部",
-            }.get(part, part)
+            name = resources.part_name(definition["_PartsType"])
             summary = f"{name}的破坏次数 > 0"
             extra["partBinding"] = dict(
                 source=path,

@@ -60,9 +60,6 @@ def validate_action_names(graph):
     uids = set()
     for row in catalog["shellCatalog"]:
         identity = (row["source"], row["uniqueId"])
-        if (
-            identity in uids
-            or graph["sourceHashes"].get(row["source"]) != row["sourceSha256"]
-        ):
+        if identity in uids or row["source"] not in graph["sources"]:
             raise ValueError("Shell 名称 UID 重复或来源摘要不匹配")
         uids.add(identity)

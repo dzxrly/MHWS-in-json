@@ -33,9 +33,7 @@ def export_commands(helper_index, metadata, output, *, exe, inventory=None):
             raise ValueError("命令元数据版本冲突")
         for row in method_rows(index):
             data = _artifact(index_path, index, row)
-            evidence = {
-                k: row[k] for k in ("type", "method", "address", "end", "nativeSha256")
-            }
+            evidence = {k: row[k] for k in ("type", "method", "address", "end")}
             record = dict(
                 **evidence,
                 parameters=row.get("parameters", []),

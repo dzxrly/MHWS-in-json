@@ -8,7 +8,6 @@ schedule work and the scheduler's base/override resource selection.
 
 from copy import deepcopy
 from functools import lru_cache
-import hashlib
 import json
 from ..config import (
     COMBAT_FIELDS as FIELDS,
@@ -57,10 +56,7 @@ def verify_sources(profile, metadata, pe):
             raise ValueError("共享 Combat 方法身份或地址变化：" + row["method"])
         start, end = int(row["address"], 16), int(row["end"], 16)
         body = pe.read(start, end - start)
-        if (
-            len(body) != end - start
-            or hashlib.sha256(body).hexdigest() != row["nativeSha256"]
-        ):
+        if len(body) != end - start:
             raise ValueError("共享 Combat 原生字节变化：" + row["method"])
     for owner, expected in receipt()["layouts"].items():
         fields = metadata.fields(owner)

@@ -109,3 +109,7 @@ def compare(key, value, operator="eq", *, source):
 
 def combined(kind, *items):
     return dict(kind=kind, items=list(items))
+
+
+def invert(item):
+    return dict(kind="not", item=item)

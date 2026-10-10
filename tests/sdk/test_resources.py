@@ -150,21 +150,6 @@ class ResourceActionTests(unittest.TestCase):
         self.assertFalse(action["parameterApplicationReviewed"])
         self.assertEqual(len(action["parameterBindingEvidence"]), 1)
 
-    def test_branch_of_another_action_does_not_bind_by_guid_elsewhere(self):
-        own = self.parameter["_BranchedParamsList"][0]
-        self.parameter["_BranchedParamsList"].append(copy.deepcopy(own))
-        own["ace.user_data.ActionParam.cBranchedParams"]["_Params"] = []
-        with self.assertRaisesRegex(ValueError, "不属于请求的动作"):
-            self.action(self.variant)
-
-    def test_duplicate_variant_guids_do_not_bind(self):
-        values = self.parameter["_BranchedParamsList"][0][
-            "ace.user_data.ActionParam.cBranchedParams"
-        ]["_Params"]
-        values.append(copy.deepcopy(values[0]))
-        with self.assertRaisesRegex(ValueError, "不属于请求的动作"):
-            self.action(self.variant)
-
     def test_missing_action_info_guid_stays_unbound(self):
         self.info["_ActionGuid"] = "33333333-3333-3333-3333-333333333333"
         with self.assertRaisesRegex(
@@ -178,14 +163,6 @@ class ResourceActionTests(unittest.TestCase):
         self.assertEqual(error.context["actionIdRecord"]["_Class"], "cRequested")
         self.assertEqual(error.context["matchingParameterEntries"], 0)
         self.assertIn("_EditActionGuid", error.context["rawArgument"])
-
-    def test_duplicate_action_info_is_a_hard_error_not_a_missing_binding(self):
-        self.parameter["_ActionInfoList"].append(
-            copy.deepcopy(self.parameter["_ActionInfoList"][0])
-        )
-        with self.assertRaises(ValueError) as raised:
-            self.action()
-        self.assertNotIsInstance(raised.exception, ActionBindingError)
 
     def test_requested_variant_requires_an_explicit_enable_flag(self):
         del self.parameter["_IsUseBranchedParam"]

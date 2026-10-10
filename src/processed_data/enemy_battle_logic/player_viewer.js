@@ -97,7 +97,7 @@
   function make(kind, title, extra = {}) {
     const node = { uid: "n" + uid++, kind, title, children: null, expanded: false, ...extra };
     node.compact = !!node.record?.presentation?.compact;
-    if (node.compact) node.title = "内部检查";
+    if (node.compact) node.title = node.record?.checks || "内部检查";
     node.titleFont = fonts[kind === "root" ? "root" : kind === "group" ? "group" : "title"];
     node.badge = badgeText(node);
     const text = node.compact
@@ -107,7 +107,11 @@
     return node;
   }
   function badgeText(node) {
-    if (node.compact) return "内部检查 · 分支保留";
+    if (node.compact) {
+      // Only unsettled checks reach the tree; name what they read.
+      const subject = node.title.length > 22 ? node.title.slice(0, 21) + "…" : node.title;
+      return "待核实 · " + subject;
+    }
     if (node.kind === "root") return "";
     if (node.kind === "group") return "分组";
     if (node.kind === "entry") return node.entry.relation === "unknown" ? "局部分支" : "行为表";
@@ -305,7 +309,7 @@
       node.subLines.forEach((part, i) => text.append(svg("tspan", { x: PAD, dy: i ? line : 0 }, part)));
       g.append(text);
     }
-    if (node.lines.clipped || node.subLines.clipped) g.append(svg("title", {}, [node.title, node.subtitle].filter(Boolean).join("\n")));
+    if (node.compact || node.lines.clipped || node.subLines.clipped) g.append(svg("title", {}, [node.title, node.subtitle].filter(Boolean).join("\n")));
     if (expandable(node)) {
       const t = svg("g", { class: "pt-toggle", transform: `translate(${node.w} ${node.h / 2})`, role: "button", "aria-label": node.expanded ? "收起分支" : "展开分支" });
       t.append(svg("circle", { r: 10 }), svg("text", { y: 4.5 }, node.expanded ? "−" : "+"));
@@ -351,7 +355,14 @@
     }
     if (rec) {
       if (rec.kind === "action" && rec.nameStatus === "unresolved") note("游戏资源里没有这个动作的中文名，标题直接用 ActionID 的类名；同一类有多套参数时用“分支参数 n”区分。");
-      if (rec.presentation?.compact) note("这个检查会影响分支走向，但内部条件还没确认。");
+      if (rec.presentation?.compact) note("这个内部检查会影响分支走向，但它读取的状态还没核实或无法由当前设定判断，所以两条分支都保留。");
+      const checks = (rec.via || []).filter(n => n.kind === "check");
+      if (checks.length) {
+        const passed = html("details"), list = html("ul");
+        passed.append(html("summary", `途经的内部检查（${checks.length} 个，按当前设定已确定）`), list);
+        for (const check of checks) list.append(html("li", `${check.title}：${check.truth ? "成立" : "不成立"}`));
+        selection.append(passed);
+      }
       if (rec.afterAction) note("这里位于动作或状态变化之后，条件会重新判断。");
       if (rec.kind === "weighted_random") note("权重只在本次抽选的候选之间比较。");
     }

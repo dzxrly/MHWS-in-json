@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 from ..native.evidence import digest, method_rows
 from ..native.pe import verify_rows
-from ..config import ACTIVE_PROFILE_PATH, ROOT, MODEL_DIR, SUPPORTED_PROFILE
+from ..config import ACTIVE_PROFILE_PATH, ROOT
 
 MODEL_DIR_WEB = ROOT / "src/processed_data/enemy_battle_logic/models"
 from ...monster import get_monster
@@ -198,17 +198,15 @@ def parser():
     extraction.add_argument(
         "--natives", type=Path, default=ROOT / "MHWS-in-json/natives"
     )
-    extraction.add_argument(
-        "--model", type=Path, help="待核实或已维护的语义输入；默认使用 data/models"
-    )
     extraction.add_argument("--rules", type=Path, help="对应来源版本的判断规则")
     extraction.add_argument(
-        "--index", type=Path, help="匹配来源的原生 BTable 证据索引，调用本怪物专项配方"
+        "--index", type=Path, required=True, help="匹配来源的原生 BTable 证据索引"
     )
     extraction.add_argument(
         "--helpers",
         type=Path,
-        help="同版本的命令与静态初始化证据索引；与 --index 一起指定",
+        required=True,
+        help="同版本的命令与静态初始化证据索引",
     )
     extraction.add_argument(
         "--requests", type=Path, help="独立发现的动作请求 JSON，用于核对恢复覆盖"
@@ -234,21 +232,6 @@ def parser():
     )
     all_models.add_argument("--rules", type=Path)
     all_models.add_argument("--output", type=Path)
-    freeze = commands.add_parser(
-        "freeze",
-        help="执行已人工核实的固化配方；全怪物必须提供语义模型，不能生成占位索引",
-    )
-    freeze.add_argument("--exe", type=Path, required=True)
-    freeze.add_argument(
-        "--metadata", type=Path, default=ROOT / "src/data/il2cpp_dump.json"
-    )
-    freeze.add_argument("--natives", type=Path, default=ROOT / "MHWS-in-json/natives")
-    freeze.add_argument("--output", type=Path)
-    freeze.add_argument(
-        "--all",
-        action="store_true",
-        help="核查工作目录 reviewed 中全部 34 个怪物的语义模型后固化",
-    )
     return result
 
 
@@ -476,76 +459,26 @@ def main():
             )
         )
     elif args.command == "extract":
-        from .freeze import freeze_models, freeze_native_model
+        from .freeze import freeze_native_model
 
         get_monster(args.enemy)
-        if bool(args.index) != bool(args.helpers):
-            raise ValueError("--index 与 --helpers 必须同时提供")
-        if args.index and args.model:
-            raise ValueError("原生专项配方与 --model 不能同时指定")
-        if args.requests and not args.index:
-            raise ValueError("--requests 仅用于原生专项配方")
-        if args.index:
-            content = freeze_native_model(
-                args.enemy,
-                args.exe,
-                args.metadata,
-                args.natives,
-                args.index,
-                args.helpers,
-                requests_path=args.requests,
-                rules_path=args.rules,
-                inventory_path=args.inventory,
-            )
-            output = args.output or work / "extracted"
-            output.mkdir(parents=True, exist_ok=True)
-            target = output / (args.enemy.lower() + ".v1.json")
-            target.write_text(content, encoding="utf8")
-            print(
-                json.dumps(
-                    dict(enemyId=args.enemy, graphs=[str(target)]), ensure_ascii=False
-                )
-            )
-            return
-        paths = freeze_models(
-            MODEL_DIR,
-            args.output or work / "extracted",
+        content = freeze_native_model(
+            args.enemy,
             args.exe,
             args.metadata,
             args.natives,
-            SUPPORTED_PROFILE,
-            enemy_id=args.enemy,
-            template_path=args.model,
+            args.index,
+            args.helpers,
+            requests_path=args.requests,
             rules_path=args.rules,
+            inventory_path=args.inventory,
         )
+        output = args.output or work / "extracted"
+        output.mkdir(parents=True, exist_ok=True)
+        target = output / (args.enemy.lower() + ".v1.json")
+        target.write_text(content, encoding="utf8")
         print(
             json.dumps(
-                dict(enemyId=args.enemy, graphs=[str(path) for path in paths]),
-                ensure_ascii=False,
+                dict(enemyId=args.enemy, graphs=[str(target)]), ensure_ascii=False
             )
         )
-    elif args.command == "freeze":
-        from .freeze import freeze_current_preview
-
-        if args.all:
-            from .freeze import freeze_reviewed_models
-
-            freeze_reviewed_models(
-                work / "reviewed",
-                args.output or ROOT / "src/processed_data/enemy_battle_logic/models",
-                args.exe,
-                args.metadata,
-                args.natives,
-                SUPPORTED_PROFILE,
-            )
-            return
-
-        output = args.output or work / "frozen"
-        freeze_current_preview(
-            output, args.exe, args.metadata, args.natives, SUPPORTED_PROFILE
-        )
-        print("FROZEN OUTPUT", output)
-
-
-if __name__ == "__main__":
-    main()

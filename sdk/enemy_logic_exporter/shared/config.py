@@ -18,7 +18,6 @@ from .native.symbols import Helper, Method, Reviewed
 ROOT = Path(__file__).resolve().parents[3]
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 EVIDENCE_DIR = DATA_DIR / "evidence"
-MODEL_DIR = DATA_DIR / "models"
 RULES_PATH = DATA_DIR / "rules.v1.json"
 ROSTER_PATH = DATA_DIR / "roster.v1.json"
 MONSTER_MODULE_DIR = Path(__file__).resolve().parents[1] / "monster"
@@ -50,9 +49,14 @@ def symbol_value(name):
     return SYMBOLS[name]["value"]
 
 
+# Native evidence identity; the active profile pins the EXE and metadata, so
+# rows carry no per-row byte digest.
+EVIDENCE_KEYS = ("type", "method", "address", "end")
+
+
 def symbol_evidence(name):
     record = SYMBOLS[name]
-    return {k: record[k] for k in ("type", "method", "address", "end", "nativeSha256")}
+    return {k: record[k] for k in EVIDENCE_KEYS}
 
 
 def symbol_name(name):
@@ -687,6 +691,7 @@ RESEARCH_ONLY_NODE_FIELDS = (
     "expectedCommandType",
     "expectedArgumentType",
     "commandIndex",
+    "inputEnums",
     "selectionEffects",
     "initializerEvidence",
     "staticArray",

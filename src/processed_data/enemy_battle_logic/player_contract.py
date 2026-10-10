@@ -17,6 +17,9 @@ def validate_player_view(graph):
     table_entries = {
         t["tableGuid"]: f"{t['tableGuid']}/{t['entry']}" for t in graph["tables"]
     }
+    scenario = view.get("scenario", {})
+    if not set(scenario.get("persistent", ())) <= set(scenario.get("inputs", {})):
+        raise ValueError("常驻情境前提必须是情境输入")
     nodes = view["nodes"]
     if set(nodes) != set(originals):
         raise ValueError("玩家行动树遗漏或新增了无来源节点")

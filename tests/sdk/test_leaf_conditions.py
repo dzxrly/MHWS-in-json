@@ -171,3 +171,62 @@ class LeafVariantTests(unittest.TestCase):
                 self.row("Em0070_00", "cCheckStateDoubleFloor"), no_flag, Metadata()
             )
         )
+
+
+class ContextFieldTests(unittest.TestCase):
+    """Common commands that compare one cEnemyContext module field."""
+
+    class Metadata:
+        def fields(self, name):
+            return {
+                "app.cEnemyContext": {
+                    "Lead": {"offset_from_base": "0x190", "type": "Lead"}
+                },
+                "Lead": {"Chase": {"offset_from_base": "0x18", "type": "Chase"}},
+                "Chase": {
+                    "_CurrentPhase": {"offset_from_base": "0x54", "type": "PHASE"}
+                },
+                "PhaseArg": {"_EditType": {"offset_from_base": "0x10", "type": "Enum"}},
+            }.get(name, {})
+
+    row = dict(
+        type="app.btable.EmCommonCommand.cCheckLeadChasePhase",
+        method="onExecute1",
+        address="0x140000000",
+        end="0x140000010",
+        nativeSha256="a" * 64,
+        parameters=[{"type": "ace.btable.cCommandWork"}, {"type": "PhaseArg"}],
+    )
+    # Ghidra line breaks are kept to check the whitespace normalization.
+    code = """undefined4 f(void) {
+  if ((param_3 != (undefined8 *)0x0) && (*(longlong *)*param_3 == _DAT_15471e840)) {
+    iVar1 = *(int *)(*(longlong *)
+                      (*(longlong *)(*(longlong *)(*(longlong *)(param_3[5] + 0x68) + 0x40) + 400) +
+                      0x18) + 0x54);
+    return CONCAT31((int3)((uint)iVar1 >> 8),iVar1 == *(int *)(*(longlong *)(param_4 + 0x10) + 0x10)
+                   );
+  }
+  return 0; }"""
+
+    def test_field_path_and_argument_are_resolved(self):
+        from sdk.enemy_logic_exporter.shared.logic.commands import recover_context_leaf
+
+        rule = recover_context_leaf(self.row, self.code, self.Metadata())
+        self.assertEqual(rule["contextField"], "Lead.Chase._CurrentPhase")
+        self.assertEqual((rule["operator"], rule["argumentField"]), ("==", "_EditType"))
+
+    def test_unresolved_offsets_or_helper_calls_are_rejected(self):
+        from sdk.enemy_logic_exporter.shared.logic.commands import recover_context_leaf
+
+        self.assertIsNone(
+            recover_context_leaf(
+                self.row, self.code.replace("0x54", "0x58"), self.Metadata()
+            )
+        )
+        self.assertIsNone(
+            recover_context_leaf(
+                self.row,
+                self.code.replace("return 0;", "FUN_1234(); return 0;"),
+                self.Metadata(),
+            )
+        )
