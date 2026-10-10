@@ -331,6 +331,7 @@ class NativeRecipeContext:
     def command_leaf(self, command_type):
         """A recovered "Extend field OP argument" rule for the actual implementation."""
         from ..logic.commands import recover_context_leaf, recover_leaf
+        from ..logic.formula import recover_formula_leaf
 
         if command_type not in self.leaf_cache:
             current, visited, found = command_type, set(), None
@@ -345,7 +346,10 @@ class NativeRecipeContext:
                         found = recover_leaf(
                             rows[0], code, self.metadata, self.pe
                         ) or recover_context_leaf(rows[0], code, self.metadata)
-                        if found is not None:
+                        found = found or recover_formula_leaf(
+                            rows[0], code, self.metadata
+                        )
+                        if found is not None and found.get("contextFieldType"):
                             found["enumType"], found["enumValues"] = self.metadata.enum(
                                 found["contextFieldType"]
                             )

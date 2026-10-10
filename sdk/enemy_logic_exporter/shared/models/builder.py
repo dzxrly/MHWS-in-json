@@ -55,7 +55,7 @@ def bind_action_node(node, body, argument, resources, names):
 def referenced_enemy_names(graph, resources):
     """Official names of the EM IDs that resource arguments compare against."""
     names = {}
-    for found in sorted(set(re.findall(r"\] (EM\d{4}_\d{2}_\d)", json.dumps(graph)))):
+    for found in sorted(set(re.findall(r"\] (EM\d{4}_\d{2}_\d)", json.dumps(graph)))):
         try:
             names[found] = resources.enemy_name(found)["displayName"]
         except ValueError:
@@ -142,7 +142,6 @@ def build_chain(
     if model.get("bindEnemyNameFromResources"):
         graph["enemyNameBinding"] = resources.enemy_name(model["enemyId"])
         graph["enemyName"] = graph["enemyNameBinding"]["displayName"]
-    graph["enemyNames"] = referenced_enemy_names(graph, resources)
     table_ids = {table["tableGuid"] for table in graph["tables"]}
     if graph["entry"] not in table_ids or len(table_ids) != len(graph["tables"]):
         raise ValueError("表入口无效或表 GUID 重复")
@@ -300,6 +299,8 @@ def build_chain(
                     node["variableGuid"] = scalar(argument["_TargetVariableIndex"])
                     node["method"] = scalar(argument["_Method"])
                     node["value"] = scalar(argument["_Value"])
+    # After binding: resource arguments name the compared enemies.
+    graph["enemyNames"] = referenced_enemy_names(graph, resources)
     unknown_conditions = sum(
         (
             expression_unknown(node["expression"])

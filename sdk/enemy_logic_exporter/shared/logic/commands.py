@@ -731,6 +731,10 @@ def leaf_expression(leaf, argument=None):
     from .expressions import combined, compare, runtime
     from .values import enum_number, scalar
 
+    if leaf.get("kind") == "formula":
+        from .formula import instantiate
+
+        return instantiate(leaf["formula"], argument)
     key = f"extend:{leaf['contextType']}.{leaf['contextField']}"
     source = (
         f"{leaf['contextType']}.{leaf['contextField']}（{leaf['contextOffset']}）"

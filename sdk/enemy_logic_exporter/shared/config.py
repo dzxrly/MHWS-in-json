@@ -187,6 +187,48 @@ EXTRA_STATE_ENUM = "app.EnemyDef.EXTRA_STATE"
 
 # -------------------------------------------------------- IL2CPP identities
 
+# cEnemyContext field paths that shared recipes already expose under a runtime
+# key; recovered field formulas reuse the key so one field is one input.
+CONTEXT_KEY_ALIASES = {
+    "AIStateManager._CurrentAIStateID": "ai_state_current",
+    "AIStateManager._NextAIStateID": "ai_state_pending",
+    "AIStateManager._NextAIInterruptID": "ai_interrupt_next",
+    "Area._CurrentStageNo": "self_current_stage_no",
+    "Area._CurrentAreaNo": "self_current_area_no",
+    "Basic.EmID": "self_basic_enemy_id",
+    "Basic.LegendaryID": "self_basic_legendary_id",
+}
+# cEnemyContext arrays indexed by an enum (cEnemyContext.checkFlagBit reads
+# _FlagArray[FLAG_BIT] directly, game 1.42.0.2).
+CONTEXT_ARRAY_INDEX_ENUMS = {"_FlagArray": "app.EnemyDef.FLAG_BIT"}
+# CheckStatus.execute_Status on a monster target (game 1.42.0.2): after the
+# target holder has _FlagArray[DONE_CONTEXT_SETUP_END], CONDITION_TYPE ANGRY,
+# TIRED and DEPLETION call the target cEnemyContext getters and DYING reads
+# Dying.<IsDying>k__BackingField; RIDE_PT, SMASH and DOWN_PL return false for
+# a monster. DOWN uses an unreviewed bit helper and stays unknown.
+ENEMY_TARGET_STATUS = {
+    "ANGRY": (
+        "selected_enemy_angry",
+        "目标怪物 cEnemyContext.get_IsAngry()",
+        "愤怒状态",
+    ),
+    "TIRED": (
+        "selected_enemy_tired",
+        "目标怪物 cEnemyContext.get_IsTired()",
+        "疲劳状态",
+    ),
+    "DEPLETION": (
+        "selected_enemy_depletion",
+        "目标怪物 cEnemyContext.get_IsDepletion()",
+        "力竭状态",
+    ),
+    "DYING": (
+        "selected_enemy_dying",
+        "目标怪物 cEnemyContext.Dying.IsDying",
+        "IsDying",
+    ),
+}
+ENEMY_TARGET_STATUS_FALSE = ("RIDE_PT", "SMASH", "DOWN_PL")
 COMMON_COMMAND_PREFIX = "app.btable.EmCommonCommand."
 ENEMY_CONTEXT_TYPE = "app.cEnemyContext"
 OPERATOR_WORK_TYPE = "ace.btable.cOperatorWork"
@@ -343,6 +385,8 @@ CONDITION_FIELDS = dict(
     legendary_id="cEnemyContext.Basic.LegendaryID（0x108→0x50）",
     enemy_id="cEnemyContext.Basic.EmID（0x108→0x48）",
     role_id="cEnemyContext.Basic.RoleID（0x108→0x4c）",
+    selected_enemy_ready="由目标键查得怪物 ContextHolder，且其 cEnemyContext._FlagArray[DONE_CONTEXT_SETUP_END] 成立",
+    selected_enemy_id="目标怪物 cEnemyContext.Basic.EmID（0x108→0x48）",
     category="cEnemyContext.Basic.Category（0x108→0x54）；0 BOSS、1 ZAKO、2 ANIMAL",
     hunter_stun="cHunterBadConditions._Stun（0x40）._IsActive（0x2f） != 0",
     enemy_enabled="选中怪物 Context 存在且其启用标志（0x308→0x27）为真",

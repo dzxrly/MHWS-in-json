@@ -9,6 +9,8 @@ from copy import deepcopy
 from functools import lru_cache
 from ..config import (
     BAD_CONDITION_LABELS,
+    ENEMY_TARGET_STATUS,
+    ENEMY_TARGET_STATUS_FALSE,
     EVIDENCE_DIR,
     HUNTER_BAD_CONDITION_INDEX,
     HUNTER_BAD_CONDITION_SOURCE,
@@ -73,6 +75,19 @@ def _player_target_status(argument):
     return None
 
 
+def _enemy_target_status(argument):
+    """The monster-target branch of CheckStatus.execute_Status, "false" or None."""
+    if enum_number(argument["_EditCategory"]) != 3:
+        return None
+    name = enum_name(typed(argument["Status"])[1]["_EditArg"])
+    if name in ENEMY_TARGET_STATUS_FALSE:
+        return "false"
+    if name not in ENEMY_TARGET_STATUS:
+        return None
+    key, source, label = ENEMY_TARGET_STATUS[name]
+    return runtime(key, source), label
+
+
 def _part_name(resources, enemy_id, guid):
     """The official name (or _PartsType name) of one EmParamParts part."""
     owner = "Em" + enemy_id[2:9]
@@ -133,10 +148,14 @@ def recover_condition(node, profile, enemy_id, resources):
             )
             summary = f"当前任务等级为 {value}"
         elif category == 5:
-            # Basic.RoleID (+0x4c) == the resource RoleID; compared by enum name.
-            name = enum_name(typed(argument["RoleID"])[1]["_EditArg"])
-            expression = compare("self_basic_role_id", name, source=FIELDS["role_id"])
+            # Basic.RoleID (+0x4c) == the resource RoleID.
+            raw = typed(argument["RoleID"])[1]["_EditArg"]
+            name, value = enum_name(raw), enum_number(raw)
+            expression = compare(
+                "context:Basic.RoleID", value, source=FIELDS["role_id"]
+            )
             summary = "自身 RoleID 为 " + name
+            extra["inputEnums"] = {"context:Basic.RoleID": {name: value}}
         elif category == 6:
             value = enum_number(typed(argument["LegendaryID"])[1]["_EditArg"])
             expression = compare(
@@ -191,38 +210,93 @@ def recover_condition(node, profile, enemy_id, resources):
             "all", guard, compare("selected_target_key_type", 2, source=selected)
         )
         summary = "当前有效目标是随从"
+    elif key == "cCheckTargetType" and enum_number(argument["_EditCategory"]) == 5:
+        # EVENT: cEnemyContext.Event (+0x200) .RequestEventPlayArg (+0x18)
+        # ._PlayTargetType (+0x38) == the resource Event value.
+        evidence = "target_type"
+        raw = typed(argument["Event"])[1]["_EditArg"]
+        name, value = enum_name(raw), enum_number(raw)
+        field = "context:Event.RequestEventPlayArg._PlayTargetType"
+        expression = combined("all", guard, compare(field, value, source=field[8:]))
+        summary = "事件目标类型 PlayTargetType 为 " + name
+        extra["inputEnums"] = {field: {name: value}}
     elif key == "cCheckTargetType" and enum_number(argument["_EditCategory"]) == 1:
         evidence = "target_type_enemy"
         name = _enemy_label(resources, typed(argument["Enemy"])[1]["_EditArg"])
+        # getEnemyManageInfo(key) -> holder whose context has
+        # _FlagArray[DONE_CONTEXT_SETUP_END]; CheckType.execute_Enemy is false
+        # for no holder, true when getEnumValue(key) == -1, otherwise compares
+        # the target's Basic.EmID with the mapped value.
+        value = enum_number(typed(argument["Enemy"])[1]["_EditArg"])
+        mapped = runtime(
+            f"enemy_enum_index:{value}",
+            "EnumMaker.getEnumValue：在当前 Enemy 枚举表查找资源枚举 key，未找到返回 -1",
+        )
         expression = combined(
             "all",
             guard,
             compare("selected_target_key_type", 1, source=selected),
-            dict(
-                kind="unknown",
-                reason="目标怪物 Context 的启用与类型比较 helper 尚未逐项固化",
+            runtime("selected_enemy_context_ready", FIELDS["selected_enemy_ready"]),
+            combined(
+                "any",
+                dict(
+                    kind="compare",
+                    operator="eq",
+                    left=mapped,
+                    right=dict(kind="constant", value=-1),
+                ),
+                dict(
+                    kind="compare",
+                    operator="eq",
+                    left=runtime(
+                        "selected_enemy_basic_em_id", FIELDS["selected_enemy_id"]
+                    ),
+                    right=mapped,
+                ),
             ),
         )
         summary = "当前有效目标是怪物 " + name
         extra["detail"] = "目标键必须是怪物；目标为玩家时此判断为假。"
-    elif key == "cCheckTargetStatus" and _player_target_status(argument):
+    elif key == "cCheckTargetStatus" and (
+        _player_target_status(argument)
+        or _enemy_target_status(argument) not in (None, "false")
+    ):
         evidence = "target_status"
-        player, enemy_known, summary = _player_target_status(argument)
-        player = combined(
-            "all",
-            compare("selected_target_key_type", 0, source=selected),
-            runtime(
-                "selected_hunter_context_valid",
-                "由选中键查询玩家 Context 且其角色模块存在",
-            ),
-            player,
-        )
-        enemy = combined(
-            "all",
-            compare("selected_target_key_type", 1, source=selected),
-            dict(kind="unknown", reason="目标为怪物时的状态映射尚未逐项固化"),
-        )
-        expression = combined("all", guard, combined("any", player, enemy))
+        branches = []
+        found = _player_target_status(argument)
+        if found:
+            player, enemy_known, summary = found
+            branches.append(
+                combined(
+                    "all",
+                    compare("selected_target_key_type", 0, source=selected),
+                    runtime(
+                        "selected_hunter_context_valid",
+                        "由选中键查询玩家 Context 且其角色模块存在",
+                    ),
+                    player,
+                )
+            )
+        enemy = _enemy_target_status(argument)
+        if enemy != "false":
+            if enemy is None:
+                enemy = dict(
+                    kind="unknown", reason="目标为怪物时的状态映射尚未逐项固化"
+                )
+            else:
+                enemy, label = enemy
+                summary = "当前目标（怪物）处于 " + label
+            branches.append(
+                combined(
+                    "all",
+                    compare("selected_target_key_type", 1, source=selected),
+                    runtime(
+                        "selected_enemy_context_ready", FIELDS["selected_enemy_ready"]
+                    ),
+                    enemy,
+                )
+            )
+        expression = combined("all", guard, combined("any", *branches))
         extra["detail"] = "目标为玩家时读取玩家状态；目标为怪物时的分支保留未知。"
     elif key == "cCheckStateSignTyoe":
         evidence = "state_sign"

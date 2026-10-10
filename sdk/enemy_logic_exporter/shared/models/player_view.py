@@ -18,12 +18,12 @@ from ..logic.monster_rules import hooks, rule_kind
 from ..resources.action_names import CLASS_EXPLANATIONS
 from ..config import (
     BAD_CONDITION_LABELS,
+    ENEMY_TARGET_STATUS,
     HUNTER_STATUS_LABELS,
     SLOT_GROUPS,
     STATE_SIGN_LABELS,
     UNFAIR_ACTIVE_FIELD,
 )
-
 
 UNATTACHED_GROUP = "接入位置待核查的局部分支"
 # Validity preconditions that hold whenever this monster is fighting the player
@@ -35,7 +35,18 @@ SCENARIO_GUARDS = {
     "selected_hunter_lookup_found": "能查到当前目标玩家",
     "selected_hunter_character_valid": "当前目标玩家的角色有效",
     "self_extend_valid": "怪物自身的专用扩展对象有效",
+    "selected_enemy_context_ready": "目标为怪物时，其 Context 已完成初始化",
 }
+
+
+def field_path_label(path):
+    """ "Lead.<Egg>k__BackingField._IsTargetUnfiar" -> "Lead.Egg.IsTargetUnfiar"."""
+    return ".".join(
+        part.replace("k__BackingField", "").strip("<>_") or part
+        for part in path.split(".")
+    )
+
+
 def extend_field_label(key):
     """ "extend:app.cEm0082_00Extend.<IsTengen>k__BackingField" -> "IsTengen".
 
@@ -44,10 +55,7 @@ def extend_field_label(key):
     """
 
     match = re.match(r"extend:app\.[^.]*Extend\.(.+)$", key)
-    parts = match[1].split(".") if match else [key.rsplit(".", 1)[-1]]
-    return ".".join(
-        part.replace("k__BackingField", "").strip("<>_") or part for part in parts
-    )
+    return field_path_label(match[1] if match else key.rsplit(".", 1)[-1])
 
 
 # Facts of a solo (or host) player fighting this monster in ordinary combat.
@@ -233,15 +241,18 @@ class PlayerCompiler:
                 f"context:{leaf['contextField']}"
                 if leaf.get("kind") == "context_field"
                 else f"extend:{leaf['contextType']}.{leaf['contextField']}"
-            ): leaf.get("enumValues")
-            or {}
+            ): dict(leaf.get("enumValues") or {})
             for leaf in graph.get("leafRules", {}).values()
+            if leaf.get("kind") != "formula"
         }
+        for leaf in graph.get("leafRules", {}).values():
+            for key, names in (leaf.get("inputEnums") or {}).items():
+                self.extend_enums.setdefault(key, {}).update(names)
         # Enum names declared by monster-module condition recipes.
         for table in graph["tables"]:
             for node in table["nodes"]:
                 for key, names in (node.get("inputEnums") or {}).items():
-                    self.extend_enums.setdefault(key, names)
+                    self.extend_enums.setdefault(key, {}).update(names)
         self.rules = {r["commandType"]: r for r in graph["rules"]["rules"]}
         self.technical_names = technical_action_names(graph)
         self.stand_states = graph.get("standStates", {})
@@ -566,7 +577,6 @@ class PlayerCompiler:
                 "selected_hunter_stun_active": ("hunter_stunned", "玩家眩晕"),
                 "environment_current_rank": ("quest_rank", "任务等级"),
                 "self_basic_legendary_id": ("legendary_id", "怪物历战分类"),
-                "self_basic_role_id": ("role_id", "怪物 RoleID"),
                 "self_current_stage_no": (
                     "self_current_stage_no",
                     "怪物所在地图 Area._CurrentStageNo",
@@ -581,6 +591,9 @@ class PlayerCompiler:
                 return comparison(key, "eq", True)
             if operand.get("kind") == "runtime" and key in SCENARIO_FACTS:
                 return comparison(key, "eq", True)
+            target_status = {k: label for k, _, label in ENEMY_TARGET_STATUS.values()}
+            if operand.get("kind") == "runtime" and key in target_status:
+                return self.boolean(key, "目标怪物处于" + target_status[key])
             if key in SCENARIO_VALUES and right.get("kind") == "constant":
                 # AI state / interrupt fields the scenario fixes for combat.
                 return comparison(key, expression.get("operator", "eq"), right["value"])
@@ -591,7 +604,7 @@ class PlayerCompiler:
                 label = (
                     "专用状态 " + extend_field_label(key)
                     if key.startswith("extend:")
-                    else "怪物状态 " + key.split(":", 1)[1]
+                    else "怪物状态 " + field_path_label(key.split(":", 1)[1])
                 )
                 if kind == "runtime":
                     return self.boolean(key, label)
@@ -713,7 +726,8 @@ class PlayerCompiler:
         if not (
             index.startswith("enemy_enum_index:")
             and missing["right"] == dict(kind="constant", value=-1)
-            and same["left"].get("key") == "self_basic_enemy_id"
+            and same["left"].get("key")
+            in ("self_basic_enemy_id", "selected_enemy_basic_em_id")
             and same["right"].get("key") == index
             and missing.get("operator", "eq") == same.get("operator", "eq") == "eq"
         ):
@@ -721,6 +735,15 @@ class PlayerCompiler:
         name = self.enemy_names.get(int(index.split(":", 1)[1]))
         if name is None:
             return None
+        if same["left"]["key"] == "selected_enemy_basic_em_id":
+            # CheckType.execute_Enemy on the selected target's context.
+            self.inputs.setdefault(
+                "selected_enemy_id", dict(label="当前目标怪物", options=[])
+            )
+            option = dict(label=self.enemy_display.get(name, name), value=name)
+            if option not in self.inputs["selected_enemy_id"]["options"]:
+                self.inputs["selected_enemy_id"]["options"].append(option)
+            return comparison("selected_enemy_id", "eq", name)
         return comparison("self_enemy_id", "eq", name)
 
     def condition(self, node):

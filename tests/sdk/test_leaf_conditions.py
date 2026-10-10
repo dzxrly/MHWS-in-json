@@ -1,6 +1,6 @@
 import unittest
 from sdk.enemy_logic_exporter.shared.logic.commands import recover_leaf
-
+from sdk.enemy_logic_exporter.shared.logic.formula import Unsupported, evaluate
 
 class Metadata:
     def fields(self, name):
@@ -230,3 +230,43 @@ class ContextFieldTests(unittest.TestCase):
                 self.Metadata(),
             )
         )
+
+
+class FieldFormulaTests(unittest.TestCase):
+    HEAD = "undefined8 f(undefined8 param_1,undefined8 param_2,undefined8 *param_3)\n"
+
+    def formula(self, body):
+        return evaluate(self.HEAD + body)[0]
+
+    def test_assignment_in_skipped_operand_does_not_leak(self):
+        # x is reassigned only when a fails; b must read the new x then.
+        result = self.formula(
+            "{ longlong x; x = param_3[5];"
+            " if ((*(int *)(x + 4) == 1) || (x = *(longlong *)(x + 8), *(char *)(x + 2) != '\0'))"
+            " { return 1; } return 0; }"
+        )
+        a = (
+            "cmp",
+            "==",
+            ("load", 4, ("load", 8, ("param", "param_3"), 40), 4),
+            ("const", 1),
+        )
+        b = (
+            "cmp",
+            "!=",
+            ("load", 1, ("load", 8, ("load", 8, ("param", "param_3"), 40), 8), 2),
+            ("const", 0),
+        )
+        self.assertEqual(result, ("or", (a, b)))
+
+    def test_trap_paths_are_false_and_calls_are_rejected(self):
+        result = self.formula(
+            "{ code *pcVar1; undefined8 uVar2;"
+            " if (*(char *)(param_3[5] + 3) == '\0') { FUN_1(param_1,0x46,0);"
+            " pcVar1 = (code *)swi(3); uVar2 = (*pcVar1)(); return uVar2; }"
+            " return 1; }"
+        )
+        self.assertEqual(result[0], "cmp")
+        self.assertEqual(result[1], "!=")
+        with self.assertRaises(Unsupported):
+            self.formula("{ char c; c = FUN_2(param_1); return c != '\0'; }")
