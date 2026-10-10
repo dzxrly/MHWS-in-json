@@ -8,6 +8,9 @@ import re
 import struct
 
 
+SECTION_WRITABLE = 0x80000000
+
+
 class PE:
     def __init__(self, path):
         self.path = Path(path)
@@ -25,6 +28,11 @@ class PE:
             self.base = struct.unpack_from("<Q", self.data, opt + 24)[0]
             self.sections = [
                 struct.unpack_from("<IIII", self.data, opt + optsize + i * 40 + 8)
+                for i in range(count)
+            ]
+            # Section characteristics, for telling constants from writable data.
+            self.section_flags = [
+                struct.unpack_from("<I", self.data, opt + optsize + i * 40 + 36)[0]
                 for i in range(count)
             ]
             rva, size = struct.unpack_from("<II", self.data, opt + 112 + 3 * 8)
@@ -52,6 +60,16 @@ class PE:
                     raw + offset : raw + offset + min(size, raw_size - offset)
                 ]
         return b""
+
+    def read_only(self, address, size):
+        """True when [address, address+size) lies in one non-writable section."""
+        rva = address - self.base
+        for (virtual_size, virtual_address, _, _), flags in zip(
+            self.sections, self.section_flags
+        ):
+            if virtual_address <= rva and rva + size <= virtual_address + virtual_size:
+                return not flags & SECTION_WRITABLE
+        return False
 
     def end(self, address):
         index = bisect.bisect_right(self.starts, address) - 1

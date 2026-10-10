@@ -17,11 +17,7 @@ from ..logic.commands import annotate_effects
 from ..resources.reader import Resources, typed
 from ..logic.predicates import RuleRegistry
 from .extraction import extract_inventory
-from ..config import (
-    OPERATOR_WORK_TYPE,
-    ROOT,
-)
-
+from ..config import OPERATOR_WORK_TYPE, in_agents
 
 def command_binding(event, body, factories, registry):
     """Require both native object identity and the declared resource type."""
@@ -124,8 +120,7 @@ def recover_all(
     requests_path=None,
 ):
     output = Path(output).resolve()
-    root = ROOT
-    if not output.is_relative_to(root / ".agents"):
+    if not in_agents(output):
         raise ValueError("逐怪物研究输出必须位于 .agents")
     index_path = Path(native_index)
     index = json.loads(index_path.read_text(encoding="utf8"))

@@ -16,7 +16,7 @@ from ..resources.action_names import ActionNames
 from ..logic.common_conditions import recover_condition
 from ..logic.commands import leaf_expression
 from .player_view import build_player_view
-
+from ..resources.variables import referenced_variables
 
 def bind_skip_argument(body, index, expected_type, source):
     if type(index) is not int or not 0 <= index < len(body["_CommandArgArray"]):
@@ -301,6 +301,8 @@ def build_chain(
                     node["value"] = scalar(argument["_Value"])
     # After binding: resource arguments name the compared enemies.
     graph["enemyNames"] = referenced_enemy_names(graph, resources)
+    # Timer and variable GUIDs are known only once arguments are bound.
+    graph["variableCatalog"] = referenced_variables(graph, resources)
     unknown_conditions = sum(
         (
             expression_unknown(node["expression"])

@@ -88,8 +88,10 @@
 | `shared/native/symbols.py` | 把符号解析为当前构建的地址：IL2CPP 方法按类型、去掉数字后缀的方法名及参数类型定位；无名 helper 按屏蔽重定位后的开头字节特征定位，可再限定为具名锚点方法的直接被调方；全局与常量作为“人工核对”值随 profile 传递。为每个函数计算与重定位无关的规范化摘要：函数内跳转记为相对偏移，RIP 相对数据记为 `REL`，外部被调方记为稳定身份（具名方法为“类型.去后缀方法名(参数类型)”，无名 helper 为其自身规范化摘要的前缀），因此被调方改指向也会被识别为代码变化。摘要方案版本记录在 profile 的 `digestScheme` |
 | `shared/workflow/version_update.py` | `resolve-symbols` 生成新版本 profile 并报告移动、代码变化与需复核项；`migrate-evidence` 按类型与方法名在新构建中重新定位全部证据行，只有整函数长度与整函数规范化摘要（含被调方身份）都不变的行才自动改写地址、范围、字节摘要与方法后缀 |
 | `shared/models/roster.py` | 生成并比较大型怪物名单（含变种实际复用的 Combat 主人）；`new-monster` 为名单新增的怪物生成独立入口模块，不覆盖已有配方 |
-| `shared/resources/variables.py` | 索引全部 BTableVariable 定义（计时器、浮点、布尔），模型以 `variableCatalog` 记录本怪物判断读取的变量及其初始值与来源 |
-| `shared/models/uncertainty.py` | `uncertainty` 统计玩家战斗树中在全部玩家输入已知时仍无法判定的条件，按命令排序，作为后续规则工作的依据 |
+| `shared/resources/variables.py` | 索引全部 BTableVariable 定义（计时器、浮点、布尔），模型以 `variableCatalog` 记录本怪物判断读取的变量及其资源导出名（`ExportValueName`，多数为空）、初始值、生命周期与来源；必须在 `builder.py` 绑定资源参数之后生成，否则读不到计时器 GUID |
+| `shared/workflow/environment.py` | 新环境的路径发现与 `check-env`：`MHWS_EXE` 或 Steam 库（注册表 `SteamPath` 与 `libraryfolders.vdf`）中的游戏 EXE、`MHWS_SDK_WORK_DIR` 工作目录、研究缓存的标准位置（`STANDARD_INPUTS`，`extract`/`extract-all` 省略 `--index` 等参数时使用）、固定版本的依赖、资源换行与 Ghidra/JDK 设置 |
+| `setup_env.ps1` | Windows 一键搭建：在 `.agents/sdk-venv` 建虚拟环境、安装 `requirements.txt` 并运行 `check-env`（文件带 UTF-8 BOM，Windows PowerShell 5.1 才能正确读取中文） |
+| `shared/models/uncertainty.py` | `uncertainty` 统计玩家战斗树中在全部玩家输入已知时仍无法判定的条件，按命令排序；`census` 统计全部表中含未知部分的条件（总数等于 `coverage.unknownConditions` 之和），按命令与原因分组，用来找最大的待确认类别 |
 | `shared/native/metadata.py` | 用 mmap 索引大体积 REFramework JSON，按需读取类型、继承字段和枚举 |
 | `shared/native/pe.py` | 只读 PE64，依据异常目录及方法地址确定函数边界，保留同地址的方法别名并校验原生字节 |
 | `shared/native/manifest.py` | 按怪物与方法类别从当前元数据重新生成提取清单 |
@@ -109,11 +111,12 @@
 | `shared/logic/weights.py` | 校验整数权重、独立候选槽和调用目标，按已核实的取模与累积权重规则检查给定抽样值；不假设随机数生成器 |
 | `shared/logic/expressions.py`、`shared/logic/values.py` | 集中构造、校验和求值条件表达式，读取标量及枚举；缺少运行时输入保持未知 |
 | `shared/resources/action_names.py` | 绑定并校验准确的资源、动作 GUID、参数变体与说明名，保留 Shell 原名及来源 |
-| `shared/models/player_view.py` | 将已核实条件编译成玩家树的 JSON 判断与分支说明，按 `schedulerSlots` 生成分组入口，把战斗中的有效性前提作为显式情境输入；保留动作身份、候选槽、调用和继续位置；只读取完整研究模型，不绘制 HTML |
+| `shared/models/player_view.py` | 将已核实条件编译成玩家树的 JSON 判断与分支说明，按 `schedulerSlots` 生成分组入口，把战斗中的有效性前提作为显式情境输入；保留动作身份、候选槽、调用和继续位置；输入的 `label` 写玩家能读懂的短语，规则、内部字段名与 GUID 放进 `hint`（`input_hints`、`INPUT_HINTS`，网页显示为“?”说明）；只读取完整研究模型，不绘制 HTML |
 | `shared/models/publish.py` | 从完整研究模型生成 Git 中的网页模型：删除研究字段、以 `sharedValues` 共享重复值并核对可完整还原（见“发布模型”） |
 | `shared/models/catalog.py`、`shared/models/io.py`、`shared/models/validation.py` | 维护独立怪物范围、模型入口、大小限制与图结构校验；`io.py` 在读取时展开已发布模型的共享值 |
 | `shared/logic/rules.py` | 固化通用条件及少数已核实的特殊条件 |
-| `shared/logic/formula.py` | 通用“字段公式”识别器：对命令 `onExecute` 的伪 C 做符号求值，只接受声明、赋值、`if`/`else`、`return`、同块内向前 `goto`、类型化读取、比较、`&&`/`||`/`!`、强制转换与 `CONCATxy`；`&&`/`||` 按 C 短路顺序分叉，未执行的操作数里的赋值不会泄漏到其他路径；栈保护（局部缓冲区与 `stack_cookie_check`）忽略，紧跟 `swi(3)` 陷阱的调用视为该路径不返回。读取按元数据命名为 `context:<路径>` 或 `extend:<Extend 类型>.<路径>`（含值类型结构体内字段、基础类型数组的常量下标，`CONTEXT_ARRAY_INDEX_ENUMS` 中的数组下标显示枚举名），已有情境键的字段经 `CONTEXT_KEY_ALIASES` 复用同一个键；命令工作、Extend、目标模块的存在与精确类型检查映射为情境守卫。遇到其他函数调用、循环、变量下标、与非类型全局量比较等即放弃，命令保持未知。结果作为 `kind=formula` 的 `leafRules`；`command_leaf` 先试 Extend 字段识别器，再试本识别器，单次读取的 Context 字段识别器只作兜底，且要求函数体除命令工作守卫、该次读取和匹配的返回外没有任何其他读取或比较，否则放弃，避免丢掉额外分支条件 |
+| `shared/logic/formula.py` | 通用“字段公式”识别器：对命令 `onExecute` 的伪 C 做符号求值，只接受声明、赋值、`if`/`else`、`return`、同块内向前 `goto`、类型化读取、比较、`&&`/`||`/`!`、强制转换与 `CONCATxy`；`&&`/`||` 按 C 短路顺序分叉，未执行的操作数里的赋值不会泄漏到其他路径；栈保护（局部缓冲区与 `stack_cookie_check`）忽略，紧跟 `swi(3)` 陷阱的调用视为该路径不返回。读取按元数据命名为 `context:<路径>` 或 `extend:<Extend 类型>.<路径>`（含值类型结构体内字段、基础类型数组的常量下标，`CONTEXT_ARRAY_INDEX_ENUMS` 中的数组下标显示枚举名），已有情境键的字段经 `CONTEXT_KEY_ALIASES` 复用同一个键；命令工作、Extend、目标模块的存在与精确类型检查映射为情境守卫。遇到其他函数调用、循环、变量下标、与非类型全局量比较等即放弃，命令保持未知。结果作为 `kind=formula` 的 `leafRules`；`command_leaf` 的顺序是：Extend 字段识别器 → 本识别器 → x64 识别器（`native_formula.py`，完整模式）→ 单次读取的 Context 字段识别器（要求函数体除命令工作守卫、该次读取和匹配的返回外没有任何其他读取或比较，否则放弃，避免丢掉额外分支条件）→ x64 识别器的部分模式 |
+| `shared/logic/native_formula.py` | x64 层字段公式识别器：用 Capstone 从命令 `onExecute` 的真实入口寄存器（rcx 线程、rdx 命令、r8 命令工作、r9 参数）逐条符号执行，**跟进直接调用与尾跳转进入被调函数自身的指令**，因此 getter、谓词 helper 按它实际收到的寄存器展开，不按名字信任，也不包装成不透明布尔输入。接受寄存器/栈传送、类型化读取、`lea`、常量指针运算、整数与 `ucomiss/comiss` 比较、条件跳转、`setcc`/`cmovcc`（与跳转一样分叉）、栈 cookie 检查、类继承检查 helper（`isa`，按守卫命名）、整字段符号位测试、Boolean 字段的第 0 位测试、构造异常后紧跟 `int3` 的抛出序列（该路径返回 false，与伪 C 识别器一致）；移位后的宽读取按字节拆回各字段（如 `Nullable<int>` 的 `_HasValue`/`_Value`），值类型字段的读取下降到首个成员；一次读取跨两个字段的等值比较（如 `cmp rax, imm` 同时比较两个 Int32）拆成两个字段分别比较，其他读取宽度与字段不符的比较一律拒绝（`split_wide`）；其他对象字段的空指针检查记为运行时键 `<字段键>#exists`（网页显示“…对象存在”），不当作守卫；比较对象若是运行时全局量，只有当字段所属值类型的 `.cctor` 是只含 `mov [rip+x], imm` 的直线代码、且该类型恰有一个同类型静态字段（如 `TARGET_ACCESS_KEY.INVALID`）时才代入常量，并把 `.cctor` 记入 `staticConstants` 证据。条件码两侧都是常量时直接定值（剪掉不可能路径）；无符号比较改写为带非负条件的有符号比较；读空指针的路径记为显式未知。遇到堆内存写入、路径过多、返回地址不平衡即整条放弃（`Fatal`）。**部分模式**下，变量下标、循环、间接调用、不支持的指令等只让“从最近分支起的这条路径”变成显式未知（`unknownPaths` 记录原因，`semanticStatus=native_x64_field_formula_partial`），其他路径保留已核实的字段条件；只有已知部分仍读取怪物状态时才接受。内联的 helper 记入 `inlinedHelpers`（类型、方法、起止地址），随模型核对原生字节 |
 | `shared/logic/field_checks.py` | 由怪物模块声明的“字段比较组合”配方：布尔字段、整数/枚举字段与常量比较，经 all/any/not 组合；字段可为 `extend:`（本怪物 Extend）、`context:`（cEnemyContext 下路径）或情境中已有的键（如 AI 状态、`self_current_area_no`）。模块只需写 `FIELD_CHECKS` 表并在 `recover_condition` 中调用 `declared_condition`，本文件不含怪物常量 |
 | `shared/logic/monster_rules.py` | 汇总怪物模块声明的专用内容并分派，自身不含怪物常量。`RULE_KINDS`（`{kind: dict(compile=..., evaluate=...)}`）由 `player_view.py` 编译成玩家条件，由 `predicates.py` 求值；`RULE_SPECS` 交给规则整理命令；`recover_command_effects(row, metadata, pe)` 交给命令实现目录；`prepare_player_graph(graph, registry)` 在生成玩家视图前调用；`recover_condition(node, enemy_id, resources)` 恢复非公共前缀的专用条件（无参数命令以空参数调用），可附带 `sceneInput`，或以 `inputEnums` 为专用状态输入提供枚举名。规则记录本身仍是 JSON，统一放在 `data/rules.v1.json`，便于证据迁移 |
 | `monster/em0021_00_0.py`、`em0022_00_0.py`、`em0046_00_0.py`、`em0071_00_0.py`、`em0078_00_0.py` | 各怪物专用判断的常量与处理代码：桃毛兽王蘑菇类型与拿取物品、雪狮子王断牙数、海龙电力等级、黑蚀龙内部状态（只声明整理表，求值用共通的字段相等）、巨戟龙阶段（区域移动结束前 FINAL 按 MIDFIELD 判断） |
@@ -126,7 +129,7 @@
 | `shared/logic/scheduler_slots.py` | 扫描 `cEmAIState*`/`cEmAIInterrupt*`/控制器方法中对 `requestChangeBTable`、`requestJumpBTable`、`requestChangeBTableVerify` 的直接调用，只接受请求前、同方法内未跨调用的立即数槽参数；专用中断按 `EnemyDef..cctor` 的初始化字节映射 `UNIQUE_00/01`。结果写入 `data/evidence/scheduler_slots.v1.json`，模型以 `schedulerSlots` 记录每个槽由哪些状态请求 |
 | `__main__.py`、`shared/workflow/cli.py` | 离线 CLI 入口 |
 
-`manifest`、`decompile`、`verify` 可用于新版本研究。原生配方当前支持经过来源核对的 **1.42.0.2**（`config.ACTIVE_GAME_VERSION`）。34 个独立模块均可通过 `build_model` 提取自身实际 BTableList、导入闭包和原生方法，公共机器追踪器不提供预先编造的怪物行为。当前 34 份已解析图合计覆盖 7,763 个原生方法上下文、8,171 个子表、123,246 个节点和 5,325 个权重选择点；复用资源按其所在模型分别计数。仍保留 1,347 个未知流程节点、1,126 个含未知表达式的条件和 68 个选择器边界；玩家战斗树中在全部玩家输入已知时仍无法判定的条件为 203 个（`uncertainty` 统计），另有 330 个随机分支按概率展示；同一调用位置的不同机器状态只有在隔离重放得到相同语义子图时才复用节点，否则保留边界。动作说明名绑定到资源、请求 GUID 与参数变体；实例 GUID 和基础 GUID 分别保留。Shell 原名及注释按资源与 UID 保存，未核实触发关系时不绑定到具体动作。全局 Combat 事件保持 partial，不能把导出成功描述为完整战斗 AI 已恢复。
+`manifest`、`decompile`、`verify` 可用于新版本研究。原生配方当前支持经过来源核对的 **1.42.0.2**（`config.ACTIVE_GAME_VERSION`）。34 个独立模块均可通过 `build_model` 提取自身实际 BTableList、导入闭包和原生方法，公共机器追踪器不提供预先编造的怪物行为。当前 34 份已解析图合计覆盖 7,763 个原生方法上下文、8,171 个子表、123,246 个节点和 5,325 个权重选择点；复用资源按其所在模型分别计数。仍保留 1,347 个未知流程节点、1,056 个含未知表达式的条件和 68 个选择器边界；玩家战斗树中在全部玩家输入已知时仍无法判定的条件为 196 个（`uncertainty` 统计），另有 330 个随机分支按概率展示；同一调用位置的不同机器状态只有在隔离重放得到相同语义子图时才复用节点，否则保留边界。动作说明名绑定到资源、请求 GUID 与参数变体；实例 GUID 和基础 GUID 分别保留。Shell 原名及注释按资源与 UID 保存，未核实触发关系时不绑定到具体动作。全局 Combat 事件保持 partial，不能把导出成功描述为完整战斗 AI 已恢复。
 
 ## 版本相关常量
 
@@ -140,17 +143,33 @@
 4. **新怪物/变种**：`roster --write` 更新名单并报告 `added`、`removed`、`ownerChanged` 与 `missingModules`；对每个新增 ID 运行 `new-monster --enemy <ID>` 生成入口，再提取。网页端名单由 `publish` 一并写入 `models/roster.json`，不需要改代码。
 5. **已有怪物的新逻辑**：新子表、导入与动作请求随 BTableList 和原生索引自动纳入；形如“自身 Extend 字段比较”的新专用命令会被自动恢复为 `leafRules`；其他新命令先表现为未知条件或未知命令节点。用 `uncertainty --models <完整模型目录>` 找出影响最大的命令，再按“核实原生语义 → 写入规则/公共条件 → 在 `player_view.py` 编译为玩家输入”的顺序补充。新出现的行为表槽若不在 `SLOT_LABELS` 中，会以原始槽名归入“未分类行为表”组，提醒补充名称与分组。
 
-## 环境与输入
+## 开发环境（Windows）
 
-在项目根目录运行模块。Python 3、Ghidra 12.0.4、Ghidra 支持的 JDK 和 PyGhidra 3.0.2、Capstone 5.0.6 已用于当前版本验证。JVM 是 Ghidra 自身的运行依赖，本项目不编写 Java 提取脚本。普通 JSON 构建无需安装这些研究依赖。
+只考虑 Windows。普通网页构建（`python -m src.processed_data.enemy_battle_logic`）只需要 Python 标准库与仓库内 JSON；下面的研究依赖只在重新提取时需要。已验证组合：Python 3.13、Capstone 5.0.6、PyGhidra 3.0.2、Ghidra 12.0.4 及其支持的 JDK。JVM 只是 Ghidra 的运行依赖，本项目不写 Java。
 
-```powershell
-python -m pip install -r sdk/enemy_logic_exporter/requirements.txt
-$env:JAVA_HOME = '你的 JDK 安装目录'
-$env:GHIDRA_INSTALL_DIR = '你的 Ghidra 安装目录'
-$exe = '游戏安装目录/MonsterHunterWilds.exe'
-$work = '.agents/enemy-logic-exporter'
-```
+### 换机步骤
+
+1. 安装 Python 3.13（勾选 `py` 启动器）和 Git；克隆仓库后在根目录运行：
+
+   ```powershell
+   powershell -ExecutionPolicy Bypass -File sdk/enemy_logic_exporter/setup_env.ps1
+   ```
+
+   脚本在 `.agents/sdk-venv` 建虚拟环境、安装 `requirements.txt` 中固定版本的依赖，最后运行 `check-env`。之后的命令都用这个解释器在项目根目录运行：`.agents/sdk-venv/Scripts/python.exe -B -m sdk.enemy_logic_exporter <命令>`。
+2. 按 `check-env` 列出的 `missing` 逐项补齐，再运行一次 `check-env`（加 `--verify` 时还会计算 EXE 与 dump 的 SHA-256，确认是当前 profile 的版本）：
+   - **游戏 EXE**：默认在 Steam 库中查找（注册表 `SteamPath` 和 `steamapps/libraryfolders.vdf` 列出的所有库）；装在别处时设环境变量 `MHWS_EXE` 或给 `--exe`。
+   - **IL2CPP dump**：与 EXE 同版本的 REFramework dump，放在 `src/data/il2cpp_dump.json`（约 1.6 GB，Git 忽略），或用 `--metadata` 指定。
+   - **资源导出**：`MHWS-in-json/natives`，随仓库检出。SDK 记录资源文件的 SHA-256，`.gitattributes` 对它设了 `-text`，Git 不再改换行；若检出早于这条规则（`check-env` 报“资源换行”），删除 `MHWS-in-json` 目录后执行 `git checkout -- MHWS-in-json` 重新取出。
+   - **研究缓存**（`--index`、`--helpers`、`--inventory`、`--requests`）：位于工作目录的标准位置（见 `environment.STANDARD_INPUTS`），`extract`/`extract-all` 省略这些参数时自动使用。新机器可以从旧机器复制整个 `.agents/enemy-logic-exporter`，或按“导出流程”用 `analyze`、`requests`、`recover` 重新生成（需要 Ghidra）。
+   - **工作目录**：默认 `.agents/enemy-logic-exporter`，可用 `MHWS_SDK_WORK_DIR` 或 `--work-dir` 改变，但必须位于项目 `.agents` 之内。缓存放在其他磁盘时，用目录联接把 `.agents` 指过去：`New-Item -ItemType Junction -Path .agents -Target D:\mhws-agents`（路径检查按解析后的真实路径比较，`config.in_agents`）。
+   - **Ghidra**（只有 `decompile`、`analyze` 需要）：设 `GHIDRA_INSTALL_DIR` 与 `JAVA_HOME`。
+3. 用一只怪物试跑：`extract --enemy EM0002_00_0 --output .agents/enemy-logic-exporter/try`，再按“迭代与度量”跑全量。
+
+### 已知环境陷阱
+
+- Windows PowerShell 5.1 把无 BOM 的 UTF-8 脚本当成系统代码页读取；仓库中的 `.ps1` 保存为带 BOM 的 UTF-8。Python 读写 JSON 一律显式 `encoding="utf-8"`（Windows 默认是 GBK）。
+- 用 Git Bash 的 heredoc 写 Python 时，非原始字符串里的 `\b`、`\0` 会变成控制字符；含反斜杠的内容用编辑工具写，批量修改后用 `grep -rlP "[\x00-\x08\x0b\x0c\x0e-\x1f]" --include=*.py --include=*.md sdk` 检查。
+- 多个会话可能共用同一检出并切换分支：提交前确认 `git branch --show-current`。`git worktree` 可以使用，但新工作树里没有被忽略的大文件：用硬链接接入 dump（`New-Item -ItemType HardLink`），用目录联接接入 `.agents`，并确认 `MHWS-in-json` 的换行与缓存一致（或用 `--natives` 指向原检出）。
 
 输入包括与 EXE 同一游戏版本的 `src/data/il2cpp_dump.json` 和 `MHWS-in-json/natives` 下导出的资源 JSON。PFB 用于资源和组件引用；BTable 参数与工厂决定参数绑定；行动与 AI 状态资源提供外围约束；motlist 主要描述动作与运动资源。不要仅凭某类文件存在就推断它决定选招。
 
@@ -261,6 +280,67 @@ python -m src.processed_data.enemy_battle_logic
 ```
 
 当前计时器：ACTIVATE 重置并启用，DEACTIVATE 保留值并停用，REACTIVATE 保留值并启用；更新到零后停用。时间增量单位未核实。角度特殊 Option、全局调度、实际动作中断仍有边界；不要将静态检查通过写成游戏内验证通过。
+
+## 维护与扩展手册
+
+本节给后续维护者（含模型）一份可以照做的流程。游戏会更新：地址、方法后缀、字段布局、怪物名单、行为表和命令实现都可能变化。原则不变：只采用有原生证据的结论，没有证据就保持未知，每次改动都要度量。
+
+### 迭代与度量（每次改动都做）
+
+在项目根目录运行（`$py` 为 `setup_env.ps1` 建的解释器；`--exe` 与研究缓存使用默认位置）：
+
+```powershell
+$py = '.agents/sdk-venv/Scripts/python.exe'
+$w = '.agents/enemy-logic-exporter/fix'
+& $py -B -m sdk.enemy_logic_exporter extract-all --output "$w/s1"      # 约 15 分钟
+& $py -B -m sdk.enemy_logic_exporter player-view --models "$w/s1" --output "$w/s1p"
+& $py -B -m sdk.enemy_logic_exporter census --models "$w/s1p"          # 全部含未知部分的条件，按命令与原因分组
+& $py -B -m sdk.enemy_logic_exporter uncertainty --models "$w/s1p"     # 玩家战斗树中输入都已知后仍无法判定的条件
+& $py -B -m sdk.enemy_logic_exporter publish --models "$w/s1p"
+& $py -B -m src.processed_data.enemy_battle_logic --output "$w/site"
+& $py -B -m unittest discover -s tests/sdk -t .
+```
+
+- 两项统计都要和上一轮对比：`census` 的 `unknownConditions` 等于各模型 `coverage.unknownConditions` 之和；`uncertainty` 的 `total.uncertain` 只看玩家战斗树。数字下降之外，还要抽查新恢复的公式与反编译、反汇编一致。
+- 纯重构必须得到逐字节一致的模型；有意的语义变化要能逐条解释。
+- 先用 `census` 找最大的类别，再看 `uncertainty` 的排行；后者只覆盖玩家战斗树，会漏掉生态、怪物间战斗等大类。
+- 改了已被导入的模块后，正在运行的提取不会用到新代码，需要重启。
+
+### 为一个未知命令选择恢复方式
+
+1. 读命令的 `onExecute`：helper 索引里有伪 C，x64 可用 Capstone 从 `PE` 直接反汇编。先判断它是“只读字段的组合”“调用 helper 后读字段”，还是依赖场景查询、物理射线、管理器查找、随机或循环。
+2. 按下面的顺序选择，能在低层自动识别就不写专用配方：
+   1. **自动识别**（不用改代码）：Extend 字段比较、伪 C 字段公式、x64 字段公式（含 helper 内联）、单次 Context 读取、x64 部分公式。提取后看模型 `leafRules[<命令>]` 的 `semanticStatus`、`inlinedHelpers`、`staticConstants` 与 `unknownPaths`，可以知道走了哪一层、哪条路径仍未知。
+   2. **扩展 x64 识别器**：失败原因只是缺一条指令语义、一种位测试或一种常量来源时，在 `native_formula.py` 补上精确语义（见下一小节），同类命令会一起受益。
+   3. **公共条件或规则**：多个怪物共用、语义需要人工核实的命令（例如按条件编号分派的 helper），写入 `common_conditions.py` 或 `data/rules.v1.json`。
+   4. **怪物专用配方**：只属于一只怪物的命令，在 `monster/<id>.py` 用 `FIELD_CHECKS` 或 `recover_condition` 声明，常量放在文件头部并注明游戏版本。
+   5. **玩家输入**：恢复出的新运行时键需要在 `player_view.py` 编译成输入，否则网页上仍是未知。新输入若依赖情境固定的键（如 `selected_target_key_type`），该键也必须作为输入暴露，否则分支永远不可达。
+3. 不能做的事：把未核实的 helper 整体当成一个可设定的布尔输入；把缺少运行时值的比较默认为 0 或 false；为减少未知把条件写成固定值。
+
+### 扩展 x64 识别器的规则
+
+- 每条新支持的指令都要写出完整语义：读哪些操作数、写哪个寄存器的哪几位（32 位写入清零高位，8/16 位写入保留其余位）、标志位如何设置。拿不准就抛 `Unsupported`，让该路径保持未知。
+- `Fatal` 只用于会改变程序状态或无法界定的情况（堆内存写入、路径过多、返回地址不平衡、无法解码）；部分模式不会把它们变成局部未知。
+- 新的常量来源（如静态字段）必须能从原生字节证明取值，并把证明位置写进规则（参照 `staticConstants`）。只有名称或注释不算证据。
+- helper 内联依靠真实寄存器状态，深度上限是 `MAX_CALL_DEPTH`；不要按名字白名单信任 helper。
+- 验证：对 helper 索引中全部 `onExecute` 同时运行伪 C 与 x64 识别器，两者都成功时公式应一致（当前 66 条中 65 条一致，唯一差异是 x64 为无符号比较补上了非负条件，更精确）；再用完整与部分两种模式跑全部命令，确认没有未捕获的异常（未知寄存器、未知指令都应是 `Unsupported`）。行为变化补充 `tests/sdk/test_native_formula.py`，测试用手写机器码和假 PE，不依赖游戏文件。
+
+### 游戏更新时的检查清单
+
+1. `check-env --verify`：确认 EXE、dump、资源都是新版本；摘要与旧 profile 不符是预期的，说明需要更新 profile。
+2. `resolve-symbols` 生成新 profile，处理 `moved`/`changed`/`review`；`migrate-evidence` 迁移证据，待复核行逐条核对（见“游戏更新与扩展”）。
+3. 用 `analyze`、`requests`、`recover` 重新生成研究缓存（需要 Ghidra），用 `scheduler-slots` 重新生成调度槽证据。
+4. `roster --write` 更新名单；新怪物用 `new-monster` 生成入口模块。
+5. 核对 `shared/config.py` 的结构偏移（命令工作、目标模块、Extend 持有者等）与 `monster/<id>.py` 头部常量。x64 识别器按元数据中的字段名和偏移命名，字段偏移变化会自动跟随；入口寄存器约定、类继承检查 helper 与栈 cookie helper 来自 profile 符号，出现在 `changed` 中时要复核。
+6. 全量提取，用 `census`、`uncertainty` 与上一版本对比：新出现的大类通常是新逻辑或识别器失效的位置；某类条件突然变多时，先查对应 helper 的字节是否变化。
+7. 发布、构建网页，并在浏览器中检查（见“游戏更新后的维护顺序”第 7 步）。
+
+### 网页标签约定
+
+- 标签写玩家能直接读懂的短语，不放字段路径、优先级符号或括号里的规则说明；这些内容放进输入的 `hint`，网页在标签旁显示“?”按钮，点开后显示说明（`player_viewer.js`）。例如“当前姿态”的 `hint` 解释专用状态、额外状态、普通站立状态三层的优先关系。
+- 专有名词（怪物、部位、gimmick 等）只用 `*.msg.23.json` 中的官方名称；找不到时显示原类名或枚举名，并在 `hint` 里说明这是游戏内部名称，不自行翻译。
+- 行为表计时器与变量用资源中的 `ExportValueName` 命名；资源未命名时用 GUID 前 8 位区分，完整 GUID、初始值、生命周期写在 `hint` 中。
+- 标签也出现在树上的分支文字里（“<标签>：<选项>”“<标签>成立”），修改后要在浏览器中检查分支文字是否通顺。
 
 ## 玩家决策树绘制约定
 

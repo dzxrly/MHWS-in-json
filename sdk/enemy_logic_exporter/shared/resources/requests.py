@@ -9,12 +9,12 @@ from ..native.evidence import evidence_key, method_rows
 from ..native.pe import PE, verify_rows
 from ..native.metadata import Il2cppMetadata
 from ..config import (
+    in_agents,
     EXPORT_COMMAND_POSITION_TYPE,
     OPERATOR_PREV_COMMAND_POSITION,
     OPERATOR_REQUEST_COMMAND,
     OPERATOR_WORK_TYPE,
     REQUEST_ACTION_COMMANDS,
-    ROOT,
     SELECT_ACTION_ARGUMENT,
     SUPPORTED_PROFILE,
 )
@@ -221,8 +221,7 @@ def packed_request_stores(native, address, *, block_starts=()):
 def discover_requests(native_index, inventory, exe, metadata, natives, output):
     """Report bindings and boundaries; do not infer branch order or complete AI."""
     native_index, output = Path(native_index), Path(output)
-    root = ROOT
-    if not output.resolve().is_relative_to(root / ".agents"):
+    if not in_agents(output):
         raise ValueError("原生请求研究结果只允许写入 .agents")
     index = json.loads(native_index.read_text(encoding="utf8"))
     inventory = json.loads(Path(inventory).read_text(encoding="utf8"))
