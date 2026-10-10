@@ -8,18 +8,19 @@ from collections import Counter
 import hashlib
 import json
 from pathlib import Path
+import re
 
 from ..logic.values import enum_number, scalar
 from ..logic.predicates import RuleRegistry
 from ..logic.expressions import expression_unknown
 from ..logic.weights import candidate_node_id
+from ..logic.monster_rules import hooks, rule_kind
 from ..resources.action_names import CLASS_EXPLANATIONS
 from ..config import (
     BAD_CONDITION_LABELS,
     HUNTER_STATUS_LABELS,
     SLOT_GROUPS,
     STATE_SIGN_LABELS,
-    EM0166_BATTLE_PHASE_COMMAND,
     UNFAIR_ACTIVE_FIELD,
 )
 
@@ -41,25 +42,33 @@ def extend_field_label(key):
     return field.replace("k__BackingField", "").strip("<>_") or field
 
 
-# Verified monster rules whose context binding names one Extend field.
-CONTEXT_RULE_KINDS = ("unique_state", "mushroom", "catch_mushroom", "electric", "fang_count")
-
-
 # Facts of a solo (or host) player fighting this monster in ordinary combat.
 # Each is a scenario input with a stated meaning, never a silent assumption.
 SCENARIO_FACTS = {
     "btable_request_action_mask": "行为表动作请求未被屏蔽",
     "request_actor_net_info_exists": "单人游戏或本机为主机（动作请求不经网络转交）",
 }
+# CheckStatus.execute_AIState: resource AI_TYPE -> app.EnemyDef.AI_STATE_ID.
+AI_STATE_SELECTORS = {0: 1, 1: 2, 2: 3, 3: 6, 9: 7, 11: 4, 13: 10}
+# These AI_TYPE selectors read AIStateManager._NextAIInterruptID or
+# _ExistInterruptResult[id] instead: resource AI_TYPE -> AI_INTERRUPT_ID.
+AI_INTERRUPT_SELECTORS = {5: 5, 7: 24, 8: 25, 14: 14}
+AI_INTERRUPT_LABELS = {5: "诱导", 14: "骑乘", 24: "登场", 25: "退场"}
 SCENARIO_VALUES = dict(
     btable_request_action_mask=False,
     request_actor_net_info_exists=False,
-    posture_override_active=False,
     ai_state_current=2,
     ai_state_pending=-1,
+    ai_interrupt_next=-1,
+    **{f"ai_interrupt_exists:{i}": False for i in AI_INTERRUPT_SELECTORS.values()},
 )
-# CheckStatus.execute_AIState: resource AI_TYPE -> app.EnemyDef.AI_STATE_ID.
-AI_STATE_SELECTORS = {0: 1, 1: 2, 2: 3, 3: 6, 9: 7, 11: 4, 13: 10}
+# CheckStatus.execute_StandState: a unique state overrides an extra state,
+# which overrides the common stand state; one input holds the effective layer.
+POSTURE_LAYERS = {0: "common", 1: "extra", 2: "unique"}
+POSTURE_NAMES = {
+    "common": {0: "地面", 1: "飞行", 2: "墙面"},
+    "extra": {0: "潜地", 1: "天花板", 2: "柱子", 3: "游泳"},
+}
 # Reviewed checks over live scene or part state; players see one input each.
 SCENE_INPUTS = {
     "cCheckDestinationRelation": "destination_relation",
@@ -120,6 +129,11 @@ def unknown(reason):
     return dict(op="unknown", reason=reason)
 
 
+def missing_state():
+    """A verified rule whose runtime state binding is not available."""
+    return unknown("此处需要额外的战斗状态或计时器信息")
+
+
 def comparison(key, operator, value):
     return dict(op="compare", key=key, operator=operator, value=value)
 
@@ -166,6 +180,45 @@ class PlayerCompiler:
         }
         self.rules = {r["commandType"]: r for r in graph["rules"]["rules"]}
         self.technical_names = technical_action_names(graph)
+        self.stand_states = graph.get("standStates", {})
+        self.unique_levels = {
+            leaf["category"]: leaf.get("categoryName")
+            for leaf in graph.get("leafRules", {}).values()
+            if leaf.get("kind") == "unique_leveled_value"
+        }
+        # Enemy enum value -> ID name, as spelled by cCheckSelfType resources.
+        self.enemy_names = {}
+        # Destination result conditions -> the cSetDest resource argument.
+        self.destinations = {}
+        self.table = None
+        for table in graph["tables"]:
+            for node in table["nodes"]:
+                arg = node.get("argument") or {}
+                for holder in (arg.get("Enemy") or {}).values():
+                    match = re.match(
+                        r"\[(-?\d+)\] (EM\d{4}_\d{2}_\d)$", str(holder.get("_EditArg"))
+                    )
+                    if match:
+                        self.enemy_names[int(match[1])] = match[2]
+                if node.get("effect") == "set_destination" and node.get("next"):
+                    self.destinations[(table["tableGuid"], node["next"])] = arg
+
+    def posture(self, layer, value):
+        """The effective-posture input value of one stand-state check."""
+        name = POSTURE_LAYERS[layer]
+        raw = next(
+            (n for n, v in self.stand_states.get(name, {}).items() if v == value), None
+        )
+        label = POSTURE_NAMES.get(name, {}).get(value)
+        if label is None:
+            label = ("专用姿态 " if name == "unique" else "") + (raw or str(value))
+        option = dict(label=label, value=f"{name}:{value}")
+        field = self.inputs.setdefault(
+            "posture", dict(label="当前姿态（专用 > 额外 > 普通）", options=[])
+        )
+        if option not in field["options"]:
+            field["options"].append(option)
+        return comparison("posture", "eq", option["value"])
 
     def boolean(self, key, label):
         self.inputs.setdefault(
@@ -184,19 +237,10 @@ class PlayerCompiler:
         if predicate.get("status") != "verified":
             return unknown("此条件的判断方式尚未核实")
         kind, values = predicate.get("kind"), predicate.get("values", {})
-        if kind == "battle_phase":
-            value = enum_number(values["value"])
-            options = self.rules[predicate["commandType"]]["enumValues"]
-            self.choices(
-                "battle_phase",
-                "当前战斗阶段",
-                [
-                    dict(label=name.replace("PHASE_", "阶段 "), value=number)
-                    for name, number in options.items()
-                    if name.startswith("PHASE_")
-                ],
-            )
-            return comparison("battle_phase", "eq", value)
+        handler = rule_kind(kind)
+        if handler is not None:
+            # Monster-specific kinds are compiled by their own monster module.
+            return handler["compile"](self, predicate, values)
         if kind == "distance":
             axis, base = enum_number(values["axis"]), enum_number(values["base"])
             if axis != 0 or base != 0:
@@ -251,24 +295,39 @@ class PlayerCompiler:
                     return self.boolean(*selected)
             if category == 1:
                 holder = values["stand"]
-                if enum_number(holder["STRUCT__Value_Type"]) == 0:
-                    state = holder["STRUCT__Value_Value"]
-                    self.choices(
-                        "posture",
-                        "普通姿态",
-                        [dict(label="地面", value=0), dict(label="飞行", value=1)],
-                    )
-                    # The native check first rejects a unique or extra state that
-                    # overrides the stand state; the scenario states its absence.
-                    return dict(
-                        op="all",
-                        items=[
-                            comparison("posture", "eq", state),
-                            comparison("posture_override_active", "eq", False),
-                        ],
-                    )
+                layer = enum_number(holder["STRUCT__Value_Type"])
+                if (
+                    layer in POSTURE_LAYERS
+                    and type(holder["STRUCT__Value_Value"]) is int
+                ):
+                    # cCheckSelfStatus passes isSelf=true, which the unique layer requires.
+                    return self.posture(layer, holder["STRUCT__Value_Value"])
             if category == 5:
                 selector = enum_number(values["ai"])
+                interrupt = AI_INTERRUPT_SELECTORS.get(selector)
+                if interrupt is not None:
+                    self.choices(
+                        "ai_interrupt_next",
+                        "待处理的 AI 中断",
+                        [
+                            dict(label="无", value=-1),
+                            *(
+                                dict(label=label, value=key)
+                                for key, label in AI_INTERRUPT_LABELS.items()
+                            ),
+                        ],
+                    )
+                    self.boolean(
+                        f"ai_interrupt_exists:{interrupt}",
+                        f"{AI_INTERRUPT_LABELS[interrupt]}中断已存在",
+                    )
+                    return dict(
+                        op="any",
+                        items=[
+                            comparison("ai_interrupt_next", "eq", interrupt),
+                            comparison(f"ai_interrupt_exists:{interrupt}", "eq", True),
+                        ],
+                    )
                 target = AI_STATE_SELECTORS.get(selector)
                 if target is not None:
                     return dict(
@@ -284,8 +343,10 @@ class PlayerCompiler:
                     dict(label="生命值百分比", number=True, min=0, max=100, unit="%"),
                 )
                 return comparison("health_percent", "le", float(values["health"]))
-        if kind in CONTEXT_RULE_KINDS and predicate.get("contextBinding"):
-            return self.context_rule(kind, values, predicate["contextBinding"])
+        if kind == "unique_state" and predicate.get("contextBinding"):
+            # A verified monster rule that is plain equality of one Extend field.
+            key, _ = self.context_field(predicate["contextBinding"])
+            return self.context_option(key, enum_number(values["value"]))
         if kind == "variable_bool":
             guid = str(values["variable"])
             default = self.timers.get(guid, {}).get("default")
@@ -303,6 +364,39 @@ class PlayerCompiler:
             if type(expected) is not bool:
                 return unknown("布尔变量的期望值不是布尔值")
             return comparison(key, "eq", expected)
+        if kind == "variable_float":
+            guid = str(values["variable"])
+            default = self.timers.get(guid, {}).get("default")
+            key = "float:" + guid
+            self.inputs.setdefault(
+                key,
+                dict(
+                    label="行为表浮点变量"
+                    + (
+                        f"（初始值 {default:g}）"
+                        if isinstance(default, (int, float))
+                        else ""
+                    ),
+                    group="variable",
+                    unit="数值",
+                ),
+            )
+            compare, target = enum_number(values["compare"]), float(values["value"])
+            # BTableUtil.checkCompare(float): EQUAL/NOT_EQUAL use |v - t| < tolerance.
+            tolerance = self.rules[predicate["commandType"]]["equalityTolerance"]
+            if compare in (0, 1):
+                low, high = target - tolerance, target + tolerance
+                self.thresholds.setdefault(key, set()).update({low, high})
+                equal = dict(
+                    op="all",
+                    items=[comparison(key, "gt", low), comparison(key, "lt", high)],
+                )
+                return equal if compare == 0 else dict(op="not", item=equal)
+            operator = {2: "gt", 3: "lt", 4: "ge", 5: "le"}.get(compare)
+            if operator is None:
+                return unknown("不支持的浮点比较方式")
+            self.thresholds.setdefault(key, set()).add(target)
+            return comparison(key, operator, target)
         if kind == "timer":
             guid = str(values["variable"])
             timer = self.timers.get(guid, {})
@@ -317,44 +411,30 @@ class PlayerCompiler:
                 ),
             )
             return comparison("timer:" + guid, "eq", True)
-        return unknown("此处需要额外的战斗状态或计时器信息")
+        return missing_state()
 
-    def context_rule(self, kind, values, binding):
-        """Verified monster rules over one Extend field (see predicates.py)."""
+    def context_field(self, binding):
+        """The "专用状态 <字段>" input of one verified Extend field binding."""
         key = f"extend:{binding['type']}.{binding['field']}"
         label = "专用状态 " + extend_field_label(key)
-        number = enum_number if kind != "fang_count" else (lambda v: v)
-        expected = number(values["value"]) if "value" in values else None
         self.inputs.setdefault(key, dict(label=label, options=[]))
+        return key, label
 
-        def option(value):
-            entry = dict(label=str(value), value=value)
-            if entry not in self.inputs[key]["options"]:
-                self.inputs[key]["options"].append(entry)
-            return comparison(key, "eq", value)
-
-        if kind == "catch_mushroom":
-            return dict(op="any", items=[option(v) for v in (0, 1, 2, 3, 4, 5, 7)])
-        if kind == "mushroom":
-            items = [option(expected)]
-            if expected != 0:
-                items.append(option(5))
-            return dict(op="any", items=items) if len(items) > 1 else items[0]
-        if kind == "electric" and expected == 2:
-            return dict(op="any", items=[option(2), option(3)])
-        if kind == "fang_count":
-            compare = enum_number(values["compare"])
-            operator = {0: "ge", 1: "le", 2: "eq"}.get(compare)
-            if operator is None:
-                return unknown("不支持的断牙数量比较")
-            self.inputs[key] = dict(label=label, number=True, min=0, max=None)
-            return comparison(key, operator, expected)
-        return option(expected)
+    def context_option(self, key, value):
+        """Equality with one listed value of a context_field input."""
+        entry = dict(label=str(value), value=value)
+        if entry not in self.inputs[key]["options"]:
+            self.inputs[key]["options"].append(entry)
+        return comparison(key, "eq", value)
 
     def expression(self, expression):
         kind = expression["kind"]
         if kind == "predicate":
             return self.predicate(expression["predicate"])
+        if kind == "any":
+            own = self.own_enemy(expression)
+            if own is not None:
+                return own
         if kind in ("all", "any"):
             return dict(
                 op=kind, items=[self.expression(x) for x in expression["items"]]
@@ -395,6 +475,39 @@ class PlayerCompiler:
                 return comparison(key, expression.get("operator", "eq"), value)
             if str(key).startswith("random_uint32_mod_") and right.get("kind") == "constant":
                 return comparison(key, expression.get("operator", "eq"), right["value"])
+            if (
+                key == "self_unique_state_fixed_id"
+                and right.get("kind") == "constant"
+                and expression.get("operator", "eq") == "eq"
+            ):
+                # HasValue and equal: the effective posture is that unique state.
+                return self.posture(2, right["value"])
+            if str(key).startswith("unique_level:") and right.get("kind") == "constant":
+                category = int(key.split(":", 1)[1])
+                name = self.unique_levels.get(category) or str(category)
+                self.inputs.setdefault(
+                    key, dict(label=f"专用等级值 {name}", options=[])
+                )
+                option = dict(label=f"等级 {right['value']}", value=right["value"])
+                if option not in self.inputs[key]["options"]:
+                    self.inputs[key]["options"].append(option)
+                return comparison(key, expression.get("operator", "eq"), right["value"])
+            if (
+                str(key).startswith("command_result:")
+                and kind == "runtime"
+                and self.table is not None
+            ):
+                argument = self.destinations.get(self.table)
+                if argument is not None:
+                    # One input per distinct cSetDest resource argument, like
+                    # SCENE_INPUTS; the navigation query itself stays runtime.
+                    identity = json.dumps(argument, ensure_ascii=False, sort_keys=True)
+                    category = str(argument.get("_EditCategory", "")).split("] ")[-1]
+                    return self.boolean(
+                        "destination_found:"
+                        + hashlib.sha1(identity.encode()).hexdigest()[:12],
+                        f"能设置移动目的地（{category}）",
+                    )
             if operand.get("kind") == "runtime" and str(key).startswith(
                 ("selected_hunter_bad_condition:", "selected_hunter_status:")
             ):
@@ -430,6 +543,31 @@ class PlayerCompiler:
                     mapped, expression.get("operator", "eq"), right["value"]
                 )
         return unknown("此处需要尚未提供或尚未核实的内部条件")
+
+    def own_enemy(self, expression):
+        """Fold cCheckSelfType ENEMY to "this model is that enemy ID".
+
+        Native: getEnumValue(key) == -1, or Basic.EmID == getEnumValue(key).
+        The key is spelled by the resource with a valid enemy ID name, so the
+        lookup succeeds and the check is equality with this model's own ID.
+        """
+        items = expression["items"]
+        if len(items) != 2 or any(item.get("kind") != "compare" for item in items):
+            return None
+        missing, same = items
+        index = missing["left"].get("key", "")
+        if not (
+            index.startswith("enemy_enum_index:")
+            and missing["right"] == dict(kind="constant", value=-1)
+            and same["left"].get("key") == "self_basic_enemy_id"
+            and same["right"].get("key") == index
+            and missing.get("operator", "eq") == same.get("operator", "eq") == "eq"
+        ):
+            return None
+        name = self.enemy_names.get(int(index.split(":", 1)[1]))
+        if name is None:
+            return None
+        return comparison("self_enemy_id", "eq", name)
 
     def condition(self, node):
         command = str(
@@ -475,8 +613,6 @@ class PlayerCompiler:
                 return f"{self.inputs[key]['label']} {symbol} {option}"
             if key in SCENARIO_FACTS:
                 return SCENARIO_FACTS[key]
-            if key == "posture_override_active":
-                return "没有覆盖普通姿态的专用状态"
             if key in ("ai_state_current", "ai_state_pending"):
                 return ("当前" if key == "ai_state_current" else "待切换") + f" AI 状态为 {value}"
             if str(key).startswith("random_uint32_mod_"):
@@ -501,8 +637,20 @@ class PlayerCompiler:
                 return label + ("成立" if positive else "不成立")
             if key == "battle_phase" and expression["operator"] == "eq":
                 return f"当前为阶段 {value + 1}" if 0 <= value <= 4 else "指定战斗阶段"
-            if key == "posture":
-                return "处于" + {0: "地面", 1: "飞行"}.get(value, "指定") + "姿态"
+            if key == "self_enemy_id":
+                return (
+                    "本怪物是 " if expression["operator"] == "eq" else "本怪物不是 "
+                ) + value
+            option = next(
+                (
+                    o["label"]
+                    for o in self.inputs.get(key, {}).get("options", [])
+                    if o.get("value") == value
+                ),
+                None,
+            )
+            if option is not None and expression["operator"] in ("eq", "ne"):
+                return f"{label}{'：' if expression['operator'] == 'eq' else '不是 '}{option}"
             return (
                 f"{label} {operator} {value:g}"
                 if isinstance(value, (int, float))
@@ -596,7 +744,9 @@ class PlayerCompiler:
             if role in node:
                 result[role] = ref(table, node[role])
         if kind == "condition":
+            self.table = (table, node["id"])
             result["condition"], result["title"] = self.condition(node)
+            self.table = None
             result["presentation"] = self.presentation(result["condition"])
             result["executionGuard"] = node.get("summary", "").startswith(
                 ("有效命令工作", "当前 actor")
@@ -819,17 +969,18 @@ def build_player_view(graph):
             distance_intervals(
                 thresholds,
                 maximum=180 if field.get("angle") else None,
-                unit="度" if field.get("angle") else "游戏距离值",
+                unit="度" if field.get("angle") else field.get("unit", "游戏距离值"),
             )
         )
         field["numericRange"] = dict(min=0, max=180 if field.get("angle") else None)
     return dict(
         schemaVersion=1,
         scenario=dict(
-            label="单人或作为主机的玩家是怪物的当前目标；怪物处于战斗 AI 状态、没有待切换状态和覆盖普通姿态的专用状态，行为表动作请求未被屏蔽",
+            label="单人或作为主机的玩家是怪物的当前目标；怪物处于战斗 AI 状态，没有待切换状态，也没有待处理或已存在的诱导、骑乘、登场、退场中断；行为表动作请求未被屏蔽",
             inputs=dict(
                 selected_target_key_type=0,
                 ordinary_combat_snapshot=True,
+                self_enemy_id=graph["enemyId"],
                 **{key: True for key in SCENARIO_GUARDS},
                 **SCENARIO_VALUES,
             ),
@@ -867,17 +1018,8 @@ def enrich_models(models, output):
         registry = RuleRegistry.load()
         if registry.data["profile"] != graph["profile"]:
             raise ValueError("当前玩家配方与模型来源版本不同")
-        for table in graph["tables"]:
-            for node in table["nodes"]:
-                if (
-                    node["kind"] == "condition"
-                    and node.get("commandType") == EM0166_BATTLE_PHASE_COMMAND
-                ):
-                    if graph["enemyId"] != "EM0166_00_0":
-                        raise ValueError("EM166 阶段配方不能用于其他怪物")
-                    node["predicate"] = registry.bind(
-                        node["commandType"], node["argumentType"], node["argument"]
-                    )
+        for prepare in hooks("prepare_player_graph"):
+            prepare(graph, registry)
         graph["rules"] = registry.data
         graph["coverage"]["unknownConditions"] = sum(
             (

@@ -24,6 +24,62 @@ CURRENT_PHASE_FIELD = "_CurrentPhase"
 CURRENT_PHASE_OFFSET = "0x22c"
 REQUEST_PHASE_FIELD = "_RequestPhase"
 REQUEST_PHASE_OFFSET = "0x254"
+# Verified current-phase comparison; its record lives in data/rules.v1.json.
+BATTLE_PHASE_COMMAND = "app.btable.Em0166_00BTableCommand.cCheckBattlePhase"
+BATTLE_PHASE_INPUT = "battle_phase"
+BATTLE_PHASE_PREFIX = "PHASE_"
+
+
+def prepare_player_graph(graph, registry):
+    """Bind the phase rule; it must never apply to another monster's graph."""
+    for table in graph["tables"]:
+        for node in table["nodes"]:
+            if (
+                node["kind"] == "condition"
+                and node.get("commandType") == BATTLE_PHASE_COMMAND
+            ):
+                if graph["enemyId"] != ENEMY_ID:
+                    raise ValueError("EM166 阶段配方不能用于其他怪物")
+                node["predicate"] = registry.bind(
+                    node["commandType"], node["argumentType"], node["argument"]
+                )
+
+
+def _compile_battle_phase(compiler, predicate, values):
+    from ..shared.logic.values import enum_number
+    from ..shared.models.player_view import comparison
+
+    value = enum_number(values["value"])
+    options = compiler.rules[predicate["commandType"]]["enumValues"]
+    compiler.choices(
+        BATTLE_PHASE_INPUT,
+        "当前战斗阶段",
+        [
+            dict(label=name.replace(BATTLE_PHASE_PREFIX, "阶段 "), value=number)
+            for name, number in options.items()
+            if name.startswith(BATTLE_PHASE_PREFIX)
+        ],
+    )
+    return comparison(BATTLE_PHASE_INPUT, "eq", value)
+
+
+def _evaluate_battle_phase(rule, bound, context, state):
+    from ..shared.logic.predicates import context_value
+    from ..shared.logic.values import MissingState, enum_number, required
+
+    if (
+        required(context, "valid_command_work") is not True
+        or required(state, "valid") is not True
+    ):
+        raise MissingState("阶段判断需要有效命令工作及匹配类型的自身 Extend")
+    return context_value(state, bound["contextBinding"]) == enum_number(
+        bound["values"]["value"]
+    )
+
+
+RULE_KINDS = {
+    "battle_phase": dict(compile=_compile_battle_phase, evaluate=_evaluate_battle_phase)
+}
 
 
 def recover_phase_apply(row, metadata, pe):
@@ -116,6 +172,9 @@ def recover_phase_apply(row, metadata, pe):
         )
     ]
 
+
+# Reviewed native writes collected by the shared command catalog.
+recover_command_effects = recover_phase_apply
 
 
 def extract(context):

@@ -3,6 +3,73 @@
 ENEMY_ID = "EM0078_00_0"
 NATIVE_OWNER = "Em0078_00"
 
+# cCheckPhase (game 1.42.0.2, onExecute 0x143ba5250..0x143ba52b6): when
+# cEm0078_00Extend._Phase (0x2e8) is FINAL and _IsFinishAreaMove (0x345) is
+# false, the argument is compared with MIDFIELD; otherwise with _Phase. The
+# reviewed record, enum values and evidence live in data/rules.v1.json.
+PHASE_COMMAND = "app.btable.Em0078_00BTableCommand.cCheckPhase"
+PHASE_FINAL = "FINAL"
+PHASE_MIDFIELD = "MIDFIELD"
+
+
+def _compile_phase(compiler, predicate, values):
+    from ..shared.logic.values import enum_number
+    from ..shared.models.player_view import comparison, extend_field_label
+
+    binding = predicate["contextBinding"]
+    phase = f"extend:{binding['type']}.{binding['field']}"
+    finished = f"extend:{binding['type']}.{binding['flagField']}"
+    names = compiler.rules[predicate["commandType"]]["enumValues"]
+    compiler.choices(
+        phase,
+        "专用状态 " + extend_field_label(phase),
+        [dict(label=name, value=value) for name, value in names.items()],
+    )
+    compiler.boolean(finished, "专用状态 " + extend_field_label(finished))
+    expected = enum_number(values["value"])
+    final, midfield = names[PHASE_FINAL], names[PHASE_MIDFIELD]
+    # A FINAL phase reads as MIDFIELD until the area move has finished.
+    if expected == midfield:
+        return dict(
+            op="any",
+            items=[
+                comparison(phase, "eq", midfield),
+                dict(
+                    op="all",
+                    items=[
+                        comparison(phase, "eq", final),
+                        comparison(finished, "eq", False),
+                    ],
+                ),
+            ],
+        )
+    if expected == final:
+        return dict(
+            op="all",
+            items=[comparison(phase, "eq", final), comparison(finished, "eq", True)],
+        )
+    return comparison(phase, "eq", expected)
+
+
+def _evaluate_phase(rule, bound, context, state):
+    from ..shared.logic.predicates import context_value
+    from ..shared.logic.values import MissingState, enum_number, required
+
+    binding = bound["contextBinding"]
+    actual = context_value(state, binding)
+    names = rule["enumValues"]
+    finished = required(state, binding["flagField"])
+    if type(finished) is not bool:
+        raise MissingState("区域移动结束标志必须是布尔值")
+    if actual == names[PHASE_FINAL] and not finished:
+        actual = names[PHASE_MIDFIELD]
+    return actual == enum_number(bound["values"]["value"])
+
+
+RULE_KINDS = {
+    "phase_after_area_move": dict(compile=_compile_phase, evaluate=_evaluate_phase)
+}
+
 
 def extract(context):
     """Select this monster's declared tables, imports and native method contexts."""

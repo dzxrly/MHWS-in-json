@@ -11,6 +11,24 @@ class Metadata:
                     "type": "app.Em0166_00_Def.BATTLE_PHASE",
                 }
             },
+            "app.cEm0159_00Extend": {
+                "_IsBlazingMode": {
+                    "offset_from_base": "0xba",
+                    "type": "System.Boolean",
+                },
+                "_Stage": {"offset_from_base": "0x10c", "type": "System.Int32"},
+            },
+            "app.cEm0160_00Extend": {
+                "_AbsorbCocoonState": {
+                    "offset_from_base": "0xa8",
+                    "type": "System.Int32",
+                }
+            },
+            "app.cEnemyExtendBase": {
+                "_UniqueStateFixedID": {"offset_from_base": "0x28", "type": "Continue"}
+            },
+            "Continue": {"_Value": {"offset_from_base": "0x10", "type": "Changed"}},
+            "Changed": {"_Value": {"offset_from_base": "0x18", "type": "Nullable"}},
             "app.PhaseArg": {
                 "_EditArg": {
                     "offset_from_base": "0x10",
@@ -67,4 +85,89 @@ class LeafConditionTests(unittest.TestCase):
     def test_extend_holder_chain_is_required(self):
         self.assertIsNone(
             recover_leaf(self.row, self.code.replace("0x78", "0x80"), Metadata())
+        )
+
+
+class LeafVariantTests(unittest.TestCase):
+    holder = "puVar1 = *(undefined8 **)(*(longlong *)(param_3[5] + 0x78) + 0x10); "
+
+    def row(self, owner, name):
+        return dict(
+            type=f"app.btable.{owner}BTableCommand.{name}",
+            method="onExecute1",
+            address="0x140000000",
+            end="0x140000010",
+            nativeSha256="a" * 64,
+            parameters=[{"type": "ace.btable.cCommandWork"}],
+        )
+
+    def test_type_checked_alias_and_integer_constant(self):
+        code = (
+            "undefined8 f(void) { if (param_3 != 0) { "
+            + self.holder
+            + "puVar2 = (undefined8 *)0x0; if (*(longlong *)*puVar1 == _DAT_154718298) "
+            "{ puVar2 = puVar1; } return CONCAT71((int7)((ulonglong)puVar1 >> 8),"
+            "*(char *)((longlong)puVar2 + 0xba) != '\\0'); } return 0; }"
+        )
+        rule = recover_leaf(
+            self.row("Em0159_00", "cCheckBlazingMode"), code, Metadata()
+        )
+        self.assertEqual(
+            (rule["contextField"], rule["operator"]), ("_IsBlazingMode", "!=")
+        )
+        code = code.replace(
+            "*(char *)((longlong)puVar2 + 0xba) != '\\0'",
+            "*(int *)((longlong)puVar2 + 0x10c) < 2",
+        )
+        rule = recover_leaf(self.row("Em0159_00", "cCheckStage"), code, Metadata())
+        self.assertEqual(
+            (rule["contextField"], rule["operator"], rule["constant"]),
+            ("_Stage", "<", 2),
+        )
+        # The alias must come from the holder's own type check.
+        other = code.replace("puVar2 = puVar1;", "puVar2 = puVar3;")
+        self.assertIsNone(
+            recover_leaf(self.row("Em0159_00", "cCheckStage"), other, Metadata())
+        )
+
+    def test_class_check_and_direct_boolean_return(self):
+        code = (
+            "bool f(void) { if (param_3 != 0 && ("
+            + self.holder.strip()[:-1]
+            + ", puVar1 != 0) && (cVar2 = func_0x00014b0212b0(*(undefined8 *)*puVar1,"
+            "_DAT_1547182b0), cVar2 != '\\0')) { return *(int *)(puVar1 + 0x15) != 0; } return false; }"
+        )
+        rule = recover_leaf(
+            self.row("Em0160_00", "cCheckAbsorbedCocoon"), code, Metadata()
+        )
+        self.assertEqual(
+            (rule["contextField"], rule["operator"], rule["constant"]),
+            ("_AbsorbCocoonState", "!=", 0),
+        )
+        unchecked = code.replace("func_0x00014b0212b0", "FUN_1234")
+        self.assertIsNone(
+            recover_leaf(
+                self.row("Em0160_00", "cCheckAbsorbedCocoon"), unchecked, Metadata()
+            )
+        )
+
+    def test_unique_state_requires_has_value_and_fixed_value(self):
+        code = (
+            "undefined8 f(void) { if (param_3 != 0) { "
+            + self.holder
+            + "uVar1 = *(undefined8 *)(*(longlong *)(puVar1[5] + 0x10) + 0x18); "
+            "return CONCAT71((uint7)((ulonglong)uVar1 >> 0x28),"
+            "(int)((ulonglong)uVar1 >> 0x20) == -0x71caef00 && (char)uVar1 != '\\0'); } return 0; }"
+        )
+        rule = recover_leaf(
+            self.row("Em0070_00", "cCheckStateDoubleFloor"), code, Metadata()
+        )
+        self.assertEqual(
+            (rule["kind"], rule["constant"]), ("unique_state", -0x71CAEF00)
+        )
+        no_flag = code.replace(" && (char)uVar1 != '\\0'", "")
+        self.assertIsNone(
+            recover_leaf(
+                self.row("Em0070_00", "cCheckStateDoubleFloor"), no_flag, Metadata()
+            )
         )

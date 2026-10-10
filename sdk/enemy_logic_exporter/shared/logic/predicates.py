@@ -11,7 +11,7 @@ from ..config import (
     RULES_PATH,
 )
 from .values import scalar, enum_number, MissingState, Outcome, number, required
-
+from .monster_rules import rule_kind
 
 class RuleRegistry:
     def __init__(self, data):
@@ -142,6 +142,24 @@ class RuleRegistry:
             if type(actual) is not bool or type(expected) is not bool:
                 raise MissingState("布尔变量或期望值不是布尔值")
             return actual == expected
+        if kind == "variable_float":
+            actual = number(
+                required(required(context, "variables"), str(values["variable"]))
+            )
+            target = number(values["value"])
+            tolerance = self.by_command[bound["commandType"]]["equalityTolerance"]
+            compare = enum_number(values["compare"])
+            result = {
+                0: lambda: abs(actual - target) < tolerance,
+                1: lambda: abs(actual - target) >= tolerance,
+                2: lambda: actual > target,
+                3: lambda: actual < target,
+                4: lambda: actual >= target,
+                5: lambda: actual <= target,
+            }.get(compare)
+            if result is None:
+                raise MissingState("不支持的浮点比较方式")
+            return result()
         if kind == "self_status":
             category = enum_number(values["category"])
             if context.get("enemy_context_enabled") is False:
@@ -181,6 +199,15 @@ class RuleRegistry:
                 raise MissingState("不支持的站立状态分类")
             if category == 5:
                 selector = enum_number(values["ai"])
+                # LEAD/ENTRY/EXIT/RIDE read the next or an existing AI interrupt.
+                interrupt = {5: 5, 7: 24, 8: 25, 14: 14}.get(selector)
+                if interrupt is not None:
+                    if context.get("ai_interrupt_next") == interrupt:
+                        return True
+                    exists = required(context, f"ai_interrupt_exists:{interrupt}")
+                    if type(exists) is not bool:
+                        raise MissingState("中断存在标志必须是布尔值")
+                    return exists or required(context, "ai_interrupt_next") == interrupt
                 target = {0: 1, 1: 2, 2: 3, 3: 6, 9: 7, 11: 4, 13: 10}.get(selector)
                 if target is None:
                     raise MissingState("此 AI 状态分支尚未固化")
@@ -197,35 +224,20 @@ class RuleRegistry:
         state = required(required(context, "objects"), binding["type"])
         if state.get("valid") is False:
             return False
-        if kind == "battle_phase":
-            if (
-                required(context, "valid_command_work") is not True
-                or required(state, "valid") is not True
-            ):
-                raise MissingState("阶段判断需要有效命令工作及匹配类型的自身 Extend")
-        actual = number(required(state, binding["field"]))
-        if type(actual) is not int:
-            raise MissingState("专用内部状态必须是整数")
-        if kind == "catch_mushroom":
-            return actual in (0, 1, 2, 3, 4, 5, 7)
-        expected = (
-            enum_number(values["value"])
-            if kind != "fang_count"
-            else number(values["value"])
-        )
-        if kind == "mushroom":
-            return actual == expected or actual == 5 and expected != 0
-        if kind == "electric":
-            return actual in (2, 3) if expected == 2 else actual == expected
-        if kind in ("unique_state", "battle_phase"):
-            return actual == expected
-        if kind == "fang_count":
-            compare = enum_number(values["compare"])
-            if compare == 0:
-                return actual >= expected
-            if compare == 1:
-                return actual <= expected
-            if compare == 2:
-                return actual == expected
-            raise MissingState("不支持的断牙数量比较")
+        handler = rule_kind(kind)
+        if handler is not None:
+            # Monster-specific kinds are evaluated by their own monster module.
+            return handler["evaluate"](
+                self.by_command[bound["commandType"]], bound, context, state
+            )
+        if kind == "unique_state":
+            return context_value(state, binding) == enum_number(values["value"])
         raise MissingState(f"尚未实现规则：{kind}")
+
+
+def context_value(state, binding):
+    """The integer Extend field named by a verified rule's context binding."""
+    actual = number(required(state, binding["field"]))
+    if type(actual) is not int:
+        raise MissingState("专用内部状态必须是整数")
+    return actual

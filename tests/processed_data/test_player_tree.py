@@ -107,6 +107,92 @@ class PlayerTreeTests(unittest.TestCase):
         self.assertEqual(phase["trueLabel"], "当前为阶段 1")
         self.assertEqual(phase["falseLabel"], "其他阶段")
 
+    def test_posture_interrupts_own_enemy_and_float_variables(self):
+        from sdk.enemy_logic_exporter.shared.logic.predicates import RuleRegistry
+        from sdk.enemy_logic_exporter.shared.models.uncertainty import evaluate
+
+        rules = RuleRegistry.load().data
+        compiler = PlayerCompiler(
+            dict(
+                enemyId="EM0160_00_0",
+                tables=[
+                    dict(
+                        tableGuid="t",
+                        nodes=[
+                            dict(
+                                id="0",
+                                kind="condition",
+                                argument=dict(
+                                    Enemy={
+                                        "Arg": {"_EditArg": "[-283654400] EM0160_50_0"}
+                                    }
+                                ),
+                            )
+                        ],
+                    )
+                ],
+                rules=rules,
+                standStates=dict(common={}, extra={}, unique={"HILL": 25477}),
+            )
+        )
+
+        def status(category, **values):
+            return compiler.predicate(
+                dict(
+                    status="verified",
+                    kind="self_status",
+                    commandType="app.btable.EmCommonCommand.cCheckSelfStatus",
+                    values=dict(category=category, **values),
+                )
+            )
+
+        def holder(layer, value):
+            return {"STRUCT__Value_Type": f"[{layer}] X", "STRUCT__Value_Value": value}
+
+        unique = status("[1] STAND_STATE", stand=holder(2, 25477))
+        common = status("[1] STAND_STATE", stand=holder(0, 1))
+        # One effective posture: the unique layer excludes the common check.
+        posture = dict(posture="unique:25477")
+        self.assertIs(evaluate(unique, posture, compiler.inputs), True)
+        self.assertIs(evaluate(common, posture, compiler.inputs), False)
+        self.assertIn("HILL", compiler.inputs["posture"]["options"][0]["label"])
+        lead = status("[5] AI_STATE", ai="[5] LEAD")
+        scenario = dict(ai_interrupt_next=-1, **{"ai_interrupt_exists:5": False})
+        self.assertIs(evaluate(lead, scenario, compiler.inputs), False)
+        self.assertIs(evaluate(lead, dict(scenario, ai_interrupt_next=5), {}), True)
+        index = dict(kind="runtime", key="enemy_enum_index:-283654400")
+        own = compiler.expression(
+            dict(
+                kind="any",
+                items=[
+                    dict(
+                        kind="compare",
+                        operator="eq",
+                        left=index,
+                        right=dict(kind="constant", value=-1),
+                    ),
+                    dict(
+                        kind="compare",
+                        operator="eq",
+                        left=dict(kind="runtime", key="self_basic_enemy_id"),
+                        right=index,
+                    ),
+                ],
+            )
+        )
+        self.assertIs(evaluate(own, dict(self_enemy_id="EM0160_00_0"), {}), False)
+        self.assertIs(evaluate(own, dict(self_enemy_id="EM0160_50_0"), {}), True)
+        equal = compiler.predicate(
+            dict(
+                status="verified",
+                kind="variable_float",
+                commandType="ace.btable.cCompareFloatValue",
+                values=dict(variable="g", compare="[0] EQUAL", value=1.0),
+            )
+        )
+        self.assertIs(evaluate(equal, {"float:g": 1.0005}, {}), True)
+        self.assertIs(evaluate(equal, {"float:g": 1.002}, {}), False)
+
     @unittest.skipUnless(shutil.which("node"), "浏览器逻辑回归需要 Node")
     def test_browser_filter_and_continuation_semantics(self):
         script = r"""

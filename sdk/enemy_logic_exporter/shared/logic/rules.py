@@ -3,6 +3,7 @@
 from ..native.evidence import evidence, method_rows
 import json
 from ..native.metadata import Il2cppMetadata
+from .monster_rules import rule_specs
 from ..config import (
     AI_STATE_ENUM,
     BOOLEAN_COMMAND_FUNC,
@@ -21,7 +22,7 @@ def main(work, metadata, output, profile):
     document = json.loads((work / "decompiled.json").read_text(encoding="utf-8"))
     rows = method_rows(document)
     rules = []
-    specs = RULE_SPECS
+    specs = RULE_SPECS + rule_specs()
     with Il2cppMetadata(metadata) as m:
         for (
             type_name,

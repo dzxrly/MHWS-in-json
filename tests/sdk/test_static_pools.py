@@ -62,7 +62,8 @@ class StaticPoolTests(unittest.TestCase):
         wrong_type=False,
         vector=False,
         vector_clobber=False,
-        tail_release=False
+        tail_release=False,
+        interleave=None
     ):
         base = 0x145F89000
         code = bytearray()
@@ -97,6 +98,9 @@ class StaticPoolTests(unittest.TestCase):
             code.extend(b"\x75\x00")
         if atomic:
             rip(bytes.fromhex("48 39 05"), 0x1547DBF38)
+            if interleave:
+                # movabs <reg>, imm64 scheduled between the compare and its je.
+                code.extend(bytes.fromhex(interleave) + struct.pack("<Q", 0x23223FD2F7))
             fast_jump = len(code)
             code.extend(b"\x74\x00")
             code.extend(bytes.fromhex("48 89 c7 48 89 c1"))
@@ -182,3 +186,10 @@ class StaticPoolTests(unittest.TestCase):
         pool = self.packed_recover(atomic=True, tail_release=True)[0]
         self.assertEqual(pool["address"], "0x1547dbf38")
         self.assertEqual(pool["arrayLength"], 2)
+
+    def test_constant_load_between_compare_and_branch_is_carried(self):
+        # 48 bb = movabs rbx: runs on both paths and leaves the array intact.
+        pool = self.packed_recover(atomic=True, interleave="48 bb")[0]
+        self.assertEqual(pool["address"], "0x1547dbf38")
+        # 48 b8 = movabs rax would overwrite the compared array register.
+        self.assertEqual(self.packed_recover(atomic=True, interleave="48 b8"), [])

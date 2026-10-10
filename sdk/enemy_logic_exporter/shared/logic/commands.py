@@ -11,9 +11,19 @@ from ..config import ROOT
 import re
 from ..native.evidence import evidence
 from ..config import (
+    ACCESSOR_TARGET_CONTEXT,
+    CLASS_HIERARCHY_CHECK_LABELS,
     COMMAND_WORK_ACCESSOR,
     EDIT_FIELD_VALUE,
+    ENEMY_CONTEXT_TYPE,
+    EXTEND_ACCESSOR_FIELD,
+    EXTEND_BASE_TYPE,
     EXTEND_HOLDER,
+    EXTEND_UNIQUE_STATE_FIELD,
+    FN_UNIQUE_LEVEL,
+    TARGET_CONTEXT_ENEMY,
+    UNIQUE_LEVEL_LABELS,
+    UNIQUE_LEVELED_MODULE_FIELD,
     extend_types,
 )
 
@@ -244,19 +254,26 @@ ARGUMENT = (
 )
 
 
-def recover_leaf(row, code, metadata):
-    owner = re.match(r"app\.(?:btable\.)?(Em\d{4}_\d{2})BTableCommand\.", row["type"])
-    if owner is None:
-        return None
-    text = re.sub(r"\s+", " ", code.replace("\r", ""))
-    body = text[text.find("{") :]
-    if (
-        re.search(r"\b(?:FUN_|func_0x|mhws_)[a-z0-9]+\s*\(", body)
-        or "switch" in body
-        or "else" in body
-    ):
-        return None
-    # Only the standard self-Extend holder chain is admitted.
+CLASS_CHECK = (
+    r"\b(?:"
+    + "|".join(CLASS_HIERARCHY_CHECK_LABELS)
+    + r")\(\*\(undefined8 \*\)\*(puVar\d+),_DAT_[0-9a-f]+\)"
+)
+CONSTANT = r"-?(?:0x[0-9a-f]+|\d+)"
+CALL = r"\b(?:FUN_|func_0x|mhws_)[a-z0-9]+\s*\("
+
+
+def _int32(value):
+    value &= 0xFFFFFFFF
+    return value - (1 << 32) if value & 0x80000000 else value
+
+
+def _holder(body):
+    """The self-Extend holder variable and its type-checked alias, if any.
+
+    ``if (*(longlong *)*holder == _DAT_x) { alias = holder; }`` leaves a null
+    alias when the exact type check fails; the guard requires it to pass.
+    """
     if HOLDER_FIELD not in body or (
         "param_3[5]" not in body and "param_3 + " + ACCESSOR_FIELD not in body
     ):
@@ -270,11 +287,47 @@ def recover_leaf(row, code, metadata):
     )
     if holder is None:
         return None
+    names = {holder[1]}
+    alias = re.search(
+        r"if \(\*\(longlong \*\)\*"
+        + holder[1]
+        + r" == _DAT_[0-9a-f]+\) \{ (puVar\d+) = "
+        + holder[1]
+        + r"; \}",
+        body,
+    )
+    if alias:
+        names.add(alias[1])
+    return holder[1], names
+
+
+def recover_leaf(row, code, metadata, pe=None):
+    owner = re.match(r"app\.(?:btable\.)?(Em\d{4}_\d{2})BTableCommand\.", row["type"])
+    if owner is None:
+        return None
+    text = re.sub(r"\s+", " ", code.replace("\r", ""))
+    body = text[text.find("{") :]
+    # The class-hierarchy test is the runtime cast check of the holder.
+    checked = [match[1] for match in re.finditer(CLASS_CHECK, body)]
+    body = re.sub(CLASS_CHECK, r"CLASS_CHECK(\1)", body)
+    found = _holder(body)
+    if found is not None and any(name not in found[1] for name in checked):
+        return None
+    names = found[1] if found else set()
+    special = recover_unique_level_leaf(row, body, metadata, owner[1], names, pe)
+    if special is None and found is not None:
+        special = recover_unique_state_leaf(row, body, metadata, names)
+    if special is not None:
+        return special
+    if found is None or re.search(CALL, body) or "switch" in body or "else" in body:
+        return None
     match = re.search(
         FIELD
         + r" (?P<operator>==|!=|<=|>=|<|>) (?P<right>"
         + ARGUMENT
-        + r"|0|'\\0')\);",
+        + r"|(?P<constant>"
+        + CONSTANT
+        + r")|'\\0')\)?;",
         body,
     )
     operator = match["operator"] if match else None
@@ -285,15 +338,17 @@ def recover_leaf(row, code, metadata):
             ARGUMENT + r" (?P<operator>==|!=|<=|>=|<|>) " + FIELD + r"\);", body
         )
         operator = match and MIRRORED[match["operator"]]
-    if match is None or match["object"] != holder[1]:
+    if match is None or match["object"] not in names:
         return None
     # Reject additional comparisons on the same data field object, except the
     # repeated value in CONCAT's unused upper bits.
     comparisons = list(re.finditer(FIELD + r" (?:==|!=|<=|>=|<|>) ", body)) + list(
         re.finditer(r" (?:==|!=|<=|>=|<|>) " + FIELD, body)
     )
-    if len(comparisons) != 1 or not re.search(
-        r"return CONCAT(?:31|71)\([^;]+", body[: match.end()]
+    # The boolean is returned through CONCAT's low byte or directly.
+    if len(comparisons) != 1 or not (
+        re.search(r"return CONCAT(?:31|71)\([^;]+", body[: match.end()])
+        or body[: match.start()].endswith("return ")
     ):
         return None
     offset = int(match["offset"], 0) * (1 if match["bytecast"] else 8)
@@ -307,6 +362,13 @@ def recover_leaf(row, code, metadata):
                 and field != "Null"
             ):
                 choices.append((name, field, definition))
+    # A subspecies Extend inherits the species fields; one field id is one field.
+    choices = list(
+        {
+            definition.get("id", (n, f)): (n, f, definition)
+            for n, f, definition in reversed(choices)
+        }.values()
+    )
     if len(choices) != 1:
         return None
     context_type, field, definition = choices[0]
@@ -336,11 +398,220 @@ def recover_leaf(row, code, metadata):
         contextOffset=hex(offset),
         operator=operator,
         argumentField=arg_field,
-        constant=0 if not arg_field else None,
+        constant=(
+            None
+            if arg_field
+            else int(match["constant"], 0) if match.groupdict().get("constant") else 0
+        ),
         guard="原生工作与自身 Extend 对象有效，且通过原生类型检查",
         evidence=evidence(row),
-        nativeExpression=match[0][:-2],
+        nativeExpression=re.sub(r"\)?;$", "", match[0]),
         semanticStatus="native_leaf_comparison_recovered",
+    )
+
+
+def _field_offset(metadata, owner, field):
+    return int(metadata.fields(owner)[field]["offset_from_base"], 16)
+
+
+def _argument_field(metadata, row, offset):
+    argument_type = row["parameters"][-1]["type"] if row.get("parameters") else None
+    if not argument_type:
+        return None, None
+    fields = [
+        k
+        for k, v in metadata.fields(argument_type).items()
+        if k != "Null" and v.get("offset_from_base") == offset and "default" not in v
+    ]
+    return (argument_type, fields[0]) if len(fields) == 1 else (None, None)
+
+
+def recover_unique_state_leaf(row, body, metadata, names):
+    """``Extend._UniqueStateFixedID`` has a value equal to one constant.
+
+    The Nullable<int> is read as one 8-byte value: the low byte is HasValue and
+    the high dword is the UNIQUE_STATE_Fixed value.
+    """
+    if ">> 0x20) ==" not in body or re.search(CALL, body):
+        return None
+    unique = _field_offset(metadata, EXTEND_BASE_TYPE, EXTEND_UNIQUE_STATE_FIELD)
+    container = metadata.fields(EXTEND_BASE_TYPE)[EXTEND_UNIQUE_STATE_FIELD]["type"]
+    holder = metadata.fields(container)["_Value"]
+    value = int(metadata.fields(holder["type"])["_Value"]["offset_from_base"], 16)
+    if unique % 8 or re.search(CALL, body):
+        return None
+    match = re.search(
+        r"(uVar\d+) = \*\(undefined8 \*\)\(\*\(longlong \*\)\((?:"
+        + "|".join(sorted(names))
+        + rf")\[{unique // 8}\] \+ {int(holder['offset_from_base'], 16):#x}\) \+ {value:#x}\); "
+        + r"return CONCAT71\([^;]*?,\s*\(int\)\(\(ulonglong\)\1 >> 0x20\) == (?P<value>"
+        + CONSTANT
+        + r") && \(char\)\1 != '\\0'\);",
+        body,
+    )
+    if match is None:
+        return None
+    return dict(
+        kind="unique_state",
+        commandType=row["type"],
+        argumentType=None,
+        contextType=EXTEND_BASE_TYPE,
+        contextField=EXTEND_UNIQUE_STATE_FIELD,
+        contextFieldType=container,
+        contextOffset=hex(unique),
+        operator="==",
+        argumentField=None,
+        constant=_int32(int(match["value"], 0)),
+        guard="原生工作与自身 Extend 对象有效，且通过原生类型检查；HasValue 为真",
+        evidence=evidence(row),
+        nativeExpression=match[0],
+        semanticStatus="native_unique_state_comparison_recovered",
+    )
+
+
+def _unique_level_getter(pe, address, metadata):
+    """Category of an Extend method whose body returns getLevel(category).Value.
+
+    Accepted only when the module comes from Extend._Accessor -> target context
+    -> cEnemyContext.UniqueLeveledValue, the category is an immediate and the
+    Nullable result is tested for HasValue before its value dword is used.
+    """
+    from capstone import Cs, CS_ARCH_X86, CS_MODE_64, CS_OP_IMM, CS_OP_MEM, CS_OP_REG
+
+    decoder = Cs(CS_ARCH_X86, CS_MODE_64)
+    decoder.detail = True
+    chain = (
+        _field_offset(metadata, EXTEND_BASE_TYPE, EXTEND_ACCESSOR_FIELD),
+        ACCESSOR_TARGET_CONTEXT,
+        TARGET_CONTEXT_ENEMY,
+        _field_offset(metadata, ENEMY_CONTEXT_TYPE, UNIQUE_LEVELED_MODULE_FIELD),
+    )
+    end = pe.end(address)
+    instructions = list(decoder.disasm(pe.read(address, end - address), address))
+    values, category, result = {"rdx": ()}, None, None
+    for number, ins in enumerate(instructions):
+        op = ins.operands
+        if ins.mnemonic == "call":
+            if op[0].type == CS_OP_IMM and op[0].imm == FN_UNIQUE_LEVEL:
+                after = instructions[number + 1 : number + 5]
+                if (
+                    result is not None
+                    or values.get("r8") != chain
+                    or category is None
+                    or values.get("rcx") != ("stack",)
+                    or [i.mnemonic for i in after] != ["mov", "test", "je", "shr"]
+                ):
+                    return None
+                result = category
+            for name in ("rax", "rcx", "rdx", "r8", "r9", "r10", "r11"):
+                values.pop(name, None)
+            continue
+        if ins.mnemonic == "mov" and len(op) == 2 and op[0].type == CS_OP_REG:
+            name = ins.reg_name(op[0].reg)
+            if op[1].type == CS_OP_MEM and not op[1].mem.index:
+                base = values.get(ins.reg_name(op[1].mem.base))
+                values[name] = (
+                    base + (op[1].mem.disp,) if isinstance(base, tuple) else None
+                )
+            elif op[1].type == CS_OP_IMM:
+                values[name] = None
+                if name == "r9d":
+                    category = op[1].imm & 0xFFFFFFFF
+            elif op[1].type == CS_OP_REG:
+                values[name] = values.get(ins.reg_name(op[1].reg))
+        elif ins.mnemonic == "lea" and op[0].type == CS_OP_REG:
+            values[ins.reg_name(op[0].reg)] = (
+                ("stack",) if ins.reg_name(op[1].mem.base) == "rsp" else None
+            )
+    return result
+
+
+def recover_unique_level_leaf(row, body, metadata, species, names, pe):
+    """``getLevel(category).Value`` compared with a constant or argument.
+
+    The level comes from cEnemyContext.UniqueLeveledValue directly, or from one
+    Extend getter whose body is that read; a missing level throws.
+    """
+    level = "(?:" + "|".join(UNIQUE_LEVEL_LABELS) + ")"
+    getter_call = re.search(
+        r"(?P<value>iVar\d+) = (?:FUN_|func_0x0*)(?P<getter>[0-9a-f]+)\(param_1,(?:"
+        + "|".join(sorted(names) or ["$^"])
+        + r")\);",
+        body,
+    )
+    if not re.search(level + r"\(", body) and (getter_call is None or pe is None):
+        return None
+    context = (
+        r"\*\(undefined8 \*\)\(\*\(longlong \*\)\(\*\(longlong \*\)\(param_3\[5\] \+ "
+        + f"{ACCESSOR_TARGET_CONTEXT:#x}"
+        + r"\) \+ "
+        + f"{TARGET_CONTEXT_ENEMY:#x}"
+        + r"\) \+ "
+        + f"{_field_offset(metadata, ENEMY_CONTEXT_TYPE, UNIQUE_LEVELED_MODULE_FIELD):#x}"
+        + r"\)"
+    )
+    right = r"(?P<right>" + ARGUMENT + r"|(?P<constant>" + CONSTANT + r"))"
+    getter = None
+    match = re.search(
+        level
+        + r"\((?P<out>\w+),param_1,\s*"
+        + context
+        + r",\s*(?P<category>0x[0-9a-f]+|\d+)\);"
+        + r" if \((?P=out)\[0\] == '\\0'\) \{ (?P<value>iVar\d+) = 0;[^{}]*\} "
+        + r"else \{ (?P=value) = (?P=out)\._4_4_; \} \w+ = CONCAT71\([^;]*?,\s*(?P=value) == "
+        + right
+        + r"\);",
+        body,
+    )
+    if match is not None:
+        category = int(match["category"], 0) & 0xFFFFFFFF
+        if len(re.findall(CALL, body)) != 4:
+            return None
+    elif pe is not None and names:
+        match = re.search(
+            r"(?P<value>iVar\d+) = (?:FUN_|func_0x0*)(?P<getter>[0-9a-f]+)\(param_1,(?:"
+            + "|".join(sorted(names))
+            + r")\); \w+ = (?P=value) == "
+            + right
+            + r";",
+            body,
+        )
+        if match is None or len(re.findall(CALL, body)) != 1:
+            return None
+        getter = int(match["getter"], 16)
+        category = _unique_level_getter(pe, getter, metadata)
+        if category is None:
+            return None
+    else:
+        return None
+    argument_type = argument_field = None
+    if match["argoffset"]:
+        argument_type, argument_field = _argument_field(
+            metadata, row, match["argoffset"]
+        )
+        if argument_field is None:
+            return None
+    _, categories = metadata.enum(
+        f"app.{species.split('_')[0]}Def.UniqueLeveledValueCategory_Fixed"
+    )
+    return dict(
+        kind="unique_leveled_value",
+        commandType=row["type"],
+        argumentType=argument_type,
+        contextType="app.cEmModuleUniqueLeveledValue",
+        contextField=f"level:{category}",
+        contextFieldType="System.UInt32",
+        contextOffset=None,
+        category=category,
+        categoryName=next((n for n, v in categories.items() if v == category), None),
+        getter=hex(getter) if getter else None,
+        operator="==",
+        argumentField=argument_field,
+        constant=None if argument_field else int(match["constant"], 0),
+        guard="原生工作有效；等级值存在（无值时原生代码抛出异常）",
+        evidence=evidence(row),
+        nativeExpression=match[0],
+        semanticStatus="native_unique_level_comparison_recovered",
     )
 
 
@@ -361,6 +632,16 @@ def leaf_expression(leaf, argument=None):
         runtime("enemy_command_work_valid", "命令工作存在且原生类型检查通过"),
         runtime("self_extend_valid", "自身 Extend 对象存在且原生类型检查通过"),
     )
+    if leaf.get("kind") == "unique_state":
+        key = "self_unique_state_fixed_id"
+        source = "cEnemyExtendBase._UniqueStateFixedID 有值时的 UNIQUE_STATE_Fixed 值"
+    elif leaf.get("kind") == "unique_leveled_value":
+        key = f"unique_level:{leaf['category']}"
+        source = f"cEmModuleUniqueLeveledValue.getLevel({leaf['categoryName'] or leaf['category']})"
+        if not leaf.get("getter"):
+            guard = runtime(
+                "enemy_command_work_valid", "命令工作存在且原生类型检查通过"
+            )
     operator = LEAF_OPERATORS[leaf["operator"]]
     if leaf["argumentField"]:
         if argument is None or leaf["argumentField"] not in argument:
