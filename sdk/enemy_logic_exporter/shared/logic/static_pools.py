@@ -3,6 +3,7 @@
 import re
 from ..native.bindings import _transfer, memory_address, pointer, register, VOLATILE
 from ..config import (
+    EVIDENCE_KEYS,
     ARRAY_ELEMENTS,
     FN_ARRAY_ALLOCATE,
     FN_POOL_ARRAY_COPY,
@@ -14,7 +15,6 @@ from ..config import (
     POOL_ELEMENT_TYPE,
     POOL_PAIR_CONSTRUCT_LABELS,
 )
-
 
 def initializer_pools(record):
     text = record["code"].replace("\r", "")
@@ -34,9 +34,7 @@ def initializer_pools(record):
                     entries=[
                         dict(nativeKey=int(a, 0), weight=int(b, 0)) for a, b in pairs
                     ],
-                    initializerEvidence={
-                        k: record[k] for k in ("type", "method", "address", "end")
-                    },
+                    initializerEvidence={k: record[k] for k in EVIDENCE_KEYS},
                     status="initialization_constants_only",
                     keyMeaningReviewed=False,
                     runtimeCandidateFilteringReviewed=False,
@@ -91,16 +89,7 @@ def native_initializer_pools(native, address, record, *, read_memory=None):
                             address=hex(destination),
                             entries=pairs,
                             copySite=event["site"],
-                            initializerEvidence={
-                                k: record[k]
-                                for k in (
-                                    "type",
-                                    "method",
-                                    "address",
-                                    "end",
-                                    "nativeSha256",
-                                )
-                            },
+                            initializerEvidence={k: record[k] for k in EVIDENCE_KEYS},
                             status="native_initialization_constants_only",
                             keyMeaningReviewed=False,
                             runtimeCandidateFilteringReviewed=False,
@@ -116,7 +105,7 @@ def native_initializer_pools(native, address, record, *, read_memory=None):
 
 
 def _initializer_evidence(record):
-    return {key: record[key] for key in ("type", "method", "address", "end")}
+    return {key: record[key] for key in EVIDENCE_KEYS}
 
 
 def _reference_assignment(instructions, start, values):

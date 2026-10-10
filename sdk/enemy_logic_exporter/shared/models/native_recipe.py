@@ -223,14 +223,12 @@ class NativeRecipeContext:
                     if method.startswith(".cctor"):
                         start = int(info["function"], 16)
                         end = self.pe.end(start)
-                        data = self.pe.read(start, end - start)
                         initializers.append(
                             dict(
                                 type=owner,
                                 method=method,
                                 address=hex(start),
                                 end=hex(end),
-                                nativeSha256=hashlib.sha256(data).hexdigest(),
                                 source="matched_metadata_and_current_PE",
                             )
                         )
