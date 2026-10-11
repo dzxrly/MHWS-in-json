@@ -1,8 +1,8 @@
-name: Build database release and monster Pages
+name: Build database release
 
-# Pull requests only validate (tests and a full export). Releases and Pages are
-# published after a merge, i.e. a push to the default branch, or by a manual
-# run on the default branch.
+# Pull requests only validate (tests and a full export). Releases are published
+# after a push to the default branch or a manual run on the default branch.
+# Cloudflare Pages builds the battle website independently from Git pushes.
 on:
   push:
     branches: [main]
@@ -60,16 +60,6 @@ jobs:
       - name: Export database and processed data (battle HTML from frozen JSON)
         run: python main.py
 
-      - name: Build monster Pages from validated processed data
-        if: env.PUBLISH == 'true'
-        run: python .github/scripts/build_pages.py --output .agents/pages --version "${{ env.RELEASE_VERSION }}" --repository "${{ github.repository }}"
-
-      - name: Upload GitHub Pages artifact
-        if: env.PUBLISH == 'true'
-        uses: actions/upload-pages-artifact@v4
-        with:
-          path: .agents/pages
-
       - name: Publish release
         if: env.PUBLISH == 'true'
         shell: pwsh
@@ -96,24 +86,3 @@ jobs:
             $notes | gh release create $tag $assets --title $title --notes-file - --target $env:GITHUB_SHA
           }
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-
-  deploy-pages:
-    if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
-    needs: release
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
-    concurrency:
-      group: github-pages
-      cancel-in-progress: false
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
-      - name: Deploy monster Pages
-        id: deployment
-        uses: actions/deploy-pages@v4

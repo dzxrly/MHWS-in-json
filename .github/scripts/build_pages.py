@@ -1,8 +1,12 @@
 """Copy validated monster HTML to Pages; frozen JSON stays in models."""
 
 import argparse
+from datetime import datetime, timezone
+from html import escape
+import os
 from pathlib import Path
 import shutil
+import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -33,7 +37,22 @@ def build_pages(processed_dir, destination, *, version, repository):
         .replace("<head>", '<head><base href="enemy_battle_logic/">', 1)
     )
     (destination / "index.html").write_text(homepage, encoding="utf-8")
-    (destination / ".nojekyll").touch()
+    commit = (
+        os.environ.get("CF_PAGES_COMMIT_SHA")
+        or subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
+        ).strip()
+    )
+    deployed_on = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    commit_url = escape(f"https://github.com/{repository}/commit/{commit}", quote=True)
+    footer = (
+        '<footer style="text-align:center;padding:20px;color:var(--faint);font-size:12px">'
+        f'部署日期：{deployed_on}（<a href="{commit_url}">{escape(commit[:7])}</a>）'
+        "</footer>"
+    )
+    for page in destination.rglob("*.html"):
+        before, after = page.read_text(encoding="utf-8").rsplit("</body>", 1)
+        page.write_text(f"{before}{footer}</body>{after}", encoding="utf-8")
     return destination
 
 

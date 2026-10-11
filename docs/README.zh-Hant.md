@@ -79,7 +79,7 @@ enemy_battle_logic/EM0001_00_0.html
 ...
 ```
 
-行動圖包含一個索引和 34 個魔物頁面。變種各有獨立頁面，不包含訓練靶。預設分支也會將這些頁面發布到 GitHub Pages。
+行動圖包含一個索引和 34 個魔物頁面。變種各有獨立頁面，不包含訓練靶。`main` 更新後，Cloudflare Pages 會將網站發布到 [mhws-monsters-ai.eggtargaryen.com](https://mhws-monsters-ai.eggtargaryen.com/)。
 
 `MHWS-in-json_<版本>.zip` 包含來源 JSON，與活頁簿分開打包。
 
@@ -95,6 +95,28 @@ python -m src.processed_data.enemy_battle_logic --preview-all --output .agents/b
 ```
 
 然後開啟 `.agents/battle-preview/enemy_battle_logic/index.html`，頁面可離線使用。
+
+## Cloudflare Pages 部署
+
+Pages 專案 `mhws-in-json` 已連接本 GitHub 儲存庫，建置設定如下：
+
+| 設定 | 值 |
+| --- | --- |
+| 正式環境分支 | `main` |
+| 框架預設 | None |
+| 根目錄 | 儲存庫根目錄（留空） |
+| 建置輸出目錄 | `.agents/pages` |
+| 環境變數（正式與預覽） | `PYTHON_VERSION=3.14`、`PYTHONUTF8=1` |
+
+建置命令：
+
+```sh
+python -m src.processed_data.enemy_battle_logic --output .agents/cloudflare-build && python .github/scripts/build_pages.py --processed-dir .agents/cloudflare-build --output .agents/pages --version cloudflare --repository dzxrly/MHWS-in-json
+```
+
+這條命令驗證已提交的全部 34 份模型，並將靜態 HTML 打包為以索引為首頁的網站。只需要 Python 標準函式庫，不需要 SDK 或遊戲檔案。正式建置不要加入 `--preview-all`，以便模型覆蓋不完整時建置失敗。預設 Pages 網址為 [mhws-in-json.pages.dev](https://mhws-in-json.pages.dev/)，自訂網域在 Pages 控制台設定。GitHub Actions 繼續獨立執行驗證並發布資料庫 Release。
+
+每個部署頁面的底部置中顯示建置日期（UTC）和提交短 ID，點擊 ID 可開啟對應的 GitHub commit。Cloudflare 透過 `CF_PAGES_COMMIT_SHA` 提供提交 ID，本機建置使用目前的 Git 提交。
 
 ## 資料說明
 
