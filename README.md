@@ -96,28 +96,6 @@ python -m src.processed_data.enemy_battle_logic --preview-all --output .agents/b
 
 Then open `.agents/battle-preview/enemy_battle_logic/index.html`; the pages work offline.
 
-## Cloudflare Pages deployment
-
-The Pages project `mhws-in-json` is connected to this GitHub repository. The GitHub **Cloudflare Workers and Pages** app's **Repository access** must include `dzxrly/MHWS-in-json` for pushes to trigger deployments; retain access to the other repositories already authorized. Use the following build settings:
-
-| Setting | Value |
-| --- | --- |
-| Production branch | `main` |
-| Framework preset | None |
-| Root directory | Repository root (leave blank) |
-| Build output directory | `.agents/pages` |
-| Environment variables (production and preview) | `PYTHON_VERSION=3.14`, `PYTHONUTF8=1` |
-
-Build command:
-
-```sh
-python -m src.processed_data.enemy_battle_logic --output .agents/cloudflare-build && python .github/scripts/build_pages.py --processed-dir .agents/cloudflare-build --output .agents/pages --version cloudflare --repository dzxrly/MHWS-in-json
-```
-
-This command validates all 34 committed models and packages the static HTML with an index at the site root. It requires only Python's standard library; no SDK or game files are needed. Keep `--preview-all` out of production builds so incomplete model coverage fails the build. The default Pages address is [mhws-in-json.pages.dev](https://mhws-in-json.pages.dev/); the custom domain is configured in the Pages dashboard. GitHub Actions continues to validate and publish database Releases independently.
-
-Every deployed page has a centered footer showing the build date in UTC and a short commit ID linked to its GitHub commit. Cloudflare supplies the ID through `CF_PAGES_COMMIT_SHA`; local builds use the current Git commit.
-
 ## Data notes
 
 - `damage_calculator.zh-Hans.json` contains monster hitzones, parts and scars, player hit profiles, sharpness rates, and item modifiers. Missing alternate hitzones remain `null`.

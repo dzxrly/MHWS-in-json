@@ -96,28 +96,6 @@ python -m src.processed_data.enemy_battle_logic --preview-all --output .agents/b
 
 然后打开 `.agents/battle-preview/enemy_battle_logic/index.html`，页面可离线使用。
 
-## Cloudflare Pages 部署
-
-Pages 项目 `mhws-in-json` 已连接本 GitHub 仓库。GitHub 的 **Cloudflare Workers and Pages** App 中，**Repository access** 必须包含 `dzxrly/MHWS-in-json`，推送才能触发部署；保留其他已授权仓库的访问权限。构建设置如下：
-
-| 设置 | 值 |
-| --- | --- |
-| 生产分支 | `main` |
-| 框架预设 | None |
-| 根目录 | 仓库根目录（留空） |
-| 构建输出目录 | `.agents/pages` |
-| 环境变量（生产与预览） | `PYTHON_VERSION=3.14`、`PYTHONUTF8=1` |
-
-构建命令：
-
-```sh
-python -m src.processed_data.enemy_battle_logic --output .agents/cloudflare-build && python .github/scripts/build_pages.py --processed-dir .agents/cloudflare-build --output .agents/pages --version cloudflare --repository dzxrly/MHWS-in-json
-```
-
-这条命令验证已提交的全部 34 份模型，并将静态 HTML 打包为以索引为首页的网站。只需要 Python 标准库，不需要 SDK 或游戏文件。生产构建不要加入 `--preview-all`，以便模型覆盖不完整时构建失败。默认 Pages 地址为 [mhws-in-json.pages.dev](https://mhws-in-json.pages.dev/)，自定义域名在 Pages 控制台配置。GitHub Actions 继续独立执行验证并发布数据库 Release。
-
-每个部署页面的底部居中显示构建日期（UTC）和提交短 ID，点击 ID 可打开对应的 GitHub commit。Cloudflare 通过 `CF_PAGES_COMMIT_SHA` 提供提交 ID，本地构建使用当前 Git 提交。
-
 ## 数据说明
 
 - `damage_calculator.zh-Hans.json` 包含怪物肉质、部位与伤口、玩家动作记录、斩味倍率和道具补正。缺失的替代肉质保留为 `null`。
