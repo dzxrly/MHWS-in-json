@@ -422,11 +422,29 @@
   // Timers and table variables can be numerous; keep them in a sub-section.
   const extra = html("details", undefined, "inputs-extra"), extraBox = html("div", undefined, "inputs");
   extra.append(html("summary", "计时器与行为表变量"), extraBox);
+  let inputCount = 0;
   for (const [key, field] of Object.entries(view.inputs || {})) {
     if (!field.options?.length) continue;
     const target = field.group === "timer" || field.group === "variable" ? extraBox : box;
-    const label = html("label"), select = html("select");
-    label.append(field.label || key, select);
+    // Label and select are tied by id so the help button stays outside the label.
+    const wrap = html("div", undefined, "input-field"), head = html("div", undefined, "input-head");
+    const label = html("label", field.label || key), select = html("select");
+    select.id = "player-input-" + inputCount++;
+    label.htmlFor = select.id;
+    head.append(label);
+    wrap.append(head, select);
+    if (field.hint) {
+      const help = html("button", "?", "input-help"), note = html("p", field.hint, "input-hint");
+      help.type = "button"; help.title = field.hint;
+      help.setAttribute("aria-label", "说明");
+      help.setAttribute("aria-expanded", "false");
+      note.id = select.id + "-hint"; note.hidden = true;
+      help.setAttribute("aria-controls", note.id);
+      select.setAttribute("aria-describedby", note.id);
+      help.onclick = () => { note.hidden = !note.hidden; help.setAttribute("aria-expanded", String(!note.hidden)); };
+      head.append(help);
+      wrap.append(note);
+    }
     select.append(new Option("任意", ""));
     field.options.forEach((option, index) => select.append(new Option(inputLabel(option), String(index))));
     select.onchange = () => {
@@ -435,7 +453,7 @@
       matches = []; lastQuery = "";
       build(); draw(); fit();
     };
-    target.append(label);
+    target.append(wrap);
   }
   if (extraBox.children.length) box.after(extra);
   if (!box.children.length && !extraBox.children.length) $("player-scenario").hidden = true;

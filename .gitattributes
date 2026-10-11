@@ -1,3 +1,6 @@
 # Preserve vendored upstream bytes so recorded SHA-256 remains valid on Windows.
 src/processed_data/enemy_battle_logic/vendor/elkjs/elk.bundled.js -text whitespace=-blank-at-eol
 src/processed_data/enemy_battle_logic/vendor/elkjs/LICENSE.md -text
+# Game resource exports: the SDK records their SHA-256, so keep the exported
+# bytes on every checkout (core.autocrlf would otherwise rewrite line endings).
+MHWS-in-json/** -text

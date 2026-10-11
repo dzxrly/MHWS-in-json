@@ -34,6 +34,8 @@ def _index(resources):
                     guid = value["InstanceGUID"]
                     record = dict(
                         kind=kind,
+                        # The designer's export name; most entries leave it empty.
+                        name=value.get("ExportValueName") or None,
                         default=value.get("_DefaultValue"),
                         life=str(value.get("_Life", "")).split("] ", 1)[-1],
                         resource=source,

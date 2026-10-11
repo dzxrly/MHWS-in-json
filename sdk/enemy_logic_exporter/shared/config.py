@@ -22,6 +22,15 @@ RULES_PATH = DATA_DIR / "rules.v1.json"
 ROSTER_PATH = DATA_DIR / "roster.v1.json"
 MONSTER_MODULE_DIR = Path(__file__).resolve().parents[1] / "monster"
 
+# Research caches and outputs live here; it may be a junction to a shared folder.
+AGENTS_DIR = ROOT / ".agents"
+
+
+def in_agents(path):
+    """True when ``path`` lies inside the project .agents folder (links resolved)."""
+    return Path(path).resolve().is_relative_to(AGENTS_DIR.resolve())
+
+
 # Publication scope: EnemyData IDs below this base number, minus exclusions.
 LARGE_ENEMY_MAX_BASE = 1000
 TRAINING_ENEMY_ID = "EM0165_00_0"
@@ -186,6 +195,13 @@ EXTRA_STATE_ENUM = "app.EnemyDef.EXTRA_STATE"
 
 
 # -------------------------------------------------------- IL2CPP identities
+
+# Runtime key suffix of "this object field is not null" (x64 field formulas).
+EXISTS_SUFFIX = "#exists"
+# Runtime key prefixes of fields read through a reference lookup (x64 field
+# formulas): another enemy found by a TARGET_ACCESS_KEY ("ref0:"/"ref1:" by
+# the lookup flag) or the monster's own squad ("squad:").
+REFERENCE_PREFIXES = ("ref0:", "ref1:", "squad:")
 
 # cEnemyContext field paths that shared recipes already expose under a runtime
 # key; recovered field formulas reuse the key so one field is one input.

@@ -10,8 +10,7 @@ from ..resources.requests import discover_requests
 from ..native.streaming import extract_cached
 from ..models.catalog import EXPECTED_ENEMY_IDS
 from .extraction import extract_inventory
-from ..config import ROOT
-
+from ..config import in_agents
 
 def package_result(output):
     """Bundle extracted JSON and receipts, excluding large native caches."""
@@ -74,8 +73,7 @@ def run_all(
     helper_index=None,
 ):
     output = Path(output).resolve()
-    root = ROOT
-    if not output.is_relative_to(root / ".agents"):
+    if not in_agents(output):
         raise ValueError("全量离线研究结果只允许输出到项目 .agents")
     output.mkdir(parents=True, exist_ok=True)
     if index_path is None:

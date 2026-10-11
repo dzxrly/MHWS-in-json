@@ -41,5 +41,9 @@ def validate_expression(expression):
     elif kind == "unknown":
         if not expression.get("reason"):
             raise ValueError("未知条件必须说明范围")
+    elif kind == "constant":
+        # Decided by the node's own resource argument in the SDK.
+        if type(expression.get("value")) is not bool:
+            raise ValueError("常量条件必须是布尔值")
     else:
         raise ValueError("未知条件表达式类型")

@@ -85,18 +85,16 @@ enemy_battle_logic/EM0001_00_0.html
 
 ## 项目工具
 
-使用 `python -m sdk.il2cpp upload --dry-run` 准备 IL2CPP 上传，或用 `python -m sdk.il2cpp download` 获取构建数据。两者沿用已有的 `gh` 登录状态。
+- `sdk.il2cpp`：上传或下载保存在 `build-data` Release 中的 IL2CPP 元数据。
+- `sdk.enemy_logic_exporter`：从游戏文件中提取怪物行动逻辑，生成行动图网页使用的 JSON。`src/processed_data/enemy_battle_logic/models` 中的 34 份模型对应游戏 **1.42.0.2**，未知分支保留标记。
 
-怪物 SDK 读取游戏资源、同版本 EXE 和 IL2CPP 元数据，生成行动图 JSON；网页构建器只读取这些 JSON。提取和维护步骤见 [SDK 说明](../sdk/enemy_logic_exporter/AGENTS.md)。
-
-`src/processed_data/enemy_battle_logic/models` 中的 34 份模型对应游戏 **1.42.0.2**。未知分支在图中保留标记。
+两个工具的环境搭建与用法见 [SDK 使用说明](sdk.zh-Hans.md)。只重新生成网页时不需要这两个工具：
 
 ```powershell
-python -m sdk.enemy_logic_exporter --help
 python -m src.processed_data.enemy_battle_logic --preview-all --output .agents/battle-preview
 ```
 
-打开 `.agents/battle-preview/enemy_battle_logic/index.html` 浏览行动图。页面可离线使用，支持缩放、节点查找和 SVG 导出。预览单个模型时，将 `--preview-all` 替换为 `--template <graph.json>`。
+然后打开 `.agents/battle-preview/enemy_battle_logic/index.html`，页面可离线使用。
 
 ## 数据说明
 

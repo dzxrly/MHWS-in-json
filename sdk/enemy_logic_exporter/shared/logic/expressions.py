@@ -6,6 +6,8 @@ from .values import Outcome
 def evaluate_expression(expression, registry, context):
     validate_expression(expression)
     kind = expression["kind"]
+    if kind == "constant":
+        return Outcome(expression["value"], "按资源参数恒定")
     if kind == "predicate":
         return registry.evaluate(expression["predicate"], context)
     if kind == "unknown":
@@ -90,6 +92,10 @@ def validate_expression(expression):
     elif kind == "unknown":
         if not expression.get("reason"):
             raise ValueError("未知条件必须说明范围")
+    elif kind == "constant":
+        # A formula decided by the node's own resource argument.
+        if type(expression.get("value")) is not bool:
+            raise ValueError("常量条件必须是布尔值")
     else:
         raise ValueError("未知条件表达式类型")
 

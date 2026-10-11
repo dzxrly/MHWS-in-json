@@ -104,9 +104,16 @@ details > summary { cursor: pointer; color: var(--muted); }
 .bar select { max-width: 200px; font-size: 12.5px; }
 .bar output { color: var(--faint); font-size: 12px; }
 .scenario { padding: 6px 14px 8px; border-bottom: 1px solid var(--line); background: var(--surface-2); font-size: 13px; }
-.scenario[open] { padding-bottom: 12px; }
+.scenario[open] { padding-bottom: 12px; max-height: 45vh; overflow-y: auto; flex: none; }
 .inputs { display: flex; flex-wrap: wrap; gap: 10px 16px; margin-top: 10px; }
-.inputs label { display: flex; flex-direction: column; gap: 3px; font-size: 12px; color: var(--muted); }
+.input-field { display: flex; flex-direction: column; gap: 3px; max-width: 260px; font-size: 12px; color: var(--muted); }
+.input-head { display: flex; align-items: center; gap: 5px; }
+.input-help {
+  flex: none; width: 16px; height: 16px; padding: 0; border: 1px solid var(--line-strong); border-radius: 50%;
+  background: var(--surface); color: var(--muted); font: 600 10.5px/1 var(--font); cursor: help;
+}
+.input-help:hover, .input-help[aria-expanded="true"] { border-color: var(--accent); color: var(--accent); }
+.input-hint { margin: 0; font-size: 11.5px; line-height: 1.45; color: var(--faint); }
 .inputs select { min-width: 140px; max-width: 260px; font-size: 13px; }
 .inputs-extra { margin-top: 10px; font-size: 12px; }
 .player-body, .technical-body { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr) 320px; min-height: 0; }

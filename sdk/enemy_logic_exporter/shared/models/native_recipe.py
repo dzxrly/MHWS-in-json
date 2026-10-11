@@ -144,6 +144,7 @@ class NativeRecipeContext:
         self.native_cache, self.record_cache, self.pool_cache = {}, {}, {}
         self.command_cache = {}
         self.leaf_cache = {}
+        self.method_names = None
         self.stack = ExitStack()
 
     def __enter__(self):
@@ -326,10 +327,19 @@ class NativeRecipeContext:
             entryInstruction=dict(address=row["address"], bytes="c3", mnemonic="ret"),
         )
 
+    def helper_names(self):
+        """Address -> metadata method names, for inlined helper evidence."""
+        if self.method_names is None:
+            from ..native.pe import address_catalog
+
+            self.method_names = address_catalog(self.metadata)
+        return self.method_names
+
     def command_leaf(self, command_type):
         """A recovered "Extend field OP argument" rule for the actual implementation."""
         from ..logic.commands import recover_context_leaf, recover_leaf
         from ..logic.formula import recover_formula_leaf
+        from ..logic.native_formula import recover_native_formula_leaf
 
         if command_type not in self.leaf_cache:
             current, visited, found = command_type, set(), None
@@ -341,12 +351,24 @@ class NativeRecipeContext:
                 if rows:
                     if len(rows) == 1:
                         code = _artifact(self.helper_path, self.helpers, rows[0])["code"]
-                        # The formula keeps every path condition; the
-                        # single-read context recognizer is only a fallback.
+                        # The formulas keep every path condition; the x64 one
+                        # also expands called helpers. The single-read context
+                        # recognizer is only a fallback.
                         found = (
                             recover_leaf(rows[0], code, self.metadata, self.pe)
                             or recover_formula_leaf(rows[0], code, self.metadata)
+                            or recover_native_formula_leaf(
+                                rows[0], self.metadata, self.pe, self.helper_names
+                            )
                             or recover_context_leaf(rows[0], code, self.metadata)
+                            # Last: keep the verified paths, the rest explicitly unknown.
+                            or recover_native_formula_leaf(
+                                rows[0],
+                                self.metadata,
+                                self.pe,
+                                self.helper_names,
+                                partial=True,
+                            )
                         )
                         if found is not None and found.get("contextFieldType"):
                             found["enumType"], found["enumValues"] = self.metadata.enum(
@@ -623,9 +645,6 @@ class NativeRecipeContext:
         from ..logic.scheduler_slots import scheduler_slots
 
         document["schedulerSlots"] = scheduler_slots(document)
-        from ..resources.variables import referenced_variables
-
-        document["variableCatalog"] = referenced_variables(document, self.resources)
         return document
 
 
