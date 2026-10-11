@@ -79,7 +79,7 @@ enemy_battle_logic/EM0001_00_0.html
 ...
 ```
 
-行動圖包含一個索引和 34 個魔物頁面。變種各有獨立頁面，不包含訓練靶。`main` 更新後，Cloudflare Pages 會將網站發布到 [mhws-monsters-ai.eggtargaryen.com](https://mhws-monsters-ai.eggtargaryen.com/)。
+行動圖包含一個索引和 34 個魔物頁面。變種各有獨立頁面，不包含訓練靶。線上行動圖網站：[mhws-monsters-ai.eggtargaryen.com](https://mhws-monsters-ai.eggtargaryen.com/)。
 
 `MHWS-in-json_<版本>.zip` 包含來源 JSON，與活頁簿分開打包。
 

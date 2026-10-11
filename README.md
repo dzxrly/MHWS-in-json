@@ -79,7 +79,7 @@ enemy_battle_logic/EM0001_00_0.html
 ...
 ```
 
-The battle graph bundle consists of an index and 34 monster pages. Variants have separate pages; the training target is excluded. Cloudflare Pages publishes the website at [mhws-monsters-ai.eggtargaryen.com](https://mhws-monsters-ai.eggtargaryen.com/) when `main` changes.
+The battle graph bundle consists of an index and 34 monster pages. Variants have separate pages; the training target is excluded. Online battle graphs: [mhws-monsters-ai.eggtargaryen.com](https://mhws-monsters-ai.eggtargaryen.com/).
 
 `MHWS-in-json_<version>.zip` contains the source JSON, packaged separately from the workbooks.
 

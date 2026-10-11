@@ -79,7 +79,7 @@ enemy_battle_logic/EM0001_00_0.html
 ...
 ```
 
-行动图包含一个索引和 34 个怪物页面。变种各有独立页面，不包含训练靶。`main` 更新后，Cloudflare Pages 会将网站发布到 [mhws-monsters-ai.eggtargaryen.com](https://mhws-monsters-ai.eggtargaryen.com/)。
+行动图包含一个索引和 34 个怪物页面。变种各有独立页面，不包含训练靶。在线行动图网站：[mhws-monsters-ai.eggtargaryen.com](https://mhws-monsters-ai.eggtargaryen.com/)。
 
 `MHWS-in-json_<版本>.zip` 包含源 JSON，与工作簿分开打包。
 
