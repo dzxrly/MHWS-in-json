@@ -916,6 +916,17 @@ def _expression(sym, namer):
                 right=dict(kind="argument", field=other[1]),
             )
         raise Unsupported("字段与非常量比较")
+    for a, b, op in ((left, right, operator), (right, left, mirrored[operator])):
+        # A resource argument against a constant (an enum switch the x64
+        # recognizer forked); instantiate decides it for each node.
+        named = namer.leaf(a)
+        if named is not None and named[0] == "arg" and b[0] == "const":
+            return dict(
+                kind="compare",
+                operator=LEAF_OPS[op],
+                left=dict(kind="argument", field=named[1]),
+                right=dict(kind="constant", value=b[1]),
+            )
     raise Unsupported("无法命名的比较")
 
 
@@ -969,11 +980,64 @@ def _reads_state(expression):
 
 
 def instantiate(formula, argument):
-    """Replace argument references with this node's resource values."""
+    """Replace argument references with this node's resource values.
+
+    Comparisons left between two constants (forked enum arguments) are decided
+    and the combinations folded, so a node keeps only its own branch.
+    """
+    bound = _bind(formula, argument)
+    return None if bound is None else fold(bound)
+
+
+def fold(expression):
+    """Decide constant comparisons and simplify all/any/not around them."""
+    kind = expression.get("kind") if isinstance(expression, dict) else None
+    if kind == "compare" and expression["left"].get("kind") == "constant":
+        left, right = expression["left"]["value"], expression["right"].get("value")
+        if expression["right"].get("kind") == "constant":
+            if type(left) is int and type(right) is int:
+                # Enum values are spelled signed or unsigned; compare the bits.
+                left, right = left & 0xFFFFFFFF, right & 0xFFFFFFFF
+            return dict(
+                kind="constant", value=_decide(expression["operator"], left, right)
+            )
+    if kind == "not":
+        item = fold(expression["item"])
+        if item.get("kind") == "constant":
+            return dict(kind="constant", value=not item["value"])
+        return dict(expression, item=item)
+    if kind in ("all", "any"):
+        decisive = kind == "any"
+        items = []
+        for item in (fold(x) for x in expression["items"]):
+            if item.get("kind") == "constant":
+                if bool(item["value"]) == decisive:
+                    return dict(kind="constant", value=decisive)
+                continue
+            if item not in items:
+                items.append(item)
+        if not items:
+            return dict(kind="constant", value=not decisive)
+        return items[0] if len(items) == 1 else dict(expression, items=items)
+    return expression
+
+
+def _decide(operator, left, right):
+    return {
+        "eq": left == right,
+        "ne": left != right,
+        "lt": left < right,
+        "le": left <= right,
+        "gt": left > right,
+        "ge": left >= right,
+    }[operator]
+
+
+def _bind(formula, argument):
     from .values import enum_number, scalar
 
     if isinstance(formula, list):
-        out = [instantiate(x, argument) for x in formula]
+        out = [_bind(x, argument) for x in formula]
         return None if any(x is None for x in out) else out
     if not isinstance(formula, dict):
         return formula
@@ -990,7 +1054,7 @@ def instantiate(formula, argument):
         return dict(kind="constant", value=value)
     out = {}
     for key, value in formula.items():
-        item = instantiate(value, argument)
+        item = _bind(value, argument)
         if item is None and value is not None:
             return None
         out[key] = item

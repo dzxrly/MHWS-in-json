@@ -27,8 +27,10 @@ def validate_player_view(graph):
     def expression(value):
         op = value.get("op")
         if op in ("all", "any"):
-            if not value.get("items"):
-                raise ValueError("玩家组合条件不能为空")
+            # An empty all/any is a condition decided by its resource argument
+            # (always true / always false); anything else must be a list.
+            if not isinstance(value.get("items"), list):
+                raise ValueError("玩家组合条件缺少条目")
             for item in value["items"]:
                 expression(item)
         elif op == "not":

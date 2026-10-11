@@ -71,6 +71,12 @@ class Metadata:
             "Index": {"offset_from_base": "0x14", "type": "System.Int32"},
             "INVALID": {"offset_from_base": "0x10", "type": "app.KEY"},
         },
+        "app.SwitchArg": {
+            "_Kind": {
+                "offset_from_base": "0x10",
+                "type": "ace.btable.cEditFieldEnum`1<app.KIND>",
+            },
+        },
         "app.ModeArg": {
             "_EditType": {
                 "offset_from_base": "0x10",
@@ -98,6 +104,8 @@ class Metadata:
         return self.TYPES.get(name)
 
     def enum(self, name):
+        if name == "ace.btable.cEditFieldEnum`1<app.KIND>":
+            return "app.KIND", {"X": 1, "Y": 3}
         return None, {}
 
 
@@ -239,6 +247,44 @@ class NativeFormulaTests(unittest.TestCase):
         self.assertEqual([p[3][1] for p in split[1]], [0xFFFFFFFF, 0xFFFFFFFE])
         with self.assertRaises(Unsupported):
             N.split_wide(("cmp", "<", key, ("const", 3)), namer)
+
+    def test_enum_argument_is_forked_and_decided_per_node(self):
+        from sdk.enemy_logic_exporter.shared.logic.formula import _expression
+
+        # mov rax, [r9+0x10]; mov eax, [rax+0x10]; cmp eax, 3; sete al; ret
+        command = bytes.fromhex("498b4110" "8b4010" "83f803" "0f94c0c3")
+        row = dict(ROW, parameters=[ROW["parameters"][0], {"type": "app.SwitchArg"}])
+        namer = N.NativeNamer(
+            Metadata(), row, ("param", "param_3"), ("param", "param_4")
+        )
+        formula, _, _ = N.evaluate(
+            FakePE({COMMAND: command}), COMMAND, False, namer.argument_domain
+        )
+        expression = _expression(formula, namer)
+        self.assertEqual(
+            instantiate(expression, {"_Kind": "[3] Y"}),
+            dict(kind="constant", value=True),
+        )
+        self.assertEqual(
+            instantiate(expression, {"_Kind": "[1] X"}),
+            dict(kind="constant", value=False),
+        )
+        # A value the enum does not declare stays unknown.
+        self.assertEqual(instantiate(expression, {"_Kind": "[7] Z"})["kind"], "unknown")
+
+    def test_cdqe_sign_extends_eax(self):
+        # mov eax, 0xffffffff; cdqe; cmp rax, -1; sete al; ret
+        command = bytes.fromhex("b8ffffffff" "4898" "4883f8ff" "0f94c0c3")
+        formula, _, _ = N.evaluate(FakePE({COMMAND: command}), COMMAND)
+        self.assertEqual(formula, ("const", True))
+
+    def test_tail_jump_target_is_recorded_as_helper(self):
+        command = bytes.fromhex("e9") + struct.pack("<i", HELPER - (COMMAND + 5))
+        helper = assemble(
+            [*CONTEXT, bytes.fromhex("83786401"), bytes.fromhex("0f94c0c3")], HELPER
+        )
+        _, helpers, _ = N.evaluate(FakePE({COMMAND: command, HELPER: helper}), COMMAND)
+        self.assertIn(HELPER, helpers)
 
     def test_constant_comparisons_are_decided(self):
         self.assertEqual(

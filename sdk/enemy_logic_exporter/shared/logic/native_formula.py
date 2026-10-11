@@ -30,7 +30,9 @@ from capstone import CS_ARCH_X86, CS_MODE_64, Cs
 from capstone.x86 import X86_OP_IMM, X86_OP_MEM, X86_OP_REG
 
 from ..config import (
+    EDIT_FIELD_VALUE,
     EXISTS_SUFFIX,
+    REFERENCE_PREFIXES,
     FN_CLASS_HIERARCHY_CHECK,
     FN_STACK_COOKIE_CHECK,
     RUNTIME_DATA_START,
@@ -39,14 +41,40 @@ from ..native.evidence import evidence
 from .formula import (
     Namer,
     Unsupported,
+    _join,
     _expression,
     _reads_state,
     b_join,
     b_not,
 )
 
-MAX_STEPS = 20000
-MAX_CALL_DEPTH = 4
+MAX_STEPS = 60000
+# Enum arguments with more declared values are not forked.
+MAX_ENUM_FORK = 64
+# Reference lookups modelled as named roots instead of being traced: they
+# index the global EnemyManager tables, which hold no static data. Identified
+# by metadata (type, method without suffix, parameter types) in every build.
+REFERENCE_LOOKUPS = {
+    # getEnemyManageInfo(key, flag): the enemy a TARGET_ACCESS_KEY refers to,
+    # or null when the key is not an enemy key or its slot was reused.
+    "enemy": (
+        "app.TargetAccessKeyUtil",
+        "getEnemyManageInfo",
+        ("app.TARGET_ACCESS_KEY", "System.Boolean"),
+        "app.cEnemyManageInfo",
+    ),
+    # EnemyManager.findSquad(group): the squad that this Group module is in.
+    "squad": (
+        "app.EnemyManager",
+        "findSquad",
+        ("app.cEmModuleGroup",),
+        "app.cEnemySquadManageInfo",
+    ),
+}
+TARGET_ACCESS_KEY = "app.TARGET_ACCESS_KEY"
+# Boolean resource arguments are forked on false/true.
+BOOL_EDIT_FIELD = "ace.btable.cEditFieldBool"
+MAX_CALL_DEPTH = 6
 MAX_FUNCTION_BYTES = 0x1000
 # Volatile argument registers on entry to onExecute(thread, command, work, argument).
 ENTRY_REGISTERS = dict(rcx="param_1", rdx="param_2", r8="param_3", r9="param_4")
@@ -134,8 +162,50 @@ def _narrow(sym, bits):
     if _is_bool(sym):
         return sym
     if kind == "low8":
-        return sym[2] if bits == 8 else ("opaque",)
+        # The low byte stays known through wider moves (mov eax, r9d; ret).
+        return sym[2] if bits == 8 else ("low8", _narrow(sym[1], bits), sym[2])
+    if kind == "addr" and bits == 32 and sym[1][0] in ("load", "off"):
+        # lea r32, [field + c]: a 32-bit field plus a constant, not a pointer.
+        return _plus(sym[1], sym[2])
+    if kind == "off" and bits == 32:
+        return sym
     return ("opaque",)
+
+
+def _sign_extend(sym, source, wide):
+    """``sym`` (the low ``source`` bits) sign-extended to ``wide`` bits.
+
+    Field reads stand for the field's own (signed) value, so they keep their
+    symbol only when the read is no wider than the source bits.
+    """
+    if sym[0] == "const" and type(sym[1]) is int:
+        value = sym[1] & ((1 << source) - 1)
+        if value >> (source - 1):
+            value -= 1 << source
+        return _const(value & ((1 << wide) - 1))
+    if (sym[0] == "load" and sym[1] * 8 <= source) or _is_bool(sym):
+        return sym
+    return ("opaque",)
+
+
+def _to_signed(value, bits):
+    return value - (1 << bits) if value >> (bits - 1) else value
+
+
+def _signed64(value):
+    return value - (1 << 64) if value >> 63 else value
+
+
+def _wrap32(value):
+    return (value + (1 << 31)) % (1 << 32) - (1 << 31)
+
+
+def _plus(sym, delta):
+    """A 32-bit value plus a constant (wrapping)."""
+    if sym[0] == "off":
+        sym, delta = sym[1], sym[2] + delta
+    delta = _wrap32(delta)
+    return sym if delta == 0 else ("off", sym, delta)
 
 
 def _offset(sym, delta):
@@ -144,7 +214,7 @@ def _offset(sym, delta):
         return (kind, sym[1] + delta)
     if kind == "addr":
         return ("addr", sym[1], sym[2] + delta)
-    if kind in ("param", "load", "global"):
+    if kind in ("param", "load", "global", "ref_enemy", "ref_squad"):
         return ("addr", sym, delta) if delta else sym
     if sym == ("const", 0):
         raise NullAccess("空对象访问")
@@ -153,6 +223,14 @@ def _offset(sym, delta):
 
 class Fatal(Unsupported):
     """The whole command leaves the subset, even for a partial formula."""
+
+
+class Concretize(Unsupported):
+    """An enum resource argument is read: continue once per declared value."""
+
+    def __init__(self, sym, values):
+        super().__init__("资源参数分叉")
+        self.sym, self.values = sym, values
 
 
 class NullAccess(Unsupported):
@@ -207,6 +285,24 @@ def _mask_zero(value, mask):
     raise Unsupported("位测试")
 
 
+def _unsigned(operator, a, bound, bits):
+    """Unsigned ``a OP bound`` over a value read as signed ``bits``-bit.
+
+    Non-negative values keep their order; negative ones are above every
+    non-negative value and keep their order among themselves.
+    """
+    k = bound - (1 << bits) if bound >> (bits - 1) else bound
+    negative = ("cmp", "<", a, _const(0))
+    test = ("cmp", operator, a, _const(k))
+    if k >= 0:
+        if operator in (">", ">="):
+            return b_join("or", (test, negative))
+        return b_join("and", (b_not(negative), test))
+    if operator in ("<", "<="):
+        return b_join("or", (b_not(negative), test))
+    return b_join("and", (negative, test))
+
+
 def _truth(sym):
     if _is_bool(sym):
         return sym if sym[0] != "const" else _const(bool(sym[1]))
@@ -218,7 +314,7 @@ def _truth(sym):
 
 
 class State:
-    __slots__ = ("regs", "xmm", "stack", "flags", "calls", "visits", "facts")
+    __slots__ = ("regs", "xmm", "stack", "flags", "calls", "visits", "facts", "bound")
 
     def __init__(self):
         self.regs, self.xmm, self.stack = {}, {}, {}
@@ -226,6 +322,8 @@ class State:
         self.calls = ()
         self.visits = {}
         self.facts = frozenset()
+        # Argument loads fixed to one enum value on this path.
+        self.bound = {}
 
     def copy(self):
         other = State()
@@ -236,15 +334,24 @@ class State:
         )
         other.flags, other.calls = self.flags, self.calls
         other.visits, other.facts = dict(self.visits), self.facts
+        other.bound = dict(self.bound)
         return other
 
 
 class Executor:
     """Symbolic execution of one command body and the helpers it calls."""
 
-    def __init__(self, pe, partial=False):
+    def __init__(self, pe, partial=False, domain=None):
         self.pe = pe
         self.partial = partial
+        # sym -> declared enum values of a resource argument field, or None.
+        self.domain = domain
+        # The command's own range; jumps outside it are recorded helpers.
+        self.entry = (0, 0)
+        # Function address -> reference lookup kind (REFERENCE_LOOKUPS).
+        self.lookups = {}
+        # (type, global sym, size) -> value proven by the type's .cctor, or None.
+        self.statics = None
         self.unknown_paths = set()
         self.md = Cs(CS_ARCH_X86, CS_MODE_64)
         self.md.detail = True
@@ -268,6 +375,13 @@ class Executor:
                 raise Fatal(f"无法解码 {address:#x}")
             self.decoded[address] = found
         return self.decoded[address]
+
+    def inside(self, address):
+        """True when ``address`` lies in the command or a recorded helper."""
+        return any(
+            start <= address < end
+            for start, end in (self.entry, *self.functions.items())
+        )
 
     def function(self, address):
         """Record the callee range as evidence."""
@@ -301,15 +415,7 @@ class Executor:
     def load(self, address, size, state, floating=False):
         kind = address[0]
         if kind == "stack":
-            stored = state.stack.get(address[1])
-            if stored is None:
-                return ("opaque",)
-            stored_size, value = stored
-            if stored_size == size:
-                return value
-            if stored_size > size and not floating:
-                return _narrow(value, size * 8)
-            return ("opaque",)
+            return self.stack_load(address[1], size, state, floating)
         if kind == "gaddr":
             where = address[1]
             if self._read_only(where, size):
@@ -320,9 +426,36 @@ class Executor:
                     return _const(struct.unpack("<f" if size == 4 else "<d", raw)[0])
                 return _const(int.from_bytes(raw, "little"))
             return ("global", f"_DAT_{where:x}", size)
-        if kind == "addr":
-            return ("load", size, address[1], address[2])
-        return ("load", size, address, 0)
+        sym = (
+            ("load", size, address[1], address[2])
+            if kind == "addr"
+            else ("load", size, address, 0)
+        )
+        if sym in state.bound:
+            return state.bound[sym]
+        values = self.domain(sym) if self.domain and not floating else None
+        if values:
+            raise Concretize(sym, values)
+        return sym
+
+    @staticmethod
+    def stack_load(offset, size, state, floating):
+        """A local slot, or part of a wider copy of a field (e.g. a 16-byte struct)."""
+        stored = state.stack.get(offset)
+        if stored is not None and stored[0] == size:
+            return stored[1]
+        if stored is not None and stored[0] > size and not floating:
+            return _narrow(stored[1], size * 8)
+        for start, (width, value) in state.stack.items():
+            if (
+                start < offset
+                and offset + size <= start + width
+                and value[0] == "load"
+                and value[1] == width
+            ):
+                # Bytes inside a copied field read: the field's own bytes.
+                return ("load", size, value[2], value[3] + offset - start)
+        return ("opaque",)
 
     def store(self, address, size, value, state):
         if address[0] != "stack":
@@ -396,7 +529,10 @@ class Executor:
                     if code in ("ne", "nz"):
                         return b_not(zero)
                     raise Unsupported("位测试的条件码 " + code)
-            zero = ("cmp", "==", a, _const(0)) if not _is_bool(a) else b_not(a)
+            if a[0] == "off":
+                zero = ("cmp", "==", a[1], _const(_wrap32(-a[2])))
+            else:
+                zero = ("cmp", "==", a, _const(0)) if not _is_bool(a) else b_not(a)
             if code in ("e", "z"):
                 return zero
             if code in ("ne", "nz"):
@@ -409,18 +545,26 @@ class Executor:
             raise Unsupported("条件码 " + code)
         if kind == "cmp":
             a, b, bits = flags[1], flags[2], flags[3]
+            if a[0] == "off":
+                return Executor.offset_condition(a, b, bits, code)
+            mask = (1 << bits) - 1
+            if a[0] == b[0] == "const" and type(a[1]) is int and type(b[1]) is int:
+                # Both known (often after an argument fork): decide on the bits.
+                x, y = a[1] & mask, b[1] & mask
+                if code in SIGNED:
+                    x, y = _to_signed(x, bits), _to_signed(y, bits)
+                operator = SIGNED.get(code) or UNSIGNED.get(code)
+                if operator is None:
+                    raise Unsupported("条件码 " + code)
+                return _fold(("cmp", operator, _const(x), _const(y)))
             if code in SIGNED:
-                if b[0] == "const" and type(b[1]) is int and b[1] >> (bits - 1):
-                    b = _const(b[1] - (1 << bits))
+                if b[0] == "const" and type(b[1]) is int:
+                    b = _const(_to_signed(b[1] & mask, bits))
                 return ("cmp", SIGNED[code], a, b)
             if code in UNSIGNED:
-                if b[0] != "const" or type(b[1]) is not int or b[1] >> (bits - 1):
+                if b[0] != "const" or type(b[1]) is not int:
                     raise Unsupported("无符号比较")
-                test = ("cmp", UNSIGNED[code], a, b)
-                negative = ("cmp", "<", a, _const(0))
-                if UNSIGNED[code] in (">", ">="):
-                    return b_join("or", (test, negative))
-                return b_join("and", (b_not(negative), test))
+                return _unsigned(UNSIGNED[code], a, b[1] & mask, bits)
             raise Unsupported("条件码 " + code)
         if kind == "fcmp":
             ordered = {"a": ">", "nbe": ">", "ae": ">=", "nb": ">=", "nc": ">="}
@@ -429,6 +573,36 @@ class Executor:
                 return ("cmp", ordered[code], flags[1], flags[2])
             raise Unsupported("浮点相等或无序判断")
         raise Unsupported("条件码来源")
+
+    @staticmethod
+    def offset_condition(a, b, bits, code):
+        """Conditions on ``field + d``: equality and the range idiom.
+
+        ``lea eax, [x - c]; cmp eax, k; jbe`` tests c <= x <= c + k; as the
+        arithmetic wraps, only equality and unsigned ranges stay exact.
+        """
+        if b[0] != "const" or type(b[1]) is not int or bits != 32:
+            raise Unsupported("偏移值的比较")
+        x, d = a[1], a[2]
+        k = b[1] - (1 << 32) if b[1] >> 31 else b[1]
+        if code in ("e", "z", "ne", "nz"):
+            test = ("cmp", "==", x, _const(_wrap32(k - d)))
+            return test if code in ("e", "z") else b_not(test)
+        if code in UNSIGNED and 0 <= b[1] < (1 << 31):
+            low, high = -d, -d + b[1]
+            if not -(1 << 31) <= low <= high < (1 << 31):
+                raise Unsupported("区间跨越 32 位边界")
+            inside = {"<": high - 1, "<=": high, ">": high, ">=": high - 1}
+            operator = UNSIGNED[code]
+            test = b_join(
+                "and",
+                (
+                    ("cmp", ">=", x, _const(low)),
+                    ("cmp", "<=", x, _const(inside[operator])),
+                ),
+            )
+            return test if operator in ("<", "<=") else b_not(test)
+        raise Unsupported("偏移值的有符号比较")
 
     # --------------------------------------------------------- execution
 
@@ -461,6 +635,24 @@ class Executor:
             state.visits[key] = state.visits.get(key, 0) + 1
             if state.visits[key] > 1:
                 raise Unsupported("循环")
+            if address in self.lookups and address != self.entry[0]:
+                # Entered by call, jump or conditional tail jump alike.
+                root = self.reference(self.lookups[address], state)
+                if root is not None:
+                    self.function(address)
+                    state.regs["rax"] = root
+                    for name in ("rcx", "rdx", "r8", "r9", "r10", "r11"):
+                        state.regs[name] = ("opaque",)
+                    state.flags = None
+                    rsp = self.reg(state, "rsp")
+                    back = self.load(rsp, 8, state)
+                    if back[0] != "retaddr":
+                        raise Fatal("返回地址不平衡")
+                    state.regs["rsp"] = _offset(rsp, 8)
+                    if back[1] is None:
+                        return _truth(self.reg(state, "al"))
+                    address, state.calls = back[1], state.calls[:-1]
+                    continue
             ins = self.instruction(address)
             following = ins.address + ins.size
             mnemonic, ops = ins.mnemonic, ins.operands
@@ -492,6 +684,9 @@ class Executor:
                     raise Unsupported("间接调用或跳转")
                 target = ops[0].imm
                 if mnemonic == "jmp":
+                    if not self.inside(target):
+                        # A tail jump into another function: record it too.
+                        self.function(target)
                     address = target
                     continue
                 result = self.call(ins, target, state, following)
@@ -502,12 +697,42 @@ class Executor:
                     address = target
                 continue
             if mnemonic == "jmp":
+                # A jump-table entry that the argument already made constant.
+                target = self.read(ins, ops[0], state)
+                if target[0] == "gaddr" or (
+                    target[0] == "const" and type(target[1]) is int
+                ):
+                    address = target[1]
+                    continue
                 raise Unsupported("间接跳转")
             try:
                 self.step(ins, state)
             except NullAccess:
                 return NULL_PATH
+            except Concretize as fork:
+                return self.concretize(address, state, fork)
             address = following
+
+    def concretize(self, address, state, fork):
+        """Re-run the instruction once per declared value of the argument.
+
+        Resources serialize a declared value, so switches, tables and helpers
+        keyed by the argument become concrete; ``instantiate`` later keeps the
+        branch of the node's actual value. Any other value stays unknown.
+        """
+        mask = (1 << (fork.sym[1] * 8)) - 1
+        tests, out = [], []
+        for value in fork.values:
+            test = ("cmp", "==", fork.sym, _const(value & mask))
+            branch = state.copy()
+            branch.visits[(address, state.calls)] -= 1
+            branch.bound[fork.sym] = _const(value & mask)
+            branch.facts = branch.facts | {test}
+            tests.append(test)
+            out.append(b_join("and", (test, self.run(address, branch))))
+        other = tuple(b_not(test) for test in tests)
+        out.append(b_join("and", other + (("unknown", "资源参数取值不在枚举声明中"),)))
+        return b_join("or", tuple(out))
 
     def fork(self, ins, prefix, test, state, following):
         def go(taken):
@@ -560,6 +785,27 @@ class Executor:
             address = ins.address + ins.size
         return False
 
+    def reference(self, kind, state):
+        """The named root returned by a reference lookup."""
+        if kind == "squad":
+            # findSquad(this = EnemyManager, group): r8 is the Group module.
+            return ("ref_squad", self.reg(state, "r8"))
+        # getEnemyManageInfo(&key, flag): the key is read through rdx.
+        pointer, flag = self.reg(state, "rdx"), self.reg(state, "r8", 8)
+        if flag[0] != "const" or type(flag[1]) is not int:
+            raise Unsupported("引用查找的标志不是常量")
+        key = self.load(pointer, 8, state)
+        if key[0] == "global" and pointer[0] == "stack" and self.statics:
+            # A local key still holding a proven static (TARGET_ACCESS_KEY.INVALID):
+            # put the constant in place and run the lookup's own code instead.
+            value = self.statics(TARGET_ACCESS_KEY, key, 8)
+            if value is not None:
+                state.stack[pointer[1]] = (8, _const(value))
+                return None
+        if key[0] != "load" or key[1] != 8:
+            raise Unsupported("引用键不是字段")
+        return ("ref_enemy", key, flag[1] & 1)
+
     def call(self, ins, target, state, following):
         """Handle a direct call; returns a formula when the path ends here."""
         if target == FN_STACK_COOKIE_CHECK:
@@ -583,6 +829,32 @@ class Executor:
         state.calls = state.calls + (following,)
         return None
 
+    def arithmetic(self, ins, state):
+        """Integer results that are exact: constants, and fields +- 1."""
+        mnemonic, ops = ins.mnemonic, ins.operands
+        bits = ops[0].size * 8
+        mask = (1 << bits) - 1
+        values = [self.read(ins, op, state) for op in ops]
+        a = values[0] if mnemonic != "imul" or len(ops) == 2 else values[1]
+        if mnemonic in ("inc", "dec") and bits == 32 and a[0] in ("load", "off"):
+            return _plus(a, 1 if mnemonic == "inc" else -1)
+        operands = values if mnemonic != "imul" or len(ops) == 2 else values[1:]
+        if not all(v[0] == "const" and type(v[1]) is int for v in operands):
+            return ("opaque",)
+        x = operands[0][1] & mask
+        y = operands[1][1] & mask if len(operands) > 1 else None
+        result = {
+            "inc": lambda: x + 1,
+            "dec": lambda: x - 1,
+            "neg": lambda: -x,
+            "not": lambda: ~x,
+            "shl": lambda: x << (y & (bits - 1)),
+            "shr": lambda: x >> (y & (bits - 1)),
+            "sar": lambda: _to_signed(x, bits) >> (y & (bits - 1)),
+            "imul": lambda: _to_signed(x, bits) * _to_signed(y, bits),
+        }[mnemonic]()
+        return _const(result & mask)
+
     def step(self, ins, state):
         mnemonic, ops = ins.mnemonic, ins.operands
         if mnemonic.startswith("v") and mnemonic[1:] in VEX_ALIASES:
@@ -599,10 +871,11 @@ class Executor:
             self.write(ins, ops[0], self.read(ins, ops[1], state), state)
         elif mnemonic in ("movzx", "movsx", "movsxd"):
             value = self.read(ins, ops[1], state)
-            if mnemonic != "movzx" and value[0] == "const":
+            if mnemonic != "movzx" and value[0] == "const" and type(value[1]) is int:
+                # Constants stay bit patterns of the destination width.
                 bits = ops[1].size * 8
-                if value[1] >> (bits - 1):
-                    value = _const(value[1] - (1 << bits))
+                signed = _to_signed(value[1] & ((1 << bits) - 1), bits)
+                value = _const(signed & ((1 << (ops[0].size * 8)) - 1))
             self.write(ins, ops[0], value, state)
         elif mnemonic in ("movss", "movsd", "movaps", "movups", "movd", "movq"):
             floating = mnemonic in ("movss", "movsd")
@@ -639,8 +912,16 @@ class Executor:
                     value = _const((a[1] + delta) & ((1 << bits) - 1))
                 elif bits == 64:
                     value = _offset(a, delta)
+                elif bits == 32 and a[0] in ("load", "off"):
+                    value = _plus(a, delta)
                 else:
                     value = ("opaque",)
+            elif (
+                mnemonic == "add" and bits == 64 and {a[0], b[0]} == {"gaddr", "const"}
+            ):
+                # Jump-table base plus a constant entry.
+                base, entry = (a, b) if a[0] == "gaddr" else (b, a)
+                value = ("gaddr", base[1] + _signed64(entry[1]))
             else:
                 value = ("opaque",)
             self.write(ins, ops[0], value, state)
@@ -683,7 +964,6 @@ class Executor:
             state.flags = ("test", value, value, ops[0].size * 8)
         elif mnemonic in ("shr", "sar"):
             a, b = self.read(ins, ops[0], state), self.read(ins, ops[1], state)
-            value = ("opaque",)
             if (
                 a[0] == "load"
                 and b[0] == "const"
@@ -691,38 +971,57 @@ class Executor:
                 and b[1] // 8 < a[1]
             ):
                 value = ("load", a[1] - b[1] // 8, a[2], a[3] + b[1] // 8)
+            else:
+                value = self.arithmetic(ins, state)
             self.write(ins, ops[0], value, state)
             state.flags = None
-        elif mnemonic in (
-            "shl",
-            "imul",
-            "inc",
-            "dec",
-            "neg",
-            "not",
-            "bsr",
-            "bsf",
-            "sbb",
-            "adc",
-        ):
+        elif mnemonic in ("shl", "imul", "inc", "dec", "neg", "not"):
+            self.write(ins, ops[0], self.arithmetic(ins, state), state)
+            state.flags = None
+        elif mnemonic in ("bsr", "bsf", "sbb", "adc"):
             self.write(ins, ops[0], ("opaque",), state)
             state.flags = None
-        elif mnemonic in ("cdqe", "cwde", "cdq", "cqo"):
-            state.regs["rdx"] = (
-                ("opaque",)
-                if mnemonic in ("cdq", "cqo")
-                else state.regs.get("rdx", ("opaque",))
+        elif (
+            mnemonic in ("btr", "bts")
+            and ops[1].type == X86_OP_IMM
+            and ops[1].imm == 63
+            and ops[0].type == X86_OP_REG
+            and self.read(ins, ops[0], state)[0] == "stack"
+        ):
+            # Clearing/setting bit 63 of a pointer to a local: on x64 Windows
+            # user-mode addresses have it clear, so btr keeps the pointer.
+            if mnemonic == "bts":
+                self.write(ins, ops[0], ("opaque",), state)
+            state.flags = None
+        elif mnemonic == "bt":
+            # CF = bit b of a; only constants (e.g. an argument-indexed mask).
+            a, b = self.read(ins, ops[0], state), self.read(ins, ops[1], state)
+            if not all(v[0] == "const" and type(v[1]) is int for v in (a, b)):
+                raise Unsupported("指令 bt")
+            bit = (a[1] >> (b[1] & (ops[0].size * 8 - 1))) & 1
+            # Unsigned 0 < bit reproduces CF for jb/jae/setb/setae.
+            state.flags = ("cmp", _const(0), _const(bit), 8)
+        elif mnemonic in ("cdqe", "cwde"):
+            # rax = sign-extend(eax), eax = sign-extend(ax) (upper rax cleared).
+            source, wide = (32, 64) if mnemonic == "cdqe" else (16, 32)
+            state.regs["rax"] = _sign_extend(
+                self.reg(state, "rax", source), source, wide
             )
+        elif mnemonic in ("cdq", "cqo"):
+            state.regs["rdx"] = ("opaque",)
         else:
             raise Unsupported("指令 " + mnemonic)
 
 
-def evaluate(pe, address, partial=False):
+def evaluate(pe, address, partial=False, domain=None, lookups=None, statics=None):
     """The formula over symbolic loads that the command at ``address`` returns.
 
     The third value lists why paths ended unknown (partial mode only).
     """
-    executor = Executor(pe, partial)
+    executor = Executor(pe, partial, domain)
+    executor.entry = (address, pe.end(address))
+    executor.lookups = lookups or {}
+    executor.statics = statics
     state = State()
     for register, name in ENTRY_REGISTERS.items():
         state.regs[register] = ("param", name)
@@ -763,6 +1062,27 @@ class NativeNamer(Namer):
             found = (found[0] + inner[0], inner[1])
         return found
 
+    def argument_domain(self, sym):
+        """Declared values of the enum argument field read by ``sym``, or None."""
+        base = sym[2] if sym[0] == "load" else None
+        if not (
+            base
+            and sym[3] == EDIT_FIELD_VALUE
+            and base[0] == "load"
+            and base[2] == ("param", "param_4")
+        ):
+            return None
+        named = self.argument_field(base[3])
+        if named is None:
+            return None
+        field = self.metadata.fields(named[2]).get(named[1].split("|")[0], {})
+        if field.get("type") == BOOL_EDIT_FIELD and sym[1] == 1:
+            return [0, 1]
+        values = self.metadata.enum(field.get("type"))[1]
+        if not values or len(values) > MAX_ENUM_FORK:
+            return None
+        return sorted({v for v in values.values() if type(v) is int})
+
     def argument_field(self, offset):
         """Like Namer.argument_field, but keeps every field at the offset.
 
@@ -788,6 +1108,63 @@ class NativeNamer(Namer):
             self.argument_fields.append(field)
         return ("arg", field, argument_type)
 
+    def path(self, sym):
+        if sym[0] in ("ref_enemy", "ref_squad"):
+            root = self.reference_root(sym)
+            if root is None:
+                return None
+            kind = "enemy" if sym[0] == "ref_enemy" else "squad"
+            return (root, REFERENCE_LOOKUPS[kind][3], [])
+        return super().path(sym)
+
+    def reference_root(self, sym):
+        """ "ref1:context:X.Key" or "squad:context:Group" for a lookup result."""
+        if sym[0] == "ref_squad":
+            group = sym[1]
+            parent = super().path(group) if group[0] == "load" else None
+            if parent is None or parent[1] != REFERENCE_LOOKUPS["squad"][2][0]:
+                return None
+            return "squad:" + self.root_name(parent)
+        key = sym[1]
+        parent = self.path(key[2])
+        if parent is None:
+            return None
+        root, owner, names = parent
+        owners = self.extends if root == "extend" and owner is None else [owner]
+        for candidate in owners:
+            found = Namer.field(self, candidate, key[3])
+            if found and found[1] == TARGET_ACCESS_KEY:
+                prefix = [candidate] if root == "extend" and owner is None else []
+                return f"ref{sym[2]}:" + self.root_name(
+                    (root, found[1], names + prefix + found[0])
+                )
+        return None
+
+    def root_name(self, parent):
+        root, _, names = parent
+        if root == "context":
+            return "context:" + _join(names)
+        if root == "extend":
+            return f"extend:{names[0]}." + _join(names[1:])
+        return root + ("." + _join(names) if names else "")
+
+    def leaf(self, sym):
+        if sym[0] == "load" and sym[2][0] in ("ref_enemy", "ref_squad", "load"):
+            parent = self.path(sym[2])
+            if parent and parent[0].startswith(REFERENCE_PREFIXES):
+                found = self.resolve(parent, sym[3])
+                if found is None:
+                    return None
+                root, kind, names = found
+                return ("key", root + "/" + _join(names), kind)
+        return super().leaf(sym)
+
+    def exists(self, sym):
+        if sym[0] in ("ref_enemy", "ref_squad"):
+            root = self.reference_root(sym)
+            return None if root is None else root + EXISTS_SUFFIX
+        return self._exists(sym)
+
     def field_size(self, type_name):
         """Bytes a field of this type occupies, "reference" for objects, or None."""
         if type_name in FIELD_SIZES:
@@ -800,7 +1177,7 @@ class NativeNamer(Namer):
             return None
         return "reference"
 
-    def exists(self, sym):
+    def _exists(self, sym):
         """Runtime key for a null check of an object field (not a guard)."""
         named = self.leaf(sym) if sym[0] == "load" and sym[1] == 8 else None
         if named and named[0] == "key" and self.field_size(named[2]) == "reference":
@@ -904,6 +1281,64 @@ def split_wide(sym, namer):
     return sym
 
 
+_LOOKUP_CACHE = {}
+
+
+def static_value(metadata, pe, used):
+    """Callback for the executor: a global proven by a straight-line .cctor."""
+
+    def value(type_name, sym, size):
+        found = static_constant(
+            metadata, pe, type_name, int(sym[1][len("_DAT_") :], 16), size
+        )
+        if found is None:
+            return None
+        if found[1] not in used:
+            used.append(found[1])
+        return found[0]
+
+    return value
+
+
+def reference_lookups(metadata):
+    """Address -> kind of each REFERENCE_LOOKUPS method in this build."""
+    key = id(metadata)
+    if key not in _LOOKUP_CACHE:
+        found = {}
+        for kind, (owner, name, params, returns) in REFERENCE_LOOKUPS.items():
+            for method, info in (
+                (metadata.get(owner) or {}).get("methods") or {}
+            ).items():
+                if (
+                    method.rstrip("0123456789") == name
+                    and tuple(p["type"] for p in info.get("params", [])) == params
+                    and info.get("returns", {}).get("type") == returns
+                    and info.get("function")
+                ):
+                    found[int(info["function"], 16)] = kind
+        _LOOKUP_CACHE[key] = found
+    return _LOOKUP_CACHE[key]
+
+
+def unknown_unnamed(sym, namer):
+    """Partial mode: a single comparison that cannot be named becomes unknown.
+
+    The other atoms keep their names; the formula still says which part of
+    the decision is not verified instead of dropping the whole command.
+    """
+    kind = sym[0]
+    if kind in ("and", "or"):
+        return b_join(kind, tuple(unknown_unnamed(x, namer) for x in sym[1]))
+    if kind == "not":
+        return b_not(unknown_unnamed(sym[1], namer))
+    if kind in ("cmp", "isa", "bool_bit"):
+        try:
+            _expression(sym, namer)
+        except Unsupported as error:
+            return ("unknown", f"比较对象无法按元数据命名（{error}），结果未核实")
+    return sym
+
+
 def resolve_statics(sym, namer, metadata, pe, used):
     """Replace runtime globals compared with a field by their ``.cctor`` value."""
     kind = sym[0]
@@ -998,11 +1433,20 @@ def recover_native_formula_leaf(row, metadata, pe, names=None, partial=False):
     accepted only when its known part still reads monster state.
     """
     try:
-        formula, helpers, unknown_paths = evaluate(pe, int(row["address"], 16), partial)
         namer = NativeNamer(metadata, row, ("param", "param_3"), ("param", "param_4"))
         statics = []
+        formula, helpers, unknown_paths = evaluate(
+            pe,
+            int(row["address"], 16),
+            partial,
+            namer.argument_domain,
+            reference_lookups(metadata),
+            static_value(metadata, pe, statics),
+        )
         formula = resolve_statics(formula, namer, metadata, pe, statics)
         formula = split_wide(formula, namer)
+        if partial:
+            formula = unknown_unnamed(formula, namer)
         expression = _expression(formula, namer)
     except Unsupported:
         return None

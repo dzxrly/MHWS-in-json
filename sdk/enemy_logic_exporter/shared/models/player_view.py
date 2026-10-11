@@ -20,6 +20,7 @@ from ..config import (
     BAD_CONDITION_LABELS,
     ENEMY_TARGET_STATUS,
     EXISTS_SUFFIX,
+    REFERENCE_PREFIXES,
     HUNTER_STATUS_LABELS,
     SLOT_GROUPS,
     STATE_SIGN_LABELS,
@@ -55,6 +56,28 @@ def field_path_label(path):
         part.replace("k__BackingField", "").strip("<>_") or part
         for part in path.split(".")
     )
+
+
+def reference_label(key):
+    """Label of a field read through another enemy or the own squad.
+
+    "ref0:squad:context:Group._LeaderKey/<Context>k__BackingField._Em.Life._X"
+    -> "本怪物所在小队 LeaderKey 指向的怪物：Context.Em.Life.X".
+    """
+    root, _, rest = key.partition("/")
+    label = reference_root_label(root)
+    return label + ("：" + field_path_label(rest) if rest else "")
+
+
+def reference_root_label(root):
+    if root.startswith(("ref0:", "ref1:")):
+        return reference_root_label(root[len("ref0:") :]) + " 指向的怪物"
+    match = re.fullmatch(r"squad:context:[^.]+(?:\.(.*))?", root)
+    if match:
+        return "本怪物所在小队" + (" " + field_path_label(match[1]) if match[1] else "")
+    if root.startswith("extend:"):
+        return "专用状态 " + extend_field_label(root)
+    return "本怪物 " + field_path_label(root.split(":", 1)[-1])
 
 
 def extend_field_label(key):
@@ -102,6 +125,13 @@ POSTURE_HINT = (
     "没有专用状态时，看潜地、天花板等额外状态；两者都没有时，才是地面、飞行等普通站立状态。"
     "标有“专用姿态”的选项是本怪物独有的状态，按游戏内部枚举名显示。"
 )
+# Fields read through another enemy (found by a TARGET_ACCESS_KEY field) or
+# through the monster's own squad; see native_formula.REFERENCE_LOOKUPS.
+REFERENCE_HINT = (
+    "这是另一只怪物或本怪物所在小队的内部字段：游戏先用 TargetAccessKeyUtil.getEnemyManageInfo"
+    "（按键查找怪物）或 EnemyManager.findSquad（查找所在小队）找到对象，再读取该字段。"
+    "没有官方中文名，按原字段名显示。"
+)
 # Hints for inputs whose label has to keep an internal name or number.
 INPUT_HINTS = {
     "self_current_stage_no": "游戏内部字段 Area._CurrentStageNo 的编号，没有对应的官方名称。",
@@ -119,6 +149,9 @@ INPUT_HINT_PREFIXES = {
     "unique_level:": "本怪物专用等级值的类别，按游戏内部枚举名显示。",
     "destination_found:": "括号内是移动目的地类别的内部枚举名；表示在当前场景中能否找到这一类目的地。",
     "ai_interrupt_exists:": "该中断已经生成、正在等待处理。",
+    "ref0:": REFERENCE_HINT,
+    "ref1:": REFERENCE_HINT,
+    "squad:": REFERENCE_HINT,
 }
 
 
@@ -634,6 +667,9 @@ class PlayerCompiler:
         kind = expression["kind"]
         if kind == "predicate":
             return self.predicate(expression["predicate"])
+        if kind == "constant":
+            # Decided for this node's resource argument (instantiated formula).
+            return dict(op="all" if expression["value"] else "any", items=[])
         if kind == "any":
             own = self.own_enemy(expression)
             if own is not None:
@@ -671,18 +707,20 @@ class PlayerCompiler:
                 # AI state / interrupt fields the scenario fixes for combat.
                 return comparison(key, expression.get("operator", "eq"), right["value"])
             if (
-                str(key).startswith(("extend:", "context:"))
+                str(key).startswith(("extend:", "context:", *REFERENCE_PREFIXES))
                 and right.get("kind") == "constant"
             ):
                 path, exists = key, key.endswith(EXISTS_SUFFIX)
                 if exists:
                     # A null check of an object field (x64 recognizer).
                     path = key[: -len(EXISTS_SUFFIX)]
-                label = (
-                    "专用状态 " + extend_field_label(path)
-                    if key.startswith("extend:")
-                    else "怪物状态 " + field_path_label(path.split(":", 1)[1])
-                ) + (" 对象存在" if exists else "")
+                if key.startswith(REFERENCE_PREFIXES):
+                    label = reference_label(path)
+                elif key.startswith("extend:"):
+                    label = "专用状态 " + extend_field_label(path)
+                else:
+                    label = "怪物状态 " + field_path_label(path.split(":", 1)[1])
+                label += " 对象存在" if exists else ""
                 if kind == "runtime":
                     return self.boolean(key, label)
                 names = self.extend_enums.get(key, {})
@@ -869,7 +907,10 @@ class PlayerCompiler:
                 return f"当前目标{verb}{name}"
             if key in SCENARIO_GUARDS:
                 return SCENARIO_GUARDS[key]
-            if str(key).startswith(("extend:", "context:")) and key in self.inputs:
+            if (
+                str(key).startswith(("extend:", "context:", *REFERENCE_PREFIXES))
+                and key in self.inputs
+            ):
                 option = next(
                     (o["label"] for o in self.inputs[key].get("options", []) if o["value"] == value),
                     str(value),
@@ -926,6 +967,12 @@ class PlayerCompiler:
                 f"{label} {operator} {value:g}"
                 if isinstance(value, (int, float))
                 else f"{label} {operator} {value}"
+            )
+        if op in ("all", "any") and not expression["items"]:
+            return (
+                "按此处的资源参数，条件恒成立"
+                if op == "all"
+                else "按此处的资源参数，条件恒不成立"
             )
         if op in ("all", "any"):
             items = [
