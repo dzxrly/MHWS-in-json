@@ -98,7 +98,7 @@ Then open `.agents/battle-preview/enemy_battle_logic/index.html`; the pages work
 
 ## Cloudflare Pages deployment
 
-The Pages project `mhws-in-json` is connected to this GitHub repository. Use the following build settings:
+The Pages project `mhws-in-json` is connected to this GitHub repository. The GitHub **Cloudflare Workers and Pages** app's **Repository access** must include `dzxrly/MHWS-in-json` for pushes to trigger deployments; retain access to the other repositories already authorized. Use the following build settings:
 
 | Setting | Value |
 | --- | --- |

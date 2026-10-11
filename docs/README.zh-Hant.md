@@ -98,7 +98,7 @@ python -m src.processed_data.enemy_battle_logic --preview-all --output .agents/b
 
 ## Cloudflare Pages 部署
 
-Pages 專案 `mhws-in-json` 已連接本 GitHub 儲存庫，建置設定如下：
+Pages 專案 `mhws-in-json` 已連接本 GitHub 儲存庫。GitHub 的 **Cloudflare Workers and Pages** App 中，**Repository access** 必須包含 `dzxrly/MHWS-in-json`，推送才能觸發部署；保留其他已授權儲存庫的存取權限。建置設定如下：
 
 | 設定 | 值 |
 | --- | --- |
