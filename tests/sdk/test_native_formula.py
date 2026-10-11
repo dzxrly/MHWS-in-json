@@ -1,10 +1,15 @@
 """x64 field-formula recognizer: helper inlining, partial paths, static constants."""
 
+from importlib.util import find_spec
 import struct
 import unittest
 
-from sdk.enemy_logic_exporter.shared.logic import native_formula as N
 from sdk.enemy_logic_exporter.shared.logic.formula import Unsupported, instantiate
+
+# Capstone is a research dependency; CI without it skips these tests.
+N = None
+if find_spec("capstone"):
+    from sdk.enemy_logic_exporter.shared.logic import native_formula as N
 
 COMMAND, HELPER, CCTOR = 0x141000000, 0x141000100, 0x141000200
 
@@ -111,6 +116,7 @@ CONTEXT = [
 ]
 
 
+@unittest.skipUnless(find_spec("capstone"), "x64 识别器测试需要 SDK 的 Capstone 依赖")
 class NativeFormulaTests(unittest.TestCase):
     def leaf(self, functions, partial=False):
         return N.recover_native_formula_leaf(
