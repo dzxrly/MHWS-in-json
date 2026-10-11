@@ -12,6 +12,7 @@
 - 证据行以“类型 + 方法名 + 起止地址”标识（`config.EVIDENCE_KEYS`），按当前 EXE 的原生字节核对；代码和 `data/` 中的 JSON 不逐行保存 SHA-256。EXE/元数据摘要只记录在 profile，`.agents` 缓存的内容寻址摘要保留在缓存内部。
 - 怪物名、部位名、gimmick 等专有名称使用游戏消息（`*.msg.23.json`，简体中文列）中的官方文本，由 `Resources.message`、`enemy_name`、`part_name` 读取；找不到对应条目时显示原始类名或枚举名，不自行翻译。
 - 保留用户已有暂存改动；本目录的迁移或维护不自动授权提交、推送或发布。
+- **同步更新用户文档**：面向使用者的说明在 `docs/sdk.md`（英文）、`docs/sdk.zh-Hans.md`、`docs/sdk.zh-Hant.md`，三份内容必须一致；三份 README 的“项目工具”一节只保留简介并链接到它们。新增、删除或改名命令与参数，改变默认路径、环境变量、依赖版本、安装脚本、输出位置、报错信息或支持的游戏版本时，在同一次改动中更新三份 SDK 文档（必要时也更新 README 简介和 `sdk/il2cpp/upload_il2cpp.py` 文件头注释），并更新本文件。只改 AGENTS.md 不算完成。
 
 ## 构建思路（先读这一节）
 
@@ -144,6 +145,8 @@
 5. **已有怪物的新逻辑**：新子表、导入与动作请求随 BTableList 和原生索引自动纳入；形如“自身 Extend 字段比较”的新专用命令会被自动恢复为 `leafRules`；其他新命令先表现为未知条件或未知命令节点。用 `uncertainty --models <完整模型目录>` 找出影响最大的命令，再按“核实原生语义 → 写入规则/公共条件 → 在 `player_view.py` 编译为玩家输入”的顺序补充。新出现的行为表槽若不在 `SLOT_LABELS` 中，会以原始槽名归入“未分类行为表”组，提醒补充名称与分组。
 
 ## 开发环境（Windows）
+
+面向使用者的同一套步骤（含 `sdk.il2cpp` 的下载与上传）写在 `docs/sdk.zh-Hans.md`、`docs/sdk.md`、`docs/sdk.zh-Hant.md`；本节修改后要同步这三份文档。
 
 只考虑 Windows。普通网页构建（`python -m src.processed_data.enemy_battle_logic`）只需要 Python 标准库与仓库内 JSON；下面的研究依赖只在重新提取时需要。已验证组合：Python 3.13、Capstone 5.0.6、PyGhidra 3.0.2、Ghidra 12.0.4 及其支持的 JDK。JVM 只是 Ghidra 的运行依赖，本项目不写 Java。
 
@@ -305,6 +308,7 @@ $w = '.agents/enemy-logic-exporter/fix'
 - 纯重构必须得到逐字节一致的模型；有意的语义变化要能逐条解释。
 - 先用 `census` 找最大的类别，再看 `uncertainty` 的排行；后者只覆盖玩家战斗树，会漏掉生态、怪物间战斗等大类。
 - 改了已被导入的模块后，正在运行的提取不会用到新代码，需要重启。
+- 收尾前检查文档：命令、参数、默认路径、环境变量、依赖或输出有变化时，三份 `docs/sdk*.md` 与 README 简介已同步更新（见“维护边界”）。
 
 ### 为一个未知命令选择恢复方式
 
@@ -334,6 +338,7 @@ $w = '.agents/enemy-logic-exporter/fix'
 5. 核对 `shared/config.py` 的结构偏移（命令工作、目标模块、Extend 持有者等）与 `monster/<id>.py` 头部常量。x64 识别器按元数据中的字段名和偏移命名，字段偏移变化会自动跟随；入口寄存器约定、类继承检查 helper 与栈 cookie helper 来自 profile 符号，出现在 `changed` 中时要复核。
 6. 全量提取，用 `census`、`uncertainty` 与上一版本对比：新出现的大类通常是新逻辑或识别器失效的位置；某类条件突然变多时，先查对应 helper 的字节是否变化。
 7. 发布、构建网页，并在浏览器中检查（见“游戏更新后的维护顺序”第 7 步）。
+8. 更新三份 `docs/sdk*.md` 与三份 README 中的支持版本号和受影响的步骤，再更新本文件中的统计数字。
 
 ### 网页标签约定
 

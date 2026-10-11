@@ -85,18 +85,16 @@ enemy_battle_logic/EM0001_00_0.html
 
 ## 專案工具
 
-使用 `python -m sdk.il2cpp upload --dry-run` 準備 IL2CPP 上傳，或用 `python -m sdk.il2cpp download` 取得建置資料。兩者沿用既有的 `gh` 登入狀態。
+- `sdk.il2cpp`：上傳或下載保存在 `build-data` Release 中的 IL2CPP 中繼資料。
+- `sdk.enemy_logic_exporter`：從遊戲檔案中提取魔物行動邏輯，產生行動圖網頁使用的 JSON。`src/processed_data/enemy_battle_logic/models` 中的 34 份模型對應遊戲 **1.42.0.2**，未知分支保留標記。
 
-魔物 SDK 讀取遊戲資源、同版本 EXE 和 IL2CPP 中繼資料，產生行動圖 JSON；網頁建置器只讀取這些 JSON。提取和維護步驟見 [SDK 說明](../sdk/enemy_logic_exporter/AGENTS.md)。
-
-`src/processed_data/enemy_battle_logic/models` 中的 34 份模型對應遊戲 **1.42.0.2**。未知分支在圖中保留標記。
+兩個工具的環境建立與用法見 [SDK 使用說明](sdk.zh-Hant.md)。只重新產生網頁時不需要這兩個工具：
 
 ```powershell
-python -m sdk.enemy_logic_exporter --help
 python -m src.processed_data.enemy_battle_logic --preview-all --output .agents/battle-preview
 ```
 
-開啟 `.agents/battle-preview/enemy_battle_logic/index.html` 瀏覽行動圖。頁面可離線使用，支援縮放、節點搜尋和 SVG 匯出。預覽單個模型時，將 `--preview-all` 替換為 `--template <graph.json>`。
+然後開啟 `.agents/battle-preview/enemy_battle_logic/index.html`，頁面可離線使用。
 
 ## 資料說明
 

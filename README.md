@@ -85,18 +85,16 @@ The battle graph bundle consists of an index and 34 monster pages. Variants have
 
 ## Project tools
 
-Use `python -m sdk.il2cpp upload --dry-run` to prepare an IL2CPP upload, or `python -m sdk.il2cpp download` to retrieve the build data. Both use the existing `gh` login.
+- `sdk.il2cpp` uploads or downloads the IL2CPP metadata kept in the `build-data` Release.
+- `sdk.enemy_logic_exporter` extracts monster battle logic from the game files into the graph JSON behind the battle pages. The 34 models in `src/processed_data/enemy_battle_logic/models` cover game version **1.42.0.2**; unresolved branches stay marked.
 
-The monster SDK reads game resources, a matching EXE, and IL2CPP metadata to produce graph JSON. The page builder reads only that JSON. See the [SDK guide](sdk/enemy_logic_exporter/AGENTS.md) for extraction and maintenance.
-
-The 34 models in `src/processed_data/enemy_battle_logic/models` currently cover game version **1.42.0.2**. Unresolved branches remain marked in the graphs.
+Setup and usage for both tools: [SDK guide](docs/sdk.md). Rebuilding the pages needs neither tool:
 
 ```powershell
-python -m sdk.enemy_logic_exporter --help
 python -m src.processed_data.enemy_battle_logic --preview-all --output .agents/battle-preview
 ```
 
-Open `.agents/battle-preview/enemy_battle_logic/index.html` to browse the graphs. Each page works offline and supports zooming, node lookup, and SVG export. To preview one model, replace `--preview-all` with `--template <graph.json>`.
+Then open `.agents/battle-preview/enemy_battle_logic/index.html`; the pages work offline.
 
 ## Data notes
 
