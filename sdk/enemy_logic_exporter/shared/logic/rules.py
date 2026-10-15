@@ -12,11 +12,13 @@ from ..config import (
     COMMAND_RESULT_ENUM,
     COMMAND_RESULT_TYPE,
     DISTANCE_MODIFIER_FIELDS,
+    EAT_HEIGHT_COMPARE,
+    EAT_HEIGHT_REVIEW,
+    EAT_HEIGHT_THRESHOLD,
     RANDOM_OPERATOR_TYPE,
     RULE_SPECS,
     SET_TIMER_TYPE,
 )
-
 
 def main(work, metadata, output, profile):
     document = json.loads((work / "decompiled.json").read_text(encoding="utf-8"))
@@ -89,7 +91,11 @@ def main(work, metadata, output, profile):
                         for prefix in CHECK_STATUS_METHOD_PREFIXES
                     )
                 ]
-            if kind == "distance":
+            if kind == "eat_height":
+                rules[-1]["heightCompare"] = dict(EAT_HEIGHT_COMPARE)
+                rules[-1]["thresholdResource"] = dict(EAT_HEIGHT_THRESHOLD)
+                rules[-1]["review"] = dict(EAT_HEIGHT_REVIEW)
+            if kind in ("distance", "eat_height"):
                 for type_name, field_name, offset in DISTANCE_MODIFIER_FIELDS:
                     assert (
                         int(m.fields(type_name)[field_name]["offset_from_base"], 16)

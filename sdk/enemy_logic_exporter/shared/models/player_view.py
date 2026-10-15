@@ -18,9 +18,11 @@ from ..logic.monster_rules import hooks, rule_kind
 from ..resources.action_names import CLASS_EXPLANATIONS
 from ..config import (
     BAD_CONDITION_LABELS,
+    BITS_SEPARATOR,
     ENEMY_TARGET_STATUS,
     EXISTS_SUFFIX,
     REFERENCE_PREFIXES,
+    RELATION_PREFIX,
     HUNTER_STATUS_LABELS,
     SLOT_GROUPS,
     STATE_SIGN_LABELS,
@@ -56,6 +58,33 @@ def field_path_label(path):
         part.replace("k__BackingField", "").strip("<>_") or part
         for part in path.split(".")
     )
+
+
+# Runtime keys that name a monster field (x64 and pseudo-C field formulas).
+FIELD_KEY_PREFIXES = ("extend:", "context:", *REFERENCE_PREFIXES)
+RELATION_SYMBOLS = {"eq": "=", "ne": "≠", "lt": "<", "le": "≤", "gt": ">", "ge": "≥"}
+
+
+def field_label(key):
+    """Label of a field key: its owner, the field path, and what is tested.
+
+    "context:Area._Route._items[Target.CurrentIndex-1].Attributes&0x400"
+    -> "怪物状态 Area.Route.items[Target.CurrentIndex-1].Attributes 含掩码 0x400 中的位".
+    """
+    path, exists = key, key.endswith(EXISTS_SUFFIX)
+    if exists:
+        # A null check of an object field (x64 recognizer).
+        path = key[: -len(EXISTS_SUFFIX)]
+    path, _, mask = path.partition(BITS_SEPARATOR)
+    if path.startswith(REFERENCE_PREFIXES):
+        label = reference_label(path)
+    elif path.startswith("extend:"):
+        label = "专用状态 " + extend_field_label(path)
+    else:
+        label = "怪物状态 " + field_path_label(path.split(":", 1)[1])
+    if mask:
+        label += f" 含掩码 {mask} 中的位"
+    return label + (" 对象存在" if exists else "")
 
 
 def reference_label(key):
@@ -152,7 +181,24 @@ INPUT_HINT_PREFIXES = {
     "ref0:": REFERENCE_HINT,
     "ref1:": REFERENCE_HINT,
     "squad:": REFERENCE_HINT,
+    RELATION_PREFIX: (
+        "游戏代码直接比较本怪物的两个内部字段（可能带一个常数），按比较结果分支；"
+        "字段没有官方中文名，按原字段名显示。"
+    ),
 }
+# Extra notes for field keys that the x64 recognizer spells in its own way.
+FIELD_KEY_NOTES = (
+    (
+        re.escape(BITS_SEPARATOR) + "0x",
+        "游戏代码用掩码检查该字段的若干位，任一位为 1 即成立。",
+    ),
+    (
+        r"\(\)",
+        "带括号的是虚方法：游戏按对象的实际类型调用，各个实现都直接返回固定值，"
+        "因此它的结果等于对象类型对应的值。",
+    ),
+    (r"\[[^\]]*\.[^\]]*\]", "方括号内是数组下标，取自另一个字段（可能加减常数）。"),
+)
 
 
 def input_hints(inputs):
@@ -169,6 +215,10 @@ def input_hints(inputs):
                     path=rest if prefix == "context:" else path,
                     type=owner + "Extend",
                 )
+        if hint and key.startswith(FIELD_KEY_PREFIXES):
+            hint += "".join(
+                note for pattern, note in FIELD_KEY_NOTES if re.search(pattern, key)
+            )
         if hint:
             field["hint"] = hint
 
@@ -178,6 +228,8 @@ SCENE_INPUTS = {
     "cCheckDestinationRelation": "destination_relation",
     "cCheckOccludedToDest": "target_occluded",
     "cCheckBreakParts": "break_parts",
+    "cCheckRise": "terrain_rise",
+    "cCheckTerrainToDestination": "terrain_to_destination",
 }
 HIDDEN_GUARDS = {"ordinary_combat_snapshot", *SCENARIO_GUARDS, *SCENARIO_FACTS}
 
@@ -429,6 +481,54 @@ class PlayerCompiler:
         if handler is not None:
             # Monster-specific kinds are compiled by their own monster module.
             return handler["compile"](self, predicate, values)
+        if kind == "eat_height":
+            # cCheckEatDistance: the same h = target.y - self.y as distance axis 2,
+            # against the monster's PredatorParam.CancelEatTrapMeatHeight.
+            rule = self.rules[predicate["commandType"]]
+            modifiers = rule.get("distanceModifiers", {})
+            states = modifiers.get("aiStateEnum", {})
+            if states.get("COMBAT") == modifiers.get("triggerAIState") or not modifiers:
+                return unknown("普通战斗的距离修正尚未核实")
+            threshold = (
+                float(values["threshold"]) * modifiers["defaultScale"]
+                + modifiers["defaultOffset"]
+            )
+            key = HEIGHT_DIFFERENCE
+            self.inputs.setdefault(
+                key,
+                dict(
+                    label="玩家相对怪物的高度差",
+                    hint="玩家比怪物高时为正数，比怪物低时为负数。",
+                    signed=True,
+                ),
+            )
+            mode = rule["heightCompare"].get(str(enum_number(values["height"])))
+            self.thresholds.setdefault(key, set()).update({threshold, -threshold})
+            test = {
+                "abs_gt": dict(
+                    op="any",
+                    items=[
+                        comparison(key, "gt", threshold),
+                        comparison(key, "lt", -threshold),
+                    ],
+                ),
+                "gt": comparison(key, "gt", threshold),
+                "neg_gt": comparison(key, "lt", -threshold),
+                "abs_le": dict(
+                    op="all",
+                    items=[
+                        comparison(key, "ge", -threshold),
+                        comparison(key, "le", threshold),
+                    ],
+                ),
+            }.get(mode)
+            if test is None:
+                # Native: a height type above 3 returns false.
+                return dict(op="any", items=[])
+            return dict(
+                op="all",
+                items=[comparison("ordinary_combat_snapshot", "eq", True), test],
+            )
         if kind == "distance":
             axis, base = enum_number(values["axis"]), enum_number(values["base"])
             if base != 0 or axis not in (0, 1, 2):
@@ -707,20 +807,28 @@ class PlayerCompiler:
                 # AI state / interrupt fields the scenario fixes for combat.
                 return comparison(key, expression.get("operator", "eq"), right["value"])
             if (
-                str(key).startswith(("extend:", "context:", *REFERENCE_PREFIXES))
+                kind == "compare"
+                and right.get("kind") == "runtime"
+                and all(
+                    str(k).startswith(FIELD_KEY_PREFIXES)
+                    for k in (key, right.get("key"))
+                )
+            ):
+                # Two fields compared with each other (x64 field formulas):
+                # one Boolean input per relation, as the game evaluates it.
+                operator = expression.get("operator", "eq")
+                offset = right.get("offset", 0)
+                text = f"{right['key']}{offset:+d}" if offset else right["key"]
+                label = (
+                    f"{field_label(key)} {RELATION_SYMBOLS[operator]} {field_label(right['key'])}"
+                    + (f" {offset:+d}" if offset else "")
+                )
+                return self.boolean(f"{RELATION_PREFIX}{key} {operator} {text}", label)
+            if (
+                str(key).startswith(FIELD_KEY_PREFIXES)
                 and right.get("kind") == "constant"
             ):
-                path, exists = key, key.endswith(EXISTS_SUFFIX)
-                if exists:
-                    # A null check of an object field (x64 recognizer).
-                    path = key[: -len(EXISTS_SUFFIX)]
-                if key.startswith(REFERENCE_PREFIXES):
-                    label = reference_label(path)
-                elif key.startswith("extend:"):
-                    label = "专用状态 " + extend_field_label(path)
-                else:
-                    label = "怪物状态 " + field_path_label(path.split(":", 1)[1])
-                label += " 对象存在" if exists else ""
+                label = field_label(key)
                 if kind == "runtime":
                     return self.boolean(key, label)
                 names = self.extend_enums.get(key, {})
@@ -908,7 +1016,7 @@ class PlayerCompiler:
             if key in SCENARIO_GUARDS:
                 return SCENARIO_GUARDS[key]
             if (
-                str(key).startswith(("extend:", "context:", *REFERENCE_PREFIXES))
+                str(key).startswith((*FIELD_KEY_PREFIXES, RELATION_PREFIX))
                 and key in self.inputs
             ):
                 option = next(

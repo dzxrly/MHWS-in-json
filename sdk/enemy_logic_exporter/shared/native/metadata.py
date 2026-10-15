@@ -27,6 +27,8 @@ class Il2cppMetadata:
         self._mapped = None
         self._objects = {}
         self._offsets = {}
+        # Parent type -> direct subclasses, built on first use.
+        self._children = None
         self.loaded = {}
         self._indent = b""
         try:
@@ -117,6 +119,41 @@ class Il2cppMetadata:
                 if field and field not in fields:
                     fields[field] = {"type": row.get("type")}
         return fields
+
+    def subclasses(self, name: str) -> list[str]:
+        """Every type that declares ``name`` as a direct or indirect parent."""
+        if self._children is None:
+            children = {}
+            if self._objects:
+                for child, record in self._objects.items():
+                    if isinstance(record, dict) and record.get("parent"):
+                        children.setdefault(record["parent"], []).append(child)
+            else:
+                starts = sorted(
+                    (start, child) for child, start in self._offsets.items()
+                )
+                pattern = re.compile(
+                    rb"^"
+                    + re.escape(self._indent * 2)
+                    + rb'"parent":\s*"((?:[^"\\]|\\.)*)"',
+                    re.M,
+                )
+                index = 0
+                for match in pattern.finditer(self._mapped):
+                    while (
+                        index + 1 < len(starts) and starts[index + 1][0] < match.start()
+                    ):
+                        index += 1
+                    parent = json.loads(b'"' + match[1] + b'"')
+                    children.setdefault(parent, []).append(starts[index][1])
+            self._children = children
+        found, pending = [], [name]
+        while pending:
+            for child in self._children.get(pending.pop(), []):
+                if child not in found:
+                    found.append(child)
+                    pending.append(child)
+        return found
 
     def type_hash(self, name: str) -> str | None:
         record = self.get(name)

@@ -101,6 +101,30 @@ class Resources:
     def reference(self, wrapper):
         return self.resolve(typed(wrapper)[1]["path"])
 
+    def package_value(self, enemy_id, spec):
+        """One value reached from the monster's own package resource.
+
+        ``spec["package"]`` is the package path with ``{enemy}`` for the full
+        ID spelled "Em0001_00_0"; ``spec["fields"]`` follows reference fields
+        into other user files and plain or typed fields inside them, mirroring
+        a runtime path such as ParamHolder._EmPackage._ParamPack._Basic.
+        Returns the value and every resource read on the way.
+        """
+        source = spec["package"].format(enemy="Em" + enemy_id[2:])
+        body, sources = self.read(source), [self.resolve(source)]
+        for field in spec["fields"]:
+            value = body[field]
+            if isinstance(value, dict) and len(value) == 1:
+                inner = typed(value)[1]
+                if "path" in inner:
+                    source = self.reference(value)
+                    body = self.read(source)
+                    sources.append(source)
+                    continue
+                value = inner
+            body = value
+        return body, sources
+
     def large_enemy_ids(self):
         from ..config import TRAINING_ENEMY_ID
 

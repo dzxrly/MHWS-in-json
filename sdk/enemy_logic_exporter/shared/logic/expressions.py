@@ -34,7 +34,11 @@ def evaluate_expression(expression, registry, context):
         if operand["kind"] == "constant":
             operands.append(operand["value"])
         elif context.get(operand["key"]) is not None:
-            operands.append(context[operand["key"]])
+            # A field compared with another field plus a constant (x64 formulas).
+            offset = operand.get("offset", 0)
+            operands.append(
+                context[operand["key"]] + offset if offset else context[operand["key"]]
+            )
         else:
             return Outcome(None, "缺少运行时值：" + operand["key"])
     left, right = operands
@@ -87,6 +91,8 @@ def validate_expression(expression):
                 raise ValueError("比较操作数无效")
             if operand["kind"] == "runtime":
                 validate_expression(operand)
+                if type(operand.get("offset", 0)) is not int:
+                    raise ValueError("比较偏移必须是整数")
             elif "value" not in operand:
                 raise ValueError("常量缺少值")
     elif kind == "unknown":

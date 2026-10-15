@@ -69,6 +69,68 @@
       }
     },
     {
+      "commandType": "app.btable.EmCommonCommand.cCheckEatDistance",
+      "argumentType": "app.btable.EmCommonCommand.cCheckEatDistanceArg",
+      "kind": "eat_height",
+      "scope": "通用",
+      "summary": "目标与自身的高度差和捕食高度阈值比较；阈值来自怪物参数并按距离修正缩放",
+      "bindings": {
+        "height": "_CheckHeightType"
+      },
+      "contextBinding": null,
+      "evidence": {
+        "type": "app.btable.EmCommonCommand.cCheckEatDistance",
+        "method": "onExecute1236877",
+        "address": "0x1484b23d0",
+        "end": "0x1484b25bc"
+      },
+      "heightCompare": {
+        "0": "abs_gt",
+        "1": "gt",
+        "2": "neg_gt",
+        "3": "abs_le"
+      },
+      "thresholdResource": {
+        "package": "STM/GameDesign/Enemy/Package/{enemy}_pkg.user.3.json",
+        "fields": ["_ParamPack", "_Basic", "PredatorParam", "CancelEatTrapMeatHeight"],
+        "runtimePath": "cEnemyBTableCommandWork.Accessor.ParamHolder._EmPackage._ParamPack._Basic.PredatorParam.CancelEatTrapMeatHeight"
+      },
+      "review": {
+        "height": "h = 目标位置.y − 自身位置.y：目标位置取 cEnemyBTableCommandWork.get_TargetPosition，自身位置取命令工作 +0x20 → +0x18 的 Transform 位置，与 cCheckDistance 的 Y 轴相同",
+        "threshold": "T = CancelEatTrapMeatHeight × 缩放 + 偏移；当前或待切换 AI 状态为 COMBAT_EM(3) 时取 CombatEm.CombatRangeScale/CombatRangeOffset，否则为 1 与 0，与 cCheckDistance 相同",
+        "switch": "参数 _CheckHeightType > 3 返回假；跳转表 0x14de35b00 四项依次为 |h| > T、h > T、−h > T、|h| ≤ T（0、3 用单精度比较，1、2 用双精度比较）"
+      },
+      "distanceModifiers": {
+        "triggerAIState": 3,
+        "aiStateEnum": {
+          "ANIMAL_PREVIEW": 13,
+          "AREA_MOVE_CHILD": 9,
+          "AREA_MOVE_COMBAT": 8,
+          "AREA_MOVE_LIFE": 7,
+          "CAPTURE": 10,
+          "CAUTION": 4,
+          "COMBAT": 2,
+          "COMBAT_EM": 3,
+          "DIE": 0,
+          "ESCAPE": 6,
+          "INVALID": 4294967295,
+          "LIFE": 1,
+          "MAX": 14,
+          "PREDATOR": 5,
+          "REPEL": 11,
+          "REPOP": 12
+        },
+        "stateType": "app.cEmAIStateManager",
+        "currentField": "_CurrentAIStateID",
+        "pendingField": "_NextAIStateID",
+        "moduleType": "app.cEmModuleCombatEm",
+        "scaleField": "<CombatRangeScale>k__BackingField",
+        "offsetField": "<CombatRangeOffset>k__BackingField",
+        "defaultScale": 1.0,
+        "defaultOffset": 0.0
+      }
+    },
+    {
       "commandType": "app.btable.EmCommonCommand.cCheckAngle",
       "argumentType": "app.btable.EmCommonCommand.cCheckAngleArg",
       "kind": "angle",

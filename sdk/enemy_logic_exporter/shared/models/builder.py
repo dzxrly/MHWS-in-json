@@ -1,9 +1,11 @@
 """Bind frozen control flow to resource values. No native binary is read here."""
 
 from copy import deepcopy
+import hashlib
 import json
 import re
 from pathlib import Path
+from ..config import LEAF_FORMULA_LIMIT_BYTES
 from ..logic.predicates import RuleRegistry
 from ..logic.values import scalar
 from ..resources.reader import Resources, ActionBindingError, structure_signature, typed
@@ -255,6 +257,16 @@ def build_chain(
             node["sourceResource"] = source
             if node["kind"] == "condition":
                 node["predicate"] = registry.bind(command_type, argument_type, argument)
+                if node["predicate"].get("kind") == "eat_height":
+                    # The threshold is a parameter of this monster, not of the node.
+                    rule = registry.by_command[command_type]
+                    value, threshold_sources = resources.package_value(
+                        model["enemyId"], rule["thresholdResource"]
+                    )
+                    if type(value) not in (int, float):
+                        raise ValueError("捕食高度阈值不是数值")
+                    node["predicate"]["values"]["threshold"] = float(value)
+                    node["predicate"]["thresholdSources"] = threshold_sources
                 if (
                     "expression" not in node
                     and node["predicate"]["status"] != "verified"
@@ -303,6 +315,18 @@ def build_chain(
     graph["enemyNames"] = referenced_enemy_names(graph, resources)
     # Timer and variable GUIDs are known only once arguments are bound.
     graph["variableCatalog"] = referenced_variables(graph, resources)
+    for leaf in graph.get("leafRules", {}).values():
+        # A template that forks on many resource arguments can outgrow the
+        # model; every node already holds its own instantiated expression and
+        # the template is reproducible from the rule's evidence rows.
+        text = json.dumps(leaf.get("formula"), ensure_ascii=False, sort_keys=True)
+        if len(text.encode("utf8")) > LEAF_FORMULA_LIMIT_BYTES:
+            leaf["formula"] = None
+            leaf["formulaOmitted"] = dict(
+                bytes=len(text.encode("utf8")),
+                sha256=hashlib.sha256(text.encode("utf8")).hexdigest(),
+                reason="按资源参数分叉的公式模板过大；各节点保存按自身参数实例化后的表达式，模板可按证据行重新生成",
+            )
     unknown_conditions = sum(
         (
             expression_unknown(node["expression"])

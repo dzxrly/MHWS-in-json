@@ -4,7 +4,12 @@ from importlib.util import find_spec
 import struct
 import unittest
 
-from sdk.enemy_logic_exporter.shared.logic.formula import Unsupported, instantiate
+from sdk.enemy_logic_exporter.shared.logic.expressions import evaluate_expression
+from sdk.enemy_logic_exporter.shared.logic.formula import (
+    Unsupported,
+    _expression,
+    instantiate,
+)
 
 # Capstone is a research dependency; CI without it skips these tests.
 N = None
@@ -12,6 +17,8 @@ if find_spec("capstone"):
     from sdk.enemy_logic_exporter.shared.logic import native_formula as N
 
 COMMAND, HELPER, CCTOR = 0x141000000, 0x141000100, 0x141000200
+OVERRIDE = 0x141000300
+POINTS = "System.Collections.Generic.List`1<app.Point>"
 
 
 def assemble(parts, base):
@@ -61,6 +68,15 @@ class Metadata:
             "Target": {"offset_from_base": "0x100", "type": "app.cEmModuleTarget"},
             "_IsBusy": {"offset_from_base": "0x60", "type": "System.Boolean"},
             "_Count": {"offset_from_base": "0x64", "type": "System.Int32"},
+            "_Points": {"offset_from_base": "0x68", "type": POINTS},
+        },
+        POINTS: {
+            "_items": {"offset_from_base": "0x10", "type": "app.Point[]"},
+            "s_emptyArray": {"offset_from_base": "0x10", "type": "app.Point[]"},
+            "_size": {"offset_from_base": "0x18", "type": "System.Int32"},
+        },
+        "app.Point": {
+            "_Flags": {"offset_from_base": "0x30", "type": "System.UInt64"},
         },
         "app.cEmModuleTarget": {
             "_Mode": {"offset_from_base": "0x50", "type": "System.Int32"},
@@ -94,11 +110,35 @@ class Metadata:
             "size": "0x18",
             "fields": FIELDS["app.KEY"],
             "methods": {".cctor1": {"function": f"{CCTOR:x}"}},
-        }
+        },
+        # get_Kind (vtable index 4, slot 0x60): 0 in Point, 1 in PointB.
+        "app.Point": {
+            "parent": "System.Object",
+            "methods": {
+                "get_Kind7": {
+                    "function": f"{HELPER:x}",
+                    "vtable_index": 4,
+                    "returns": {"type": "System.Int32"},
+                }
+            },
+        },
+        "app.PointB": {
+            "parent": "app.Point",
+            "methods": {
+                "get_Kind8": {
+                    "function": f"{OVERRIDE:x}",
+                    "vtable_index": 4,
+                    "returns": {"type": "System.Int32"},
+                }
+            },
+        },
     }
 
     def fields(self, name):
         return self.FIELDS.get(name, {})
+
+    def subclasses(self, name):
+        return ["app.PointB"] if name == "app.Point" else []
 
     def get(self, name):
         return self.TYPES.get(name)
@@ -184,7 +224,9 @@ class NativeFormulaTests(unittest.TestCase):
         self.assertIsNone(self.leaf({COMMAND: command}))
         rule = self.leaf({COMMAND: command}, partial=True)
         self.assertEqual(rule["semanticStatus"], "native_x64_field_formula_partial")
-        self.assertEqual(rule["unknownPaths"], ["变量索引"])
+        # The index is read from a field, but the base is no array: the read
+        # cannot be named, so only that comparison stays unknown.
+        self.assertEqual(rule["unknownPaths"], [])
         text = str(rule["formula"])
         self.assertIn("context:_Count", text)
         self.assertIn("'kind': 'unknown'", text)
@@ -286,12 +328,167 @@ class NativeFormulaTests(unittest.TestCase):
         _, helpers, _ = N.evaluate(FakePE({COMMAND: command, HELPER: helper}), COMMAND)
         self.assertIn(HELPER, helpers)
 
+    def truth(self, expression, **values):
+        context = {f"context:{k}": v for k, v in values.items()}
+        return evaluate_expression(expression, None, context).truth
+
+    def test_list_element_at_a_field_index_and_a_flag_mask(self):
+        command = assemble(
+            [
+                *CONTEXT,
+                bytes.fromhex("488b5068"),  # mov rdx, [rax+0x68] (_Points)
+                bytes.fromhex("48634864"),  # movsxd rcx, dword [rax+0x64] (_Count)
+                bytes.fromhex("3b4a18"),  # cmp ecx, [rdx+0x18] (_size)
+                (0x7D, "zero"),  # jge zero
+                bytes.fromhex("488b5210"),  # mov rdx, [rdx+0x10] (_items)
+                bytes.fromhex("488b54ca20"),  # mov rdx, [rdx+rcx*8+0x20]
+                bytes.fromhex("488b4230"),  # mov rax, [rdx+0x30] (_Flags)
+                bytes.fromhex("48a940000000"),  # test rax, 0x40
+                bytes.fromhex("0f95c0c3"),  # setne al; ret
+                "zero",
+                bytes.fromhex("31c0c3"),
+            ],
+            COMMAND,
+        )
+        rule = self.leaf({COMMAND: command})
+        self.assertEqual(rule["semanticStatus"], "native_x64_field_formula_recovered")
+        formula = rule["formula"]
+        self.assertEqual(
+            formula["items"][0],
+            dict(
+                kind="compare",
+                operator="lt",
+                left=dict(kind="runtime", key="context:_Count", source="_Count"),
+                right=dict(
+                    kind="runtime", key="context:_Points._size", source="_Points._size"
+                ),
+            ),
+        )
+        self.assertEqual(
+            formula["items"][1]["key"], "context:_Points._items[_Count]._Flags&0x40"
+        )
+        context = {"context:_Count": 1, "context:_Points._size": 1}
+        self.assertFalse(evaluate_expression(formula, None, context).truth)
+
+    def test_virtual_getter_answered_by_constants(self):
+        command = assemble(
+            [
+                *CONTEXT,
+                bytes.fromhex("488b5068"),  # mov rdx, [rax+0x68]
+                bytes.fromhex("48634864"),  # movsxd rcx, dword [rax+0x64]
+                bytes.fromhex("488b5210"),  # mov rdx, [rdx+0x10]
+                bytes.fromhex("488b54ca20"),  # mov rdx, [rdx+rcx*8+0x20]
+                bytes.fromhex("488b02"),  # mov rax, [rdx] (method table)
+                bytes.fromhex("ff5060"),  # call [rax+0x60] (vtable index 4)
+                bytes.fromhex("83f801"),  # cmp eax, 1
+                bytes.fromhex("0f94c0c3"),  # sete al; ret
+            ],
+            COMMAND,
+        )
+        functions = {
+            COMMAND: command,
+            HELPER: bytes.fromhex("31c0c3"),  # Point: xor eax, eax; ret
+            OVERRIDE: bytes.fromhex("b801000000c3"),  # PointB: mov eax, 1; ret
+        }
+        rule = self.leaf(functions)
+        self.assertEqual(
+            rule["formula"]["left"]["key"], "context:_Points._items[_Count].get_Kind()"
+        )
+        self.assertEqual(rule["formula"]["right"], dict(kind="constant", value=1))
+        found = rule["virtualMethods"][0]["implementations"]
+        self.assertEqual(
+            [(i["type"], i["value"]) for i in found],
+            [("app.Point", 0), ("app.PointB", 1)],
+        )
+        self.assertEqual(
+            {h["address"] for h in rule["inlinedHelpers"]}, {hex(HELPER), hex(OVERRIDE)}
+        )
+        # An override that does more than return a constant is rejected.
+        functions[OVERRIDE] = bytes.fromhex("8b4210c3")  # mov eax, [rdx+0x10]; ret
+        self.assertIsNone(self.leaf(functions))
+
+    def test_carry_and_masked_equality(self):
+        # xor eax, eax; cmp ecx, 1; adc eax, 1 -> 2 exactly when ecx is 0.
+        carry = assemble(
+            [
+                *CONTEXT,
+                bytes.fromhex("8b4864"),  # mov ecx, [rax+0x64]
+                bytes.fromhex("31c0"),
+                bytes.fromhex("83f901"),  # cmp ecx, 1
+                bytes.fromhex("83d001"),  # adc eax, 1
+                bytes.fromhex("83f802"),  # cmp eax, 2
+                bytes.fromhex("0f94c0c3"),
+            ],
+            COMMAND,
+        )
+        formula = self.leaf({COMMAND: carry})["formula"]
+        self.assertEqual(
+            [self.truth(formula, _Count=v) for v in (-1, 0, 1, 5)],
+            [False, True, False, False],
+        )
+        # and ecx, -2; cmp ecx, 8: the field is 8 or 9.
+        masked = assemble(
+            [
+                *CONTEXT,
+                bytes.fromhex("8b4864"),
+                bytes.fromhex("83e1fe"),  # and ecx, 0xfffffffe
+                bytes.fromhex("83f908"),
+                bytes.fromhex("0f94c0c3"),
+            ],
+            COMMAND,
+        )
+        formula = self.leaf({COMMAND: masked})["formula"]
+        self.assertEqual(
+            [self.truth(formula, _Count=v) for v in (7, 8, 9, 10, -8)],
+            [False, True, True, False, False],
+        )
+
+    def test_merged_helper_returns_keep_the_formula(self):
+        call = HELPER - (COMMAND + 24)
+        command = assemble(
+            [
+                bytes.fromhex("53"),  # push rbx
+                *CONTEXT,
+                bytes.fromhex("4889c3"),  # mov rbx, rax
+                bytes.fromhex("4889c2"),  # mov rdx, rax
+                b"\xe8" + struct.pack("<i", call),  # call helper
+                bytes.fromhex("84c0"),  # test al, al
+                (0x74, "zero"),
+                bytes.fromhex("807b6000"),  # cmp byte [rbx+0x60], 0
+                bytes.fromhex("0f95c05bc3"),  # setne al; pop rbx; ret
+                "zero",
+                bytes.fromhex("31c05bc3"),
+            ],
+            COMMAND,
+        )
+        helper = bytes.fromhex("837a6403" "0f9fc0c3")  # cmp [rdx+0x64], 3; setg al
+        pe = FakePE({COMMAND: command, HELPER: helper})
+        namer = N.NativeNamer(
+            Metadata(), ROW, ("param", "param_3"), ("param", "param_4")
+        )
+        tables = []
+        for merge in (False, True):
+            formula = N.evaluate(pe, COMMAND, merge=merge)[0]
+            expression = _expression(formula, namer)
+            tables.append(
+                [
+                    self.truth(expression, _Count=count, _IsBusy=busy)
+                    for count in (2, 3, 4)
+                    for busy in (False, True)
+                ]
+            )
+        self.assertEqual(tables[0], [False, False, False, False, False, True])
+        self.assertEqual(tables[0], tables[1])
+
     def test_constant_comparisons_are_decided(self):
         self.assertEqual(
             N._fold(("cmp", "==", ("const", 0), ("const", 0))), ("const", True)
         )
+        field = ("load", 4, ("param", "param_3"), 0)
+        # Any other mask is the atom "the field has a bit of the mask".
+        self.assertEqual(N._mask_zero(field, ("const", 6)), ("not", ("bits", field, 6)))
         with self.assertRaises(Unsupported):
-            N._mask_zero(("load", 4, ("param", "param_3"), 0), ("const", 6))
+            N._mask_zero(field, ("load", 4, ("param", "param_3"), 8))
 
 
 if __name__ == "__main__":

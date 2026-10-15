@@ -65,9 +65,76 @@
         "address": "0x1469cc4b0",
         "end": "0x1469cc712"
       }
+    ],
+    "terrain_rise": [
+      {
+        "type": "app.btable.EmCommonCommand.cCheckRise",
+        "method": "onExecute1237192",
+        "address": "0x146e50cb0",
+        "end": "0x146e50e90"
+      },
+      {
+        "type": "app.cEnemyBTableCommandWork",
+        "method": "get_TargetPosition577920",
+        "address": "0x1440c6680",
+        "end": "0x1440c673b"
+      }
+    ],
+    "terrain_to_destination": [
+      {
+        "type": "app.btable.EmCommonCommand.cCheckTerrainToDestination",
+        "method": "onExecute1237196",
+        "address": "0x1476150f0",
+        "end": "0x147615361"
+      },
+      {
+        "type": "app.cEnemyBTableCommandWork",
+        "method": "get_TargetPosition577920",
+        "address": "0x1440c6680",
+        "end": "0x1440c673b"
+      },
+      {
+        "type": "native.helper",
+        "method": "vec3_subtract",
+        "address": "0x14b10aa00",
+        "end": "0x14b10aa2e"
+      }
     ]
   },
   "queryContracts": {
+    "voxel_terrain": {
+      "manager": "全局量+0x60 处的 app.VoxelDataManager 实例（其方法的 this），且该实例 +0x10 不为空",
+      "dataInfoQuery": {
+        "method": "app.VoxelDataManager.getDataInfoEmAuto",
+        "address": "0x1457018e0",
+        "holder": "EnemyAccessor.ContextHolder",
+        "position": "cEnemyContextHolder.Transform（cContextTransform）._Position",
+        "booleanArgument": true,
+        "filter": null,
+        "nullableSingles": [
+          {
+            "hasValue": false
+          },
+          {
+            "hasValue": false
+          }
+        ],
+        "output": "ace.voxel.cVoxelBufferBase.DATA_INFO；只读取 _Pos.y"
+      },
+      "ceilingQuery": {
+        "method": "app.VoxelDataManager.getCeilingDist",
+        "address": "0x1457010a0",
+        "dataInfo": "本次 dataInfoQuery 输出"
+      },
+      "wallQuery": {
+        "method": "app.VoxelDataManager.isBlockByWall(DATA_INFO, vec3, Single)",
+        "address": "0x145700f80",
+        "vector": "get_TargetPosition − ThisObject.Transform 位置",
+        "length": "该向量的水平长度 sqrt(x²+z²)"
+      },
+      "heightDifference": "get_TargetPosition.y − ThisObject.Transform 位置的 y，与 cCheckDistance 高度轴相同",
+      "scope": "只命名原生查询的输出与字段；不模拟体素数据，也不把命令最终结果作为输入"
+    },
     "destination_relation": {
       "navigationQuery": {
         "method": "app.VoxelDataManager.getDataInfoForNav",

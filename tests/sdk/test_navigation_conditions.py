@@ -170,6 +170,69 @@ class NavigationConditionTests(unittest.TestCase):
             self.evaluate(node, dict(context, **{"self_continue_flag:128": True}))
         )
 
+    def test_rise_and_terrain_follow_the_native_branches(self):
+        rise = recover_navigation_condition(
+            dict(
+                commandType=PREFIX + "cCheckRise",
+                argument=dict(_CheckHeight={"ace.btable.cEditFieldFloat": 25.0}),
+            ),
+            SUPPORTED_PROFILE,
+        )
+        base = {
+            "enemy_command_work_valid": True,
+            "distance:2:0": 30.0,
+            "self_current_stage_no": 0,
+            "self_current_area_no": 0,
+            "voxel_manager_valid": True,
+            "voxel_self_info_found": True,
+            "voxel_ceiling_clearance": 20.0,
+        }
+        # Clearance between 0 and the height difference: the ceiling blocks.
+        self.assertFalse(self.evaluate(rise, base))
+        self.assertTrue(self.evaluate(rise, dict(base, voxel_ceiling_clearance=40.0)))
+        self.assertTrue(self.evaluate(rise, dict(base, voxel_ceiling_clearance=0.0)))
+        # No voxel data or no query result: the native code answers true.
+        self.assertTrue(self.evaluate(rise, dict(base, voxel_manager_valid=False)))
+        self.assertTrue(self.evaluate(rise, dict(base, voxel_self_info_found=False)))
+        # Below CheckHeight, or Stage 1 Area 6: false; an unordered h passes.
+        self.assertFalse(self.evaluate(rise, dict(base, **{"distance:2:0": 24.0})))
+        self.assertFalse(
+            self.evaluate(
+                rise, dict(base, self_current_stage_no=1, self_current_area_no=6)
+            )
+        )
+        self.assertTrue(
+            self.evaluate(rise, dict(base, **{"distance:2:0": float("nan")}))
+        )
+        terrain = self.bind("cCheckTerrainToDestination")
+        base = {
+            "enemy_command_work_valid": True,
+            "voxel_manager_valid": True,
+            "voxel_self_info_found": True,
+            "voxel_wall_blocks_target": False,
+            "distance:2:0": -5.0,
+            "voxel_self_info_y": 3.0,
+            "target_position_y": 4.0,
+            "voxel_ceiling_distance": 2.0,
+            "voxel_ceiling_y": 5.0,
+        }
+        # Monster above the target: the voxel floor must not be above it.
+        self.assertTrue(self.evaluate(terrain, base))
+        self.assertFalse(self.evaluate(terrain, dict(base, target_position_y=2.0)))
+        self.assertFalse(
+            self.evaluate(terrain, dict(base, voxel_wall_blocks_target=True))
+        )
+        # Monster not above: a negative ceiling distance or a ceiling at least
+        # as high as the target passes.
+        below = dict(base, **{"distance:2:0": 5.0})
+        self.assertTrue(self.evaluate(terrain, below))
+        self.assertFalse(self.evaluate(terrain, dict(below, voxel_ceiling_y=3.5)))
+        self.assertTrue(
+            self.evaluate(
+                terrain, dict(below, voxel_ceiling_y=3.5, voxel_ceiling_distance=-1.0)
+            )
+        )
+
     def test_profile_and_unlisted_relation_are_rejected(self):
         self.assertIsNone(self.bind(relation=2))
         with self.assertRaisesRegex(ValueError, "来源版本"):
