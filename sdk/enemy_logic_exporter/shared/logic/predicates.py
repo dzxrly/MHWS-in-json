@@ -72,39 +72,59 @@ class RuleRegistry:
             return Outcome(None, str(error))
         return Outcome(bool(truth), bound["summary"])
 
+    def _scaled_threshold(self, bound, context):
+        """Resource threshold * scale + offset; COMBAT_EM uses the CombatEm fields."""
+        modifiers = self.by_command[bound["commandType"]]["distanceModifiers"]
+        trigger = modifiers["triggerAIState"]
+        current = (
+            enum_number(context["ai_state_current"])
+            if "ai_state_current" in context
+            else None
+        )
+        pending = (
+            enum_number(context["ai_state_pending"])
+            if "ai_state_pending" in context
+            else None
+        )
+        if current == trigger or pending == trigger:
+            module = required(required(context, "objects"), modifiers["moduleType"])
+            scale = number(required(module, modifiers["scaleField"]))
+            offset = number(required(module, modifiers["offsetField"]))
+        elif current is not None and pending is not None:
+            scale, offset = modifiers["defaultScale"], modifiers["defaultOffset"]
+        else:
+            scale = number(required(context, "distance_scale"))
+            offset = number(required(context, "distance_offset"))
+        return number(bound["values"]["threshold"]) * scale + offset
+
     def _evaluate(self, bound, context):
         kind, values = bound["kind"], bound["values"]
         if kind == "occlusion_hits":
             from .navigation_conditions import occlusion_hits
 
             return occlusion_hits(context)
+        if kind == "eat_height":
+            # cCheckEatDistance: h = target.y - self.y, as cCheckDistance axis 2.
+            measured = number(required(context, "distance:2:0"))
+            threshold = self._scaled_threshold(bound, context)
+            mode = self.by_command[bound["commandType"]]["heightCompare"].get(
+                str(enum_number(values["height"]))
+            )
+            tests = {
+                "abs_gt": lambda: abs(measured) > threshold,
+                "gt": lambda: measured > threshold,
+                "neg_gt": lambda: -measured > threshold,
+                "abs_le": lambda: abs(measured) <= threshold,
+            }
+            if mode not in tests:
+                return False
+            return tests[mode]()
         if kind == "distance":
             axis, base = enum_number(values["axis"]), enum_number(values["base"])
             if axis not in (0, 1, 2) or base not in (0, 1):
                 raise MissingState("不支持的距离轴或基准位置")
             measured = number(required(context, f"distance:{axis}:{base}"))
-            modifiers = self.by_command[bound["commandType"]]["distanceModifiers"]
-            trigger = modifiers["triggerAIState"]
-            current = (
-                enum_number(context["ai_state_current"])
-                if "ai_state_current" in context
-                else None
-            )
-            pending = (
-                enum_number(context["ai_state_pending"])
-                if "ai_state_pending" in context
-                else None
-            )
-            if current == trigger or pending == trigger:
-                module = required(required(context, "objects"), modifiers["moduleType"])
-                scale = number(required(module, modifiers["scaleField"]))
-                offset = number(required(module, modifiers["offsetField"]))
-            elif current is not None and pending is not None:
-                scale, offset = modifiers["defaultScale"], modifiers["defaultOffset"]
-            else:
-                scale = number(required(context, "distance_scale"))
-                offset = number(required(context, "distance_offset"))
-            threshold = number(values["threshold"]) * scale + offset
+            threshold = self._scaled_threshold(bound, context)
             if axis == 2:
                 height = enum_number(values["height"])
                 if height == 0:

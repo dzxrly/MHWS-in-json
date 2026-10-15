@@ -25,6 +25,7 @@ from dataclasses import dataclass
 import re
 
 from ..config import (
+    BITS_SEPARATOR,
     ACCESSOR_TARGET_CONTEXT,
     COMMAND_WORK_ACCESSOR,
     CONTEXT_ARRAY_INDEX_ENUMS,
@@ -50,6 +51,9 @@ ARRAY_ELEMENT_SIZES = {
     "System.Int32": 4,
     "System.UInt32": 4,
     "System.Single": 4,
+    "System.Int64": 8,
+    "System.UInt64": 8,
+    "System.Double": 8,
 }
 TYPE_SIZES = {
     "undefined": 1,
@@ -683,6 +687,10 @@ class Namer:
         ]
         if len(rows) > 1:
             rows = [r for r in rows if not re.fullmatch(r"[A-Z][A-Z0-9_]*", r[0])]
+        if len(rows) > 1 and owner.startswith("System."):
+            # Library statics share offsets too and follow the s_ convention
+            # (List`1 declares s_emptyArray at the offset of _items).
+            rows = [r for r in rows if not r[0].startswith("s_")]
         if len(rows) == 1:
             return [rows[0][0]], rows[0][1]["type"]
         # A field inside a value-type struct (object header 0x10 not stored).
@@ -839,6 +847,17 @@ def _expression(sym, namer):
         if named is None or named[0] != "key" or named[2] != "System.Boolean":
             raise Unsupported("非布尔字段的位测试")
         return runtime(named[1], named[1].split(":", 1)[-1] + " 为真")
+    if kind == "bits":
+        # field & mask != 0 (x64 recognizer): one runtime key per field and mask.
+        named = namer.leaf(sym[1])
+        if (
+            named is None
+            or named[0] != "key"
+            or namer.field_size(named[2]) != sym[1][1]
+        ):
+            raise Unsupported("无法命名的位测试")
+        key = f"{named[1]}{BITS_SEPARATOR}{sym[2]:#x}"
+        return runtime(key, f"{named[1].split(':', 1)[-1]} 含掩码 {sym[2]:#x} 中的位")
     if kind == "isa":
         # Runtime class-hierarchy test of an object's class (x64 recognizer).
         klass, key = sym[1], None
@@ -883,6 +902,21 @@ def _expression(sym, namer):
             if key is not None:
                 test = runtime(key, "对象存在")
                 return test if op == "!=" else invert(test)
+    found = namer.relation(left, right) if getattr(namer, "relations", False) else None
+    if found is not None:
+        # Two fields compared with each other (x64 recognizer): left OP right + d.
+        key_a, key_b, offset, references = found
+        if references and (operator not in ("==", "!=") or offset):
+            raise Unsupported("对象引用的大小比较")
+        other = runtime(key_b, key_b.split(":", 1)[-1])
+        if offset:
+            other["offset"] = offset
+        return dict(
+            kind="compare",
+            operator=LEAF_OPS[operator],
+            left=runtime(key_a, key_a.split(":", 1)[-1]),
+            right=other,
+        )
     for a, b, op in ((left, right, operator), (right, left, mirrored[operator])):
         named = namer.leaf(a)
         if named is None or named[0] != "key":

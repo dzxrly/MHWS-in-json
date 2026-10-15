@@ -202,6 +202,21 @@ EXISTS_SUFFIX = "#exists"
 # formulas): another enemy found by a TARGET_ACCESS_KEY ("ref0:"/"ref1:" by
 # the lookup flag) or the monster's own squad ("squad:").
 REFERENCE_PREFIXES = ("ref0:", "ref1:", "squad:")
+# Runtime key of "field AND mask is non-zero" (x64 field formulas): the field
+# key, this separator, then the mask in hex ("context:X._Flags&0x40").
+BITS_SEPARATOR = "&"
+# Runtime key prefix of a comparison between two fields (x64 field formulas).
+RELATION_PREFIX = "relation:"
+# Virtual method slots: the object header points to a method table whose slot
+# for metadata vtable_index i is at +0x40 + 8 * i. Checked in 1.42.0.2 on
+# cRelayInfo: slot 0x60 (get_RelayType, index 4) returns an int compared with
+# an enum, slot 0x68 (getPos, index 5) returns a vec3 through a hidden buffer.
+VTABLE_METHODS_OFFSET = 0x40
+# Raising a managed exception stores it in the thread's pending slot,
+# [[thread + 0x50] + 0x18], and returns (1.42.0.2: the helper called after the
+# exception constructor in List`1 index checks, e.g. cAreaMoveSchedule).
+THREAD_EXCEPTION_HOLDER = 0x50
+PENDING_EXCEPTION = 0x18
 
 # cEnemyContext field paths that shared recipes already expose under a runtime
 # key; recovered field formulas reuse the key so one field is one input.
@@ -457,7 +472,22 @@ RULE_SPECS = (
         "distance",
         "通用",
         "命令距离：XZ/XYZ 使用严格近远比较；Y 轴使用高度比较",
-        {"threshold": 0x10, "compare": 0x18, "height": 0x20, "axis": 0x28, "base": 0x30},
+        {
+            "threshold": 0x10,
+            "compare": 0x18,
+            "height": 0x20,
+            "axis": 0x28,
+            "base": 0x30,
+        },
+        None,
+        None,
+    ),
+    (
+        "app.btable.EmCommonCommand.cCheckEatDistance",
+        "eat_height",
+        "通用",
+        "目标与自身的高度差和捕食高度阈值比较；阈值来自怪物参数并按距离修正缩放",
+        {"height": 0x10},
         None,
         None,
     ),
@@ -511,6 +541,21 @@ DISTANCE_MODIFIER_FIELDS = (
     ("app.cEmModuleCombatEm", "<CombatRangeScale>k__BackingField", 0x14),
     ("app.cEmModuleCombatEm", "<CombatRangeOffset>k__BackingField", 0xB8),
 )
+# cCheckEatDistance (1.42.0.2): _CheckHeightType selects one of four height
+# comparisons through the jump table at 0x14de35b00; h = target.y - self.y.
+EAT_HEIGHT_COMPARE = {"0": "abs_gt", "1": "gt", "2": "neg_gt", "3": "abs_le"}
+# Threshold: Accessor.ParamHolder._EmPackage._ParamPack._Basic.PredatorParam
+# .CancelEatTrapMeatHeight, i.e. the monster's own package resource.
+EAT_HEIGHT_THRESHOLD = {
+    "package": "STM/GameDesign/Enemy/Package/{enemy}_pkg.user.3.json",
+    "fields": ["_ParamPack", "_Basic", "PredatorParam", "CancelEatTrapMeatHeight"],
+    "runtimePath": "cEnemyBTableCommandWork.Accessor.ParamHolder._EmPackage._ParamPack._Basic.PredatorParam.CancelEatTrapMeatHeight",
+}
+EAT_HEIGHT_REVIEW = {
+    "height": "h = 目标位置.y − 自身位置.y：目标位置取 cEnemyBTableCommandWork.get_TargetPosition，自身位置取命令工作 +0x20 → +0x18 的 Transform 位置，与 cCheckDistance 的 Y 轴相同",
+    "threshold": "T = CancelEatTrapMeatHeight × 缩放 + 偏移；当前或待切换 AI 状态为 COMBAT_EM(3) 时取 CombatEm.CombatRangeScale/CombatRangeOffset，否则为 1 与 0，与 cCheckDistance 相同",
+    "switch": "参数 _CheckHeightType > 3 返回假；跳转表 0x14de35b00 四项依次为 |h| > T、h > T、−h > T、|h| ≤ T（0、3 用单精度比较，1、2 用双精度比较）",
+}
 AI_STATE_ENUM = "app.EnemyDef.AI_STATE_ID"
 COMMAND_RESULT_TYPE = "ace.btable.COMMAND_RESULT"
 COMMAND_RESULT_ENUM = "ace.btable.BTableDef.COMMAND_RESULT_TYPE"
@@ -760,6 +805,9 @@ RESEARCH_ONLY_NODE_FIELDS = (
 PREDICATE_DUPLICATE_FIELDS = ("argument", "commandType", "argumentType")
 # Repeated JSON values at least this long are stored once and referenced.
 SHARED_VALUE_MIN_BYTES = 48
+# A leaf formula template larger than this (compact JSON) is not stored in the
+# model once its nodes are instantiated; only its size and SHA-256 remain.
+LEAF_FORMULA_LIMIT_BYTES = 256 * 1024
 
 
 # ------------------------------------------------- version-independent symbols

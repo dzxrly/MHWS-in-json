@@ -14,7 +14,7 @@ from ..config import (
     CONDITION_FIELDS as FIELDS,
     OCCLUSION_QUERY,
 )
-from .values import MissingState, enum_number
+from .values import MissingState, enum_number, scalar
 from .expressions import runtime, compare, combined, invert
 
 @lru_cache(maxsize=1)
@@ -220,6 +220,128 @@ def unfair_guard():
     )
 
 
+# Raw inputs of the voxel terrain commands (queryContracts.voxel_terrain).
+HEIGHT = runtime(
+    "distance:2:0",
+    "get_TargetPosition.y − ThisObject.Transform 位置的 y（cCheckDistance 高度轴的同一个量）",
+)
+VOXEL_READY = runtime(
+    "voxel_manager_valid",
+    "全局 VoxelDataManager 实例存在，且其 +0x10 不为空",
+)
+VOXEL_INFO = runtime(
+    "voxel_self_info_found",
+    "本次 getDataInfoEmAuto（ContextHolder.Transform._Position）的返回值",
+)
+
+
+def terrain_rise(argument):
+    """cCheckRise: the target is at least CheckHeight above, unless the voxel
+    ceiling over the monster is lower than that height.
+
+    Native (0x146e50cb0): h = target.y − self.y; the check continues when
+    CheckHeight <= h or the compare is unordered; Stage 1 Area 6 is false;
+    a missing voxel manager or a failed query is true; with
+    v = float(double(info._Pos.y) + double(getCeilingDist) − double(position.y))
+    the result is false only when v > 0 and h > v.
+    """
+    height = scalar(argument.get("_CheckHeight"))
+    if type(height) not in (int, float):
+        return None
+    clearance = runtime(
+        "voxel_ceiling_clearance",
+        "float(double(DATA_INFO._Pos.y) + double(getCeilingDist(DATA_INFO)) − "
+        "double(ContextHolder.Transform._Position.y))；原生以双精度计算后转单精度",
+    )
+    return combined(
+        "all",
+        invert(compare("distance:2:0", float(height), "lt", source=HEIGHT["source"])),
+        invert(
+            combined(
+                "all",
+                compare("self_current_stage_no", 1, source=FIELDS["stage_no"]),
+                compare("self_current_area_no", 6, source=FIELDS["area_no"]),
+            )
+        ),
+        combined(
+            "any",
+            invert(VOXEL_READY),
+            invert(VOXEL_INFO),
+            invert(
+                dict(
+                    kind="compare",
+                    operator="gt",
+                    left=clearance,
+                    right=dict(kind="constant", value=0.0),
+                )
+            ),
+            invert(dict(kind="compare", operator="gt", left=HEIGHT, right=clearance)),
+        ),
+    )
+
+
+def terrain_to_destination():
+    """cCheckTerrainToDestination (0x1476150f0).
+
+    Needs the voxel manager, a found DATA_INFO and no wall on the way. When
+    the monster is not below the target (!(self.y <= target.y)), the result
+    is info._Pos.y <= target.y (setbe: also when unordered); otherwise it is
+    ceiling < 0 or info._Pos.y + ceiling >= target.y (negated compares, so an
+    unordered value also passes).
+    """
+    target_y = runtime("target_position_y", "get_TargetPosition 的 y 分量")
+    info_y = runtime("voxel_self_info_y", "本次 DATA_INFO._Pos.y")
+    ceiling = runtime("voxel_ceiling_distance", "getCeilingDist(DATA_INFO) 的返回值")
+    ceiling_y = runtime(
+        "voxel_ceiling_y", "DATA_INFO._Pos.y + getCeilingDist(DATA_INFO)（单精度相加）"
+    )
+    below = compare("distance:2:0", 0.0, "ge", source=HEIGHT["source"])
+    return combined(
+        "all",
+        VOXEL_READY,
+        VOXEL_INFO,
+        invert(
+            runtime(
+                "voxel_wall_blocks_target",
+                "本次 isBlockByWall(DATA_INFO, 目标−自身位置, 其水平长度) 的返回值",
+            )
+        ),
+        combined(
+            "any",
+            combined(
+                "all",
+                invert(below),
+                invert(
+                    dict(kind="compare", operator="gt", left=info_y, right=target_y)
+                ),
+            ),
+            combined(
+                "all",
+                below,
+                combined(
+                    "any",
+                    invert(
+                        dict(
+                            kind="compare",
+                            operator="ge",
+                            left=ceiling,
+                            right=dict(kind="constant", value=0.0),
+                        )
+                    ),
+                    invert(
+                        dict(
+                            kind="compare",
+                            operator="lt",
+                            left=ceiling_y,
+                            right=target_y,
+                        )
+                    ),
+                ),
+            ),
+        ),
+    )
+
+
 def occlusion_hits(context):
     """Evaluate the native loop over ray hits, with raw keys and gimmick IDs.
 
@@ -285,6 +407,27 @@ def recover_navigation_condition(node, profile):
         if result is not None:
             result["expression"] = combined("all", guard, result["expression"])
         return result
+    if name == "cCheckRise":
+        expression = terrain_rise(node.get("argument") or {})
+        if expression is None:
+            return None
+        return dict(
+            expression=combined("all", guard, expression),
+            summary="目标比自身高出指定高度，且头顶空间允许升高",
+            semanticStatus="reviewed_native_semantics",
+            semanticEvidence=deepcopy(receipt()["evidence"]["terrain_rise"]),
+            detail="目标与自身的高度差须不小于参数 CheckHeight；Stage 1 Area 6 恒为假。体素管理器或体素查询不可用时为真；否则只有头顶净空大于 0 且小于高度差时为假。距离单位未核实。",
+            queryContract=deepcopy(receipt()["queryContracts"]["voxel_terrain"]),
+        )
+    if name == "cCheckTerrainToDestination":
+        return dict(
+            expression=combined("all", guard, terrain_to_destination()),
+            summary="自身所在体素地形允许到达目标高度",
+            semanticStatus="reviewed_native_semantics",
+            semanticEvidence=deepcopy(receipt()["evidence"]["terrain_to_destination"]),
+            detail="需要体素管理器、查到自身位置的体素信息且途中没有墙阻挡。自身高于目标时，要求体素地面不高于目标；否则要求天花板距离为负或天花板高度不低于目标。",
+            queryContract=deepcopy(receipt()["queryContracts"]["voxel_terrain"]),
+        )
     if name == "cCheckUnfairRoutineActive":
         return dict(
             expression=combined("all", guard, unfair_guard()),
