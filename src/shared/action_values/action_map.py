@@ -180,7 +180,7 @@ def _parse_resource_relation(
     ):
         raise ValueError(f"{where}.resolutionMethods must be a non-empty string array")
     role = _required_string(value, "resourceRole", where)
-    if role not in {"shell", "ammo", "rcol_fallback"}:
+    if role not in {"shell", "ammo", "insect", "rcol_fallback"}:
         raise ValueError(f"{where}.resourceRole is unsupported: {role!r}")
     return ResourceMapRelation(
         scope=scope,
