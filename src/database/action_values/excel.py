@@ -11,7 +11,7 @@ from src.shared.excel.styles import StylePalette
 
 from src.database.action_values.build import (
     ActionValueWorkbookData,
-    LEADING_COLUMNS,
+    REFERENCE_NAME_COLUMN,
     RowGroup,
 )
 
@@ -46,6 +46,7 @@ CENTER_COLUMNS = {
 }
 
 FIXED_WIDTHS = {
+    REFERENCE_NAME_COLUMN: 34.0,
     "MappingName": 34.0,
     "MappingKind": 12.0,
     "MappingIdentity": 42.0,
@@ -68,6 +69,7 @@ FIXED_WIDTHS = {
 }
 
 WRAPPED_COLUMNS = {
+    REFERENCE_NAME_COLUMN,
     "MappingName",
     "MappingIdentity",
     "MappingInternalName",
@@ -120,8 +122,13 @@ def _style_sheet(
     groups: tuple[RowGroup, ...],
     styles: dict,
 ) -> None:
-    sheet.freeze_panes = f"{get_column_letter(len(LEADING_COLUMNS) + 1)}3"
-    name_column = columns.index("MappingName") + 1
+    # Freeze the mapping names and the two attack columns.
+    sheet.freeze_panes = f"{get_column_letter(columns.index('_FixAttack') + 2)}3"
+    name_columns = [
+        columns.index(name) + 1
+        for name in (REFERENCE_NAME_COLUMN, "MappingName")
+        if name in columns
+    ]
     metadata_start = columns.index("MappingKind") + 1
     sheet.sheet_view.showGridLines = False
     sheet.sheet_view.zoomScale = 85
@@ -173,7 +180,7 @@ def _style_sheet(
         )
     column_styles = [
         (
-            index == name_column,
+            index in name_columns,
             header in CENTER_COLUMNS,
             header in WRAPPED_COLUMNS or index == metadata_start - 1,
         )
@@ -188,22 +195,23 @@ def _style_sheet(
             mapped_index += 1
         _style_group(sheet, group, styles, color_index, column_styles)
 
-        if not group.unmapped and group.end_row > group.start_row:
-            sheet.merge_cells(
-                start_row=group.start_row,
-                start_column=name_column,
-                end_row=group.end_row,
-                end_column=name_column,
+        for name_column in name_columns:
+            if not group.unmapped and group.end_row > group.start_row:
+                sheet.merge_cells(
+                    start_row=group.start_row,
+                    start_column=name_column,
+                    end_row=group.end_row,
+                    end_column=name_column,
+                )
+            action_cell = sheet.cell(group.start_row, name_column)
+            action_cell.font = Font(
+                bold=True, color="9C5700" if group.unmapped else "1F1F1F"
             )
-        action_cell = sheet.cell(group.start_row, name_column)
-        action_cell.font = Font(
-            bold=True, color="9C5700" if group.unmapped else "1F1F1F"
-        )
-        action_cell.alignment = Alignment(
-            horizontal="center",
-            vertical="center",
-            wrap_text=True,
-        )
+            action_cell.alignment = Alignment(
+                horizontal="center",
+                vertical="center",
+                wrap_text=True,
+            )
 
     _set_column_widths(sheet, columns)
 

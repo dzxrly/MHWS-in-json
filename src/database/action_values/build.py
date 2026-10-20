@@ -13,7 +13,6 @@ from src.shared.action_values.catalog import (
 )
 from src.shared.action_values.rcol import RequestSetKey, RequestSetRecord
 
-
 SHEET_NAMES = {
     **{
         f"Wp{index:02d}": f"Wp{index:02d}_{weapon_name}"
@@ -24,6 +23,8 @@ SHEET_NAMES = {
 
 LEADING_MAPPING_COLUMNS = ("MappingName", "MappingInternalName", "MappingConfidence")
 LEADING_COLUMNS = (*LEADING_MAPPING_COLUMNS, "_Attack", "_FixAttack")
+# Japanese MappingName shown before MappingName in non-Japanese workbooks.
+REFERENCE_NAME_COLUMN = "MappingNameJa"
 
 TRAILING_MAPPING_COLUMNS = (
     "MappingKind",
@@ -81,8 +82,13 @@ class ActionValueWorkbookData:
 def build_action_value_workbook(
     catalog: ActionValueCatalog,
     resolve_text: Callable[[str], str],
+    reference_text: Callable[[str], str] | None = None,
 ) -> ActionValueWorkbookData:
+    """Build the workbook rows; ``reference_text`` adds the Japanese name column."""
     names = mapping_names(catalog, resolve_text)
+    reference_names = (
+        mapping_names(catalog, reference_text) if reference_text is not None else None
+    )
     sheets: dict[str, list[dict[str, Any]]] = {}
     columns_by_sheet: dict[str, tuple[str, ...]] = {}
     sources_by_sheet: dict[str, tuple[str, ...]] = {}
@@ -136,7 +142,7 @@ def build_action_value_workbook(
                 sorted(item[3]),
             ),
         )
-        columns = _sheet_columns(records)
+        columns = _sheet_columns(records, reference_names is not None)
         rows: list[dict[str, Any]] = []
         row_groups: list[RowGroup] = []
         next_excel_row = 3
@@ -156,6 +162,11 @@ def build_action_value_workbook(
                         edge_binding,
                         record,
                         columns,
+                        (
+                            reference_names[(scope, binding.identity)]
+                            if reference_names is not None
+                            else None
+                        ),
                     )
                 )
                 next_excel_row += 1
@@ -176,9 +187,7 @@ def build_action_value_workbook(
                 unmapped_records,
                 key=lambda item: item.sort_key,
             ):
-                rows.append(
-                    _workbook_row(None, None, record, columns)
-                )
+                rows.append(_workbook_row(None, None, record, columns))
                 next_excel_row += 1
             row_groups.append(
                 RowGroup(
@@ -220,17 +229,23 @@ def build_action_value_workbook(
 
 def _sheet_columns(
     records: tuple[RequestSetRecord, ...],
+    with_reference_name: bool = False,
 ) -> tuple[str, ...]:
-    columns = list(LEADING_COLUMNS)
-    seen = set(MAPPING_COLUMNS) | set(LEADING_COLUMNS)
-    for record in records:
-        for key in record.properties:
-            if key not in seen:
-                columns.append(key)
-                seen.add(key)
     if not records:
-        return DEFAULT_COLUMNS
-    return (*columns, *TRAILING_MAPPING_COLUMNS)
+        columns = DEFAULT_COLUMNS
+    else:
+        leading = list(LEADING_COLUMNS)
+        seen = set(MAPPING_COLUMNS) | set(LEADING_COLUMNS) | {REFERENCE_NAME_COLUMN}
+        for record in records:
+            for key in record.properties:
+                if key not in seen:
+                    leading.append(key)
+                    seen.add(key)
+        columns = (*leading, *TRAILING_MAPPING_COLUMNS)
+    if not with_reference_name:
+        return columns
+    index = columns.index("MappingName")
+    return (*columns[:index], REFERENCE_NAME_COLUMN, *columns[index:])
 
 
 def _workbook_row(
@@ -238,8 +253,10 @@ def _workbook_row(
     binding: MappingBinding | None,
     record: RequestSetRecord,
     columns: tuple[str, ...],
+    reference_name: str | None = None,
 ) -> dict[str, Any]:
     values = {
+        REFERENCE_NAME_COLUMN: reference_name,
         "MappingName": mapping_name,
         "MappingKind": binding.kind if binding else None,
         "MappingIdentity": binding.identity if binding else None,

@@ -7,6 +7,7 @@ from config import (
     ACTION_VALUE_WORKBOOK,
     AMULET_WORKBOOK,
     FULL_TEXT_WORKBOOK,
+    JAPANESE_LANGUAGE_ID,
     MAX_COLUMN_WIDTH,
     MISSION_WORKBOOK,
 )
@@ -83,8 +84,14 @@ def export_language(
     text_db: TextDB,
     language_id: int,
     timings: Timings,
+    japanese_text_db: TextDB | None = None,
 ) -> list[Path]:
     outputs = []
+    reference_text = (
+        (lambda guid: japanese_text_db.get(guid) or "")
+        if japanese_text_db is not None and language_id != JAPANESE_LANGUAGE_ID
+        else None
+    )
 
     def export(name, write):
         with timings.measure(f"{output_dir.name}/{name}"):
@@ -116,7 +123,9 @@ def export_language(
         lambda: write_action_value_workbook(
             output_dir / ACTION_VALUE_WORKBOOK,
             build_action_value_workbook(
-                catalog.actions, lambda guid: text_db.get(guid) or ""
+                catalog.actions,
+                lambda guid: text_db.get(guid) or "",
+                reference_text,
             ),
         ),
     )

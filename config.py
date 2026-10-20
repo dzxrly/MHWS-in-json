@@ -46,6 +46,9 @@ ENEMY_ACTION_WORKBOOK = "EnemyActionNames.xlsx"
 MAX_COLUMN_WIDTH = 80.0
 FULL_TEXT_MAX_COLUMN_WIDTH = 300.0
 
+# Language whose names are added as a reference column (WeaponActionValues).
+JAPANESE_LANGUAGE_ID = 0
+
 LANGUAGES: dict[int, Language] = {
     0: Language("ja-JP", "日本語"),
     1: Language("en-US", "English"),

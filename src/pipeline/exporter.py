@@ -9,6 +9,7 @@ from config import (
     ACTION_MAP_PATH,
     BASE_DIR,
     ENUMS_PATH,
+    JAPANESE_LANGUAGE_ID,
     JSON_ROOT,
     LANGUAGE_IDS,
     NATIVES_DIR,
@@ -65,6 +66,9 @@ def export_all() -> list[Path]:
         amulets = load_amulet_catalog(repository.table)
         database = prepare_database(repository, amulets, ENUMS_PATH, ACTION_MAP_PATH)
     names = PoolNames(amulets)
+    with timings.measure("prepare/japanese-text"):
+        # Non-Japanese action value workbooks also show the Japanese names.
+        japanese_text_db = text_source.build(JAPANESE_LANGUAGE_ID)
 
     with ExportTransaction(OUTPUT_DIR, BASE_DIR) as transaction:
         stage = transaction.stage
@@ -77,7 +81,13 @@ def export_all() -> list[Path]:
                 text_db = text_source.build(language_id)
                 names.add_language(language_id, text_db)
             export_language(
-                directory, database, text_source, text_db, language_id, timings
+                directory,
+                database,
+                text_source,
+                text_db,
+                language_id,
+                timings,
+                japanese_text_db,
             )
             with timings.measure(f"{code}/zip"):
                 archive = zip_language_output(

@@ -24,7 +24,9 @@ from src.database.action_values.excel import write_action_value_workbook
 
 
 class ActionValueTests(unittest.TestCase):
-    def test_flatten_request_set_keeps_leaf_paths_and_excludes_collider_payload(self) -> None:
+    def test_flatten_request_set_keeps_leaf_paths_and_excludes_collider_payload(
+        self,
+    ) -> None:
         request_set = {
             "requestSetID": 7,
             "keyHash": 99,
@@ -145,10 +147,16 @@ class ActionValueTests(unittest.TestCase):
                 self.assertEqual(workbook.sheetnames, list(SHEET_NAMES.values()))
                 for worksheet in workbook:
                     headers = tuple(cell.value for cell in worksheet[2])
-                    self.assertEqual(headers[:5], (
-                        "MappingName", "MappingInternalName", "MappingConfidence",
-                        "_Attack", "_FixAttack",
-                    ))
+                    self.assertEqual(
+                        headers[:5],
+                        (
+                            "MappingName",
+                            "MappingInternalName",
+                            "MappingConfidence",
+                            "_Attack",
+                            "_FixAttack",
+                        ),
+                    )
                     self.assertEqual(len(headers), len(set(headers)))
                     self.assertEqual(worksheet.freeze_panes, "F3")
                 sheet = workbook["Wp00_LongSword"]
@@ -156,20 +164,32 @@ class ActionValueTests(unittest.TestCase):
                 name_column = columns.index("MappingName") + 1
                 name_letter = get_column_letter(name_column)
                 kind_column = columns.index("MappingKind") + 1
-                self.assertEqual(columns[-6:], (
-                    "MappingKind", "MappingIdentity", "MappingNameSource",
-                    "ResourceRole", "MappingCondition", "MappingSource",
-                ))
+                self.assertEqual(
+                    columns[-6:],
+                    (
+                        "MappingKind",
+                        "MappingIdentity",
+                        "MappingNameSource",
+                        "ResourceRole",
+                        "MappingCondition",
+                        "MappingSource",
+                    ),
+                )
                 self.assertFalse(sheet.sheet_view.showGridLines)
                 self.assertTrue(
-                    any(str(cell_range).startswith("A1:") for cell_range in sheet.merged_cells)
+                    any(
+                        str(cell_range).startswith("A1:")
+                        for cell_range in sheet.merged_cells
+                    )
                 )
                 self.assertIn(f"{name_letter}3:{name_letter}4", sheet.merged_cells)
                 self.assertEqual(name_column, 1)
                 self.assertNotIn("B3:B4", sheet.merged_cells)
                 self.assertEqual(sheet["B4"].value, rows[1]["MappingInternalName"])
                 self.assertNotIn("C3:C4", sheet.merged_cells)
-                self.assertEqual(sheet["C4"].value, rows[1]["MappingConfidence"] or None)
+                self.assertEqual(
+                    sheet["C4"].value, rows[1]["MappingConfidence"] or None
+                )
                 self.assertEqual(sheet["D3"].value, rows[0]["_Attack"])
                 self.assertEqual(sheet["E3"].value, rows[0]["_FixAttack"])
                 self.assertNotIn(f"{name_letter}5:{name_letter}6", sheet.merged_cells)
@@ -179,14 +199,18 @@ class ActionValueTests(unittest.TestCase):
                 self.assertIsNone(sheet.cell(6, name_column).value)
                 self.assertEqual(sheet["B3"].border.bottom.style, None)
                 self.assertEqual(sheet["B4"].border.bottom.style, "medium")
-                self.assertEqual(sheet.cell(6, name_column).fill.fgColor.rgb, "00F4B183")
+                self.assertEqual(
+                    sheet.cell(6, name_column).fill.fgColor.rgb, "00F4B183"
+                )
 
                 note_column = data.columns["Wp00_LongSword"].index("note") + 1
                 self.assertEqual(sheet.cell(3, note_column).value, "'=guard")
             finally:
                 workbook.close()
 
-    def test_action_map_is_the_only_binding_authority_and_keeps_many_to_many(self) -> None:
+    def test_action_map_is_the_only_binding_authority_and_keeps_many_to_many(
+        self,
+    ) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             root = Path(temp_dir)
             natives_dir = _synthetic_natives(root, [(0, 100), (1, 101), (2, 102)])
@@ -302,6 +326,56 @@ class ActionValueTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "exact current requestSet"):
                 load_action_value_catalog(natives_dir, action_map)
 
+    def test_reference_text_adds_japanese_name_column_before_mapping_name(self) -> None:
+        record = _record(0, 100, 0, "safe")
+        record_unmapped = _record(1, 101, 1, "unknown")
+        binding = MappingBinding(
+            identity="action:a",
+            scope="Wp00",
+            order=(0, 1, 1, "action:a"),
+            kind="Action",
+            fallback_name="ACTION_A",
+            internal_name="ACTION_A",
+            name_guid="guid-a",
+            source="test",
+        )
+        catalog = ActionValueCatalog(
+            records={"Wp00": (record, record_unmapped)},
+            bindings={record.key: (binding,)},
+            mapping_source_counts={"test": 1},
+        )
+        local = {"guid-a": "Action A"}.get
+        japanese = {"guid-a": "アクションA"}.get
+
+        plain = build_action_value_workbook(catalog, local)
+        self.assertNotIn("MappingNameJa", plain.columns["Wp00_LongSword"])
+
+        data = build_action_value_workbook(catalog, local, japanese)
+        columns = data.columns["Wp00_LongSword"]
+        self.assertEqual(
+            columns[: columns.index("MappingName") + 1],
+            ("MappingNameJa", "MappingName"),
+        )
+        self.assertEqual(
+            [
+                (row["MappingNameJa"], row["MappingName"])
+                for row in data.sheets["Wp00_LongSword"]
+            ],
+            [("アクションA", "Action A"), (None, None)],
+        )
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = write_action_value_workbook(Path(temp_dir) / "values.xlsx", data)
+            sheet = load_workbook(path)["Wp00_LongSword"]
+            self.assertEqual(
+                [sheet.cell(2, 1).value, sheet.cell(2, 2).value],
+                ["MappingNameJa", "MappingName"],
+            )
+            self.assertEqual(sheet.cell(3, 1).value, "アクションA")
+            # Mapping names and the two attack columns stay frozen.
+            fix_attack = columns.index("_FixAttack") + 2
+            self.assertEqual(sheet.freeze_panes, f"{get_column_letter(fix_attack)}3")
+
     def test_real_source_contract_has_all_scopes_and_unmapped_tail_blocks(self) -> None:
         catalog = load_action_value_catalog(NATIVES_DIR, ACTION_MAP_PATH)
         data = build_action_value_workbook(catalog, lambda _guid: "")
@@ -325,21 +399,32 @@ class ActionValueTests(unittest.TestCase):
                     all(row["MappingName"] for row in rows[:unmapped_start])
                 )
                 self.assertTrue(
-                    all(
-                        row["MappingName"] is None
-                        for row in rows[unmapped_start:]
-                    )
+                    all(row["MappingName"] is None for row in rows[unmapped_start:])
                 )
 
             expected_columns = data.columns[sheet_name]
-            self.assertEqual(expected_columns[:5], (
-                "MappingName", "MappingInternalName", "MappingConfidence", "_Attack", "_FixAttack",
-            ))
+            self.assertEqual(
+                expected_columns[:5],
+                (
+                    "MappingName",
+                    "MappingInternalName",
+                    "MappingConfidence",
+                    "_Attack",
+                    "_FixAttack",
+                ),
+            )
             self.assertEqual(len(expected_columns), len(set(expected_columns)))
-            self.assertEqual(expected_columns[-6:], (
-                "MappingKind", "MappingIdentity", "MappingNameSource",
-                "ResourceRole", "MappingCondition", "MappingSource",
-            ))
+            self.assertEqual(
+                expected_columns[-6:],
+                (
+                    "MappingKind",
+                    "MappingIdentity",
+                    "MappingNameSource",
+                    "ResourceRole",
+                    "MappingCondition",
+                    "MappingSource",
+                ),
+            )
             self.assertIn("_ActionTypeFixed._Value", expected_columns)
 
 
@@ -465,9 +550,7 @@ def _resource_relation(
         "source": "test_resource",
         "resolutionMethods": ["test_exact"],
         "confidence": "derived",
-        "conditions": [
-            {"kind": "request_set_resource_marker", "value": "TEST_MODE"}
-        ],
+        "conditions": [{"kind": "request_set_resource_marker", "value": "TEST_MODE"}],
         "rcol": rcol,
         "requestSetId": request_set_id,
         "keyHash": key_hash,

@@ -101,4 +101,4 @@ python -m src.processed_data.enemy_battle_logic --preview-all --output .agents/b
 - `damage_calculator.zh-Hans.json` 包含魔物肉質、部位與傷口、玩家動作記錄、斬味倍率和道具補正。缺失的替代肉質保留為 `null`。
 - `skill_effects.zh-Hans.json` 包含技能等級和已核實的傷害效果，標明結算階段、武器與屬性範圍以及生效檔位。使用時假定勾選技能已生效，並選擇目前命中是否會心；資料不處理觸發過程、持續時間、會心率加值、餐點技能和異常積蓄，未核實效果不參與計算。
 - `MissionData.xlsx` 中每個任務完成條件佔一列，其餘任務欄位縱向合併。缺少對應語言文字時回退英文，無名稱的魔物保留 `EM` 編號。`SoloHealth` 列出可能的初始單人最大血量，計入任務難度、隨機血量檔位和`Legendary` 倍率；無法確定目標時留空。
-- `WeaponActionValues.xlsx` 需要格式為 `mhws_static_action_request_set_map_v2` 的 `MHWS-in-json/ActionMap.json`。使用同版本輸入執行 `motlist-to-json action-map` 可重新產生，也可透過 `MHWS_ACTION_MAP_PATH` 指定其他檔案。每條對映各佔一列，未對映的 requestSet 保留，`MappingName` 留空。`MappingConfidence` 表示證據類別。
+- `WeaponActionValues.xlsx` 需要格式為 `mhws_static_action_request_set_map_v2` 的 `MHWS-in-json/ActionMap.json`。使用同版本輸入執行 `motlist-to-json action-map` 可重新產生，也可透過 `MHWS_ACTION_MAP_PATH` 指定其他檔案。每條對映各佔一列，未對映的 requestSet 保留，`MappingName` 留空。`MappingConfidence` 表示證據類別。日語以外的語言版本會在 `MappingName` 前增加日語名稱欄 `MappingNameJa`。
