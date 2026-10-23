@@ -9,10 +9,10 @@
 - 不复制 EXE 或完整 IL2CPP dump 到 Git；不提交 `.agents` 中的证据缓存。
 - EM166 的历史图与原始分析只能作为对照，不能作为其他怪物图的节点、连接或判断依据。
 - 原生地址、参数索引、字段偏移、静态权重地址、方法名后缀均与游戏版本相关。更新后不能仅替换版本号或摘要以绕过检查。
-- 证据行以“类型 + 方法名 + 起止地址”标识（`config.EVIDENCE_KEYS`），按当前 EXE 的原生字节核对；代码和 `data/` 中的 JSON 不逐行保存 SHA-256。EXE/元数据摘要只记录在 profile，`.agents` 缓存的内容寻址摘要保留在缓存内部。
+- 证据行以“类型 + 方法名 + 起止地址”标识（`config.EVIDENCE_KEYS`），按当前 EXE 的原生字节核对；代码和 `data/` 中的 JSON 不逐行保存 SHA-256。EXE 与 il2cpp 的摘要只记录在 `sdk/game_versions.json`（两个 SDK 共用，由 `sdk/versions.py` 读写）；提交到 Git 的 profile、证据、规则、名单和网页模型中，来源一律写成 `{"gameVersion": "<版本>"}`，读取时按登记表展开，写出时收缩（`versions.read` / `versions.compact`）。资源文件与模型分片不再保存字节摘要；`.agents` 研究缓存保留完整来源和内容寻址摘要，只在缓存内部使用。
 - 怪物名、部位名、gimmick 等专有名称使用游戏消息（`*.msg.23.json`，简体中文列）中的官方文本，由 `Resources.message`、`enemy_name`、`part_name` 读取；找不到对应条目时显示原始类名或枚举名，不自行翻译。
 - 保留用户已有暂存改动；本目录的迁移或维护不自动授权提交、推送或发布。
-- **同步更新用户文档**：面向使用者的说明在 `docs/sdk.md`（英文）、`docs/sdk.zh-Hans.md`、`docs/sdk.zh-Hant.md`，三份内容必须一致；三份 README 的“项目工具”一节只保留简介并链接到它们。新增、删除或改名命令与参数，改变默认路径、环境变量、依赖版本、安装脚本、输出位置、报错信息或支持的游戏版本时，在同一次改动中更新三份 SDK 文档（必要时也更新 README 简介和 `sdk/il2cpp/upload_il2cpp.py` 文件头注释），并更新本文件。只改 AGENTS.md 不算完成。
+- **同步更新用户文档**：面向使用者的说明在 `docs/sdk.md`（英文）、`docs/sdk.zh-Hans.md`、`docs/sdk.zh-Hant.md`，三份内容必须一致；三份 README 的“项目工具”一节只保留简介并链接到它们。新增、删除或改名命令与参数，改变默认路径、环境变量、依赖版本、安装脚本、输出位置、报错信息或支持的游戏版本时，在同一次改动中更新三份 SDK 文档（必要时也更新 README 简介），并更新本文件。只改 AGENTS.md 不算完成。
 
 ## 构建思路（先读这一节）
 
@@ -139,15 +139,16 @@
 
 ## 游戏更新与扩展
 
-1. **地址变化**：`resolve-symbols --exe <新EXE> --metadata <新dump> --version <新版本>` 以当前 profile 为基线生成新 profile，报告 `moved`（地址移动）、`changed`（规范化代码变化，需复核语义）和 `review`（人工核对常量）。任何符号无法唯一定位都会失败，不会沿用旧地址。
-2. **证据迁移**：`migrate-evidence --exe <新EXE> --metadata <新dump> --profile data/profiles/<新版本>.json` 先只报告；加 `--apply` 后，函数长度与整函数规范化摘要都不变的证据行自动更新到新地址与方法后缀，并为新 profile 记录摘要。profile 中每个证据摘要记录 `functionLength`（当前函数边界，至少覆盖证据行）与 `rowLength`（证据行自身范围）；证据行只覆盖函数前段时，后段代码变化或函数变长同样进入复核。上一版本 profile 的 `digestScheme` 与当前代码不一致时命令直接拒绝，需先在上一版本 EXE 上重新运行 `resolve-symbols`（同一构建会重新计算全部证据摘要）；有任何待复核行的文件保持不动，命令以非零码退出。
+1. **地址变化**：`resolve-symbols -e <新EXE> -i <新dump> --version <新版本>` 以当前 profile 为基线生成新 profile，并在 `sdk/game_versions.json` 登记新版本的 EXE 与 il2cpp 摘要（同一版本号已登记为其他文件时拒绝覆盖），报告 `moved`（地址移动）、`changed`（规范化代码变化，需复核语义）和 `review`（人工核对常量）。任何符号无法唯一定位都会失败，不会沿用旧地址。
+2. **证据迁移**：`migrate-evidence -e <新EXE> -i <新dump> --profile data/profiles/<新版本>.json` 先只报告；加 `--apply` 后，函数长度与整函数规范化摘要都不变的证据行自动更新到新地址与方法后缀，并为新 profile 记录摘要。profile 中每个证据摘要记录 `functionLength`（当前函数边界，至少覆盖证据行）与 `rowLength`（证据行自身范围）；证据行只覆盖函数前段时，后段代码变化或函数变长同样进入复核。上一版本 profile 的 `digestScheme` 与当前代码不一致时命令直接拒绝，需先在上一版本 EXE 上重新运行 `resolve-symbols`（同一构建会重新计算全部证据摘要）；有任何待复核行的文件保持不动，命令以非零码退出。
 3. 复核通过后把 `config.ACTIVE_GAME_VERSION` 改为新版本，重新生成 `scheduler-slots` 证据和 `roster`，再提取、对比与发布。
 4. **新怪物/变种**：`roster --write` 更新名单并报告 `added`、`removed`、`ownerChanged` 与 `missingModules`；对每个新增 ID 运行 `new-monster --enemy <ID>` 生成入口，再提取。网页端名单由 `publish` 一并写入 `models/roster.json`，不需要改代码。
-5. **已有怪物的新逻辑**：新子表、导入与动作请求随 BTableList 和原生索引自动纳入；形如“自身 Extend 字段比较”的新专用命令会被自动恢复为 `leafRules`；其他新命令先表现为未知条件或未知命令节点。用 `uncertainty --models <完整模型目录>` 找出影响最大的命令，再按“核实原生语义 → 写入规则/公共条件 → 在 `player_view.py` 编译为玩家输入”的顺序补充。新出现的行为表槽若不在 `SLOT_LABELS` 中，会以原始槽名归入“未分类行为表”组，提醒补充名称与分组。
+5. **同一构建换用另一份 il2cpp dump**（例如新版 REFramework 导出了更多字段）：先用旧 dump 对当前 EXE 运行 `resolve-symbols` 重算全部证据摘要（输出到 `.agents`），再用新 dump 运行 `resolve-symbols -o .agents/...` 生成目标 profile，以前者为 `--previous` 运行 `migrate-evidence`（应为 0 待复核）后 `--apply`。`.agents` 研究缓存（native/helpers 索引及其 bodies、inventory、action-requests）记录了旧 dump 摘要：逐行核对方法、地址别名、参数与字段布局在新 dump 中不变后再改写其 profile。最后全量 `extract-all` → `player-view` → `publish`，确认网页模型除摘要外逐字节一致。2026-10-23 的 1.42.0.2 迁移按此完成：253 行证据 0 待复核，34 份模型只差 `metadataSha256`。
+6. **已有怪物的新逻辑**：新子表、导入与动作请求随 BTableList 和原生索引自动纳入；形如“自身 Extend 字段比较”的新专用命令会被自动恢复为 `leafRules`；其他新命令先表现为未知条件或未知命令节点。用 `uncertainty --models <完整模型目录>` 找出影响最大的命令，再按“核实原生语义 → 写入规则/公共条件 → 在 `player_view.py` 编译为玩家输入”的顺序补充。新出现的行为表槽若不在 `SLOT_LABELS` 中，会以原始槽名归入“未分类行为表”组，提醒补充名称与分组。
 
 ## 开发环境（Windows）
 
-面向使用者的同一套步骤（含 `sdk.il2cpp` 的下载与上传）写在 `docs/sdk.zh-Hans.md`、`docs/sdk.md`、`docs/sdk.zh-Hant.md`；本节修改后要同步这三份文档。
+面向使用者的同一套步骤写在 `docs/sdk.zh-Hans.md`、`docs/sdk.md`、`docs/sdk.zh-Hant.md`；本节修改后要同步这三份文档。
 
 只考虑 Windows。普通网页构建（`python -m src.processed_data.enemy_battle_logic`）只需要 Python 标准库与仓库内 JSON；下面的研究依赖只在重新提取时需要。已验证组合：Python 3.13、Capstone 5.0.6、PyGhidra 3.0.2、Ghidra 12.0.4 及其支持的 JDK。JVM 只是 Ghidra 的运行依赖，本项目不写 Java。
 
@@ -160,10 +161,11 @@
    ```
 
    脚本在 `.agents/sdk-venv` 建虚拟环境、安装 `requirements.txt` 中固定版本的依赖，最后运行 `check-env`。之后的命令都用这个解释器在项目根目录运行：`.agents/sdk-venv/Scripts/python.exe -B -m sdk.enemy_logic_exporter <命令>`。
+   常用参数都有短写：`-e/--exe`、`-i/--il2cpp`、`-n/--natives`、`-o/--output`、`-m/--models`，以及放在子命令前的 `-w/--work-dir`。
 2. 按 `check-env` 列出的 `missing` 逐项补齐，再运行一次 `check-env`（加 `--verify` 时还会计算 EXE 与 dump 的 SHA-256，确认是当前 profile 的版本）：
    - **游戏 EXE**：默认在 Steam 库中查找（注册表 `SteamPath` 和 `steamapps/libraryfolders.vdf` 列出的所有库）；装在别处时设环境变量 `MHWS_EXE` 或给 `--exe`。
-   - **IL2CPP dump**：与 EXE 同版本的 REFramework dump，放在 `src/data/il2cpp_dump.json`（约 1.6 GB，Git 忽略），或用 `--metadata` 指定。
-   - **资源导出**：`MHWS-in-json/natives`，随仓库检出。SDK 记录资源文件的 SHA-256，`.gitattributes` 对它设了 `-text`，Git 不再改换行；若检出早于这条规则（`check-env` 报“资源换行”），删除 `MHWS-in-json` 目录后执行 `git checkout -- MHWS-in-json` 重新取出。
+   - **IL2CPP dump**：与 EXE 同版本的 REFramework dump（`il2cpp_dump.json`），由使用者提供，仓库不保存副本。默认取环境变量 `MHWS_IL2CPP`，其次取 EXE 同目录的 `il2cpp_dump.json`；也可用 `-i/--il2cpp` 指定。profile 记录 dump 的 SHA-256，换用其他 dump 时命令会拒绝运行（见“游戏更新与扩展”）。
+   - **资源导出**：`MHWS-in-json/natives`，随仓库检出。`.gitattributes` 对它设了 `-text`，Git 不再改换行；若检出早于这条规则（`check-env` 报“资源换行”），删除 `MHWS-in-json` 目录后执行 `git checkout -- MHWS-in-json` 重新取出。
    - **研究缓存**（`--index`、`--helpers`、`--inventory`、`--requests`）：位于工作目录的标准位置（见 `environment.STANDARD_INPUTS`），`extract`/`extract-all` 省略这些参数时自动使用。新机器可以从旧机器复制整个 `.agents/enemy-logic-exporter`，或按“导出流程”用 `analyze`、`requests`、`recover` 重新生成（需要 Ghidra）。
    - **工作目录**：默认 `.agents/enemy-logic-exporter`，可用 `MHWS_SDK_WORK_DIR` 或 `--work-dir` 改变，但必须位于项目 `.agents` 之内。缓存放在其他磁盘时，用目录联接把 `.agents` 指过去：`New-Item -ItemType Junction -Path .agents -Target D:\mhws-agents`（路径检查按解析后的真实路径比较，`config.in_agents`）。
    - **Ghidra**（只有 `decompile`、`analyze` 需要）：设 `GHIDRA_INSTALL_DIR` 与 `JAVA_HOME`。
@@ -175,7 +177,7 @@
 - 用 Git Bash 的 heredoc 写 Python 时，非原始字符串里的 `\b`、`\0` 会变成控制字符；含反斜杠的内容用编辑工具写，批量修改后用 `grep -rlP "[\x00-\x08\x0b\x0c\x0e-\x1f]" --include=*.py --include=*.md sdk` 检查。
 - 多个会话可能共用同一检出并切换分支：提交前确认 `git branch --show-current`。`git worktree` 可以使用，但新工作树里没有被忽略的大文件：用硬链接接入 dump（`New-Item -ItemType HardLink`），用目录联接接入 `.agents`，并确认 `MHWS-in-json` 的换行与缓存一致（或用 `--natives` 指向原检出）。
 
-输入包括与 EXE 同一游戏版本的 `src/data/il2cpp_dump.json` 和 `MHWS-in-json/natives` 下导出的资源 JSON。PFB 用于资源和组件引用；BTable 参数与工厂决定参数绑定；行动与 AI 状态资源提供外围约束；motlist 主要描述动作与运动资源。不要仅凭某类文件存在就推断它决定选招。
+输入包括与 EXE 同一游戏版本的 il2cpp dump 和 `MHWS-in-json/natives` 下导出的资源 JSON。PFB 用于资源和组件引用；BTable 参数与工厂决定参数绑定；行动与 AI 状态资源提供外围约束；motlist 主要描述动作与运动资源。不要仅凭某类文件存在就推断它决定选招。
 
 ## 导出流程
 
@@ -265,7 +267,7 @@ python -m src.processed_data.enemy_battle_logic --output "$work/player-preview"
 
 `publish`（`shared/models/publish.py`）从完整研究模型生成 Git 中的网页模型：删除 `config.py` 中 `RESEARCH_ONLY_NODE_FIELDS`、`RESEARCH_ONLY_MODEL_FIELDS` 所列的研究字段（原生位置、继续位置证明、请求位置、源指针及与节点重复的谓词字段等），再把出现两次以上、序列化后不少于 `SHARED_VALUE_MIN_BYTES` 字节的 JSON 值写入一次 `sharedValues`，原位置写成 `{"$": 索引}`，并以 `storage.format = "shared-values-v1"` 标记。发布时逐个核对展开结果与删减后的模型完全一致；网页与 SDK 的读取器在任何校验之前展开引用。新增网页或校验所需字段时，必须同步检查这两个删除列表。研究字段只保留在 `.agents` 的完整模型中。
 
-原生研究索引只允许保存到 `.agents`。Git 中的正式模型只保留语义、资源绑定及最小原生证据，可以用 `evidenceCatalog` 复用共同证据，并通过带摘要的 `fragments` 拆分语义表。单个模型文件超过 10 MiB 提示审核，超过 25 MiB 拒绝读入（GitHub 单文件 50 MB 警告、100 MB 拒绝）；当前发布模型最大约 4.3 MB。缩小文件只能删除网页不读取的研究字段或共享重复值，不能删除条件、连接、动作身份等逻辑。旧的 34 个大型原生索引保存在 `.agents/enemy-logic-exporter/legacy-native-models`，不参与正式构建。
+原生研究索引只允许保存到 `.agents`。Git 中的正式模型只保留语义、资源绑定及最小原生证据，可以用 `evidenceCatalog` 复用共同证据，并通过 `fragments` 拆分语义表。单个模型文件超过 10 MiB 提示审核，超过 25 MiB 拒绝读入（GitHub 单文件 50 MB 警告、100 MB 拒绝）；当前发布模型最大约 4.3 MB。缩小文件只能删除网页不读取的研究字段或共享重复值，不能删除条件、连接、动作身份等逻辑。旧的 34 个大型原生索引保存在 `.agents/enemy-logic-exporter/legacy-native-models`，不参与正式构建。
 
 ## 游戏更新后的维护顺序
 
@@ -335,7 +337,7 @@ $w = '.agents/enemy-logic-exporter/fix'
 
 ### 游戏更新时的检查清单
 
-1. `check-env --verify`：确认 EXE、dump、资源都是新版本；摘要与旧 profile 不符是预期的，说明需要更新 profile。
+1. `check-env --verify`：确认 EXE、dump、资源都是新版本；摘要与 `sdk/game_versions.json` 中当前版本的登记不符是预期的，说明需要为新版本生成 profile 并登记。
 2. `resolve-symbols` 生成新 profile，处理 `moved`/`changed`/`review`；`migrate-evidence` 迁移证据，待复核行逐条核对（见“游戏更新与扩展”）。
 3. 用 `analyze`、`requests`、`recover` 重新生成研究缓存（需要 Ghidra），用 `scheduler-slots` 重新生成调度槽证据。
 4. `roster --write` 更新名单；新怪物用 `new-monster` 生成入口模块。

@@ -69,10 +69,9 @@ Bowgun_Custom.xlsx
 EnemyActionNames.xlsx
 HeavyBowgun.xlsx
 LightBowgun.xlsx
+SkillDetails.xlsx
 amulet_pool.json
-damage_calculator.zh-Hans.json
 graphic_preset.xlsx
-skill_effects.zh-Hans.json
 skill_pool.json
 enemy_battle_logic/index.html
 enemy_battle_logic/EM0001_00_0.html
@@ -85,10 +84,10 @@ enemy_battle_logic/EM0001_00_0.html
 
 ## 專案工具
 
-- `sdk.il2cpp`：上傳或下載保存在 `build-data` Release 中的 IL2CPP 中繼資料。
 - `sdk.enemy_logic_exporter`：從遊戲檔案中提取魔物行動邏輯，產生行動圖網頁使用的 JSON。`src/processed_data/enemy_battle_logic/models` 中的 34 份模型對應遊戲 **1.42.0.2**，未知分支保留標記。
+- `sdk.skill_effect_exporter`：找出原生程式碼中使用每個技能的函式並按等級求值，產生 `SkillDetails.xlsx` 使用的技能效果鏈路 JSON。
 
-兩個工具的環境建立與用法見 [SDK 使用說明](sdk.zh-Hant.md)。只重新產生網頁時不需要這兩個工具：
+兩個工具都需要使用者提供與遊戲同版本的 EXE 和 REFramework `il2cpp_dump.json`。環境建立與用法見 [SDK 使用說明](sdk.zh-Hant.md)。只重新產生網頁或表格時不需要這兩個工具：
 
 ```powershell
 python -m src.processed_data.enemy_battle_logic --preview-all --output .agents/battle-preview
@@ -98,7 +97,6 @@ python -m src.processed_data.enemy_battle_logic --preview-all --output .agents/b
 
 ## 資料說明
 
-- `damage_calculator.zh-Hans.json` 包含魔物肉質、部位與傷口、玩家動作記錄、斬味倍率和道具補正。缺失的替代肉質保留為 `null`。
-- `skill_effects.zh-Hans.json` 包含技能等級和已核實的傷害效果，標明結算階段、武器與屬性範圍以及生效檔位。使用時假定勾選技能已生效，並選擇目前命中是否會心；資料不處理觸發過程、持續時間、會心率加值、餐點技能和異常積蓄，未核實效果不參與計算。
+- `SkillDetails.xlsx` 合併 SkillCommonData 與 SkillData，並列出原生程式碼中使用每個技能的函式及按等級求得的結果。名稱只提供日文與簡體中文，說明只提供簡體中文。「技能效果」頁的每列是一個函式在一組等級和參數下的結果：數值、仍依賴的執行期條件，以及數值來自哪個 SkillData 槽位、參數檔案欄位或 EXE 常數。結果按「只裝備該技能」的情境求得；彙總多個技能的函式可能標為「分支过多，未完整求值」。「说明」頁列出前提、組合技能對應中資料與程式碼不一致之處和來源 EXE、il2cpp 的摘要。
 - `MissionData.xlsx` 中每個任務完成條件佔一列，其餘任務欄位縱向合併。缺少對應語言文字時回退英文，無名稱的魔物保留 `EM` 編號。`SoloHealth` 列出可能的初始單人最大血量，計入任務難度、隨機血量檔位和`Legendary` 倍率；無法確定目標時留空。
 - `WeaponActionValues.xlsx` 需要格式為 `mhws_static_action_request_set_map_v2` 的 `MHWS-in-json/ActionMap.json`。使用同版本輸入執行 `motlist-to-json action-map` 可重新產生，也可透過 `MHWS_ACTION_MAP_PATH` 指定其他檔案。每條對映各佔一列，未對映的 requestSet 保留，`MappingName` 留空。`MappingConfidence` 表示證據類別。日語以外的語言版本會在 `MappingName` 前增加日語名稱欄 `MappingNameJa`。
