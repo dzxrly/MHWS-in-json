@@ -1,3 +1,5 @@
-# Only needed by the offline decompile command; no production dependency.
+# SDK dependencies: Capstone for both tools, PyGhidra for the offline decompile
+# command, questionary for the menu (python -m sdk).
 pyghidra==3.0.2
 capstone==5.0.6
+questionary==2.1.0
