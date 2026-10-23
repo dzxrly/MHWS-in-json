@@ -116,8 +116,10 @@ def address_catalog(metadata):
         return addresses
     starts = list(metadata._offsets.values())
     addresses = {}
+    # Newer REFramework dumps write "flags" before "function".
     pattern = re.compile(
-        rb'^ {12}"([^"\r\n]+)": \{\s+"function": "([0-9a-fA-F]+)"', re.M
+        rb'^ {12}"([^"\r\n]+)": \{\s+(?:"flags": "[^"\r\n]*",\s+)?"function": "([0-9a-fA-F]+)"',
+        re.M,
     )
     for match in pattern.finditer(metadata._mapped):
         name = names[bisect.bisect_right(starts, match.start()) - 1]

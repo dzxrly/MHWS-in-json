@@ -82,7 +82,7 @@ class BattleReleaseTests(unittest.TestCase):
                 "sdk/data/models/em0001.v1.json",
                 "MHWS-in-json/em0001.user.3.json",
                 "MonsterHunterWilds.exe",
-                "src/data/il2cpp_dump.json",
+                "MonsterHunterWilds/il2cpp_dump.json",
             ):
                 with self.subTest(checkout=checkout_name, path=relative):
                     self.assertTrue(_is_research_input(root / relative, root))

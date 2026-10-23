@@ -4,7 +4,7 @@
  "profile": {
   "gameVersion": "1.42.0.2",
   "exeSha256": "aa38eb46ae1f3c6c94fb2dd94af59b4665bd4c8ccee56bc36b88cf82397a5b4a",
-  "metadataSha256": "01ab8f96c9786f3707fc0fc0376eb2e34124eea2d61b749354cac6e124b323d1"
+  "metadataSha256": "6abc3d0f9cb8cc71eaf8d610e3045a5691b9211655ae3bf22261cb82169d3259"
  },
  "symbols": {
   "set_current_position": {
@@ -217,6 +217,20 @@
    "type": "app.TargetAccessKeyUtil",
    "method": "makeTargetAccessKey1226827"
   },
+  "unique_leveled_value_get_level": {
+   "address": "0x1486f12e0",
+   "end": "0x1486f138d",
+   "normalizedSha256": "d202fa5ce2893d0548f454c4d7917aaac43d2bf42ae07c0b8ce7c89b9b41228c",
+   "type": "app.cEmModuleUniqueLeveledValue",
+   "method": "getLevel720072"
+  },
+  "check_angle_execute": {
+   "address": "0x149d9b590",
+   "end": "0x149d9bc90",
+   "normalizedSha256": "f9840ef874720b6d08b6d0dda3fd67bef15dae73497182945b09f114fb795df1",
+   "type": "app.btable.EmCommonCommand.cCheckAngle",
+   "method": "onExecute1236786"
+  },
   "stack_cookie_check": {
    "address": "0x14b1295f0",
    "end": "0x14b12960e",
@@ -265,6 +279,12 @@
    "normalizedSha256": "bc5b5d9a01a1e3287d899d33501f8848c67566ce504f904628b600dda8f7983a",
    "pattern": "415741565657534883ec204c89c74889d64989ce4584c975??"
   },
+  "class_hierarchy_check": {
+   "address": "0x14b0212b0",
+   "end": "0x14b0215a0",
+   "normalizedSha256": "d5dd81bef37a37edf20a6ebcb9c6690f6d837a9cf63843d40ebcdc0300332d20",
+   "pattern": "f642102075??488b41484c8b42484983f8ff410f94c14883f8ff"
+  },
   "restore_helper": {
    "address": "0x1454bd9c0",
    "end": "0x1454bda28",
@@ -311,29 +331,15 @@
   "special_gimmick_global": {
    "value": "0x15480a9b0",
    "note": "遮挡检查的特殊 GIMMICK 索引全局"
-  },
-  "unique_leveled_value_get_level": {
-   "address": "0x1486f12e0",
-   "end": "0x1486f138d",
-   "normalizedSha256": "d202fa5ce2893d0548f454c4d7917aaac43d2bf42ae07c0b8ce7c89b9b41228c",
-   "type": "app.cEmModuleUniqueLeveledValue",
-   "method": "getLevel720072"
-  },
-  "check_angle_execute": {
-   "address": "0x149d9b590",
-   "end": "0x149d9bc90",
-   "normalizedSha256": "f9840ef874720b6d08b6d0dda3fd67bef15dae73497182945b09f114fb795df1",
-   "type": "app.btable.EmCommonCommand.cCheckAngle",
-   "method": "onExecute1236786"
-  },
-  "class_hierarchy_check": {
-   "address": "0x14b0212b0",
-   "end": "0x14b0215a0",
-   "normalizedSha256": "d5dd81bef37a37edf20a6ebcb9c6690f6d837a9cf63843d40ebcdc0300332d20",
-   "pattern": "f642102075??488b41484c8b42484983f8ff410f94c14883f8ff"
   }
  },
  "evidenceDigests": {
+  "ace.btable.BTableUtil::checkCompare1028044": {
+   "address": "0x14bc11440",
+   "functionLength": 2048,
+   "rowLength": 116,
+   "normalizedSha256": "f5d838ac07e066ac525ef4777011781de3fb0d7abb8a3176e48694d1189ad29c"
+  },
   "ace.btable.cCheckTimerValue::onExecute1028243": {
    "address": "0x149ec0720",
    "functionLength": 102,
@@ -351,6 +357,12 @@
    "functionLength": 108,
    "rowLength": 108,
    "normalizedSha256": "4fe677a312ae4c89ad3e5b10c2db98c0c88a1099f5acabbe945a229079b150d9"
+  },
+  "ace.btable.cCompareFloatValue::onExecute1028236": {
+   "address": "0x14988ac50",
+   "functionLength": 131,
+   "rowLength": 131,
+   "normalizedSha256": "fd60b1d662981bd00a1ba38b4dd67215210978c243a4da6aaca7d985bf8b683b"
   },
   "ace.btable.cManager::get_Valid330442": {
    "address": "0x1454bcc30",
@@ -1288,6 +1300,12 @@
    "rowLength": 2048,
    "normalizedSha256": "32a44ac2184c330cb160121d30eea079ac2fc0363fb27121a8d88f9259f54bad"
   },
+  "app.EnemyUtil::IsArenaQuest869239": {
+   "address": "0x145637bd0",
+   "functionLength": 112,
+   "rowLength": 112,
+   "normalizedSha256": "4494bb412c4fc310ac1cfe5444c8ae3684769c3414c75a2d26e5fd092c941d9e"
+  },
   "app.EnemyUtil::checkRelation869213": {
    "address": "0x1456355e0",
    "functionLength": 1509,
@@ -1354,6 +1372,12 @@
    "rowLength": 80,
    "normalizedSha256": "8c80527b95701abdaaf922f6b5383617d777ac53b53ccd69763457d22f235b1e"
   },
+  "app.btable.Em0078_00BTableCommand.cCheckPhase::onExecute1233924": {
+   "address": "0x143ba5250",
+   "functionLength": 192,
+   "rowLength": 102,
+   "normalizedSha256": "7e13db90623c69e37ce765b1ead272ddb26f0433699669cbfb7e502dc74fdfd6"
+  },
   "app.btable.Em0166_00BTableCommand.cCheckBattlePhase::onExecute1234575": {
    "address": "0x143ba54d0",
    "functionLength": 288,
@@ -1384,6 +1408,12 @@
    "rowLength": 968,
    "normalizedSha256": "cbb39ae796d2ace5aac922dede7225fc9759ea71df74c54edc75f16d9025713d"
   },
+  "app.btable.EmCommonCommand.CheckStatus::execute_GroundMaterial1236637": {
+   "address": "0x146e50860",
+   "functionLength": 384,
+   "rowLength": 384,
+   "normalizedSha256": "f99ecc0a6957872529dcc1c1dc99e69465005b9f9f39cee45831a1507c5069bf"
+  },
   "app.btable.EmCommonCommand.CheckStatus::execute_Health1236624": {
    "address": "0x146e4fbf0",
    "functionLength": 216,
@@ -1401,6 +1431,12 @@
    "functionLength": 715,
    "rowLength": 715,
    "normalizedSha256": "bb01199dae25f0cda4192e23a6e248f7425cf3342bc579293425cd4c49779be1"
+  },
+  "app.btable.EmCommonCommand.CheckType::execute_Enemy1236701": {
+   "address": "0x148226a40",
+   "functionLength": 84,
+   "rowLength": 84,
+   "normalizedSha256": "0948f68e712c0f02b3493ccae3bed98f0b9162e19cf1afa3c3a29c922595ddac"
   },
   "app.btable.EmCommonCommand.cCheckAngle::onExecute1236786": {
    "address": "0x149d9b590",
@@ -1426,11 +1462,41 @@
    "rowLength": 715,
    "normalizedSha256": "fa3bc827474369dcce2c638835605fa7df7f2ee95bbfebf24ffff35507c44031"
   },
+  "app.btable.EmCommonCommand.cCheckEatDistance::onExecute1236877": {
+   "address": "0x1484b23d0",
+   "functionLength": 492,
+   "rowLength": 492,
+   "normalizedSha256": "8d794a3b1684f5b6f6a8b5f3986613903399429b7ea70df573b0c765a6e5a686"
+  },
+  "app.btable.EmCommonCommand.cCheckGimmickReactionType::onExecute1237163": {
+   "address": "0x144d2bd20",
+   "functionLength": 85,
+   "rowLength": 85,
+   "normalizedSha256": "84af12f2f936f218b442a07cb170b65f90996884d5c8ecbd226baffe40aad298"
+  },
+  "app.btable.EmCommonCommand.cCheckObstacleClimbHeight::onExecute1237118": {
+   "address": "0x148de89d0",
+   "functionLength": 80,
+   "rowLength": 80,
+   "normalizedSha256": "e0f9405b179a691f5c0d1509483690de3613badedb8af59678f6a68aa0981326"
+  },
   "app.btable.EmCommonCommand.cCheckOccludedToDest::onExecute1237038": {
    "address": "0x144748d80",
    "functionLength": 248,
    "rowLength": 248,
    "normalizedSha256": "4872a0d895d50b32e66c17af5e5f5a6573a927c055267a8ea0deeaa955e854cb"
+  },
+  "app.btable.EmCommonCommand.cCheckRidingParts::onExecute1237007": {
+   "address": "0x14a099560",
+   "functionLength": 228,
+   "rowLength": 228,
+   "normalizedSha256": "20cd48abad0e63ea19ba0892761fa1f32e59d6596025d35de8cf50ed3594a9b9"
+  },
+  "app.btable.EmCommonCommand.cCheckRise::onExecute1237192": {
+   "address": "0x146e50cb0",
+   "functionLength": 480,
+   "rowLength": 480,
+   "normalizedSha256": "c9e5fb0d19145e7136b10a7228e3669f1418ee2a6f17e3b571c3438a33d4c086"
   },
   "app.btable.EmCommonCommand.cCheckSelfStatus::onExecute1236644": {
    "address": "0x147614fd0",
@@ -1461,6 +1527,12 @@
    "functionLength": 622,
    "rowLength": 622,
    "normalizedSha256": "fff144bac53a4d094003ee3f79ac03561ce12048abeb46d58762b421d7a3c702"
+  },
+  "app.btable.EmCommonCommand.cCheckTerrainToDestination::onExecute1237196": {
+   "address": "0x1476150f0",
+   "functionLength": 625,
+   "rowLength": 625,
+   "normalizedSha256": "6fa4d3f3730b975f57058e8245c1936de116e38606329c7c235d1056e1244213"
   },
   "app.btable.EmCommonCommand.cCheckUnfairRoutineActive::onExecute1237081": {
    "address": "0x146758520",
@@ -1576,6 +1648,12 @@
    "rowLength": 320,
    "normalizedSha256": "e7fc444cca49144a11ad43e4092d4f71ba3c186b33c89daddb9684320b8f7add"
   },
+  "app.cEmModuleRide::convertRidePartsIndex719770": {
+   "address": "0x1452e0370",
+   "functionLength": 48,
+   "rowLength": 48,
+   "normalizedSha256": "03ebe9ad5fefe495c1b16927657b349e88e12e14ad6f2dfe2a6094b2f009f3ab"
+  },
   "app.cEmModuleTarget::checkOccluded544377": {
    "address": "0x1469cc4b0",
    "functionLength": 610,
@@ -1588,6 +1666,18 @@
    "rowLength": 48,
    "normalizedSha256": "47b6695ff6d13e78bdefa2dd24c8318e88f089f9bd9211dc7becbe101d93ef7c"
   },
+  "app.cEmReactableGmInterface::get_ReactionType719888": {
+   "address": "0x14b7626e0",
+   "functionLength": 416,
+   "rowLength": 416,
+   "normalizedSha256": "31c56952e9a9bd2904ed60e9b474883f877c0adb94bcd7ccf2b70df5c977f410"
+  },
+  "app.cEnemyBTableCommandWork::get_TargetPosition577920": {
+   "address": "0x1440c6680",
+   "functionLength": 187,
+   "rowLength": 187,
+   "normalizedSha256": "d83db760698c012a47423221968bd3ca385defac86796ba97e4bf236c87cd6b4"
+  },
   "app.cEnemyBTableManager::get_IsTableRoot578098": {
    "address": "0x14466de50",
    "functionLength": 64,
@@ -1599,6 +1689,12 @@
    "functionLength": 107,
    "rowLength": 107,
    "normalizedSha256": "337398983dafb6188c8db3e369055ee6cb7d6a2ee7355260bd137709340815fa"
+  },
+  "app.cEnemyContext::get_IsDepletion721271": {
+   "address": "0x14b10ad50",
+   "functionLength": 2048,
+   "rowLength": 30,
+   "normalizedSha256": "96feb518e6af40fdaf8e4d5cf61bb239463c7b4cddf0b378ef5b0111af9cde11"
   },
   "app.cEnemyContext::get_IsTired721270": {
    "address": "0x145cc7880",
@@ -1629,6 +1725,12 @@
    "functionLength": 121,
    "rowLength": 121,
    "normalizedSha256": "1edc242a7d4bae4209b4646af0bee0d3934bf59c6ea892d6a71b10fe2262398c"
+  },
+  "app.user_data.EmParamParts::getPartsIndex579857": {
+   "address": "0x146423570",
+   "functionLength": 118,
+   "rowLength": 118,
+   "normalizedSha256": "ba11a487b302c13e8f212be1d38ff8e454814fbdbc231e4d4f60348f6487c432"
   },
   "native.helper::attribute_bit_test": {
    "address": "0x14b10c220",

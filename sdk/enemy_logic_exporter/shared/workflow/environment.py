@@ -13,9 +13,10 @@ import sys
 from ..config import AGENTS_DIR, ROOT, SUPPORTED_PROFILE, in_agents
 
 GAME_FOLDER = Path("steamapps/common/MonsterHunterWilds/MonsterHunterWilds.exe")
+# REFramework writes its dump next to the game executable.
+IL2CPP_NAME = "il2cpp_dump.json"
 DEFAULT_STEAM = Path("C:/Program Files (x86)/Steam")
 DEFAULT_WORK_DIR = AGENTS_DIR / "enemy-logic-exporter"
-DEFAULT_METADATA = ROOT / "src/data/il2cpp_dump.json"
 DEFAULT_NATIVES = ROOT / "MHWS-in-json/natives"
 # Research caches built by analyze / recover, relative to the work directory.
 STANDARD_INPUTS = dict(
@@ -63,6 +64,16 @@ def find_game_exe():
     return None
 
 
+def find_il2cpp(exe=None):
+    """MHWS_IL2CPP, else il2cpp_dump.json beside the game EXE; None when not found."""
+    if os.environ.get("MHWS_IL2CPP"):
+        return Path(os.environ["MHWS_IL2CPP"])
+    exe = exe or find_game_exe()
+    if exe is not None and (Path(exe).parent / IL2CPP_NAME).is_file():
+        return Path(exe).parent / IL2CPP_NAME
+    return None
+
+
 def default_work_dir():
     return Path(os.environ.get("MHWS_SDK_WORK_DIR") or DEFAULT_WORK_DIR)
 
@@ -76,7 +87,7 @@ def fill_standard_inputs(args, work, names):
                 setattr(args, name, candidate)
 
 
-def check_environment(exe=None, metadata=None, natives=None, work=None, verify=False):
+def check_environment(exe=None, il2cpp=None, natives=None, work=None, verify=False):
     """Rows of (item, status, detail); status is ok, missing or optional."""
     from ..native.evidence import digest
 
@@ -112,15 +123,19 @@ def check_environment(exe=None, metadata=None, natives=None, work=None, verify=F
     add(
         "游戏 EXE",
         bool(exe and Path(exe).is_file()),
-        f"{exe}（--exe 或环境变量 MHWS_EXE）",
+        f"{exe}（-e/--exe 或环境变量 MHWS_EXE）",
     )
-    metadata = metadata or DEFAULT_METADATA
-    add("IL2CPP dump", Path(metadata).is_file(), f"{metadata}（--metadata）")
+    il2cpp = il2cpp or find_il2cpp(exe)
+    add(
+        "IL2CPP dump",
+        bool(il2cpp and Path(il2cpp).is_file()),
+        f"{il2cpp or '未找到'}（-i/--il2cpp 或环境变量 MHWS_IL2CPP；默认取 EXE 同目录的 {IL2CPP_NAME}）",
+    )
     natives = natives or DEFAULT_NATIVES
     add(
         "资源导出",
         (Path(natives) / "STM/GameDesign/Enemy").is_dir(),
-        f"{natives}（--natives）",
+        f"{natives}（-n/--natives）",
     )
     sample = next((Path(natives) / "STM/GameDesign/Enemy").rglob("*.user.3.json"), None)
     if sample is not None:
@@ -138,7 +153,7 @@ def check_environment(exe=None, metadata=None, natives=None, work=None, verify=F
     if verify:
         for item, path, key in (
             ("EXE 版本", exe, "exeSha256"),
-            ("IL2CPP dump 版本", metadata, "metadataSha256"),
+            ("IL2CPP dump 版本", il2cpp, "metadataSha256"),
         ):
             same = (
                 bool(path and Path(path).is_file())
@@ -154,7 +169,7 @@ def check_environment(exe=None, metadata=None, natives=None, work=None, verify=F
     add(
         "工作目录",
         in_agents(work),
-        f"{work}（--work-dir 或 MHWS_SDK_WORK_DIR；必须位于项目 .agents 内，可用目录联接指向其他磁盘）",
+        f"{work}（-w/--work-dir 或 MHWS_SDK_WORK_DIR；必须位于项目 .agents 内，可用目录联接指向其他磁盘）",
     )
     for name, relative in STANDARD_INPUTS.items():
         path = work / relative
