@@ -45,8 +45,6 @@ sdk/
 tests/
 ```
 
-Temporary files and research caches stay under `.agents/`.
-
 ## Release archives
 
 `DATABASE_<language>_<version>.zip` contains the database workbooks for one language:
