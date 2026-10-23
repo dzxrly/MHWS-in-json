@@ -4,14 +4,6 @@ from pathlib import Path
 from src.processed_data.amulet_pools.exporter import export_amulet_pools
 from src.processed_data.bowguns.exporter import export_bowgun_workbooks
 from src.processed_data.enemy_actions.exporter import export_enemy_action_workbook
-from src.processed_data.damage_calculator.exporter import (
-    OUTPUT_NAME as DAMAGE_OUTPUT_NAME,
-    export_damage_calculator,
-)
-from src.processed_data.skill_effects.exporter import (
-    OUTPUT_NAME as SKILL_EFFECTS_OUTPUT_NAME,
-    export_skill_effects,
-)
 from src.processed_data.graphics.exporter import export_graphic_preset
 from src.processed_data.enemy_battle_logic.exporter import (
     OUTPUT_NAMES as BATTLE_OUTPUT_NAMES,
@@ -31,8 +23,6 @@ OUTPUT_NAMES = (
     "HeavyBowgun.xlsx",
     "LightBowgun.xlsx",
     "EnemyActionNames.xlsx",
-    DAMAGE_OUTPUT_NAME,
-    SKILL_EFFECTS_OUTPUT_NAME,
     *BATTLE_OUTPUT_NAMES,
 )
 
@@ -78,14 +68,6 @@ def export_processed(
     with timings.measure("processed/enemy_actions"):
         export_enemy_action_workbook(
             output_dir, repository.root, text_source, repository
-        )
-    with timings.measure("processed/damage_calculator"):
-        export_damage_calculator(
-            output_dir / DAMAGE_OUTPUT_NAME, repository, text_source
-        )
-    with timings.measure("processed/skill_effects"):
-        export_skill_effects(
-            output_dir / SKILL_EFFECTS_OUTPUT_NAME, repository, text_source
         )
     with timings.measure("processed/enemy_battle_logic"):
         export_battle_logic(output_dir)
