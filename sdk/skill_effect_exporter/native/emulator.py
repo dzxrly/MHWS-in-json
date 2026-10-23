@@ -11,6 +11,7 @@ unknown named after it. Heap writes end a path: accessors only read.
 from __future__ import annotations
 
 import copy
+import math
 from itertools import product
 import struct
 
@@ -94,6 +95,9 @@ CONDITIONS = {
     "c": "<u",
     "nc": ">=u",
 }
+# Conditions that read only CF or OF, the flags IMUL defines.
+IMUL_DEFINED = frozenset({"o", "no", "b", "c", "nae", "ae", "nb", "nc"})
+
 NEGATE = {
     "==": "!=",
     "!=": "==",
@@ -162,6 +166,8 @@ def _feasible(kind):
         ]
     if kind == "result":  # arithmetic result: CF and OF free
         return [t for t in every if not (t[0] and (t[1] or not t[4]))]
+    if kind == "imul":  # CF = OF = product overflowed; ZF, SF, PF undefined
+        return [t for t in every if t[2] == t[3]]
     if kind == "float":  # ucomiss: unordered, less, equal, greater
         return [(1, 0, 1, 0, 1), (0, 0, 1, 0, 0), (1, 0, 0, 0, 0), (0, 0, 0, 0, 0)]
     return every  # bit tests, flags left by an opaque call
@@ -464,8 +470,7 @@ class Emulator:
     def vget(self, st, reg):
         name = self.cs.reg_name(reg)
         index = int(name[3:])
-        lanes = st.vregs.get(index)
-        return lanes if lanes is not None else [V(0)] * 8
+        return self.vget_index(st, index)
 
     def vput(self, st, reg, lanes, width):
         name = self.cs.reg_name(reg)
@@ -732,6 +737,8 @@ class Emulator:
             raise Unsupported(f"条件码 {cc}")
         relation = CONDITIONS[cc]
         negated = NEGATE.get(relation, f"not {relation}")
+        if flags.kind == "imul" and cc not in IMUL_DEFINED:
+            raise Unsupported(f"imul 后读取未定义的标志（{cc}）")
         left, right = flags.label
         texts = []
         for rel in (relation, negated):
@@ -853,9 +860,9 @@ class Emulator:
         for reg in VOLATILE:
             st.regs[reg] = unk(f"{name}() 后的 {reg}")
         st.regs["rax"] = unk(f"{name}()")
-        st.vregs[0] = [unk(f"{name}()")] + [V(0)] * 7
+        st.vregs[0] = [unk(f"{name}()")] + unknown_lanes(f"{name}() 后的 xmm0")[1:]
         for index in range(1, 6):
-            st.vregs.pop(index, None)
+            st.vregs[index] = unknown_lanes(f"{name}() 后的 xmm{index}")
         st.flags = Flags(label=(f"{name}() 后的标志", "0"), kind="any")
 
     def path(self, st, worklist, return_type):
@@ -1065,7 +1072,7 @@ class Emulator:
 
     def vget_index(self, st, index):
         lanes = st.vregs.get(index)
-        return lanes if lanes is not None else [V(0)] * 8
+        return lanes if lanes is not None else unknown_lanes(f"调用者 xmm{index}")
 
     # ------------------------------------------------------------ integer ops
     def op_mov(self, st, insn, ops, _):
@@ -1112,7 +1119,7 @@ class Emulator:
             value = V(value.val & MASK[4], value.prov)
         self.put(st, self.cs.reg_name(ops[0].reg), value)
 
-    def _binary(self, st, insn, ops, op, flags=True):
+    def _binary(self, st, insn, ops, op):
         dst, src = ops
         size = dst.size
         a = self.read_op(st, insn, dst, size)
@@ -1129,24 +1136,15 @@ class Emulator:
         else:
             r = self.arith(op, a, b, size)
         self.write_op(st, insn, dst, r, size)
-        if flags:
-            if op == "sub":
-                st.flags = self.compare_flags(a, b, size, None)
-            else:
-                logical = op in ("and", "or", "xor")
-                st.flags = self.result_flags(
-                    r, size, r.prov, "test" if logical else "result"
-                )
-                if op == "add" and isinstance(a.val, int) and isinstance(b.val, int):
-                    st.flags.cf = int(
-                        (a.val & MASK[size]) + (b.val & MASK[size]) > MASK[size]
-                    )
-                    sa, sb, sr = (
-                        signed(a.val, size),
-                        signed(b.val, size),
-                        signed(r.val, size),
-                    )
-                    st.flags.of = int((sa < 0) == (sb < 0) and (sr < 0) != (sa < 0))
+        if op == "sub":
+            st.flags = self.compare_flags(a, b, size, None)
+            return
+        logical = op in ("and", "or", "xor")
+        st.flags = self.result_flags(r, size, r.prov, "test" if logical else "result")
+        if op == "add" and isinstance(a.val, int) and isinstance(b.val, int):
+            st.flags.cf = int((a.val & MASK[size]) + (b.val & MASK[size]) > MASK[size])
+            sa, sb, sr = signed(a.val, size), signed(b.val, size), signed(r.val, size)
+            st.flags.of = int((sa < 0) == (sb < 0) and (sr < 0) != (sa < 0))
 
     def op_add(self, st, insn, ops, _):
         self._binary(st, insn, ops, "add")
@@ -1164,14 +1162,25 @@ class Emulator:
         self._binary(st, insn, ops, "xor")
 
     def op_imul(self, st, insn, ops, _):
+        size = ops[0].size
         if len(ops) == 3:
-            a = self.read_op(st, insn, ops[1], ops[0].size)
-            r = self.arith("imul", a, V(ops[2].imm & MASK[ops[0].size]), ops[0].size)
-            self.put(st, self.cs.reg_name(ops[0].reg), r)
+            a = self.read_op(st, insn, ops[1], size)
+            b = V(ops[2].imm & MASK[size])
         elif len(ops) == 2:
-            self._binary(st, insn, ops, "imul", flags=False)
+            a = self.read_op(st, insn, ops[0], size)
+            b = self.read_op(st, insn, ops[1], size)
         else:
             raise Unsupported("单操作数 imul")
+        r = self.arith("imul", a, b, size)
+        self.put(st, self.cs.reg_name(ops[0].reg), r)
+        label = (f"{name_of(a)} * {name_of(b)}", f"{8 * size} 位")
+        flags = Flags(label=label, kind="imul", prov=r.prov)
+        if isinstance(a.val, int) and isinstance(b.val, int):
+            overflow = int(
+                signed(r.val, size) != signed(a.val, size) * signed(b.val, size)
+            )
+            flags = flags.narrowed([t for t in flags.candidates if t[2] == overflow])
+        st.flags = flags
 
     def _step(self, st, insn, ops, op):
         """inc / dec: OF from the result, CF kept from the previous instruction."""
@@ -1414,6 +1423,8 @@ class Emulator:
             raise PathEnd("throws", "除以零")
         q = abs(dividend) // abs(d) * (1 if (dividend < 0) == (d < 0) else -1)
         r = dividend - q * d
+        if not -(1 << (8 * size - 1)) <= q < 1 << (8 * size - 1):
+            raise PathEnd("throws", "除法溢出")
         prov = divisor.prov | lo.prov | hi.prov
         self.put(st, {8: "rax", 4: "eax"}[size], V(q & MASK[size], prov))
         self.put(st, {8: "rdx", 4: "edx"}[size], V(r & MASK[size], prov))
@@ -1464,8 +1475,10 @@ class Emulator:
         if src.type == X.X86_OP_MEM:
             value = self.load(st, insn, src.mem, 4)
             self.vput(st, dst.reg, [value, V(0), V(0), V(0)], 16)
-        else:
-            self.vput(st, dst.reg, self.vget(st, src.reg), 16)
+        else:  # legacy movss xmm1, xmm2: the upper lanes of xmm1 stay
+            lanes = list(self.vget(st, dst.reg))
+            lanes[0] = self.vget(st, src.reg)[0]
+            self.vput(st, dst.reg, lanes, 16)
 
     op_movss = op_vmovss
 
@@ -1478,6 +1491,11 @@ class Emulator:
         dst, src = ops
         if dst.type == X.X86_OP_MEM:
             self.vstore(st, insn, dst.mem, self.vget(st, src.reg), 8)
+            return
+        if src.type == X.X86_OP_REG:  # legacy movsd xmm1, xmm2: upper lanes stay
+            lanes = list(self.vget(st, dst.reg))
+            lanes[:2] = self.vget(st, src.reg)[:2]
+            self.vput(st, dst.reg, lanes, 16)
             return
         lanes = self._vsrc(st, insn, src, 8)
         self.vput(st, dst.reg, lanes[:2] + [V(0), V(0)], 16)
@@ -1631,11 +1649,7 @@ class Emulator:
             st,
             insn,
             ops,
-            lambda x, y: (
-                x / y
-                if y
-                else float("inf") if x > 0 else float("-inf") if x < 0 else float("nan")
-            ),
+            _divide,
             "/",
         )
 
@@ -1689,9 +1703,7 @@ class Emulator:
         self._scalar_double(st, insn, ops, lambda x, y: x * y, "*")
 
     def op_vdivsd(self, st, insn, ops, _):
-        self._scalar_double(
-            st, insn, ops, lambda x, y: x / y if y else float("nan"), "/"
-        )
+        self._scalar_double(st, insn, ops, _divide, "/")
 
     def op_vmaxsd(self, st, insn, ops, _):
         self._scalar_double(st, insn, ops, lambda x, y: x if x > y else y, "max")
@@ -1724,8 +1736,8 @@ class Emulator:
             st,
             self.cs.reg_name(ops[0].reg),
             (
-                V(int(d) & MASK[ops[0].size], prov)
-                if d is not None and d == d and abs(d) < 2**62
+                V(_to_int(d, ops[0].size, int), prov)
+                if d is not None
                 else unk("int(double)", prov)
             ),
         )
@@ -1835,8 +1847,8 @@ class Emulator:
         )
         f = self.lane_float(lane)
         value = (
-            V(int(f) & MASK[ops[0].size], lane.prov)
-            if f is not None and f == f and abs(f) < 2**62
+            V(_to_int(f, ops[0].size, int), lane.prov)
+            if f is not None
             else unk(f"int({name_of(lane)})", lane.prov)
         )
         self.put(st, self.cs.reg_name(ops[0].reg), value)
@@ -1849,8 +1861,8 @@ class Emulator:
         for lane in lanes[: ops[0].size // 4]:
             f = self.lane_float(lane)
             out.append(
-                V(int(f) & MASK[4], lane.prov)
-                if f is not None and f == f and abs(f) < 2**31
+                V(_to_int(f, 4, int), lane.prov)
+                if f is not None
                 else unk(f"int({name_of(lane)})", lane.prov)
             )
         self.vput(st, ops[0].reg, out, ops[0].size)
@@ -1875,9 +1887,9 @@ class Emulator:
             else self.load(st, insn, src.mem, 4)
         )
         f = self.lane_float(lane)
-        value = (
-            V(round(f) & MASK[ops[0].size], lane.prov)
-            if f is not None and f == f
+        value = (  # MXCSR default: round to nearest even, as Python's round
+            V(_to_int(f, ops[0].size, round), lane.prov)
+            if f is not None
             else unk(f"round({name_of(lane)})", lane.prov)
         )
         self.put(st, self.cs.reg_name(ops[0].reg), value)
@@ -2000,12 +2012,12 @@ class Emulator:
             else self.load(st, insn, src.mem, 4)
         )
         f = self.lane_float(lane)
-        mode = ops[3].imm & 3
-        import math
-
+        mode = 0 if ops[3].imm & 4 else ops[3].imm & 3
         lanes = list(self.vget(st, ops[1].reg))
         if f is None:
             lanes[0] = unk(f"round({name_of(lane)})", lane.prov)
+        elif not math.isfinite(f):
+            lanes[0] = lane
         else:
             lanes[0] = V(
                 f32_bits(float([round, math.floor, math.ceil, math.trunc][mode](f))),
@@ -2031,6 +2043,26 @@ class _Mem:
         m = _Mem.__new__(_Mem)
         m.base, m.index, m.scale, m.segment, m.disp = X.X86_REG_RSP, 0, 1, 0, 0
         return m
+
+
+def _divide(x, y):
+    """IEEE division: x / 0 is a signed infinity, 0 / 0 is NaN."""
+    if y:
+        return x / y
+    if x == 0 or x != x:
+        return float("nan")
+    return math.copysign(float("inf"), x) * math.copysign(1.0, y)
+
+
+def _to_int(f, size, rounding):
+    """cvt(t)ss2si result: NaN, infinity and out-of-range give the integer indefinite."""
+    indefinite = 1 << (8 * size - 1)
+    if not math.isfinite(f):
+        return indefinite
+    value = rounding(f)
+    if not -indefinite <= value < indefinite:
+        return indefinite
+    return value & MASK[size]
 
 
 def _bytes_mask(count):
@@ -2105,6 +2137,11 @@ def _overlay_read(writes, region, off, size, original):
         result = result & ~(_bytes_mask(hi - lo) << shift) | part << shift
         prov |= piece.prov
     return V(result, prov)
+
+
+def unknown_lanes(name):
+    """Eight 32-bit lanes of a SIMD register whose contents are not known."""
+    return [unk(f"{name}[{lane}]") for lane in range(8)]
 
 
 # setcc / cmovcc dispatch by mnemonic suffix.

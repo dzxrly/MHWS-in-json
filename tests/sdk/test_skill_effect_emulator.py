@@ -6,7 +6,7 @@ import unittest
 
 if find_spec("capstone"):
     from sdk.skill_effect_exporter.native.emulator import STACK, Emulator
-    from sdk.skill_effect_exporter.native.values import Ptr, V
+    from sdk.skill_effect_exporter.native.values import Ptr, V, f32_bits
     from sdk.skill_effect_exporter.runtime.heap import Heap, Layouts, SynthObj
 
 BASE = 0x140001000
@@ -154,6 +154,49 @@ class EmulatorTests(unittest.TestCase):
         code = bytes.fromhex("b907000000" "c4e37922c101" "c4e37917c001" "c3")
         (result,) = run(code, lambda st, heap: None, "System.Int32")
         self.assertEqual(result["value"], 7)
+
+    def test_registers_clobbered_by_opaque_call_stay_unknown(self):
+        # call [rax] (not emulated); vmovaps xmm0,xmm1; ret
+        code = bytes.fromhex("ff10" "c5f828c1" "c3")
+
+        def setup(st, heap):
+            st.regs["rax"] = V(Ptr(heap.unknown("t", "表")))
+
+        (result,) = run(code, setup, "System.Single")
+        self.assertEqual(result["status"], "ok")
+        self.assertNotIsInstance(result["value"], (int, float))
+
+    def test_imul_sets_overflow(self):
+        # mov eax,0x40000000; imul eax,eax,4; seto al; movzx eax,al; ret
+        code = bytes.fromhex("b800000040" "6bc004" "0f90c0" "0fb6c0" "c3")
+        (result,) = run(code, lambda st, heap: None, "System.Int32")
+        self.assertEqual(result["value"], 1)
+
+    def test_legacy_movss_keeps_upper_lanes(self):
+        # movss xmm1,xmm0; vextractps eax,xmm1,1; ret
+        code = bytes.fromhex("f30f10c8" "c4e37917c801" "c3")
+
+        def setup(st, heap):
+            st.vregs[0] = [V(5)] * 8
+            st.vregs[1] = [V(10), V(11), V(12), V(13)] + [V(0)] * 4
+
+        (result,) = run(code, setup, "System.Int32")
+        self.assertEqual(result["value"], 11)
+
+    def test_float_edge_cases_follow_hardware(self):
+        # cvttss2si eax,xmm0; ret: 3e9 does not fit, giving the integer indefinite
+        def big(st, heap):
+            st.vregs[0] = [V(f32_bits(3e9))] + [V(0)] * 7
+
+        (result,) = run(bytes.fromhex("f30f2cc0" "c3"), big, "System.Int32")
+        self.assertEqual(result["value"], -(2**31))
+
+        # vmulss xmm0,xmm0,xmm0; ret: 3e38 squared overflows to infinity
+        def huge(st, heap):
+            st.vregs[0] = [V(f32_bits(3e38))] + [V(0)] * 7
+
+        (result,) = run(bytes.fromhex("c5fa59c0" "c3"), huge, "System.Single")
+        self.assertEqual(result["value"], float("inf"))
 
     def test_dec_keeps_carry(self):
         # mov eax,2; cmp eax,3; dec eax; setb al; movzx eax,al; ret

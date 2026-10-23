@@ -13,7 +13,7 @@ from ..config import (
     OUT_PARAMETER_AREA,
     OUT_PARAMETER_STRIDE,
 )
-from ..native.emulator import STACK, Emulator, Stack
+from ..native.emulator import STACK, Emulator, Stack, unknown_lanes
 from ..native.values import Ptr, V, unk
 
 FLOAT_TYPES = ("System.Single", "System.Double")
@@ -122,7 +122,7 @@ class Evaluator:
             for position, (name, value, ptype) in enumerate(arguments):
                 if position < len(registers):
                     if ptype in FLOAT_TYPES:
-                        lanes = [value] + [V(0)] * 7
+                        lanes = [value] + unknown_lanes(f"{name} 的高位")[1:]
                         st.vregs[position + 1] = lanes
                     else:
                         st.regs[registers[position]] = value

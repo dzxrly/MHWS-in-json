@@ -44,7 +44,12 @@ def f32(bits):
 
 
 def f32_bits(value):
-    return struct.unpack("<I", struct.pack("<f", value))[0]
+    """Single-precision bits; a finite value beyond its range rounds to infinity."""
+
+    try:
+        return struct.unpack("<I", struct.pack("<f", value))[0]
+    except OverflowError:
+        return 0xFF800000 if value < 0 else 0x7F800000
 
 
 def f64_bits(value):
