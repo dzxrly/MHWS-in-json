@@ -92,6 +92,50 @@ class EmulatorTests(unittest.TestCase):
             [(w["target"], w["value"]) for w in result["writes"]], [("状态+0x10", 7)]
         )
 
+    def test_later_condition_on_same_flags_keeps_feasible_outcomes(self):
+        # mov eax,[rdx+0x10]; cmp eax,0; jl neg; je zero; mov eax,1; ret;
+        # neg: mov eax,-1; ret; zero: xor eax,eax; ret
+        code = bytes.fromhex(
+            "8b4210"
+            "83f800"
+            "7c08"
+            "740c"
+            "b801000000"
+            "c3"
+            "b8ffffffff"
+            "c3"
+            "31c0"
+            "c3"
+        )
+
+        def setup(st, heap):
+            st.regs["rdx"] = V(Ptr(heap.unknown("t", "状态")))
+
+        results = run(code, setup, "System.Int32")
+        by_value = {r["value"]: r["conditions"] for r in results}
+        self.assertEqual(sorted(by_value), [-1, 0, 1])
+        self.assertEqual(by_value[0], ["状态+0x10 >= 0", "状态+0x10 == 0"])
+
+    def test_overlapping_writes_combine_by_byte(self):
+        # mov dword [rdx+0x10],0x100; mov byte [rdx+0x11],2; mov eax,[rdx+0x10]; ret
+        code = bytes.fromhex("c7421000010000" "c6421102" "8b4210" "c3")
+
+        def setup(st, heap):
+            st.regs["rdx"] = V(Ptr(heap.unknown("t", "状态")))
+
+        (result,) = run(code, setup, "System.Int32")
+        self.assertEqual(result["value"], 0x200)
+        self.assertEqual(
+            [(w["target"], w["value"]) for w in result["writes"]],
+            [("状态+0x10", 0x200)],
+        )
+
+    def test_dec_keeps_carry(self):
+        # mov eax,2; cmp eax,3; dec eax; setb al; movzx eax,al; ret
+        code = bytes.fromhex("b802000000" "83f803" "ffc8" "0f92c0" "0fb6c0" "c3")
+        (result,) = run(code, lambda st, heap: None, "System.Int32")
+        self.assertEqual(result["value"], 1)
+
     def test_lea_on_integers_is_arithmetic(self):
         # lea rcx,[r8+7]; mov rax,rcx; ret  (getSkillValue builds masks this way)
         code = bytes.fromhex("498d4807" "4889c8" "c3")

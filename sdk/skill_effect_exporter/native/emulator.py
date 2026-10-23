@@ -11,6 +11,7 @@ unknown named after it. Heap writes end a path: accessors only read.
 from __future__ import annotations
 
 import copy
+from itertools import product
 import struct
 
 from capstone import CS_ARCH_X86, CS_MODE_64, Cs
@@ -144,14 +145,94 @@ def shorten(text, limit=160):
     return text if len(text) <= limit else text[: limit - 3] + "..."
 
 
+def _feasible(kind):
+    """Flag tuples (zf, sf, cf, of, pf) an instruction of this kind can produce."""
+    every = list(product((0, 1), repeat=5))
+    if kind == "cmp":  # a - b: equal means no sign, borrow or overflow
+        return [t for t in every if not t[0] or t[1:4] == (0, 0, 0)]
+    if kind == "test":  # logical result: CF = OF = 0; zero has no sign
+        return [t for t in every if t[2] == t[3] == 0 and not (t[0] and t[1])]
+    if kind == "result":  # arithmetic result: zero has no sign, CF and OF free
+        return [t for t in every if not (t[0] and t[1])]
+    if kind == "float":  # ucomiss: unordered, less, equal, greater
+        return [(1, 0, 1, 0, 1), (0, 0, 1, 0, 0), (1, 0, 0, 0, 0), (0, 0, 0, 0, 0)]
+    return every  # bit tests, flags left by an opaque call
+
+
+def _condition(flags, cc):
+    z, s, c, o, p = flags
+    table = {
+        "e": z,
+        "z": z,
+        "ne": not z,
+        "nz": not z,
+        "g": not z and s == o,
+        "ge": s == o,
+        "l": s != o,
+        "le": z or s != o,
+        "a": not c and not z,
+        "nbe": not c and not z,
+        "ae": not c,
+        "nb": not c,
+        "nc": not c,
+        "b": c,
+        "nae": c,
+        "c": c,
+        "be": c or z,
+        "na": c or z,
+        "s": s,
+        "ns": not s,
+        "p": p,
+        "np": not p,
+        "o": o,
+        "no": not o,
+    }
+    if cc not in table:
+        raise Unsupported(f"条件码 {cc}")
+    return bool(table[cc])
+
+
 class Flags:
-    """Either concrete flag bits or a pending comparison on unknown operands."""
+    """Concrete flag bits, or a comparison on unknown operands.
+
+    An unknown comparison keeps the flag combinations still feasible on this
+    path; each branch narrows them, so a later condition on the same flags
+    only sees outcomes consistent with the earlier ones.
+    """
 
     def __init__(
-        self, zf=0, sf=0, cf=0, of=0, pf=0, label=None, kind=None, prov=frozenset()
+        self,
+        zf=0,
+        sf=0,
+        cf=0,
+        of=0,
+        pf=0,
+        label=None,
+        kind=None,
+        prov=frozenset(),
+        candidates=None,
     ):
         self.zf, self.sf, self.cf, self.of, self.pf = zf, sf, cf, of, pf
-        self.label, self.kind, self.prov = label, kind, prov  # kind: cmp/test/float
+        # kind: cmp / test / result / float / bit / any (see _feasible)
+        self.label, self.kind, self.prov = label, kind, prov
+        self.candidates = None
+        if label is not None:
+            self.candidates = (
+                list(candidates) if candidates is not None else _feasible(kind)
+            )
+
+    def split(self, cc):
+        """Feasible combinations where cc holds, and where it does not."""
+        true = [t for t in self.candidates if _condition(t, cc)]
+        false = [t for t in self.candidates if not _condition(t, cc)]
+        return true, false
+
+    def narrowed(self, candidates):
+        if len(candidates) == 1:
+            return Flags(*candidates[0], prov=self.prov)
+        return Flags(
+            label=self.label, kind=self.kind, prov=self.prov, candidates=candidates
+        )
 
     def holds(self, cc):
         z, s, c, o, p = self.zf, self.sf, self.cf, self.of, self.pf
@@ -264,9 +345,9 @@ class State:
         self.snapshot = None  # state before the outermost pending inline call
         self.opaque = []
         self.steps = 0
-        self.writes = (
-            {}
-        )  # (object id, offset) -> (object, offset, size, V); globals keyed by address
+        # (object id, offset) -> (object, offset, size, V); globals keyed by
+        # ("global", address). Entries of one object never overlap.
+        self.writes = {}
 
     def clone(self):
         other = copy.copy(self)
@@ -415,27 +496,35 @@ class Emulator:
         kind, *rest = self.address(st, insn, mem)
         if kind == "rip":
             target = rest[0]
-            if ("global", target) in st.writes:
-                return st.writes[("global", target)][3]
-            if target in self.globals:
-                return self.globals[target]
-            if self.pe.read_only(target, size):
-                raw = self.pe.read(target, size)
-                return V(
-                    int.from_bytes(raw, "little"),
-                    frozenset({f"EXE 常量 {target:#x}:{raw.hex()}"}),
-                )
-            return unk(f"全局量 {target:#x}")
+            return _overlay_read(
+                st.writes,
+                "global",
+                target,
+                size,
+                lambda: self.global_value(target, size),
+            )
         if kind == "unknown":
             return unk(f"[{rest[0]}]", rest[1])
         ptr = rest[0]
         if ptr.obj is STACK:
             return st.stack.read(ptr.off, size, self.heap)
-        written = st.writes.get((id(ptr.obj), ptr.off))
-        if written is not None and written[2] == size:
-            return written[3]
-        value = ptr.obj.read(ptr.off, size, self.heap)
-        return V(value.val, value.prov | rest[1])
+
+        def original():
+            value = ptr.obj.read(ptr.off, size, self.heap)
+            return V(value.val, value.prov | rest[1])
+
+        return _overlay_read(st.writes, id(ptr.obj), ptr.off, size, original)
+
+    def global_value(self, target, size):
+        if target in self.globals:
+            return self.globals[target]
+        if self.pe.read_only(target, size):
+            raw = self.pe.read(target, size)
+            return V(
+                int.from_bytes(raw, "little"),
+                frozenset({f"EXE 常量 {target:#x}:{raw.hex()}"}),
+            )
+        return unk(f"全局量 {target:#x}")
 
     def store(self, st, insn, mem, size, value):
         kind, *rest = self.address(st, insn, mem)
@@ -445,9 +534,9 @@ class Emulator:
         # Writes to runtime state are effects: kept per path and reported with the result.
         if kind == "ptr":
             ptr = rest[0]
-            st.writes[(id(ptr.obj), ptr.off)] = (ptr.obj, ptr.off, size, value)
+            _overlay_write(st.writes, id(ptr.obj), ptr.obj, ptr.off, size, value)
         elif kind == "rip":
-            st.writes[("global", rest[0])] = (None, rest[0], size, value)
+            _overlay_write(st.writes, "global", None, rest[0], size, value)
         else:
             st.writes[("unknown", rest[0])] = (None, rest[0], size, value)
 
@@ -594,13 +683,19 @@ class Emulator:
             )  # live references are non-null
         return Flags(label=(name_of(V(av)), name_of(V(bv))), kind="cmp", prov=prov)
 
-    def result_flags(self, r, size, prov):
+    def result_flags(self, r, size, prov, kind="test"):
+        """Flags of a result; kind "test" (logical ops) also means CF = OF = 0."""
         if isinstance(r.val, int):
             v = r.val & MASK[size]
             return Flags(zf=int(v == 0), sf=int(signed(v, size) < 0), prov=prov)
         if isinstance(r.val, Ptr):
-            return Flags(zf=0, sf=0, prov=prov)
-        return Flags(label=(name_of(r), "0"), kind="cmp", prov=prov)
+            if kind == "test":
+                return Flags(zf=0, sf=0, prov=prov)
+            nonzero = [t for t in _feasible(kind) if t[0] == t[1] == 0]
+            return Flags(
+                label=(name_of(r), "0"), kind=kind, prov=prov, candidates=nonzero
+            )
+        return Flags(label=(name_of(r), "0"), kind=kind, prov=prov)
 
     # ------------------------------------------------------------ float lanes
     @staticmethod
@@ -649,13 +744,19 @@ class Emulator:
         if flags.label is None:
             st.rip = target if flags.holds(cc) else fallthrough
             return
+        true, false = flags.split(cc)
+        if not false or not true:
+            # Decided by conditions this path already took on the same flags.
+            st.rip = target if true else fallthrough
+            st.flags = flags.narrowed(true or false)
+            return
         taken, not_taken = self.condition_texts(flags, cc)
         other = st.clone()
         st.conditions.append(taken)
-        st.flags = _forced(flags, cc, True)
+        st.flags = flags.narrowed(true)
         st.rip = target
         other.conditions.append(not_taken)
-        other.flags = _forced(flags, cc, False)
+        other.flags = flags.narrowed(false)
         other.rip = fallthrough
         worklist.append(other)
 
@@ -665,14 +766,18 @@ class Emulator:
         flags = st.flags
         if flags.label is None:
             return flags.holds(cc)
+        true, false = flags.split(cc)
+        if not false or not true:
+            st.flags = flags.narrowed(true or false)
+            return bool(true)
         taken, not_taken = self.condition_texts(flags, cc)
         other = st.clone()
         other.conditions.append(not_taken)
-        other.flags = _forced(flags, cc, False)
+        other.flags = flags.narrowed(false)
         other.rip = insn.address
         worklist.append(other)
         st.conditions.append(taken)
-        st.flags = _forced(flags, cc, True)
+        st.flags = flags.narrowed(true)
         return True
 
     def run(self, entry, setup, return_type):
@@ -741,7 +846,7 @@ class Emulator:
         st.vregs[0] = [unk(f"{name}()")] + [V(0)] * 7
         for index in range(1, 6):
             st.vregs.pop(index, None)
-        st.flags = Flags(label=(f"{name}() 后的标志", "0"), kind="cmp")
+        st.flags = Flags(label=(f"{name}() 后的标志", "0"), kind="any")
 
     def path(self, st, worklist, return_type):
         while True:
@@ -1018,7 +1123,10 @@ class Emulator:
             if op == "sub":
                 st.flags = self.compare_flags(a, b, size, None)
             else:
-                st.flags = self.result_flags(r, size, r.prov)
+                logical = op in ("and", "or", "xor")
+                st.flags = self.result_flags(
+                    r, size, r.prov, "test" if logical else "result"
+                )
                 if op == "add" and isinstance(a.val, int) and isinstance(b.val, int):
                     st.flags.cf = int(
                         (a.val & MASK[size]) + (b.val & MASK[size]) > MASK[size]
@@ -1055,27 +1163,49 @@ class Emulator:
         else:
             raise Unsupported("单操作数 imul")
 
-    def op_inc(self, st, insn, ops, _):
+    def _step(self, st, insn, ops, op):
+        """inc / dec: OF from the result, CF kept from the previous instruction."""
+        size = ops[0].size
         a = self.read_op(st, insn, ops[0])
-        r = self.arith("add", a, V(1), ops[0].size)
+        r = self.arith(op, a, V(1), size)
         self.write_op(st, insn, ops[0], r)
-        cf = st.flags.cf
-        st.flags = self.result_flags(r, ops[0].size, r.prov)
-        st.flags.cf = cf
+        old = st.flags
+        new = self.result_flags(r, size, r.prov, "result")
+        if new.label is None:
+            edge = 1 << (8 * size - 1)  # signed minimum after inc, maximum after dec
+            new.of = int(r.val & MASK[size] == (edge if op == "add" else edge - 1))
+        if old.label is None:
+            if new.label is None:
+                new.cf = old.cf
+                st.flags = new
+                return
+            new.candidates = [t for t in new.candidates if t[2] == old.cf]
+            st.flags = new
+            return
+        if new.label is None:
+            # The flags left are still those of the earlier comparison, through CF.
+            carries = {t[2] for t in old.candidates}
+            st.flags = old.narrowed(
+                [(new.zf, new.sf, c, new.of, new.pf) for c in sorted(carries)]
+            )
+            return
+        raise Unsupported(f"{insn.mnemonic} 的结果和保留的 CF 都依赖未知量")
+
+    def op_inc(self, st, insn, ops, _):
+        self._step(st, insn, ops, "add")
 
     def op_dec(self, st, insn, ops, _):
-        a = self.read_op(st, insn, ops[0])
-        r = self.arith("sub", a, V(1), ops[0].size)
-        self.write_op(st, insn, ops[0], r)
-        st.flags = self.result_flags(r, ops[0].size, r.prov)
+        self._step(st, insn, ops, "sub")
 
     def op_neg(self, st, insn, ops, _):
+        size = ops[0].size
         a = self.read_op(st, insn, ops[0])
-        r = self.arith("sub", V(0), a, ops[0].size)
+        r = self.arith("sub", V(0), a, size)
         self.write_op(st, insn, ops[0], r)
-        st.flags = self.result_flags(r, ops[0].size, r.prov)
+        st.flags = self.result_flags(r, size, r.prov, "result")
         if isinstance(a.val, int):
-            st.flags.cf = int(a.val & MASK[ops[0].size] != 0)
+            st.flags.cf = int(a.val & MASK[size] != 0)
+            st.flags.of = int(a.val & MASK[size] == 1 << (8 * size - 1))
 
     def op_not(self, st, insn, ops, _):
         a = self.read_op(st, insn, ops[0])
@@ -1105,7 +1235,24 @@ class Emulator:
             value = unk(f"({name_of(a)} {kind} {n})", a.prov)
         self.write_op(st, insn, ops[0], value)
         if n:
-            st.flags = self.result_flags(value, size, value.prov)
+            st.flags = self.result_flags(value, size, value.prov, "result")
+            if isinstance(a.val, int):  # CF is the last bit shifted out
+                bits = 8 * size
+                if kind == "shl":
+                    st.flags.cf = int(n <= bits and (a.val >> (bits - n)) & 1)
+                else:
+                    source = (
+                        a.val & MASK[size] if kind == "shr" else signed(a.val, size)
+                    )
+                    st.flags.cf = (source >> (n - 1)) & 1
+                st.flags.of = int(
+                    n == 1
+                    and (
+                        (r >> (bits - 1)) ^ st.flags.cf
+                        if kind == "shl"
+                        else kind == "shr" and (a.val & MASK[size]) >> (bits - 1)
+                    )
+                )
 
     def op_shl(self, st, insn, ops, _):
         self._shift(st, insn, ops, "shl")
@@ -1142,11 +1289,11 @@ class Emulator:
             return
         r = self.arith("and", a, b, size)
         if not r.known and same:
-            st.flags = Flags(label=(name_of(a), "0"), kind="cmp", prov=a.prov)
+            st.flags = Flags(label=(name_of(a), "0"), kind="test", prov=a.prov)
             return
         if not r.known:
             st.flags = Flags(
-                label=(f"({name_of(a)} & {name_of(b)})", "0"), kind="cmp", prov=r.prov
+                label=(f"({name_of(a)} & {name_of(b)})", "0"), kind="test", prov=r.prov
             )
             return
         st.flags = self.result_flags(r, size, r.prov)
@@ -1871,18 +2018,70 @@ class _Mem:
         return m
 
 
-def _forced(flags, cc, truth):
-    """Concrete flags that make condition cc evaluate to truth."""
-    forced = Flags(prov=flags.prov)
-    for zf in (0, 1):
-        for sf in (0, 1):
-            for cf in (0, 1):
-                for of in (0, 1):
-                    for pf in (0, 1):
-                        candidate = Flags(zf, sf, cf, of, pf, prov=flags.prov)
-                        if candidate.holds(cc) == truth:
-                            return candidate
-    return forced
+def _overlapping(writes, region, off, size):
+    return [
+        key
+        for key, (_, start, width, _) in writes.items()
+        if key[0] == region and start < off + size and off < start + width
+    ]
+
+
+def _overlay_write(writes, region, obj, off, size, value):
+    """Record a write; a partial overlap with an earlier write is merged by bytes."""
+    keys = _overlapping(writes, region, off, size)
+    partial = [
+        k
+        for k in keys
+        if not (off <= writes[k][1] and writes[k][1] + writes[k][2] <= off + size)
+    ]
+    for key in keys:
+        if key not in partial:
+            del writes[key]
+    if not partial:
+        writes[(region, off)] = (obj, off, size, value)
+        return
+    # The union is contiguous: every merged entry overlaps the new write.
+    start = min([off] + [writes[k][1] for k in partial])
+    end = max([off + size] + [writes[k][1] + writes[k][2] for k in partial])
+    pieces = [writes.pop(k) for k in partial] + [(obj, off, size, value)]
+    merged, prov = 0, frozenset()
+    for _, at, width, piece in pieces:  # older first, the new write last
+        if not isinstance(piece.val, int):
+            raise Unsupported("不同宽度的重叠写入涉及非整数值")
+        shift = 8 * (at - start)
+        merged = merged & ~(MASK[width] << shift) | (piece.val & MASK[width]) << shift
+        prov |= piece.prov
+    writes[(region, start)] = (obj, start, end - start, V(merged, prov))
+
+
+def _overlay_read(writes, region, off, size, original):
+    """Read through this path's writes, combining bytes when widths differ."""
+    keys = _overlapping(writes, region, off, size)
+    if not keys:
+        return original()
+    if len(keys) == 1 and writes[keys[0]][1:3] == (off, size):
+        return writes[keys[0]][3]
+    covered = sum(
+        min(off + size, at + width) - max(off, at)
+        for _, at, width, _ in (writes[k] for k in keys)
+    )
+    if covered < size:
+        base = original()
+        if not isinstance(base.val, int):
+            raise Unsupported("部分覆盖的读取，未写入部分不是整数")
+        result, prov = base.val & MASK[size], base.prov
+    else:
+        result, prov = 0, frozenset()
+    for key in keys:
+        _, at, width, piece = writes[key]
+        if not isinstance(piece.val, int):
+            raise Unsupported("不同宽度的读取涉及非整数写入值")
+        lo, hi = max(off, at), min(off + size, at + width)
+        part = (piece.val >> 8 * (lo - at)) & MASK[hi - lo]
+        shift = 8 * (lo - off)
+        result = result & ~(MASK[hi - lo] << shift) | part << shift
+        prov |= piece.prov
+    return V(result, prov)
 
 
 # setcc / cmovcc dispatch by mnemonic suffix.
