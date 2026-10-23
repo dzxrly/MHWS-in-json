@@ -149,22 +149,49 @@ def format_write(write: dict) -> str:
     )
 
 
-def format_cases(cases: list[dict], domains: dict) -> tuple[str, str]:
-    levels = sorted({case["level"] for case in cases})
-    seen: dict[str, list[str]] = {}
-    for case in cases:
-        for key, label in case["args"].items():
-            if label not in seen.setdefault(key, []):
-                seen[key].append(label)
-    parts = []
-    for key, labels in seen.items():
-        if len(labels) == len(domains.get(key, ())) and len(labels) > 1:
-            parts.append(f"{key}=任意")
-        elif len(labels) == 1:
-            parts.append(f"{key}={labels[0]}")
-        else:
-            parts.append(f"{key}∈{{{','.join(labels)}}}")
-    return ",".join(map(str, levels)), "；".join(parts)
+def cartesian_blocks(points: list[tuple]) -> list[list[set]]:
+    """Split distinct points into blocks whose per-dimension value sets multiply out
+    to exactly the block's points, so a row never implies combinations it lacks."""
+    if len(points[0]) == 1:
+        return [[{p[0] for p in points}]]
+    lasts: dict[tuple, set] = {}
+    for p in points:
+        lasts.setdefault(p[:-1], set()).add(p[-1])
+    by_last: dict[frozenset, list[tuple]] = {}
+    for prefix, values in lasts.items():
+        by_last.setdefault(frozenset(values), []).append(prefix)
+    return [
+        block + [set(values)]
+        for values, prefixes in by_last.items()
+        for block in cartesian_blocks(prefixes)
+    ]
+
+
+def format_cases(cases: list[dict], domains: dict) -> list[tuple[str, str]]:
+    """(levels, arguments) texts of a result group, one per Cartesian block."""
+    keys = list(dict.fromkeys(key for case in cases for key in case["args"]))
+    points = list(
+        dict.fromkeys(
+            (*(case["args"].get(key) for key in keys), case["level"]) for case in cases
+        )
+    )
+    rows = []
+    for *arg_sets, levels in cartesian_blocks(points):
+        parts = []
+        for key, labels in zip(keys, arg_sets):
+            domain = domains.get(key, [])
+            labels = sorted(
+                labels - {None},
+                key=lambda v: domain.index(v) if v in domain else len(domain),
+            )
+            if len(labels) == len(domain) and len(labels) > 1:
+                parts.append(f"{key}=任意")
+            elif len(labels) == 1:
+                parts.append(f"{key}={labels[0]}")
+            elif labels:
+                parts.append(f"{key}∈{{{','.join(labels)}}}")
+        rows.append((",".join(map(str, sorted(levels))), "；".join(parts)))
+    return sorted(rows, key=lambda row: (int(row[0].split(",")[0]), row[1]))
 
 
 def build_sheets(
@@ -273,10 +300,10 @@ def build_sheets(
                 pending.append({**base, "原因": reason})
                 continue
             for group in results["groups"]:
-                level_text, args_text = format_cases(
-                    group["cases"], results["argDomains"]
-                )
-                for path in group["paths"]:
+                blocks = format_cases(group["cases"], results["argDomains"])
+                for (level_text, args_text), path in (
+                    (block, path) for block in blocks for path in group["paths"]
+                ):
                     effects.append(
                         {
                             **base,

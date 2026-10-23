@@ -10,6 +10,7 @@ from config import NATIVES_DIR
 from src.processed_data.skill_details.exporter import (
     LINKS_DIR,
     build_sheets,
+    format_cases,
     load_links,
 )
 from src.shared.source.repository import SourceRepository
@@ -63,6 +64,20 @@ class SkillDetailsTests(unittest.TestCase):
         self.assertEqual(row["代码引用的技能"].split("（")[0], "HunterSkill_154")
         self.assertIn(
             "PlayerSkillParam._ViolentData._DataPack[2]._Value", row["数据来源"]
+        )
+
+    def test_cases_are_split_into_cartesian_blocks(self):
+        domains = {"1:Kind": ["S", "M", "L"]}
+        cases = [
+            {"level": 1, "args": {"1:Kind": "S"}},
+            {"level": 2, "args": {"1:Kind": "L"}},
+            {"level": 3, "args": {"1:Kind": "S"}},
+            {"level": 3, "args": {"1:Kind": "M"}},
+            {"level": 3, "args": {"1:Kind": "L"}},
+        ]
+        self.assertEqual(
+            format_cases(cases, domains),
+            [("1,3", "1:Kind=S"), ("2,3", "1:Kind=L"), ("3", "1:Kind=M")],
         )
 
     def test_every_skill_level_row_is_listed(self):
