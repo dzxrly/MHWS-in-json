@@ -1,11 +1,13 @@
 """Skill accessor emulation on hand-written machine code; no game files needed."""
 
+from importlib.util import find_spec
 import struct
 import unittest
 
-from sdk.skill_effect_exporter.native.emulator import STACK, Emulator
-from sdk.skill_effect_exporter.native.values import Ptr, V
-from sdk.skill_effect_exporter.runtime.heap import Heap, Layouts, SynthObj
+if find_spec("capstone"):
+    from sdk.skill_effect_exporter.native.emulator import STACK, Emulator
+    from sdk.skill_effect_exporter.native.values import Ptr, V
+    from sdk.skill_effect_exporter.runtime.heap import Heap, Layouts, SynthObj
 
 BASE = 0x140001000
 CONSTANT = 0x140002000
@@ -49,6 +51,9 @@ def run(code, setup, returns, constants=b""):
 THRESHOLD = bytes.fromhex("8b4210" "83f803" "7f03" "31c0" "c3" "b801000000" "c3")
 
 
+@unittest.skipUnless(
+    find_spec("capstone"), "技能效果模拟器测试需要 SDK 的 Capstone 依赖"
+)
 class EmulatorTests(unittest.TestCase):
     def test_known_field_takes_one_path(self):
         def setup(st, heap):
