@@ -7,15 +7,26 @@ import unittest
 if find_spec("capstone"):
     from sdk.skill_effect_exporter.native.emulator import STACK, Emulator
     from sdk.skill_effect_exporter.native.values import Ptr, V, f32_bits
-    from sdk.skill_effect_exporter.runtime.heap import Heap, Layouts, SynthObj
+    from sdk.skill_effect_exporter.runtime.heap import Heap, JsonObj, Layouts, SynthObj
+    from sdk.skill_effect_exporter.config import MAX_RECORDED_PATHS
+    from sdk.skill_effect_exporter.workflow.extract import limit_recorded, merge_paths
 
 BASE = 0x140001000
 CONSTANT = 0x140002000
 
 
 class FakeMetadata:
+    TYPES = {
+        "Pair": dict(
+            fields={
+                "a": dict(type="System.Int32", offset_from_base="0x10"),
+                "b": dict(type="System.Int32", offset_from_base="0x14"),
+            }
+        )
+    }
+
     def get(self, name):
-        return None
+        return self.TYPES.get(name)
 
 
 class FakePE:
@@ -197,6 +208,78 @@ class EmulatorTests(unittest.TestCase):
 
         (result,) = run(bytes.fromhex("c5fa59c0" "c3"), huge, "System.Single")
         self.assertEqual(result["value"], float("inf"))
+
+    def test_partial_write_keeps_unknown_upper_bits(self):
+        # mov al,1; shr eax,8; ret  (eax was never set)
+        code = bytes.fromhex("b001" "c1e808" "c3")
+        (result,) = run(code, lambda st, heap: None, "System.Int32")
+        self.assertNotIsInstance(result["value"], int)
+
+    def test_wide_read_spans_adjacent_fields(self):
+        # mov rax,[rdx+0x10]; ret
+        def setup(st, heap):
+            st.regs["rdx"] = V(Ptr(JsonObj("Pair", {"a": 1, "b": 2}, "pair")))
+
+        (result,) = run(bytes.fromhex("488b4210" "c3"), setup, "System.UInt64")
+        self.assertEqual(result["value"], 0x200000001)
+
+    def test_switch_on_unknown_index_takes_every_case(self):
+        # mov eax,[rdx+0x10]; cmp eax,2; ja default; lea rcx,[rip+table];
+        # movsxd rax,[rcx+rax*4]; add rax,rcx; jmp rax; cases return 10/20/30, default -1
+        head = bytes.fromhex("8b4210" "83f802" "7722" "488d0d") + struct.pack(
+            "<i", CONSTANT - (BASE + 15)
+        )
+        code = head + bytes.fromhex("48630481" "4801c8" "ffe0")
+        for value in (10, 20, 30, -1):
+            code += bytes([0xB8]) + struct.pack("<i", value) + bytes([0xC3])
+        table = b"".join(
+            struct.pack("<i", BASE + 24 + 6 * k - CONSTANT) for k in range(3)
+        )
+
+        def setup(st, heap):
+            st.regs["rdx"] = V(Ptr(heap.unknown("t", "状态")))
+
+        results = run(code, setup, "System.Int32", constants=table)
+        by_value = {r["value"]: r["conditions"] for r in results}
+        self.assertEqual(sorted(by_value), [-1, 10, 20, 30])
+        self.assertEqual(by_value[20][-1], "状态+0x10 == 1")
+
+    def test_paths_differing_in_an_irrelevant_branch_merge(self):
+        negations = {"a": "!a", "!a": "a", "b": "!b", "!b": "b"}
+        paths = [
+            dict(status="ok", value=1, conditions=c)
+            for c in (["a", "b"], ["a", "!b"], ["!a", "b"])
+        ]
+        merged = merge_paths(paths, negations)
+        self.assertEqual(
+            sorted(tuple(p.get("conditions", [])) for p in merged),
+            [("!a", "b"), ("a",)],
+        )
+
+    def test_inc_of_unknown_still_branches_on_zero(self):
+        # mov eax,[rdx+0x10]; mov ecx,[rdx+0x14]; cmp eax,3; inc ecx; jz +6;
+        # mov eax,1; ret; xor eax,eax; ret
+        code = bytes.fromhex(
+            "8b4210" "8b4a14" "83f803" "ffc1" "7406" "b801000000" "c3" "31c0" "c3"
+        )
+
+        def setup(st, heap):
+            st.regs["rdx"] = V(Ptr(heap.unknown("t", "状态")))
+
+        results = run(code, setup, "System.Int32")
+        self.assertEqual(
+            sorted((r["status"], r["value"]) for r in results), [("ok", 0), ("ok", 1)]
+        )
+
+    def test_recorded_paths_keep_the_fewest_conditions(self):
+        paths = [
+            dict(status="ok", value=n, conditions=["c"] * n)
+            for n in range(MAX_RECORDED_PATHS + 5)
+        ]
+        kept = limit_recorded(list(reversed(paths)))
+        self.assertEqual(len(kept), MAX_RECORDED_PATHS + 1)
+        self.assertEqual(kept[0]["value"], 0)
+        self.assertEqual(kept[-1]["status"], "truncated")
 
     def test_dec_keeps_carry(self):
         # mov eax,2; cmp eax,3; dec eax; setb al; movzx eax,al; ret

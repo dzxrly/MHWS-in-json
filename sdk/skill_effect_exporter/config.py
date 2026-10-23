@@ -105,5 +105,41 @@ MAX_TOTAL_STEPS = 60000  # all paths of one evaluation together
 LIMIT_STATUSES = ("too_many_paths", "too_long")
 MAX_PATHS = 256  # pending forks included; forks inside a replayed callee collapse
 MAX_CALL_DEPTH = 4
+# A path forking more often than this at one branch is in a loop whose trip
+# count is unknown (see emulator.UnknownLoop).
+MAX_LOOP_FORKS = 4
 MAX_ARGUMENT_COMBINATIONS = 64
 MAX_ENUM_VALUES = 40
+# Callers of a cHunterSkill accessor are evaluated for the skills it reads,
+# unless it reads more than this many (sums over many skills, like calcAttackRate).
+MAX_ACCESSOR_SKILLS = 2
+# Paths kept per case after merging; the ones with fewest conditions first.
+MAX_RECORDED_PATHS = 32
+
+# Scenario dimensions: runtime values that choose between per-weapon or
+# per-ammo parameters. A function that reads one is evaluated once per enum
+# value (except DIMENSION_EXCLUDED), and the value is listed as an argument
+# named by the dimension. "field" names the exact runtime field, given as
+# (declaring type, field name); without it any runtime field of the enum type
+# counts, and so does the result of an opaque call declared to return it.
+# The weapon is HunterCharacter._HunterComp.Prepare
+# .<WeaponBuilder>k__BackingField._EquippedWeaponType; _ReserveWeaponType, of
+# the same enum, stays runtime state.
+# "only" limits a dimension to cases where another dimension, when known, has
+# one of the listed values: the ammo enums belong to WeaponGunDef (bowguns).
+BOWGUNS = {"武器": ("HEAVY_BOWGUN", "LIGHT_BOWGUN")}
+DIMENSIONS = (
+    dict(
+        name="武器",
+        enum="app.WeaponDef.TYPE",
+        field=("app.mcHunterWeaponBuilder", "_EquippedWeaponType"),
+    ),
+    dict(name="弹种", enum="app.WeaponGunDef.SHELL_TYPE", field=None, only=BOWGUNS),
+    dict(
+        name="弹药参数类型",
+        enum="app.WeaponGunDef.SHELL_PARAM_TYPE",
+        field=None,
+        only=BOWGUNS,
+    ),
+)
+DIMENSION_EXCLUDED = ("INVALID", "MAX")

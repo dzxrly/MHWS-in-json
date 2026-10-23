@@ -34,6 +34,7 @@ STATUS_TEXT = {
     "null": "经过空引用的路径",
     "throws": "异常路径",
     "writes_state": "会写入运行时状态，不是取值函数",
+    "truncated": "路径过多，只列出条件最少的部分",
 }
 KIND_TEXT = {
     "value": "读取数值槽",
@@ -41,6 +42,9 @@ KIND_TEXT = {
     "active": "检查是否发动",
     "other": "其他",
 }
+ACCESSOR_KIND = (
+    "accessor"  # the function calls a skill accessor, not a skill-argument method
+)
 
 
 def load_links(directory: Path = LINKS_DIR) -> dict:
@@ -167,6 +171,12 @@ def cartesian_blocks(points: list[tuple]) -> list[list[set]]:
     ]
 
 
+def usage_text(use: dict) -> str:
+    if use["kind"] == ACCESSOR_KIND:
+        return f"调用技能取值函数 {use['helper'].rsplit('.', 1)[-1]}"
+    return KIND_TEXT[use["kind"]]
+
+
 def format_cases(cases: list[dict], domains: dict) -> list[tuple[str, str]]:
     """(levels, arguments) texts of a result group, one per Cartesian block."""
     keys = list(dict.fromkeys(key for case in cases for key in case["args"]))
@@ -280,9 +290,7 @@ def build_sheets(
                 "函数": short_function(function),
                 "函数地址": function["address"],
                 "返回类型": function["returns"].rsplit(".", 1)[-1],
-                "用法": "、".join(
-                    sorted({KIND_TEXT[use["kind"]] for use in link["uses"]})
-                ),
+                "用法": "、".join(sorted({usage_text(use) for use in link["uses"]})),
             }
             results = link.get("results")
             if not results:
@@ -320,6 +328,9 @@ def build_sheets(
                                 format_write(w) for w in path.get("writes", [])
                             ),
                             "未模拟的调用": "\n".join(path.get("opaque", [])),
+                            "求值范围": (
+                                "仅经过技能读取点的路径" if path.get("focused") else ""
+                            ),
                         }
                     )
 

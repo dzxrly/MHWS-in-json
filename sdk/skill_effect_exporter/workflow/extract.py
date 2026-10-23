@@ -17,14 +17,20 @@ from sdk import versions
 
 from .. import notes
 from ..config import (
+    DIMENSION_EXCLUDED,
+    DIMENSIONS,
     EVALUATE_SKIP_PREFIXES,
+    HUNTER_SKILL,
     LIMIT_STATUSES,
+    MAX_ACCESSOR_SKILLS,
+    MAX_RECORDED_PATHS,
     SCHEMA_VERSION,
+    SKILL_PARAM_TYPES,
 )
 from ..native.emulator import PathEnd
 from ..runtime.evaluate import Evaluator, argument_domains
 from ..runtime.scenario import Scenario, SkillWorld
-from ..native.values import Unk
+from ..native.values import Unk, V
 from ..native.scan import NativeIndex, method_stem
 
 CONSTANT = re.compile(r"^EXE 常量 (0x[0-9a-f]+):([0-9a-f]+)$")
@@ -69,8 +75,65 @@ def clean_sources(prov):
     return data, constants
 
 
+def merge_paths(paths, negations):
+    """Merge paths with the same outcome whose conditions differ only in one
+    condition and its negation: that branch does not change the result.
+    Repeats until no pair is left, so conditions that never matter disappear."""
+    items = []
+    for path in paths:
+        record = {k: v for k, v in path.items() if k != "conditions"}
+        key = json.dumps(record, ensure_ascii=False, sort_keys=True)
+        items.append((key, list(path.get("conditions", [])), record))
+    while True:
+        # One pass pairs every path with at most one partner, then merges them.
+        seen, used, merges = {}, set(), []
+        for i, (key, conditions, _) in enumerate(items):
+            present = set(conditions)
+            for condition in conditions:
+                negation = negations.get(condition)
+                if negation is None or negation in present:
+                    continue
+                rest = frozenset(present - {condition})
+                partner = seen.get((key, rest, negation))
+                if partner is not None and partner not in used and i not in used:
+                    used.update((partner, i))
+                    merges.append((partner, i, condition))
+                    break
+                seen.setdefault((key, rest, condition), i)
+        if not merges:
+            break
+        for first, second, condition in merges:
+            key, conditions, record = items[second]
+            dropped = {condition, negations[condition]}
+            items[first] = (key, [c for c in conditions if c not in dropped], record)
+        removed = {second for _, second, _ in merges}
+        items = [item for i, item in enumerate(items) if i not in removed]
+    merged, done = [], set()
+    for key, conditions, record in items:
+        if (key, tuple(conditions)) in done:
+            continue
+        done.add((key, tuple(conditions)))
+        merged.append(dict(record, conditions=conditions) if conditions else record)
+    return merged
+
+
+def limit_recorded(paths):
+    """At most MAX_RECORDED_PATHS paths per case, those with fewest conditions
+    first; the rest are counted in one "truncated" record."""
+    if len(paths) <= MAX_RECORDED_PATHS:
+        return paths
+    ordered = sorted(paths, key=lambda p: len(p.get("conditions", [])))
+    kept = ordered[:MAX_RECORDED_PATHS]
+    rest = len(paths) - len(kept)
+    return kept + [
+        dict(status="truncated", detail=f"另有 {rest} 条条件更多的路径未列出")
+    ]
+
+
 def path_record(result):
     record = dict(status=result["status"])
+    if result.get("focused"):
+        record["focused"] = True
     if result.get("conditions"):
         record["conditions"] = list(result["conditions"])
     if result["status"] == "ok":
@@ -126,12 +189,14 @@ def extract(
             by_function[row["function"]].append(row)
         functions, links = {}, []
         evaluator = Evaluator(world)
+        evaluator.skill_calls = frozenset(helpers)
+
         scenarios = {}
         stats = defaultdict(int)
-        for address, rows in sorted(by_function.items()):
-            names = index.catalog.get(address, [])
+        def describe(address):
+            """il2cpp method record of a function; also lists it in functions."""
             info, owner = None, None
-            for type_name, method in names:
+            for type_name, method in index.catalog.get(address, []):
                 candidate = (
                     (metadata.get(type_name) or {}).get("methods", {}).get(method)
                 )
@@ -147,6 +212,40 @@ def extract(
                 returns=returns,
                 params=[p.get("type") for p in (info or {}).get("params", [])],
             )
+            evaluable = (
+                info is not None
+                and returns != "?"
+                and not owner[1].startswith((".ctor", ".cctor"))
+                and not owner[0].startswith(EVALUATE_SKIP_PREFIXES)
+            )
+            return key, info, evaluable
+
+        def add_link(key, info, evaluable, via, uses, sites):
+            equipped = world.remap.get(via, via)
+            if skills and equipped not in skills:
+                return
+            link = dict(skill=equipped, via=via, function=key, uses=uses)
+            levels = [
+                row["_SkillLv"]
+                for row in world.levels.get(equipped, ())
+                if row["_SkillLv"] > 0
+            ]
+            if evaluable and levels:
+                link["results"] = evaluate_link(
+                    evaluator,
+                    world,
+                    scenarios,
+                    equipped,
+                    levels,
+                    functions[key],
+                    info,
+                    stats,
+                    sites,
+                )
+            links.append(link)
+
+        for address, rows in sorted(by_function.items()):
+            key, info, evaluable = describe(address)
             referenced = defaultdict(list)
             for row in rows:
                 if row["skill"] in (None, "NONE"):
@@ -160,39 +259,68 @@ def extract(
                         intArgs=row["intArgs"],
                     )
                 )
-            evaluable = (
-                info is not None
-                and returns != "?"
-                and not owner[1].startswith((".ctor", ".cctor"))
-                and not owner[0].startswith(EVALUATE_SKIP_PREFIXES)
+            # cHunterSkill methods over many skills are sums (calcAttackRate,
+            # calcElemFireRate): they keep their limit status. Other functions,
+            # such as a weapon's hit handling, apply skills to actions or ammo.
+            focusable = (
+                len(referenced) <= MAX_ACCESSOR_SKILLS
+                or functions[key]["type"] != HUNTER_SKILL
             )
             for via, uses in sorted(referenced.items()):
-                equipped = world.remap.get(via, via)
-                if skills and equipped not in skills:
-                    continue
-                link = dict(skill=equipped, via=via, function=key, uses=uses)
-                levels = [
-                    row["_SkillLv"]
-                    for row in world.levels.get(equipped, ())
-                    if row["_SkillLv"] > 0
-                ]
-                if evaluable and levels:
-                    link["results"] = evaluate_link(
-                        evaluator,
-                        world,
-                        scenarios,
-                        equipped,
-                        levels,
-                        functions[key],
-                        info,
-                        stats,
-                    )
-                links.append(link)
+                sites = {int(use["site"], 16) for use in uses} if focusable else None
+                add_link(key, info, evaluable, via, uses, sites)
             stats["functions"] += 1
             if stats["functions"] % 200 == 0:
                 log(
                     f"  已处理函数 {stats['functions']}/{len(by_function)}，用时 {time.time() - started:.0f}s"
                 )
+
+        # Second layer: a cHunterSkill accessor that takes no skill argument
+        # (getSkillDodgeNoHitLv, getSkillGunnerAmmo_Normal_Rate) returns a level
+        # or rate that its callers turn into the effect (invulnerable frames per
+        # weapon action, which shells the rate applies to). Those callers are
+        # evaluated in the same scenario, with the accessor run inline.
+        accessors = defaultdict(set)
+        for link in links:
+            function = functions[link["function"]]
+            if (
+                function["type"] == HUNTER_SKILL
+                and function["returns"] not in ("System.Void", "?")
+                and not set(SKILL_PARAM_TYPES) & set(function["params"])
+                and "results" in link
+            ):
+                accessors[int(link["function"], 16)].add(link["via"])
+        accessors = {
+            address: vias
+            for address, vias in accessors.items()
+            if len(vias) <= MAX_ACCESSOR_SKILLS
+        }
+        linked = {(link["function"], link["via"]) for link in links}
+        second = defaultdict(list)
+        for target, owners in index.calls_to(set(accessors)).items():
+            helper = functions[f"{target:#x}"]
+            for owner, sites in owners.items():
+                if owner in by_function:  # uses skills itself: a first-layer link
+                    continue
+                for via in accessors[target]:
+                    if (f"{owner:#x}", via) in linked:
+                        continue
+                    second[(owner, via)] += [
+                        dict(
+                            helper=f"{helper['type']}.{helper['method']}",
+                            kind="accessor",
+                            site=f"{site:#x}",
+                        )
+                        for site in sites
+                    ]
+        log(f"技能取值函数 {len(accessors)} 个，其调用方链路 {len(second)} 条")
+        for (owner, via), uses in sorted(second.items()):
+            key, info, evaluable = describe(owner)
+            add_link(
+                key, info, evaluable, via, uses, {int(u["site"], 16) for u in uses}
+            )
+            stats["accessor_callers"] += 1
+
         document = dict(
             schemaVersion=SCHEMA_VERSION,
             gameVersion=game_version,
@@ -200,6 +328,8 @@ def extract(
                 "每次只装备一个技能；组合/系列技能的等级是装备件数",
                 "未导出的运行时状态保持未知，并在条件或表达式中按字段路径列出",
                 "运行时对象引用均视为存在（不展开空引用分支）",
+                "读取装备武器类型或弹种的函数按每种取值分别求值，参数中的“武器”“弹种”“弹药参数类型”即情境中的装备武器与所用弹药",
+                "分支过多的函数只追踪经过技能读取点的路径；在一个等级下某一武器或弹药没有路径经过读取点时，其他等级视为同样不经过",
             ],
             skills=skill_table(
                 world, {l["skill"] for l in links} | {l["via"] for l in links}
@@ -215,7 +345,9 @@ def extract(
         return document
 
 
-def evaluate_link(evaluator, world, scenarios, skill, levels, function, info, stats):
+def evaluate_link(
+    evaluator, world, scenarios, skill, levels, function, info, stats, sites
+):
     groups = {}
     combos = argument_domains(world.layouts, info.get("params", []))
     domains = {}
@@ -224,37 +356,130 @@ def evaluate_link(evaluator, world, scenarios, skill, levels, function, info, st
             key = f"{i + 1}:{param.get('type', '').rsplit('.', 1)[-1]}"
             if label is not None and label not in domains.setdefault(key, []):
                 domains[key].append(label)
+    values = {
+        dimension["name"]: sorted(
+            (value & 0xFFFFFFFF, label)
+            for label, value in world.layouts.enum_values(dimension["enum"]).items()
+            if label not in DIMENSION_EXCLUDED
+        )
+        for dimension in DIMENSIONS
+    }
+    order = [dimension["name"] for dimension in DIMENSIONS]
+    only = {dimension["name"]: dimension.get("only", {}) for dimension in DIMENSIONS}
+    settled = {}  # arguments with dimension values -> results reused at other levels
     limited = None  # first limit this function hit: later cases reuse it
+    focus_only = False  # the whole function exceeded a limit: run focused at once
+
+    def attempt(scenario, combo, fixed):
+        """One evaluation with the dimensions in fixed set: name -> (value, label)."""
+        heap = scenario.heap
+        heap.inputs = {
+            name: V(value, frozenset({f"参数 {name}={label}"}))
+            for name, (value, label) in fixed.items()
+        }
+        heap.inputs_read = set()
+        nonlocal focus_only
+        results, end = None, None
+        if not focus_only:
+            try:
+                results = evaluator.run(scenario, function, info, combo)
+            except PathEnd as error:
+                results, end = [dict(status=error.status, detail=error.detail)], error
+            stats["runs"] += 1
+        if focus_only or (end is not None and end.status in LIMIT_STATUSES and sites):
+            # Too large as a whole: keep only the paths through the skill's use.
+            try:
+                focused = evaluator.run(scenario, function, info, combo, sites)
+                results, end = [dict(r, focused=True) for r in focused], None
+                focus_only = True
+            except PathEnd as error:
+                # The skill is used on this case, its value still not complete.
+                detail = f"只追踪可能经过技能读取点的路径仍超限：{error.detail}"
+                results = [dict(status=error.status, detail=detail, focused=True)]
+                end = end or error
+            stats["focused_runs"] += 1
+        unset = [
+            n
+            for n in order
+            if n in heap.inputs_read
+            and n not in fixed
+            and all(
+                fixed[other][1] in allowed
+                for other, allowed in only[n].items()
+                if other in fixed
+            )
+        ]
+        return results, end, unset
+
+    def limit_of(end):
+        if end is None or end.status not in LIMIT_STATUSES:
+            return None
+        return dict(
+            status=end.status,
+            detail=end.detail + "（同一函数的其他情形未再单独求值）",
+        )
+
+    def expand(scenario, combo, args, fixed):
+        """(args, results) of one case, split by every dimension the code reads."""
+        nonlocal limited
+        # With focused evaluation, dimension values differ in which code they
+        # reach: what one value gave (no path through the skill, or a limit) is
+        # reused only for the same arguments and value at the other levels.
+        under = tuple(sorted(args.items()))
+        if sites and fixed and under in settled:
+            stats["skipped"] += 1
+            return [(args, settled[under])]
+        if limited is not None and not (sites and fixed):
+            stats["skipped"] += 1
+            return [(args, [limited])]
+        results, end, unset = attempt(scenario, combo, fixed)
+        if not unset:
+            if sites and fixed:
+                if not results:  # no path reaches the skill under these values
+                    settled[under] = []
+                elif limit_of(end) is not None and len(results) == 1:
+                    first = results[0]
+                    settled[under] = [
+                        dict(
+                            first,
+                            detail=first.get("detail", "")
+                            + "（同一函数的其他情形未再单独求值）",
+                        )
+                    ]
+            else:
+                limited = limit_of(end)
+            return [(args, results)]
+        # Fixing a dimension usually removes branches, so a limit hit while it
+        # was unknown does not stop the runs per value.
+        name = unset[0]
+        domains[name] = [label for _, label in values[name]]
+        cases = []
+        for value, label in values[name]:
+            cases += expand(
+                scenario, combo, {**args, name: label}, {**fixed, name: (value, label)}
+            )
+        return cases
+
     for level in levels:
         scenario = scenarios.get((skill, level))
         if scenario is None:
             scenario = scenarios[(skill, level)] = Scenario(world, skill, level)
         for combo in combos:
-            if limited is not None:
-                results = [limited]
-                stats["skipped"] += 1
-            else:
-                try:
-                    results = evaluator.run(scenario, function, info, combo)
-                except PathEnd as end:
-                    results = [dict(status=end.status, detail=end.detail)]
-                    if end.status in LIMIT_STATUSES:
-                        limited = dict(
-                            status=end.status,
-                            detail=end.detail + "（同一函数的其他情形未再单独求值）",
-                        )
-                stats["runs"] += 1
-            paths = [path_record(r) for r in results]
-            for p in paths:
-                stats["path_" + p["status"]] += 1
             args = {
                 f"{i + 1}:{p.get('type', '').rsplit('.', 1)[-1]}": label
                 for i, (p, (label, _)) in enumerate(zip(info.get("params", []), combo))
                 if label is not None
             }
-            signature = json.dumps(paths, ensure_ascii=False, sort_keys=True)
-            group = groups.setdefault(signature, dict(paths=paths, cases=[]))
-            group["cases"].append(dict(level=level, args=args))
+            cases = expand(scenario, combo, args, {})
+            for case_args, results in cases:
+                paths = limit_recorded(
+                    merge_paths([path_record(r) for r in results], evaluator.negations)
+                )
+                for p in paths:
+                    stats["path_" + p["status"]] += 1
+                signature = json.dumps(paths, ensure_ascii=False, sort_keys=True)
+                group = groups.setdefault(signature, dict(paths=paths, cases=[]))
+                group["cases"].append(dict(level=level, args=case_args))
     return dict(argDomains=domains, groups=list(groups.values()))
 
 

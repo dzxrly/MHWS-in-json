@@ -34,6 +34,7 @@ from ..config import (
     SKILL_DATA_ROW,
     SKILL_ENUM,
     SKILL_FIXED_ENUM,
+    DIMENSIONS,
 )
 from .heap import (
     ENUM_TEXT,
@@ -179,6 +180,7 @@ class Scenario:
     def __init__(self, world: SkillWorld, skill, level):
         self.world, self.skill, self.level = world, skill, level
         self.heap = Heap(world.layouts, world.natives)
+        self.heap.dimensions = DIMENSIONS
         layouts = world.layouts
         count = max(world.runtime.values()) + 1
         holder_elements = []

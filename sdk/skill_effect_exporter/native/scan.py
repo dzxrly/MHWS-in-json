@@ -142,6 +142,14 @@ class NativeIndex:
     def callers(self, targets):
         """function start -> [call site address] for direct calls/jumps to targets."""
         result = defaultdict(list)
+        for target, owners in self.calls_to(targets).items():
+            for owner, sites in owners.items():
+                result[owner] += sites
+        return {owner: sorted(sites) for owner, sites in result.items()}
+
+    def calls_to(self, targets):
+        """target -> {function start -> [call site]} for direct calls/jumps to targets."""
+        result = defaultdict(lambda: defaultdict(list))
         for (vsize, va, raw_size, raw), flags in zip(
             self.pe.sections, self.pe.section_flags
         ):
@@ -159,8 +167,49 @@ class NativeIndex:
                 if target in targets:
                     owner = self.owner(base + offset)
                     if owner is not None:
-                        result[owner].append(base + offset)
+                        result[target][owner].append(base + offset)
         return result
+
+    def reaching(self, start, sites):
+        """Instructions of the function at start from which some site is reachable.
+
+        Successors come from the static control flow: conditional and direct
+        jumps, fall-through after calls. An indirect jump, or a jump out of the
+        function body (a tail call or a split-off block), may lead anywhere, so
+        everything before it counts as reaching.
+        """
+        insns = self.disasm(start)
+        end = self.pe.end(start)
+        addresses = [insn.address for insn in insns]
+        predecessors = defaultdict(set)
+        anywhere = []
+        for insn in insns:
+            nxt = insn.address + insn.size
+            m, ops = insn.mnemonic, insn.operands
+            if m in ("ret", "retn", "int3", "ud2"):
+                continue
+            if m == "jmp" or m.startswith("j"):
+                direct = ops and ops[0].type == X.X86_OP_IMM
+                target = ops[0].imm if direct else None
+                if target is None or not start <= target < end:
+                    anywhere.append(insn.address)
+                else:
+                    predecessors[target].add(insn.address)
+                if m != "jmp":
+                    predecessors[nxt].add(insn.address)
+                continue
+            predecessors[nxt].add(insn.address)
+        if anywhere:  # their successors are unknown: any instruction may follow
+            for address in addresses:
+                predecessors[address].update(anywhere)
+        reach, pending = set(), [s for s in sites if start <= s < end]
+        while pending:
+            address = pending.pop()
+            if address in reach:
+                continue
+            reach.add(address)
+            pending.extend(predecessors[address])
+        return frozenset(reach)
 
     def owner(self, address):
         k = bisect.bisect_right(self.pe.starts, address) - 1

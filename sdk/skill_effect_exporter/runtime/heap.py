@@ -91,6 +91,16 @@ class Layouts:
     def is_enum(self, type_name):
         return self.record(type_name).get("parent") == "System.Enum"
 
+    def is_struct(self, type_name):
+        """A value type with dumped fields (not a primitive, enum or float vector)."""
+        return (
+            self.is_value_type(type_name)
+            and type_name not in PRIMITIVES
+            and type_name not in FLOAT_VECTORS
+            and not self.is_enum(type_name)
+            and bool(self.fields(type_name))
+        )
+
     def size(self, type_name):
         """Inline size of a field or array element of this type."""
         if type_name in PRIMITIVES:
@@ -159,6 +169,22 @@ class HObj:
         layout = heap.layouts.fields(self.type_name) if self.type_name else {}
         return field_width(layout, off, heap)
 
+    def read_wide(self, off, size, heap):
+        """A read wider than the field at off (a copy of adjacent fields):
+        the bytes are assembled field by field; integers only."""
+        value, prov, pos = 0, frozenset(), off
+        while pos < off + size:
+            width = self.width(pos, heap)
+            part = self.read(pos, width, heap)
+            if not isinstance(part.val, int) or pos + width > off + size:
+                raise Unsupported(
+                    f"{self.path}+0x{off:x} 的 {size} 字节读取跨越非整数或不完整字段"
+                )
+            value |= (part.val & ((1 << 8 * width) - 1)) << 8 * (pos - off)
+            prov |= part.prov
+            pos += width
+        return V(value, prov)
+
     def __hash__(self):
         return id(self)
 
@@ -177,12 +203,24 @@ class UnkObj(HObj):
         if off in layout:
             name, ftype = layout[off]
             path = f"{self.path}.{name}"
+            dimension = heap.dimension_of(self.type_name, name, ftype)
+            if dimension is not None:
+                heap.inputs_read.add(dimension)
+                if dimension in heap.inputs:
+                    return heap.inputs[dimension]
             if not heap.layouts.is_value_type(ftype):
                 return V(Ptr(heap.unknown(ftype, path)))
+            if heap.layouts.is_struct(ftype):
+                return UnkObj(ftype, path).read(BOX_HEADER, size, heap)
             return unk(path)
         for start, (name, ftype) in layout.items():
             inner = heap.layouts.size(ftype) if heap.layouts.is_value_type(ftype) else 8
             if start < off < start + inner:
+                if heap.layouts.is_struct(ftype):
+                    # An embedded struct: its dumped offsets include the box header.
+                    return UnkObj(ftype, f"{self.path}.{name}").read(
+                        off - start + BOX_HEADER, size, heap
+                    )
                 return unk(f"{self.path}.{name}+0x{off - start:x}")
         return unk(f"{self.path}+0x{off:x}")
 
@@ -209,6 +247,8 @@ class JsonObj(HObj):
 
     def read(self, off, size, heap):
         layout = heap.layouts.fields(self.type_name)
+        if off in layout and size > self.width(off, heap):
+            return self.read_wide(off, size, heap)
         if off in layout:
             name, ftype = layout[off]
             if name in self.overrides:
@@ -277,6 +317,8 @@ class ValueView(HObj):
         layout = {
             k - BOX_HEADER: v for k, v in heap.layouts.fields(self.type_name).items()
         }
+        if off in layout and size > self.width(off, heap):
+            return self.read_wide(off, size, heap)
         if off in layout:
             name, ftype = layout[off]
             value = self.data.get(name) if isinstance(self.data, dict) else None
@@ -370,9 +412,25 @@ class Heap:
         self.unknowns = {}
         self.objects = {}
         self.read_files = set()
+        # Scenario dimensions (config.DIMENSIONS): inputs holds the values given
+        # for the current evaluation by dimension name, inputs_read the
+        # dimensions the evaluation read.
+        self.dimensions = ()
+        self.inputs = {}
+        self.inputs_read = set()
         self.singletons = (
             {}
         )  # type -> object every unknown reference of that type resolves to
+
+    def dimension_of(self, type_name, field_name, field_type):
+        """Name of the scenario dimension a runtime field supplies, if any."""
+        for dimension in self.dimensions:
+            if dimension["field"] is not None:
+                if dimension["field"] == (type_name, field_name):
+                    return dimension["name"]
+            elif field_type == dimension["enum"]:
+                return dimension["name"]
+        return None
 
     def unknown(self, type_name, path):
         if type_name in self.singletons:

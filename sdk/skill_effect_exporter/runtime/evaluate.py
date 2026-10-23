@@ -57,6 +57,21 @@ class Evaluator:
         self.world = world
         index = world.index
         self.names = dict(index.names)
+        self.negations = {}  # shared by every run: condition text -> its negation
+        self.signatures = {}  # callee address -> il2cpp method record, on demand
+        self.skill_calls = frozenset()  # set by extract: skill-argument methods
+
+    def signature(self, address):
+        """il2cpp method record of a callee (returns, params, flags), or None."""
+        if address not in self.signatures:
+            record = None
+            for type_name, method in self.world.index.catalog.get(address, []):
+                methods = (self.world.metadata.get(type_name) or {}).get("methods", {})
+                if method in methods:
+                    record = methods[method]
+                    break
+            self.signatures[address] = record
+        return self.signatures[address]
 
     def emulator(self, scenario):
         index = self.world.index
@@ -76,8 +91,20 @@ class Evaluator:
             globals_=scenario.globals,
         )
 
-    def run(self, scenario, function, info, args):
+    def run(self, scenario, function, info, args, sites=None):
+        """Evaluate function once; with sites, only paths through one of them."""
         emulator = self.emulator(scenario)
+        emulator.negations = self.negations
+        emulator.signature = self.signature
+        emulator.skill_calls = self.skill_calls
+        if sites:
+            start = int(function["address"], 16)
+            emulator.focus = (
+                start,
+                self.world.pe.end(start),
+                self.world.index.reaching(start, sites),
+                frozenset(sites),
+            )
         params = info.get("params", [])
         static = "Static" in info.get("flags", "")
         returns = info.get("returns", {}).get("type", "System.Void")

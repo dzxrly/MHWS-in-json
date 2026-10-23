@@ -11,7 +11,7 @@ SDK 与 `src` 之间只通过这份 JSON 交接：`src` 不导入本目录的代
 - 原生布局常量（对象头、数组与 `List`1` 偏移、调用约定、栈对齐、扫描用的字节模式）只放在 `config.py` 的“native layout constants”一节；类型名、方法名和字段名也集中在 `config.py`。其他模块不写字面偏移。
 - 函数地址、全局变量地址、字段偏移都不写进代码：每次运行按类型名、去后缀方法名和字段名从当前 il2cpp dump 重新定位（`scan.py`、`heap.Layouts`）。
 - 需要人工说明的技能写在 `notes.py`（简体中文），每条注明核对的游戏版本；没有证据的内容不写。
-- 同步更新用户文档：命令或参数变化时，同一次改动中更新 `docs/sdk.md`、`docs/sdk.zh-Hans.md`、`docs/sdk.zh-Hant.md`（三份内容一致），必要时更新三份 README 的“项目工具”简介，并更新本文件。
+- 同步更新用户文档：命令或参数变化时，同一次改动中更新 `sdk/README.md`、`sdk/README.zh-Hans.md`、`sdk/README.zh-Hant.md`（三份内容一致），必要时更新三份 README 的“项目工具”简介，并更新本文件。
 
 ## 构建思路（先读这一节）
 
@@ -40,6 +40,13 @@ SDK 与 `src` 之间只通过这份 JSON 交接：`src` 不导入本目录的代
 - **来源**：每个值都带来源集合（SkillData 槽位、参数文件字段的叶子路径、EXE 只读常量），结果据此列出数据来源；指针本身不带来源。
 - **前提**（写入 JSON 的 `assumptions`）：一次只装备一个技能；运行时对象引用视为存在，不展开空引用分支；未导出的运行时状态保持未知。
 
+### 3a. 情境维度、取值函数调用方与聚焦求值
+
+- **情境维度**（`config.DIMENSIONS`）：装备武器类型（`HunterCharacter._HunterComp.Prepare.<WeaponBuilder>k__BackingField._EquippedWeaponType`）、弩弹种类（`app.WeaponGunDef.SHELL_TYPE`）、弹药参数类型（`app.WeaponGunDef.SHELL_PARAM_TYPE`）。函数读到维度字段（按字段名，或按字段/返回值/`out` 参数的枚举类型）时，`heap.inputs_read` 记下它，`extract.evaluate_link` 再按该枚举的每个取值（除 `DIMENSION_EXCLUDED`）分别求值；多个维度依次展开（先武器、在需要时再按弹种）。取值作为参数写进结果。`_ReserveWeaponType` 与装备武器同类型但不是维度，保持运行时状态。超限沿用（`LIMIT_STATUSES`）只在等级、参数之间生效，不跨维度取值。
+- **取值函数调用方**：不带技能参数、返回非 void 的 `cHunterSkill` 方法（如 `getSkillDodgeNoHitLv`、`getSkillGunnerAmmo_*`）只给出等级或倍率。它们若只读不超过 `MAX_ACCESSOR_SKILLS` 个技能，`NativeIndex.calls_to` 找出的直接调用方也在同一情境中求值（链路 `uses.kind = "accessor"`）。被内联到调用方的取值函数没有调用点，这时结果来自调用方作为第一层链路的求值。
+- **聚焦求值**：完整求值超限且链路有调用点时（`cHunterSkill` 上引用超过 `MAX_ACCESSOR_SKILLS` 个技能的汇总方法除外，它们保持超限状态），`Evaluator.run(..., sites)` 重新求值：未到达调用点前只保留静态控制流图上仍能到达调用点的分支（`NativeIndex.reaching`），走不到的路径丢弃；除调用点本身与技能参数方法外，所有调用按不透明调用处理。同一函数此后的情形直接聚焦求值。结果标 `focused`，表格“求值范围”列显示；聚焦后仍超限的详情为“只追踪可能经过技能读取点的路径仍超限”。
+- **其他保证**：同一路径在同一分支地址因未知量分叉超过 `MAX_LOOP_FORKS` 次视为次数未知的循环（`UnknownLoop`），所在内联调用整体回放为不透明调用；`switch` 跳转表的索引未知时，按前面 `cmp idx, N; ja` 的上界逐个情形分叉；不透明调用的 `ByRef` 参数写入以“函数() 的输出 参数名”命名的未知值；结果相同、条件只差一对互为否定条件的路径合并（`extract.merge_paths`）。`inc`/`dec` 的结果和保留的 CF 都未知时，只在后续条件读取 CF 时报告不支持。合并后每个情形最多记录 `MAX_RECORDED_PATHS` 条路径（条件少的优先），其余以 `truncated` 记录计数，控制分片体积。
+
 ### 4. 结果的含义
 
 - `status=ok` 且有 `value`：在列出的运行时条件下函数返回这个数。
@@ -65,10 +72,10 @@ SDK 与 `src` 之间只通过这份 JSON 交接：`src` 不导入本目录的代
 | `native/emulator.py` | x64 解释执行、分叉与条件文本、调用内联与失败回退、运行时写入覆盖层、浮点与向量指令 |
 | `runtime/heap.py` | il2cpp 字段布局（`Layouts`）、解包 JSON 对象模型、未知运行时对象 |
 | `runtime/scenario.py` | 情境：技能目录、`EquipSkillData`/`EquipSkillInfo` 拼装、组合技能表、单例链 |
-| `runtime/evaluate.py` | 参数取值范围、按调用约定装入参数并执行一次求值 |
+| `runtime/evaluate.py` | 参数取值范围、按调用约定装入参数并执行一次求值（含聚焦求值）、被调方法签名 |
 | `workflow/extract.py` | 汇总全部链路与求值结果、整理来源、按 `sdk/game_versions.json` 识别游戏版本 |
 | `workflow/shards.py` | 写出 `index.json` 与按技能类别的分片；分片内的条件、来源、调用文本与常量各自去重成表 |
-| `workflow/cli.py`、`__main__.py` | 命令行入口 |
+| `workflow/cli.py`、`__main__.py` | 命令行入口；菜单界面在 `sdk/tui.py`（`python -m sdk`），只调用命令行 |
 | `notes.py` | 需要显式说明的技能与通用说明（简体中文） |
 
 ## 命令
@@ -83,7 +90,7 @@ python -B -m sdk.skill_effect_exporter extract -s HunterSkill_019 -o .agents/ski
 
 - `-e/--exe`：默认取环境变量 `MHWS_EXE`，其次在 Steam 库中查找。
 - `-i/--il2cpp`：默认取环境变量 `MHWS_IL2CPP`，其次取 EXE 同目录的 `il2cpp_dump.json`。
-- 全量运行需要数分钟；之后运行 `python -m src.processed_data.skill_details` 或完整流水线检查表格。
+- 全量运行约 20 分钟（多数时间花在按武器、弹药展开与聚焦求值上）；之后运行 `python -m src.processed_data.skill_details` 或完整流水线检查表格。
 
 ## 游戏更新后的检查
 
