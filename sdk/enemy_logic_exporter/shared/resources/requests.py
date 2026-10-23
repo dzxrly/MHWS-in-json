@@ -346,7 +346,6 @@ def discover_requests(native_index, inventory, exe, metadata, natives, output):
                             type=row["type"],
                             method=row["method"],
                             resource=source,
-                            resourceSha256=resources.hashes[source],
                             nativeCodeRef=key,
                             **store,
                             reason="action_identity_binding_unresolved",
@@ -398,7 +397,6 @@ def discover_requests(native_index, inventory, exe, metadata, natives, output):
                         method=row["method"],
                         tableGuid=row["method"][6:42].replace("_", "-"),
                         resource=source,
-                        resourceSha256=resources.hashes[source],
                         nativeCodeRef=key,
                         **store,
                         actionRef=identity_key,
@@ -425,7 +423,6 @@ def discover_requests(native_index, inventory, exe, metadata, natives, output):
         shellNameCatalogs={
             k: v.catalog()["shellCatalog"] for k, v in name_sources.items()
         },
-        sourceHashes=resources.hashes,
         scope="核实原生位置写入与资源动作身份；分支、调用/返回、运行时选中动作和具体 Shell 触发另行恢复",
     )
     output.parent.mkdir(parents=True, exist_ok=True)

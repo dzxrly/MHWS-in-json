@@ -8,8 +8,9 @@ reviewed version: after a game update, re-resolve the profile, migrate the
 evidence and review what changed. Replacing digests alone proves nothing.
 """
 
-import json
 from pathlib import Path
+
+from sdk import versions
 
 from .native.symbols import Helper, Method, Reviewed
 
@@ -43,7 +44,7 @@ EXCLUDED_ENEMY_IDS = (TRAINING_ENEMY_ID,)
 ACTIVE_GAME_VERSION = "1.42.0.2"
 PROFILE_DIR = DATA_DIR / "profiles"
 ACTIVE_PROFILE_PATH = PROFILE_DIR / f"{ACTIVE_GAME_VERSION}.json"
-ACTIVE_PROFILE = json.loads(ACTIVE_PROFILE_PATH.read_text(encoding="utf-8"))
+ACTIVE_PROFILE = versions.read(ACTIVE_PROFILE_PATH)
 SUPPORTED_PROFILE = dict(ACTIVE_PROFILE["profile"])
 SYMBOLS = ACTIVE_PROFILE["symbols"]
 

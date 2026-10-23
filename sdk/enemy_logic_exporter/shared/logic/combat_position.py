@@ -2,10 +2,10 @@
 
 import copy
 from functools import lru_cache
-import json
 
 from capstone import CS_OP_MEM
 
+from sdk import versions
 from ..config import (
     ARRAY_ELEMENTS,
     ARRAY_LENGTH,
@@ -24,9 +24,7 @@ from ..native.bindings import add, pointer
 
 @lru_cache(maxsize=1)
 def evidence():
-    return json.loads(
-        (EVIDENCE_DIR / "combat_position_push.v1.json").read_text(encoding="utf8")
-    )
+    return versions.read(EVIDENCE_DIR / "combat_position_push.v1.json")
 
 
 def recover_entry_push(machine, branch, original):

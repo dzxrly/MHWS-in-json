@@ -10,6 +10,7 @@ appended tail or a different function length all count as changes.
 import json
 from pathlib import Path
 
+from sdk import versions
 from ..config import EVIDENCE_DIR, PROFILE_DIR, RULES_PATH, SYMBOL_SPECS
 from ..native.evidence import digest
 from ..native.metadata import Il2cppMetadata
@@ -32,12 +33,13 @@ def evidence_documents():
 
 
 def _read(path):
-    return json.loads(Path(path).read_text(encoding="utf-8"))
+    return versions.read(path)
 
 
 def _write(path, value, *, indent=2):
     Path(path).write_text(
-        json.dumps(value, ensure_ascii=False, indent=indent) + "\n", encoding="utf-8"
+        json.dumps(versions.compact(value), ensure_ascii=False, indent=indent) + "\n",
+        encoding="utf-8",
     )
 
 
@@ -99,6 +101,7 @@ def resolve_profile(exe, metadata_path, version, previous_path, output=None):
         symbols=symbols,
         evidenceDigests=digests,
     )
+    versions.register(profile)  # sdk/game_versions.json is the only copy of the digests
     _write(output, document, indent=1)
     return dict(output=str(output), sameBuild=same_build, **report)
 

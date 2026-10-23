@@ -8,7 +8,7 @@ schedule work and the scheduler's base/override resource selection.
 
 from copy import deepcopy
 from functools import lru_cache
-import json
+from sdk import versions
 from ..config import (
     COMBAT_FIELDS as FIELDS,
     COMBAT_HELPER_METHODS as HELPER_METHODS,
@@ -26,9 +26,7 @@ from ..native.symbols import method_stem
 
 @lru_cache(maxsize=1)
 def receipt():
-    return json.loads(
-        (EVIDENCE_DIR / "combat_entry_evidence.v1.json").read_text(encoding="utf8")
-    )
+    return versions.read(EVIDENCE_DIR / "combat_entry_evidence.v1.json")
 
 
 def _suffixed_methods():

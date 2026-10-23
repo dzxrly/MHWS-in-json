@@ -7,6 +7,7 @@ re-run and ``new-monster`` to scaffold its entry module; no code list changes.
 import json
 import re
 
+from sdk import versions
 from ..config import (  # noqa: F401  (ROSTER_PATH is re-exported for the CLI)
     EXCLUDED_ENEMY_IDS,
     LARGE_ENEMY_MAX_BASE,
@@ -59,7 +60,7 @@ def build_roster(resources):
 
 
 def load_roster(path=ROSTER_PATH):
-    return json.loads(path.read_text(encoding="utf-8"))
+    return versions.read(path)
 
 
 def roster_changes(old, new):

@@ -5,9 +5,9 @@ or EnemyUtil result. The Boolean bit inputs are snapshots of the named raw bit,
 not a substitute for running the whole condition helper.
 """
 
-import json
 from copy import deepcopy
 from functools import lru_cache
+from sdk import versions
 from ..config import (
     EVIDENCE_DIR,
     COMMON_COMMAND_PREFIX,
@@ -19,11 +19,7 @@ from .expressions import runtime, compare, combined, invert
 
 @lru_cache(maxsize=1)
 def receipt():
-    return json.loads(
-        (EVIDENCE_DIR / "navigation_condition_evidence.v1.json").read_text(
-            encoding="utf8"
-        )
-    )
+    return versions.read(EVIDENCE_DIR / "navigation_condition_evidence.v1.json")
 
 
 def bit(member, index):

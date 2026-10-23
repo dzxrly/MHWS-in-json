@@ -85,7 +85,6 @@ def discover_inventory(natives, metadata_path, profile):
                     )
                     records[source] = dict(
                         resource=source,
-                        resourceSha256=resources.hashes[source],
                         structureSignature=structure_signature(body, factories),
                         exportType=export_type,
                         metadataPresent=True,
@@ -114,7 +113,7 @@ def discover_inventory(natives, metadata_path, profile):
                 source = entry["source"]
                 catalog = name_catalog.setdefault(
                     source,
-                    dict(resource=source, sha256=entry["sourceSha256"], entries=[]),
+                    dict(resource=source, entries=[]),
                 )
                 if entry not in catalog["entries"]:
                     catalog["entries"].append(entry)
@@ -145,6 +144,5 @@ def discover_inventory(natives, metadata_path, profile):
         resources=list(records.values()),
         commandFactoryTypeCatalog=factory_catalog,
         shellNameCatalog=list(name_catalog.values()),
-        sourceHashes=resources.hashes,
         scope="资源、名称和元数据发现；入口候选及资源槽位不代表已恢复执行流程",
     )

@@ -1,5 +1,6 @@
 """Curate verified native semantics into data; never used by the build command."""
 
+from sdk import versions
 from ..native.evidence import evidence, method_rows
 import json
 from ..native.metadata import Il2cppMetadata
@@ -166,6 +167,7 @@ def main(work, metadata, output, profile):
     out = output / "rules.v1.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(
-        json.dumps(semantics, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        json.dumps(versions.compact(semantics), ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
     )
     print("FROZEN", len(rules), "rules", out)

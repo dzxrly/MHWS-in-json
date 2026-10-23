@@ -2,7 +2,7 @@
 
 from copy import deepcopy
 from functools import lru_cache
-import json
+from sdk import versions
 from ..config import (
     EVIDENCE_DIR,
     CONDITION_FIELDS as FIELDS,
@@ -13,9 +13,7 @@ from .expressions import combined, runtime
 
 @lru_cache(maxsize=1)
 def receipt():
-    return json.loads(
-        (EVIDENCE_DIR / "action_command_evidence.v1.json").read_text(encoding="utf8")
-    )
+    return versions.read(EVIDENCE_DIR / "action_command_evidence.v1.json")
 
 
 def request_details(command, profile, command_evidence=None, metadata=None):

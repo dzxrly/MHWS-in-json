@@ -4,9 +4,9 @@ Only the listed cases are accepted. Runtime keys describe raw fields or the
 explicit target/parts queries, rather than assuming a command's final result.
 """
 
-import json
 from copy import deepcopy
 from functools import lru_cache
+from sdk import versions
 from ..config import (
     BAD_CONDITION_LABELS,
     ENEMY_TARGET_STATUS,
@@ -30,9 +30,7 @@ from .navigation_conditions import recover_navigation_condition
 
 @lru_cache(maxsize=1)
 def receipt():
-    return json.loads(
-        (EVIDENCE_DIR / "condition_evidence.v1.json").read_text(encoding="utf8")
-    )
+    return versions.read(EVIDENCE_DIR / "condition_evidence.v1.json")
 
 
 def enum_name(value):

@@ -10,6 +10,7 @@ from copy import deepcopy
 from functools import lru_cache
 import json
 
+from sdk import versions
 from ..config import (
     BTABLE_SLOT_ENUM,
     EVIDENCE_DIR,
@@ -33,7 +34,7 @@ ARGUMENT_REGISTERS = {
 
 @lru_cache(maxsize=1)
 def receipt():
-    return json.loads(EVIDENCE_PATH.read_text(encoding="utf8"))
+    return versions.read(EVIDENCE_PATH)
 
 
 def _immediate_argument(instructions, index):
@@ -140,7 +141,8 @@ def write_slot_evidence(exe, metadata_path, output=EVIDENCE_PATH):
     with PE(exe) as pe, Il2cppMetadata(metadata_path) as metadata:
         result = recover_slot_requests(pe, metadata, address_catalog(metadata))
     output.write_text(
-        json.dumps(result, ensure_ascii=False, indent=1) + "\n", encoding="utf-8"
+        json.dumps(versions.compact(result), ensure_ascii=False, indent=1) + "\n",
+        encoding="utf-8",
     )
     return result
 

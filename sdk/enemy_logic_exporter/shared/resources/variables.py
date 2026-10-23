@@ -5,7 +5,6 @@ index covers every BTableVariable resource. Only definitions are recorded:
 initial values say nothing about the live value during a fight.
 """
 
-import hashlib
 import json
 
 from .reader import typed
@@ -39,7 +38,6 @@ def _index(resources):
                         default=value.get("_DefaultValue"),
                         life=str(value.get("_Life", "")).split("] ", 1)[-1],
                         resource=source,
-                        resourceSha256=hashlib.sha256(raw).hexdigest(),
                     )
                     if guid in result and result[guid] != record:
                         result[guid]["alsoDeclaredIn"] = sorted(

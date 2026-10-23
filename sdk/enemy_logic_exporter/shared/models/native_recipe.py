@@ -444,11 +444,7 @@ class NativeRecipeContext:
             expected = self.resource_records[source]
             body = self.resources.read(source)
             factories = self.resources.factories(body)
-            if (
-                self.resources.hashes[source] != expected["resourceSha256"]
-                or structure_signature(body, factories)
-                != expected["structureSignature"]
-            ):
+            if structure_signature(body, factories) != expected["structureSignature"]:
                 raise ValueError("资源发现后行为表发生变化：" + source)
             owner = body["_ExportBTableType"]
             if owner in sources and sources[owner] != source:

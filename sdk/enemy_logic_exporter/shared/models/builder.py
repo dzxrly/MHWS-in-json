@@ -1,7 +1,6 @@
 """Bind frozen control flow to resource values. No native binary is read here."""
 
 from copy import deepcopy
-import hashlib
 import json
 import re
 from pathlib import Path
@@ -324,7 +323,6 @@ def build_chain(
             leaf["formula"] = None
             leaf["formulaOmitted"] = dict(
                 bytes=len(text.encode("utf8")),
-                sha256=hashlib.sha256(text.encode("utf8")).hexdigest(),
                 reason="按资源参数分叉的公式模板过大；各节点保存按自身参数实例化后的表达式，模板可按证据行重新生成",
             )
     unknown_conditions = sum(

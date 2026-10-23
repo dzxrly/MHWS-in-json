@@ -61,7 +61,6 @@ class Resources:
             for p in self.root.rglob("*.json")
         }
         self.cache = {}
-        self.hashes = {}
         self.accessed = set()
 
     def resolve(self, relative):
@@ -95,7 +94,6 @@ class Resources:
                     raise ValueError("预期一个资源根对象")
                 data = data[0]
             self.cache[relative] = typed(data)[1]
-            self.hashes[relative] = hashlib.sha256(raw).hexdigest()
         return self.cache[relative]
 
     def reference(self, wrapper):
@@ -165,7 +163,6 @@ class Resources:
         if source not in self.cache:
             raw = self.paths[source.casefold()].read_bytes()
             self.cache[source] = json.loads(raw)
-            self.hashes[source] = hashlib.sha256(raw).hexdigest()
         messages = self.cache[source]
         columns = [i for i, v in enumerate(messages["languages"]) if v == language]
         if len(columns) != 1:

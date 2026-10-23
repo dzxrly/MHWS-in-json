@@ -141,9 +141,6 @@ def recover_all(
     if requests is not None and requests["profile"] != index["profile"]:
         raise ValueError("动作请求与原生恢复来源不匹配")
     resources = Resources(natives)
-    for source, expected in inventory["sourceHashes"].items():
-        if digest(resources.root / resources.resolve(source)) != expected:
-            raise ValueError("资源清单来源变化：" + source)
     registry = RuleRegistry.load()
     catalog = (
         json.loads(Path(command_catalog).read_text(encoding="utf8"))
@@ -190,8 +187,6 @@ def recover_all(
             source = resource["resource"]
             name = resource["exportType"]
             body = resources.read(source)
-            if resources.hashes[source] != resource["resourceSha256"]:
-                raise ValueError("行为表来源变化：" + source)
             factories = resources.factories(body)
             methods = []
             resource_counts = Counter()
