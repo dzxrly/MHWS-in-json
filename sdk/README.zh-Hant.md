@@ -1,6 +1,6 @@
 # SDK 使用說明
 
-[English](sdk.md) | [简体中文](sdk.zh-Hans.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh-Hans.md) | 繁體中文
 
 倉庫的 `sdk/` 目錄中有兩個離線命令列工具，都在專案根目錄用 `python -m` 執行：
 
@@ -27,7 +27,7 @@ IL2CPP 中繼資料是 REFramework 匯出的 `il2cpp_dump.json`，必須與 EXE 
 ## 建置環境（Windows）
 
 1. 安裝 Python 3.13（勾選 `py` 啟動器）與 Git，複製倉庫。
-2. 在專案根目錄執行安裝腳本。它在 `.agents/sdk-venv` 建立虛擬環境，安裝固定版本的相依套件（Capstone、PyGhidra），最後執行環境檢查：
+2. 在專案根目錄執行安裝腳本。它在 `.agents/sdk-venv` 建立虛擬環境，安裝固定版本的相依套件（Capstone、PyGhidra、questionary），最後執行環境檢查：
 
    ```powershell
    powershell -ExecutionPolicy Bypass -File sdk/enemy_logic_exporter/setup_env.ps1
@@ -51,6 +51,14 @@ IL2CPP 中繼資料是 REFramework 匯出的 `il2cpp_dump.json`，必須與 EXE 
 | `GHIDRA_INSTALL_DIR`、`JAVA_HOME` | 只有 `decompile`、`analyze` 需要：安裝 Ghidra 12.0.4 及其支援的 JDK 後設定這兩個環境變數 |
 
 以下範例中的 `python` 指上面虛擬環境中的直譯器；所有命令都在專案根目錄執行。查看任一命令的完整參數：`python -m sdk.<工具> <命令> --help`。
+
+## 選單介面（TUI）
+
+`python -m sdk` 開啟常用工作的選單：環境檢查、技能效果提取（全部或指定技能）、重建 `SkillDetails.xlsx`、魔物提取與玩家視圖、未知條件統計、發布與建置行動邏輯網頁，以及 SDK 測試。用方向鍵和 Enter 選擇（選單文字為簡體中文）。每個操作先印出要執行的完整命令列再執行，同樣的步驟可以直接寫進腳本。EXE 與 IL2CPP dump 的尋找方式和命令列相同，「设置 EXE 与 il2cpp 路径」可在本次工作階段中修改。發布前會先確認，避免誤覆蓋已提交的模型。
+
+```powershell
+.agents/sdk-venv/Scripts/python.exe -m sdk
+```
 
 ## 魔物行動邏輯 SDK（`sdk.enemy_logic_exporter`）
 
@@ -105,7 +113,7 @@ python -B -m sdk.enemy_logic_exporter roster --write
 python -B -m sdk.enemy_logic_exporter new-monster --enemy <新魔物ID>          # 名單新增的每隻魔物
 ```
 
-之後把 `sdk/enemy_logic_exporter/shared/config.py` 中的 `ACTIVE_GAME_VERSION` 改為新版本，再按「修改程式碼後重新提取」跑一遍。`migrate-evidence` 列出的待複核項和 `resolve-symbols` 報告的 `changed` 項必須逐條核對原生程式碼，不能只替換版本號或摘要。遊戲版本不變、只換用另一份 IL2CPP dump 時的步驟，以及詳細的核對順序，見 [SDK 維護說明](../sdk/enemy_logic_exporter/AGENTS.md)（簡體中文）。
+之後把 `sdk/enemy_logic_exporter/shared/config.py` 中的 `ACTIVE_GAME_VERSION` 改為新版本，再按「修改程式碼後重新提取」跑一遍。`migrate-evidence` 列出的待複核項和 `resolve-symbols` 報告的 `changed` 項必須逐條核對原生程式碼，不能只替換版本號或摘要。遊戲版本不變、只換用另一份 IL2CPP dump 時的步驟，以及詳細的核對順序，見 [SDK 維護說明](enemy_logic_exporter/AGENTS.md)（簡體中文）。
 
 ### 命令一覽
 
@@ -138,13 +146,17 @@ python -B -m sdk.enemy_logic_exporter new-monster --enemy <新魔物ID>         
 遊戲沒有「技能 → 效果數值」的資料表：SkillData 的四個數值槽沒有名稱，`PlayerSkillParam` 等參數檔案裡的欄位也不帶技能 ID，二者只在原生程式碼中連接。這個工具先掃描 EXE，找出以技能 ID 呼叫技能讀取方法的全部函式；再在「只裝備該技能、取某一等級」的情境下，按真實指令執行這些函式（布林與列舉參數逐一列舉），記錄回傳值、執行期條件以及數值來自哪個 SkillData 槽位、參數檔案欄位或 EXE 常數。結果寫入 `src/processed_data/skill_details/data/skill_links/`（`index.json` 加按技能類別拆分的分片），建置 PROCESSED_DATA 時與 SkillCommonData、SkillData 合併成 `SkillDetails.xlsx`。
 
 ```powershell
-python -B -m sdk.skill_effect_exporter extract                                     # 全部技能，約 5 分鐘，寫入正式位置
+python -B -m sdk.skill_effect_exporter extract                                     # 全部技能，約 20 分鐘，寫入正式位置
 python -B -m sdk.skill_effect_exporter extract -e <EXE> -i <il2cpp_dump.json>      # 指定輸入
 python -B -m sdk.skill_effect_exporter extract -s HunterSkill_019 -o .agents/skill-effects/try.json   # 除錯單個技能
 python -m src.processed_data.skill_details                                         # 只重建 SkillDetails.xlsx
 ```
 
 - 相依套件與上面的虛擬環境相同（Capstone）。
+- 讀取獵人裝備武器類型（`HunterCharacter._HunterComp.Prepare.<WeaponBuilder>k__BackingField._EquippedWeaponType`）或弩彈種類（`app.WeaponGunDef.SHELL_TYPE`、`SHELL_PARAM_TYPE`，包括由呼叫回傳或寫入 `out` 參數的情況）的函式，按每種取值分別求值，表格把取值列為參數「武器」「弹种」「弹药参数类型」。清單是 `sdk/skill_effect_exporter/config.py` 中的 `DIMENSIONS`。
+- 有些 `cHunterSkill` 取值函式只回傳等級或倍率，實際效果由呼叫它的函式決定，例如 `getSkillDodgeNoHitLv` 的呼叫方 `getDodgeNoHitTime` 給出各迴避動作的無敵時間。讀取的技能不超過 `MAX_ACCESSOR_SKILLS` 個的取值函式，其呼叫方也會求值，「用法」欄寫作「调用技能取值函数 …」。
+- 超過路徑或指令上限的函式，會只保留仍能走到技能讀取點的路徑重新求值，其他呼叫按不透明呼叫處理；這些列在「求值范围」欄中標出。「只追踪可能经过技能读取点的路径仍超限」表示技能可能在此處（該武器或彈種下）起作用，但數值仍不完整。
+- 結果相同、條件只差一個條件及其否定的路徑會合併，不影響結果的條件不再列出。每個情形最多保留 `MAX_RECORDED_PATHS` 條路徑，條件少的優先，最後一列註明未列出的條數。
 - 輸出只記錄遊戲版本，不保存解包檔案摘要；更新 `MHWS-in-json` 後要重新執行 `extract`。
 - 彙總多個技能的函式（如攻擊力合計）依賴其他技能的計時器等執行期狀態，表格中可能顯示「分支过多，未完整求值」；同一技能的精確數值通常由 `getSkill*` 讀取函式給出。
-- 需要人工說明的技能寫在 `sdk/skill_effect_exporter/notes.py`；版本相關的佈局常數集中在 `sdk/skill_effect_exporter/config.py`。遊戲更新後的檢查步驟見 [技能效果 SDK 維護說明](../sdk/skill_effect_exporter/AGENTS.md)（簡體中文）。
+- 需要人工說明的技能寫在 `sdk/skill_effect_exporter/notes.py`；版本相關的佈局常數集中在 `sdk/skill_effect_exporter/config.py`。遊戲更新後的檢查步驟見 [技能效果 SDK 維護說明](skill_effect_exporter/AGENTS.md)（簡體中文）。

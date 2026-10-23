@@ -85,7 +85,7 @@ enemy_battle_logic/EM0001_00_0.html
 - `sdk.enemy_logic_exporter`：从游戏文件中提取怪物行动逻辑，生成行动图网页使用的 JSON。`src/processed_data/enemy_battle_logic/models` 中的 34 份模型对应游戏 **1.42.0.2**，未知分支保留标记。
 - `sdk.skill_effect_exporter`：找出原生代码中使用每个技能的函数并按等级求值，生成 `SkillDetails.xlsx` 使用的技能效果链路 JSON。
 
-两个工具都需要使用者提供与游戏同版本的 EXE 和 REFramework `il2cpp_dump.json`。环境搭建与用法见 [SDK 使用说明](sdk.zh-Hans.md)。只重新生成网页或表格时不需要这两个工具：
+两个工具都需要使用者提供与游戏同版本的 EXE 和 REFramework `il2cpp_dump.json`。环境搭建与用法见 [SDK 使用说明](../sdk/README.zh-Hans.md)。只重新生成网页或表格时不需要这两个工具：
 
 ```powershell
 python -m src.processed_data.enemy_battle_logic --preview-all --output .agents/battle-preview

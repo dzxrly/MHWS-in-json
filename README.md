@@ -85,7 +85,7 @@ The battle graph bundle consists of an index and 34 monster pages. Variants have
 - `sdk.enemy_logic_exporter` extracts monster battle logic from the game files into the graph JSON behind the battle pages. The 34 models in `src/processed_data/enemy_battle_logic/models` cover game version **1.42.0.2**; unresolved branches stay marked.
 - `sdk.skill_effect_exporter` finds the native functions that use each skill, evaluates them per level, and writes the skill effect link JSON behind `SkillDetails.xlsx`.
 
-Both tools need the game EXE and a REFramework `il2cpp_dump.json` of the same version, which you provide. Setup and usage: [SDK guide](docs/sdk.md). Rebuilding the pages or workbooks needs neither tool:
+Both tools need the game EXE and a REFramework `il2cpp_dump.json` of the same version, which you provide. Setup and usage: [SDK guide](sdk/README.md). Rebuilding the pages or workbooks needs neither tool:
 
 ```powershell
 python -m src.processed_data.enemy_battle_logic --preview-all --output .agents/battle-preview
