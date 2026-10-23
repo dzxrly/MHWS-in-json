@@ -130,6 +130,31 @@ class EmulatorTests(unittest.TestCase):
             [("状态+0x10", 0x200)],
         )
 
+    def test_merged_writes_of_any_width_are_readable(self):
+        # mov dword [rdx],0x11223344; mov dword [rdx+2],0x55667788;
+        # mov dword [rdx+4],0x99aabbcc; mov rax,[rdx]; ret
+        code = bytes.fromhex(
+            "c70244332211" "c7420288776655" "c74204ccbbaa99" "488b02" "c3"
+        )
+
+        def setup(st, heap):
+            st.regs["rdx"] = V(Ptr(SynthObj("t", "obj", {0: V(0)})))
+
+        (result,) = run(code, setup, "System.UInt64")
+        self.assertEqual(result["value"], 0x99AABBCC77883344)
+
+    def test_parity_of_concrete_result(self):
+        # mov eax,3; cmp eax,0; setp al; movzx eax,al; ret
+        code = bytes.fromhex("b803000000" "83f800" "0f9ac0" "0fb6c0" "c3")
+        (result,) = run(code, lambda st, heap: None, "System.Int32")
+        self.assertEqual(result["value"], 1)
+
+    def test_vpinsrd_replaces_one_lane(self):
+        # mov ecx,7; vpinsrd xmm0,xmm0,ecx,1; vextractps eax,xmm0,1; ret
+        code = bytes.fromhex("b907000000" "c4e37922c101" "c4e37917c001" "c3")
+        (result,) = run(code, lambda st, heap: None, "System.Int32")
+        self.assertEqual(result["value"], 7)
+
     def test_dec_keeps_carry(self):
         # mov eax,2; cmp eax,3; dec eax; setb al; movzx eax,al; ret
         code = bytes.fromhex("b802000000" "83f803" "ffc8" "0f92c0" "0fb6c0" "c3")

@@ -145,15 +145,23 @@ def shorten(text, limit=160):
     return text if len(text) <= limit else text[: limit - 3] + "..."
 
 
+def _parity(value):
+    """PF: set when the low byte of a result has an even number of one bits."""
+    return int(bin(value & 0xFF).count("1") % 2 == 0)
+
+
 def _feasible(kind):
     """Flag tuples (zf, sf, cf, of, pf) an instruction of this kind can produce."""
     every = list(product((0, 1), repeat=5))
-    if kind == "cmp":  # a - b: equal means no sign, borrow or overflow
-        return [t for t in every if not t[0] or t[1:4] == (0, 0, 0)]
-    if kind == "test":  # logical result: CF = OF = 0; zero has no sign
-        return [t for t in every if t[2] == t[3] == 0 and not (t[0] and t[1])]
-    if kind == "result":  # arithmetic result: zero has no sign, CF and OF free
-        return [t for t in every if not (t[0] and t[1])]
+    if kind == "cmp":  # a - b: equal means zero, so no sign, borrow or overflow
+        return [t for t in every if not t[0] or t[1:] == (0, 0, 0, 1)]
+    # A zero result has no sign and even parity.
+    if kind == "test":  # logical result: CF = OF = 0
+        return [
+            t for t in every if t[2] == t[3] == 0 and not (t[0] and (t[1] or not t[4]))
+        ]
+    if kind == "result":  # arithmetic result: CF and OF free
+        return [t for t in every if not (t[0] and (t[1] or not t[4]))]
     if kind == "float":  # ucomiss: unordered, less, equal, greater
         return [(1, 0, 1, 0, 1), (0, 0, 1, 0, 0), (1, 0, 0, 0, 0), (0, 0, 0, 0, 0)]
     return every  # bit tests, flags left by an opaque call
@@ -671,7 +679,7 @@ class Emulator:
                 sf=int(sr < 0),
                 cf=int((av & MASK[size]) < (bv & MASK[size])),
                 of=int((sa < 0) != (sb < 0) and (sr < 0) != (sa < 0)),
-                pf=0,
+                pf=_parity(r),
                 prov=prov,
             )
         if isinstance(av, Ptr) and isinstance(bv, Ptr) and av.obj is bv.obj:
@@ -687,7 +695,9 @@ class Emulator:
         """Flags of a result; kind "test" (logical ops) also means CF = OF = 0."""
         if isinstance(r.val, int):
             v = r.val & MASK[size]
-            return Flags(zf=int(v == 0), sf=int(signed(v, size) < 0), prov=prov)
+            return Flags(
+                zf=int(v == 0), sf=int(signed(v, size) < 0), pf=_parity(v), prov=prov
+            )
         if isinstance(r.val, Ptr):
             if kind == "test":
                 return Flags(zf=0, sf=0, prov=prov)
@@ -787,7 +797,7 @@ class Emulator:
         setup(start)
         self.total_steps = 0
         worklist, results = [start], []
-        reverted = set()
+        reverted = {}  # id -> snapshot; holding it keeps the id from being reused
         while worklist:
             if len(results) + len(worklist) > MAX_PATHS:
                 raise PathEnd("too_many_paths", f"路径超过 {MAX_PATHS}")
@@ -808,7 +818,7 @@ class Emulator:
                     # An inlined callee failed: replay the outermost call as opaque.
                     snap, callee = st.snapshot
                     if id(snap) not in reverted:
-                        reverted.add(id(snap))
+                        reverted[id(snap)] = snap
                         resumed = snap.clone()
                         resumed.snapshot = None
                         self.opaque_effects(resumed, callee)
@@ -1960,6 +1970,11 @@ class Emulator:
                 a[index] = V(0)
         self.vput(st, ops[0].reg, a, 16)
 
+    def op_vpinsrd(self, st, insn, ops, _):
+        a = list(self.vget(st, ops[1].reg))
+        a[ops[3].imm & 3] = self.read_op(st, insn, ops[2], 4)
+        self.vput(st, ops[0].reg, a, 16)
+
     def op_vunpcklps(self, st, insn, ops, _):
         a, b = self.vget(st, ops[1].reg), self._vsrc(st, insn, ops[2], 16)
         self.vput(st, ops[0].reg, [a[0], b[0], a[1], b[1]], 16)
@@ -2018,6 +2033,11 @@ class _Mem:
         return m
 
 
+def _bytes_mask(count):
+    """Mask of count bytes; merged overlay entries need not be 1, 2, 4 or 8 wide."""
+    return (1 << 8 * count) - 1
+
+
 def _overlapping(writes, region, off, size):
     return [
         key
@@ -2049,7 +2069,10 @@ def _overlay_write(writes, region, obj, off, size, value):
         if not isinstance(piece.val, int):
             raise Unsupported("不同宽度的重叠写入涉及非整数值")
         shift = 8 * (at - start)
-        merged = merged & ~(MASK[width] << shift) | (piece.val & MASK[width]) << shift
+        merged = (
+            merged & ~(_bytes_mask(width) << shift)
+            | (piece.val & _bytes_mask(width)) << shift
+        )
         prov |= piece.prov
     writes[(region, start)] = (obj, start, end - start, V(merged, prov))
 
@@ -2069,7 +2092,7 @@ def _overlay_read(writes, region, off, size, original):
         base = original()
         if not isinstance(base.val, int):
             raise Unsupported("部分覆盖的读取，未写入部分不是整数")
-        result, prov = base.val & MASK[size], base.prov
+        result, prov = base.val & _bytes_mask(size), base.prov
     else:
         result, prov = 0, frozenset()
     for key in keys:
@@ -2077,9 +2100,9 @@ def _overlay_read(writes, region, off, size, original):
         if not isinstance(piece.val, int):
             raise Unsupported("不同宽度的读取涉及非整数写入值")
         lo, hi = max(off, at), min(off + size, at + width)
-        part = (piece.val >> 8 * (lo - at)) & MASK[hi - lo]
+        part = (piece.val >> 8 * (lo - at)) & _bytes_mask(hi - lo)
         shift = 8 * (lo - off)
-        result = result & ~(MASK[hi - lo] << shift) | part << shift
+        result = result & ~(_bytes_mask(hi - lo) << shift) | part << shift
         prov |= piece.prov
     return V(result, prov)
 
