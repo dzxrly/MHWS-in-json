@@ -26,11 +26,14 @@ ENEMY_DIR = ".agents/enemy-logic-exporter/tui"
 
 
 class Session:
-    """EXE and il2cpp chosen in this session; None keeps each tool's default."""
+    """The dumped EXE and il2cpp dump of this session; None until given.
+
+    Only MHWS_EXE / MHWS_IL2CPP are read at start; no path is guessed.
+    """
 
     def __init__(self):
         self.exe = find_game_exe()
-        self.il2cpp = find_il2cpp(self.exe)
+        self.il2cpp = find_il2cpp()
 
     def inputs(self):
         args = []
@@ -125,21 +128,30 @@ def enemy_menu(session):
         run("src.processed_data.enemy_battle_logic", "--output", f"{ENEMY_DIR}/site")
 
 
+def ask_path(message, current):
+    """A file path typed or pasted by the user (quotes from "Copy as path" removed)."""
+    answer = ask_text(message, str(current or ""))
+    return Path(answer.strip('"')) if answer else current
+
+
 def settings_menu(session):
-    exe = ask_text("游戏 EXE（留空使用默认查找）", str(session.exe or ""))
-    if exe is not None:
-        session.exe = Path(exe) if exe else find_game_exe()
-    il2cpp = ask_text(
-        "il2cpp_dump.json（留空取 EXE 同目录）", str(session.il2cpp or "")
+    session.exe = ask_path(
+        "dump 出的游戏 EXE 路径（如 …\\MonsterHunterWilds_dump.exe）", session.exe
     )
-    if il2cpp is not None:
-        session.il2cpp = Path(il2cpp) if il2cpp else find_il2cpp(session.exe)
+    session.il2cpp = ask_path(
+        "REFramework 导出的 il2cpp_dump.json 路径", session.il2cpp
+    )
 
 
 def main():
     session = Session()
+    if session.exe is None or session.il2cpp is None:
+        print(
+            "尚未指定 dump 出的 EXE 或 il2cpp_dump.json，请先填写（也可设环境变量 MHWS_EXE、MHWS_IL2CPP）"
+        )
+        settings_menu(session)
     while True:
-        print(f"\nEXE：{session.exe or '未找到'}\nil2cpp：{session.il2cpp or '未找到'}")
+        print(f"\nEXE：{session.exe or '未设置'}\nil2cpp：{session.il2cpp or '未设置'}")
         action = choose(
             "MHWS SDK",
             [

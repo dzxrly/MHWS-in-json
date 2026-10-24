@@ -4,14 +4,15 @@ Missing state is unknown. These comparisons do not simulate native floating-poin
 vector arithmetic, target selection, or the game loop bit for bit.
 """
 
+import json
 from pathlib import Path
-from sdk import versions
 from ..config import (
     ENEMY_CONTEXT_TYPE,
     RULES_PATH,
 )
 from .values import scalar, enum_number, MissingState, Outcome, number, required
 from .monster_rules import rule_kind
+
 
 class RuleRegistry:
     def __init__(self, data):
@@ -28,7 +29,7 @@ class RuleRegistry:
     @classmethod
     def load(cls, path=None):
         path = Path(path) if path is not None else RULES_PATH
-        return cls(versions.read(path))
+        return cls(json.loads(Path(path).read_text(encoding="utf-8")))
 
     def bind(self, command_type, argument_type, argument):
         rule = self.by_command.get(command_type)

@@ -8,7 +8,6 @@ from ..models.validation import validate_graph
 
 class ExtractionContext:
     def __init__(self, inventory, rows):
-        self.profile = inventory["profile"]
         self.monsters = {item["enemyId"]: item for item in inventory["monsters"]}
         if len(self.monsters) != len(inventory["monsters"]):
             raise ValueError("资源发现中出现重复怪物身份")
@@ -35,7 +34,6 @@ class ExtractionContext:
             enemyId=enemy_id,
             extractorModule=get_monster(enemy_id).__name__,
             nativeOwner=native_owner,
-            profile=self.profile,
             combatResource=combat,
             slots=monster["slots"],
             resources=closure,
@@ -52,14 +50,12 @@ class ModelContext:
         model_path,
         *,
         rules_path=None,
-        metadata_path=None,
         model=None,
         resources=None,
     ):
         self.natives = natives
         self.model_path = model_path
         self.rules_path = rules_path
-        self.metadata_path = metadata_path
         self.model = model
         self.resources = resources
 
@@ -68,7 +64,6 @@ class ModelContext:
             self.natives,
             self.model_path,
             rules_path=self.rules_path,
-            metadata_path=self.metadata_path,
             model=self.model,
             resources=self.resources,
         )
@@ -95,7 +90,6 @@ def extract_model(
     model_path=None,
     *,
     rules_path=None,
-    metadata_path=None,
     model=None,
     resources=None,
 ):
@@ -104,7 +98,6 @@ def extract_model(
             natives,
             model_path,
             rules_path=rules_path,
-            metadata_path=metadata_path,
             model=model,
             resources=resources,
         )

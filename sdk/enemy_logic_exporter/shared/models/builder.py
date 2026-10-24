@@ -3,13 +3,11 @@
 from copy import deepcopy
 import json
 import re
-from pathlib import Path
 from ..config import LEAF_FORMULA_LIMIT_BYTES
 from ..logic.predicates import RuleRegistry
 from ..logic.values import scalar
 from ..resources.reader import Resources, ActionBindingError, structure_signature, typed
 from ..logic.weights import choose_with_uint32, weighted_pool, candidate_node_id
-from ..native.evidence import digest
 from .io import load_model
 from .audit import combat_entry_recovered
 from ..logic.expressions import evaluate_expression, expression_unknown
@@ -18,6 +16,7 @@ from ..logic.common_conditions import recover_condition
 from ..logic.commands import leaf_expression
 from .player_view import build_player_view
 from ..resources.variables import referenced_variables
+
 
 def bind_skip_argument(body, index, expected_type, source):
     if type(index) is not int or not 0 <= index < len(body["_CommandArgArray"]):
@@ -68,7 +67,6 @@ def build_chain(
     natives,
     template_path=None,
     *,
-    metadata_path=None,
     rules_path=None,
     resources=None,
     model=None,
@@ -82,16 +80,8 @@ def build_chain(
         model = load_model(template_path)
     else:
         model = deepcopy(model)
-    if model.get("schemaVersion") != 1 or model["profile"] != registry.data["profile"]:
-        raise ValueError("表模板与判断规则的来源版本不匹配")
-    metadata_status = "not_supplied"
-    if metadata_path is not None:
-        metadata_path = Path(metadata_path)
-        if metadata_path.suffix.lower() != ".json":
-            raise ValueError("版本核对只接受元数据 JSON")
-        if digest(metadata_path) != model["profile"]["metadataSha256"]:
-            raise ValueError("当前元数据版本与固化规则不匹配，需要重新核实")
-        metadata_status = "matched"
+    if model.get("schemaVersion") != 1:
+        raise ValueError("表模板格式无效")
     resources = resources if resources is not None else Resources(natives)
     resources.accessed.clear()
     names = ActionNames(
@@ -214,7 +204,6 @@ def build_chain(
                         dict(
                             node, commandType=node["expectedCommandType"], argument={}
                         ),
-                        model["profile"],
                         model["enemyId"],
                         resources,
                     )
@@ -270,13 +259,15 @@ def build_chain(
                     "expression" not in node
                     and node["predicate"]["status"] != "verified"
                 ):
-                    recovered = recover_condition(
-                        node, model["profile"], model["enemyId"], resources
-                    )
+                    recovered = recover_condition(node, model["enemyId"], resources)
                     if recovered is not None:
                         node.update(recovered)
                     leaf = model.get("leafRules", {}).get(command_type)
-                    if recovered is None and leaf and leaf["argumentType"] in (None, argument_type):
+                    if (
+                        recovered is None
+                        and leaf
+                        and leaf["argumentType"] in (None, argument_type)
+                    ):
                         expression = leaf_expression(leaf, argument)
                         if expression is not None:
                             node.update(
@@ -358,7 +349,6 @@ def build_chain(
     )
     graph["actionNameCatalog"] = names.catalog()
     graph["sources"] = sorted(resources.accessed)
-    graph["metadataVerification"] = metadata_status
     graph["coverage"] = {
         "localTables": len(graph["tables"]),
         "nodes": sum(len(t["nodes"]) for t in graph["tables"]),

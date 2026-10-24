@@ -202,11 +202,7 @@ class BattleReleaseTests(unittest.TestCase):
 
     def test_html_must_embed_same_graph_without_external_scripts(self):
         changed = deepcopy(self.graph)
-        changed["metadataVerification"] = (
-            "not_supplied"
-            if self.graph["metadataVerification"] == "matched"
-            else "matched"
-        )
+        changed["logicStatus"] = changed["logicStatus"] + "_changed"
         with self.assertRaises(ValueError):
             validate_html(self.html, changed)
         with self.assertRaises(ValueError):

@@ -10,13 +10,11 @@ from sdk.enemy_logic_exporter.shared.logic.combat_entry import (
 from sdk.enemy_logic_exporter.shared.logic.expressions import evaluate_expression
 from sdk.enemy_logic_exporter.shared.logic.expressions import validate_expression
 from sdk.enemy_logic_exporter.shared.logic.predicates import RuleRegistry
-from sdk.enemy_logic_exporter.shared.config import SUPPORTED_PROFILE
 
 
 class CombatEntryTests(unittest.TestCase):
     def setUp(self):
         self.model = dict(
-            profile=deepcopy(SUPPORTED_PROFILE),
             enemyId="EM0002_00_0",
             entry="combat-root",
             tables=[dict(tableGuid="combat-root"), dict(tableGuid="sign-root")],
@@ -48,11 +46,7 @@ class CombatEntryTests(unittest.TestCase):
             self.tables[table][node]["expression"], RuleRegistry.load(), context
         ).truth
 
-    def test_source_identity_and_monster_dispatch_are_required(self):
-        bad = deepcopy(self.model)
-        bad["profile"]["gameVersion"] = "changed"
-        with self.assertRaises(ValueError):
-            build_combat_entries(bad, self.monster)
+    def test_monster_dispatch_is_required(self):
         bad = deepcopy(self.model)
         bad["resourceEntries"]["combat-resource"]["status"] = "metadata_candidate"
         with self.assertRaises(ValueError):

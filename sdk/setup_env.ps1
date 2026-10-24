@@ -17,8 +17,10 @@ environment (mhws_sdk.pth), so the sdk package is found from any directory.
 param(
     # Python launcher version; 3.13 is the verified one.
     [string]$PythonVersion = "3.13",
-    # Game executable when it is not in a Steam library (sets MHWS_EXE for this session).
-    [string]$Exe = ""
+    # Dumped game EXE checked by check-env (sets MHWS_EXE for this session).
+    [string]$Exe = "",
+    # REFramework il2cpp_dump.json checked by check-env (sets MHWS_IL2CPP for this session).
+    [string]$Il2cpp = ""
 )
 $ErrorActionPreference = "Stop"
 $root = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
@@ -36,6 +38,7 @@ if ($LASTEXITCODE) { throw "依赖安装失败" }
 $sitePackages = Join-Path $venv "Lib/site-packages"
 [IO.File]::WriteAllText((Join-Path $sitePackages "mhws_sdk.pth"), $root)
 if ($Exe) { $env:MHWS_EXE = $Exe }
+if ($Il2cpp) { $env:MHWS_IL2CPP = $Il2cpp }
 
 Push-Location $root
 try {

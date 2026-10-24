@@ -84,10 +84,10 @@ The battle graph bundle consists of an index and 34 monster pages. Variants have
 
 The `sdk/` directory is an offline SDK that reads the game files; `python -m sdk` opens its menu. Its features:
 
-- Monster battle logic (`sdk.enemy_logic_exporter`) extracts monster battle logic into the graph JSON behind the battle pages. The 34 models in `src/processed_data/enemy_battle_logic/models` cover game version **1.42.0.2**; unresolved branches stay marked.
+- Monster battle logic (`sdk.enemy_logic_exporter`) extracts monster battle logic into the graph JSON behind the battle pages. The 34 models in `src/processed_data/enemy_battle_logic/models` keep unresolved branches marked.
 - Skill effects (`sdk.skill_effect_exporter`) finds the native functions that use each skill, evaluates them per level, and writes the skill effect link JSON behind `SkillDetails.xlsx`.
 
-The SDK needs the game EXE and a REFramework `il2cpp_dump.json` of the same version, which you provide. Setup (`sdk/setup_env.ps1`) and usage: [SDK guide](sdk/README.md). Rebuilding the pages or workbooks does not need the SDK:
+The SDK needs the game EXE dumped from memory (e.g. `MonsterHunterWilds_dump.exe`) and the REFramework `il2cpp_dump.json`, which you provide; it records no game version. Setup (`sdk/setup_env.ps1`) and usage: [SDK guide](sdk/README.md). Rebuilding the pages or workbooks does not need the SDK:
 
 ```powershell
 python -m src.processed_data.enemy_battle_logic --preview-all --output .agents/battle-preview

@@ -72,8 +72,6 @@ def load_model(path):
         if relative.is_absolute() or not fragment.is_relative_to(root):
             raise ValueError("模型分片不能越出模型目录")
         content = expand_shared_values(read_json(fragment))
-        if content.get("profile") != model.get("profile"):
-            raise ValueError("模型分片来源版本不匹配")
         if content.get("enemyId", model.get("enemyId")) != model.get("enemyId"):
             raise ValueError("模型分片怪物标识不匹配")
         model.setdefault("tables", []).extend(content.get("tables", []))

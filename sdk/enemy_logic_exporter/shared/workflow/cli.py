@@ -4,7 +4,7 @@ import argparse
 import json
 import os
 from pathlib import Path
-from ..native.evidence import digest, method_rows
+from ..native.evidence import method_rows
 from ..native.pe import verify_rows
 from ..config import ACTIVE_PROFILE_PATH, ROOT, in_agents
 
@@ -25,18 +25,8 @@ def write_json(path, value):
     )
 
 
-def verify_profile(exe, il2cpp, profile):
-    if (
-        digest(exe) != profile["exeSha256"]
-        or digest(il2cpp) != profile["metadataSha256"]
-    ):
-        raise ValueError(
-            "Source version changed; review recipes before freezing. Do not merely replace hashes."
-        )
-
-
 def parser():
-    from .environment import default_work_dir, find_game_exe
+    from .environment import default_work_dir, find_game_exe, find_il2cpp
 
     result = argparse.ArgumentParser(
         description="离线提取原生证据；正式行动树构建无需 EXE"
@@ -48,7 +38,7 @@ def parser():
         default=default_work_dir(),
         help="研究缓存目录，默认 .agents/enemy-logic-exporter 或环境变量 MHWS_SDK_WORK_DIR",
     )
-    exe = find_game_exe()
+    exe, il2cpp = find_game_exe(), find_il2cpp()
 
     def add_exe(command):
         command.add_argument(
@@ -57,7 +47,7 @@ def parser():
             type=Path,
             default=exe,
             required=exe is None,
-            help="游戏 EXE；默认取环境变量 MHWS_EXE，其次在 Steam 库中查找",
+            help="dump 出的游戏 EXE（如 MonsterHunterWilds_dump.exe）；未指定时取环境变量 MHWS_EXE",
         )
 
     def add_il2cpp(command):
@@ -65,7 +55,9 @@ def parser():
             "-i",
             "--il2cpp",
             type=Path,
-            help="与 EXE 同版本的 REFramework il2cpp_dump.json；默认取环境变量 MHWS_IL2CPP，其次取 EXE 同目录的文件",
+            default=il2cpp,
+            required=il2cpp is None,
+            help="REFramework 导出的 il2cpp_dump.json；未指定时取环境变量 MHWS_IL2CPP",
         )
 
     def add_natives(command):
@@ -88,13 +80,8 @@ def parser():
         "check-env", help="检查新环境缺少的依赖、游戏文件、研究缓存与 Ghidra 设置"
     )
     check.add_argument("-e", "--exe", type=Path)
-    add_il2cpp(check)
+    check.add_argument("-i", "--il2cpp", type=Path)
     check.add_argument("-n", "--natives", type=Path)
-    check.add_argument(
-        "--verify",
-        action="store_true",
-        help="同时核对 EXE 与 il2cpp dump 是否为当前 profile 版本",
-    )
     player = commands.add_parser(
         "player-view", help="为已提取的图 JSON 整理玩家条件与路径，不重新提取原生数据"
     )
@@ -115,19 +102,21 @@ def parser():
     )
     add_natives(roster)
     roster.add_argument("--write", action="store_true")
-    scaffold = commands.add_parser("new-monster", help="为名单中的新怪物生成独立入口模块")
+    scaffold = commands.add_parser(
+        "new-monster", help="为名单中的新怪物生成独立入口模块"
+    )
     scaffold.add_argument("--enemy", required=True)
     resolve = commands.add_parser(
         "resolve-symbols",
-        help="按符号定义为新版本 EXE/il2cpp 生成 data/profiles/<版本>.json",
+        help="按符号定义为当前 EXE/il2cpp 重新生成 profile（默认写入 data/profile.json）",
     )
     add_exe(resolve)
     add_il2cpp(resolve)
-    resolve.add_argument("--version", required=True)
     resolve.add_argument("--previous", type=Path, default=ACTIVE_PROFILE_PATH)
     add_output(resolve)
     migrate = commands.add_parser(
-        "migrate-evidence", help="把规范化代码未变的证据行迁移到新版本，其余列入人工复核"
+        "migrate-evidence",
+        help="把规范化代码未变的证据行迁移到新版本，其余列入人工复核",
     )
     add_exe(migrate)
     add_il2cpp(migrate)
@@ -153,7 +142,6 @@ def parser():
     manifest.add_argument(
         "--selection", choices=("base", "upstream", "all"), default="all"
     )
-    manifest.add_argument("--version", required=True)
     manifest.add_argument(
         "--helper", type=lambda value: int(value, 0), action="append", default=[]
     )
@@ -187,7 +175,6 @@ def parser():
     )
     add_exe(index)
     add_il2cpp(index)
-    index.add_argument("--version", required=True)
     add_output(index)
     requests = commands.add_parser(
         "requests", help="从压缩原生证据发现显式动作请求及参数变体；不推断完整控制流"
@@ -214,7 +201,6 @@ def parser():
         help="完整运行全部大型怪物的资源、原生证据及动作请求分析，保留语义发布验收",
     )
     add_exe(analyze)
-    analyze.add_argument("--version", required=True)
     add_il2cpp(analyze)
     add_natives(analyze)
     analyze.add_argument(
@@ -222,10 +208,10 @@ def parser():
     )
     analyze.add_argument("--project-dir", type=Path)
     analyze.add_argument("--project-name")
-    analyze.add_argument("--index", type=Path, help="复用来源摘要已匹配的全量索引")
+    analyze.add_argument("--index", type=Path, help="复用已有的全量原生索引")
     analyze.add_argument("--cache-dir", type=Path)
     analyze.add_argument(
-        "--helpers", type=Path, help="同版本命令/静态初始化索引，供独立怪物配方构图"
+        "--helpers", type=Path, help="命令/静态初始化索引，供独立怪物配方构图"
     )
     add_output(analyze)
     extraction = commands.add_parser(
@@ -237,22 +223,22 @@ def parser():
     add_exe(extraction)
     add_il2cpp(extraction)
     add_natives(extraction)
-    extraction.add_argument("--rules", type=Path, help="对应来源版本的判断规则")
+    extraction.add_argument(
+        "--rules", type=Path, help="判断规则（默认 data/rules.v1.json）"
+    )
     extraction.add_argument(
         "--index",
         type=Path,
-        help="匹配来源的原生 BTable 证据索引（默认取工作目录标准位置）",
+        help="原生 BTable 证据索引（默认取工作目录标准位置）",
     )
     extraction.add_argument(
-        "--helpers", type=Path, help="同版本的命令与静态初始化证据索引（同上）"
+        "--helpers", type=Path, help="命令与静态初始化证据索引（同上）"
     )
     extraction.add_argument(
         "--requests", type=Path, help="独立发现的动作请求 JSON，用于核对恢复覆盖"
     )
     add_output(extraction)
-    extraction.add_argument(
-        "--inventory", type=Path, help="同版本实际槽和导入闭包发现 JSON"
-    )
+    extraction.add_argument("--inventory", type=Path, help="实际槽和导入闭包发现 JSON")
     all_models = commands.add_parser(
         "extract-all", help="按34个独立怪物模块构图并输出覆盖回执；保留真实未知边界"
     )
@@ -270,23 +256,8 @@ def parser():
     return result
 
 
-def resolve_il2cpp(args):
-    """Commands that read metadata take the user's dump; fail when none is found."""
-    from .environment import find_il2cpp
-
-    if not hasattr(args, "il2cpp") or args.command == "check-env":
-        return
-    args.il2cpp = args.il2cpp or find_il2cpp(args.exe)
-    if args.il2cpp is None or not Path(args.il2cpp).is_file():
-        raise SystemExit(
-            "缺少 il2cpp dump：用 -i/--il2cpp 指定，或设环境变量 MHWS_IL2CPP，"
-            "或把 il2cpp_dump.json 放在 EXE 同目录"
-        )
-
-
 def main():
     args = parser().parse_args()
-    resolve_il2cpp(args)
     work = args.work_dir.resolve()
     if args.command in ("extract", "extract-all"):
         from .environment import STANDARD_INPUTS, fill_standard_inputs
@@ -305,9 +276,7 @@ def main():
     if args.command == "check-env":
         from .environment import check_environment
 
-        rows = check_environment(
-            args.exe, args.il2cpp, args.natives, work, verify=args.verify
-        )
+        rows = check_environment(args.exe, args.il2cpp, args.natives, work)
         for item, status, detail in rows:
             print(f"[{status:8}] {item}: {detail}")
         raise SystemExit(any(status == "missing" for _, status, _ in rows))
@@ -332,7 +301,12 @@ def main():
             )
         )
     elif args.command == "roster":
-        from ..models.roster import ROSTER_PATH, build_roster, load_roster, roster_changes
+        from ..models.roster import (
+            ROSTER_PATH,
+            build_roster,
+            load_roster,
+            roster_changes,
+        )
         from ..resources.reader import Resources
 
         new = build_roster(Resources(args.natives))
@@ -349,9 +323,7 @@ def main():
 
         print(
             json.dumps(
-                resolve_profile(
-                    args.exe, args.il2cpp, args.version, args.previous, args.output
-                ),
+                resolve_profile(args.exe, args.il2cpp, args.previous, args.output),
                 ensure_ascii=False,
                 indent=2,
             )
@@ -391,7 +363,6 @@ def main():
             args.il2cpp,
             args.enemy,
             args.selection,
-            args.version,
             args.helper,
         )
         write_json(args.output or work / "manifest.json", value)
@@ -400,7 +371,6 @@ def main():
                 {
                     "methods": len(value["methods"]),
                     "skipped": len(value["skipped"]),
-                    "profile": value["profile"],
                 }
             )
         )
@@ -454,7 +424,6 @@ def main():
             args.exe,
             args.il2cpp,
             args.output or work / "native-index.v2.json",
-            args.version,
         )
         print(
             "INDEXED",
@@ -473,7 +442,6 @@ def main():
             args.il2cpp,
             args.natives,
             args.output or work / "full-run",
-            args.version,
             args.ghidra,
             args.project_dir or work / "ghidra-projects",
             project_name=args.project_name,

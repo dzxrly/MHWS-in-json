@@ -1,8 +1,8 @@
 """Bounded, project-contained model reads; research indexes are not models."""
 
+import json
 from pathlib import Path
 import warnings
-from sdk import versions
 
 MODEL_WARNING_BYTES = 10 * 1024 * 1024
 MODEL_LIMIT_BYTES = 25 * 1024 * 1024
@@ -17,7 +17,7 @@ def read_json(path):
         )
     if size > MODEL_WARNING_BYTES:
         warnings.warn(f"模型文件超过 10 MiB，检查重复证据：{path.name}", stacklevel=2)
-    return versions.read(path)
+    return json.loads(Path(path).read_text(encoding="utf-8"))
 
 
 SHARED_VALUES_FORMAT = "shared-values-v1"
@@ -72,8 +72,6 @@ def load_model(path):
         if relative.is_absolute() or not fragment.is_relative_to(root):
             raise ValueError("模型分片不能越出模型目录")
         content = expand_shared_values(read_json(fragment))
-        if content.get("profile") != model.get("profile"):
-            raise ValueError("模型分片来源版本不匹配")
         if content.get("enemyId", model.get("enemyId")) != model.get("enemyId"):
             raise ValueError("模型分片怪物标识不匹配")
         model.setdefault("tables", []).extend(content.get("tables", []))

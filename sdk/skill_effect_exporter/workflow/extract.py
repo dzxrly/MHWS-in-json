@@ -9,11 +9,10 @@ import time
 from collections import defaultdict
 from pathlib import Path
 
-from sdk.enemy_logic_exporter.shared.native.evidence import digest
 from sdk.enemy_logic_exporter.shared.native.metadata import Il2cppMetadata
+from sdk.progress import track
 from sdk.enemy_logic_exporter.shared.native.pe import PE
 
-from sdk import versions
 
 from .. import notes
 from ..config import (
@@ -175,8 +174,6 @@ def extract(
     started = time.time()
     exe, il2cpp, natives = Path(exe), Path(il2cpp), Path(natives)
     with PE(exe) as pe, Il2cppMetadata(il2cpp) as metadata:
-        # The digests live only in sdk/game_versions.json; the output names the version.
-        game_version = versions.identify(digest(exe), metadata.sha256)
         index = NativeIndex(pe, metadata)
         world = SkillWorld(natives, metadata, pe, index)
         helpers = index.skill_helpers()
@@ -193,6 +190,7 @@ def extract(
 
         scenarios = {}
         stats = defaultdict(int)
+
         def describe(address):
             """il2cpp method record of a function; also lists it in functions."""
             info, owner = None, None
@@ -244,7 +242,7 @@ def extract(
                 )
             links.append(link)
 
-        for address, rows in sorted(by_function.items()):
+        for address, rows in track(sorted(by_function.items()), "求值使用技能的函数"):
             key, info, evaluable = describe(address)
             referenced = defaultdict(list)
             for row in rows:
@@ -270,10 +268,6 @@ def extract(
                 sites = {int(use["site"], 16) for use in uses} if focusable else None
                 add_link(key, info, evaluable, via, uses, sites)
             stats["functions"] += 1
-            if stats["functions"] % 200 == 0:
-                log(
-                    f"  已处理函数 {stats['functions']}/{len(by_function)}，用时 {time.time() - started:.0f}s"
-                )
 
         # Second layer: a cHunterSkill accessor that takes no skill argument
         # (getSkillDodgeNoHitLv, getSkillGunnerAmmo_Normal_Rate) returns a level
@@ -314,7 +308,7 @@ def extract(
                         for site in sites
                     ]
         log(f"技能取值函数 {len(accessors)} 个，其调用方链路 {len(second)} 条")
-        for (owner, via), uses in sorted(second.items()):
+        for (owner, via), uses in track(sorted(second.items()), "求值取值函数的调用方"):
             key, info, evaluable = describe(owner)
             add_link(
                 key, info, evaluable, via, uses, {int(u["site"], 16) for u in uses}
@@ -323,7 +317,6 @@ def extract(
 
         document = dict(
             schemaVersion=SCHEMA_VERSION,
-            gameVersion=game_version,
             assumptions=[
                 "每次只装备一个技能；组合/系列技能的等级是装备件数",
                 "未导出的运行时状态保持未知，并在条件或表达式中按字段路径列出",

@@ -1,6 +1,6 @@
 # 技能效果链路提取与维护
 
-本目录是离线研究 SDK，代码统一使用 Python。它读取游戏 EXE、与之同版本的 il2cpp dump（REFramework 的 `il2cpp_dump.json`）和 `MHWS-in-json/natives` 中的解包 JSON，找出原生代码中使用每个技能的函数，并按技能等级把这些函数实际执行一遍，得到“技能 → 函数 → 数值与来源”的链路。结果写入 `src/processed_data/skill_details/data/skill_links/`（`index.json` 加按技能类别拆分的分片），由 `src/processed_data/skill_details` 在构建 PROCESSED_DATA 时生成 `SkillDetails.xlsx`（每个技能等级的每个效果一行，适用范围写作“【武器】弹种”，只列游戏参数中的数值；函数、条件与来源只保留在链路 JSON 中）。表格的取舍规则与效果名称翻译在 `src/processed_data/skill_details/exporter.py`（`effect_links`、`own_values`）和 `labels.py`；新增取值函数后检查它的效果名称是否通顺，不通顺就在 `labels.py` 的 `EFFECT_NAMES` 中补写。
+本目录是离线研究 SDK，代码统一使用 Python。它读取从内存 dump 出的游戏 EXE（如 `MonsterHunterWilds_dump.exe`，不使用原版 EXE）、REFramework 的 `il2cpp_dump.json` 和 `MHWS-in-json/natives` 中的解包 JSON，找出原生代码中使用每个技能的函数，并按技能等级把这些函数实际执行一遍，得到“技能 → 函数 → 数值与来源”的链路。结果写入 `src/processed_data/skill_details/data/skill_links/`（`index.json` 加按技能类别拆分的分片），由 `src/processed_data/skill_details` 在构建 PROCESSED_DATA 时生成 `SkillDetails.xlsx`（每个技能等级的每个效果一行，适用范围写作“【武器】弹种”，只列游戏参数中的数值；函数、条件与来源只保留在链路 JSON 中）。表格的取舍规则与效果名称翻译在 `src/processed_data/skill_details/exporter.py`（`effect_links`、`own_values`）和 `labels.py`；新增取值函数后检查它的效果名称是否通顺，不通顺就在 `labels.py` 的 `EFFECT_NAMES` 中补写。
 
 SDK 与 `src` 之间只通过这份 JSON 交接：`src` 不导入本目录的代码，也不读取 EXE 或 il2cpp；本目录不导入 `src`。EXE 和 il2cpp 由使用者提供，仓库不保存副本。
 
@@ -73,7 +73,7 @@ SDK 与 `src` 之间只通过这份 JSON 交接：`src` 不导入本目录的代
 | `runtime/heap.py` | il2cpp 字段布局（`Layouts`）、解包 JSON 对象模型、未知运行时对象 |
 | `runtime/scenario.py` | 情境：技能目录、`EquipSkillData`/`EquipSkillInfo` 拼装、组合技能表、单例链 |
 | `runtime/evaluate.py` | 参数取值范围、按调用约定装入参数并执行一次求值（含聚焦求值）、被调方法签名 |
-| `workflow/extract.py` | 汇总全部链路与求值结果、整理来源、按 `sdk/game_versions.json` 识别游戏版本 |
+| `workflow/extract.py` | 汇总全部链路与求值结果、整理来源；不记录游戏版本或文件摘要 |
 | `workflow/shards.py` | 写出 `index.json` 与按技能类别的分片；分片内的条件、来源、调用文本与常量各自去重成表 |
 | `workflow/cli.py`、`__main__.py` | 命令行入口；菜单界面在 `sdk/tui.py`（`python -m sdk`），只调用命令行 |
 | `notes.py` | 需要显式说明的技能与通用说明（简体中文） |
@@ -88,22 +88,21 @@ python -B -m sdk.skill_effect_exporter extract -e <EXE> -i <il2cpp_dump.json> -n
 python -B -m sdk.skill_effect_exporter extract -s HunterSkill_019 -o .agents/skill-effects/try.json   # 调试单个技能
 ```
 
-- `-e/--exe`：默认取环境变量 `MHWS_EXE`，其次在 Steam 库中查找。
-- `-i/--il2cpp`：默认取环境变量 `MHWS_IL2CPP`，其次取 EXE 同目录的 `il2cpp_dump.json`。
+- `-e/--exe`：dump 出的游戏 EXE；未设环境变量 `MHWS_EXE` 时必须指定。
+- `-i/--il2cpp`：`il2cpp_dump.json`；未设环境变量 `MHWS_IL2CPP` 时必须指定。SDK 不猜测这两个路径。
 - 全量运行约 20 分钟（多数时间花在按武器、弹药展开与聚焦求值上）；之后运行 `python -m src.processed_data.skill_details` 或完整流水线检查表格。
 
 ## 游戏更新后的检查
 
-1. 用新 EXE 生成新的 il2cpp dump（REFramework），放在 EXE 同目录或用 `-i` 指定；重新解包 `MHWS-in-json`。
+1. 从更新后的游戏 dump 出新的 EXE，并用 REFramework 生成新的 il2cpp dump；重新解包 `MHWS-in-json`。
 2. 运行 `extract`。以下任一项报错都说明代码模式变化，先核对原生指令再修改 `native/scan.py` 或 `config.py`：
-   - EXE 与 il2cpp 必须已在 `sdk/game_versions.json` 登记（新版本由 `sdk.enemy_logic_exporter resolve-symbols` 登记）；输出只记录 `gameVersion`。
    - `getSkillValue` 开头读取 `SkillToGroupSkill`（`mov rax,[rip+X]; movsxd rdx,r8d; mov eax,[rax+rdx*4+ARRAY_DATA_OFFSET]`）与结尾 `xor rcx,rsp; call 栈保护检查`；
    - `get__SkillParam` 仍是三次读取后 `ret` 的单例链；
    - `createSkillToGroupSkill` 仍以 `r8d/r9d` 成对立即数调用同一个写入函数（少于 10 对视为模式变化）。
 3. 核对 `config.py` 的布局常量：用一个已知函数（如 `getSkillBallisticBeginWideRate_Gun`）确认数组长度在 `ARRAY_LENGTH_OFFSET`、元素从 `ARRAY_DATA_OFFSET` 开始；`List`1` 的 `_items/_size/_version` 偏移与 il2cpp 字段记录一致；`via.rds.Mandrake` 的 `v/m` 字段与 `EquipSkillInfo._SkillLv` 仍按 `v / m` 解码（见 `getSkillLevelCore`）。
 4. 与上一版输出比较 `stats`（各状态的路径数）和关键技能的数值（攻击 `getSkillAttackRate/Add`、弹道强化 `getSkillBallistic*`、恨击 `getSkillViolentAddDamage`）。新出现的 `unsupported` 先看详情：缺指令就在 `native/emulator.py` 补完整语义，缺数据形式就在 `runtime/heap.py` 补对象模型。
 5. 复核 `notes.py` 中每条说明对应的代码是否仍成立，更新其中的版本号；`remapDifferences` 有变化时同步更新说明。
-6. 构建 `SkillDetails.xlsx` 检查表格；核对数值时直接查看链路 JSON 中的条件与来源。`src` 只核对索引与分片的格式和游戏版本是否一致，不保存解包文件摘要；更新 `MHWS-in-json` 后必须重新运行 `extract`。
+6. 构建 `SkillDetails.xlsx` 检查表格；核对数值时直接查看链路 JSON 中的条件与来源。`src` 只核对索引与分片的格式是否一致，不保存游戏版本或解包文件摘要；游戏或 `MHWS-in-json` 更新后必须重新运行 `extract`。
 
 ## 扩展规则
 

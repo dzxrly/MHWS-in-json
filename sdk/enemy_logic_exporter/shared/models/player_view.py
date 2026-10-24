@@ -16,6 +16,7 @@ from ..logic.expressions import expression_unknown
 from ..logic.weights import candidate_node_id
 from ..logic.monster_rules import hooks, rule_kind
 from ..resources.action_names import CLASS_EXPLANATIONS
+from sdk.progress import track
 from ..config import (
     BAD_CONDITION_LABELS,
     BITS_SEPARATOR,
@@ -851,7 +852,10 @@ class PlayerCompiler:
                 if option not in self.inputs[key]["options"]:
                     self.inputs[key]["options"].append(option)
                 return comparison(key, expression.get("operator", "eq"), value)
-            if str(key).startswith("random_uint32_mod_") and right.get("kind") == "constant":
+            if (
+                str(key).startswith("random_uint32_mod_")
+                and right.get("kind") == "constant"
+            ):
                 return comparison(key, expression.get("operator", "eq"), right["value"])
             if (
                 key == "self_unique_state_fixed_id"
@@ -905,7 +909,11 @@ class PlayerCompiler:
                 label = BAD_CONDITION_LABELS.get(name)
                 return self.boolean(
                     key,
-                    "玩家处于" + label if label else HUNTER_STATUS_LABELS.get(name, name),
+                    (
+                        "玩家处于" + label
+                        if label
+                        else HUNTER_STATUS_LABELS.get(name, name)
+                    ),
                 )
             if key == "self_state_sign" and right.get("kind") == "constant":
                 self.inputs.setdefault(key, dict(label="当前状态信号", options=[]))
@@ -991,7 +999,9 @@ class PlayerCompiler:
         if scene and node.get("semanticEvidence") and node.get("summary"):
             # Reviewed checks over live scene/part state: the player sees one
             # input per distinct resource argument, labelled by the SDK summary.
-            identity = json.dumps(node.get("argument", {}), ensure_ascii=False, sort_keys=True)
+            identity = json.dumps(
+                node.get("argument", {}), ensure_ascii=False, sort_keys=True
+            )
             key = scene + ":" + hashlib.sha1(identity.encode()).hexdigest()[:12]
             result = self.boolean(key, node["summary"])
             return result, self.describe(result)
@@ -1020,25 +1030,42 @@ class PlayerCompiler:
                 and key in self.inputs
             ):
                 option = next(
-                    (o["label"] for o in self.inputs[key].get("options", []) if o["value"] == value),
+                    (
+                        o["label"]
+                        for o in self.inputs[key].get("options", [])
+                        if o["value"] == value
+                    ),
                     str(value),
                 )
                 if type(value) is bool:
-                    return self.inputs[key]["label"] + ("成立" if value == (expression["operator"] == "eq") else "不成立")
-                symbol = {"lt": "<", "le": "≤", "gt": ">", "ge": "≥", "eq": "=", "ne": "≠"}[
-                    expression["operator"]
-                ]
+                    return self.inputs[key]["label"] + (
+                        "成立"
+                        if value == (expression["operator"] == "eq")
+                        else "不成立"
+                    )
+                symbol = {
+                    "lt": "<",
+                    "le": "≤",
+                    "gt": ">",
+                    "ge": "≥",
+                    "eq": "=",
+                    "ne": "≠",
+                }[expression["operator"]]
                 return f"{self.inputs[key]['label']} {symbol} {option}"
             if key in SCENARIO_FACTS:
                 return SCENARIO_FACTS[key]
             if key in ("ai_state_current", "ai_state_pending"):
-                return ("当前" if key == "ai_state_current" else "待切换") + f" AI 状态为 {value}"
+                return (
+                    "当前" if key == "ai_state_current" else "待切换"
+                ) + f" AI 状态为 {value}"
             if str(key).startswith("random_uint32_mod_"):
                 modulus = int(key.split(":", 1)[0].rsplit("_", 1)[-1])
                 return f"随机整数 % {modulus} ≤ {value}"
             if key == "self_state_sign":
                 text = STATE_SIGN_LABELS.get(value, value)
-                return ("状态信号：" if expression["operator"] == "eq" else "状态信号不是：") + text
+                return (
+                    "状态信号：" if expression["operator"] == "eq" else "状态信号不是："
+                ) + text
             label = self.inputs.get(key, {}).get("label", "距离")
             if key == "distance_horizontal":
                 label = "玩家与怪物的水平距离"
@@ -1159,7 +1186,9 @@ class PlayerCompiler:
             title=title,
             trueLabel=true_label,
             falseLabel=false_label,
-            snapshotGuard=any(p.get("key") == "ordinary_combat_snapshot" for p in parts),
+            snapshotGuard=any(
+                p.get("key") == "ordinary_combat_snapshot" for p in parts
+            ),
             compact=category == "internal",
         )
 
@@ -1342,7 +1371,9 @@ def build_player_view(graph):
                 group=slot["group"],
                 requestedBy=owners,
                 note=(
-                    "由 " + "、".join(owners) + " 请求切换到此行为表；触发这些状态的条件不在本表内。"
+                    "由 "
+                    + "、".join(owners)
+                    + " 请求切换到此行为表；触发这些状态的条件不在本表内。"
                     if owners
                     else "未找到请求此槽的 AI 状态或中断。"
                 ),
@@ -1458,15 +1489,15 @@ def enrich_models(models, output):
     paths = sorted(models.glob("em*.v*.json"))
     if not paths:
         raise ValueError("没有已提取的怪物图 JSON")
-    for path in paths:
+    for path in track(paths, "生成玩家视图"):
         graph = json.loads(path.read_text(encoding="utf8"))
         if graph.get("storage"):
-            raise ValueError("玩家视图需要 .agents 中的完整研究模型，不能读取已发布的精简模型")
+            raise ValueError(
+                "玩家视图需要 .agents 中的完整研究模型，不能读取已发布的精简模型"
+            )
         if graph.get("artifactKind") != "extracted_battle_graph":
             raise ValueError("玩家视图只接受已提取的语义图")
         registry = RuleRegistry.load()
-        if registry.data["profile"] != graph["profile"]:
-            raise ValueError("当前玩家配方与模型来源版本不同")
         for prepare in hooks("prepare_player_graph"):
             prepare(graph, registry)
         graph["rules"] = registry.data

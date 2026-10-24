@@ -61,7 +61,7 @@ class EvidenceTests(unittest.TestCase):
                 fields={"b": 2},
             ),
         ]
-        packed = pack_methods(rows, {"gameVersion": "fixture"})
+        packed = pack_methods(rows)
         self.assertEqual(method_rows(packed), rows)
         self.assertEqual(len(packed["nativeCode"]), 1)
         self.assertEqual(len(packed["methods"]), 2)
@@ -83,7 +83,7 @@ class EvidenceTests(unittest.TestCase):
             )
             for i in range(50)
         ]
-        packed = pack_methods(rows, {})
+        packed = pack_methods(rows)
         self.assertLess(len(json.dumps(packed)), len(json.dumps(rows)) // 10)
         self.assertEqual(method_rows(packed), rows)
 

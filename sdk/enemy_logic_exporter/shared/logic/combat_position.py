@@ -1,11 +1,12 @@
 """Recover reviewed Combat entry pushes without a general runtime stack model."""
 
+import json
+from pathlib import Path
 import copy
 from functools import lru_cache
 
 from capstone import CS_OP_MEM
 
-from sdk import versions
 from ..config import (
     ARRAY_ELEMENTS,
     ARRAY_LENGTH,
@@ -24,7 +25,9 @@ from ..native.bindings import add, pointer
 
 @lru_cache(maxsize=1)
 def evidence():
-    return versions.read(EVIDENCE_DIR / "combat_position_push.v1.json")
+    return json.loads(
+        Path(EVIDENCE_DIR / "combat_position_push.v1.json").read_text(encoding="utf-8")
+    )
 
 
 def recover_entry_push(machine, branch, original):
@@ -35,8 +38,6 @@ def recover_entry_push(machine, branch, original):
     methods are the originally reviewed samples, not a whitelist.
     """
     proof = evidence()
-    if machine.registry.data["profile"] != proof["profile"]:
-        return None
     helper = proof["resizeHelper"]
     start = int(helper["address"], 16)
     # The helper must be the profile's resolved position_array_resize.
@@ -113,7 +114,10 @@ def _trace_push(machine, address, original, used, capacity, reference, resize):
             if committed and event["target"] in machine.targets:
                 if any(value is None for value in event["arguments"][:4]):
                     return None
-                if machine.load(pointer("operator", OPERATOR_EXPORT_JUMP), 1, state) != 1:
+                if (
+                    machine.load(pointer("operator", OPERATOR_EXPORT_JUMP), 1, state)
+                    != 1
+                ):
                     return None
                 return ins.address, event["arguments"][:4], continuation, sites
             if event["target"] != resize or continuation is not None:

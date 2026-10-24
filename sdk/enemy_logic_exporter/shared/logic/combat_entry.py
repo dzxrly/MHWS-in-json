@@ -6,9 +6,10 @@ Unreviewed helper bodies remain explicit boundaries, including onEnter's area
 schedule work and the scheduler's base/override resource selection.
 """
 
+import json
+from pathlib import Path
 from copy import deepcopy
 from functools import lru_cache
-from sdk import versions
 from ..config import (
     COMBAT_FIELDS as FIELDS,
     COMBAT_HELPER_METHODS as HELPER_METHODS,
@@ -18,7 +19,6 @@ from ..config import (
     COMBAT_STATE_SIGN_COMPONENT_WRITES,
     COMBAT_STATE_SIGN_COMPONENTS,
     EVIDENCE_DIR,
-    SUPPORTED_PROFILE,
 )
 from .expressions import combined, compare, runtime
 from ..native.symbols import method_stem
@@ -26,7 +26,9 @@ from ..native.symbols import method_stem
 
 @lru_cache(maxsize=1)
 def receipt():
-    return versions.read(EVIDENCE_DIR / "combat_entry_evidence.v1.json")
+    return json.loads(
+        Path(EVIDENCE_DIR / "combat_entry_evidence.v1.json").read_text(encoding="utf-8")
+    )
 
 
 def _suffixed_methods():
@@ -37,17 +39,15 @@ def _suffixed_methods():
     result = {}
     for role, identity in COMBAT_METHODS.items():
         if len(keys.get(identity, [])) != 1:
-            raise ValueError("共享 Combat 证据中的方法无法唯一对应：" + ".".join(identity))
+            raise ValueError(
+                "共享 Combat 证据中的方法无法唯一对应：" + ".".join(identity)
+            )
         result[role] = keys[identity][0]
     return result
 
 
-def verify_sources(profile, metadata, pe):
+def verify_sources(metadata, pe):
     """Verify the actual method identities, field layout and read-only PE bytes."""
-    if profile != SUPPORTED_PROFILE or profile != receipt()["profile"]:
-        raise ValueError("共享 Combat 配方与来源版本不匹配")
-    if metadata.sha256 != profile["metadataSha256"]:
-        raise ValueError("共享 Combat 配方的元数据来源变化")
     for row in receipt()["methods"].values():
         method = metadata.get(row["type"])["methods"].get(row["method"])
         if not method or int(method["function"], 16) != int(row["address"], 16):
@@ -82,7 +82,7 @@ def _condition(identity, summary, expression, yes, no, **extra):
         expression=expression,
         true=yes,
         false=no,
-        **extra
+        **extra,
     )
 
 
@@ -93,7 +93,7 @@ def _effect(identity, summary, following, effect, **extra):
         effect=effect,
         summary=summary,
         next=following,
-        **extra
+        **extra,
     )
 
 
@@ -130,11 +130,8 @@ def build_combat_entries(model, monster):
     Production extraction must use attach_combat_entries, which verifies sources.
     No event receives a blanket verified or complete Combat status.
     """
-    if (
-        model["profile"] != receipt()["profile"]
-        or monster["enemyId"] != model["enemyId"]
-    ):
-        raise ValueError("共享 Combat 入口的怪物或来源版本不匹配")
+    if monster["enemyId"] != model["enemyId"]:
+        raise ValueError("共享 Combat 入口的怪物不匹配")
     METHODS = _suffixed_methods()
     tables = {table["tableGuid"]: table for table in model["tables"]}
     bindings = {}
@@ -155,7 +152,7 @@ def build_combat_entries(model, monster):
                 }
                 if root
                 else {}
-            )
+            ),
         )
     if "COMBAT" not in bindings:
         raise ValueError("本怪物的实际 BTableList 缺少 Combat 槽")
@@ -173,7 +170,7 @@ def build_combat_entries(model, monster):
                 "status": "partial",
                 "reason": "由 isWaitUntilActionEndBTable 的实际策略计算；不能固定为立即切换",
             },
-            **bindings.get(slot, {})
+            **bindings.get(slot, {}),
         )
 
     def request(identity, slot, following, *, verified=False):
@@ -186,9 +183,7 @@ def build_combat_entries(model, monster):
             verifiedCurrentSlot=verified,
         )
 
-    manager = _raw(
-        "controller_exists", FIELDS["controller_exists"]
-    )
+    manager = _raw("controller_exists", FIELDS["controller_exists"])
     done_combat = _raw(
         "done_combat_begin",
         FIELDS["done_combat_begin"],
@@ -249,9 +244,7 @@ def build_combat_entries(model, monster):
                     "wait_policy",
                     f"调用方先计算 isWaitUntilActionEndBTable；该方法检查重启、反应事件、故事表和位集等上下文，也可能清除 {FIELDS['wait_policy_flag']} 标志。完整等待策略尚未固化，不能将未知结果设成固定立即切换",
                     "resume_pending",
-                    nativeEvidence=deepcopy(
-                        evidence[METHODS["wait_until_action_end"]]
-                    ),
+                    nativeEvidence=deepcopy(evidence[METHODS["wait_until_action_end"]]),
                     callerScope=True,
                 ),
                 _condition(
@@ -661,9 +654,7 @@ def build_combat_entries(model, monster):
 
         current = "_Current" + channel.title() + "BTable"
         pending = "_Request" + channel.title() + "BTable"
-        needs_update = _raw(
-            "btable_request_update", FIELDS["btable_request_update"]
-        )
+        needs_update = _raw("btable_request_update", FIELDS["btable_request_update"])
         pending_exists = relation("pending_slot", -1, "ne", pending + ".ID；NONE=-1")
         resource_refresh = combined(
             "all",
@@ -708,9 +699,7 @@ def build_combat_entries(model, monster):
         root_index = dict(
             kind="compare",
             operator="eq",
-            left=runtime(
-                prefix + "saved_table", FIELDS["saved_table"]
-            ),
+            left=runtime(prefix + "saved_table", FIELDS["saved_table"]),
             right=runtime(
                 prefix + "export_root_index",
                 FIELDS["export_root_index"],
@@ -1010,7 +999,6 @@ def build_combat_entries(model, monster):
     ]
     scheduler = dict(
         status="partial",
-        sourceProfile=deepcopy(model["profile"]),
         slotBindings=bindings,
         requestSemantics="request_btable 排队写入待切换字段；dispatchTarget 是调度器之后可能选择的资源入口，不是同步子表调用",
         updateSemantics="跳表优先；跳表管理器有效时该帧不更新主表；恢复请求使用主表保存位置",
@@ -1022,7 +1010,7 @@ def build_combat_entries(model, monster):
 
 def attach_combat_entries(model, monster, metadata, pe):
     """Attach verified-source partial shared events to this monster's native graph."""
-    verify_sources(model["profile"], metadata, pe)
+    verify_sources(metadata, pe)
     additions = build_combat_entries(model, monster)
     identities = {t["tableGuid"] for t in model["tables"]}
     if identities & {t["tableGuid"] for t in additions["tables"]}:

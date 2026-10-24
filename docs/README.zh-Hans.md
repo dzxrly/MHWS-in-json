@@ -84,10 +84,10 @@ enemy_battle_logic/EM0001_00_0.html
 
 仓库的 `sdk/` 目录是读取游戏文件的离线 SDK，`python -m sdk` 打开它的菜单。它包含以下功能：
 
-- 怪物行动逻辑（`sdk.enemy_logic_exporter`）：从游戏文件中提取怪物行动逻辑，生成行动图网页使用的 JSON。`src/processed_data/enemy_battle_logic/models` 中的 34 份模型对应游戏 **1.42.0.2**，未知分支保留标记。
+- 怪物行动逻辑（`sdk.enemy_logic_exporter`）：从游戏文件中提取怪物行动逻辑，生成行动图网页使用的 JSON。`src/processed_data/enemy_battle_logic/models` 中的 34 份模型保留未知分支的标记。
 - 技能效果（`sdk.skill_effect_exporter`）：找出原生代码中使用每个技能的函数并按等级求值，生成 `SkillDetails.xlsx` 使用的技能效果链路 JSON。
 
-SDK 需要使用者提供与游戏同版本的 EXE 和 REFramework `il2cpp_dump.json`。环境搭建（`sdk/setup_env.ps1`）与用法见 [SDK 使用说明](../sdk/docs/README.zh-Hans.md)。只重新生成网页或表格时不需要 SDK：
+SDK 需要使用者提供从内存 dump 出的游戏 EXE（如 `MonsterHunterWilds_dump.exe`）和 REFramework `il2cpp_dump.json`，不记录游戏版本。环境搭建（`sdk/setup_env.ps1`）与用法见 [SDK 使用说明](../sdk/docs/README.zh-Hans.md)。只重新生成网页或表格时不需要 SDK：
 
 ```powershell
 python -m src.processed_data.enemy_battle_logic --preview-all --output .agents/battle-preview

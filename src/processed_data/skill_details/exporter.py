@@ -2,9 +2,8 @@
 
 The links come from ``data/skill_links/`` (``index.json`` plus one shard per
 skill category), written offline by ``python -m sdk.skill_effect_exporter
-extract``. This builder never reads the EXE or il2cpp dump. The links name the
-game version they were extracted from; rerun the extractor after updating
-MHWS-in-json to a new game version.
+extract``. This builder never reads the EXE or il2cpp dump; rerun the
+extractor after updating MHWS-in-json to a new game version.
 """
 
 from __future__ import annotations
@@ -83,11 +82,8 @@ def load_links(directory: Path = LINKS_DIR) -> dict:
     links = []
     for name in sorted(listed):
         shard = json.loads((directory / name).read_text(encoding="utf-8"))
-        if (
-            shard.get("schemaVersion") != SCHEMA_VERSION
-            or shard.get("gameVersion") != document["gameVersion"]
-        ):
-            raise ValueError(f"技能链路分片的格式或游戏版本与索引不一致：{name}")
+        if shard.get("schemaVersion") != SCHEMA_VERSION:
+            raise ValueError(f"技能链路分片的格式与索引不一致：{name}")
         links.extend(
             unpack_link(link, shard["strings"], shard["constants"])
             for link in shard["links"]
@@ -425,7 +421,6 @@ def build_sheets(
     remarks += [
         {"项目": "通用说明", "内容": text} for text in links["notes"]["general"]
     ]
-    remarks.append({"项目": "提取时的游戏版本", "内容": links["gameVersion"]})
     return {"技能效果": effects, "技能": overview, "说明": remarks}
 
 

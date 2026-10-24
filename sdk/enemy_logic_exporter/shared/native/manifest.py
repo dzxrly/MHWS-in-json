@@ -4,7 +4,7 @@ import hashlib
 import re
 from .metadata import Il2cppMetadata
 from .pe import PE, address_catalog
-from .evidence import digest, pack_methods
+from .evidence import pack_methods
 from ..config import (
     BOOLEAN_COMMAND_FUNC,
     COMMON_COMMAND_PREFIX,
@@ -115,7 +115,7 @@ def selected(name, method, enemy, selection):
     )
 
 
-def build_manifest(exe, metadata_path, enemy, selection, version, helpers=()):
+def build_manifest(exe, metadata_path, enemy, selection, helpers=()):
     if not re.fullmatch(r"Em\d{4}_\d{2}", enemy):
         raise ValueError("Enemy must look like Em0001_00")
     rows, skipped, fields = [], [], {}
@@ -155,13 +155,8 @@ def build_manifest(exe, metadata_path, enemy, selection, version, helpers=()):
             )
         for name in MANIFEST_RUNTIME_TYPES:
             fields[name] = metadata.fields(name)
-        profile = {
-            "gameVersion": version,
-            "exeSha256": digest(exe),
-            "metadataSha256": metadata.sha256,
-        }
     return pack_methods(
-        rows, profile, enemy=enemy, selection=selection, fields=fields, skipped=skipped
+        rows, enemy=enemy, selection=selection, fields=fields, skipped=skipped
     )
 
 

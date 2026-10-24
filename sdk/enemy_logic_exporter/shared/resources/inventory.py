@@ -29,12 +29,10 @@ def table_references(resources, value):
             yield from table_references(resources, item)
 
 
-def discover_inventory(natives, metadata_path, profile):
+def discover_inventory(natives, metadata_path):
     resources = Resources(natives)
     records, monsters, factory_catalog, name_catalog = {}, [], {}, {}
     with Il2cppMetadata(metadata_path) as metadata:
-        if metadata.sha256 != profile["metadataSha256"]:
-            raise ValueError("资源审计的元数据版本与索引不匹配")
         for enemy_id in EXPECTED_ENEMY_IDS:
             prefix = "Em" + enemy_id[2:9]
             path = resources.resolve(
@@ -134,7 +132,6 @@ def discover_inventory(natives, metadata_path, profile):
         raise ValueError("训练靶不能进入大型怪物审计")
     return dict(
         schemaVersion=2,
-        profile=profile,
         monsterCount=len(monsters),
         uniqueBTableResources=len(records),
         nativeTableMethodBindings=sum(

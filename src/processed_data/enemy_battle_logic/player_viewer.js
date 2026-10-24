@@ -379,7 +379,7 @@
       details.addEventListener("toggle", () => {
         if (!details.open || details.querySelector("pre")) return;
         const refs = [...new Set([...(rec.via || []).map(n => n.sourceRef), rec.sourceRef])];
-        details.append(html("pre", JSON.stringify({ path: refs.map(ref => ({ ref, node: sources.get(ref)?.node, evidence: sources.get(ref)?.table.evidence })), profile: graph.profile }, null, 2)));
+        details.append(html("pre", JSON.stringify({ path: refs.map(ref => ({ ref, node: sources.get(ref)?.node, evidence: sources.get(ref)?.table.evidence })) }, null, 2)));
       });
       selection.append(details);
     }

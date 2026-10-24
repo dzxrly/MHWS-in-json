@@ -4,9 +4,10 @@ Only the listed cases are accepted. Runtime keys describe raw fields or the
 explicit target/parts queries, rather than assuming a command's final result.
 """
 
+import json
+from pathlib import Path
 from copy import deepcopy
 from functools import lru_cache
-from sdk import versions
 from ..config import (
     BAD_CONDITION_LABELS,
     ENEMY_TARGET_STATUS,
@@ -30,7 +31,9 @@ from .navigation_conditions import recover_navigation_condition
 
 @lru_cache(maxsize=1)
 def receipt():
-    return versions.read(EVIDENCE_DIR / "condition_evidence.v1.json")
+    return json.loads(
+        Path(EVIDENCE_DIR / "condition_evidence.v1.json").read_text(encoding="utf-8")
+    )
 
 
 def enum_name(value):
@@ -67,9 +70,15 @@ def _player_target_status(argument):
             return None
         player = runtime(
             "selected_hunter_status:" + name,
-            HUNTER_STATUS_SOURCE.format(bits="/".join(map(str, HUNTER_STATUS_BITS[name]))),
+            HUNTER_STATUS_SOURCE.format(
+                bits="/".join(map(str, HUNTER_STATUS_BITS[name]))
+            ),
         )
-        return player, False, HUNTER_STATUS_LABELS[name].replace("玩家", "当前目标（玩家）")
+        return (
+            player,
+            False,
+            HUNTER_STATUS_LABELS[name].replace("玩家", "当前目标（玩家）"),
+        )
     return None
 
 
@@ -102,9 +111,7 @@ def _part_name(resources, enemy_id, guid):
     return resources.part_name(matches[0]["_PartsType"]) if len(matches) == 1 else None
 
 
-def recover_condition(node, profile, enemy_id, resources):
-    if profile != receipt()["profile"]:
-        raise ValueError("公共条件配方与来源版本不匹配")
+def recover_condition(node, enemy_id, resources):
     command = node.get("commandType", "")
     if not command.startswith(COMMON_COMMAND_PREFIX):
         # Monster-specific commands are reviewed in their own monster modules.
@@ -115,7 +122,7 @@ def recover_condition(node, profile, enemy_id, resources):
             if recovered is not None:
                 return recovered
         return None
-    navigation = recover_navigation_condition(node, profile)
+    navigation = recover_navigation_condition(node)
     if navigation is not None:
         return navigation
     argument = node["argument"]
@@ -127,9 +134,7 @@ def recover_condition(node, profile, enemy_id, resources):
         "self_target_context_valid",
         FIELDS["target_context"],
     )
-    selected = (
-        FIELDS["selected_target"]
-    )
+    selected = FIELDS["selected_target"]
     key = command.rsplit(".", 1)[-1]
     extra = {}
     if key == "cCheckSelfType":
@@ -181,9 +186,7 @@ def recover_condition(node, profile, enemy_id, resources):
                 dict(
                     kind="compare",
                     operator="eq",
-                    left=runtime(
-                        "self_basic_enemy_id", FIELDS["enemy_id"]
-                    ),
+                    left=runtime("self_basic_enemy_id", FIELDS["enemy_id"]),
                     right=mapped,
                 ),
             )

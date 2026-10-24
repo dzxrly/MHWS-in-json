@@ -9,7 +9,7 @@ import gzip
 import hashlib
 import json
 from pathlib import Path
-from ..native.evidence import method_rows, evidence_key, digest
+from ..native.evidence import method_rows, evidence_key
 from ..native.metadata import Il2cppMetadata
 from ..native.pe import PE, verify_rows
 from ..native.bindings import bind_native
@@ -18,6 +18,7 @@ from ..resources.reader import Resources, typed
 from ..logic.predicates import RuleRegistry
 from .extraction import extract_inventory
 from ..config import OPERATOR_WORK_TYPE, in_agents
+
 
 def command_binding(event, body, factories, registry):
     """Require both native object identity and the declared resource type."""
@@ -101,8 +102,8 @@ def _artifact(index_path, index, row):
     if hashlib.sha256(raw).hexdigest() != artifact["sha256"]:
         raise ValueError("原生缓存摘要变化")
     data = json.loads(gzip.decompress(raw))
-    if not data["completed"] or data["profile"] != index["profile"]:
-        raise ValueError("原生缓存不完整或版本冲突")
+    if not data["completed"]:
+        raise ValueError("原生缓存不完整")
     if any(data[k] != row[k] for k in ("address", "end", "nativeSha256")):
         raise ValueError("原生方法身份变化")
     return data
@@ -125,11 +126,6 @@ def recover_all(
     index_path = Path(native_index)
     index = json.loads(index_path.read_text(encoding="utf8"))
     inventory = json.loads(Path(inventory).read_text(encoding="utf8"))
-    if (
-        index["profile"] != inventory["profile"]
-        or digest(exe) != index["profile"]["exeSha256"]
-    ):
-        raise ValueError("逐怪物分析来源不匹配")
     rows = method_rows(index)
     verify_rows(exe, rows)
     scopes = extract_inventory(inventory, rows)
@@ -138,8 +134,6 @@ def recover_all(
         if requests_path
         else None
     )
-    if requests is not None and requests["profile"] != index["profile"]:
-        raise ValueError("动作请求与原生恢复来源不匹配")
     resources = Resources(natives)
     registry = RuleRegistry.load()
     catalog = (
@@ -147,8 +141,6 @@ def recover_all(
         if command_catalog
         else {}
     )
-    if catalog and catalog["profile"] != index["profile"]:
-        raise ValueError("专有命令来源不匹配")
     leaf_by_type = defaultdict(list)
     for leaf in catalog.get("leafComparisons", []):
         leaf_by_type[leaf["commandType"]].append(leaf)
@@ -156,8 +148,6 @@ def recover_all(
     for initializer in catalog.get("initializers", []):
         for pool in initializer["staticPools"]:
             pools[pool["address"]].append(pool)
-    if registry.data["profile"] != index["profile"]:
-        raise ValueError("规则来源不匹配")
     by_type = {r["exportType"]: r for r in inventory["resources"]}
     by_address = defaultdict(list)
     grouped = defaultdict(list)
@@ -166,8 +156,6 @@ def recover_all(
         by_address[int(row["address"], 16)].append(row)
     layouts = {}
     with Il2cppMetadata(Path(metadata)) as dump:
-        if dump.sha256 != index["profile"]["metadataSha256"]:
-            raise ValueError("元数据来源不匹配")
         operator = {
             int(v["offset_from_base"], 16): k
             for k, v in dump.fields(OPERATOR_WORK_TYPE).items()
@@ -452,7 +440,6 @@ def recover_all(
         )
     result = dict(
         schemaVersion=1,
-        profile=index["profile"],
         monsters=monsters,
         resources=bindings,
         counts=dict(counts),

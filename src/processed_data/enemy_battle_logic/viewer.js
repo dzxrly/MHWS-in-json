@@ -10,7 +10,6 @@ if (graph.playerView) {
     const table = tables.get(detail.tableGuid);
     detail.node = table.nodes.find(node => node.id === detail.localId);
     detail.tableEvidence = table.evidence;
-    detail.profile = graph.profile;
   }
 }
 const viewport = document.getElementById("viewport"),

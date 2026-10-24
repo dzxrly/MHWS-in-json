@@ -13,6 +13,8 @@ if find_spec("capstone"):
 
 BASE = 0x140001000
 CONSTANT = 0x140002000
+# Writable data with no raw bytes in the file (zero-filled section tail).
+ZERO_FILLED = 0x140003000
 
 
 class FakeMetadata:
@@ -44,6 +46,13 @@ class FakePE:
 
     def read_only(self, address, size):
         return CONSTANT <= address and address + size <= CONSTANT + len(self.constants)
+
+    def contains(self, address):
+        return (
+            BASE <= address < BASE + len(self.code)
+            or CONSTANT <= address < CONSTANT + len(self.constants)
+            or ZERO_FILLED <= address < ZERO_FILLED + 0x100
+        )
 
 
 def run(code, setup, returns, constants=b""):
@@ -102,6 +111,14 @@ class EmulatorTests(unittest.TestCase):
         self.assertEqual(
             [(w["target"], w["value"]) for w in result["writes"]], [("状态+0x10", 7)]
         )
+
+    def test_zero_filled_global_is_runtime_state_not_null(self):
+        # mov rax, ZERO_FILLED+0x10; mov eax, [rax]; ret
+        code = bytes.fromhex("48b8") + struct.pack("<Q", ZERO_FILLED + 0x10)
+        code += bytes.fromhex("8b00" "c3")
+        (result,) = run(code, lambda st, heap: None, "System.Int32")
+        self.assertEqual(result["status"], "ok")
+        self.assertEqual(result["value"].name, f"全局量 {ZERO_FILLED + 0x10:#x}")
 
     def test_unhandled_operand_widths_end_as_unsupported(self):
         # idiv cx; ret  /  vpshufd ymm0,ymm1,0xe4; ret

@@ -57,9 +57,7 @@ def build_model(
     from ..shared.native.evidence import method_rows
     from ..shared.native.metadata import Il2cppMetadata
     from ..shared.native.pe import PE, verify_rows
-    from ..shared.native.evidence import digest
     from ..shared.native.bindings import bind_native
-    from ..shared.config import SUPPORTED_PROFILE
     from ..shared.resources.reader import Resources, structure_signature
     from ..shared.workflow.semantic_recovery import _artifact
     from ..shared.logic.static_pools import native_initializer_pools
@@ -67,11 +65,6 @@ def build_model(
     index_path, helper_path = Path(native_index), Path(helper_index)
     index = json.loads(index_path.read_text(encoding="utf8"))
     helpers = json.loads(helper_path.read_text(encoding="utf8"))
-    profile = index["profile"]
-    if profile != helpers["profile"] or profile != SUPPORTED_PROFILE:
-        raise ValueError("火龙配方与原生/辅助方法索引的已核查版本不匹配")
-    if digest(exe) != profile["exeSha256"]:
-        raise ValueError("火龙配方的 EXE 来源变化，必须重新核查")
     common = "STM/GameDesign/Enemy/Em0002/00/BTable/Em0002_00_BTable_CommonAttack.user.3.json"
     combat = common.replace("CommonAttack", "Combat")
     resources = Resources(natives)
@@ -96,8 +89,6 @@ def build_model(
     verify_rows(exe, rows + initializers)
     imports = {}
     with Il2cppMetadata(Path(metadata)) as dump:
-        if dump.sha256 != profile["metadataSha256"]:
-            raise ValueError("火龙配方的 IL2CPP 来源变化")
         for name in sources:
             imports[name] = {
                 int(field["offset_from_base"], 16): field["type"]
@@ -213,7 +204,6 @@ def build_model(
     document = dict(
         schemaVersion=1,
         documentType="enemy_battle_logic",
-        profile=profile,
         enemyId=ENEMY_ID,
         enemyName=ENEMY_ID,
         bindEnemyNameFromResources=True,
@@ -237,8 +227,6 @@ def build_model(
     )
     if requests_path is not None:
         requests = json.loads(Path(requests_path).read_text(encoding="utf8"))
-        if requests["profile"] != profile:
-            raise ValueError("火龙动作发现与模型来源版本不匹配")
         expected = {
             item["address"]
             for item in requests["actionRequestBindings"]

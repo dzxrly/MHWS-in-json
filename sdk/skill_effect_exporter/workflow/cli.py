@@ -13,7 +13,7 @@ from ..config import DEFAULT_NATIVES, DEFAULT_OUTPUT
 
 
 def parser():
-    exe = find_game_exe()
+    exe, il2cpp = find_game_exe(), find_il2cpp()
     result = argparse.ArgumentParser(
         description="离线提取技能到效果数值的链路；数据库构建不需要 EXE"
     )
@@ -27,13 +27,15 @@ def parser():
         type=Path,
         default=exe,
         required=exe is None,
-        help="游戏 EXE；默认取环境变量 MHWS_EXE，其次在 Steam 库中查找",
+        help="dump 出的游戏 EXE（如 MonsterHunterWilds_dump.exe）；未指定时取环境变量 MHWS_EXE",
     )
     extract.add_argument(
         "-i",
         "--il2cpp",
         type=Path,
-        help="与 EXE 同版本的 il2cpp_dump.json；默认取环境变量 MHWS_IL2CPP，其次取 EXE 同目录的文件",
+        default=il2cpp,
+        required=il2cpp is None,
+        help="REFramework 导出的 il2cpp_dump.json；未指定时取环境变量 MHWS_IL2CPP",
     )
     extract.add_argument(
         "-n",
@@ -60,11 +62,6 @@ def parser():
 
 def main():
     args = parser().parse_args()
-    il2cpp = args.il2cpp or find_il2cpp(args.exe)
-    if il2cpp is None or not Path(il2cpp).is_file():
-        raise SystemExit(
-            "缺少 il2cpp dump：用 -i/--il2cpp 指定，或设环境变量 MHWS_IL2CPP，或把 il2cpp_dump.json 放在 EXE 同目录"
-        )
     if args.command == "extract":
         if args.skill and args.output == DEFAULT_OUTPUT:
             raise SystemExit(
@@ -72,7 +69,9 @@ def main():
             )
         from .extract import extract
 
-        document = extract(args.exe, il2cpp, args.natives, skills=set(args.skill or ()))
+        document = extract(
+            args.exe, args.il2cpp, args.natives, skills=set(args.skill or ())
+        )
         from .shards import write_shards
 
         written = write_shards(document, args.output)

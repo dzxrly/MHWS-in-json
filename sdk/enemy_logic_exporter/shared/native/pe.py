@@ -7,8 +7,12 @@ from pathlib import Path
 import re
 import struct
 
-
 SECTION_WRITABLE = 0x80000000
+SECTION_EXECUTABLE = 0x20000000
+# The EXE is dumped from memory, so section flags show the runtime protection.
+# .sdata holds the read-only constants but the dump marks it writable, because
+# the loader fills the import table inside it.
+CONSTANT_SECTIONS = (b".sdata",)
 
 
 class PE:
@@ -33,6 +37,12 @@ class PE:
             # Section characteristics, for telling constants from writable data.
             self.section_flags = [
                 struct.unpack_from("<I", self.data, opt + optsize + i * 40 + 36)[0]
+                for i in range(count)
+            ]
+            self.section_names = [
+                self.data[opt + optsize + i * 40 : opt + optsize + i * 40 + 8].rstrip(
+                    b"\0"
+                )
                 for i in range(count)
             ]
             rva, size = struct.unpack_from("<II", self.data, opt + 112 + 3 * 8)
@@ -61,14 +71,26 @@ class PE:
                 ]
         return b""
 
-    def read_only(self, address, size):
-        """True when [address, address+size) lies in one non-writable section."""
+    def contains(self, address):
+        """True when address lies in a section's virtual range.
+
+        Includes the zero-filled tail past a section's raw data, where read()
+        returns no bytes.
+        """
         rva = address - self.base
-        for (virtual_size, virtual_address, _, _), flags in zip(
-            self.sections, self.section_flags
+        return any(
+            virtual_address <= rva < virtual_address + max(virtual_size, raw_size)
+            for virtual_size, virtual_address, raw_size, _ in self.sections
+        )
+
+    def read_only(self, address, size):
+        """True when [address, address+size) lies in one constant section."""
+        rva = address - self.base
+        for (virtual_size, virtual_address, _, _), flags, name in zip(
+            self.sections, self.section_flags, self.section_names
         ):
             if virtual_address <= rva and rva + size <= virtual_address + virtual_size:
-                return not flags & SECTION_WRITABLE
+                return not flags & SECTION_WRITABLE or name in CONSTANT_SECTIONS
         return False
 
     def end(self, address):
@@ -141,8 +163,7 @@ def verify_rows(exe, rows, *, require_completed=False):
             start, end = int(row["address"], 16), int(row["end"], 16)
             size = end - start
             body = pe.read(start, size) if 0 < size <= 0x200000 else b""
-            # The active profile pins the EXE; rows from older caches may
-            # still carry a byte digest, which is then checked as well.
+            # Rows that carry a digest of the analysed bytes are checked too.
             if len(body) != size or (
                 "nativeSha256" in row
                 and hashlib.sha256(body).hexdigest() != row["nativeSha256"]

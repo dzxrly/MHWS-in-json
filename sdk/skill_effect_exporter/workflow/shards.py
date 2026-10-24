@@ -91,7 +91,6 @@ def write_shards(document, directory):
         name = shard_name(category)
         shard = dict(
             schemaVersion=SCHEMA_VERSION,
-            gameVersion=document["gameVersion"],
             category=category,
             strings=strings,
             constants=constants,

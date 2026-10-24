@@ -16,7 +16,6 @@ from ..config import (
     OPERATOR_WORK_TYPE,
     REQUEST_ACTION_COMMANDS,
     SELECT_ACTION_ARGUMENT,
-    SUPPORTED_PROFILE,
 )
 from .reader import Resources, typed
 from .action_names import ActionNames
@@ -225,17 +224,13 @@ def discover_requests(native_index, inventory, exe, metadata, natives, output):
         raise ValueError("原生请求研究结果只允许写入 .agents")
     index = json.loads(native_index.read_text(encoding="utf8"))
     inventory = json.loads(Path(inventory).read_text(encoding="utf8"))
-    if (
-        index["profile"] != SUPPORTED_PROFILE
-        or inventory["profile"] != index["profile"]
-    ):
-        raise ValueError("请求位置契约只支持已核实的 1.42.0.2 来源")
     with Il2cppMetadata(Path(metadata)) as metadata_data:
-        if metadata_data.sha256 != index["profile"]["metadataSha256"]:
-            raise ValueError("元数据来源版本不匹配")
         operator = metadata_data.fields(OPERATOR_WORK_TYPE)
         position = metadata_data.fields(EXPORT_COMMAND_POSITION_TYPE)
-        if int(operator["PrevCommandPosition"]["offset_from_base"], 16) != OPERATOR_PREV_COMMAND_POSITION:
+        if (
+            int(operator["PrevCommandPosition"]["offset_from_base"], 16)
+            != OPERATOR_PREV_COMMAND_POSITION
+        ):
             raise ValueError("原生请求位置字段偏移已改变")
         if (
             int(position["CommandNum"]["offset_from_fieldptr"], 16) != 4
@@ -315,7 +310,7 @@ def discover_requests(native_index, inventory, exe, metadata, natives, output):
                             type=row["type"],
                             method=row["method"],
                             **store,
-                            reason="position_outside_resource_slots"
+                            reason="position_outside_resource_slots",
                         )
                     )
                     continue
@@ -324,8 +319,7 @@ def discover_requests(native_index, inventory, exe, metadata, natives, output):
                 if (
                     arg_type != SELECT_ACTION_ARGUMENT
                     or factory["_ArgumentType"] != arg_type
-                    or factory["_OrderType"]
-                    not in set(REQUEST_ACTION_COMMANDS)
+                    or factory["_OrderType"] not in set(REQUEST_ACTION_COMMANDS)
                 ):
                     boundaries.append(
                         dict(
@@ -334,7 +328,7 @@ def discover_requests(native_index, inventory, exe, metadata, natives, output):
                             **store,
                             reason="request_is_not_an_explicit_select_action",
                             commandType=factory["_OrderType"],
-                            argumentType=arg_type
+                            argumentType=arg_type,
                         )
                     )
                     continue
@@ -350,7 +344,7 @@ def discover_requests(native_index, inventory, exe, metadata, natives, output):
                             **store,
                             reason="action_identity_binding_unresolved",
                             error=str(error),
-                            argument=arg
+                            argument=arg,
                         )
                     )
                     continue
@@ -401,7 +395,7 @@ def discover_requests(native_index, inventory, exe, metadata, natives, output):
                         **store,
                         actionRef=identity_key,
                         status="native_position_and_resource_binding_verified",
-                        controlFlowReviewed=False
+                        controlFlowReviewed=False,
                     )
                 )
     counts = {}
@@ -414,7 +408,6 @@ def discover_requests(native_index, inventory, exe, metadata, natives, output):
             entireBattleRecovered=False,
         )
     result = dict(
-        profile=index["profile"],
         nativePositionContract=contract,
         actionRequestBindings=events,
         actionCatalog=action_catalog,

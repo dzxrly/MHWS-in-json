@@ -12,6 +12,8 @@ from ..models.native_recipe import NativeRecipeContext
 from ..models.catalog import EXPECTED_ENEMY_IDS
 from ..models.validation import validate_graph
 from ..config import in_agents
+from sdk.progress import track
+
 
 def extract_all_models(
     exe,
@@ -45,9 +47,8 @@ def extract_all_models(
         inventory_path=inventory_path,
         requests_path=requests_path,
     ) as context:
-        for enemy_id in enemy_ids:
+        for enemy_id in track(enemy_ids, "提取怪物模型"):
             module = get_monster(enemy_id)
-            print("EXTRACT", enemy_id, flush=True)
             model = module.build_model(
                 exe,
                 metadata,
@@ -65,9 +66,6 @@ def extract_all_models(
                 rules_path=rules_path,
                 resources=context.resources,
             )
-            # This metadata was hashed and opened once in the same read-only
-            # context. Every model's imports/fields were read from that mapping.
-            graph["metadataVerification"] = "matched"
             for row in native_evidence(graph):
                 context.native(row)
             graph["nativeVerification"] = "matched"
@@ -105,7 +103,6 @@ def extract_all_models(
                 flush=True,
             )
         receipt = dict(
-            profile=context.profile,
             semanticModels=results,
             missingSemanticModels=sorted(set(EXPECTED_ENEMY_IDS) - set(enemy_ids)),
             allModelsExported=set(enemy_ids) == set(EXPECTED_ENEMY_IDS),

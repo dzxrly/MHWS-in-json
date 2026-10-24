@@ -1,16 +1,16 @@
 """Bundled paths, reviewed source identity and version-specific native constants.
 
 Native functions are declared as version-independent symbols (SYMBOL_SPECS)
-and resolved per build into data/profiles/<gameVersion>.json by the
-``resolve-symbols`` command; constants below read their addresses from the
-active profile. Structure offsets and IL2CPP names below still belong to the
+and resolved for the current build into data/profile.json by the
+``resolve-symbols`` command; constants below read their addresses from that
+profile. Structure offsets and IL2CPP names below still belong to the
 reviewed version: after a game update, re-resolve the profile, migrate the
 evidence and review what changed. Replacing digests alone proves nothing.
 """
 
+import json
 from pathlib import Path
 
-from sdk import versions
 
 from .native.symbols import Helper, Method, Reviewed
 
@@ -38,14 +38,11 @@ TRAINING_ENEMY_ID = "EM0165_00_0"
 EXCLUDED_ENEMY_IDS = (TRAINING_ENEMY_ID,)
 
 
-# ---------------------------------------------- active build profile
+# ---------------------------------------------- current build profile
 
-# Switching game versions means resolving a new profile and changing this.
-ACTIVE_GAME_VERSION = "1.42.0.2"
-PROFILE_DIR = DATA_DIR / "profiles"
-ACTIVE_PROFILE_PATH = PROFILE_DIR / f"{ACTIVE_GAME_VERSION}.json"
-ACTIVE_PROFILE = versions.read(ACTIVE_PROFILE_PATH)
-SUPPORTED_PROFILE = dict(ACTIVE_PROFILE["profile"])
+# Symbol addresses of the build the SDK reads; resolve-symbols rewrites it.
+ACTIVE_PROFILE_PATH = DATA_DIR / "profile.json"
+ACTIVE_PROFILE = json.loads(ACTIVE_PROFILE_PATH.read_text(encoding="utf-8"))
 SYMBOLS = ACTIVE_PROFILE["symbols"]
 
 
@@ -55,12 +52,12 @@ def symbol(name):
 
 
 def symbol_value(name):
-    """Reviewed constant carried by the active profile."""
+    """Reviewed constant carried by the profile."""
     return SYMBOLS[name]["value"]
 
 
-# Native evidence identity; the active profile pins the EXE and metadata, so
-# rows carry no per-row byte digest.
+# Native evidence identity: rows name a method and its range in the current EXE;
+# they are checked against the EXE's bytes when used.
 EVIDENCE_KEYS = ("type", "method", "address", "end")
 
 
@@ -314,7 +311,10 @@ COMBAT_METHODS = dict(
     on_table_change=("app.cEmAIStateCombat", "onBTableChange"),
     update_btable=("app.cEmAIUpdateBTable", "updateBTable"),
     update=("app.cEmAIUpdateBTable", "update"),
-    wait_until_action_end=("app.cMasterEnemyControllerEntity", "isWaitUntilActionEndBTable"),
+    wait_until_action_end=(
+        "app.cMasterEnemyControllerEntity",
+        "isWaitUntilActionEndBTable",
+    ),
     manager_valid=("ace.btable.cManager", "get_Valid"),
     table_root=("app.cEnemyBTableManager", "get_IsTableRoot"),
     update_table=("ace.btable.cManager", "updateTable"),
@@ -338,12 +338,21 @@ COMBAT_NATIVE_TARGETS = dict(
     ),
     detector_event=tuple(
         hex(symbol(name))
-        for name in ("fetch_hate_target", "detector_attribute_ctor", "detector_register")
+        for name in (
+            "fetch_hate_target",
+            "detector_attribute_ctor",
+            "detector_register",
+        )
     ),
     smoke=hex(symbol("refresh_smoke")),
     restore=tuple(
         hex(symbol(name))
-        for name in ("resume_jump_btable", "manager_clear", "target_resume", "restore_helper")
+        for name in (
+            "resume_jump_btable",
+            "manager_clear",
+            "target_resume",
+            "restore_helper",
+        )
     ),
 )
 
@@ -448,7 +457,9 @@ CONDITION_FIELDS = dict(
     actor_self_index="请求 actor 的 NetInfo._SelfMemberIndex(+0x20)",
 )
 
-RANDOM_DRAW_SOURCE = "cCommandWork.Random（匹配元数据偏移0x10）在该原生调用位置返回的整数余数"
+RANDOM_DRAW_SOURCE = (
+    "cCommandWork.Random（匹配元数据偏移0x10）在该原生调用位置返回的整数余数"
+)
 
 OCCLUSION_QUERY = dict(
     queryType="app.RAY_CAST_TYPE.TERRAIN_EM_SIGHT",
@@ -458,7 +469,10 @@ OCCLUSION_QUERY = dict(
 )
 
 REQUEST_EFFECTS = (
-    ("cEnemyContext._FlagArray[WAITING_REQUEST_ACTION_RANDOM_OPERATOR=14]", "0x308→0x2e"),
+    (
+        "cEnemyContext._FlagArray[WAITING_REQUEST_ACTION_RANDOM_OPERATOR=14]",
+        "0x308→0x2e",
+    ),
     ("cEnemyContext._FlagArray[NO_REQUEST_ACTION=50]", "0x308→0x52"),
 )
 
@@ -560,9 +574,7 @@ EAT_HEIGHT_REVIEW = {
 AI_STATE_ENUM = "app.EnemyDef.AI_STATE_ID"
 COMMAND_RESULT_TYPE = "ace.btable.COMMAND_RESULT"
 COMMAND_RESULT_ENUM = "ace.btable.BTableDef.COMMAND_RESULT_TYPE"
-BOOLEAN_COMMAND_FUNC = (
-    "ace.btable.cCommandFunc`2<app.btable.EmCommonCommand.cCheckDistanceArg,System.Boolean>"
-)
+BOOLEAN_COMMAND_FUNC = "ace.btable.cCommandFunc`2<app.btable.EmCommonCommand.cCheckDistanceArg,System.Boolean>"
 RANDOM_OPERATOR_TYPE = "ace.btable.cOperatorRandom"
 SET_TIMER_TYPE = "ace.btable.cSetTimerValue"
 
@@ -743,15 +755,11 @@ BAD_CONDITION_LABELS = dict(
 # either listed bit satisfies the status.
 HUNTER_STATUS_BITS = dict(DOWN_PL=(9, 8), SMASH=(10, 11))
 HUNTER_STATUS_LABELS = dict(DOWN_PL="玩家倒地", SMASH="玩家被击飞")
-HUNTER_BAD_CONDITION_SOURCE = (
-    "getPlayerManageInfo 的 HunterCharacter 状态模块；cHunterBadConditions.get_Item({index})._IsActive（0x2f） != 0"
-)
+HUNTER_BAD_CONDITION_SOURCE = "getPlayerManageInfo 的 HunterCharacter 状态模块；cHunterBadConditions.get_Item({index})._IsActive（0x2f） != 0"
 HUNTER_STATUS_SOURCE = (
     "getPlayerManageInfo 的 HunterCharacter（0x18→0xe0→0x20）状态位 {bits} 任一为真"
 )
-STATE_SIGN_SOURCE = (
-    "cEnemyContext.StateSignActionType（0x40→0x358）不为 -1，且等于 getSTATE_SIGN_ACTION_TYPEFromFixed(资源值)"
-)
+STATE_SIGN_SOURCE = "cEnemyContext.StateSignActionType（0x40→0x358）不为 -1，且等于 getSTATE_SIGN_ACTION_TYPEFromFixed(资源值)"
 STATE_SIGN_LABELS = dict(
     COMBAT_BEGIN="刚进入战斗",
     ANGRY_BEGIN="刚进入愤怒",
@@ -817,8 +825,8 @@ LEAF_FORMULA_LIMIT_BYTES = 256 * 1024
 POSITION_TYPE = "ace.btable.BTableDef.POSITION"
 POSITION_STACK = "System.Collections.Generic.Stack`1<ace.btable.BTableDef.POSITION>"
 # Every native identity the SDK relies on. ``resolve-symbols`` turns these into
-# data/profiles/<gameVersion>.json for each build; code reads addresses from the
-# active profile, never from literals.
+# data/profile.json for the current build; code reads addresses from that
+# profile, never from literals.
 SYMBOL_SPECS = {
     "set_current_position": Method(
         "ace.btable.cOperatorWork", "setCurrentPosition", (POSITION_TYPE,)

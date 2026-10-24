@@ -55,7 +55,6 @@ class BTableMachineTests(unittest.TestCase):
             r14=pointer("command_work"),
         )
         proof = dict(
-            profile=machine.registry.data["profile"],
             methods=[row],
             scope="fixture",
             resizeHelper=dict(

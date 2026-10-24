@@ -10,12 +10,8 @@ import os
 from pathlib import Path
 import sys
 
-from ..config import AGENTS_DIR, ROOT, SUPPORTED_PROFILE, in_agents
+from ..config import AGENTS_DIR, ROOT, in_agents
 
-GAME_FOLDER = Path("steamapps/common/MonsterHunterWilds/MonsterHunterWilds.exe")
-# REFramework writes its dump next to the game executable.
-IL2CPP_NAME = "il2cpp_dump.json"
-DEFAULT_STEAM = Path("C:/Program Files (x86)/Steam")
 DEFAULT_WORK_DIR = AGENTS_DIR / "enemy-logic-exporter"
 DEFAULT_NATIVES = ROOT / "MHWS-in-json/natives"
 # Research caches built by analyze / recover, relative to the work directory.
@@ -29,49 +25,16 @@ REQUIRED_PACKAGES = {"capstone": "5.0.6"}
 OPTIONAL_PACKAGES = {"pyghidra": "3.0.2"}
 
 
-def steam_libraries():
-    """Steam library roots from the registry and libraryfolders.vdf."""
-    roots = []
-    try:
-        import winreg
-
-        with winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Valve\Steam") as key:
-            roots.append(Path(winreg.QueryValueEx(key, "SteamPath")[0]))
-    except (ImportError, OSError):
-        pass
-    roots.append(DEFAULT_STEAM)
-    libraries = []
-    for root in roots:
-        libraries.append(root)
-        folders = root / "steamapps/libraryfolders.vdf"
-        if folders.is_file():
-            for line in folders.read_text(
-                encoding="utf-8", errors="replace"
-            ).splitlines():
-                parts = line.strip().split('"')
-                if len(parts) >= 4 and parts[1] == "path":
-                    libraries.append(Path(parts[3].replace("\\\\", "\\")))
-    return list(dict.fromkeys(libraries))
-
-
 def find_game_exe():
-    """MHWS_EXE, else the game in any Steam library; None when not found."""
-    if os.environ.get("MHWS_EXE"):
-        return Path(os.environ["MHWS_EXE"])
-    for library in steam_libraries():
-        if (library / GAME_FOLDER).is_file():
-            return library / GAME_FOLDER
-    return None
+    """The dumped game EXE named by MHWS_EXE; None when unset. No path is guessed."""
+    value = os.environ.get("MHWS_EXE")
+    return Path(value) if value else None
 
 
-def find_il2cpp(exe=None):
-    """MHWS_IL2CPP, else il2cpp_dump.json beside the game EXE; None when not found."""
-    if os.environ.get("MHWS_IL2CPP"):
-        return Path(os.environ["MHWS_IL2CPP"])
-    exe = exe or find_game_exe()
-    if exe is not None and (Path(exe).parent / IL2CPP_NAME).is_file():
-        return Path(exe).parent / IL2CPP_NAME
-    return None
+def find_il2cpp():
+    """The il2cpp dump named by MHWS_IL2CPP; None when unset. No path is guessed."""
+    value = os.environ.get("MHWS_IL2CPP")
+    return Path(value) if value else None
 
 
 def default_work_dir():
@@ -87,10 +50,8 @@ def fill_standard_inputs(args, work, names):
                 setattr(args, name, candidate)
 
 
-def check_environment(exe=None, il2cpp=None, natives=None, work=None, verify=False):
+def check_environment(exe=None, il2cpp=None, natives=None, work=None):
     """Rows of (item, status, detail); status is ok, missing or optional."""
-    from ..native.evidence import digest
-
     rows = []
 
     def add(item, ok, detail, required=True):
@@ -121,15 +82,15 @@ def check_environment(exe=None, il2cpp=None, natives=None, work=None, verify=Fal
             )
     exe = exe or find_game_exe()
     add(
-        "游戏 EXE",
+        "游戏 EXE（dump 出的 EXE）",
         bool(exe and Path(exe).is_file()),
-        f"{exe}（-e/--exe 或环境变量 MHWS_EXE）",
+        f"{exe or '未指定'}（-e/--exe 或环境变量 MHWS_EXE）",
     )
-    il2cpp = il2cpp or find_il2cpp(exe)
+    il2cpp = il2cpp or find_il2cpp()
     add(
         "IL2CPP dump",
         bool(il2cpp and Path(il2cpp).is_file()),
-        f"{il2cpp or '未找到'}（-i/--il2cpp 或环境变量 MHWS_IL2CPP；默认取 EXE 同目录的 {IL2CPP_NAME}）",
+        f"{il2cpp or '未指定'}（-i/--il2cpp 或环境变量 MHWS_IL2CPP）",
     )
     natives = natives or DEFAULT_NATIVES
     add(
@@ -150,21 +111,6 @@ def check_environment(exe=None, il2cpp=None, natives=None, work=None, verify=Fal
                 " git checkout -- MHWS-in-json 重新取出（.gitattributes 已设 -text）"
             ),
         )
-    if verify:
-        for item, path, key in (
-            ("EXE 版本", exe, "exeSha256"),
-            ("IL2CPP dump 版本", il2cpp, "metadataSha256"),
-        ):
-            same = (
-                bool(path and Path(path).is_file())
-                and digest(path) == SUPPORTED_PROFILE[key]
-            )
-            add(
-                item,
-                same,
-                f"与 profile {SUPPORTED_PROFILE['gameVersion']} 的摘要"
-                + ("一致" if same else "不一致"),
-            )
     work = Path(work or default_work_dir())
     add(
         "工作目录",

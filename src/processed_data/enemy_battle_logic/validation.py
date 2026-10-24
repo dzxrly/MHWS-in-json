@@ -67,15 +67,6 @@ def validate_graph(graph):
         r"EM\d{4}_\d{2}_\d+", graph.get("enemyId", "")
     ):
         raise ValueError("行动图格式或怪物标识无效")
-    profile = graph["profile"]
-    if profile != graph["rules"]["profile"]:
-        raise ValueError("行动图与规则的来源版本不匹配")
-    # Models name their source by game version; the SDK keeps the digests in
-    # sdk/game_versions.json.
-    if set(profile) != {"gameVersion"} or not profile["gameVersion"]:
-        raise ValueError("行动图来源版本无效")
-    if graph["metadataVerification"] not in ("matched", "not_supplied"):
-        raise ValueError("行动图元数据核对状态无效")
     if not graph.get("sources") or not all(
         isinstance(v, str) for v in graph["sources"]
     ):
@@ -278,7 +269,7 @@ def validate_bundle(processed_dir, *, require_release=True):
             document is None
             or any(
                 document[key] != item[key]
-                for key in ("enemyId", "enemyName", "profile", "logicStatus")
+                for key in ("enemyId", "enemyName", "logicStatus")
             )
             or document.get("coverage") != item["coverage"]
         ):

@@ -2,7 +2,6 @@
 
 import re
 
-from sdk import versions
 from ..config import TRAINING_ENEMY_ID
 from ..logic.weights import weighted_pool, candidate_node_id
 from ..logic.values import scalar
@@ -60,15 +59,6 @@ def validate_graph(graph):
         r"EM\d{4}_\d{2}_\d+", graph.get("enemyId", "")
     ):
         raise ValueError("行动图格式或怪物标识无效")
-    # Published models name their source by version; both forms must be the
-    # registered profile of that version (sdk/game_versions.json).
-    profile = versions.expand(graph["profile"])
-    if profile != versions.expand(graph["rules"]["profile"]):
-        raise ValueError("行动图与规则的来源版本不匹配")
-    if profile != versions.profile(profile.get("gameVersion")):
-        raise ValueError("行动图来源版本证据无效")
-    if graph["metadataVerification"] not in ("matched", "not_supplied"):
-        raise ValueError("行动图元数据核对状态无效")
     if not graph.get("sources") or not all(
         isinstance(v, str) for v in graph["sources"]
     ):

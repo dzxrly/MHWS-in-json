@@ -525,7 +525,7 @@ class Emulator:
             return ("unknown", f"{base.val.name}+{offset:#x}", base.prov)
         if isinstance(base.val, int) and base.val:
             target = (base.val + offset) & MASK[8]
-            if self.pe.read(target, 1):
+            if self.pe.contains(target):
                 return ("rip", target)  # an image address computed from lea [rip+x]
         raise PathEnd("null", f"读取空指针 {insn.address:#x}")
 

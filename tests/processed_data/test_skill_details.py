@@ -139,7 +139,6 @@ class SkillDetailsTests(unittest.TestCase):
         self.assertEqual(
             sum(s["links"] for s in index["shards"]), len(self.links["links"])
         )
-        self.assertEqual(self.links["gameVersion"], index["gameVersion"])
 
     def test_missing_shard_is_refused(self):
         with tempfile.TemporaryDirectory() as temp:

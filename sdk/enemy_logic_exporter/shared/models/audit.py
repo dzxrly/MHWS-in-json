@@ -51,11 +51,8 @@ def validate_release_graph(graph):
     ):
         raise ValueError("缺少经过核实的 SDK 入口追踪与资源侧核查记录")
     discovery = audit.get("discovery", {})
-    if (
-        discovery.get("profile") != graph.get("profile")
-        or discovery_digest(discovery) != audit["discoverySha256"]
-    ):
-        raise ValueError("SDK 发现记录的内容、摘要或版本不匹配")
+    if discovery_digest(discovery) != audit["discoverySha256"]:
+        raise ValueError("SDK 发现记录的内容或摘要不匹配")
     for key in ("discoveredMethods", "actionRequestSites"):
         if discovery.get(key) != audit.get(key):
             raise ValueError("SDK 发现记录与覆盖验收范围不一致")

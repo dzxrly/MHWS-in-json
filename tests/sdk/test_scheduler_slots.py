@@ -4,8 +4,6 @@ from importlib.util import find_spec
 import unittest
 from unittest.mock import patch
 
-from sdk.enemy_logic_exporter.shared.config import SUPPORTED_PROFILE
-
 
 @unittest.skipUnless(find_spec("capstone"), "离线原生测试需要 SDK 的 Capstone 依赖")
 class SlotArgumentTests(unittest.TestCase):
@@ -44,7 +42,6 @@ class SlotBindingTests(unittest.TestCase):
         from sdk.enemy_logic_exporter.shared.logic import scheduler_slots
 
         evidence = dict(
-            profile=SUPPORTED_PROFILE,
             requests=[
                 dict(
                     owner="app.cEmAIInterruptDamage",
@@ -62,7 +59,6 @@ class SlotBindingTests(unittest.TestCase):
             ),
         )
         model = dict(
-            profile=SUPPORTED_PROFILE,
             combatScheduler=dict(
                 slotBindings=dict(
                     DAMAGE=dict(resource="damage", dispatchTarget="t1"),
@@ -73,11 +69,10 @@ class SlotBindingTests(unittest.TestCase):
         )
         with patch.object(scheduler_slots, "receipt", return_value=evidence):
             slots = {s["slot"]: s for s in scheduler_slots.scheduler_slots(model)}
-        self.assertEqual(slots["DAMAGE"]["requestedBy"][0]["owner"], "app.cEmAIInterruptDamage")
+        self.assertEqual(
+            slots["DAMAGE"]["requestedBy"][0]["owner"], "app.cEmAIInterruptDamage"
+        )
         self.assertEqual(slots["DAMAGE"]["group"], "与玩家战斗")
         self.assertEqual(slots["UNIQUE_00"]["requestedBy"][0]["uniqueIndex"], 1)
         self.assertEqual(slots["LIFE"]["requestedBy"], [])
         self.assertIsNone(slots["LIFE"]["dispatchTarget"])
-        with self.assertRaisesRegex(ValueError, "来源版本"):
-            with patch.object(scheduler_slots, "receipt", return_value=dict(evidence, profile={})):
-                scheduler_slots.scheduler_slots(model)

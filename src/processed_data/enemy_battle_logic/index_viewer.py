@@ -95,13 +95,12 @@ def render_card(record):
 
 
 def render_index(records, *, release_ready=False):
-    versions = sorted({record["profile"]["gameVersion"] for record in records})
     data = json.dumps(
         dict(schemaVersion=1, releaseReady=release_ready, monsters=records),
         ensure_ascii=False,
     ).replace("<", "\\u003c")
     return f"""<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>荒野怪物行动逻辑</title><link rel="icon" href="data:,"><style>{STYLE}</style></head><body>
-<header class="wrap"><p class="eyebrow">怪物猎人：荒野 · 游戏版本 {escape("、".join(versions))}</p><h1>怪物行动逻辑</h1><p class="lede">从游戏数据整理出的怪物出招决策树：在什么距离、角度和状态下，怪物会从哪些招式里选择。</p></header>
+<header class="wrap"><p class="eyebrow">怪物猎人：荒野</p><h1>怪物行动逻辑</h1><p class="lede">从游戏数据整理出的怪物出招决策树：在什么距离、角度和状态下，怪物会从哪些招式里选择。</p></header>
 <main class="wrap"><div class="controls"><input id="search" type="search" placeholder="搜索名称或编号" aria-label="搜索怪物名称或编号" autocomplete="off"><span id="count" aria-live="polite"></span></div>
 <ul class="grid">{''.join(render_card(record) for record in records)}</ul><p class="empty" hidden>没有匹配的怪物。</p>
 <section class="notes"><h2>阅读前须知</h2><ul><li>每只怪物一页，从行为表开始，按距离、角度、状态逐层展开到具体动作，可按情境筛选分支。</li><li>距离是游戏内部单位，还没有换算成米；权重只在同一次抽选内比较，不是整场战斗的出招概率。</li><li>请求动作不等于一定出招。还没确认的逻辑标为“待核查”，保留在图中。</li></ul></section></main>

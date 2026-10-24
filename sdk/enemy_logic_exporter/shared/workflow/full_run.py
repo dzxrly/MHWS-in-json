@@ -4,13 +4,14 @@ import json
 import zipfile
 from pathlib import Path
 from .batch import export_native_index
-from ..native.evidence import method_rows, pack_methods, digest
+from ..native.evidence import method_rows, pack_methods
 from ..resources.inventory import discover_inventory
 from ..resources.requests import discover_requests
 from ..native.streaming import extract_cached
 from ..models.catalog import EXPECTED_ENEMY_IDS
 from .extraction import extract_inventory
 from ..config import in_agents
+
 
 def package_result(output):
     """Bundle extracted JSON and receipts, excluding large native caches."""
@@ -63,7 +64,6 @@ def run_all(
     metadata,
     natives,
     output,
-    version,
     ghidra,
     project_dir,
     *,
@@ -78,16 +78,10 @@ def run_all(
     output.mkdir(parents=True, exist_ok=True)
     if index_path is None:
         index_path = output / "native-index.json"
-        index = export_native_index(exe, metadata, index_path, version)
+        index = export_native_index(exe, metadata, index_path)
     else:
         index = json.loads(Path(index_path).read_text(encoding="utf8"))
-        if (
-            index["profile"]["gameVersion"] != version
-            or index["profile"]["metadataSha256"] != digest(metadata)
-            or index["profile"]["exeSha256"] != digest(exe)
-        ):
-            raise ValueError("全量运行索引与当前 EXE、元数据或版本不匹配")
-    inventory = discover_inventory(natives, Path(metadata), index["profile"])
+    inventory = discover_inventory(natives, Path(metadata))
     inventory_path = output / "inventory.json"
     inventory_path.write_text(
         json.dumps(inventory, ensure_ascii=False, separators=(",", ":")),
@@ -105,7 +99,7 @@ def run_all(
         != inventory["nativeTableMethodBindings"]
     ):
         raise ValueError("原生索引未完整覆盖实际资源的子表方法")
-    manifest = pack_methods(rows, index["profile"])
+    manifest = pack_methods(rows)
     cache_dir = Path(cache_dir or output / "native")
     extraction = extract_cached(
         manifest, exe, cache_dir, project_dir, ghidra, project_name=project_name
@@ -137,7 +131,6 @@ def run_all(
         model_results = receipt["semanticModels"]
     available = {r["enemyId"] for r in model_results}
     result = dict(
-        profile=index["profile"],
         stages=dict(
             inventory="complete",
             nativeExtraction="complete",
