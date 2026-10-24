@@ -103,6 +103,12 @@ class EmulatorTests(unittest.TestCase):
             [(w["target"], w["value"]) for w in result["writes"]], [("状态+0x10", 7)]
         )
 
+    def test_unhandled_operand_widths_end_as_unsupported(self):
+        # idiv cx; ret  /  vpshufd ymm0,ymm1,0xe4; ret
+        for code in (bytes.fromhex("66f7f9" "c3"), bytes.fromhex("c5fd70c1e4" "c3")):
+            (result,) = run(code, lambda st, heap: None, "System.Int32")
+            self.assertEqual(result["status"], "unsupported", code.hex())
+
     def test_later_condition_on_same_flags_keeps_feasible_outcomes(self):
         # mov eax,[rdx+0x10]; cmp eax,0; jl neg; je zero; mov eax,1; ret;
         # neg: mov eax,-1; ret; zero: xor eax,eax; ret

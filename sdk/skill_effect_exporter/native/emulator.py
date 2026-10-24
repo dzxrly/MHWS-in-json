@@ -1564,6 +1564,8 @@ class Emulator:
 
     def op_idiv(self, st, insn, ops, _):
         size = ops[0].size
+        if size not in (4, 8):
+            raise Unsupported(f"{size * 8} 位 idiv")
         divisor = self.read_op(st, insn, ops[0], size)
         lo = self.get(st, {8: "rax", 4: "eax"}[size])
         hi = self.get(st, {8: "rdx", 4: "edx"}[size])
@@ -1688,6 +1690,8 @@ class Emulator:
         self.vput(st, ops[0].reg, lanes, 16)
 
     def op_vpshufd(self, st, insn, ops, _):
+        if ops[0].size != 16:
+            raise Unsupported("256 位 vpshufd")
         a = self._vsrc(st, insn, ops[1], 16)
         imm = ops[2].imm
         self.vput(st, ops[0].reg, [a[(imm >> (2 * i)) & 3] for i in range(4)], 16)
