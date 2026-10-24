@@ -54,7 +54,7 @@ In the examples below, `python` is the interpreter of that virtual environment, 
 
 ## Menu (TUI)
 
-`python -m sdk` opens a menu for the common tasks: the environment check, skill effect extraction (all skills or chosen ones), rebuilding `SkillDetails.xlsx`, monster extraction with the player view, the census, publishing and building the battle logic pages, and the SDK tests. Choose with the arrow keys and Enter (the menu text is in Chinese). Each action first prints the exact command line and then runs it, so the same step can go into a script. The EXE and IL2CPP dump are found as on the command line; "设置 EXE 与 il2cpp 路径" changes them for the session. Publishing asks before it overwrites the committed models.
+`python -m sdk` opens a menu for the common tasks: the environment check, skill effect extraction (all skills or chosen ones), rebuilding `SkillDetails.xlsx`, monster extraction with the player view, the census, publishing and building the battle logic pages, and the SDK tests. Choose with the arrow keys and Enter (the menu text is in Chinese). Each action first prints the exact command line and then runs it, so the same step can go into a script. The EXE and IL2CPP dump are found as on the command line; "设置 EXE 与 il2cpp 路径" changes them for the session. Publishing asks before it overwrites the committed models. The setup script registers the repository root in the virtual environment (`mhws_sdk.pth`), so the menu can be started from any directory; on an environment created before this change, run the setup script again.
 
 ```powershell
 .agents/sdk-venv/Scripts/python.exe -m sdk

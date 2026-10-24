@@ -91,7 +91,7 @@
 | `shared/models/roster.py` | 生成并比较大型怪物名单（含变种实际复用的 Combat 主人）；`new-monster` 为名单新增的怪物生成独立入口模块，不覆盖已有配方 |
 | `shared/resources/variables.py` | 索引全部 BTableVariable 定义（计时器、浮点、布尔），模型以 `variableCatalog` 记录本怪物判断读取的变量及其资源导出名（`ExportValueName`，多数为空）、初始值、生命周期与来源；必须在 `builder.py` 绑定资源参数之后生成，否则读不到计时器 GUID |
 | `shared/workflow/environment.py` | 新环境的路径发现与 `check-env`：`MHWS_EXE` 或 Steam 库（注册表 `SteamPath` 与 `libraryfolders.vdf`）中的游戏 EXE、`MHWS_SDK_WORK_DIR` 工作目录、研究缓存的标准位置（`STANDARD_INPUTS`，`extract`/`extract-all` 省略 `--index` 等参数时使用）、固定版本的依赖、资源换行与 Ghidra/JDK 设置 |
-| `sdk/setup_env.ps1` | SDK 共用的 Windows 一键搭建：在 `.agents/sdk-venv` 建虚拟环境、安装 `sdk/requirements.txt` 并运行 `check-env`（文件带 UTF-8 BOM，Windows PowerShell 5.1 才能正确读取中文） |
+| `sdk/setup_env.ps1` | SDK 共用的 Windows 一键搭建：在 `.agents/sdk-venv` 建虚拟环境、安装 `sdk/requirements.txt`、写入 `mhws_sdk.pth` 把项目根目录加入 `sys.path`（任意目录都能 `python -m sdk`），并运行 `check-env`（文件带 UTF-8 BOM，Windows PowerShell 5.1 才能正确读取中文） |
 | `shared/models/uncertainty.py` | `uncertainty` 统计玩家战斗树中在全部玩家输入已知时仍无法判定的条件，按命令排序；`census` 统计全部表中含未知部分的条件（总数等于 `coverage.unknownConditions` 之和），按命令与原因分组，用来找最大的待确认类别 |
 | `shared/native/metadata.py` | 用 mmap 索引大体积 REFramework JSON，按需读取类型、继承字段和枚举；`subclasses` 首次使用时扫描各类型的 `parent` 建立反向索引，列出全部直接与间接子类 |
 | `shared/native/pe.py` | 只读 PE64，依据异常目录及方法地址确定函数边界，保留同地址的方法别名并校验原生字节 |

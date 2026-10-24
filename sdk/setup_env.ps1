@@ -10,8 +10,9 @@ Run it from any directory:
 
     powershell -ExecutionPolicy Bypass -File sdk/setup_env.ps1
 
-Afterwards run SDK commands from the repository root with
-.agents/sdk-venv/Scripts/python.exe -m sdk (menu), or -m sdk.<tool> <command>.
+Afterwards run .agents/sdk-venv/Scripts/python.exe -m sdk (menu), or
+-m sdk.<tool> <command>. The script registers the repository root in the
+environment (mhws_sdk.pth), so the sdk package is found from any directory.
 #>
 param(
     # Python launcher version; 3.13 is the verified one.
@@ -31,6 +32,9 @@ if (-not (Test-Path $python)) {
 }
 & $python -m pip install --disable-pip-version-check -r (Join-Path $PSScriptRoot "requirements.txt")
 if ($LASTEXITCODE) { throw "依赖安装失败" }
+# Put the repository root on sys.path so `python -m sdk` works outside the root.
+$sitePackages = Join-Path $venv "Lib/site-packages"
+[IO.File]::WriteAllText((Join-Path $sitePackages "mhws_sdk.pth"), $root)
 if ($Exe) { $env:MHWS_EXE = $Exe }
 
 Push-Location $root
@@ -39,7 +43,7 @@ try {
     if ($LASTEXITCODE) {
         Write-Host "仍有缺失项（见上方 missing）。补齐后重新运行 check-env。" -ForegroundColor Yellow
     }
-    Write-Host "菜单界面：$python -m sdk"
+    Write-Host "菜单界面（任意目录均可运行）：& `"$python`" -m sdk"
 }
 finally {
     Pop-Location
