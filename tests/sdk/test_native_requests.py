@@ -1,12 +1,10 @@
 """Reject stores without the reviewed operator provenance or constant value."""
 
-import importlib.util
 import unittest
 
 from sdk.enemy_logic_exporter.shared.resources.requests import packed_request_stores
 
 
-@unittest.skipUnless(importlib.util.find_spec("capstone"), "需要离线 SDK 的 capstone")
 class RequestStoreTests(unittest.TestCase):
     def test_abi_operator_and_packed_command_argument_indices(self):
         # mov rbx,r9; movabs rax,0x23800000004; mov [rbx+0xb0],rax

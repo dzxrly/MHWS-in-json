@@ -34,7 +34,6 @@ def render_html(graph):
     here = Path(__file__).resolve().parent
     vendor = here / "vendor/elkjs"
     coverage = graph["coverage"]
-    game_version = graph.get("profile", {}).get("gameVersion")
     enemy = graph.get("enemyName") or graph["enemyId"]
     payload = json.dumps(
         {
@@ -49,9 +48,7 @@ def render_html(graph):
     values = {
         "TITLE": escape(enemy + " · 行动逻辑"),
         "NAME": escape(enemy),
-        "META": escape(
-            graph["enemyId"] + (f" · 游戏版本 {game_version}" if game_version else "")
-        ),
+        "META": escape(graph["enemyId"]),
         "SCOPE": (
             f"共 {coverage['localTables']} 个子表、{coverage['nodes']} 个节点，"
             f"其中 {coverage.get('completeLocalTables', 0)} 个子表的流程已核实；"

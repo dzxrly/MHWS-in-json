@@ -1,11 +1,9 @@
 """Prevent false resource bindings across ABI clobbers and divergent paths."""
 
 import unittest
-from importlib.util import find_spec
 from sdk.enemy_logic_exporter.shared.native.bindings import bind_native, pointer
 
 
-@unittest.skipUnless(find_spec("capstone"), "离线原生测试需要 SDK 的 Capstone 依赖")
 class NativeBindingTests(unittest.TestCase):
     def bind(self, hexadecimal):
         code = bytes.fromhex(hexadecimal)

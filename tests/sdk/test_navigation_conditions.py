@@ -8,7 +8,6 @@ from sdk.enemy_logic_exporter.shared.logic.navigation_conditions import (
     recover_navigation_condition,
 )
 from sdk.enemy_logic_exporter.shared.logic.predicates import RuleRegistry
-from sdk.enemy_logic_exporter.shared.config import SUPPORTED_PROFILE
 
 PREFIX = "app.btable.EmCommonCommand."
 
@@ -18,7 +17,7 @@ class NavigationConditionTests(unittest.TestCase):
         node = dict(commandType=PREFIX + command)
         if command == "cCheckDestinationRelation":
             node["argument"] = dict(_EditType=relation)
-        return recover_navigation_condition(node, SUPPORTED_PROFILE)
+        return recover_navigation_condition(node)
 
     def evaluate(self, node, context):
         return evaluate_expression(
@@ -175,8 +174,7 @@ class NavigationConditionTests(unittest.TestCase):
             dict(
                 commandType=PREFIX + "cCheckRise",
                 argument=dict(_CheckHeight={"ace.btable.cEditFieldFloat": 25.0}),
-            ),
-            SUPPORTED_PROFILE,
+            )
         )
         base = {
             "enemy_command_work_valid": True,
@@ -233,10 +231,8 @@ class NavigationConditionTests(unittest.TestCase):
             )
         )
 
-    def test_profile_and_unlisted_relation_are_rejected(self):
+    def test_unlisted_relation_is_rejected(self):
         self.assertIsNone(self.bind(relation=2))
-        with self.assertRaisesRegex(ValueError, "来源版本"):
-            recover_navigation_condition({}, {})
 
     def test_occlusion_ray_range_and_gimmick_filter(self):
         node = self.bind("cCheckOccludedToDest")

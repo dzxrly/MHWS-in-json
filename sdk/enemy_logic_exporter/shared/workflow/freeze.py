@@ -2,7 +2,6 @@
 
 import json
 from .extraction import extract_model
-from ..native.evidence import digest
 from ..native.pe import verify_rows
 from ..models.io import MODEL_LIMIT_BYTES
 
@@ -54,11 +53,7 @@ def freeze_native_model(
         requests_path=requests_path,
         **({"inventory_path": inventory_path} if inventory_path is not None else {}),
     )
-    graph = extract_model(
-        enemy_id, natives, metadata_path=metadata, rules_path=rules_path, model=model
-    )
-    if digest(exe) != graph["profile"]["exeSha256"]:
-        raise ValueError("原生模型与当前 EXE 版本不匹配")
+    graph = extract_model(enemy_id, natives, rules_path=rules_path, model=model)
     verify_rows(exe, native_evidence(graph))
     graph["nativeVerification"] = "matched"
     content = json.dumps(graph, ensure_ascii=False, indent=2) + "\n"

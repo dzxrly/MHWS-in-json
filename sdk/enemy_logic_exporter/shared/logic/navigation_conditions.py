@@ -6,6 +6,7 @@ not a substitute for running the whole condition helper.
 """
 
 import json
+from pathlib import Path
 from copy import deepcopy
 from functools import lru_cache
 from ..config import (
@@ -17,11 +18,12 @@ from ..config import (
 from .values import MissingState, enum_number, scalar
 from .expressions import runtime, compare, combined, invert
 
+
 @lru_cache(maxsize=1)
 def receipt():
     return json.loads(
-        (EVIDENCE_DIR / "navigation_condition_evidence.v1.json").read_text(
-            encoding="utf8"
+        Path(EVIDENCE_DIR / "navigation_condition_evidence.v1.json").read_text(
+            encoding="utf-8"
         )
     )
 
@@ -160,9 +162,7 @@ def destination_relation(argument):
 def unfair_guard():
     return combined(
         "all",
-        runtime(
-            "self_target_context_valid", FIELDS["target_context_unfair"]
-        ),
+        runtime("self_target_context_valid", FIELDS["target_context_unfair"]),
         compare(
             "selected_target_key_type",
             0,
@@ -207,9 +207,7 @@ def unfair_guard():
                         10,
                         source=FIELDS["stage_no_short"],
                     ),
-                    compare(
-                        "self_current_area_no", 4, source=FIELDS["area_no_short"]
-                    ),
+                    compare("self_current_area_no", 4, source=FIELDS["area_no_short"]),
                 ),
             )
         ),
@@ -391,9 +389,7 @@ def occlusion_hits(context):
     return False
 
 
-def recover_navigation_condition(node, profile):
-    if profile != receipt()["profile"]:
-        raise ValueError("导航条件配方与来源版本不匹配")
+def recover_navigation_condition(node):
     command = node.get("commandType", node.get("expectedCommandType", ""))
     if not command.startswith(COMMON_COMMAND_PREFIX):
         return None

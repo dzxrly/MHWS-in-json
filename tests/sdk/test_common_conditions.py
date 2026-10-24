@@ -5,7 +5,6 @@ import unittest
 from sdk.enemy_logic_exporter.shared.logic.common_conditions import recover_condition
 from sdk.enemy_logic_exporter.shared.logic.expressions import evaluate_expression
 from sdk.enemy_logic_exporter.shared.logic.predicates import RuleRegistry
-from sdk.enemy_logic_exporter.shared.config import SUPPORTED_PROFILE
 
 PREFIX = "app.btable.EmCommonCommand."
 
@@ -39,7 +38,6 @@ class CommonConditionTests(unittest.TestCase):
     def bind(self, command, argument):
         return recover_condition(
             dict(commandType=PREFIX + command, argument=argument),
-            SUPPORTED_PROFILE,
             "EM0002_00_0",
             ResourcesFixture(),
         )
@@ -195,9 +193,7 @@ class CommonConditionTests(unittest.TestCase):
         self.assertTrue(self.evaluate(down, dict(player, **{key: True})))
 
     def test_state_sign_compares_the_mapped_sign_name(self):
-        node = self.bind(
-            "cCheckStateSignTyoe", {"_EditArg": "[353142784] ANGRY_BEGIN"}
-        )
+        node = self.bind("cCheckStateSignTyoe", {"_EditArg": "[353142784] ANGRY_BEGIN"})
         context = dict(enemy_command_work_valid=True)
         self.assertIsNone(self.evaluate(node, context))
         self.assertTrue(
@@ -223,5 +219,3 @@ class CommonConditionTests(unittest.TestCase):
         self.assertIsNone(
             self.bind("cCheckTargetStatus", {"_EditCategory": "[7] DANGER_LEVEL"})
         )
-        with self.assertRaisesRegex(ValueError, "来源版本"):
-            recover_condition({}, {}, "EM0002_00_0", ResourcesFixture())

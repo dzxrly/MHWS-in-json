@@ -1,6 +1,7 @@
 """Validate frozen graph structure and provenance without game inputs."""
 
 import re
+
 from ..config import TRAINING_ENEMY_ID
 from ..logic.weights import weighted_pool, candidate_node_id
 from ..logic.values import scalar
@@ -58,16 +59,6 @@ def validate_graph(graph):
         r"EM\d{4}_\d{2}_\d+", graph.get("enemyId", "")
     ):
         raise ValueError("行动图格式或怪物标识无效")
-    profile = graph["profile"]
-    if profile != graph["rules"]["profile"]:
-        raise ValueError("行动图与规则的来源版本不匹配")
-    if not profile.get("gameVersion") or any(
-        not re.fullmatch(r"[0-9a-f]{64}", profile.get(key, ""))
-        for key in ("exeSha256", "metadataSha256")
-    ):
-        raise ValueError("行动图来源版本证据无效")
-    if graph["metadataVerification"] not in ("matched", "not_supplied"):
-        raise ValueError("行动图元数据核对状态无效")
     if not graph.get("sources") or not all(
         isinstance(v, str) for v in graph["sources"]
     ):

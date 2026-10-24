@@ -1,8 +1,9 @@
 """Reviewed request-command guards; actor helpers remain bounded evidence."""
 
+import json
+from pathlib import Path
 from copy import deepcopy
 from functools import lru_cache
-import json
 from ..config import (
     EVIDENCE_DIR,
     CONDITION_FIELDS as FIELDS,
@@ -14,13 +15,13 @@ from .expressions import combined, runtime
 @lru_cache(maxsize=1)
 def receipt():
     return json.loads(
-        (EVIDENCE_DIR / "action_command_evidence.v1.json").read_text(encoding="utf8")
+        Path(EVIDENCE_DIR / "action_command_evidence.v1.json").read_text(
+            encoding="utf-8"
+        )
     )
 
 
-def request_details(command, profile, command_evidence=None, metadata=None):
-    if profile != receipt()["profile"]:
-        raise ValueError("动作请求配方与来源版本不匹配")
+def request_details(command, command_evidence=None, metadata=None):
     row = receipt()["commands"].get(command)
     if row is None:
         return None

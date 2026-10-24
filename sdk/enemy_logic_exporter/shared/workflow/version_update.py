@@ -10,8 +10,7 @@ appended tail or a different function length all count as changes.
 import json
 from pathlib import Path
 
-from ..config import EVIDENCE_DIR, PROFILE_DIR, RULES_PATH, SYMBOL_SPECS
-from ..native.evidence import digest
+from ..config import ACTIVE_PROFILE_PATH, EVIDENCE_DIR, RULES_PATH, SYMBOL_SPECS
 from ..native.metadata import Il2cppMetadata
 from ..native.pe import PE, address_catalog
 from ..native.symbols import (
@@ -37,7 +36,8 @@ def _read(path):
 
 def _write(path, value, *, indent=2):
     Path(path).write_text(
-        json.dumps(value, ensure_ascii=False, indent=indent) + "\n", encoding="utf-8"
+        json.dumps(value, ensure_ascii=False, indent=indent) + "\n",
+        encoding="utf-8",
     )
 
 
@@ -75,27 +75,29 @@ def evidence_digests(pe, metadata, names):
     return dict(sorted(result.items()))
 
 
-def resolve_profile(exe, metadata_path, version, previous_path, output=None):
-    """Write data/profiles/<version>.json and return the change report."""
+def resolve_profile(exe, metadata_path, previous_path, output=None):
+    """Write the build's profile (data/profile.json by default); return the report.
+
+    The build counts as unchanged when every symbol kept its address and its
+    whole normalized code; only then are the evidence digests recomputed in
+    place and the carried constants left without review.
+    """
     previous = _read(previous_path)
-    output = Path(output or PROFILE_DIR / f"{version}.json")
+    output = Path(output or ACTIVE_PROFILE_PATH)
     with PE(exe) as pe, Il2cppMetadata(metadata_path) as metadata:
-        profile = dict(
-            gameVersion=version,
-            exeSha256=digest(exe),
-            metadataSha256=metadata.sha256,
-        )
         names = CallNames(pe, metadata, address_catalog(metadata))
-        symbols, report = resolve_symbols(
-            SYMBOL_SPECS, metadata, pe, previous, profile, names
+        symbols, report = resolve_symbols(SYMBOL_SPECS, metadata, pe, previous, names)
+        same_build = (
+            previous.get("digestScheme") == DIGEST_SCHEME
+            and not report["moved"]
+            and not report["changed"]
         )
-        same_build = previous["profile"] == profile
         # On a new build the rows still point at the old one until they migrate.
         digests = evidence_digests(pe, metadata, names) if same_build else {}
+    report["review"] = [] if same_build else report["reviewed"]
     document = dict(
         schemaVersion=1,
         digestScheme=DIGEST_SCHEME,
-        profile=profile,
         symbols=symbols,
         evidenceDigests=digests,
     )
@@ -134,8 +136,6 @@ def migrate_evidence(exe, metadata_path, previous_path, profile_path, *, apply=F
     new_digests = dict(target.get("evidenceDigests", {}))
     report = dict(migrated=0, unchanged=0, review=[], files={})
     with PE(exe) as pe, Il2cppMetadata(metadata_path) as metadata:
-        if metadata.sha256 != target["profile"]["metadataSha256"]:
-            raise ValueError("元数据与目标 profile 不匹配")
         names = CallNames(pe, metadata, address_catalog(metadata))
         for path in evidence_documents():
             document = _read(path)
@@ -144,12 +144,18 @@ def migrate_evidence(exe, metadata_path, previous_path, profile_path, *, apply=F
                 key = row["type"] + "::" + row["method"]
                 old = old_digests.get(key)
                 if old is None:
-                    pending.append(dict(row=key, reason="上一版本 profile 缺少该证据行的规范化摘要"))
+                    pending.append(
+                        dict(
+                            row=key, reason="上一版本 profile 缺少该证据行的规范化摘要"
+                        )
+                    )
                     continue
                 candidates = _candidates(metadata, row)
                 if not candidates and old.get("pattern"):
                     # Unnamed helpers carry a relocation-masked opening pattern.
-                    candidates = [(row["method"], a) for a in scan_pattern(pe, old["pattern"])]
+                    candidates = [
+                        (row["method"], a) for a in scan_pattern(pe, old["pattern"])
+                    ]
                 matches = [
                     (name, address)
                     for name, address in candidates
@@ -184,8 +190,6 @@ def migrate_evidence(exe, metadata_path, previous_path, profile_path, *, apply=F
             report["review"].extend(dict(file=Path(path).name, **p) for p in pending)
             if apply and not pending:
                 _rename_keys(document, renames)
-                if "profile" in document:
-                    document["profile"] = dict(target["profile"])
                 _write(path, document)
     if apply:
         target["evidenceDigests"] = dict(sorted(new_digests.items()))
@@ -198,7 +202,11 @@ def _rename_keys(value, renames):
     """Evidence dictionaries keyed by method name follow the renamed rows."""
     if isinstance(value, dict):
         for old, new in renames.items():
-            if old in value and isinstance(value[old], dict) and value[old].get("method") == new:
+            if (
+                old in value
+                and isinstance(value[old], dict)
+                and value[old].get("method") == new
+            ):
                 value[new] = value.pop(old)
         for item in value.values():
             _rename_keys(item, renames)

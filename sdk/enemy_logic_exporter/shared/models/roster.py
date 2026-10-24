@@ -5,6 +5,7 @@ re-run and ``new-monster`` to scaffold its entry module; no code list changes.
 """
 
 import json
+from pathlib import Path
 import re
 
 from ..config import (  # noqa: F401  (ROSTER_PATH is re-exported for the CLI)
@@ -12,7 +13,6 @@ from ..config import (  # noqa: F401  (ROSTER_PATH is re-exported for the CLI)
     LARGE_ENEMY_MAX_BASE,
     MONSTER_MODULE_DIR,
     ROSTER_PATH,
-    SUPPORTED_PROFILE,
 )
 
 COMBAT_RESOURCE = re.compile(r"(Em\d{4}_\d{2})_BTable_Combat\.user", re.I)
@@ -51,7 +51,6 @@ def build_roster(resources):
         raise ValueError("EnemyData 中的大型怪物身份重复")
     return dict(
         schemaVersion=1,
-        sourceProfile=dict(SUPPORTED_PROFILE),
         scope=f"EnemyData 中基础编号小于 {LARGE_ENEMY_MAX_BASE} 的完整 ID，排除 {', '.join(EXCLUDED_ENEMY_IDS)}",
         excludedEnemyIds=list(EXCLUDED_ENEMY_IDS),
         enemies=sorted(enemies, key=lambda e: e["enemyId"]),
@@ -59,7 +58,7 @@ def build_roster(resources):
 
 
 def load_roster(path=ROSTER_PATH):
-    return json.loads(path.read_text(encoding="utf-8"))
+    return json.loads(Path(path).read_text(encoding="utf-8"))
 
 
 def roster_changes(old, new):

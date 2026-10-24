@@ -13,7 +13,7 @@ class ActionCommandTests(unittest.TestCase):
     def test_sync_has_work_and_mask_guard_without_normal_actor_host_guard(self):
         command = "app.btable.EmCommonCommand.cRequestActionSync"
         proof = receipt()["commands"][command]
-        detail = request_details(command, receipt()["profile"], proof)
+        detail = request_details(command, proof)
         self.assertEqual(detail["requestImplementation"], "synchronous")
         self.assertEqual(detail["requestGuard"]["kind"], "all")
         self.assertEqual(
@@ -24,9 +24,7 @@ class ActionCommandTests(unittest.TestCase):
 
     def test_normal_actor_guard_preserves_absent_invalid_and_self_host_cases(self):
         command = "app.btable.EmCommonCommand.cRequestAction"
-        detail = request_details(
-            command, receipt()["profile"], receipt()["commands"][command]
-        )
+        detail = request_details(command, receipt()["commands"][command])
         guard = detail["actorRequestGuard"]
         self.assertEqual(guard["kind"], "any")
         self.assertEqual(guard["items"][0]["kind"], "not")
@@ -35,21 +33,17 @@ class ActionCommandTests(unittest.TestCase):
             guard["items"][2]["right"]["key"], "request_actor_self_member_index"
         )
 
-    def test_wrong_implementation_or_version_cannot_use_guard_recipe(self):
+    def test_wrong_implementation_cannot_use_guard_recipe(self):
         command = "app.btable.EmCommonCommand.cRequestActionSync"
         proof = deepcopy(receipt()["commands"][command])
         proof["address"] = "0x140000000"
         with self.assertRaises(ValueError):
-            request_details(command, receipt()["profile"], proof)
-        with self.assertRaises(ValueError):
-            request_details(command, {}, receipt()["commands"][command])
+            request_details(command, proof)
 
     def test_selected_and_desire_recovery_cannot_become_fixed_action_recipes(self):
         for command in ("cRequestSelectedAction", "cRequestActionDesireRecover"):
             self.assertIsNone(
-                request_details(
-                    "app.btable.EmCommonCommand." + command, receipt()["profile"], {}
-                )
+                request_details("app.btable.EmCommonCommand." + command, {})
             )
 
 

@@ -2,7 +2,6 @@
 
 import hashlib
 import json
-from pathlib import Path
 
 
 def evidence_key(row):
@@ -12,7 +11,7 @@ def evidence_key(row):
     ).hexdigest()[:24]
 
 
-def pack_methods(rows, profile, **attributes):
+def pack_methods(rows, **attributes):
     code, aliases, layouts, bindings = {}, {}, {}, []
     for row in rows:
         key = evidence_key(row)
@@ -35,7 +34,6 @@ def pack_methods(rows, profile, **attributes):
     return dict(
         schemaVersion=2,
         documentType="native_evidence_index",
-        profile=profile,
         nativeCode=code,
         aliasesByAddress=aliases,
         fieldsByType=layouts,
@@ -68,14 +66,6 @@ def semantic_evidence(rows):
         catalog.setdefault(key, {k: row[k] for k in ("address", "end", "nativeSha256")})
         bindings.append(dict(type=row["type"], method=row["method"], evidenceRef=key))
     return catalog, bindings
-
-
-def digest(path):
-    value = hashlib.sha256()
-    with Path(path).open("rb") as stream:
-        for chunk in iter(lambda: stream.read(4 * 1024 * 1024), b""):
-            value.update(chunk)
-    return value.hexdigest()
 
 
 def evidence(row):

@@ -2,7 +2,7 @@
 
 import json
 from pathlib import Path
-from .evidence import digest, method_rows, pack_methods
+from .evidence import method_rows, pack_methods
 from .pe import verify_rows
 from .control_flow import high_function_evidence
 
@@ -18,9 +18,6 @@ def extract(
     timeout=30,
     limit=None,
 ):
-    profile = manifest["profile"]
-    if digest(exe) != profile["exeSha256"]:
-        raise ValueError("EXE does not match manifest")
     methods = method_rows(manifest)
     rows = methods[:limit] if limit is not None else methods
     verify_rows(exe, rows)
@@ -37,7 +34,7 @@ def extract(
 
     project_dir = Path(project_dir)
     project_dir.mkdir(parents=True, exist_ok=True)
-    name = project_name or "MHWS_" + profile["exeSha256"][:16]
+    name = project_name or "MHWS_" + Path(exe).stem
     program_path = "/" + Path(exe).name
     result_rows = []
     with pyghidra.open_project(project_dir, name, create=True) as project:
@@ -50,8 +47,6 @@ def extract(
             with loader.load() as results:
                 results.save(TaskMonitor.DUMMY)
         with pyghidra.program_context(project, program_path) as program:
-            if str(program.getExecutableSHA256()).lower() != profile["exeSha256"]:
-                raise ValueError("Cached Ghidra program does not match manifest EXE")
             api = FlatProgramAPI(program, TaskMonitor.DUMMY)
             with pyghidra.transaction(program, "MHWS bounded evidence extraction"):
                 for row in rows:
@@ -108,7 +103,7 @@ def extract(
     Path(output).parent.mkdir(parents=True, exist_ok=True)
     Path(output).write_text(
         json.dumps(
-            pack_methods(result_rows, profile),
+            pack_methods(result_rows),
             ensure_ascii=False,
             separators=(",", ":"),
         )

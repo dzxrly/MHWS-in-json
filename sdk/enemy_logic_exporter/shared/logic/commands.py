@@ -7,7 +7,7 @@ import copy
 import hashlib
 import json
 from pathlib import Path
-from ..config import in_agents
+from ..config import in_tmp
 import re
 from ..native.evidence import evidence
 from ..config import (
@@ -82,12 +82,10 @@ def annotate_effects(annotation, catalog):
 def enrich_existing(annotations, catalog_path):
     """Update only command effects; retain all native blocks and field bindings."""
     path = Path(annotations).resolve()
-    if not in_agents(path):
-        raise ValueError("注释更新只能写入 .agents")
+    if not in_tmp(path):
+        raise ValueError("注释更新只能写入 .tmp")
     index = json.loads(path.read_text(encoding="utf8"))
     catalog = json.loads(Path(catalog_path).read_text(encoding="utf8"))
-    if index["profile"] != catalog["profile"]:
-        raise ValueError("命令与注释来源不匹配")
     updated = Counter()
     for source, reference in index["resources"].items():
         resource_path = path.parent / reference["path"]
@@ -751,9 +749,7 @@ def leaf_expression(leaf, argument=None):
 
         return instantiate(leaf["formula"], argument)
     key = f"extend:{leaf['contextType']}.{leaf['contextField']}"
-    source = (
-        f"{leaf['contextType']}.{leaf['contextField']}（{leaf['contextOffset']}）"
-    )
+    source = f"{leaf['contextType']}.{leaf['contextField']}（{leaf['contextOffset']}）"
     guard = combined(
         "all",
         runtime("enemy_command_work_valid", "命令工作存在且原生类型检查通过"),

@@ -1,7 +1,7 @@
 """Resolve version-independent native identities to one build's addresses.
 
-A symbol is declared once in ``config.SYMBOL_SPECS`` and resolved per game
-version into ``data/profiles/<version>.json``:
+A symbol is declared once in ``config.SYMBOL_SPECS`` and resolved for the
+current build into ``data/profile.json``:
 
 * ``Method`` - an IL2CPP method found by type, name without its numeric
   suffix and, when overloaded, parameter types.
@@ -22,6 +22,8 @@ data and jump-table contents behind ``REL`` are not covered.
 from dataclasses import dataclass
 import hashlib
 import re
+
+from .pe import SECTION_EXECUTABLE
 
 
 @dataclass(frozen=True)
@@ -81,8 +83,7 @@ def direct_callees(pe, start):
     return {
         target
         for ins in body
-        if (target := _branch_target(ins)) is not None
-        and not start <= target < end
+        if (target := _branch_target(ins)) is not None and not start <= target < end
     }
 
 
@@ -99,8 +100,14 @@ class CallNames:
             if aliases:
                 names = []
                 for owner, method in aliases:
-                    details = (self.metadata.get(owner) or {}).get("methods", {}).get(method, {})
-                    params = ",".join(p.get("type", "") for p in details.get("params", []))
+                    details = (
+                        (self.metadata.get(owner) or {})
+                        .get("methods", {})
+                        .get(method, {})
+                    )
+                    params = ",".join(
+                        p.get("type", "") for p in details.get("params", [])
+                    )
                     names.append(f"{owner}.{method_stem(method)}({params})")
                 self.cache[address] = "M:" + "|".join(sorted(set(names)))
             else:
@@ -156,13 +163,23 @@ def masked_pattern(pe, start, length):
 def scan_pattern(pe, pattern):
     expression = re.compile(
         b"".join(
-            b"." if pattern[i : i + 2] == "??" else re.escape(bytes.fromhex(pattern[i : i + 2]))
+            (
+                b"."
+                if pattern[i : i + 2] == "??"
+                else re.escape(bytes.fromhex(pattern[i : i + 2]))
+            )
             for i in range(0, len(pattern), 2)
         ),
         re.S,
     )
     hits = []
-    for virtual_size, virtual_address, raw_size, raw in pe.sections:
+    # Only code sections: the dumped EXE also holds a decrypted copy of the
+    # protector's runtime in a data section.
+    for (virtual_size, virtual_address, raw_size, raw), flags in zip(
+        pe.sections, pe.section_flags
+    ):
+        if not flags & SECTION_EXECUTABLE:
+            continue
         for match in expression.finditer(pe.data, raw, raw + raw_size):
             hits.append(pe.base + virtual_address + match.start() - raw)
     return hits
@@ -180,7 +197,9 @@ def find_method(metadata, spec):
         )
     ]
     if len(matches) != 1:
-        raise ValueError(f"方法符号无法唯一定位：{spec.type}.{spec.name}（{len(matches)}）")
+        raise ValueError(
+            f"方法符号无法唯一定位：{spec.type}.{spec.name}（{len(matches)}）"
+        )
     name, details = matches[0]
     return name, int(details["function"], 16)
 
@@ -213,11 +232,17 @@ def _unique_pattern(pe, address, spec, resolved):
     raise ValueError(f"无法为辅助函数生成唯一特征：{address:#x}")
 
 
-def resolve_symbols(specs, metadata, pe, previous, profile, names=None):
-    """Resolve all specs; ``previous`` is the last reviewed profile document."""
+def resolve_symbols(specs, metadata, pe, previous, names=None):
+    """Resolve all specs; ``previous`` is the last reviewed profile document.
+
+    ``report["reviewed"]`` lists the carried constants; the caller asks for their
+    review when the build changed.
+    """
     old = previous.get("symbols", {})
-    resolved, report = {}, dict(moved=[], changed=[], review=[])
-    order = sorted(specs, key=lambda n: {Method: 0, Helper: 1, Reviewed: 2}[type(specs[n])])
+    resolved, report = {}, dict(moved=[], changed=[], reviewed=[])
+    order = sorted(
+        specs, key=lambda n: {Method: 0, Helper: 1, Reviewed: 2}[type(specs[n])]
+    )
     for name in order:
         spec = specs[name]
         before = old.get(name, {})
@@ -227,7 +252,9 @@ def resolve_symbols(specs, metadata, pe, previous, profile, names=None):
         elif isinstance(spec, Helper):
             candidates = _helper_candidates(pe, spec, before.get("pattern"), resolved)
             if len(candidates) != 1:
-                raise ValueError(f"辅助函数特征不唯一或失效：{name}（{len(candidates)}）")
+                raise ValueError(
+                    f"辅助函数特征不唯一或失效：{name}（{len(candidates)}）"
+                )
             address = candidates[0]
             record = _function_record(
                 pe, address, names, pattern=_unique_pattern(pe, address, spec, resolved)
@@ -236,8 +263,7 @@ def resolve_symbols(specs, metadata, pe, previous, profile, names=None):
             if "value" not in before:
                 raise ValueError(f"人工核对常量缺少上一版本取值：{name}")
             record = dict(value=before["value"], note=spec.note)
-            if previous.get("profile", {}).get("exeSha256") != profile["exeSha256"]:
-                report["review"].append(name)
+            report["reviewed"].append(name)
         if before.get("address") not in (None, record.get("address")):
             report["moved"].append(name)
         if previous.get("digestScheme") == DIGEST_SCHEME and before.get(

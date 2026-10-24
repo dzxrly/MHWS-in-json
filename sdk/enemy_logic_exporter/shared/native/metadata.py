@@ -35,10 +35,6 @@ class Il2cppMetadata:
             self._file = self.path.open("rb")
             self._mapped = mmap.mmap(self._file.fileno(), 0, access=mmap.ACCESS_READ)
             self.bytes = len(self._mapped)
-            digest = hashlib.sha256()
-            for start in range(0, self.bytes, 1024 * 1024):
-                digest.update(self._mapped[start : start + 1024 * 1024])
-            self.sha256 = digest.hexdigest()
             if self.bytes <= SMALL_FILE_LIMIT:
                 self._objects = json.loads(self._mapped[:].decode("utf-8-sig"))
                 if not isinstance(self._objects, dict):
@@ -211,7 +207,6 @@ class Il2cppMetadata:
         names = self._objects if self._objects else self._offsets
         return {
             "file": self.path.name,
-            "sha256": self.sha256,
             "bytes": self.bytes,
             "indexedTypes": len(names),
             "loadedTypes": sum(record is not None for record in self.loaded.values()),

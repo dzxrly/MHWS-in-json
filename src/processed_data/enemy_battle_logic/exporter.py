@@ -44,7 +44,6 @@ def export_battle_logic(
                 enemyName=graph.get("enemyName", spec.enemy_id),
                 html=Path(name).name,
                 logicStatus=graph.get("logicStatus", "recovered_with_boundaries"),
-                profile=graph["profile"],
                 coverage=graph["coverage"],
                 # Homepage summary only; validate_bundle ignores these keys.
                 behaviorTables=sum(

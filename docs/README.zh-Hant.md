@@ -45,8 +45,6 @@ sdk/
 tests/
 ```
 
-暫存檔案和研究快取放在 `.agents/`。
-
 ## 發布壓縮檔
 
 `DATABASE_<語言>_<版本>.zip` 每種語言一份，包含該語言的資料庫活頁簿：
@@ -69,10 +67,9 @@ Bowgun_Custom.xlsx
 EnemyActionNames.xlsx
 HeavyBowgun.xlsx
 LightBowgun.xlsx
+SkillDetails.xlsx
 amulet_pool.json
-damage_calculator.zh-Hans.json
 graphic_preset.xlsx
-skill_effects.zh-Hans.json
 skill_pool.json
 enemy_battle_logic/index.html
 enemy_battle_logic/EM0001_00_0.html
@@ -85,20 +82,21 @@ enemy_battle_logic/EM0001_00_0.html
 
 ## 專案工具
 
-- `sdk.il2cpp`：上傳或下載保存在 `build-data` Release 中的 IL2CPP 中繼資料。
-- `sdk.enemy_logic_exporter`：從遊戲檔案中提取魔物行動邏輯，產生行動圖網頁使用的 JSON。`src/processed_data/enemy_battle_logic/models` 中的 34 份模型對應遊戲 **1.42.0.2**，未知分支保留標記。
+倉庫的 `sdk/` 目錄是讀取遊戲檔案的離線 SDK，`python -m sdk` 開啟它的選單。它包含以下功能：
 
-兩個工具的環境建立與用法見 [SDK 使用說明](sdk.zh-Hant.md)。只重新產生網頁時不需要這兩個工具：
+- 魔物行動邏輯（`sdk.enemy_logic_exporter`）：從遊戲檔案中提取魔物行動邏輯，產生行動圖網頁使用的 JSON。`src/processed_data/enemy_battle_logic/models` 中的 34 份模型保留未知分支的標記。
+- 技能效果（`sdk.skill_effect_exporter`）：找出原生程式碼中使用每個技能的函式並按等級求值，產生 `SkillDetails.xlsx` 使用的技能效果鏈路 JSON。
+
+SDK 需要使用者提供從記憶體 dump 出的遊戲 EXE（如 `MonsterHunterWilds_dump.exe`）和 REFramework `il2cpp_dump.json`，不記錄遊戲版本。環境建立（`sdk/setup_env.ps1`）與用法見 [SDK 使用說明](../sdk/docs/README.zh-Hant.md)。只重新產生網頁或表格時不需要 SDK：
 
 ```powershell
-python -m src.processed_data.enemy_battle_logic --preview-all --output .agents/battle-preview
+python -m src.processed_data.enemy_battle_logic --preview-all --output .tmp/battle-preview
 ```
 
-然後開啟 `.agents/battle-preview/enemy_battle_logic/index.html`，頁面可離線使用。
+然後開啟 `.tmp/battle-preview/enemy_battle_logic/index.html`，頁面可離線使用。
 
 ## 資料說明
 
-- `damage_calculator.zh-Hans.json` 包含魔物肉質、部位與傷口、玩家動作記錄、斬味倍率和道具補正。缺失的替代肉質保留為 `null`。
-- `skill_effects.zh-Hans.json` 包含技能等級和已核實的傷害效果，標明結算階段、武器與屬性範圍以及生效檔位。使用時假定勾選技能已生效，並選擇目前命中是否會心；資料不處理觸發過程、持續時間、會心率加值、餐點技能和異常積蓄，未核實效果不參與計算。
+- `SkillDetails.xlsx` 給出每個技能的效果數值。「技能效果」頁每列是一個技能在某一等級（`Lv.1`、`Lv.2`……）的一個效果，列出遊戲內的技能說明與等級說明、效果數值，以及適用的武器、彈種或動作（寫作「【武器】彈種」）。只列出從遊戲參數讀取到的數值，按「只裝備該技能」的情境求得；數值為「a / b」表示隨戰鬥狀態變化。「技能」頁合併 SkillCommonData 與 SkillData。名稱提供日文與簡體中文，說明和效果名稱只提供簡體中文。
 - `MissionData.xlsx` 中每個任務完成條件佔一列，其餘任務欄位縱向合併。缺少對應語言文字時回退英文，無名稱的魔物保留 `EM` 編號。`SoloHealth` 列出可能的初始單人最大血量，計入任務難度、隨機血量檔位和`Legendary` 倍率；無法確定目標時留空。
 - `WeaponActionValues.xlsx` 需要格式為 `mhws_static_action_request_set_map_v2` 的 `MHWS-in-json/ActionMap.json`。使用同版本輸入執行 `motlist-to-json action-map` 可重新產生，也可透過 `MHWS_ACTION_MAP_PATH` 指定其他檔案。每條對映各佔一列，未對映的 requestSet 保留，`MappingName` 留空。`MappingConfidence` 表示證據類別。日語以外的語言版本會在 `MappingName` 前增加日語名稱欄 `MappingNameJa`。

@@ -22,7 +22,9 @@ class PublicationTests(unittest.TestCase):
             with ExportTransaction(self.output, self.root) as transaction:
                 (transaction.stage / "partial.txt").touch()
                 raise ValueError("generation failed")
-        self.assertEqual((self.output / "previous.txt").read_text(encoding="utf-8"), "previous")
+        self.assertEqual(
+            (self.output / "previous.txt").read_text(encoding="utf-8"), "previous"
+        )
         self.assertFalse((self.output / "partial.txt").exists())
 
     def test_publish_failure_restores_previous_directory(self):
@@ -48,7 +50,11 @@ class PublicationTests(unittest.TestCase):
         self.assertFalse(transaction.run_dir.exists())
 
     def test_workspace_and_staging_cannot_be_publication_targets(self):
-        for output in (self.root, self.root / ".agents", self.root / ".agents/export-runs/nested"):
+        for output in (
+            self.root,
+            self.root / ".tmp",
+            self.root / ".tmp/export-runs/nested",
+        ):
             with self.assertRaises(ValueError):
                 ExportTransaction(output, self.root)
 

@@ -20,7 +20,8 @@ from ..config import (
     SET_TIMER_TYPE,
 )
 
-def main(work, metadata, output, profile):
+
+def main(work, metadata, output):
     document = json.loads((work / "decompiled.json").read_text(encoding="utf-8"))
     rows = method_rows(document)
     rules = []
@@ -129,10 +130,8 @@ def main(work, metadata, output, profile):
                 and r["method"].startswith("execute")
             )
         )
-    source_profile = dict(profile)
     semantics = {
         "schemaVersion": 1,
-        "profile": source_profile,
         "rules": rules,
         "commandResult": command_result,
         "operatorSemantics": [
@@ -166,6 +165,7 @@ def main(work, metadata, output, profile):
     out = output / "rules.v1.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(
-        json.dumps(semantics, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        json.dumps(semantics, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
     )
     print("FROZEN", len(rules), "rules", out)

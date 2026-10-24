@@ -61,7 +61,6 @@ def combined_diagram(graph, *, compact_details=False):
                 table=name,
                 tableGuid=guid,
                 tableEvidence=table["evidence"],
-                profile=graph["profile"],
             )
             if compact_details:
                 details[key] = dict(table=name, tableGuid=guid, localId=node["id"])

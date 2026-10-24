@@ -6,17 +6,16 @@ import json
 from pathlib import Path
 import time
 from .control_flow import high_function_evidence
-from .evidence import evidence_key, method_rows, pack_methods, digest
+from .evidence import evidence_key, method_rows, pack_methods
 from .pe import verify_rows
-from ..config import in_agents
+from ..config import in_tmp
 
-def _read_cache(path, row, profile):
+
+def _read_cache(path, row):
     if not path.exists():
         return None
     with gzip.open(path, "rt", encoding="utf8") as stream:
         data = json.load(stream)
-    if data.get("profile") != profile:
-        raise ValueError("缓存来源版本不匹配")
     for field in ("address", "end", "nativeSha256"):
         if data[field] != row[field]:
             raise ValueError("缓存原生范围或字节身份不匹配")
@@ -47,13 +46,10 @@ def extract_cached(
     or release eligibility is inferred from decompiler success.
     """
     output = Path(output).resolve()
-    if not in_agents(output):
-        raise ValueError("原生缓存只允许写入项目 .agents")
+    if not in_tmp(output):
+        raise ValueError("原生缓存只允许写入项目 .tmp")
     if timeout <= 0:
         raise ValueError("反编译超时必须大于零")
-    profile = manifest["profile"]
-    if digest(exe) != profile["exeSha256"]:
-        raise ValueError("EXE does not match manifest")
     rows = method_rows(manifest)
     verify_rows(exe, rows)
     output.mkdir(parents=True, exist_ok=True)
@@ -65,8 +61,6 @@ def extract_cached(
     reused = 0
     for source in reuse:
         document = json.loads(Path(source).read_text(encoding="utf8"))
-        if isinstance(document, dict) and document.get("profile") != profile:
-            raise ValueError("复用证据版本不匹配")
         candidates = [
             r
             for r in method_rows(document)
@@ -84,7 +78,6 @@ def extract_cached(
                 _write_cache(
                     path,
                     dict(
-                        profile=profile,
                         **{
                             k: row[k]
                             for k in (
@@ -105,7 +98,7 @@ def extract_cached(
     status = {}
     pending = []
     for key, row in unique.items():
-        data = _read_cache(bodies / (key + ".json.gz"), row, profile)
+        data = _read_cache(bodies / (key + ".json.gz"), row)
         if data and data.get("completed") and data.get("controlFlow"):
             status[key] = {
                 "completed": data["completed"],
@@ -127,7 +120,6 @@ def extract_cached(
             )
         index = pack_methods(
             rows,
-            profile,
             nativeBodyArtifacts=references,
             scope="原生证据提取；未经人工语义审核，不是行动模型",
         )
@@ -168,21 +160,16 @@ def extract_cached(
 
         project_dir = Path(project_dir)
         project_dir.mkdir(parents=True, exist_ok=True)
-        name = project_name or "MHWS_" + profile["exeSha256"][:16]
+        name = project_name or "MHWS_" + Path(exe).stem
         program_path = "/" + Path(exe).name
         with pyghidra.open_project(project_dir, name, create=False) as project:
             with pyghidra.program_context(project, program_path) as program:
-                if str(program.getExecutableSHA256()).lower() != profile["exeSha256"]:
-                    raise ValueError(
-                        "Cached Ghidra program does not match manifest EXE"
-                    )
                 api = FlatProgramAPI(program, TaskMonitor.DUMMY)
                 decompiler = DecompInterface()
                 try:
                     decompiler.openProgram(program)
                     for number, (key, row) in enumerate(pending, 1):
                         data = dict(
-                            profile=profile,
                             **{k: row[k] for k in ("address", "end", "nativeSha256")},
                             completed=False,
                             error="",

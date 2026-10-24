@@ -1,10 +1,8 @@
 import struct
 import unittest
-from importlib.util import find_spec
 from sdk.enemy_logic_exporter.shared.logic.static_pools import native_initializer_pools
 
 
-@unittest.skipUnless(find_spec("capstone"), "离线原生测试需要 SDK 的 Capstone 依赖")
 class StaticPoolTests(unittest.TestCase):
     def code(self, *, branch=False, clobber=False):
         base = 0x143928000

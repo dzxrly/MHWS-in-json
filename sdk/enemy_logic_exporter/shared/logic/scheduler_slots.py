@@ -9,6 +9,7 @@ slot table is checked against the exact static-constructor bytes.
 from copy import deepcopy
 from functools import lru_cache
 import json
+from pathlib import Path
 
 from ..config import (
     BTABLE_SLOT_ENUM,
@@ -18,7 +19,6 @@ from ..config import (
     SLOT_REQUEST_ARGUMENT,
     SLOT_REQUEST_METHODS,
     SLOT_REQUEST_OWNER_PREFIXES,
-    SUPPORTED_PROFILE,
     UNIQUE_SLOT_REQUESTER,
     UNIQUE_SLOT_TABLE,
 )
@@ -33,7 +33,7 @@ ARGUMENT_REGISTERS = {
 
 @lru_cache(maxsize=1)
 def receipt():
-    return json.loads(EVIDENCE_PATH.read_text(encoding="utf8"))
+    return json.loads(Path(EVIDENCE_PATH).read_text(encoding="utf-8"))
 
 
 def _immediate_argument(instructions, index):
@@ -64,8 +64,6 @@ def recover_slot_requests(pe, metadata, catalog):
     """Scan every method of the owner families for direct slot requests."""
     from capstone import Cs, CS_ARCH_X86, CS_MODE_64, CS_OP_IMM
 
-    if metadata.sha256 != SUPPORTED_PROFILE["metadataSha256"]:
-        raise ValueError("调度槽配方的元数据来源变化")
     _, slots = metadata.enum(BTABLE_SLOT_ENUM)
     names = {
         (value if value < 1 << 31 else value - (1 << 32)): name
@@ -110,7 +108,6 @@ def recover_slot_requests(pe, metadata, catalog):
     unique = [names.get(value, value) for value in table["values"]]
     return dict(
         schemaVersion=1,
-        profile=dict(SUPPORTED_PROFILE),
         requestMethods={
             hex(a): dict(owner=o, method=m, mode=k)
             for a, (o, m, k) in SLOT_REQUEST_METHODS.items()
@@ -133,14 +130,12 @@ def recover_slot_requests(pe, metadata, catalog):
 def write_slot_evidence(exe, metadata_path, output=EVIDENCE_PATH):
     from ..native.metadata import Il2cppMetadata
     from ..native.pe import PE, address_catalog
-    from ..native.evidence import digest
 
-    if digest(exe) != SUPPORTED_PROFILE["exeSha256"]:
-        raise ValueError("EXE 与调度槽配方版本不匹配")
     with PE(exe) as pe, Il2cppMetadata(metadata_path) as metadata:
         result = recover_slot_requests(pe, metadata, address_catalog(metadata))
     output.write_text(
-        json.dumps(result, ensure_ascii=False, indent=1) + "\n", encoding="utf-8"
+        json.dumps(result, ensure_ascii=False, indent=1) + "\n",
+        encoding="utf-8",
     )
     return result
 
@@ -148,8 +143,6 @@ def write_slot_evidence(exe, metadata_path, output=EVIDENCE_PATH):
 def scheduler_slots(model):
     """Bind this monster's declared slots to the AI states that queue them."""
     evidence = receipt()
-    if evidence["profile"] != model["profile"]:
-        raise ValueError("调度槽证据与模型来源版本不匹配")
     bindings = model.get("combatScheduler", {}).get("slotBindings", {})
     unique = evidence["uniqueSlots"]
     groups = {slot: name for name, slots in SLOT_GROUPS for slot in slots}

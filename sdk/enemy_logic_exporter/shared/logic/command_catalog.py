@@ -2,7 +2,7 @@
 
 import json
 from pathlib import Path
-from ..native.evidence import method_rows, digest
+from ..native.evidence import method_rows
 from ..native.metadata import Il2cppMetadata
 from ..workflow.semantic_recovery import _artifact
 from .commands import recover_leaf, recover_writes
@@ -10,25 +10,18 @@ from .monster_rules import hooks
 from .static_pools import native_initializer_pools
 from ..native.pe import PE, verify_rows
 import hashlib
-from ..config import in_agents
+from ..config import in_tmp
+
 
 def export_commands(helper_index, metadata, output, *, exe, inventory=None):
     output = Path(output).resolve()
-    if not in_agents(output):
-        raise ValueError("命令原生证据只允许写入 .agents")
+    if not in_tmp(output):
+        raise ValueError("命令原生证据只允许写入 .tmp")
     index_path = Path(helper_index)
     index = json.loads(index_path.read_text(encoding="utf8"))
-    if digest(exe) != index["profile"]["exeSha256"]:
-        raise ValueError("命令 EXE 版本冲突")
-    from ..config import SUPPORTED_PROFILE
-
-    if index["profile"] != SUPPORTED_PROFILE:
-        raise ValueError("初始化地址配方尚未审核此版本")
     verify_rows(exe, method_rows(index))
     commands, leaves, initializers, schedulers = {}, [], [], []
     with Il2cppMetadata(Path(metadata)) as dump, PE(exe) as pe:
-        if dump.sha256 != index["profile"]["metadataSha256"]:
-            raise ValueError("命令元数据版本冲突")
         for row in method_rows(index):
             data = _artifact(index_path, index, row)
             evidence = {k: row[k] for k in ("type", "method", "address", "end")}
@@ -98,7 +91,6 @@ def export_commands(helper_index, metadata, output, *, exe, inventory=None):
             leaf["enumType"], leaf["enumValues"] = dump.enum(leaf["contextFieldType"])
     output.mkdir(parents=True, exist_ok=True)
     result = dict(
-        profile=index["profile"],
         commands=commands,
         leafComparisons=leaves,
         initializers=initializers,

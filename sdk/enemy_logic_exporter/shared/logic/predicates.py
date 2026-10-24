@@ -13,6 +13,7 @@ from ..config import (
 from .values import scalar, enum_number, MissingState, Outcome, number, required
 from .monster_rules import rule_kind
 
+
 class RuleRegistry:
     def __init__(self, data):
         if data.get("schemaVersion") != 1:
@@ -28,7 +29,7 @@ class RuleRegistry:
     @classmethod
     def load(cls, path=None):
         path = Path(path) if path is not None else RULES_PATH
-        return cls(json.loads(path.read_text(encoding="utf-8")))
+        return cls(json.loads(Path(path).read_text(encoding="utf-8")))
 
     def bind(self, command_type, argument_type, argument):
         rule = self.by_command.get(command_type)

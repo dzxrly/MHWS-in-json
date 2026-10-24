@@ -43,7 +43,7 @@ def _is_research_input(path, root):
 class BattleReleaseTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        scratch = ROOT / ".agents" / "test-runs"
+        scratch = ROOT / ".tmp" / "test-runs"
         scratch.mkdir(parents=True, exist_ok=True)
         cls.temp = tempfile.TemporaryDirectory(dir=scratch)
         cls.addClassCleanup(cls.temp.cleanup)
@@ -82,7 +82,7 @@ class BattleReleaseTests(unittest.TestCase):
                 "sdk/data/models/em0001.v1.json",
                 "MHWS-in-json/em0001.user.3.json",
                 "MonsterHunterWilds.exe",
-                "src/data/il2cpp_dump.json",
+                "MonsterHunterWilds/il2cpp_dump.json",
             ):
                 with self.subTest(checkout=checkout_name, path=relative):
                     self.assertTrue(_is_research_input(root / relative, root))
@@ -202,11 +202,7 @@ class BattleReleaseTests(unittest.TestCase):
 
     def test_html_must_embed_same_graph_without_external_scripts(self):
         changed = deepcopy(self.graph)
-        changed["metadataVerification"] = (
-            "not_supplied"
-            if self.graph["metadataVerification"] == "matched"
-            else "matched"
-        )
+        changed["logicStatus"] = changed["logicStatus"] + "_changed"
         with self.assertRaises(ValueError):
             validate_html(self.html, changed)
         with self.assertRaises(ValueError):

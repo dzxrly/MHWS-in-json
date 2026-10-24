@@ -8,14 +8,6 @@ from zipfile import ZipFile
 from xml.etree import ElementTree
 
 import openpyxl
-from src.processed_data.damage_calculator.exporter import (
-    OUTPUT_NAME as DAMAGE_OUTPUT_NAME,
-    validate_catalog,
-)
-from src.processed_data.skill_effects.exporter import (
-    OUTPUT_NAME as SKILL_EFFECTS_OUTPUT_NAME,
-    validate_catalog as validate_skill_effects,
-)
 from src.processed_data.enemy_battle_logic.definitions import (
     INDEX_NAME as BATTLE_INDEX_NAME,
 )
@@ -38,7 +30,6 @@ def validate_outputs(
             f"Output manifest mismatch: missing={sorted(expected - actual)}, extra={sorted(actual - expected)}"
         )
     records = []
-    calculator_contracts = set()
     for relative in sorted(expected_files):
         path = stage / relative
         if not path.stat().st_size:
@@ -47,13 +38,7 @@ def validate_outputs(
             _validate_workbook(path)
         elif path.suffix == ".json":
             with path.open(encoding="utf-8") as handle:
-                payload = json.load(handle)
-            if path.name == DAMAGE_OUTPUT_NAME:
-                validate_catalog(payload)
-                calculator_contracts.add(payload["sourceContract"]["id"])
-            elif path.name == SKILL_EFFECTS_OUTPUT_NAME:
-                validate_skill_effects(payload)
-                calculator_contracts.add(payload["sourceContract"]["id"])
+                json.load(handle)
         if path.as_posix().endswith("/" + BATTLE_INDEX_NAME):
             validate_battle_bundle(path.parent.parent)
         records.append(
@@ -63,8 +48,6 @@ def validate_outputs(
                 "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
             }
         )
-    if len(calculator_contracts) > 1:
-        raise ValueError("Calculator and skill exports have different source contracts")
     for name, source in archives.items():
         with ZipFile(stage / name) as archive:
             members = archive.infolist()

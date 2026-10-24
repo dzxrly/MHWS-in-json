@@ -432,10 +432,7 @@ class Machine:
         self.nodes[key] = node
         node["true"] = self.walk(after, self.complete_call(s, event, 1))
         node["false"] = self.walk(after, self.complete_call(s, event, 0))
-        if (
-            bound["commandType"]
-            == UNFAIR_ROUTINE_COMMAND
-        ):
+        if bound["commandType"] == UNFAIR_ROUTINE_COMMAND:
             node["expression"] = dict(
                 kind="unknown",
                 reason="目标有效性及 checkTargetCharaUnfair 的完整资格条件尚未核实；不能把该命令当作读取已激活标志",
@@ -460,9 +457,7 @@ class Machine:
         if bound.get("argumentIndex") is None:
             from .navigation_conditions import recover_navigation_condition
 
-            recovered = recover_navigation_condition(
-                node, self.registry.data["profile"]
-            )
+            recovered = recover_navigation_condition(node)
             if recovered is not None:
                 node.update(recovered)
         return key
@@ -1027,7 +1022,9 @@ class Machine:
                             ),
                             execution="request_then_yield",
                             requestSite=(
-                                self.last_request["site"] if self.last_request else e["site"]
+                                self.last_request["site"]
+                                if self.last_request
+                                else e["site"]
                             ),
                             callSite=e["site"],
                             nativeRequestPosition=self.last_request,
@@ -1037,7 +1034,6 @@ class Machine:
 
                         detail = request_details(
                             bound["commandType"],
-                            self.registry.data["profile"],
                             self.command_evidence.get(bound["commandType"]),
                             self.metadata,
                         )

@@ -11,7 +11,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
-from ..native.evidence import evidence, method_rows, digest
+from ..native.evidence import evidence, method_rows
 from ..native.metadata import Il2cppMetadata
 from ..native.pe import PE
 from ..config import (
@@ -20,7 +20,6 @@ from ..config import (
     POSITION_ROW,
     POSITION_TABLE,
     STAND_STATE_ENUM,
-    SUPPORTED_PROFILE,
     VOID_TYPE,
 )
 from ..resources.reader import Resources, structure_signature
@@ -117,18 +116,9 @@ class NativeRecipeContext:
         self.index = json.loads(self.index_path.read_text(encoding="utf8"))
         self.helpers = json.loads(self.helper_path.read_text(encoding="utf8"))
         self.inventory = json.loads(Path(inventory_path).read_text(encoding="utf8"))
-        self.profile = self.index["profile"]
-        documents = [self.helpers, self.inventory]
         self.requests = None
         if requests_path is not None:
             self.requests = json.loads(Path(requests_path).read_text(encoding="utf8"))
-            documents.append(self.requests)
-        if self.profile != SUPPORTED_PROFILE or any(
-            d["profile"] != self.profile for d in documents
-        ):
-            raise ValueError("原生配方、辅助方法、资源发现及动作请求来源版本不匹配")
-        if digest(exe) != self.profile["exeSha256"]:
-            raise ValueError("原生配方的 EXE 来源变化，必须重新核查")
         self.resources = Resources(natives)
         self.monsters = {m["enemyId"]: m for m in self.inventory["monsters"]}
         if set(self.monsters) != set(
@@ -151,8 +141,6 @@ class NativeRecipeContext:
         try:
             self.pe = self.stack.enter_context(PE(self.exe))
             self.metadata = self.stack.enter_context(Il2cppMetadata(self.metadata_path))
-            if self.metadata.sha256 != self.profile["metadataSha256"]:
-                raise ValueError("原生配方的 IL2CPP 来源变化，必须重新核查")
         except BaseException:
             self.stack.close()
             raise
@@ -162,7 +150,7 @@ class NativeRecipeContext:
         self.stack.close()
 
     def native(self, row):
-        # The profile pins the EXE; cache rows may still carry a byte digest.
+        # Cache rows may carry a digest of the bytes they were analysed from.
         key = row["address"], row["end"], row.get("nativeSha256")
         if key not in self.native_cache:
             start, end = int(row["address"], 16), int(row["end"], 16)
@@ -346,11 +334,15 @@ class NativeRecipeContext:
             while current and current not in visited:
                 visited.add(current)
                 rows = [
-                    r for r in self.helper_rows[current] if r["method"].startswith("onExecute")
+                    r
+                    for r in self.helper_rows[current]
+                    if r["method"].startswith("onExecute")
                 ]
                 if rows:
                     if len(rows) == 1:
-                        code = _artifact(self.helper_path, self.helpers, rows[0])["code"]
+                        code = _artifact(self.helper_path, self.helpers, rows[0])[
+                            "code"
+                        ]
                         # The formulas keep every path condition; the x64 one
                         # also expands called helpers. The single-read context
                         # recognizer is only a fallback.
@@ -444,11 +436,7 @@ class NativeRecipeContext:
             expected = self.resource_records[source]
             body = self.resources.read(source)
             factories = self.resources.factories(body)
-            if (
-                self.resources.hashes[source] != expected["resourceSha256"]
-                or structure_signature(body, factories)
-                != expected["structureSignature"]
-            ):
+            if structure_signature(body, factories) != expected["structureSignature"]:
                 raise ValueError("资源发现后行为表发生变化：" + source)
             owner = body["_ExportBTableType"]
             if owner in sources and sources[owner] != source:
@@ -588,7 +576,6 @@ class NativeRecipeContext:
         document = dict(
             schemaVersion=1,
             documentType="enemy_battle_logic",
-            profile=self.profile,
             enemyId=enemy_id,
             enemyName=enemy_id,
             entry=roots[combat]["tableGuid"],

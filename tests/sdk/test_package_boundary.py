@@ -47,7 +47,7 @@ class PackageBoundaryTests(unittest.TestCase):
                     )
 
     def test_packages_work_with_the_other_package_blocked(self):
-        scratch = ROOT / ".agents/test-runs"
+        scratch = ROOT / ".tmp/test-runs"
         scratch.mkdir(parents=True, exist_ok=True)
         with tempfile.TemporaryDirectory(dir=scratch) as directory:
             cases = (

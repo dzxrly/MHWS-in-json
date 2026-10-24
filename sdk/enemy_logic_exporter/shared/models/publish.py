@@ -10,6 +10,7 @@ import json
 from pathlib import Path
 
 from .io import expand_shared_values
+from sdk.progress import track
 from ..config import (
     PREDICATE_DUPLICATE_FIELDS,
     PUBLISHED_STORAGE_FORMAT,
@@ -106,10 +107,10 @@ def publish_models(source, output, *, complete=True):
         raise ValueError("没有可发布的怪物图 JSON")
     output.mkdir(parents=True, exist_ok=True)
     results = []
-    for path in paths:
+    for path in track(paths, "发布网页模型"):
         model = json.loads(path.read_text(encoding="utf8"))
         if model.get("storage"):
-            raise ValueError("发布步骤只接受 .agents 中的完整研究模型")
+            raise ValueError("发布步骤只接受 .tmp 中的完整研究模型")
         stripped = strip_research_fields(model)
         packed = share_values(stripped)
         if expand_shared_values(packed) != stripped:
