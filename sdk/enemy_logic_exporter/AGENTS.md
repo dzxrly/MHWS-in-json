@@ -12,7 +12,7 @@
 - 证据行以“类型 + 方法名 + 起止地址”标识（`config.EVIDENCE_KEYS`），按当前 EXE 的原生字节核对；代码和 `data/` 中的 JSON 不逐行保存 SHA-256。EXE 与 il2cpp 的摘要只记录在 `sdk/game_versions.json`（两个 SDK 共用，由 `sdk/versions.py` 读写）；提交到 Git 的 profile、证据、规则、名单和网页模型中，来源一律写成 `{"gameVersion": "<版本>"}`，读取时按登记表展开，写出时收缩（`versions.read` / `versions.compact`）。资源文件与模型分片不再保存字节摘要；`.agents` 研究缓存保留完整来源和内容寻址摘要，只在缓存内部使用。
 - 怪物名、部位名、gimmick 等专有名称使用游戏消息（`*.msg.23.json`，简体中文列）中的官方文本，由 `Resources.message`、`enemy_name`、`part_name` 读取；找不到对应条目时显示原始类名或枚举名，不自行翻译。
 - 保留用户已有暂存改动；本目录的迁移或维护不自动授权提交、推送或发布。
-- **同步更新用户文档**：面向使用者的说明在 `sdk/README.md`（英文）、`sdk/README.zh-Hans.md`、`sdk/README.zh-Hant.md`，三份内容必须一致；三份 README 的“项目工具”一节只保留简介并链接到它们。新增、删除或改名命令与参数，改变默认路径、环境变量、依赖版本、安装脚本、输出位置、报错信息或支持的游戏版本时，在同一次改动中更新三份 SDK 文档（必要时也更新 README 简介），并更新本文件。只改 AGENTS.md 不算完成。
+- **同步更新用户文档**：面向使用者的说明在 `sdk/README.md`（英文）、`sdk/docs/README.zh-Hans.md`、`sdk/docs/README.zh-Hant.md`，三份内容必须一致；三份 README 的“项目工具”一节只保留简介并链接到它们。新增、删除或改名命令与参数，改变默认路径、环境变量、依赖版本、安装脚本、输出位置、报错信息或支持的游戏版本时，在同一次改动中更新三份 SDK 文档（必要时也更新 README 简介），并更新本文件。只改 AGENTS.md 不算完成。
 
 ## 构建思路（先读这一节）
 
@@ -91,7 +91,7 @@
 | `shared/models/roster.py` | 生成并比较大型怪物名单（含变种实际复用的 Combat 主人）；`new-monster` 为名单新增的怪物生成独立入口模块，不覆盖已有配方 |
 | `shared/resources/variables.py` | 索引全部 BTableVariable 定义（计时器、浮点、布尔），模型以 `variableCatalog` 记录本怪物判断读取的变量及其资源导出名（`ExportValueName`，多数为空）、初始值、生命周期与来源；必须在 `builder.py` 绑定资源参数之后生成，否则读不到计时器 GUID |
 | `shared/workflow/environment.py` | 新环境的路径发现与 `check-env`：`MHWS_EXE` 或 Steam 库（注册表 `SteamPath` 与 `libraryfolders.vdf`）中的游戏 EXE、`MHWS_SDK_WORK_DIR` 工作目录、研究缓存的标准位置（`STANDARD_INPUTS`，`extract`/`extract-all` 省略 `--index` 等参数时使用）、固定版本的依赖、资源换行与 Ghidra/JDK 设置 |
-| `setup_env.ps1` | Windows 一键搭建：在 `.agents/sdk-venv` 建虚拟环境、安装 `requirements.txt` 并运行 `check-env`（文件带 UTF-8 BOM，Windows PowerShell 5.1 才能正确读取中文） |
+| `sdk/setup_env.ps1` | SDK 共用的 Windows 一键搭建：在 `.agents/sdk-venv` 建虚拟环境、安装 `sdk/requirements.txt` 并运行 `check-env`（文件带 UTF-8 BOM，Windows PowerShell 5.1 才能正确读取中文） |
 | `shared/models/uncertainty.py` | `uncertainty` 统计玩家战斗树中在全部玩家输入已知时仍无法判定的条件，按命令排序；`census` 统计全部表中含未知部分的条件（总数等于 `coverage.unknownConditions` 之和），按命令与原因分组，用来找最大的待确认类别 |
 | `shared/native/metadata.py` | 用 mmap 索引大体积 REFramework JSON，按需读取类型、继承字段和枚举；`subclasses` 首次使用时扫描各类型的 `parent` 建立反向索引，列出全部直接与间接子类 |
 | `shared/native/pe.py` | 只读 PE64，依据异常目录及方法地址确定函数边界，保留同地址的方法别名并校验原生字节 |
@@ -148,7 +148,7 @@
 
 ## 开发环境（Windows）
 
-面向使用者的同一套步骤写在 `sdk/README.zh-Hans.md`、`sdk/README.md`、`sdk/README.zh-Hant.md`；本节修改后要同步这三份文档。
+面向使用者的同一套步骤写在 `sdk/docs/README.zh-Hans.md`、`sdk/README.md`、`sdk/docs/README.zh-Hant.md`；本节修改后要同步这三份文档。
 
 只考虑 Windows。普通网页构建（`python -m src.processed_data.enemy_battle_logic`）只需要 Python 标准库与仓库内 JSON；下面的研究依赖只在重新提取时需要。已验证组合：Python 3.13、Capstone 5.0.6、PyGhidra 3.0.2、Ghidra 12.0.4 及其支持的 JDK。JVM 只是 Ghidra 的运行依赖，本项目不写 Java。
 
@@ -157,10 +157,10 @@
 1. 安装 Python 3.13（勾选 `py` 启动器）和 Git；克隆仓库后在根目录运行：
 
    ```powershell
-   powershell -ExecutionPolicy Bypass -File sdk/enemy_logic_exporter/setup_env.ps1
+   powershell -ExecutionPolicy Bypass -File sdk/setup_env.ps1
    ```
 
-   脚本在 `.agents/sdk-venv` 建虚拟环境、安装 `requirements.txt` 中固定版本的依赖，最后运行 `check-env`。之后的命令都用这个解释器在项目根目录运行：`.agents/sdk-venv/Scripts/python.exe -B -m sdk.enemy_logic_exporter <命令>`。
+   脚本在 `.agents/sdk-venv` 建虚拟环境、安装 `sdk/requirements.txt` 中固定版本的依赖，最后运行 `check-env`。之后的命令都用这个解释器在项目根目录运行：`.agents/sdk-venv/Scripts/python.exe -B -m sdk.enemy_logic_exporter <命令>`。
    常用参数都有短写：`-e/--exe`、`-i/--il2cpp`、`-n/--natives`、`-o/--output`、`-m/--models`，以及放在子命令前的 `-w/--work-dir`。
 2. 按 `check-env` 列出的 `missing` 逐项补齐，再运行一次 `check-env`（加 `--verify` 时还会计算 EXE 与 dump 的 SHA-256，确认是当前 profile 的版本）：
    - **游戏 EXE**：默认在 Steam 库中查找（注册表 `SteamPath` 和 `steamapps/libraryfolders.vdf` 列出的所有库）；装在别处时设环境变量 `MHWS_EXE` 或给 `--exe`。
@@ -311,7 +311,7 @@ $w = '.agents/enemy-logic-exporter/fix'
 - 纯重构必须得到逐字节一致的模型；有意的语义变化要能逐条解释。
 - 先用 `census` 找最大的类别，再看 `uncertainty` 的排行；后者只覆盖玩家战斗树，会漏掉生态、怪物间战斗等大类。
 - 改了已被导入的模块后，正在运行的提取不会用到新代码，需要重启。
-- 收尾前检查文档：命令、参数、默认路径、环境变量、依赖或输出有变化时，三份 `sdk/README*.md` 与 README 简介已同步更新（见“维护边界”）。
+- 收尾前检查文档：命令、参数、默认路径、环境变量、依赖或输出有变化时，三份 SDK 文档（`sdk/README.md`、`sdk/docs/README.*.md`）与 README 简介已同步更新（见“维护边界”）。
 
 ### 为一个未知命令选择恢复方式
 
@@ -344,7 +344,7 @@ $w = '.agents/enemy-logic-exporter/fix'
 5. 核对 `shared/config.py` 的结构偏移（命令工作、目标模块、Extend 持有者等）与 `monster/<id>.py` 头部常量。x64 识别器按元数据中的字段名和偏移命名，字段偏移变化会自动跟随；入口寄存器约定、类继承检查 helper 与栈 cookie helper 来自 profile 符号，出现在 `changed` 中时要复核。
 6. 全量提取，用 `census`、`uncertainty` 与上一版本对比：新出现的大类通常是新逻辑或识别器失效的位置；某类条件突然变多时，先查对应 helper 的字节是否变化。
 7. 发布、构建网页，并在浏览器中检查（见“游戏更新后的维护顺序”第 7 步）。
-8. 更新三份 `sdk/README*.md` 与三份 README 中的支持版本号和受影响的步骤，再更新本文件中的统计数字。
+8. 更新三份 SDK 文档（`sdk/README.md`、`sdk/docs/README.*.md`）与三份 README 中的支持版本号和受影响的步骤，再更新本文件中的统计数字。
 
 ### 网页标签约定
 

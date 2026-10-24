@@ -8,10 +8,10 @@ the pinned research dependencies and runs `check-env`, which lists the game
 files, research caches and optional Ghidra settings that are still missing.
 Run it from any directory:
 
-    powershell -ExecutionPolicy Bypass -File sdk/enemy_logic_exporter/setup_env.ps1
+    powershell -ExecutionPolicy Bypass -File sdk/setup_env.ps1
 
 Afterwards run SDK commands from the repository root with
-.agents/sdk-venv/Scripts/python.exe -m sdk.enemy_logic_exporter <command>.
+.agents/sdk-venv/Scripts/python.exe -m sdk (menu), or -m sdk.<tool> <command>.
 #>
 param(
     # Python launcher version; 3.13 is the verified one.
@@ -20,7 +20,7 @@ param(
     [string]$Exe = ""
 )
 $ErrorActionPreference = "Stop"
-$root = (Resolve-Path (Join-Path $PSScriptRoot "../..")).Path
+$root = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 $venv = Join-Path $root ".agents/sdk-venv"
 $python = Join-Path $venv "Scripts/python.exe"
 
@@ -39,6 +39,7 @@ try {
     if ($LASTEXITCODE) {
         Write-Host "仍有缺失项（见上方 missing）。补齐后重新运行 check-env。" -ForegroundColor Yellow
     }
+    Write-Host "菜单界面：$python -m sdk"
 }
 finally {
     Pop-Location

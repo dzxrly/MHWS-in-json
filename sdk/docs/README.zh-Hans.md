@@ -1,17 +1,17 @@
 # SDK 使用说明
 
-[English](README.md) | 简体中文 | [繁體中文](README.zh-Hant.md)
+[English](../README.md) | 简体中文 | [繁體中文](README.zh-Hant.md)
 
-仓库的 `sdk/` 目录中有两个离线命令行工具，都在项目根目录用 `python -m` 运行：
+仓库的 `sdk/` 目录是读取游戏文件的离线 SDK。`python -m sdk` 打开它的[菜单界面](#菜单界面tui)；各项功能也可以在项目根目录用 `python -m` 单独运行。安装脚本 `sdk/setup_env.ps1` 和依赖清单 `sdk/requirements.txt` 由所有功能共用：
 
-| 工具 | 用途 | 需要的外部文件 |
+| 功能 | 用途 | 需要的外部文件 |
 |---|---|---|
 | `sdk.enemy_logic_exporter` | 从游戏 EXE、IL2CPP 元数据和资源导出中提取怪物行动逻辑，生成网页使用的行动图 JSON | 游戏 EXE、IL2CPP 元数据、`MHWS-in-json` 资源；部分命令还需要 Ghidra |
 | `sdk.skill_effect_exporter` | 找出原生代码中使用每个技能的函数，按技能等级求值，生成技能效果链路 JSON（`SkillDetails.xlsx` 的数据来源） | 游戏 EXE、IL2CPP 元数据、`MHWS-in-json` 资源 |
 
-IL2CPP 元数据是 REFramework 导出的 `il2cpp_dump.json`，必须与 EXE 同一游戏版本。它和 EXE 一样由使用者提供，仓库和 Release 都不保存副本。两个工具查找它的顺序相同：`-i/--il2cpp` 参数、环境变量 `MHWS_IL2CPP`、EXE 同目录的 `il2cpp_dump.json`。EXE 与 dump 的 SHA-256 只登记在 `sdk/game_versions.json`；提交的数据与模型只记录游戏版本号。
+IL2CPP 元数据是 REFramework 导出的 `il2cpp_dump.json`，必须与 EXE 同一游戏版本。它和 EXE 一样由使用者提供，仓库和 Release 都不保存副本。各项功能查找它的顺序相同：`-i/--il2cpp` 参数、环境变量 `MHWS_IL2CPP`、EXE 同目录的 `il2cpp_dump.json`。EXE 与 dump 的 SHA-256 只登记在 `sdk/game_versions.json`；提交的数据与模型只记录游戏版本号。
 
-只想重新生成网页或表格、不改动提取结果时，两个工具都不需要：构建器只读取仓库中已提交的 JSON（见“[只构建网页](#只构建网页)”）。
+只想重新生成网页或表格、不改动提取结果时，不需要 SDK：构建器只读取仓库中已提交的 JSON（见“[只构建网页](#只构建网页)”）。
 
 ## 通用参数
 
@@ -30,7 +30,7 @@ IL2CPP 元数据是 REFramework 导出的 `il2cpp_dump.json`，必须与 EXE 同
 2. 在项目根目录运行安装脚本。它在 `.agents/sdk-venv` 建虚拟环境，安装固定版本的依赖（Capstone、PyGhidra、questionary），最后运行环境检查：
 
    ```powershell
-   powershell -ExecutionPolicy Bypass -File sdk/enemy_logic_exporter/setup_env.ps1
+   powershell -ExecutionPolicy Bypass -File sdk/setup_env.ps1
    ```
 
 3. 按检查结果补齐缺失项，然后再检查一次：
@@ -113,7 +113,7 @@ python -B -m sdk.enemy_logic_exporter roster --write
 python -B -m sdk.enemy_logic_exporter new-monster --enemy <新怪物ID>          # 名单新增的每只怪物
 ```
 
-之后把 `sdk/enemy_logic_exporter/shared/config.py` 中的 `ACTIVE_GAME_VERSION` 改为新版本，再按“修改代码后重新提取”跑一遍。`migrate-evidence` 列出的待复核项和 `resolve-symbols` 报告的 `changed` 项必须逐条核对原生代码，不能只替换版本号或摘要。游戏版本不变、只换用另一份 IL2CPP dump 时的步骤，以及详细的核对顺序，见 [SDK 维护说明](enemy_logic_exporter/AGENTS.md)。
+之后把 `sdk/enemy_logic_exporter/shared/config.py` 中的 `ACTIVE_GAME_VERSION` 改为新版本，再按“修改代码后重新提取”跑一遍。`migrate-evidence` 列出的待复核项和 `resolve-symbols` 报告的 `changed` 项必须逐条核对原生代码，不能只替换版本号或摘要。游戏版本不变、只换用另一份 IL2CPP dump 时的步骤，以及详细的核对顺序，见 [SDK 维护说明](../enemy_logic_exporter/AGENTS.md)。
 
 ### 命令一览
 
@@ -143,7 +143,7 @@ python -B -m sdk.enemy_logic_exporter new-monster --enemy <新怪物ID>         
 
 ## 技能效果 SDK（`sdk.skill_effect_exporter`）
 
-游戏没有“技能 → 效果数值”的数据表：SkillData 的四个数值槽没有名称，`PlayerSkillParam` 等参数文件里的字段也不带技能 ID，二者只在原生代码中连接。这个工具先扫描 EXE，找出以技能 ID 调用技能读取方法的全部函数；再在“只装备该技能、取某一等级”的情境下，按真实指令执行这些函数（布尔与枚举参数逐一枚举），记录返回值、运行时条件以及数值来自哪个 SkillData 槽位、参数文件字段或 EXE 常量。结果写入 `src/processed_data/skill_details/data/skill_links/`（`index.json` 加按技能类别拆分的分片），构建 PROCESSED_DATA 时与 SkillCommonData、SkillData 合并成 `SkillDetails.xlsx`。
+游戏没有“技能 → 效果数值”的数据表：SkillData 的四个数值槽没有名称，`PlayerSkillParam` 等参数文件里的字段也不带技能 ID，二者只在原生代码中连接。这个工具先扫描 EXE，找出以技能 ID 调用技能读取方法的全部函数；再在“只装备该技能、取某一等级”的情境下，按真实指令执行这些函数（布尔与枚举参数逐一枚举），记录返回值、运行时条件以及数值来自哪个 SkillData 槽位、参数文件字段或 EXE 常量。结果写入 `src/processed_data/skill_details/data/skill_links/`（`index.json` 加按技能类别拆分的分片），构建 PROCESSED_DATA 时据此生成 `SkillDetails.xlsx`。
 
 ```powershell
 python -B -m sdk.skill_effect_exporter extract                                     # 全部技能，约 20 分钟，写入正式位置
@@ -152,11 +152,14 @@ python -B -m sdk.skill_effect_exporter extract -s HunterSkill_019 -o .agents/ski
 python -m src.processed_data.skill_details                                         # 只重建 SkillDetails.xlsx
 ```
 
+- `SkillDetails.xlsx` 的“技能效果”表每行是一个技能等级（`Lv.X`）的一个效果，列出游戏内的技能说明与等级说明，以及适用的武器、弹种或动作（“【武器】弹种”）。表中只保留从游戏参数读取到的数值，优先采用技能自身的 `getSkill*` 取值函数，不采用组合多个来源的函数；只在未装备技能或叠加餐点效果时出现的数值不列出。效果名称由取值函数名翻译而来（`src/processed_data/skill_details/labels.py`），最后一列保留函数名。数值为“a / b”表示数值随战斗状态变化，例如连击的命中段数。
+- 表格不列出的函数地址、参数、运行时条件、数据来源、EXE 常量和未模拟的调用保留在链路 JSON 中。
+
 - 依赖与上面的虚拟环境相同（Capstone）。
-- 读取猎人装备武器类型（`HunterCharacter._HunterComp.Prepare.<WeaponBuilder>k__BackingField._EquippedWeaponType`）或弩弹种类（`app.WeaponGunDef.SHELL_TYPE`、`SHELL_PARAM_TYPE`，包括由调用返回或写入 `out` 参数的情况）的函数，按每种取值分别求值，表格把取值列为参数“武器”“弹种”“弹药参数类型”。清单是 `sdk/skill_effect_exporter/config.py` 中的 `DIMENSIONS`。
-- 有些 `cHunterSkill` 取值函数只返回等级或倍率，实际效果由调用它的函数决定，例如 `getSkillDodgeNoHitLv` 的调用方 `getDodgeNoHitTime` 给出各回避动作的无敌时间。读取的技能不超过 `MAX_ACCESSOR_SKILLS` 个的取值函数，其调用方也会求值，“用法”列写作“调用技能取值函数 …”。
-- 超过路径或指令上限的函数，会只保留仍能走到技能读取点的路径重新求值，其他调用按不透明调用处理；这些行在“求值范围”列中标出。“只追踪可能经过技能读取点的路径仍超限”表示技能可能在此处（该武器或弹种下）起作用，但数值仍不完整。
+- 读取猎人装备武器类型（`HunterCharacter._HunterComp.Prepare.<WeaponBuilder>k__BackingField._EquippedWeaponType`）或弩弹种类（`app.WeaponGunDef.SHELL_TYPE`、`SHELL_PARAM_TYPE`，包括由调用返回或写入 `out` 参数的情况）的函数，按每种取值分别求值，链路 JSON 把取值记为参数“武器”“弹种”“弹药参数类型”。清单是 `sdk/skill_effect_exporter/config.py` 中的 `DIMENSIONS`。
+- 有些 `cHunterSkill` 取值函数只返回等级或倍率，实际效果由调用它的函数决定，例如 `getSkillDodgeNoHitLv` 的调用方 `getDodgeNoHitTime` 给出各回避动作的无敌时间。读取的技能不超过 `MAX_ACCESSOR_SKILLS` 个的取值函数，其调用方也会求值，链路中的用法记为 `accessor`。
+- 超过路径或指令上限的函数，会只保留仍能走到技能读取点的路径重新求值，其他调用按不透明调用处理；这些路径标记为 `focused`。“只追踪可能经过技能读取点的路径仍超限”表示技能可能在此处（该武器或弹种下）起作用，但数值仍不完整。
 - 结果相同、条件只差一个条件及其否定的路径会合并，不影响结果的条件不再列出。每个情形最多保留 `MAX_RECORDED_PATHS` 条路径，条件少的优先，最后一行注明未列出的条数。
 - 输出只记录游戏版本，不保存解包文件摘要；更新 `MHWS-in-json` 后要重新运行 `extract`。
-- 汇总多个技能的函数（如攻击力合计）依赖其他技能的计时器等运行时状态，表格中可能显示“分支过多，未完整求值”；同一技能的精确数值通常由 `getSkill*` 读取函数给出。
-- 需要人工说明的技能写在 `sdk/skill_effect_exporter/notes.py`；版本相关的布局常量集中在 `sdk/skill_effect_exporter/config.py`。游戏更新后的检查步骤见 [技能效果 SDK 维护说明](skill_effect_exporter/AGENTS.md)。
+- 汇总多个技能的函数（如攻击力合计）依赖其他技能的计时器等运行时状态，链路 JSON 中可能记为 `too_many_paths`；同一技能的精确数值通常由 `getSkill*` 读取函数给出。
+- 需要人工说明的技能写在 `sdk/skill_effect_exporter/notes.py`；版本相关的布局常量集中在 `sdk/skill_effect_exporter/config.py`。游戏更新后的检查步骤见 [技能效果 SDK 维护说明](../skill_effect_exporter/AGENTS.md)。
