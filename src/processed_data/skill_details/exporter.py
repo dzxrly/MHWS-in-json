@@ -11,7 +11,10 @@ from __future__ import annotations
 
 import json
 import re
+from copy import copy
 from pathlib import Path
+
+from openpyxl.styles import Alignment, Font, PatternFill
 
 from config import (
     JAPANESE_LANGUAGE_ID,
@@ -19,6 +22,7 @@ from config import (
     SUPPORT_FILES,
     ZH_HANS_LANGUAGE_ID,
 )
+from src.shared.excel.styles import StylePalette
 from src.shared.excel.writer import write_workbook
 from src.shared.source.repository import SourceRepository
 from src.shared.text.catalog import TextSource
@@ -29,6 +33,24 @@ OUTPUT_NAME = "SkillDetails.xlsx"
 LINKS_DIR = Path(__file__).resolve().parent / "data" / "skill_links"
 SKILL_DATA = "STM/GameDesign/Common/Equip/SkillData.user.3.json"
 SCHEMA_VERSION = 1
+# Remarks at the end of in-game skill descriptions that the table leaves out.
+DROPPED_NOTES = (
+    "（骑乘鹭鹰龙时不会发动）",
+    "（武器属性值的强化存在上限）",
+    "（效果结束后，需要经过一定时间才能再次发动）",
+    "（不会超过上限）",
+    "（上升效果因武器种类而异）",
+    "（部分攻击除外）",
+    "（30分钟后达到增幅上限）",
+    "（对甲虫种等部分怪物无效）",
+    "（部分怪物除外）",
+    "（满足对应条件后，效果可重复发动）",
+)
+HEADER_FILL = "305496"
+# Rows alternate per skill; the value column uses a warmer tint of the same band.
+BAND_FILLS = ("FFFFFF", "EAF1FB")
+VALUE_FILLS = ("FFF4D6", "FBE8B5")
+VALUE_COLUMN = "数值"
 DIMENSION_EXCLUDED = {"INVALID", "MAX"}
 OWN_SOURCES = {"PlayerSkillParam", "SkillData"}
 OTHER_SOURCES = {"PlayerMealSkillParam"}
@@ -275,6 +297,14 @@ def applies_texts(dims: list[str], domains: dict, block: list[set]) -> list[str]
     return texts
 
 
+def description(text: str | None, dropped: tuple[str, ...] = ()) -> str:
+    """In-game text without its hard line breaks and the given remarks."""
+    text = re.sub(r"\r?\n", "", text or "")
+    for note in dropped:
+        text = text.replace(note, "")
+    return text
+
+
 def level_text(level: int) -> str:
     return f"Lv.{level}"
 
@@ -306,7 +336,7 @@ def build_sheets(
         row["skillId"]: (
             ja.get(row["skillName"]) or "",
             zh.get(row["skillName"]) or "",
-            zh.get(row["skillExplain"]) or "",
+            description(zh.get(row["skillExplain"]), DROPPED_NOTES),
         )
         for row in common_rows
     }
@@ -315,7 +345,7 @@ def build_sheets(
         if row["skillId"] != "NONE":
             levels_of.setdefault(row["skillId"], []).append(row)
     level_explain = {
-        (skill_id, row["SkillLv"]): zh.get(row["skillExplain"]) or ""
+        (skill_id, row["SkillLv"]): description(zh.get(row["skillExplain"]))
         for skill_id, rows in levels_of.items()
         for row in rows
     }
@@ -379,7 +409,9 @@ def build_sheets(
                     "简体中文名称": zh_name,
                     "技能说明": explain,
                     "技能等级": level_text(data["SkillLv"]) if data else "",
-                    "等级说明": (zh.get(data["skillExplain"]) or "") if data else "",
+                    "等级说明": (
+                        description(zh.get(data["skillExplain"])) if data else ""
+                    ),
                     "打开技能": "、".join(
                         names.get(s, ("", s, ""))[1] or s
                         for s in info.get("openSkills", [])
@@ -402,4 +434,48 @@ def export_skill_details(
 ) -> Path:
     links = load_links()
     sheets = build_sheets(repository, text_source, links)
-    return write_workbook(Path(output_dir) / OUTPUT_NAME, sheets, MAX_COLUMN_WIDTH)
+    return write_workbook(
+        Path(output_dir) / OUTPUT_NAME, sheets, MAX_COLUMN_WIDTH, format_workbook
+    )
+
+
+def format_workbook(workbook) -> None:
+    """Header colours, one background band per skill, a tinted value column, frozen
+    names and filters."""
+    palette = StylePalette(workbook, "skill_details")
+    align = Alignment(horizontal="left", vertical="center")
+    bold = copy(palette.default_font)
+    bold.b = True
+    header_font = copy(bold)
+    header_font.color = "FFFFFF"
+    header = palette.get(
+        "header", font=header_font, fill=solid(HEADER_FILL), alignment=align
+    )
+    for sheet in workbook.worksheets:
+        titles = [cell.value for cell in sheet[1]]
+        for cell in sheet[1]:
+            cell.style = header
+        sheet.auto_filter.ref = sheet.dimensions
+        if "简体中文名称" in titles:
+            sheet.freeze_panes = sheet.cell(2, titles.index("简体中文名称") + 2)
+        else:
+            sheet.freeze_panes = "A2"
+        key = titles.index("技能ID") if "技能ID" in titles else None
+        band, last = 0, None
+        for row in sheet.iter_rows(min_row=2):
+            if key is not None and row[key].value != last:
+                band = 1 - band if last is not None else 0
+                last = row[key].value
+            for cell in row:
+                value = titles[cell.column - 1] == VALUE_COLUMN
+                fill = (VALUE_FILLS if value else BAND_FILLS)[band]
+                cell.style = palette.get(
+                    (fill, value),
+                    font=bold if value else palette.default_font,
+                    fill=solid(fill),
+                    alignment=align,
+                )
+
+
+def solid(color: str) -> PatternFill:
+    return PatternFill(start_color=color, end_color=color, fill_type="solid")

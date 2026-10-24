@@ -103,6 +103,14 @@ class SkillDetailsTests(unittest.TestCase):
             self.value("HunterSkill_114", "属性值加算", 1, "【双刀、弓】"), "3 / 4"
         )
 
+    def test_descriptions_drop_listed_remarks_and_line_breaks(self):
+        explain = next(
+            r["技能说明"]
+            for r in self.sheets["技能效果"]
+            if r["技能ID"] == "HunterSkill_114"
+        )
+        self.assertEqual(explain, "攻击连续命中时，攻击力和属性值会阶段性上升。")
+
     def test_effect_names_read_the_accessor_name(self):
         self.assertEqual(effect_name("getSkillFireAttackAdd493160"), "火属性值加算")
         self.assertEqual(
