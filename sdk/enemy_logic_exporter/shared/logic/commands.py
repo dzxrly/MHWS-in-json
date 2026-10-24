@@ -7,7 +7,7 @@ import copy
 import hashlib
 import json
 from pathlib import Path
-from ..config import in_agents
+from ..config import in_tmp
 import re
 from ..native.evidence import evidence
 from ..config import (
@@ -82,8 +82,8 @@ def annotate_effects(annotation, catalog):
 def enrich_existing(annotations, catalog_path):
     """Update only command effects; retain all native blocks and field bindings."""
     path = Path(annotations).resolve()
-    if not in_agents(path):
-        raise ValueError("注释更新只能写入 .agents")
+    if not in_tmp(path):
+        raise ValueError("注释更新只能写入 .tmp")
     index = json.loads(path.read_text(encoding="utf8"))
     catalog = json.loads(Path(catalog_path).read_text(encoding="utf8"))
     updated = Counter()

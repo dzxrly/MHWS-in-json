@@ -12,14 +12,22 @@ class ExportTransaction:
     def __init__(self, output_dir: Path, workspace: Path):
         self.workspace = Path(workspace).resolve()
         self.output_dir = Path(output_dir).resolve()
-        self.runs = self.workspace / ".agents" / "export-runs"
+        self.runs = self.workspace / ".tmp" / "export-runs"
         if not self.runs.resolve().is_relative_to(self.workspace):
-            raise ValueError(f"Staging directory must be inside the workspace: {self.runs}")
+            raise ValueError(
+                f"Staging directory must be inside the workspace: {self.runs}"
+            )
         if self.output_dir.exists() and not self.output_dir.is_dir():
-            raise ValueError(f"Export destination is not a directory: {self.output_dir}")
-        if (not self.output_dir.is_relative_to(self.workspace) or self.output_dir == self.workspace
-                or self.output_dir == self.runs or self.output_dir.is_relative_to(self.runs)
-                or self.runs.is_relative_to(self.output_dir)):
+            raise ValueError(
+                f"Export destination is not a directory: {self.output_dir}"
+            )
+        if (
+            not self.output_dir.is_relative_to(self.workspace)
+            or self.output_dir == self.workspace
+            or self.output_dir == self.runs
+            or self.output_dir.is_relative_to(self.runs)
+            or self.runs.is_relative_to(self.output_dir)
+        ):
             raise ValueError(f"Unsafe export destination: {self.output_dir}")
         self.run_dir = self.runs / uuid4().hex
         self.stage = self.run_dir / "output"
@@ -48,7 +56,9 @@ class ExportTransaction:
                 try:
                     self.backup.replace(self.output_dir)
                 except OSError as rollback_error:
-                    raise RuntimeError(f"Restore previous output manually from {self.backup}") from rollback_error
+                    raise RuntimeError(
+                        f"Restore previous output manually from {self.backup}"
+                    ) from rollback_error
             raise
         self.published = True
 
@@ -64,4 +74,6 @@ class ExportTransaction:
             except OSError as error:
                 info(f"Published output; temporary cleanup deferred: {target}: {error}")
         else:
-            info(f"Export failed; previous output preserved. Diagnostic files: {self.run_dir}")
+            info(
+                f"Export failed; previous output preserved. Diagnostic files: {self.run_dir}"
+            )

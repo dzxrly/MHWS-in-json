@@ -1,12 +1,10 @@
 """Verify selector PCs from native instructions rather than array spacing."""
 
 import hashlib
-from importlib.util import find_spec
 import unittest
 from unittest.mock import Mock, patch
 
 
-@unittest.skipUnless(find_spec("capstone"), "离线原生测试需要 SDK 的 Capstone 依赖")
 class NativeSelectorTests(unittest.TestCase):
     def machine(self, hexadecimal):
         from sdk.enemy_logic_exporter.shared.logic.machine import Machine
@@ -109,6 +107,7 @@ class NativeSelectorTests(unittest.TestCase):
         self.assertEqual(mode, "per_candidate")
         self.assertEqual([argument["index"] for argument in arguments], [304, 305])
         self.assertEqual(evidence["indexRegister"], "r13")
+
 
 class SelectorCandidateContractTests(unittest.TestCase):
     def recover_shared_target(
@@ -238,6 +237,7 @@ class SelectorCandidateContractTests(unittest.TestCase):
         )
         self.assertEqual([c["id"] for c in candidates], ["slot:0", "slot:1"])
         self.assertEqual(sum(n["kind"] == "call" for n in result["nodes"]), 1)
+
 
 if __name__ == "__main__":
     unittest.main()

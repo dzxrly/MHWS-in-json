@@ -99,22 +99,33 @@ def _text_source():
 
 class MissionFixtureTests(unittest.TestCase):
     def test_solo_health_uses_new_random_grades_from_user3(self):
-        self.assertEqual(calculate_solo_health(
-            enemy_id="EM9999_00_0", base_health=10000, quest_health_rate=1.0,
-            legendary_id="NORMAL", reward_rank=0, legendary_rates={"HealthRate": 1.0},
-            random_rate_table={"_Value0": 1.0, "_ValueP4": 1.125},
-            random_probability_tables=[{"_Prob0": 50, "_ProbP4": 50}],
-            difficulty_adjust_range=0, king_when_none_ids=frozenset(),
-            no_auto_hard_ids=frozenset(),
-        ), "10000、11250")
+        self.assertEqual(
+            calculate_solo_health(
+                enemy_id="EM9999_00_0",
+                base_health=10000,
+                quest_health_rate=1.0,
+                legendary_id="NORMAL",
+                reward_rank=0,
+                legendary_rates={"HealthRate": 1.0},
+                random_rate_table={"_Value0": 1.0, "_ValueP4": 1.125},
+                random_probability_tables=[{"_Prob0": 50, "_ProbP4": 50}],
+                difficulty_adjust_range=0,
+                king_when_none_ids=frozenset(),
+                no_auto_hard_ids=frozenset(),
+            ),
+            "10000、11250",
+        )
 
     def test_msdata_id_without_quest_data_is_appended_with_available_text(self):
-        source = TextSource(_text_source().entries + [
-            _entry(None, "Mission000124_100", "Quest title"),
-            _entry(None, "Mission000124_102", "Quest detail"),
-            _entry(None, "Mission000124_000", "Story title", "故事标题"),
-            _entry(None, "Mission000125_000", "Story title", "故事标题"),
-        ])
+        source = TextSource(
+            _text_source().entries
+            + [
+                _entry(None, "Mission000124_100", "Quest title"),
+                _entry(None, "Mission000124_102", "Quest detail"),
+                _entry(None, "Mission000124_000", "Story title", "故事标题"),
+                _entry(None, "Mission000125_000", "Story title", "故事标题"),
+            ]
+        )
         missing = ("MISSION_000124", "MISSION_000125", "MISSION_000126")
         data = build_mission_workbook_data(
             _catalog(_quest(), missions_without_quest_data=missing), source, 13
@@ -124,12 +135,14 @@ class MissionFixtureTests(unittest.TestCase):
         self.assertEqual(data.rows[-3]["_TitleMsg"], "Quest title")
         self.assertEqual(data.rows[-3]["_DetailMsg"], "Quest detail")
         self.assertEqual(data.rows[-2]["_TitleMsg"], "故事标题")
-        self.assertTrue(all(
-            row[column] == ""
-            for row in data.rows[-3:]
-            for column in MISSION_COLUMNS
-            if column not in ("_MissionId", "_TitleMsg", "_DetailMsg")
-        ))
+        self.assertTrue(
+            all(
+                row[column] == ""
+                for row in data.rows[-3:]
+                for column in MISSION_COLUMNS
+                if column not in ("_MissionId", "_TitleMsg", "_DetailMsg")
+            )
+        )
         self.assertEqual(data.rows[-1]["_TitleMsg"], "")
 
     def test_language_fallback_monster_id_and_deduplicated_subbosses(self):
@@ -156,7 +169,9 @@ class MissionFixtureTests(unittest.TestCase):
         data = build_mission_workbook_data(_catalog(_quest("ITEM")), _text_source(), 13)
         self.assertEqual(len(data.rows), 1)
         self.assertEqual(data.rows[0]["_TargetType"], "ITEM")
-        self.assertTrue(all(not row["_LegendaryID"] and not row["MonsterName"] for row in data.rows))
+        self.assertTrue(
+            all(not row["_LegendaryID"] and not row["MonsterName"] for row in data.rows)
+        )
 
     def test_multiple_clear_conditions_use_consecutive_rows(self):
         quest = _quest()
@@ -172,9 +187,10 @@ class MissionFixtureTests(unittest.TestCase):
         ]
         data = build_mission_workbook_data(_catalog(quest), _text_source(), 13)
         self.assertEqual(data.groups, ((3, 5),))
-        self.assertEqual([row["_TargetType"] for row in data.rows], [
-            "EM_BOSS_HUNTING", "EM_BOSS_HUNTING", "ITEM"
-        ])
+        self.assertEqual(
+            [row["_TargetType"] for row in data.rows],
+            ["EM_BOSS_HUNTING", "EM_BOSS_HUNTING", "ITEM"],
+        )
         self.assertEqual(data.rows[-1]["MonsterName"], "")
 
     def test_stream_text_uses_sibling_data_with_english_fallback(self):
@@ -183,7 +199,9 @@ class MissionFixtureTests(unittest.TestCase):
             "_EnglishList": ["Stream title", "English stream detail"],
             "_SimplelifiedChineseList": ["", "中文说明"],
         }
-        data = build_mission_workbook_data(_catalog(_quest(), stream), _text_source(), 13)
+        data = build_mission_workbook_data(
+            _catalog(_quest(), stream), _text_source(), 13
+        )
         self.assertEqual(data.rows[0]["_TitleMsg"], "Stream title")
         self.assertEqual(data.rows[0]["_DetailMsg"], "中文说明")
 
@@ -198,7 +216,14 @@ class MissionCorpusTests(unittest.TestCase):
         languages = discover_language_ids(NATIVES_DIR)
         self.assertEqual(set(languages), set(STREAM_TEXT_FIELDS))
         expected_rows = sum(
-            max(1, len(record.data["_ClearCondition"]["app.user_data.QuestData.cClearCondition"]["_TargetInfoArray"]))
+            max(
+                1,
+                len(
+                    record.data["_ClearCondition"][
+                        "app.user_data.QuestData.cClearCondition"
+                    ]["_TargetInfoArray"]
+                ),
+            )
             for record in self.catalog.quests
         )
         self.assertTrue(any(record.stream_text for record in self.catalog.quests))
@@ -207,25 +232,43 @@ class MissionCorpusTests(unittest.TestCase):
         self.assertNotIn("MISSION_001020", self.catalog.missions_without_quest_data)
         for language_id in languages:
             with self.subTest(language_id=language_id):
-                data = build_mission_workbook_data(self.catalog, self.text_source, language_id)
+                data = build_mission_workbook_data(
+                    self.catalog, self.text_source, language_id
+                )
                 self.assertEqual(
                     len(data.groups),
-                    len(self.catalog.quests) + len(self.catalog.missions_without_quest_data),
+                    len(self.catalog.quests)
+                    + len(self.catalog.missions_without_quest_data),
                 )
-                self.assertEqual(len(data.rows), expected_rows + len(self.catalog.missions_without_quest_data))
-                self.assertTrue(all(row["_TitleMsg"] and row["_DetailMsg"] for row in data.rows[:expected_rows]))
+                self.assertEqual(
+                    len(data.rows),
+                    expected_rows + len(self.catalog.missions_without_quest_data),
+                )
+                self.assertTrue(
+                    all(
+                        row["_TitleMsg"] and row["_DetailMsg"]
+                        for row in data.rows[:expected_rows]
+                    )
+                )
                 self.assertEqual(
                     [row["_MissionId"] for row in data.rows[expected_rows:]],
                     list(self.catalog.missions_without_quest_data),
                 )
-                self.assertTrue(all(
-                    row["MonsterName"]
-                    for row in data.rows[:expected_rows] if row["_TargetType"].startswith("EM_")
-                ))
-                self.assertTrue(all(
-                    len(names := row["_SubBossInfoArray"].split("\n")) == len(set(names))
-                    for row in data.rows if row["_SubBossInfoArray"]
-                ))
+                self.assertTrue(
+                    all(
+                        row["MonsterName"]
+                        for row in data.rows[:expected_rows]
+                        if row["_TargetType"].startswith("EM_")
+                    )
+                )
+                self.assertTrue(
+                    all(
+                        len(names := row["_SubBossInfoArray"].split("\n"))
+                        == len(set(names))
+                        for row in data.rows
+                        if row["_SubBossInfoArray"]
+                    )
+                )
 
     def test_target_rates_resolve_selected_layouts_and_stream_quests(self):
         difficulty = self.catalog.difficulty
@@ -236,12 +279,24 @@ class MissionCorpusTests(unittest.TestCase):
 
         data = build_mission_workbook_data(self.catalog, self.text_source, 1)
         rows = {row["_MissionId"]: row for row in data.rows}
-        self.assertEqual(data.columns[:9], (
-            "_MissionId", "_QuestLv", "_OrderHR", "_OrderMR", "_TitleMsg",
-            "MonsterName", "_TargetType", "_LegendaryID", "_RewardRank",
-        ))
+        self.assertEqual(
+            data.columns[:9],
+            (
+                "_MissionId",
+                "_QuestLv",
+                "_OrderHR",
+                "_OrderMR",
+                "_TitleMsg",
+                "MonsterName",
+                "_TargetType",
+                "_LegendaryID",
+                "_RewardRank",
+            ),
+        )
         self.assertEqual(len(data.columns), 108)
-        self.assertEqual(data.columns.index("SoloHealth") + 1, data.columns.index("_Health"))
+        self.assertEqual(
+            data.columns.index("SoloHealth") + 1, data.columns.index("_Health")
+        )
         self.assertEqual(rows["MISSION_001130"]["_Health"], 1.17)
         self.assertEqual(rows["MISSION_001130"]["_Attack"], 1.0)
         self.assertEqual(rows["MISSION_001130"]["_Count=2._Health"], 1.6)
@@ -273,8 +328,8 @@ class MissionCorpusTests(unittest.TestCase):
 
     def test_workbook_merges_mission_fields_and_centers_numeric_content(self):
         data = build_mission_workbook_data(self.catalog, self.text_source, 1)
-        BASE_DIR.joinpath(".agents").mkdir(exist_ok=True)
-        with tempfile.TemporaryDirectory(dir=BASE_DIR / ".agents") as temp_dir:
+        BASE_DIR.joinpath(".tmp").mkdir(exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=BASE_DIR / ".tmp") as temp_dir:
             path = write_mission_workbook(Path(temp_dir) / "MissionData.xlsx", data)
             workbook = load_workbook(path)
             try:
@@ -285,10 +340,20 @@ class MissionCorpusTests(unittest.TestCase):
                 solo = data.columns.index("SoloHealth") + 1
                 self.assertEqual(sheet.cell(1, solo).value, "SoloHealth")
                 self.assertEqual(sheet.cell(1, solo + 1).value, "_Health")
-                self.assertEqual([sheet.cell(1, index).value for index in range(1, 10)], [
-                    "_MissionId", "_QuestLv", "_OrderHR", "_OrderMR", "_TitleMsg",
-                    "MonsterName", "_TargetType", "_LegendaryID", "_RewardRank",
-                ])
+                self.assertEqual(
+                    [sheet.cell(1, index).value for index in range(1, 10)],
+                    [
+                        "_MissionId",
+                        "_QuestLv",
+                        "_OrderHR",
+                        "_OrderMR",
+                        "_TitleMsg",
+                        "MonsterName",
+                        "_TargetType",
+                        "_LegendaryID",
+                        "_RewardRank",
+                    ],
+                )
                 merged = {str(region) for region in sheet.merged_cells.ranges}
                 self.assertIn("A1:A2", merged)
                 poison = data.columns.index("_Poison._DefaultLimit") + 1
@@ -300,7 +365,8 @@ class MissionCorpusTests(unittest.TestCase):
                 self.assertEqual(sheet.cell(2, poison + 1).value, "_AddAndMaxLimit")
                 count = data.columns.index("_Count=2._Health") + 1
                 self.assertIn(
-                    f"{get_column_letter(count)}1:{get_column_letter(count + 12)}1", merged
+                    f"{get_column_letter(count)}1:{get_column_letter(count + 12)}1",
+                    merged,
                 )
                 self.assertEqual(sheet.cell(1, count).value, "_Count = 2")
                 self.assertEqual(sheet.cell(2, count).value, "_Health")
@@ -312,21 +378,35 @@ class MissionCorpusTests(unittest.TestCase):
                     sheet.cell(3, 1).fill.fgColor.rgb,
                     sheet.cell(3, 9).fill.fgColor.rgb,
                 )
-                first, last = next(group for group in data.groups if group[1] > group[0])
+                first, last = next(
+                    group for group in data.groups if group[1] > group[0]
+                )
                 for column in (
-                    "_MissionId", "_QuestLv", "_OrderHR", "_OrderMR", "_TitleMsg",
-                    "_DetailMsg", "_SubBossInfoArray",
+                    "_MissionId",
+                    "_QuestLv",
+                    "_OrderHR",
+                    "_OrderMR",
+                    "_TitleMsg",
+                    "_DetailMsg",
+                    "_SubBossInfoArray",
                 ):
                     letter = get_column_letter(data.columns.index(column) + 1)
                     self.assertIn(f"{letter}{first}:{letter}{last}", merged)
-                for column in ("MonsterName", "_TargetType", "_Health", "_Count=2._Health"):
+                for column in (
+                    "MonsterName",
+                    "_TargetType",
+                    "_Health",
+                    "_Count=2._Health",
+                ):
                     letter = get_column_letter(data.columns.index(column) + 1)
                     self.assertNotIn(f"{letter}{first}:{letter}{last}", merged)
                 for row in sheet.iter_rows(min_row=3):
                     for cell in row:
                         if isinstance(cell, MergedCell):
                             continue
-                        numeric = isinstance(cell.value, (int, float)) and not isinstance(cell.value, bool)
+                        numeric = isinstance(
+                            cell.value, (int, float)
+                        ) and not isinstance(cell.value, bool)
                         self.assertEqual(
                             (cell.alignment.horizontal, cell.alignment.vertical),
                             ("center" if numeric else "left", "center"),

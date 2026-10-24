@@ -1,7 +1,7 @@
-# SDK dependencies: Capstone for both tools, PyGhidra for the offline decompile
-# command, questionary and the prompt_toolkit it was
-# tested with (questionary 2.1.0 fails on prompt_toolkit 3.0.53) for the menu,
-# rich for the progress bars of long commands.
+# SDK dependencies, also installed by CI before the tests: Capstone for both
+# tools, PyGhidra for the offline decompile command, questionary and the
+# prompt_toolkit it was tested with (questionary 2.1.0 fails on prompt_toolkit
+# 3.0.53) for the menu, rich for the progress bars of long commands.
 pyghidra==3.0.2
 capstone==5.0.6
 questionary==2.1.1

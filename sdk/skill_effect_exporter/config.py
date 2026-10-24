@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[2]
 SCHEMA_VERSION = 1
 DEFAULT_NATIVES = ROOT / "MHWS-in-json/natives"
 DEFAULT_OUTPUT = ROOT / "src/processed_data/skill_details/data/skill_links"
-AGENTS_DIR = ROOT / ".agents"
+TMP_DIR = ROOT / ".tmp"
 
 SKILL_COMMON = "STM/GameDesign/Common/Equip/SkillCommonData.user.3.json"
 SKILL_DATA = "STM/GameDesign/Common/Equip/SkillData.user.3.json"

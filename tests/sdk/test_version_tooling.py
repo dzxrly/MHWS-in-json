@@ -1,6 +1,5 @@
 """Version-update tooling: relocation-insensitive digests, symbols, roster."""
 
-from importlib.util import find_spec
 import unittest
 
 from sdk.enemy_logic_exporter.shared.models.uncertainty import evaluate
@@ -33,7 +32,6 @@ class FakeMetadata:
         return dict(methods=self.methods) if name == "app.T" else None
 
 
-@unittest.skipUnless(find_spec("capstone"), "离线原生测试需要 SDK 的 Capstone 依赖")
 class NormalizedDigestTests(unittest.TestCase):
     def test_relocated_calls_and_rip_data_keep_the_digest(self):
         from sdk.enemy_logic_exporter.shared.native.symbols import normalized_digest
@@ -56,8 +54,8 @@ class NormalizedDigestTests(unittest.TestCase):
         # Same bytes shape, call targets 0x1ffb and 0x72b5 in the two builds.
         first = FakePE(0x1000, "8b0500100000e8f00f0000c3")
         second = FakePE(0x5000, "8b0534120000e8aa220000c3")
-        same = {0x1ffb: "M:app.A.f()", 0x72b5: "M:app.A.f()"}.get
-        moved = {0x1ffb: "M:app.A.f()", 0x72b5: "M:app.B.g()"}.get
+        same = {0x1FFB: "M:app.A.f()", 0x72B5: "M:app.A.f()"}.get
+        moved = {0x1FFB: "M:app.A.f()", 0x72B5: "M:app.B.g()"}.get
         self.assertEqual(
             normalized_digest(first, 0x1000, names=same),
             normalized_digest(second, 0x5000, names=same),
@@ -69,7 +67,9 @@ class NormalizedDigestTests(unittest.TestCase):
 
     def test_migration_compares_the_whole_function_not_the_row_prefix(self):
         from sdk.enemy_logic_exporter.shared.native.symbols import normalized_digest
-        from sdk.enemy_logic_exporter.shared.workflow.version_update import _same_function
+        from sdk.enemy_logic_exporter.shared.workflow.version_update import (
+            _same_function,
+        )
 
         names = lambda address: "M:app.A.f()"
         original = FakePE(0x1000, "8b0500100000e8f00f0000c3")
@@ -102,9 +102,12 @@ class SymbolTests(unittest.TestCase):
         )
         self.assertEqual(method_stem("get_Item494226"), "get_Item")
         spec = Method("app.T", "setCurrentPosition", ("ace.btable.BTableDef.POSITION",))
-        self.assertEqual(find_method(metadata, spec), ("setCurrentPosition233780", 0x2000))
+        self.assertEqual(
+            find_method(metadata, spec), ("setCurrentPosition233780", 0x2000)
+        )
         with self.assertRaisesRegex(ValueError, "无法唯一定位"):
             find_method(metadata, Method("app.T", "setCurrentPosition"))
+
 
 class RosterTests(unittest.TestCase):
     def test_combat_owner_and_exclusions_come_from_the_resources(self):
@@ -126,8 +129,12 @@ class RosterTests(unittest.TestCase):
                     enemy("EM1001_00_0"),
                 ]
             },
-            "STM/GameDesign/Enemy/Em0160/00/BTable/Em0160_00_BTableList.user.3.json": btable("Em0160_00"),
-            "STM/GameDesign/Enemy/Em0160/50/BTable/Em0160_50_BTableList.user.3.json": btable("Em0160_00"),
+            "STM/GameDesign/Enemy/Em0160/00/BTable/Em0160_00_BTableList.user.3.json": btable(
+                "Em0160_00"
+            ),
+            "STM/GameDesign/Enemy/Em0160/50/BTable/Em0160_50_BTableList.user.3.json": btable(
+                "Em0160_00"
+            ),
         }
 
         class Resources:
@@ -144,13 +151,25 @@ class RosterTests(unittest.TestCase):
 class UncertaintyTests(unittest.TestCase):
     def test_player_inputs_are_not_uncertainty_but_unknown_leaves_are(self):
         scenario, inputs = dict(mask=False), dict(distance={})
-        guard = dict(op="not", item=dict(op="compare", key="mask", operator="eq", value=True))
+        guard = dict(
+            op="not", item=dict(op="compare", key="mask", operator="eq", value=True)
+        )
         distance = dict(op="compare", key="distance", operator="lt", value=8)
         unknown = dict(op="unknown", reason="x")
         self.assertTrue(evaluate(guard, scenario, inputs))
-        self.assertEqual(evaluate(dict(op="all", items=[guard, distance]), scenario, inputs), "input")
-        self.assertIsNone(evaluate(dict(op="all", items=[distance, unknown]), scenario, inputs))
-        self.assertFalse(evaluate(dict(op="all", items=[dict(guard, op="not", item=guard), unknown]), scenario, inputs))
+        self.assertEqual(
+            evaluate(dict(op="all", items=[guard, distance]), scenario, inputs), "input"
+        )
+        self.assertIsNone(
+            evaluate(dict(op="all", items=[distance, unknown]), scenario, inputs)
+        )
+        self.assertFalse(
+            evaluate(
+                dict(op="all", items=[dict(guard, op="not", item=guard), unknown]),
+                scenario,
+                inputs,
+            )
+        )
 
 
 class LeafRuleTests(unittest.TestCase):

@@ -1493,7 +1493,7 @@ def enrich_models(models, output):
         graph = json.loads(path.read_text(encoding="utf8"))
         if graph.get("storage"):
             raise ValueError(
-                "玩家视图需要 .agents 中的完整研究模型，不能读取已发布的精简模型"
+                "玩家视图需要 .tmp 中的完整研究模型，不能读取已发布的精简模型"
             )
         if graph.get("artifactKind") != "extracted_battle_graph":
             raise ValueError("玩家视图只接受已提取的语义图")

@@ -29,10 +29,13 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v6.3.0
         with:
-          python-version: "3.14"
+          # 3.13: the SDK's pyghidra pins JPype1 1.5.2, which has no 3.14 wheel.
+          python-version: "3.13"
           check-latest: true
           cache: pip
-          cache-dependency-path: requirements.txt
+          cache-dependency-path: |
+            requirements.txt
+            sdk/requirements.txt
 
       - name: Show tool versions
         run: |
@@ -40,10 +43,11 @@ jobs:
           python -m pip --version
           gh --version
 
+      # The SDK dependencies are installed too: tests/sdk must run, never skip.
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -r requirements.txt
+          python -m pip install -r requirements.txt -r sdk/requirements.txt
 
       - name: Run regression tests
         run: python -B -m tests
@@ -55,8 +59,8 @@ jobs:
           "RELEASE_VERSION=$version" >> $env:GITHUB_ENV
 
       # Battle HTML reads only offline-extracted JSON committed under src models.
-      # Do not run the offline SDK, install its native-analysis dependencies,
-      # or provide EXE/IL2CPP/resource inputs to the battle HTML builder here.
+      # Do not run the offline SDK or provide EXE/IL2CPP/resource inputs to the
+      # battle HTML builder here; the SDK packages above are only for the tests.
       - name: Export database and processed data (battle HTML from frozen JSON)
         run: python main.py
 

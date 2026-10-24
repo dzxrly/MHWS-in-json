@@ -4,27 +4,20 @@
 time). On a terminal the bar redraws in place and ``print`` output appears
 above it; when output goes to a file or pipe, rich prints the bar only when the
 loop ends, so logs stay readable.
-
-rich is an SDK dependency (sdk/requirements.txt) but only for display: where it
-is not installed, such as CI running the unit tests with the project
-requirements, the loop runs the same without a bar.
 """
+
+from rich.progress import (
+    BarColumn,
+    MofNCompleteColumn,
+    Progress,
+    TextColumn,
+    TimeElapsedColumn,
+    TimeRemainingColumn,
+)
 
 
 def track(items, description, total=None):
     """Yield ``items`` while advancing a progress bar labelled ``description``."""
-    try:
-        from rich.progress import (
-            BarColumn,
-            MofNCompleteColumn,
-            Progress,
-            TextColumn,
-            TimeElapsedColumn,
-            TimeRemainingColumn,
-        )
-    except ImportError:
-        yield from items
-        return
     items = list(items) if total is None and not hasattr(items, "__len__") else items
     columns = (
         TextColumn("{task.description}"),

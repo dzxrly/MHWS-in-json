@@ -11,7 +11,7 @@ from ..models.io import MODEL_LIMIT_BYTES
 from ..models.native_recipe import NativeRecipeContext
 from ..models.catalog import EXPECTED_ENEMY_IDS
 from ..models.validation import validate_graph
-from ..config import in_agents
+from ..config import in_tmp
 from sdk.progress import track
 
 
@@ -30,8 +30,8 @@ def extract_all_models(
 ):
     """Write a checked receipt for each graph, including honest remaining gaps."""
     output = Path(output).resolve()
-    if not in_agents(output):
-        raise ValueError("批次研究导出只能保存到项目 .agents")
+    if not in_tmp(output):
+        raise ValueError("批次研究导出只能保存到项目 .tmp")
     if len(set(enemy_ids)) != len(enemy_ids) or set(enemy_ids) - set(
         EXPECTED_ENEMY_IDS
     ):

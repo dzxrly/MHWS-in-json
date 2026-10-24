@@ -3,14 +3,14 @@
 Set up the offline SDK research environment on a new Windows machine.
 
 .DESCRIPTION
-Creates a virtual environment in .agents/sdk-venv (ignored by Git), installs
+Creates a virtual environment in .tmp/sdk-venv (ignored by Git), installs
 the pinned research dependencies and runs `check-env`, which lists the game
 files, research caches and optional Ghidra settings that are still missing.
 Run it from any directory:
 
     powershell -ExecutionPolicy Bypass -File sdk/setup_env.ps1
 
-Afterwards run .agents/sdk-venv/Scripts/python.exe -m sdk (menu), or
+Afterwards run .tmp/sdk-venv/Scripts/python.exe -m sdk (menu), or
 -m sdk.<tool> <command>. The script registers the repository root in the
 environment (mhws_sdk.pth), so the sdk package is found from any directory.
 #>
@@ -24,11 +24,11 @@ param(
 )
 $ErrorActionPreference = "Stop"
 $root = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
-$venv = Join-Path $root ".agents/sdk-venv"
+$venv = Join-Path $root ".tmp/sdk-venv"
 $python = Join-Path $venv "Scripts/python.exe"
 
 if (-not (Test-Path $python)) {
-    New-Item -ItemType Directory -Force (Join-Path $root ".agents") | Out-Null
+    New-Item -ItemType Directory -Force (Join-Path $root ".tmp") | Out-Null
     & py "-$PythonVersion" -m venv $venv
     if ($LASTEXITCODE) { throw "py -$PythonVersion 不可用；先安装 Python $PythonVersion（含 py 启动器）" }
 }

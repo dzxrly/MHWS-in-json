@@ -8,7 +8,7 @@ import time
 from .control_flow import high_function_evidence
 from .evidence import evidence_key, method_rows, pack_methods
 from .pe import verify_rows
-from ..config import in_agents
+from ..config import in_tmp
 
 
 def _read_cache(path, row):
@@ -46,8 +46,8 @@ def extract_cached(
     or release eligibility is inferred from decompiler success.
     """
     output = Path(output).resolve()
-    if not in_agents(output):
-        raise ValueError("原生缓存只允许写入项目 .agents")
+    if not in_tmp(output):
+        raise ValueError("原生缓存只允许写入项目 .tmp")
     if timeout <= 0:
         raise ValueError("反编译超时必须大于零")
     rows = method_rows(manifest)

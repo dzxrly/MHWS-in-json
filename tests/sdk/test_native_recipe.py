@@ -1,12 +1,10 @@
 """Check root dispatch aliases and unknown random data with synthetic x64."""
 
 import hashlib
-from importlib.util import find_spec
 import unittest
 from unittest.mock import Mock, patch
 
 
-@unittest.skipUnless(find_spec("capstone"), "原生配方回归需要 Capstone")
 class NativeRecipeTests(unittest.TestCase):
     def context(self, native):
         from sdk.enemy_logic_exporter.shared.models.native_recipe import (

@@ -24,12 +24,12 @@ ROSTER_PATH = DATA_DIR / "roster.v1.json"
 MONSTER_MODULE_DIR = Path(__file__).resolve().parents[1] / "monster"
 
 # Research caches and outputs live here; it may be a junction to a shared folder.
-AGENTS_DIR = ROOT / ".agents"
+TMP_DIR = ROOT / ".tmp"
 
 
-def in_agents(path):
-    """True when ``path`` lies inside the project .agents folder (links resolved)."""
-    return Path(path).resolve().is_relative_to(AGENTS_DIR.resolve())
+def in_tmp(path):
+    """True when ``path`` lies inside the project .tmp folder (links resolved)."""
+    return Path(path).resolve().is_relative_to(TMP_DIR.resolve())
 
 
 # Publication scope: EnemyData IDs below this base number, minus exclusions.
@@ -786,7 +786,7 @@ STATE_SIGN_LABELS = dict(
 # ------------------------------------------------------ published web models
 
 # Published models keep what the web builder renders and validates. Research
-# provenance stays in the full models under .agents.
+# provenance stays in the full models under .tmp.
 PUBLISHED_STORAGE_FORMAT = "shared-values-v1"
 RESEARCH_ONLY_MODEL_FIELDS = ("selectionRecovery", "standStates")
 RESEARCH_ONLY_NODE_FIELDS = (

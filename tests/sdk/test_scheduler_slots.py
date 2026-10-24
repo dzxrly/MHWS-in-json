@@ -1,11 +1,9 @@
 """Check slot-request recovery and per-monster slot binding without game files."""
 
-from importlib.util import find_spec
 import unittest
 from unittest.mock import patch
 
 
-@unittest.skipUnless(find_spec("capstone"), "离线原生测试需要 SDK 的 Capstone 依赖")
 class SlotArgumentTests(unittest.TestCase):
     def decode(self, hexadecimal):
         from capstone import Cs, CS_ARCH_X86, CS_MODE_64

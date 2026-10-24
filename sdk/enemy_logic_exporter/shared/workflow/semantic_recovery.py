@@ -17,7 +17,7 @@ from ..logic.commands import annotate_effects
 from ..resources.reader import Resources, typed
 from ..logic.predicates import RuleRegistry
 from .extraction import extract_inventory
-from ..config import OPERATOR_WORK_TYPE, in_agents
+from ..config import OPERATOR_WORK_TYPE, in_tmp
 
 
 def command_binding(event, body, factories, registry):
@@ -121,8 +121,8 @@ def recover_all(
     requests_path=None,
 ):
     output = Path(output).resolve()
-    if not in_agents(output):
-        raise ValueError("逐怪物研究输出必须位于 .agents")
+    if not in_tmp(output):
+        raise ValueError("逐怪物研究输出必须位于 .tmp")
     index_path = Path(native_index)
     index = json.loads(index_path.read_text(encoding="utf8"))
     inventory = json.loads(Path(inventory).read_text(encoding="utf8"))

@@ -90,10 +90,10 @@ The `sdk/` directory is an offline SDK that reads the game files; `python -m sdk
 The SDK needs the game EXE dumped from memory (e.g. `MonsterHunterWilds_dump.exe`) and the REFramework `il2cpp_dump.json`, which you provide; it records no game version. Setup (`sdk/setup_env.ps1`) and usage: [SDK guide](sdk/README.md). Rebuilding the pages or workbooks does not need the SDK:
 
 ```powershell
-python -m src.processed_data.enemy_battle_logic --preview-all --output .agents/battle-preview
+python -m src.processed_data.enemy_battle_logic --preview-all --output .tmp/battle-preview
 ```
 
-Then open `.agents/battle-preview/enemy_battle_logic/index.html`; the pages work offline.
+Then open `.tmp/battle-preview/enemy_battle_logic/index.html`; the pages work offline.
 
 ## Data notes
 

@@ -15,7 +15,9 @@ ROOT = Path(__file__).resolve().parents[2]
 
 class PlayerTreeTests(unittest.TestCase):
     def test_unexplained_actions_are_named_by_class_and_parameter_set(self):
-        from sdk.enemy_logic_exporter.shared.models.player_view import technical_action_names
+        from sdk.enemy_logic_exporter.shared.models.player_view import (
+            technical_action_names,
+        )
 
         own = "STM/GameDesign/Enemy/Em0002/50/Action/Em0002_50_ActionID.user.3.json"
         base = own.replace("50", "00")
@@ -37,12 +39,16 @@ class PlayerTreeTests(unittest.TestCase):
 
         nodes = [
             action("a", "cDash"),
-            action("a", "cDash", variant="v", pointer="/_BranchedParamsList/3/_Params/1"),
+            action(
+                "a", "cDash", variant="v", pointer="/_BranchedParamsList/3/_Params/1"
+            ),
             action("b", "cGlide", source=base),
             action("c1234567x", "cTwin"),
             action("d7654321x", "cTwin"),
         ]
-        names = technical_action_names(dict(enemyId="EM0002_50_0", tables=[dict(nodes=nodes)]))
+        names = technical_action_names(
+            dict(enemyId="EM0002_50_0", tables=[dict(nodes=nodes)])
+        )
         self.assertEqual(
             sorted(names.values()),
             [
@@ -172,7 +178,6 @@ class PlayerTreeTests(unittest.TestCase):
         self.assertIs(evaluate(equal, {"float:g": 1.0005}, {}), True)
         self.assertIs(evaluate(equal, {"float:g": 1.002}, {}), False)
 
-    @unittest.skipUnless(shutil.which("node"), "浏览器逻辑回归需要 Node")
     def test_browser_filter_and_continuation_semantics(self):
         script = r"""
 const assert = require('node:assert/strict');

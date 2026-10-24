@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 from ..native.evidence import method_rows
 from ..native.pe import verify_rows
-from ..config import ACTIVE_PROFILE_PATH, ROOT, in_agents
+from ..config import ACTIVE_PROFILE_PATH, ROOT, in_tmp
 
 MODEL_DIR_WEB = ROOT / "src/processed_data/enemy_battle_logic/models"
 DEFAULT_NATIVES = ROOT / "MHWS-in-json/natives"
@@ -36,7 +36,7 @@ def parser():
         "--work-dir",
         type=Path,
         default=default_work_dir(),
-        help="研究缓存目录，默认 .agents/enemy-logic-exporter 或环境变量 MHWS_SDK_WORK_DIR",
+        help="研究缓存目录，默认 .tmp/enemy-logic-exporter 或环境变量 MHWS_SDK_WORK_DIR",
     )
     exe, il2cpp = find_game_exe(), find_il2cpp()
 
@@ -124,7 +124,7 @@ def parser():
     migrate.add_argument("--profile", type=Path, required=True)
     migrate.add_argument("--apply", action="store_true")
     publish = commands.add_parser(
-        "publish", help="把 .agents 中的完整研究模型写成网页使用的精简模型"
+        "publish", help="把 .tmp 中的完整研究模型写成网页使用的精简模型"
     )
     add_models(publish)
     add_output(publish, default=MODEL_DIR_WEB)
@@ -158,7 +158,7 @@ def parser():
     decompile.add_argument("--limit", type=int)
     decompile.add_argument("--timeout", type=int, default=30)
     decompile.add_argument(
-        "--cache-dir", type=Path, help="在 .agents 按原生字节身份压缩缓存，支持续跑"
+        "--cache-dir", type=Path, help="在 .tmp 按原生字节身份压缩缓存，支持续跑"
     )
     decompile.add_argument(
         "--reuse",
@@ -170,9 +170,7 @@ def parser():
     verify = commands.add_parser("verify", help="核对证据摘要与当前 EXE")
     add_exe(verify)
     verify.add_argument("--evidence", type=Path, required=True)
-    index = commands.add_parser(
-        "index", help="去重的全怪物原生研究索引，只输出到 .agents"
-    )
+    index = commands.add_parser("index", help="去重的全怪物原生研究索引，只输出到 .tmp")
     add_exe(index)
     add_il2cpp(index)
     add_output(index)
@@ -465,8 +463,8 @@ def main():
         from .semantic_recovery import recover_all
 
         output = (args.output or work / "per-monster").resolve()
-        if not in_agents(output):
-            raise ValueError("逐怪物研究只能输出到 .agents")
+        if not in_tmp(output):
+            raise ValueError("逐怪物研究只能输出到 .tmp")
         inventory = json.loads(args.inventory.read_text(encoding="utf8"))
         export_commands(
             args.helpers,

@@ -10,7 +10,7 @@ from ..resources.requests import discover_requests
 from ..native.streaming import extract_cached
 from ..models.catalog import EXPECTED_ENEMY_IDS
 from .extraction import extract_inventory
-from ..config import in_agents
+from ..config import in_tmp
 
 
 def package_result(output):
@@ -73,8 +73,8 @@ def run_all(
     helper_index=None,
 ):
     output = Path(output).resolve()
-    if not in_agents(output):
-        raise ValueError("全量离线研究结果只允许输出到项目 .agents")
+    if not in_tmp(output):
+        raise ValueError("全量离线研究结果只允许输出到项目 .tmp")
     output.mkdir(parents=True, exist_ok=True)
     if index_path is None:
         index_path = output / "native-index.json"

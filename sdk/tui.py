@@ -21,8 +21,8 @@ from sdk.enemy_logic_exporter.shared.workflow.environment import (
 ROOT = Path(__file__).resolve().parents[1]
 ENEMY = "sdk.enemy_logic_exporter"
 SKILL = "sdk.skill_effect_exporter"
-TRY_DIR = ".agents/skill-effects"
-ENEMY_DIR = ".agents/enemy-logic-exporter/tui"
+TRY_DIR = ".tmp/skill-effects"
+ENEMY_DIR = ".tmp/enemy-logic-exporter/tui"
 
 
 class Session:
@@ -66,7 +66,7 @@ def skill_menu(session):
         "技能效果 SDK",
         [
             "全量提取（写入 src/processed_data/skill_details/data，约 20 分钟）",
-            "调试指定技能（输出到 .agents）",
+            "调试指定技能（输出到 .tmp）",
             "重建 SkillDetails.xlsx",
             "返回",
         ],

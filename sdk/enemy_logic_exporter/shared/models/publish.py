@@ -110,7 +110,7 @@ def publish_models(source, output, *, complete=True):
     for path in track(paths, "发布网页模型"):
         model = json.loads(path.read_text(encoding="utf8"))
         if model.get("storage"):
-            raise ValueError("发布步骤只接受 .agents 中的完整研究模型")
+            raise ValueError("发布步骤只接受 .tmp 中的完整研究模型")
         stripped = strip_research_fields(model)
         packed = share_values(stripped)
         if expand_shared_values(packed) != stripped:

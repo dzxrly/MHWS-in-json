@@ -65,7 +65,7 @@ def main():
     if args.command == "extract":
         if args.skill and args.output == DEFAULT_OUTPUT:
             raise SystemExit(
-                "按技能筛选的调试结果不能写入正式位置，请用 -o 指定 .agents 下的目录"
+                "按技能筛选的调试结果不能写入正式位置，请用 -o 指定 .tmp 下的目录"
             )
         from .extract import extract
 

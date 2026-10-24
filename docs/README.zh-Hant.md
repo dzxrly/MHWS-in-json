@@ -90,10 +90,10 @@ enemy_battle_logic/EM0001_00_0.html
 SDK 需要使用者提供從記憶體 dump 出的遊戲 EXE（如 `MonsterHunterWilds_dump.exe`）和 REFramework `il2cpp_dump.json`，不記錄遊戲版本。環境建立（`sdk/setup_env.ps1`）與用法見 [SDK 使用說明](../sdk/docs/README.zh-Hant.md)。只重新產生網頁或表格時不需要 SDK：
 
 ```powershell
-python -m src.processed_data.enemy_battle_logic --preview-all --output .agents/battle-preview
+python -m src.processed_data.enemy_battle_logic --preview-all --output .tmp/battle-preview
 ```
 
-然後開啟 `.agents/battle-preview/enemy_battle_logic/index.html`，頁面可離線使用。
+然後開啟 `.tmp/battle-preview/enemy_battle_logic/index.html`，頁面可離線使用。
 
 ## 資料說明
 

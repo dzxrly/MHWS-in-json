@@ -8,13 +8,13 @@ from ..native.manifest import method_row, discovery_types
 from ..native.metadata import Il2cppMetadata
 from ..native.pe import PE, address_catalog
 from ...monster import iter_monsters
-from ..config import in_agents
+from ..config import in_tmp
 
 
 def export_native_index(exe, metadata_path, output):
     output = Path(output).resolve()
-    if not in_agents(output):
-        raise ValueError("原生研究索引只能输出到项目 .agents")
+    if not in_tmp(output):
+        raise ValueError("原生研究索引只能输出到项目 .tmp")
     rows, skipped = [], []
     prefixes = [module.NATIVE_OWNER for module in iter_monsters()]
     with Il2cppMetadata(metadata_path) as metadata, PE(exe) as pe:

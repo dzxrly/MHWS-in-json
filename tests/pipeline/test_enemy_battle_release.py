@@ -43,7 +43,7 @@ def _is_research_input(path, root):
 class BattleReleaseTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        scratch = ROOT / ".agents" / "test-runs"
+        scratch = ROOT / ".tmp" / "test-runs"
         scratch.mkdir(parents=True, exist_ok=True)
         cls.temp = tempfile.TemporaryDirectory(dir=scratch)
         cls.addClassCleanup(cls.temp.cleanup)

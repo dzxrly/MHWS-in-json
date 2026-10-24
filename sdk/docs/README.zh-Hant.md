@@ -27,7 +27,7 @@
 ## 建置環境（Windows）
 
 1. 安裝 Python 3.13（勾選 `py` 啟動器）與 Git，複製倉庫。
-2. 在專案根目錄執行安裝腳本。它在 `.agents/sdk-venv` 建立虛擬環境，安裝固定版本的相依套件（Capstone、PyGhidra、questionary、rich），最後執行環境檢查：
+2. 在專案根目錄執行安裝腳本。它在 `.tmp/sdk-venv` 建立虛擬環境，安裝固定版本的相依套件（Capstone、PyGhidra、questionary、rich），最後執行環境檢查：
 
    ```powershell
    powershell -ExecutionPolicy Bypass -File sdk/setup_env.ps1 -Exe <dump 出的 EXE> -Il2cpp <il2cpp_dump.json>
@@ -36,7 +36,7 @@
 3. 按檢查結果補齊缺失項，然後再檢查一次：
 
    ```powershell
-   .agents/sdk-venv/Scripts/python.exe -B -m sdk.enemy_logic_exporter check-env -e <dump 出的 EXE> -i <il2cpp_dump.json>
+   .tmp/sdk-venv/Scripts/python.exe -B -m sdk.enemy_logic_exporter check-env -e <dump 出的 EXE> -i <il2cpp_dump.json>
    ```
 
 | 檢查項 | 怎樣補齊 |
@@ -45,8 +45,8 @@
 | IL2CPP dump | REFramework 對同一遊戲匯出的 `il2cpp_dump.json`；用 `-i` 指定或設環境變數 `MHWS_IL2CPP` |
 | 資源匯出 | 隨倉庫檢出的 `MHWS-in-json/natives`，或用 `-n` 指定 |
 | 資源換行 | 資源檔案必須保持匯出時的 LF 位元組。報錯時刪除 `MHWS-in-json` 目錄，再執行 `git checkout -- MHWS-in-json` |
-| 研究快取 `--index`、`--helpers`、`--inventory`、`--requests` | 從已有機器複製整個 `.agents/enemy-logic-exporter`，或按「[遊戲更新後](#遊戲更新後)」重新產生（需要 Ghidra） |
-| 工作目錄 | 預設 `.agents/enemy-logic-exporter`；可用 `-w` 或環境變數 `MHWS_SDK_WORK_DIR` 修改，但必須位於專案 `.agents` 內。快取放在其他磁碟時，用目錄連接把 `.agents` 指過去 |
+| 研究快取 `--index`、`--helpers`、`--inventory`、`--requests` | 從已有機器複製整個 `.tmp/enemy-logic-exporter`，或按「[遊戲更新後](#遊戲更新後)」重新產生（需要 Ghidra） |
+| 工作目錄 | 預設 `.tmp/enemy-logic-exporter`；可用 `-w` 或環境變數 `MHWS_SDK_WORK_DIR` 修改，但必須位於專案 `.tmp` 內。快取放在其他磁碟時，用目錄連接把 `.tmp` 指過去 |
 | `GHIDRA_INSTALL_DIR`、`JAVA_HOME` | 只有 `decompile`、`analyze` 需要：安裝 Ghidra 12.0.4 及其支援的 JDK 後設定這兩個環境變數 |
 
 以下範例中的 `python` 指上面虛擬環境中的直譯器；所有命令都在專案根目錄執行，並已設定 `MHWS_EXE`、`MHWS_IL2CPP`（否則加上 `-e`、`-i`）。查看任一命令的完整參數：`python -m sdk.<工具> <命令> --help`。
@@ -56,12 +56,12 @@
 `python -m sdk` 開啟常用工作的選單：環境檢查、技能效果提取（全部或指定技能）、重建 `SkillDetails.xlsx`、魔物提取與玩家視圖、未知條件統計、發布與建置行動邏輯網頁，以及 SDK 測試。用方向鍵和 Enter 選擇（選單文字為簡體中文）。每個操作先印出要執行的完整命令列再執行，同樣的步驟可以直接寫進腳本。選單啟動時讀取 `MHWS_EXE`、`MHWS_IL2CPP`；未設定時先詢問 dump 出的 EXE 與 IL2CPP dump 的路徑，「设置 EXE 与 il2cpp 路径」可在本次工作階段中修改。發布前會先確認，避免誤覆蓋已提交的模型。耗時的步驟（技能提取、`extract-all`、`player-view`、`publish`）會顯示進度條，給出已完成數量、用時與預計剩餘時間，選單和命令列中都會顯示（`sdk/progress.py`）。安裝腳本會把專案根目錄登記到虛擬環境中（`mhws_sdk.pth`），因此選單可以在任意目錄啟動；此前建立的環境需要重新執行一次安裝腳本。
 
 ```powershell
-.agents/sdk-venv/Scripts/python.exe -m sdk
+.tmp/sdk-venv/Scripts/python.exe -m sdk
 ```
 
 ## 魔物行動邏輯 SDK（`sdk.enemy_logic_exporter`）
 
-SDK 只讀取遊戲檔案，不執行遊戲、不注入。它從 EXE 的 x64 指令中還原每張行為表的控制流程，再結合資源參數和 IL2CPP 中繼資料，把判斷條件、動作和繼續位置寫成 JSON。完整研究模型保存在 `.agents/enemy-logic-exporter`，用 `publish` 精簡後寫入 `src/processed_data/enemy_battle_logic/models`，網頁由這些模型產生。
+SDK 只讀取遊戲檔案，不執行遊戲、不注入。它從 EXE 的 x64 指令中還原每張行為表的控制流程，再結合資源參數和 IL2CPP 中繼資料，把判斷條件、動作和繼續位置寫成 JSON。完整研究模型保存在 `.tmp/enemy-logic-exporter`，用 `publish` 精簡後寫入 `src/processed_data/enemy_battle_logic/models`，網頁由這些模型產生。
 
 函式位址取自 `sdk/enemy_logic_exporter/data/profile.json`，由 `resolve-symbols` 按目前 dump 出的 EXE 與 IL2CPP dump 重新產生。
 
@@ -71,8 +71,8 @@ SDK 只讀取遊戲檔案，不執行遊戲、不注入。它從 EXE 的 x64 指
 
 ```powershell
 python -m src.processed_data.enemy_battle_logic                     # 正式建置，輸出到 output/processed_data
-python -m src.processed_data.enemy_battle_logic --preview-all --output .agents/battle-preview
-python -m src.processed_data.enemy_battle_logic --template <模型.json> --output .agents/one
+python -m src.processed_data.enemy_battle_logic --preview-all --output .tmp/battle-preview
+python -m src.processed_data.enemy_battle_logic --template <模型.json> --output .tmp/one
 ```
 
 開啟輸出目錄下的 `enemy_battle_logic/index.html` 瀏覽。頁面可離線使用。
@@ -82,7 +82,7 @@ python -m src.processed_data.enemy_battle_logic --template <模型.json> --outpu
 `-e`、`-i` 和研究快取參數省略時使用預設位置。全量提取約 15 分鐘。
 
 ```powershell
-$w = '.agents/enemy-logic-exporter/fix'
+$w = '.tmp/enemy-logic-exporter/fix'
 python -B -m sdk.enemy_logic_exporter extract --enemy EM0002_00_0 -o "$w/one"   # 試跑一隻魔物
 python -B -m sdk.enemy_logic_exporter extract-all -o "$w/s1"                     # 全部 34 隻
 python -B -m sdk.enemy_logic_exporter player-view -m "$w/s1" -o "$w/s1p"         # 產生玩家視圖
@@ -93,7 +93,7 @@ python -B -m src.processed_data.enemy_battle_logic --output "$w/site"
 python -B -m unittest discover -s tests/sdk -t .
 ```
 
-每次改動前後都比較 `census` 的 `unknownConditions` 和 `uncertainty` 的 `total.uncertain`。`player-view` 只接受 `.agents` 中的完整模型，不接受已發佈的精簡模型。
+每次改動前後都比較 `census` 的 `unknownConditions` 和 `uncertainty` 的 `total.uncertain`。`player-view` 只接受 `.tmp` 中的完整模型，不接受已發佈的精簡模型。
 
 ### 遊戲更新後
 
@@ -101,13 +101,13 @@ python -B -m unittest discover -s tests/sdk -t .
 
 ```powershell
 python -B -m sdk.enemy_logic_exporter check-env
-python -B -m sdk.enemy_logic_exporter resolve-symbols -o .agents/enemy-logic-exporter/new-profile.json   # 報告移動、變化的符號
-python -B -m sdk.enemy_logic_exporter migrate-evidence --profile .agents/enemy-logic-exporter/new-profile.json           # 先看報告
-python -B -m sdk.enemy_logic_exporter migrate-evidence --profile .agents/enemy-logic-exporter/new-profile.json --apply   # 遷移程式碼未變的證據
-Copy-Item .agents/enemy-logic-exporter/new-profile.json sdk/enemy_logic_exporter/data/profile.json
-python -B -m sdk.enemy_logic_exporter analyze -o .agents/enemy-logic-exporter/full-run/result --cache-dir .agents/enemy-logic-exporter/full-run/native
-python -B -m sdk.enemy_logic_exporter requests --index .agents/enemy-logic-exporter/full-run/native/index.json --inventory .agents/enemy-logic-exporter/full-run/result/inventory.json -o .agents/enemy-logic-exporter/full-run/result/action-requests.json
-python -B -m sdk.enemy_logic_exporter recover --index .agents/enemy-logic-exporter/full-run/native/index.json --helpers .agents/enemy-logic-exporter/per-monster/helpers/index.json --inventory .agents/enemy-logic-exporter/full-run/result/inventory.json --requests .agents/enemy-logic-exporter/full-run/result/action-requests.json
+python -B -m sdk.enemy_logic_exporter resolve-symbols -o .tmp/enemy-logic-exporter/new-profile.json   # 報告移動、變化的符號
+python -B -m sdk.enemy_logic_exporter migrate-evidence --profile .tmp/enemy-logic-exporter/new-profile.json           # 先看報告
+python -B -m sdk.enemy_logic_exporter migrate-evidence --profile .tmp/enemy-logic-exporter/new-profile.json --apply   # 遷移程式碼未變的證據
+Copy-Item .tmp/enemy-logic-exporter/new-profile.json sdk/enemy_logic_exporter/data/profile.json
+python -B -m sdk.enemy_logic_exporter analyze -o .tmp/enemy-logic-exporter/full-run/result --cache-dir .tmp/enemy-logic-exporter/full-run/native
+python -B -m sdk.enemy_logic_exporter requests --index .tmp/enemy-logic-exporter/full-run/native/index.json --inventory .tmp/enemy-logic-exporter/full-run/result/inventory.json -o .tmp/enemy-logic-exporter/full-run/result/action-requests.json
+python -B -m sdk.enemy_logic_exporter recover --index .tmp/enemy-logic-exporter/full-run/native/index.json --helpers .tmp/enemy-logic-exporter/per-monster/helpers/index.json --inventory .tmp/enemy-logic-exporter/full-run/result/inventory.json --requests .tmp/enemy-logic-exporter/full-run/result/action-requests.json
 python -B -m sdk.enemy_logic_exporter scheduler-slots
 python -B -m sdk.enemy_logic_exporter roster --write
 python -B -m sdk.enemy_logic_exporter new-monster --enemy <新魔物ID>          # 名單新增的每隻魔物
@@ -138,8 +138,8 @@ python -B -m sdk.enemy_logic_exporter new-monster --enemy <新魔物ID>         
 - **「资源发现后行为表发生变化」**：資源檔案的位元組與研究快取不一致，通常是換行被 Git 改成了 CRLF。按上表「資源換行」一項處理。
 - **「原生字节不匹配」/「Native evidence mismatch」或「辅助函数特征不唯一或失效」**：EXE 的程式碼與 profile、研究快取所依據的不同——遊戲已更新，或傳入的是原版 EXE 而不是 dump 出的 EXE。先檢查 `-e`；遊戲已更新時按「遊戲更新後」處理。
 - **「the following arguments are required: -e/--exe」或「-i/--il2cpp」**：指定 dump 出的 EXE 和 IL2CPP dump，或設環境變數 `MHWS_EXE`、`MHWS_IL2CPP`。
-- **「缺少研究缓存」**：`.agents/enemy-logic-exporter` 中沒有標準位置的快取。執行 `check-env` 查看路徑，複製或重新產生。
-- **只能輸出到 `.agents`**：研究輸出必須位於專案 `.agents` 內，這是為了不把大型證據快取提交到 Git。
+- **「缺少研究缓存」**：`.tmp/enemy-logic-exporter` 中沒有標準位置的快取。執行 `check-env` 查看路徑，複製或重新產生。
+- **只能輸出到 `.tmp`**：研究輸出必須位於專案 `.tmp` 內，這是為了不把大型證據快取提交到 Git。
 
 ## 技能效果 SDK（`sdk.skill_effect_exporter`）
 
@@ -147,7 +147,7 @@ python -B -m sdk.enemy_logic_exporter new-monster --enemy <新魔物ID>         
 
 ```powershell
 python -B -m sdk.skill_effect_exporter extract -e <dump 出的 EXE> -i <il2cpp_dump.json>   # 全部技能，約 20 分鐘，寫入正式位置
-python -B -m sdk.skill_effect_exporter extract -s HunterSkill_019 -o .agents/skill-effects/try.json   # 除錯單個技能
+python -B -m sdk.skill_effect_exporter extract -s HunterSkill_019 -o .tmp/skill-effects/try.json   # 除錯單個技能
 python -m src.processed_data.skill_details                                         # 只重建 SkillDetails.xlsx
 ```
 

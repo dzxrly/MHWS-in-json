@@ -27,7 +27,7 @@ The SDK is not needed to rebuild the pages or workbooks without changing the ext
 ## Set up (Windows)
 
 1. Install Python 3.13 (with the `py` launcher) and Git, and clone the repository.
-2. From the repository root, run the setup script. It creates a virtual environment in `.agents/sdk-venv`, installs the pinned dependencies (Capstone, PyGhidra, questionary, rich), and runs the environment check:
+2. From the repository root, run the setup script. It creates a virtual environment in `.tmp/sdk-venv`, installs the pinned dependencies (Capstone, PyGhidra, questionary, rich), and runs the environment check:
 
    ```powershell
    powershell -ExecutionPolicy Bypass -File sdk/setup_env.ps1 -Exe <dumped EXE> -Il2cpp <il2cpp_dump.json>
@@ -36,7 +36,7 @@ The SDK is not needed to rebuild the pages or workbooks without changing the ext
 3. Fix whatever the check reports as missing, then check again:
 
    ```powershell
-   .agents/sdk-venv/Scripts/python.exe -B -m sdk.enemy_logic_exporter check-env -e <dumped EXE> -i <il2cpp_dump.json>
+   .tmp/sdk-venv/Scripts/python.exe -B -m sdk.enemy_logic_exporter check-env -e <dumped EXE> -i <il2cpp_dump.json>
    ```
 
 | Item | How to provide it |
@@ -45,8 +45,8 @@ The SDK is not needed to rebuild the pages or workbooks without changing the ext
 | IL2CPP dump | `il2cpp_dump.json` written by REFramework from the same game; pass `-i` or set `MHWS_IL2CPP` |
 | Resource exports | `MHWS-in-json/natives` from the repository, or pass `-n` |
 | Resource line endings | Resource files must keep their exported LF bytes. If the check fails, delete the `MHWS-in-json` folder and run `git checkout -- MHWS-in-json` |
-| Research caches `--index`, `--helpers`, `--inventory`, `--requests` | Copy the whole `.agents/enemy-logic-exporter` from an existing machine, or regenerate them as in [After a game update](#after-a-game-update) (needs Ghidra) |
-| Work directory | `.agents/enemy-logic-exporter` by default; change it with `-w` or `MHWS_SDK_WORK_DIR`, but it must stay inside the project's `.agents`. To keep caches on another disk, make `.agents` a directory junction |
+| Research caches `--index`, `--helpers`, `--inventory`, `--requests` | Copy the whole `.tmp/enemy-logic-exporter` from an existing machine, or regenerate them as in [After a game update](#after-a-game-update) (needs Ghidra) |
+| Work directory | `.tmp/enemy-logic-exporter` by default; change it with `-w` or `MHWS_SDK_WORK_DIR`, but it must stay inside the project's `.tmp`. To keep caches on another disk, make `.tmp` a directory junction |
 | `GHIDRA_INSTALL_DIR`, `JAVA_HOME` | Only for `decompile` and `analyze`: install Ghidra 12.0.4 and a JDK it supports, then set both variables |
 
 In the examples below, `python` is the interpreter of that virtual environment, every command runs from the repository root, and `MHWS_EXE` / `MHWS_IL2CPP` are set (otherwise add `-e` and `-i`). For all options of a command, run `python -m sdk.<tool> <command> --help`.
@@ -56,12 +56,12 @@ In the examples below, `python` is the interpreter of that virtual environment, 
 `python -m sdk` opens a menu for the common tasks: the environment check, skill effect extraction (all skills or chosen ones), rebuilding `SkillDetails.xlsx`, monster extraction with the player view, the census, publishing and building the battle logic pages, and the SDK tests. Choose with the arrow keys and Enter (the menu text is in Chinese). Each action first prints the exact command line and then runs it, so the same step can go into a script. The menu starts from `MHWS_EXE` / `MHWS_IL2CPP`; when they are not set it first asks for the dumped EXE and the IL2CPP dump, and "设置 EXE 与 il2cpp 路径" changes them for the session. Publishing asks before it overwrites the committed models. Long steps (skill extraction, `extract-all`, `player-view`, `publish`) show a progress bar with the count done, elapsed and remaining time, in the menu and on the command line (`sdk/progress.py`). The setup script registers the repository root in the virtual environment (`mhws_sdk.pth`), so the menu can be started from any directory; on an environment created before this change, run the setup script again.
 
 ```powershell
-.agents/sdk-venv/Scripts/python.exe -m sdk
+.tmp/sdk-venv/Scripts/python.exe -m sdk
 ```
 
 ## Monster battle logic SDK (`sdk.enemy_logic_exporter`)
 
-The SDK only reads game files; it never runs or injects into the game. It rebuilds the control flow of each behavior table from the EXE's x64 instructions, combines it with resource arguments and IL2CPP metadata, and writes conditions, actions, and continuation points as JSON. Full research models stay in `.agents/enemy-logic-exporter`; `publish` slims them into `src/processed_data/enemy_battle_logic/models`, from which the pages are built.
+The SDK only reads game files; it never runs or injects into the game. It rebuilds the control flow of each behavior table from the EXE's x64 instructions, combines it with resource arguments and IL2CPP metadata, and writes conditions, actions, and continuation points as JSON. Full research models stay in `.tmp/enemy-logic-exporter`; `publish` slims them into `src/processed_data/enemy_battle_logic/models`, from which the pages are built.
 
 Function addresses come from `sdk/enemy_logic_exporter/data/profile.json`, which `resolve-symbols` regenerates from the current dumped EXE and IL2CPP dump.
 
@@ -71,8 +71,8 @@ No SDK dependencies or game files are needed:
 
 ```powershell
 python -m src.processed_data.enemy_battle_logic                     # release build into output/processed_data
-python -m src.processed_data.enemy_battle_logic --preview-all --output .agents/battle-preview
-python -m src.processed_data.enemy_battle_logic --template <model.json> --output .agents/one
+python -m src.processed_data.enemy_battle_logic --preview-all --output .tmp/battle-preview
+python -m src.processed_data.enemy_battle_logic --template <model.json> --output .tmp/one
 ```
 
 Open `enemy_battle_logic/index.html` in the output folder. The pages work offline.
@@ -82,7 +82,7 @@ Open `enemy_battle_logic/index.html` in the output folder. The pages work offlin
 `-e`, `-i`, and the research cache options use their default locations when omitted. A full extraction takes about 15 minutes.
 
 ```powershell
-$w = '.agents/enemy-logic-exporter/fix'
+$w = '.tmp/enemy-logic-exporter/fix'
 python -B -m sdk.enemy_logic_exporter extract --enemy EM0002_00_0 -o "$w/one"   # try one monster
 python -B -m sdk.enemy_logic_exporter extract-all -o "$w/s1"                     # all 34
 python -B -m sdk.enemy_logic_exporter player-view -m "$w/s1" -o "$w/s1p"         # player view
@@ -93,7 +93,7 @@ python -B -m src.processed_data.enemy_battle_logic --output "$w/site"
 python -B -m unittest discover -s tests/sdk -t .
 ```
 
-Compare `unknownConditions` from `census` and `total.uncertain` from `uncertainty` before and after every change. `player-view` only accepts full models from `.agents`, not published ones.
+Compare `unknownConditions` from `census` and `total.uncertain` from `uncertainty` before and after every change. `player-view` only accepts full models from `.tmp`, not published ones.
 
 ### After a game update
 
@@ -101,13 +101,13 @@ You need the new dumped EXE, its IL2CPP dump, re-exported resources, and Ghidra.
 
 ```powershell
 python -B -m sdk.enemy_logic_exporter check-env
-python -B -m sdk.enemy_logic_exporter resolve-symbols -o .agents/enemy-logic-exporter/new-profile.json   # report moved/changed symbols
-python -B -m sdk.enemy_logic_exporter migrate-evidence --profile .agents/enemy-logic-exporter/new-profile.json           # report first
-python -B -m sdk.enemy_logic_exporter migrate-evidence --profile .agents/enemy-logic-exporter/new-profile.json --apply   # move unchanged evidence
-Copy-Item .agents/enemy-logic-exporter/new-profile.json sdk/enemy_logic_exporter/data/profile.json
-python -B -m sdk.enemy_logic_exporter analyze -o .agents/enemy-logic-exporter/full-run/result --cache-dir .agents/enemy-logic-exporter/full-run/native
-python -B -m sdk.enemy_logic_exporter requests --index .agents/enemy-logic-exporter/full-run/native/index.json --inventory .agents/enemy-logic-exporter/full-run/result/inventory.json -o .agents/enemy-logic-exporter/full-run/result/action-requests.json
-python -B -m sdk.enemy_logic_exporter recover --index .agents/enemy-logic-exporter/full-run/native/index.json --helpers .agents/enemy-logic-exporter/per-monster/helpers/index.json --inventory .agents/enemy-logic-exporter/full-run/result/inventory.json --requests .agents/enemy-logic-exporter/full-run/result/action-requests.json
+python -B -m sdk.enemy_logic_exporter resolve-symbols -o .tmp/enemy-logic-exporter/new-profile.json   # report moved/changed symbols
+python -B -m sdk.enemy_logic_exporter migrate-evidence --profile .tmp/enemy-logic-exporter/new-profile.json           # report first
+python -B -m sdk.enemy_logic_exporter migrate-evidence --profile .tmp/enemy-logic-exporter/new-profile.json --apply   # move unchanged evidence
+Copy-Item .tmp/enemy-logic-exporter/new-profile.json sdk/enemy_logic_exporter/data/profile.json
+python -B -m sdk.enemy_logic_exporter analyze -o .tmp/enemy-logic-exporter/full-run/result --cache-dir .tmp/enemy-logic-exporter/full-run/native
+python -B -m sdk.enemy_logic_exporter requests --index .tmp/enemy-logic-exporter/full-run/native/index.json --inventory .tmp/enemy-logic-exporter/full-run/result/inventory.json -o .tmp/enemy-logic-exporter/full-run/result/action-requests.json
+python -B -m sdk.enemy_logic_exporter recover --index .tmp/enemy-logic-exporter/full-run/native/index.json --helpers .tmp/enemy-logic-exporter/per-monster/helpers/index.json --inventory .tmp/enemy-logic-exporter/full-run/result/inventory.json --requests .tmp/enemy-logic-exporter/full-run/result/action-requests.json
 python -B -m sdk.enemy_logic_exporter scheduler-slots
 python -B -m sdk.enemy_logic_exporter roster --write
 python -B -m sdk.enemy_logic_exporter new-monster --enemy <new monster ID>     # for each monster added to the roster
@@ -138,8 +138,8 @@ Then run [Re-extract after a code change](#re-extract-after-a-code-change). Ever
 - **"资源发现后行为表发生变化" (behavior table changed after resource discovery)**: resource bytes differ from the research caches, usually because Git converted line endings to CRLF. See "Resource line endings" above.
 - **"原生字节不匹配" / "Native evidence mismatch" (native bytes changed) or "辅助函数特征不唯一或失效" (helper pattern not unique)**: the EXE's code differs from what the profile and research caches were built on — the game was updated, or the shipped EXE was passed instead of the dumped one. Check `-e`; after a game update follow [After a game update](#after-a-game-update).
 - **"the following arguments are required: -e/--exe" or "-i/--il2cpp"**: pass the dumped EXE and the IL2CPP dump, or set `MHWS_EXE` / `MHWS_IL2CPP`.
-- **"缺少研究缓存" (research caches missing)**: no caches at the standard location in `.agents/enemy-logic-exporter`. Run `check-env` for the paths, then copy or regenerate them.
-- **Output must be inside `.agents`**: research output is restricted to the project's `.agents` so that large evidence caches never reach Git.
+- **"缺少研究缓存" (research caches missing)**: no caches at the standard location in `.tmp/enemy-logic-exporter`. Run `check-env` for the paths, then copy or regenerate them.
+- **Output must be inside `.tmp`**: research output is restricted to the project's `.tmp` so that large evidence caches never reach Git.
 
 ## Skill effect SDK (`sdk.skill_effect_exporter`)
 
@@ -147,7 +147,7 @@ The game has no table mapping skills to effect values: the four SkillData value 
 
 ```powershell
 python -B -m sdk.skill_effect_exporter extract -e <dumped EXE> -i <il2cpp_dump.json>   # all skills, about 20 minutes, writes the committed location
-python -B -m sdk.skill_effect_exporter extract -s HunterSkill_019 -o .agents/skill-effects/try.json   # debug one skill
+python -B -m sdk.skill_effect_exporter extract -s HunterSkill_019 -o .tmp/skill-effects/try.json   # debug one skill
 python -m src.processed_data.skill_details                                         # rebuild SkillDetails.xlsx only
 ```
 

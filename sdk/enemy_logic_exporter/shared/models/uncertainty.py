@@ -56,7 +56,15 @@ def reachable(view, group=GROUP):
             continue
         seen.add(key)
         node = nodes[key]
-        for role in ("true", "false", "next", "target", "resume", "fallback", "dispatch"):
+        for role in (
+            "true",
+            "false",
+            "next",
+            "target",
+            "resume",
+            "fallback",
+            "dispatch",
+        ):
             if node.get(role):
                 pending.append(node[role])
         pending.extend(c["target"] for c in node.get("candidates", []))
@@ -80,7 +88,9 @@ def measure(model):
         elif evaluate(node["condition"], scenario, inputs) is None:
             result["uncertain"] += 1
             source = raw.get(key, {})
-            command = source.get("commandType") or source.get("summary") or node["title"]
+            command = (
+                source.get("commandType") or source.get("summary") or node["title"]
+            )
             result["commands"][str(command).rsplit(".", 1)[-1]] += 1
     return result
 
@@ -92,7 +102,7 @@ def uncertainty_report(models_dir, top=30):
     for path in sorted(Path(models_dir).glob("em*.v*.json")):
         model = json.loads(path.read_text(encoding="utf8"))
         if model.get("storage"):
-            raise ValueError("不确定性报告需要 .agents 中的完整研究模型")
+            raise ValueError("不确定性报告需要 .tmp 中的完整研究模型")
         result = measure(model)
         commands.update(result.pop("commands"))
         total.update(result)
@@ -130,7 +140,7 @@ def unknown_census(models_dir, top=40):
     for path in sorted(Path(models_dir).glob("em*.v*.json")):
         model = json.loads(path.read_text(encoding="utf8"))
         if model.get("storage"):
-            raise ValueError("分类统计需要 .agents 中的完整研究模型")
+            raise ValueError("分类统计需要 .tmp 中的完整研究模型")
         for table in model["tables"]:
             for node in table["nodes"]:
                 if node["kind"] != "condition":

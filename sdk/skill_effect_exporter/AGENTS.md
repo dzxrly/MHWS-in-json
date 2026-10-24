@@ -7,7 +7,7 @@ SDK 与 `src` 之间只通过这份 JSON 交接：`src` 不导入本目录的代
 ## 维护边界
 
 - 不运行游戏、EXE，不注入或 Hook；Capstone 只把 EXE 当作字节数据读取。
-- 调试脚本、试运行输出放在项目根目录 `.agents`（默认 `.agents/skill-effects`）。按技能筛选（`-s`）的结果不能写入正式位置，CLI 会拒绝。
+- 调试脚本、试运行输出放在项目根目录 `.tmp`（默认 `.tmp/skill-effects`）。按技能筛选（`-s`）的结果不能写入正式位置，CLI 会拒绝。
 - 原生布局常量（对象头、数组与 `List`1` 偏移、调用约定、栈对齐、扫描用的字节模式）只放在 `config.py` 的“native layout constants”一节；类型名、方法名和字段名也集中在 `config.py`。其他模块不写字面偏移。
 - 函数地址、全局变量地址、字段偏移都不写进代码：每次运行按类型名、去后缀方法名和字段名从当前 il2cpp dump 重新定位（`scan.py`、`heap.Layouts`）。
 - 需要人工说明的技能写在 `notes.py`（简体中文），每条注明核对的游戏版本；没有证据的内容不写。
@@ -80,12 +80,12 @@ SDK 与 `src` 之间只通过这份 JSON 交接：`src` 不导入本目录的代
 
 ## 命令
 
-在项目根目录运行（解释器为 `.agents/sdk-venv/Scripts/python.exe`，依赖见 `sdk/requirements.txt`，用到其中的 Capstone）：
+在项目根目录运行（解释器为 `.tmp/sdk-venv/Scripts/python.exe`，依赖见 `sdk/requirements.txt`，用到其中的 Capstone）：
 
 ```powershell
 python -B -m sdk.skill_effect_exporter extract                       # EXE 与 il2cpp 取默认位置，写入 src/processed_data/skill_details/data
 python -B -m sdk.skill_effect_exporter extract -e <EXE> -i <il2cpp_dump.json> -n MHWS-in-json/natives -o <输出>
-python -B -m sdk.skill_effect_exporter extract -s HunterSkill_019 -o .agents/skill-effects/try.json   # 调试单个技能
+python -B -m sdk.skill_effect_exporter extract -s HunterSkill_019 -o .tmp/skill-effects/try.json   # 调试单个技能
 ```
 
 - `-e/--exe`：dump 出的游戏 EXE；未设环境变量 `MHWS_EXE` 时必须指定。

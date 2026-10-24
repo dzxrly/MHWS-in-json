@@ -10,9 +10,9 @@ import os
 from pathlib import Path
 import sys
 
-from ..config import AGENTS_DIR, ROOT, in_agents
+from ..config import TMP_DIR, ROOT, in_tmp
 
-DEFAULT_WORK_DIR = AGENTS_DIR / "enemy-logic-exporter"
+DEFAULT_WORK_DIR = TMP_DIR / "enemy-logic-exporter"
 DEFAULT_NATIVES = ROOT / "MHWS-in-json/natives"
 # Research caches built by analyze / recover, relative to the work directory.
 STANDARD_INPUTS = dict(
@@ -114,8 +114,8 @@ def check_environment(exe=None, il2cpp=None, natives=None, work=None):
     work = Path(work or default_work_dir())
     add(
         "工作目录",
-        in_agents(work),
-        f"{work}（-w/--work-dir 或 MHWS_SDK_WORK_DIR；必须位于项目 .agents 内，可用目录联接指向其他磁盘）",
+        in_tmp(work),
+        f"{work}（-w/--work-dir 或 MHWS_SDK_WORK_DIR；必须位于项目 .tmp 内，可用目录联接指向其他磁盘）",
     )
     for name, relative in STANDARD_INPUTS.items():
         path = work / relative

@@ -31,7 +31,7 @@ collect_commit_changelog = release_notes.collect_commit_changelog
 
 class ReleaseNotesTests(unittest.TestCase):
     def setUp(self) -> None:
-        scratch_dir = Path(__file__).resolve().parents[2] / ".agents"
+        scratch_dir = Path(__file__).resolve().parents[2] / ".tmp"
         scratch_dir.mkdir(exist_ok=True)
         self.temp_dir = tempfile.TemporaryDirectory(dir=scratch_dir)
         self.repository_dir = Path(self.temp_dir.name) / "repository"

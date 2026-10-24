@@ -1,12 +1,10 @@
 """Check actual x64 returns and navigation-result branches without game files."""
 
 import hashlib
-from importlib.util import find_spec
 import unittest
 from unittest.mock import patch
 
 
-@unittest.skipUnless(find_spec("capstone"), "离线原生测试需要 SDK 的 Capstone 依赖")
 class BTableMachineTests(unittest.TestCase):
     def entry_push(self, *, conflicting_position=False):
         from types import SimpleNamespace

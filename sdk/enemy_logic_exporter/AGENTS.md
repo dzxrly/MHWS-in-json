@@ -5,11 +5,11 @@
 ## 维护边界
 
 - 不运行游戏、EXE、注入或 Hook。Ghidra 只将 EXE 当作数据读取。
-- 调试代码、反编译结果、Ghidra 项目、截图及测试输出统一放在项目根目录 `.agents`。默认工作目录是 `.agents/enemy-logic-exporter`。
-- 不复制 EXE 或完整 IL2CPP dump 到 Git；不提交 `.agents` 中的证据缓存。
+- 调试代码、反编译结果、Ghidra 项目、截图及测试输出统一放在项目根目录 `.tmp`。默认工作目录是 `.tmp/enemy-logic-exporter`。
+- 不复制 EXE 或完整 IL2CPP dump 到 Git；不提交 `.tmp` 中的证据缓存。
 - EM166 的历史图与原始分析只能作为对照，不能作为其他怪物图的节点、连接或判断依据。
 - 原生地址、参数索引、字段偏移、静态权重地址、方法名后缀均随游戏更新变化。更新后要重新生成 profile 并核对，不能只改地址绕过检查。
-- 证据行以“类型 + 方法名 + 起止地址”标识（`config.EVIDENCE_KEYS`），按当前 EXE 的原生字节核对；代码和 `data/` 中的 JSON 不逐行保存 SHA-256。SDK 不记录游戏版本，也不保存 EXE 与 il2cpp 的文件摘要：游戏更新后，符号无法定位或原生字节不一致时命令直接报错，按“游戏更新与扩展”处理。EXE 是 dump 出的内存镜像，节属性反映运行时保护：`.sdata` 中装有导入表而被标为可写，`pe.CONSTANT_SECTIONS` 仍把它当作只读常量；按字节特征查找 helper 只扫描可执行节，避免匹配 `.text1` 中解密后的保护壳代码。资源文件与模型分片不再保存字节摘要；`.agents` 研究缓存保留内容寻址摘要（原生字节、压缩体），只在缓存内部使用。
+- 证据行以“类型 + 方法名 + 起止地址”标识（`config.EVIDENCE_KEYS`），按当前 EXE 的原生字节核对；代码和 `data/` 中的 JSON 不逐行保存 SHA-256。SDK 不记录游戏版本，也不保存 EXE 与 il2cpp 的文件摘要：游戏更新后，符号无法定位或原生字节不一致时命令直接报错，按“游戏更新与扩展”处理。EXE 是 dump 出的内存镜像，节属性反映运行时保护：`.sdata` 中装有导入表而被标为可写，`pe.CONSTANT_SECTIONS` 仍把它当作只读常量；按字节特征查找 helper 只扫描可执行节，避免匹配 `.text1` 中解密后的保护壳代码。资源文件与模型分片不再保存字节摘要；`.tmp` 研究缓存保留内容寻址摘要（原生字节、压缩体），只在缓存内部使用。
 - 怪物名、部位名、gimmick 等专有名称使用游戏消息（`*.msg.23.json`，简体中文列）中的官方文本，由 `Resources.message`、`enemy_name`、`part_name` 读取；找不到对应条目时显示原始类名或枚举名，不自行翻译。
 - 保留用户已有暂存改动；本目录的迁移或维护不自动授权提交、推送或发布。
 - **同步更新用户文档**：面向使用者的说明在 `sdk/README.md`（英文）、`sdk/docs/README.zh-Hans.md`、`sdk/docs/README.zh-Hant.md`，三份内容必须一致；三份 README 的“项目工具”一节只保留简介并链接到它们。新增、删除或改名命令与参数，改变默认路径、环境变量、依赖版本、安装脚本、输出位置或报错信息时，在同一次改动中更新三份 SDK 文档（必要时也更新 README 简介），并更新本文件。只改 AGENTS.md 不算完成。
@@ -67,7 +67,7 @@
 
 ### 7. 交付：SDK 与网页只通过 JSON 交接
 
-完整研究模型（含原生证据、恢复证明）只放在 `.agents`；`publish` 删除研究字段并共享重复值后写入 `src/processed_data/enemy_battle_logic/models`。`src` 只读取这些 JSON 构建单棵可交互树，CI 不读取 EXE、IL2CPP 或资源，也不导入 SDK。发布工作流只在合并到默认分支（或手动触发于默认分支）时构建 Pages 和 Release；PR 只运行校验与构建，不发布。
+完整研究模型（含原生证据、恢复证明）只放在 `.tmp`；`publish` 删除研究字段并共享重复值后写入 `src/processed_data/enemy_battle_logic/models`。`src` 只读取这些 JSON 构建单棵可交互树，CI 不读取 EXE、IL2CPP 或资源；构建网页不导入 SDK（回归测试会安装 `sdk/requirements.txt` 并运行 `tests/sdk`，缺少依赖时测试失败而不是跳过）。发布工作流只在合并到默认分支（或手动触发于默认分支）时构建 Pages 和 Release；PR 只运行校验与构建，不发布。
 
 ### 必须坚持的原则
 
@@ -81,7 +81,7 @@
 
 `shared/native` 负责只读 PE、元数据及原生证据；`shared/resources` 负责资源发现、参数和动作身份；`shared/logic` 负责已核实的条件、命令与机器追踪；`shared/models` 负责图构建、JSON 读写和覆盖校验；`shared/workflow` 负责 CLI 与离线批次调度。各组只保留具体实现，不提供旧路径兼容包装。`shared/config.py` 集中定义项目根目录、数据路径、profile 以及全部随游戏更新变化的常量（见“版本相关常量”），资源定位不依赖当前工作目录。
 
-`data/evidence` 保存配方的 JSON 证据（含 `scheduler_slots.v1.json` 调度槽证据），`data/rules.v1.json` 保存已核实规则。`shared` 和 `monster` 只保存 Python 代码，研究运行生成的缓存继续放在项目根目录 `.agents`。
+`data/evidence` 保存配方的 JSON 证据（含 `scheduler_slots.v1.json` 调度槽证据），`data/rules.v1.json` 保存已核实规则。`shared` 和 `monster` 只保存 Python 代码，研究运行生成的缓存继续放在项目根目录 `.tmp`。
 
 | 文件 | 职责 |
 |---|---|
@@ -91,14 +91,14 @@
 | `shared/models/roster.py` | 生成并比较大型怪物名单（含变种实际复用的 Combat 主人）；`new-monster` 为名单新增的怪物生成独立入口模块，不覆盖已有配方 |
 | `shared/resources/variables.py` | 索引全部 BTableVariable 定义（计时器、浮点、布尔），模型以 `variableCatalog` 记录本怪物判断读取的变量及其资源导出名（`ExportValueName`，多数为空）、初始值、生命周期与来源；必须在 `builder.py` 绑定资源参数之后生成，否则读不到计时器 GUID |
 | `shared/workflow/environment.py` | `check-env` 与输入位置：dump 出的 EXE 与 il2cpp 只取命令参数或环境变量 `MHWS_EXE`、`MHWS_IL2CPP`，不猜测路径；`MHWS_SDK_WORK_DIR` 工作目录、研究缓存的标准位置（`STANDARD_INPUTS`，`extract`/`extract-all` 省略 `--index` 等参数时使用）、固定版本的依赖、资源换行与 Ghidra/JDK 设置 |
-| `sdk/setup_env.ps1` | SDK 共用的 Windows 一键搭建：在 `.agents/sdk-venv` 建虚拟环境、安装 `sdk/requirements.txt`、写入 `mhws_sdk.pth` 把项目根目录加入 `sys.path`（任意目录都能 `python -m sdk`），并运行 `check-env`（文件带 UTF-8 BOM，Windows PowerShell 5.1 才能正确读取中文） |
+| `sdk/setup_env.ps1` | SDK 共用的 Windows 一键搭建：在 `.tmp/sdk-venv` 建虚拟环境、安装 `sdk/requirements.txt`、写入 `mhws_sdk.pth` 把项目根目录加入 `sys.path`（任意目录都能 `python -m sdk`），并运行 `check-env`（文件带 UTF-8 BOM，Windows PowerShell 5.1 才能正确读取中文） |
 | `sdk/progress.py` | 两个 SDK 共用的进度条（rich `track`）：`extract-all`、`player-view`、`publish` 与技能提取的主循环用它显示完成数量、用时与剩余时间；输出不是终端时只在结束时打印一次 |
 | `shared/models/uncertainty.py` | `uncertainty` 统计玩家战斗树中在全部玩家输入已知时仍无法判定的条件，按命令排序；`census` 统计全部表中含未知部分的条件（总数等于 `coverage.unknownConditions` 之和），按命令与原因分组，用来找最大的待确认类别 |
 | `shared/native/metadata.py` | 用 mmap 索引大体积 REFramework JSON，按需读取类型、继承字段和枚举；`subclasses` 首次使用时扫描各类型的 `parent` 建立反向索引，列出全部直接与间接子类 |
 | `shared/native/pe.py` | 只读 PE64，依据异常目录及方法地址确定函数边界，保留同地址的方法别名并校验原生字节 |
 | `shared/native/manifest.py` | 按怪物与方法类别从当前元数据重新生成提取清单 |
 | `shared/native/evidence.py` | 去重原生字节身份、地址别名和类型字段，保留每个类型的方法及参数上下文 |
-| `shared/workflow/batch.py` | 将 34 个怪物及共同调度器的方法定位保存为 `.agents` 研究索引 |
+| `shared/workflow/batch.py` | 将 34 个怪物及共同调度器的方法定位保存为 `.tmp` 研究索引 |
 | `shared/native/decompile.py`、`shared/native/control_flow.py` | 通过官方 PyGhidra 接口提取伪 C、基本块、P-code、调用点和失败状态 |
 | `shared/workflow/freeze.py` | `extract` 使用的单怪物提取：调用怪物模块的 `build_model`，核对模型中全部原生证据行的字节 |
 | `shared/native/streaming.py` | 每份唯一原生代码保存一个压缩证据体；保留全部方法上下文，校验来源后支持续跑 |
@@ -140,11 +140,11 @@
 
 ## 游戏更新与扩展
 
-1. **地址变化**：`resolve-symbols -e <新的 dump 出的 EXE> -i <新dump> -o .agents/<目录>/new-profile.json` 以 `data/profile.json` 为基线生成新 profile，报告 `moved`（地址移动）、`changed`（规范化代码变化，需复核语义）和 `review`（人工核对常量）。任何符号无法唯一定位都会失败，不会沿用旧地址。
-2. **证据迁移**：`migrate-evidence -e <新EXE> -i <新dump> --profile .agents/<目录>/new-profile.json` 先只报告；加 `--apply` 后，函数长度与整函数规范化摘要都不变的证据行自动更新到新地址与方法后缀，并为新 profile 记录摘要。profile 中每个证据摘要记录 `functionLength`（当前函数边界，至少覆盖证据行）与 `rowLength`（证据行自身范围）；证据行只覆盖函数前段时，后段代码变化或函数变长同样进入复核。上一份 profile 的 `digestScheme` 与当前代码不一致时命令直接拒绝，需先在上一构建的 EXE 上重新运行 `resolve-symbols`（同一构建会重新计算全部证据摘要）；有任何待复核行的文件保持不动，命令以非零码退出。
+1. **地址变化**：`resolve-symbols -e <新的 dump 出的 EXE> -i <新dump> -o .tmp/<目录>/new-profile.json` 以 `data/profile.json` 为基线生成新 profile，报告 `moved`（地址移动）、`changed`（规范化代码变化，需复核语义）和 `review`（人工核对常量）。任何符号无法唯一定位都会失败，不会沿用旧地址。
+2. **证据迁移**：`migrate-evidence -e <新EXE> -i <新dump> --profile .tmp/<目录>/new-profile.json` 先只报告；加 `--apply` 后，函数长度与整函数规范化摘要都不变的证据行自动更新到新地址与方法后缀，并为新 profile 记录摘要。profile 中每个证据摘要记录 `functionLength`（当前函数边界，至少覆盖证据行）与 `rowLength`（证据行自身范围）；证据行只覆盖函数前段时，后段代码变化或函数变长同样进入复核。上一份 profile 的 `digestScheme` 与当前代码不一致时命令直接拒绝，需先在上一构建的 EXE 上重新运行 `resolve-symbols`（同一构建会重新计算全部证据摘要）；有任何待复核行的文件保持不动，命令以非零码退出。
 3. 复核通过后把新 profile 复制为 `data/profile.json`，重新生成 `scheduler-slots` 证据和 `roster`，再提取、对比与发布。
 4. **新怪物/变种**：`roster --write` 更新名单并报告 `added`、`removed`、`ownerChanged` 与 `missingModules`；对每个新增 ID 运行 `new-monster --enemy <ID>` 生成入口，再提取。网页端名单由 `publish` 一并写入 `models/roster.json`，不需要改代码。
-5. **同一构建换用另一份 il2cpp dump 或另一份 EXE 镜像**（例如新版 REFramework 导出了更多字段）：用新 dump 运行 `resolve-symbols -o .agents/...`，确认报告为同一构建（`sameBuild`，无 `moved`/`changed`）且符号与证据摘要和 `data/profile.json` 一致；`.agents` 研究缓存记录的方法、地址别名、参数与字段布局要逐行核对在新 dump 中不变。最后全量 `extract-all` → `player-view` → `publish`，确认网页模型逐字节一致。
+5. **同一构建换用另一份 il2cpp dump 或另一份 EXE 镜像**（例如新版 REFramework 导出了更多字段）：用新 dump 运行 `resolve-symbols -o .tmp/...`，确认报告为同一构建（`sameBuild`，无 `moved`/`changed`）且符号与证据摘要和 `data/profile.json` 一致；`.tmp` 研究缓存记录的方法、地址别名、参数与字段布局要逐行核对在新 dump 中不变。最后全量 `extract-all` → `player-view` → `publish`，确认网页模型逐字节一致。
 6. **已有怪物的新逻辑**：新子表、导入与动作请求随 BTableList 和原生索引自动纳入；形如“自身 Extend 字段比较”的新专用命令会被自动恢复为 `leafRules`；其他新命令先表现为未知条件或未知命令节点。用 `uncertainty --models <完整模型目录>` 找出影响最大的命令，再按“核实原生语义 → 写入规则/公共条件 → 在 `player_view.py` 编译为玩家输入”的顺序补充。新出现的行为表槽若不在 `SLOT_LABELS` 中，会以原始槽名归入“未分类行为表”组，提醒补充名称与分组。
 
 ## 开发环境（Windows）
@@ -161,22 +161,22 @@
    powershell -ExecutionPolicy Bypass -File sdk/setup_env.ps1
    ```
 
-   脚本在 `.agents/sdk-venv` 建虚拟环境、安装 `sdk/requirements.txt` 中固定版本的依赖，最后运行 `check-env`。之后的命令都用这个解释器在项目根目录运行：`.agents/sdk-venv/Scripts/python.exe -B -m sdk.enemy_logic_exporter <命令>`。
+   脚本在 `.tmp/sdk-venv` 建虚拟环境、安装 `sdk/requirements.txt` 中固定版本的依赖，最后运行 `check-env`。之后的命令都用这个解释器在项目根目录运行：`.tmp/sdk-venv/Scripts/python.exe -B -m sdk.enemy_logic_exporter <命令>`。
    常用参数都有短写：`-e/--exe`、`-i/--il2cpp`、`-n/--natives`、`-o/--output`、`-m/--models`，以及放在子命令前的 `-w/--work-dir`。
 2. 按 `check-env` 列出的 `missing` 逐项补齐，再运行一次 `check-env`：
    - **游戏 EXE**：从运行中的游戏 dump 出的 EXE（如 `MonsterHunterWilds_dump.exe`；生成 il2cpp dump 前本来就会得到），不使用原版 EXE。用 `-e/--exe` 指定或设环境变量 `MHWS_EXE`，SDK 不猜测路径。
    - **IL2CPP dump**：REFramework 对同一游戏导出的 `il2cpp_dump.json`，由使用者提供，仓库不保存副本。用 `-i/--il2cpp` 指定或设环境变量 `MHWS_IL2CPP`。
    - **资源导出**：`MHWS-in-json/natives`，随仓库检出。`.gitattributes` 对它设了 `-text`，Git 不再改换行；若检出早于这条规则（`check-env` 报“资源换行”），删除 `MHWS-in-json` 目录后执行 `git checkout -- MHWS-in-json` 重新取出。
-   - **研究缓存**（`--index`、`--helpers`、`--inventory`、`--requests`）：位于工作目录的标准位置（见 `environment.STANDARD_INPUTS`），`extract`/`extract-all` 省略这些参数时自动使用。新机器可以从旧机器复制整个 `.agents/enemy-logic-exporter`，或按“导出流程”用 `analyze`、`requests`、`recover` 重新生成（需要 Ghidra）。
-   - **工作目录**：默认 `.agents/enemy-logic-exporter`，可用 `MHWS_SDK_WORK_DIR` 或 `--work-dir` 改变，但必须位于项目 `.agents` 之内。缓存放在其他磁盘时，用目录联接把 `.agents` 指过去：`New-Item -ItemType Junction -Path .agents -Target D:\mhws-agents`（路径检查按解析后的真实路径比较，`config.in_agents`）。
+   - **研究缓存**（`--index`、`--helpers`、`--inventory`、`--requests`）：位于工作目录的标准位置（见 `environment.STANDARD_INPUTS`），`extract`/`extract-all` 省略这些参数时自动使用。新机器可以从旧机器复制整个 `.tmp/enemy-logic-exporter`，或按“导出流程”用 `analyze`、`requests`、`recover` 重新生成（需要 Ghidra）。
+   - **工作目录**：默认 `.tmp/enemy-logic-exporter`，可用 `MHWS_SDK_WORK_DIR` 或 `--work-dir` 改变，但必须位于项目 `.tmp` 之内。缓存放在其他磁盘时，用目录联接把 `.tmp` 指过去：`New-Item -ItemType Junction -Path .tmp -Target D:\mhws-agents`（路径检查按解析后的真实路径比较，`config.in_tmp`）。
    - **Ghidra**（只有 `decompile`、`analyze` 需要）：设 `GHIDRA_INSTALL_DIR` 与 `JAVA_HOME`。
-3. 用一只怪物试跑：`extract --enemy EM0002_00_0 --output .agents/enemy-logic-exporter/try`，再按“迭代与度量”跑全量。
+3. 用一只怪物试跑：`extract --enemy EM0002_00_0 --output .tmp/enemy-logic-exporter/try`，再按“迭代与度量”跑全量。
 
 ### 已知环境陷阱
 
 - Windows PowerShell 5.1 把无 BOM 的 UTF-8 脚本当成系统代码页读取；仓库中的 `.ps1` 保存为带 BOM 的 UTF-8。Python 读写 JSON 一律显式 `encoding="utf-8"`（Windows 默认是 GBK）。
 - 用 Git Bash 的 heredoc 写 Python 时，非原始字符串里的 `\b`、`\0` 会变成控制字符；含反斜杠的内容用编辑工具写，批量修改后用 `grep -rlP "[\x00-\x08\x0b\x0c\x0e-\x1f]" --include=*.py --include=*.md sdk` 检查。
-- 多个会话可能共用同一检出并切换分支：提交前确认 `git branch --show-current`。`git worktree` 可以使用，但新工作树里没有被忽略的大文件：用硬链接接入 dump（`New-Item -ItemType HardLink`），用目录联接接入 `.agents`，并确认 `MHWS-in-json` 的换行与缓存一致（或用 `--natives` 指向原检出）。
+- 多个会话可能共用同一检出并切换分支：提交前确认 `git branch --show-current`。`git worktree` 可以使用，但新工作树里没有被忽略的大文件：用硬链接接入 dump（`New-Item -ItemType HardLink`），用目录联接接入 `.tmp`，并确认 `MHWS-in-json` 的换行与缓存一致（或用 `--natives` 指向原检出）。
 
 输入包括与 EXE 来自同一游戏的 il2cpp dump 和 `MHWS-in-json/natives` 下导出的资源 JSON。PFB 用于资源和组件引用；BTable 参数与工厂决定参数绑定；行动与 AI 状态资源提供外围约束；motlist 主要描述动作与运动资源。不要仅凭某类文件存在就推断它决定选招。
 
@@ -205,9 +205,9 @@ python -m sdk.enemy_logic_exporter --work-dir $work decompile --exe $exe --manif
 python -m sdk.enemy_logic_exporter verify --exe $exe --evidence "$work/continued-python.json"
 ```
 
-`.agents` 中的反编译证据保存类型、完整方法名、VA 起止、原生字节摘要、参数与字段、地址别名、反编译状态和伪 C。schemaVersion=2 的研究索引将共同字节身份、地址别名和字段各保存一次，通过引用复用，但不能合并不同类型、参数布局或调用上下文。兼容旧行数组。基本块与 P-code 的状态为 `unreviewed_native_control_flow`，不能直接等同于动作图；固化前仍须逐个核实语义与原生字节。
+`.tmp` 中的反编译证据保存类型、完整方法名、VA 起止、原生字节摘要、参数与字段、地址别名、反编译状态和伪 C。schemaVersion=2 的研究索引将共同字节身份、地址别名和字段各保存一次，通过引用复用，但不能合并不同类型、参数布局或调用上下文。兼容旧行数组。基本块与 P-code 的状态为 `unreviewed_native_control_flow`，不能直接等同于动作图；固化前仍须逐个核实语义与原生字节。
 
-完整批次使用 `analyze`，扫描全部 34 个大型怪物（排除训练靶），按实际 BTableList 和导入关系确定资源范围。它提取各行为表的全部 `table_` 和 `updateTableInpl` 方法，以原生字节身份去重、压缩并保存到 `.agents`，不会向 Git 写入大型原生 JSON。缓存续跑仍会核对方法范围、原生字节与压缩体摘要。
+完整批次使用 `analyze`，扫描全部 34 个大型怪物（排除训练靶），按实际 BTableList 和导入关系确定资源范围。它提取各行为表的全部 `table_` 和 `updateTableInpl` 方法，以原生字节身份去重、压缩并保存到 `.tmp`，不会向 Git 写入大型原生 JSON。缓存续跑仍会核对方法范围、原生字节与压缩体摘要。
 
 ```powershell
 python -m sdk.enemy_logic_exporter --work-dir $work analyze --exe $exe --ghidra $env:GHIDRA_INSTALL_DIR --output "$work/full-run/result" --cache-dir "$work/full-run/native"
@@ -240,9 +240,9 @@ python -m sdk.enemy_logic_exporter extract-all --exe $exe --index "$work/full-ru
 python -m src.processed_data.enemy_battle_logic --models "$work/all-extracted" --preview-all --output "$work/all-preview"
 ```
 
-现有研究缓存可通过 `--work-dir .agents/enemy-action-tree` 复用。确认生成结果和差异后，用 `publish` 把 `.agents` 中的完整研究模型写成网页模型并更新 `src/processed_data/enemy_battle_logic/models`（见下文“发布模型”）。该目录不保存待绑定模板或判断规则文件。预览结果位于 `$work/preview/enemy_battle_logic`。不要将伪 C、EXE 或 Ghidra 缓存作为正式构建依赖。
+现有研究缓存可通过 `--work-dir .tmp/enemy-action-tree` 复用。确认生成结果和差异后，用 `publish` 把 `.tmp` 中的完整研究模型写成网页模型并更新 `src/processed_data/enemy_battle_logic/models`（见下文“发布模型”）。该目录不保存待绑定模板或判断规则文件。预览结果位于 `$work/preview/enemy_battle_logic`。不要将伪 C、EXE 或 Ghidra 缓存作为正式构建依赖。
 
-已提取的完整研究模型可独立更新玩家展示字段，无需重新提取原生代码。`player-view` 只接受 `.agents` 中的完整模型，拒绝已发布的精简模型：
+已提取的完整研究模型可独立更新玩家展示字段，无需重新提取原生代码。`player-view` 只接受 `.tmp` 中的完整模型，拒绝已发布的精简模型：
 
 ```powershell
 python -m sdk.enemy_logic_exporter player-view --models "$work/all-extracted" --output "$work/player-models"
@@ -252,32 +252,32 @@ python -m src.processed_data.enemy_battle_logic --output "$work/player-preview"
 
 `playerView` 保存声明式条件、准确的分支与动作继续位置。情境（`scenario`）明确写出：单人或作为主机的玩家是当前目标，怪物处于战斗 AI 状态，没有待切换状态，也没有待处理或已存在的诱导、骑乘、登场、退场中断，行为表动作请求未被屏蔽；这些都是可见的情境输入，不是隐含假设。计时器检查按 `variableCatalog` 的初始值作为“计时器到期”输入，布尔变量比较作为“行为表布尔变量”输入，浮点变量比较按阈值区间作为“行为表浮点变量”输入，站立状态与专用状态命令合成为“当前姿态”输入，`leafRules` 恢复的专用字段作为“专用状态 <字段>”输入（枚举字段显示枚举名），专用等级值作为“专用等级值 <类别>”输入，`cSetDest` 的返回结果按资源参数作为“能设置移动目的地（<类别>）”输入，地形高低与遮挡判定作为单个布尔输入，随机余数分支标为“随机”类别并给出按均匀分布估算的比例（随机源分布未核实）。入口按 `schedulerSlots` 分组：普通战斗选招之外，每个行为表槽（受击、闪光、骑乘、状态提示等）都是独立入口并列出请求它的 AI 状态或中断；没有已证实上游的局部树单独归入“接入位置待核查”组，不伪造接入线。命令上下文、目标模块与目标玩家有效性在“目标是该玩家、正在战斗”的情境中作为显式情境输入，不再让每个条件都显示为未知。网页把整只怪物画成同一棵可交互树：怪物 → 分组 → 行为表 → 条件分支 → 动作，节点就地展开或收起，内部检查保留为小节点，相同判断状态只在首次出现处展开，其他位置显示“同前”并可跳转；顶部可搜索动作/条件、按距离角度和怒/疲劳等设定情境。SDK 与网页端继续只通过 JSON 交接。动作说明名来自已绑定动作类的解释，不代表官方招式名或游戏内验证。游戏资源中没有动作中文名，也没有分支参数名：没有说明名的动作直接以 ActionID 中的类名为标题（`nameStatus=unresolved`），每个动作节点都带 `technicalName`，网页显示为副标题并可搜索。`technicalName` 在同一怪物内唯一：同类的分支参数按 `_BranchedParamsList` 中的位置写成“分支参数 n”，参数类与动作类不同时注明参数类，变种请求其他怪物 ActionID 表中的动作时注明“<主人> 动作表”，同一表中重复的类名再附加动作 GUID 前 8 位。不要用“未命名动作 N”之类的序号代替。
 
-正式流水线只交付 `enemy_battle_logic/index.html` 和各怪物的 `<enemyId>.html`，语义模型与图数据内嵌在离线页面中。Pages 和压缩包均使用这同一份输出，不另外发布研究索引、伪 C 或重复 JSON。同一怪物只能有一个正式模型；重复版本、来源冲突、断开的连接或图数据不一致会阻止发布。CI 只读取已解析的图 JSON，不读取资源、IL2CPP、EXE，也不运行或安装 SDK。网页显示离线提取时记录的来源核对状态；CI 的 JSON 校验不能证明之后的游戏原生代码没有变化。
+正式流水线只交付 `enemy_battle_logic/index.html` 和各怪物的 `<enemyId>.html`，语义模型与图数据内嵌在离线页面中。Pages 和压缩包均使用这同一份输出，不另外发布研究索引、伪 C 或重复 JSON。同一怪物只能有一个正式模型；重复版本、来源冲突、断开的连接或图数据不一致会阻止发布。CI 构建网页时只读取已解析的图 JSON，不读取资源、IL2CPP、EXE，也不运行 SDK；SDK 依赖只为回归测试安装。网页显示离线提取时记录的来源核对状态；CI 的 JSON 校验不能证明之后的游戏原生代码没有变化。
 
 正式范围是 EnemyData 中基础编号小于 1000 的完整 ID，排除训练靶 `EM0165_00_0`，当前为 34 个。全部怪物统一使用语义行动图；不得用资源清单或原生方法索引替代。默认构建校验 34 个模型、实际连接、方法/动作请求覆盖和 HTML 内容一致性；按用户已确认的发布范围保留 partial 图，不再以全部语义审核完成或完整 Combat 总入口作为网页发布前提。发现记录与摘要必须一致。这些静态验收不代替人工语义审核或游戏内验证。
 
-当前网页模型目录已有 34 份实际提取的 partial 图 JSON，均为 `publish` 生成的精简格式，未知分支和接入关系继续保留。显式 `--template` 或 `--preview-all` 可在 `.agents` 生成单个或部分怪物预览；默认全量构建仍要求全部 34 个身份及结构检查通过。图保留 Combat 进入、更新、BTable 切换、中断和恢复的实际已核实部分，异步请求只连接到等待调度的目标，不当作同步调用。未知命令的真实 void 调用方连续流可保留，但其副作用仍标未知；未恢复的 Boolean 不能伪造为 0 或整个命令的 opaque 运行时布尔输入。
+当前网页模型目录已有 34 份实际提取的 partial 图 JSON，均为 `publish` 生成的精简格式，未知分支和接入关系继续保留。显式 `--template` 或 `--preview-all` 可在 `.tmp` 生成单个或部分怪物预览；默认全量构建仍要求全部 34 个身份及结构检查通过。图保留 Combat 进入、更新、BTable 切换、中断和恢复的实际已核实部分，异步请求只连接到等待调度的目标，不当作同步调用。未知命令的真实 void 调用方连续流可保留，但其副作用仍标未知；未恢复的 Boolean 不能伪造为 0 或整个命令的 opaque 运行时布尔输入。
 
 方法覆盖、原生字节位置覆盖和资源/类型/方法/命令/参数上下文覆盖分别记录。同址方法别名不能只靠地址 set 视为恢复完成；相同子表 GUID 出现在不同资源时保留独立图身份和 nativeTableGuid。非 Combat 的空声明资源不编造入口。当前元数据确认返回 Void、当前原生入口第一条指令为 ret 的空调度函数存入 resourceNonDispatchEntries，不为它补造子表入口；其他未恢复入口继续保留边界。逐候选跳过列表按各自参数槽绑定；新候选的 id 为实际池槽 slot:<nativeCandidateIndex>，nodeId 指向已核实的调用节点。多个槽可以汇入相同上下文的调用节点，各自保留 key、权重和筛选参数，不编造 PC 或合并权重。相同原生调用地址若参数、调用目标或实际保存位置不同，须保留独立语义节点（节点名为 `<地址>-variant-N`），完整研究模型中的 nativeSite 仍指向原指令；不能以同址为由覆盖恢复 PC 或复用其他路径的条件。旧 JSON 没有 nodeId 时，其 id 仍表示调用节点。真实动作 ID 与参数类名不同不代表绑定无效：核对唯一 GUID、所属参数槽及当前原生选择代码，保留两种类型及应用边界。缺少 ActionInfo 的已确认请求保留请求位置、原始身份和保存的恢复位置，不借用近似 GUID。
 
-本版以既有 EM0166 研究页的详细程度为目标，不继续扩展 Life 历史缓存、HIGH 物理命中或通用栈存储模拟。尚未核实的辅助方法、恢复位置和运行时条件保持未知；深入探索代码只留存在 .agents，不作为网页构建或正式 SDK 的依赖。
+本版以既有 EM0166 研究页的详细程度为目标，不继续扩展 Life 历史缓存、HIGH 物理命中或通用栈存储模拟。尚未核实的辅助方法、恢复位置和运行时条件保持未知；深入探索代码只留存在 .tmp，不作为网页构建或正式 SDK 的依赖。
 
 内联返回位置保存使用 `data/evidence/combat_position_push.v1.json` 中的布局和扩容 helper 字节；其中的方法列表是最初人工核对的样本，不是白名单。证明只依赖匹配的指令前缀、固定 POSITION 写入、正常扩容返回及准确子表调用，不推断游戏中的栈容量、异常、回调或不同缓存上下文等价性。纯返回位置分支和仍不明确的调用继续保留边界；该配方不表示完整 Combat 或整场战斗已恢复。
 
 ### 发布模型
 
-`publish`（`shared/models/publish.py`）从完整研究模型生成 Git 中的网页模型：删除 `config.py` 中 `RESEARCH_ONLY_NODE_FIELDS`、`RESEARCH_ONLY_MODEL_FIELDS` 所列的研究字段（原生位置、继续位置证明、请求位置、源指针及与节点重复的谓词字段等），再把出现两次以上、序列化后不少于 `SHARED_VALUE_MIN_BYTES` 字节的 JSON 值写入一次 `sharedValues`，原位置写成 `{"$": 索引}`，并以 `storage.format = "shared-values-v1"` 标记。发布时逐个核对展开结果与删减后的模型完全一致；网页与 SDK 的读取器在任何校验之前展开引用。新增网页或校验所需字段时，必须同步检查这两个删除列表。研究字段只保留在 `.agents` 的完整模型中。
+`publish`（`shared/models/publish.py`）从完整研究模型生成 Git 中的网页模型：删除 `config.py` 中 `RESEARCH_ONLY_NODE_FIELDS`、`RESEARCH_ONLY_MODEL_FIELDS` 所列的研究字段（原生位置、继续位置证明、请求位置、源指针及与节点重复的谓词字段等），再把出现两次以上、序列化后不少于 `SHARED_VALUE_MIN_BYTES` 字节的 JSON 值写入一次 `sharedValues`，原位置写成 `{"$": 索引}`，并以 `storage.format = "shared-values-v1"` 标记。发布时逐个核对展开结果与删减后的模型完全一致；网页与 SDK 的读取器在任何校验之前展开引用。新增网页或校验所需字段时，必须同步检查这两个删除列表。研究字段只保留在 `.tmp` 的完整模型中。
 
-原生研究索引只允许保存到 `.agents`。Git 中的正式模型只保留语义、资源绑定及最小原生证据，可以用 `evidenceCatalog` 复用共同证据，并通过 `fragments` 拆分语义表。单个模型文件超过 10 MiB 提示审核，超过 25 MiB 拒绝读入（GitHub 单文件 50 MB 警告、100 MB 拒绝）；当前发布模型最大约 4.3 MB。缩小文件只能删除网页不读取的研究字段或共享重复值，不能删除条件、连接、动作身份等逻辑。旧的 34 个大型原生索引保存在 `.agents/enemy-logic-exporter/legacy-native-models`，不参与正式构建。
+原生研究索引只允许保存到 `.tmp`。Git 中的正式模型只保留语义、资源绑定及最小原生证据，可以用 `evidenceCatalog` 复用共同证据，并通过 `fragments` 拆分语义表。单个模型文件超过 10 MiB 提示审核，超过 25 MiB 拒绝读入（GitHub 单文件 50 MB 警告、100 MB 拒绝）；当前发布模型最大约 4.3 MB。缩小文件只能删除网页不读取的研究字段或共享重复值，不能删除条件、连接、动作身份等逻辑。旧的 34 个大型原生索引保存在 `.tmp/enemy-logic-exporter/legacy-native-models`，不参与正式构建。
 
 ## 游戏更新后的维护顺序
 
-1. 取得新的 dump 出的 EXE、IL2CPP dump 和资源导出；新 profile 先写到 `.agents`，复核通过后再覆盖 `data/profile.json`。
+1. 取得新的 dump 出的 EXE、IL2CPP dump 和资源导出；新 profile 先写到 `.tmp`，复核通过后再覆盖 `data/profile.json`。
 2. 用通用 `manifest` 重新定位方法；核对大 JSON 格式是否仍符合索引器的假设。索引失败应修正索引器，不能读旧地址兜底。
 3. 对通用条件、getter、随机算子、计时器更新及具体怪物子表分别比较。只迁移被当前字节、字段布局与资源绑定支持的结论。
 4. 逐项核对 `shared/config.py` 与各 `monster/<id>.py` 文件头部的常量（地址、偏移、内部名、方法后缀、字节摘要），并重新生成 `scheduler-slots` 证据，确认 `boundaries` 只剩转发参数的包装方法。
 5. 更新经过核实的配方和对应 profile；新怪物编写独立配方。部位、目标、阶段、中断和动作内部条件没有证据时仍输出未知，不补造完整树。
-6. 在 `.agents` 中重新提取完整研究模型，与上一版逐项对比统计；纯重构必须得到逐字节一致的输出。确认后用 `publish` 更新网页模型。
+6. 在 `.tmp` 中重新提取完整研究模型，与上一版逐项对比统计；纯重构必须得到逐字节一致的输出。确认后用 `publish` 更新网页模型。
 7. 运行下面的回归检查与正式 JSON 构建。检查边界值、缺失状态、资源结构变化、跨表调用和返回位置。重建 HTML 后用真实浏览器检查展开/收起、搜索定位、情境筛选、“同前”跳转、缩放、离线使用及 SVG 导出。
 
 ```powershell
@@ -297,8 +297,8 @@ python -m src.processed_data.enemy_battle_logic
 在项目根目录运行（`$py` 为 `setup_env.ps1` 建的解释器；已设置 `MHWS_EXE`、`MHWS_IL2CPP`，研究缓存使用默认位置）：
 
 ```powershell
-$py = '.agents/sdk-venv/Scripts/python.exe'
-$w = '.agents/enemy-logic-exporter/fix'
+$py = '.tmp/sdk-venv/Scripts/python.exe'
+$w = '.tmp/enemy-logic-exporter/fix'
 & $py -B -m sdk.enemy_logic_exporter extract-all --output "$w/s1"      # 约 15 分钟
 & $py -B -m sdk.enemy_logic_exporter player-view --models "$w/s1" --output "$w/s1p"
 & $py -B -m sdk.enemy_logic_exporter census --models "$w/s1p"          # 全部含未知部分的条件，按命令与原因分组
