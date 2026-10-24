@@ -82,10 +82,12 @@ enemy_battle_logic/EM0001_00_0.html
 
 ## 项目工具
 
-- `sdk.enemy_logic_exporter`：从游戏文件中提取怪物行动逻辑，生成行动图网页使用的 JSON。`src/processed_data/enemy_battle_logic/models` 中的 34 份模型对应游戏 **1.42.0.2**，未知分支保留标记。
-- `sdk.skill_effect_exporter`：找出原生代码中使用每个技能的函数并按等级求值，生成 `SkillDetails.xlsx` 使用的技能效果链路 JSON。
+仓库的 `sdk/` 目录是读取游戏文件的离线 SDK，`python -m sdk` 打开它的菜单。它包含以下功能：
 
-两个工具都需要使用者提供与游戏同版本的 EXE 和 REFramework `il2cpp_dump.json`。环境搭建与用法见 [SDK 使用说明](../sdk/README.zh-Hans.md)。只重新生成网页或表格时不需要这两个工具：
+- 怪物行动逻辑（`sdk.enemy_logic_exporter`）：从游戏文件中提取怪物行动逻辑，生成行动图网页使用的 JSON。`src/processed_data/enemy_battle_logic/models` 中的 34 份模型对应游戏 **1.42.0.2**，未知分支保留标记。
+- 技能效果（`sdk.skill_effect_exporter`）：找出原生代码中使用每个技能的函数并按等级求值，生成 `SkillDetails.xlsx` 使用的技能效果链路 JSON。
+
+SDK 需要使用者提供与游戏同版本的 EXE 和 REFramework `il2cpp_dump.json`。环境搭建（`sdk/setup_env.ps1`）与用法见 [SDK 使用说明](../sdk/docs/README.zh-Hans.md)。只重新生成网页或表格时不需要 SDK：
 
 ```powershell
 python -m src.processed_data.enemy_battle_logic --preview-all --output .agents/battle-preview
@@ -95,6 +97,6 @@ python -m src.processed_data.enemy_battle_logic --preview-all --output .agents/b
 
 ## 数据说明
 
-- `SkillDetails.xlsx` 合并 SkillCommonData 与 SkillData，并列出原生代码中使用每个技能的函数及按等级求得的结果。名称只提供日文与简体中文，说明只提供简体中文。“技能效果”页的每行是一个函数在一组等级和参数下的结果：数值、仍依赖的运行时条件，以及数值来自哪个 SkillData 槽位、参数文件字段或 EXE 常量。结果按“只装备该技能”的情境求得；汇总多个技能的函数可能标为“分支过多，未完整求值”。“说明”页列出前提、组合技能映射中数据与代码不一致之处和来源 EXE、il2cpp 的摘要。
+- `SkillDetails.xlsx` 给出每个技能的效果数值。“技能效果”页每行是一个技能在某一等级（`Lv.1`、`Lv.2`……）的一个效果，列出游戏内的技能说明与等级说明、效果数值，以及适用的武器、弹种或动作（写作“【武器】弹种”）。只列出从游戏参数读取到的数值，按“只装备该技能”的情境求得；数值为“a / b”表示随战斗状态变化。“技能”页合并 SkillCommonData 与 SkillData。名称提供日文与简体中文，说明和效果名称只提供简体中文。
 - `MissionData.xlsx` 中每个任务完成条件占一行，其余任务字段纵向合并。缺少对应语言文本时回退英语，无名称的怪物保留 `EM` 编号。`SoloHealth` 列出可能的初始单人最大血量，计入任务难度、随机血量档位和`Legendary` 倍率；无法确定目标时留空。
 - `WeaponActionValues.xlsx` 需要格式为 `mhws_static_action_request_set_map_v2` 的 `MHWS-in-json/ActionMap.json`。使用同版本输入运行 `motlist-to-json action-map` 可重新生成，也可通过 `MHWS_ACTION_MAP_PATH` 指定其他文件。每条映射各占一行，未映射的 requestSet 保留，`MappingName` 留空。`MappingConfidence` 表示证据类别。日语以外的语言版本会在 `MappingName` 前增加日语名称列 `MappingNameJa`。

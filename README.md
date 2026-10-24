@@ -82,10 +82,12 @@ The battle graph bundle consists of an index and 34 monster pages. Variants have
 
 ## Project tools
 
-- `sdk.enemy_logic_exporter` extracts monster battle logic from the game files into the graph JSON behind the battle pages. The 34 models in `src/processed_data/enemy_battle_logic/models` cover game version **1.42.0.2**; unresolved branches stay marked.
-- `sdk.skill_effect_exporter` finds the native functions that use each skill, evaluates them per level, and writes the skill effect link JSON behind `SkillDetails.xlsx`.
+The `sdk/` directory is an offline SDK that reads the game files; `python -m sdk` opens its menu. Its features:
 
-Both tools need the game EXE and a REFramework `il2cpp_dump.json` of the same version, which you provide. Setup and usage: [SDK guide](sdk/README.md). Rebuilding the pages or workbooks needs neither tool:
+- Monster battle logic (`sdk.enemy_logic_exporter`) extracts monster battle logic into the graph JSON behind the battle pages. The 34 models in `src/processed_data/enemy_battle_logic/models` cover game version **1.42.0.2**; unresolved branches stay marked.
+- Skill effects (`sdk.skill_effect_exporter`) finds the native functions that use each skill, evaluates them per level, and writes the skill effect link JSON behind `SkillDetails.xlsx`.
+
+The SDK needs the game EXE and a REFramework `il2cpp_dump.json` of the same version, which you provide. Setup (`sdk/setup_env.ps1`) and usage: [SDK guide](sdk/README.md). Rebuilding the pages or workbooks does not need the SDK:
 
 ```powershell
 python -m src.processed_data.enemy_battle_logic --preview-all --output .agents/battle-preview
@@ -95,6 +97,6 @@ Then open `.agents/battle-preview/enemy_battle_logic/index.html`; the pages work
 
 ## Data notes
 
-- `SkillDetails.xlsx` joins SkillCommonData with SkillData and lists, for each skill, the native functions that use it and their results per level. Names are given in Japanese and Simplified Chinese, descriptions in Simplified Chinese only. Each row of the 技能效果 (effects) sheet is one function's result for a set of levels and arguments: the value, the runtime conditions it still depends on, and whether it comes from a SkillData slot, a parameter file field, or an EXE constant. Results assume only that skill is equipped; functions that add up many skills may be marked as not fully evaluated. The 说明 (notes) sheet lists the assumptions, where the group-skill mapping in the data differs from the code, and the digests of the source EXE and il2cpp dump.
+- `SkillDetails.xlsx` gives the effect values of each skill. Each row of the 技能效果 (effects) sheet is one effect of a skill at one level (`Lv.1`, `Lv.2`, …), with the in-game skill and level descriptions, the effect value, and the weapons, ammo kinds or actions it applies to, written as "【weapon】ammo". Only numbers read from game parameters are listed, assuming only that skill is equipped; "a / b" means the value depends on the battle state. The 技能 (skills) sheet joins SkillCommonData with SkillData. Names are in Japanese and Simplified Chinese, descriptions and effect names in Simplified Chinese only.
 - `MissionData.xlsx` gives each quest clear condition its own row and merges the remaining quest fields. Missing localized text falls back to English; monsters without a name retain their `EM` ID. `SoloHealth` lists the possible initial solo maximum HP values, including quest difficulty, random health grades, and Legendary modifiers. It stays blank when the target cannot be resolved.
 - `WeaponActionValues.xlsx` requires `MHWS-in-json/ActionMap.json` in `mhws_static_action_request_set_map_v2` format. Rebuild it with `motlist-to-json action-map` using inputs from the same game version, or set `MHWS_ACTION_MAP_PATH` to use another file. Each relation has its own row; unmatched requestSets retain a blank `MappingName`. `MappingConfidence` describes the evidence category. Workbooks for languages other than Japanese add a `MappingNameJa` column with the Japanese name before `MappingName`.

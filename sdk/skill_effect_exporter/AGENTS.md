@@ -1,6 +1,6 @@
 # 技能效果链路提取与维护
 
-本目录是离线研究 SDK，代码统一使用 Python。它读取游戏 EXE、与之同版本的 il2cpp dump（REFramework 的 `il2cpp_dump.json`）和 `MHWS-in-json/natives` 中的解包 JSON，找出原生代码中使用每个技能的函数，并按技能等级把这些函数实际执行一遍，得到“技能 → 函数 → 数值与来源”的链路。结果写入 `src/processed_data/skill_details/data/skill_links/`（`index.json` 加按技能类别拆分的分片），由 `src/processed_data/skill_details` 在构建 PROCESSED_DATA 时和 SkillCommonData、SkillData 合并成 `SkillDetails.xlsx`。
+本目录是离线研究 SDK，代码统一使用 Python。它读取游戏 EXE、与之同版本的 il2cpp dump（REFramework 的 `il2cpp_dump.json`）和 `MHWS-in-json/natives` 中的解包 JSON，找出原生代码中使用每个技能的函数，并按技能等级把这些函数实际执行一遍，得到“技能 → 函数 → 数值与来源”的链路。结果写入 `src/processed_data/skill_details/data/skill_links/`（`index.json` 加按技能类别拆分的分片），由 `src/processed_data/skill_details` 在构建 PROCESSED_DATA 时生成 `SkillDetails.xlsx`（每个技能等级的每个效果一行，适用范围写作“【武器】弹种”，只列游戏参数中的数值；函数、条件与来源只保留在链路 JSON 中）。表格的取舍规则与效果名称翻译在 `src/processed_data/skill_details/exporter.py`（`effect_links`、`own_values`）和 `labels.py`；新增取值函数后检查它的效果名称是否通顺，不通顺就在 `labels.py` 的 `EFFECT_NAMES` 中补写。
 
 SDK 与 `src` 之间只通过这份 JSON 交接：`src` 不导入本目录的代码，也不读取 EXE 或 il2cpp；本目录不导入 `src`。EXE 和 il2cpp 由使用者提供，仓库不保存副本。
 
@@ -11,7 +11,7 @@ SDK 与 `src` 之间只通过这份 JSON 交接：`src` 不导入本目录的代
 - 原生布局常量（对象头、数组与 `List`1` 偏移、调用约定、栈对齐、扫描用的字节模式）只放在 `config.py` 的“native layout constants”一节；类型名、方法名和字段名也集中在 `config.py`。其他模块不写字面偏移。
 - 函数地址、全局变量地址、字段偏移都不写进代码：每次运行按类型名、去后缀方法名和字段名从当前 il2cpp dump 重新定位（`scan.py`、`heap.Layouts`）。
 - 需要人工说明的技能写在 `notes.py`（简体中文），每条注明核对的游戏版本；没有证据的内容不写。
-- 同步更新用户文档：命令或参数变化时，同一次改动中更新 `sdk/README.md`、`sdk/README.zh-Hans.md`、`sdk/README.zh-Hant.md`（三份内容一致），必要时更新三份 README 的“项目工具”简介，并更新本文件。
+- 同步更新用户文档：命令或参数变化时，同一次改动中更新 `sdk/README.md`、`sdk/docs/README.zh-Hans.md`、`sdk/docs/README.zh-Hant.md`（三份内容一致），必要时更新三份 README 的“项目工具”简介，并更新本文件。
 
 ## 构建思路（先读这一节）
 
@@ -44,7 +44,7 @@ SDK 与 `src` 之间只通过这份 JSON 交接：`src` 不导入本目录的代
 
 - **情境维度**（`config.DIMENSIONS`）：装备武器类型（`HunterCharacter._HunterComp.Prepare.<WeaponBuilder>k__BackingField._EquippedWeaponType`）、弩弹种类（`app.WeaponGunDef.SHELL_TYPE`）、弹药参数类型（`app.WeaponGunDef.SHELL_PARAM_TYPE`）。函数读到维度字段（按字段名，或按字段/返回值/`out` 参数的枚举类型）时，`heap.inputs_read` 记下它，`extract.evaluate_link` 再按该枚举的每个取值（除 `DIMENSION_EXCLUDED`）分别求值；多个维度依次展开（先武器、在需要时再按弹种）。取值作为参数写进结果。`_ReserveWeaponType` 与装备武器同类型但不是维度，保持运行时状态。超限沿用（`LIMIT_STATUSES`）只在等级、参数之间生效，不跨维度取值。
 - **取值函数调用方**：不带技能参数、返回非 void 的 `cHunterSkill` 方法（如 `getSkillDodgeNoHitLv`、`getSkillGunnerAmmo_*`）只给出等级或倍率。它们若只读不超过 `MAX_ACCESSOR_SKILLS` 个技能，`NativeIndex.calls_to` 找出的直接调用方也在同一情境中求值（链路 `uses.kind = "accessor"`）。被内联到调用方的取值函数没有调用点，这时结果来自调用方作为第一层链路的求值。
-- **聚焦求值**：完整求值超限且链路有调用点时（`cHunterSkill` 上引用超过 `MAX_ACCESSOR_SKILLS` 个技能的汇总方法除外，它们保持超限状态），`Evaluator.run(..., sites)` 重新求值：未到达调用点前只保留静态控制流图上仍能到达调用点的分支（`NativeIndex.reaching`），走不到的路径丢弃；除调用点本身与技能参数方法外，所有调用按不透明调用处理。同一函数此后的情形直接聚焦求值。结果标 `focused`，表格“求值范围”列显示；聚焦后仍超限的详情为“只追踪可能经过技能读取点的路径仍超限”。
+- **聚焦求值**：完整求值超限且链路有调用点时（`cHunterSkill` 上引用超过 `MAX_ACCESSOR_SKILLS` 个技能的汇总方法除外，它们保持超限状态），`Evaluator.run(..., sites)` 重新求值：未到达调用点前只保留静态控制流图上仍能到达调用点的分支（`NativeIndex.reaching`），走不到的路径丢弃；除调用点本身与技能参数方法外，所有调用按不透明调用处理。同一函数此后的情形直接聚焦求值。结果标 `focused`；聚焦后仍超限的详情为“只追踪可能经过技能读取点的路径仍超限”。
 - **其他保证**：同一路径在同一分支地址因未知量分叉超过 `MAX_LOOP_FORKS` 次视为次数未知的循环（`UnknownLoop`），所在内联调用整体回放为不透明调用；`switch` 跳转表的索引未知时，按前面 `cmp idx, N; ja` 的上界逐个情形分叉；不透明调用的 `ByRef` 参数写入以“函数() 的输出 参数名”命名的未知值；结果相同、条件只差一对互为否定条件的路径合并（`extract.merge_paths`）。`inc`/`dec` 的结果和保留的 CF 都未知时，只在后续条件读取 CF 时报告不支持。合并后每个情形最多记录 `MAX_RECORDED_PATHS` 条路径（条件少的优先），其余以 `truncated` 记录计数，控制分片体积。
 
 ### 4. 结果的含义
@@ -80,7 +80,7 @@ SDK 与 `src` 之间只通过这份 JSON 交接：`src` 不导入本目录的代
 
 ## 命令
 
-在项目根目录运行（解释器为 `.agents/sdk-venv/Scripts/python.exe`，依赖同 `sdk/enemy_logic_exporter/requirements.txt` 中的 Capstone）：
+在项目根目录运行（解释器为 `.agents/sdk-venv/Scripts/python.exe`，依赖见 `sdk/requirements.txt`，用到其中的 Capstone）：
 
 ```powershell
 python -B -m sdk.skill_effect_exporter extract                       # EXE 与 il2cpp 取默认位置，写入 src/processed_data/skill_details/data
@@ -103,7 +103,7 @@ python -B -m sdk.skill_effect_exporter extract -s HunterSkill_019 -o .agents/ski
 3. 核对 `config.py` 的布局常量：用一个已知函数（如 `getSkillBallisticBeginWideRate_Gun`）确认数组长度在 `ARRAY_LENGTH_OFFSET`、元素从 `ARRAY_DATA_OFFSET` 开始；`List`1` 的 `_items/_size/_version` 偏移与 il2cpp 字段记录一致；`via.rds.Mandrake` 的 `v/m` 字段与 `EquipSkillInfo._SkillLv` 仍按 `v / m` 解码（见 `getSkillLevelCore`）。
 4. 与上一版输出比较 `stats`（各状态的路径数）和关键技能的数值（攻击 `getSkillAttackRate/Add`、弹道强化 `getSkillBallistic*`、恨击 `getSkillViolentAddDamage`）。新出现的 `unsupported` 先看详情：缺指令就在 `native/emulator.py` 补完整语义，缺数据形式就在 `runtime/heap.py` 补对象模型。
 5. 复核 `notes.py` 中每条说明对应的代码是否仍成立，更新其中的版本号；`remapDifferences` 有变化时同步更新说明。
-6. 构建 `SkillDetails.xlsx` 检查表格。`src` 只核对索引与分片的格式和游戏版本是否一致，不保存解包文件摘要；更新 `MHWS-in-json` 后必须重新运行 `extract`。
+6. 构建 `SkillDetails.xlsx` 检查表格；核对数值时直接查看链路 JSON 中的条件与来源。`src` 只核对索引与分片的格式和游戏版本是否一致，不保存解包文件摘要；更新 `MHWS-in-json` 后必须重新运行 `extract`。
 
 ## 扩展规则
 

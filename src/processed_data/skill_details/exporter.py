@@ -23,28 +23,27 @@ from src.shared.excel.writer import write_workbook
 from src.shared.source.repository import SourceRepository
 from src.shared.text.catalog import TextSource
 
+from .labels import DIMENSION_NAMES, ENUMS, WEAPON_CODES, effect_name, enum_label
+
 OUTPUT_NAME = "SkillDetails.xlsx"
 LINKS_DIR = Path(__file__).resolve().parent / "data" / "skill_links"
 SKILL_DATA = "STM/GameDesign/Common/Equip/SkillData.user.3.json"
 SCHEMA_VERSION = 1
-STATUS_TEXT = {
-    "too_many_paths": "分支过多，未完整求值",
-    "too_long": "指令过多，未完整求值",
-    "unsupported": "未支持的指令或数据",
-    "null": "经过空引用的路径",
-    "throws": "异常路径",
-    "writes_state": "会写入运行时状态，不是取值函数",
-    "truncated": "路径过多，只列出条件最少的部分",
-}
-KIND_TEXT = {
-    "value": "读取数值槽",
-    "level": "读取等级",
-    "active": "检查是否发动",
-    "other": "其他",
-}
-ACCESSOR_KIND = (
-    "accessor"  # the function calls a skill accessor, not a skill-argument method
-)
+DIMENSION_EXCLUDED = {"INVALID", "MAX"}
+OWN_SOURCES = {"PlayerSkillParam", "SkillData"}
+OTHER_SOURCES = {"PlayerMealSkillParam"}
+# A condition that a meal effect is running, e.g. "_MealEffect._IsEffectActive != 0"
+# or "_MealEffect._SkillParamInfo._Collab03BreakKingTimer > 0.0".
+OTHER_ACTIVE = re.compile(r"_MealEffect\..*(!= 0|> 0)|^0 < .*_MealEffect\.")
+READING_NOTES = [
+    "技能效果表每行是一个效果在某个技能等级的数值；“倍率”是乘算系数（1.05 即提高 5%），“加算”是直接加上的数值，“概率”是百分比",
+    "“适用”为空表示对所有武器、弹种和动作都相同；列出时只对这些武器、弹种或动作生效",
+    "数值为“a / b”时，表示同一等级在不同战斗状态下（如连击段数、是否满足发动条件）取不同数值",
+    "时间、距离等数值保留游戏内部单位，未换算",
+    "没有把握翻译的动作、射击类型保留游戏内部名称（如 QUICK_SHOT、EX_FIELD），效果名称中的英文同理",
+    "只列出从游戏参数读取到的数值；只有发动条件、没有数值的技能在“技能”表中标为“未提取到”",
+    "“代码名称”是游戏中读取该数值的函数名，便于核对",
+]
 
 
 def load_links(directory: Path = LINKS_DIR) -> dict:
@@ -118,41 +117,6 @@ def unpack_link(link: dict, strings: list, constants: list) -> dict:
     return dict(link, results=dict(results, groups=groups))
 
 
-def short_function(function: dict) -> str:
-    if not function.get("type"):
-        return f"未命名函数 {function['address']}"
-    method = re.sub(r"\d+$", "", function["method"])
-    return f"{function['type'].rsplit('.', 1)[-1]}.{method}"
-
-
-def format_value(path: dict) -> str:
-    if path["status"] != "ok":
-        text = STATUS_TEXT.get(path["status"], path["status"])
-        return f"{text}：{path['detail']}" if path.get("detail") else text
-    if "value" in path:
-        value = path["value"]
-        if isinstance(value, bool):
-            return "是" if value else "否"
-        return f"{value:g}" if isinstance(value, float) else str(value)
-    if "expression" in path:
-        return f"表达式：{path['expression']}"
-    return "无返回值"
-
-
-def format_write(write: dict) -> str:
-    value = write["value"]
-    if isinstance(value, bool):
-        value = "true" if value else "false"
-    elif isinstance(value, float):
-        value = f"{value:g}"
-    sources = write.get("sources") or [
-        f"EXE 常量 {c['address']}" for c in write.get("constants", [])
-    ]
-    return f"{write['target']} = {value}" + (
-        f"（{'、'.join(sources)}）" if sources else ""
-    )
-
-
 def cartesian_blocks(points: list[tuple]) -> list[list[set]]:
     """Split distinct points into blocks whose per-dimension value sets multiply out
     to exactly the block's points, so a row never implies combinations it lacks."""
@@ -171,82 +135,242 @@ def cartesian_blocks(points: list[tuple]) -> list[list[set]]:
     ]
 
 
-def usage_text(use: dict) -> str:
-    if use["kind"] == ACCESSOR_KIND:
-        return f"调用技能取值函数 {use['helper'].rsplit('.', 1)[-1]}"
-    return KIND_TEXT[use["kind"]]
+def sourced(path: dict) -> bool:
+    """A finished path whose value was read from game data, not a code fallback."""
+    return path["status"] == "ok" and "value" in path and bool(path.get("sources"))
 
 
-def format_cases(cases: list[dict], domains: dict) -> list[tuple[str, str]]:
-    """(levels, arguments) texts of a result group, one per Cartesian block."""
-    keys = list(dict.fromkeys(key for case in cases for key in case["args"]))
-    points = list(
-        dict.fromkeys(
-            (*(case["args"].get(key) for key in keys), case["level"]) for case in cases
+def own_values(paths: list[dict]) -> list[dict]:
+    """The data-sourced paths that show the skill's own effect.
+
+    A path reading only PlayerGlobalParam is the value without the skill; one
+    that reads PlayerMealSkillParam, or runs with a meal effect active (the meal
+    raises the skill level), stacks a meal effect on top. Both are dropped when
+    a path reads the skill's own parameters alone."""
+    paths = [p for p in paths if sourced(p)]
+    own = []
+    for path in paths:
+        roots = {re.split(r"[.\[]", source, 1)[0] for source in path["sources"]}
+        if (
+            roots & OWN_SOURCES
+            and not roots & OTHER_SOURCES
+            and not any(OTHER_ACTIVE.search(c) for c in path.get("conditions", []))
+        ):
+            own.append(path)
+    return own or paths
+
+
+def bare_method(function: dict) -> str:
+    return re.sub(r"\d+$", "", function.get("method") or "")
+
+
+def effect_links(links: dict) -> dict[str, list[dict]]:
+    """Per skill, the links shown in the simplified sheet.
+
+    Only links with data-sourced values count. Level getters are dropped when the
+    skill has anything else, and the skill's own getters (getSkill*/isSkill*)
+    win over callers that combine them with other state."""
+    functions = links["functions"]
+    chosen: dict[str, list[dict]] = {}
+    for link in links["links"]:
+        results = link.get("results")
+        if results and any(
+            sourced(p) for group in results["groups"] for p in group["paths"]
+        ):
+            chosen.setdefault(link["skill"], []).append(link)
+    for skill, own in chosen.items():
+        method = {id(l): bare_method(functions[l["function"]]) for l in own}
+        effects = [
+            l for l in own if not re.search(r"(Lv|Level)$", method[id(l)])
+        ] or own
+        direct = [
+            l
+            for l in effects
+            if method[id(l)].lower().startswith(("getskill", "isskill"))
+        ]
+        chosen[skill] = direct or effects
+    return chosen
+
+
+def effect_points(link: dict) -> tuple[list[str], dict, dict]:
+    """(dimensions, domains, {point: {level: values}}) of one link.
+
+    A point holds one label per dimension (None when it does not apply). Boolean
+    arguments are dropped because the dump does not name them; the weapon a data
+    path belongs to (``_Wp11Data`` and so on) stands in for them when the
+    function has no weapon dimension of its own."""
+    results = link["results"]
+    keys, domains = {}, {}
+    for key, labels in results["argDomains"].items():
+        raw = key.split(":", 1)[-1]
+        if raw == "Boolean":
+            continue
+        name = DIMENSION_NAMES.get(raw, raw)
+        keys[key] = name
+        domains.setdefault(name, set()).update(set(labels) - DIMENSION_EXCLUDED)
+    dims = list(dict.fromkeys(keys.values()))
+    inferred = "武器" not in dims
+    if inferred:
+        dims.append("武器")
+    points: dict[tuple, dict[int, set]] = {}
+    for group in results["groups"]:
+        paths = own_values(group["paths"])
+        if not paths:
+            continue
+        values = {p["value"] for p in paths}
+        weapons = {
+            WEAPON_CODES[code]
+            for p in paths
+            for source in p["sources"]
+            for code in re.findall(r"Wp\d\d", source)
+            if code in WEAPON_CODES
+        }
+        for case in group["cases"]:
+            labels = dict.fromkeys(dims)
+            for key, name in keys.items():
+                labels[name] = labels[name] or case["args"].get(key)
+            if inferred and len(weapons) == 1:
+                labels["武器"] = next(iter(weapons))
+            levels = points.setdefault(tuple(labels.values()), {})
+            levels.setdefault(case["level"], set()).update(values)
+    return dims, domains, points
+
+
+def applies_texts(dims: list[str], domains: dict, block: list[set]) -> list[str]:
+    """Texts such as "【重弩、轻弩】散弹": weapons in brackets, then ammo kinds or
+    actions. Actions named after one weapon (``WP03_MIKIRI``) go under that
+    weapon; a block mixing them with general actions becomes one text per
+    weapon so that every text has at most one bracket."""
+    weapons, parts, by_weapon = "", [], {}
+    for name, labels in zip(dims, block):
+        labels = labels - {None} - DIMENSION_EXCLUDED
+        domain = domains.get(name, set())
+        if not labels or (len(domain) > 1 and labels >= domain):
+            continue
+        order = list(ENUMS.get(name, {}))
+        labels = sorted(
+            labels, key=lambda v: (order.index(v) if v in order else len(order), v)
         )
+        if name == "武器":
+            weapons = "、".join(enum_label(name, label) for label in labels)
+            continue
+        plain = []
+        for label in labels:
+            prefix = re.match(r"WP(\d\d)_(.+)", label)
+            weapon = prefix and WEAPON_CODES.get(f"Wp{prefix.group(1)}")
+            if weapon:
+                text = ENUMS.get(name, {}).get(label, prefix.group(2))
+                by_weapon.setdefault(weapon, []).append(text)
+            else:
+                plain.append(enum_label(name, label))
+        if plain:
+            parts.append("、".join(plain))
+    texts = []
+    if parts or not by_weapon:
+        texts.append((f"【{weapons}】" if weapons else "") + "；".join(parts))
+    texts += [
+        f"【{enum_label('武器', weapon)}】" + "、".join(actions)
+        for weapon, actions in by_weapon.items()
+    ]
+    return texts
+
+
+def level_text(level: int) -> str:
+    return f"Lv.{level}"
+
+
+def cell_value(values: set):
+    # Single-precision values: 6 significant digits drop the float32 tail.
+    values = {float(f"{v:.6g}") if isinstance(v, float) else v for v in values}
+    if len(values) == 1:
+        (value,) = values
+        return ("是" if value else "否") if isinstance(value, bool) else value
+    return " / ".join(
+        ("是" if v else "否") if isinstance(v, bool) else f"{v:g}"
+        for v in sorted(values)
     )
-    rows = []
-    for *arg_sets, levels in cartesian_blocks(points):
-        parts = []
-        for key, labels in zip(keys, arg_sets):
-            domain = domains.get(key, [])
-            labels = sorted(
-                labels - {None},
-                key=lambda v: domain.index(v) if v in domain else len(domain),
-            )
-            if len(labels) == len(domain) and len(labels) > 1:
-                parts.append(f"{key}=任意")
-            elif len(labels) == 1:
-                parts.append(f"{key}={labels[0]}")
-            elif labels:
-                parts.append(f"{key}∈{{{','.join(labels)}}}")
-        rows.append((",".join(map(str, sorted(levels))), "；".join(parts)))
-    return sorted(rows, key=lambda row: (int(row[0].split(",")[0]), row[1]))
 
 
 def build_sheets(
     repository: SourceRepository, text_source: TextSource, links: dict
 ) -> dict[str, list[dict]]:
+    """技能效果: one row per skill level and effect; 技能: SkillCommonData x SkillData."""
     zh = text_source.build(ZH_HANS_LANGUAGE_ID)
     ja = text_source.build(JAPANESE_LANGUAGE_ID)
-    skills = links["skills"]
-    names = {}
     common_rows = [
         row
         for row in repository.table(SUPPORT_FILES["skill_common"])
         if row["skillId"] != "NONE"
     ]
-    for row in common_rows:
-        names[row["skillId"]] = (
+    names = {
+        row["skillId"]: (
             ja.get(row["skillName"]) or "",
             zh.get(row["skillName"]) or "",
             zh.get(row["skillExplain"]) or "",
         )
-    levels = {}
+        for row in common_rows
+    }
+    levels_of = {}
     for row in repository.table(SKILL_DATA):
         if row["skillId"] != "NONE":
-            levels.setdefault(row["skillId"], []).append(row)
-
-    def label(skill_id):
-        name = names.get(skill_id, ("", "", ""))[1]
-        return f"{skill_id}（{name}）" if name else skill_id
-
+            levels_of.setdefault(row["skillId"], []).append(row)
+    level_explain = {
+        (skill_id, row["SkillLv"]): zh.get(row["skillExplain"]) or ""
+        for skill_id, rows in levels_of.items()
+        for row in rows
+    }
+    skills = links["skills"]
     functions = links["functions"]
-    by_skill: dict[str, list[dict]] = {}
-    for link in links["links"]:
-        by_skill.setdefault(link["skill"], []).append(link)
-    notes = links["notes"]["skills"]
+    chosen = effect_links(links)
+    effects = []
+    order = [row["skillId"] for row in common_rows]
+    order += sorted(set(chosen) - set(order))
+    for skill_id in order:
+        ja_name, zh_name, explain = names.get(skill_id, ("", "", ""))
+        rows = []
+        for link in chosen.get(skill_id, []):
+            function = functions[link["function"]]
+            dims, domains, points = effect_points(link)
+            # Per level, points with the same values share one row.
+            by_level: dict[tuple, list[tuple]] = {}
+            for point, levels in points.items():
+                for level, values in levels.items():
+                    by_level.setdefault((level, frozenset(values)), []).append(point)
+            for (level, values), members in by_level.items():
+                for block in cartesian_blocks(members):
+                    for applies in applies_texts(dims, domains, block):
+                        rows.append(
+                            {
+                                "技能ID": skill_id,
+                                "日文名称": ja_name,
+                                "简体中文名称": zh_name,
+                                "技能说明": explain,
+                                "技能等级": level,
+                                "数值": cell_value(set(values)),
+                                "适用": applies,
+                                "等级说明": level_explain.get((skill_id, level), ""),
+                                "效果": effect_name(function["method"]),
+                                "备注": (
+                                    "数值随战斗状态不同" if len(values) > 1 else ""
+                                ),
+                                "代码名称": bare_method(function),
+                            }
+                        )
+        rows.sort(key=lambda r: (r["技能等级"], r["效果"], r["适用"]))
+        for row in rows:
+            row["技能等级"] = level_text(row["技能等级"])
+        effects += rows
 
+    counted = {row["技能ID"] for row in effects}
+    notes = links["notes"]["skills"]
     overview = []
     for row in common_rows:
         skill_id = row["skillId"]
         ja_name, zh_name, explain = names[skill_id]
         info = skills.get(skill_id, {})
-        own = by_skill.get(skill_id, [])
-        evaluated = sum(1 for link in own if link.get("results"))
-        rows = sorted(levels.get(skill_id, []), key=lambda r: r["SkillLv"]) or [None]
-        for data in rows:
-            values = data["value"] if data else []
+        for data in sorted(levels_of.get(skill_id, []), key=lambda r: r["SkillLv"]) or [
+            None
+        ]:
             overview.append(
                 {
                     "技能ID": skill_id,
@@ -254,106 +378,23 @@ def build_sheets(
                     "日文名称": ja_name,
                     "简体中文名称": zh_name,
                     "技能说明": explain,
-                    "等级": data["SkillLv"] if data else None,
-                    "等级名称": (zh.get(data["skillName"]) or "") if data else "",
+                    "技能等级": level_text(data["SkillLv"]) if data else "",
                     "等级说明": (zh.get(data["skillExplain"]) or "") if data else "",
-                    **{
-                        f"数值槽{i}": values[i] if i < len(values) else None
-                        for i in range(4)
-                    },
-                    "打开技能": "、".join(label(s) for s in info.get("openSkills", [])),
-                    "代码中的组合技能": (
-                        label(info["groupSkill"]) if info.get("groupSkill") else ""
+                    "打开技能": "、".join(
+                        names.get(s, ("", s, ""))[1] or s
+                        for s in info.get("openSkills", [])
                     ),
-                    "关联函数数": len(own),
-                    "已求值函数数": evaluated,
+                    "效果数值": "见技能效果表" if skill_id in counted else "未提取到",
                     "说明": "\n".join(notes.get(skill_id, [])),
                 }
             )
 
-    effects, pending = [], []
-    order = [row["skillId"] for row in common_rows]
-    # Skills the code references that SkillCommonData does not list (hidden or unused IDs).
-    order += sorted(set(by_skill) - set(order))
-    for skill_id in order:
-        ja_name, zh_name, _ = names.get(skill_id, ("", "", ""))
-        for link in sorted(
-            by_skill.get(skill_id, []),
-            key=lambda l: short_function(functions[l["function"]]),
-        ):
-            function = functions[link["function"]]
-            base = {
-                "技能ID": skill_id,
-                "简体中文名称": zh_name,
-                "日文名称": ja_name,
-                "代码引用的技能": label(link["via"]) if link["via"] != skill_id else "",
-                "函数": short_function(function),
-                "函数地址": function["address"],
-                "返回类型": function["returns"].rsplit(".", 1)[-1],
-                "用法": "、".join(sorted({usage_text(use) for use in link["uses"]})),
-            }
-            results = link.get("results")
-            if not results:
-                reason = (
-                    "无返回值（发动、更新等状态处理）"
-                    if function["returns"] == "System.Void"
-                    else (
-                        "显示或同步用途，未求值"
-                        if function["returns"] != "?"
-                        else "无方法记录"
-                    )
-                )
-                if not skills.get(skill_id, {}).get("levels"):
-                    reason = "技能没有等级数据"
-                pending.append({**base, "原因": reason})
-                continue
-            for group in results["groups"]:
-                blocks = format_cases(group["cases"], results["argDomains"])
-                for (level_text, args_text), path in (
-                    (block, path) for block in blocks for path in group["paths"]
-                ):
-                    effects.append(
-                        {
-                            **base,
-                            "等级": level_text,
-                            "参数": args_text,
-                            "运行时条件": "；".join(path.get("conditions", [])),
-                            "结果": format_value(path),
-                            "数据来源": "\n".join(path.get("sources", [])),
-                            "EXE 常量": "、".join(
-                                f"{c['address']}={c.get('float', c['hex'])}"
-                                for c in path.get("constants", [])
-                            ),
-                            "写入的运行时状态": "\n".join(
-                                format_write(w) for w in path.get("writes", [])
-                            ),
-                            "未模拟的调用": "\n".join(path.get("opaque", [])),
-                            "求值范围": (
-                                "仅经过技能读取点的路径" if path.get("focused") else ""
-                            ),
-                        }
-                    )
-
-    remarks = [{"项目": "前提", "内容": text} for text in links["assumptions"]]
+    remarks = [{"项目": "读法", "内容": text} for text in READING_NOTES]
     remarks += [
         {"项目": "通用说明", "内容": text} for text in links["notes"]["general"]
     ]
-    for diff in links["remapDifferences"]:
-        if diff["kind"] == "code_only":
-            content = (
-                f"代码把 {label(diff['skill'])} 映射到 {label(diff['group'])}，"
-                f"SkillData 中该技能打开的是 {'、'.join(label(s) for s in diff['dataOpens']) or '无'}"
-            )
-        else:
-            content = f"SkillData 中 {label(diff['group'])} 打开 {label(diff['skill'])}，代码没有对应映射"
-        remarks.append({"项目": "数据与代码不一致", "内容": content})
     remarks.append({"项目": "提取时的游戏版本", "内容": links["gameVersion"]})
-    return {
-        "技能": overview,
-        "技能效果": effects,
-        "未求值链路": pending,
-        "说明": remarks,
-    }
+    return {"技能效果": effects, "技能": overview, "说明": remarks}
 
 
 def export_skill_details(
