@@ -65,7 +65,7 @@ def skill_menu(session):
     action = choose(
         "技能效果 SDK",
         [
-            "全量提取（写入 src/processed_data/skill_details/data，约 20 分钟）",
+            "全量提取（写入 src/processed_data/skill_details/data，约 30 分钟）",
             "调试指定技能（输出到 .tmp）",
             "重建 SkillDetails.xlsx",
             "返回",

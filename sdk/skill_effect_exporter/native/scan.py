@@ -11,7 +11,7 @@ from __future__ import annotations
 import bisect
 import re
 import struct
-from collections import defaultdict
+from collections import defaultdict, deque
 
 from capstone import CS_ARCH_X86, CS_MODE_64, Cs
 from capstone import x86_const as X
@@ -25,6 +25,8 @@ from ..config import (
     CALL_OPCODES,
     EXECUTABLE_SECTION,
     METHOD_RECORD,
+    TYPE_ADDRESS,
+    TYPE_RECORD,
     HUNTER_SKILL,
     MAX_HELPER_ALIASES,
     PARAM_GETTER,
@@ -58,6 +60,31 @@ def method_stem(name):
     return re.sub(r"\d+$", "", name)
 
 
+def indexed_fields(layout, offset, scale, layouts):
+    """Fields read by [base + index*scale + offset]: the field covering offset
+    and, with an index, the following fields spaced by scale whose names
+    differ only in digits (per-weapon fields such as _Ballistic_Wp12AttackAdd
+    and _Ballistic_Wp13AttackAdd)."""
+    fields = []
+    for start, (name, ftype) in layout.items():
+        size = layouts.size(ftype) if layouts.is_value_type(ftype) else 8
+        if start <= offset < start + max(size, 1):
+            fields.append(name)
+            if not scale or start != offset:
+                return fields
+            stem = re.sub(r"\d+", "", name)
+            position = start + scale
+            while (
+                position in layout
+                and layout[position][1] == ftype
+                and re.sub(r"\d+", "", layout[position][0]) == stem
+            ):
+                fields.append(layout[position][0])
+                position += scale
+            return fields
+    return fields
+
+
 class NativeIndex:
     """Method names, skill helpers and globals of one EXE / il2cpp pair."""
 
@@ -84,6 +111,24 @@ class NativeIndex:
             )
         name, info = found[0]
         return name, int(info["function"], 16), info
+
+    def type_addresses(self):
+        """Runtime type descriptor address -> type name, from the il2cpp dump.
+        The dumped EXE's globals hold these pointers where code checks an
+        object's exact type (cmp [[obj]], [rip+X])."""
+        if not hasattr(self, "_types"):
+            mapped = self.metadata._mapped
+            heads = [
+                (m.start(), m.group(1).decode())
+                for m in re.finditer(TYPE_RECORD, mapped, re.M)
+            ]
+            positions = [h[0] for h in heads]
+            self._types = {}
+            for m in re.finditer(TYPE_ADDRESS, mapped, re.M):
+                k = bisect.bisect_right(positions, m.start()) - 1
+                if k >= 0:
+                    self._types.setdefault(int(m.group(1), 16), heads[k][1])
+        return self._types
 
     def disasm(self, start):
         end = self.pe.end(start)
@@ -171,7 +216,8 @@ class NativeIndex:
         return result
 
     def reaching(self, start, sites):
-        """Instructions of the function at start from which some site is reachable.
+        """Instructions of the function at start from which some site is
+        reachable -> fewest instructions from there to a site.
 
         Successors come from the static control flow: conditional and direct
         jumps, fall-through after calls. An indirect jump, or a jump out of the
@@ -202,14 +248,28 @@ class NativeIndex:
         if anywhere:  # their successors are unknown: any instruction may follow
             for address in addresses:
                 predecessors[address].update(anywhere)
-        reach, pending = set(), [s for s in sites if start <= s < end]
-        while pending:
-            address = pending.pop()
-            if address in reach:
-                continue
-            reach.add(address)
-            pending.extend(predecessors[address])
-        return frozenset(reach)
+        reach = {s: 0 for s in sites if start <= s < end}
+        pending = deque(reach)
+        while pending:  # breadth first: the first visit is the shortest
+            address = pending.popleft()
+            for previous in predecessors[address]:
+                if previous not in reach:
+                    reach[previous] = reach[address] + 1
+                    pending.append(previous)
+        return reach
+
+    def exits(self, start):
+        """Returns and jumps out of the function at start (tail calls)."""
+        end = self.pe.end(start)
+        found = []
+        for insn in self.disasm(start):
+            if insn.mnemonic in ("ret", "retn"):
+                found.append(insn.address)
+            elif insn.mnemonic == "jmp" and insn.operands:
+                op = insn.operands[0]
+                if op.type != X.X86_OP_IMM or not start <= op.imm < end:
+                    found.append(insn.address)
+        return found
 
     def owner(self, address):
         k = bisect.bisect_right(self.pe.starts, address) - 1
@@ -374,6 +434,118 @@ class NativeIndex:
                 "getSkillValue 的 SkillToGroupSkill 读取或栈保护调用模式已变化"
             )
         return table, cookie
+
+    def param_reads(self, root, offsets, getter, layouts, global_type):
+        """Static reads of parameter-file fields through PlayerGlobalParam.
+
+        The singleton chain [rip+root] -> +offsets[0] -> +offsets[1] gives
+        PlayerGlobalParam; one more load of one of its reference fields gives a
+        parameter object (PlayerSkillParam, PlayerMealSkillParam, ...), whose
+        field reads are recorded. get__SkillParam() returns the PlayerSkillParam
+        object directly. Registers are followed linearly from each chain load
+        to the next unconditional jump or return.
+
+        Returns {(param type, field name): {function start: [site, ...]}}.
+        """
+        global_fields = layouts.fields(global_type)
+        getter_type = global_fields.get(offsets[-1], (None, None))[1]
+        starts = defaultdict(set)  # function -> addresses to start following at
+        rip_load = re.compile(rb"[\x48\x4c]\x8b[\x05\x0d\x15\x1d\x25\x2d\x35\x3d]")
+        for (vsize, va, raw_size, raw), flags in zip(
+            self.pe.sections, self.pe.section_flags
+        ):
+            if not flags & EXECUTABLE_SECTION:
+                continue
+            base = self.pe.base + va
+            data = self.pe.data[raw : raw + raw_size]
+            for match in rip_load.finditer(data):
+                offset = match.start()
+                if offset + 7 > len(data):
+                    break
+                address = base + offset
+                if address + 7 + struct.unpack_from("<i", data, offset + 3)[0] == root:
+                    owner = self.owner(address)
+                    if owner is not None:
+                        starts[owner].add(address)
+        for owner, sites in self.callers({getter}).items():
+            starts[owner].update(sites)
+        reads = defaultdict(lambda: defaultdict(list))
+        for function, entries in starts.items():
+            code = self.disasm(function)
+            positions = {insn.address: i for i, insn in enumerate(code)}
+            seen = set()
+            for entry in sorted(entries):
+                if entry not in positions:
+                    continue  # not an instruction boundary of the linear sweep
+                # register -> chain stage (int) or parameter object type (str)
+                stage = {}
+                for insn in code[positions[entry] :]:
+                    ops = insn.operands
+                    m = insn.mnemonic
+                    if insn.address == entry and m == "call":
+                        stage = {"rax": getter_type}
+                        continue
+                    loaded = None
+                    for op in ops:
+                        if op.type != X.X86_OP_MEM or not op.mem.base:
+                            continue
+                        base_reg = GPR.get(insn.reg_name(op.mem.base))
+                        if insn.reg_name(op.mem.base) == "rip":
+                            target = insn.address + insn.size + op.mem.disp
+                            if target == root and m == "mov":
+                                loaded = 0
+                            continue
+                        held = stage.get(base_reg)
+                        if isinstance(held, int) and not op.mem.index and m == "mov":
+                            if held < len(offsets) - 1 and op.mem.disp == offsets[held]:
+                                loaded = held + 1
+                            elif held == len(offsets) - 1:
+                                name, ftype = global_fields.get(
+                                    op.mem.disp, (None, None)
+                                )
+                                if ftype and not layouts.is_value_type(ftype):
+                                    loaded = ftype
+                        elif isinstance(held, str) and (insn.address, held) not in seen:
+                            seen.add((insn.address, held))
+                            for field in indexed_fields(
+                                layouts.fields(held),
+                                op.mem.disp,
+                                op.mem.scale if op.mem.index else 0,
+                                layouts,
+                            ):
+                                reads[(held, field)][function].append(insn.address)
+                    if m in ("ret", "jmp", "int3"):
+                        break
+                    if m == "call":
+                        for reg in VOLATILE:
+                            stage.pop(reg, None)
+                        continue
+                    try:
+                        _, written = insn.regs_access()
+                    except Exception:
+                        written = ()
+                    for reg in written:
+                        stage.pop(GPR.get(insn.reg_name(reg)), None)
+                    if (
+                        loaded is not None
+                        and ops
+                        and ops[0].type == X.X86_OP_REG
+                        and GPR.get(insn.reg_name(ops[0].reg))
+                    ):
+                        stage[GPR[insn.reg_name(ops[0].reg)]] = loaded
+                    elif (
+                        m == "mov"
+                        and len(ops) == 2
+                        and ops[0].type == X.X86_OP_REG
+                        and ops[1].type == X.X86_OP_REG
+                        and GPR.get(insn.reg_name(ops[1].reg)) in stage
+                    ):
+                        stage[GPR[insn.reg_name(ops[0].reg)]] = stage[
+                            GPR[insn.reg_name(ops[1].reg)]
+                        ]
+                    if not stage:
+                        break
+        return {key: dict(value) for key, value in reads.items()}
 
     def param_chain(self):
         """Global slot and the two offsets leading to PlayerGlobalParam (get__SkillParam)."""

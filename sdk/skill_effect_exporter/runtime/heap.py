@@ -18,13 +18,15 @@ from ..config import (
     ARRAY_LENGTH_OFFSET,
     BOX_HEADER,
     FLOAT_VECTORS,
+    INTERFACE_FLAG,
+    INTERFACE_TABLE_OFFSET,
     LIST_ITEMS_OFFSET,
     LIST_SIZE_OFFSET,
     LIST_VERSION_OFFSET,
     VEC3_SIZE,
 )
 
-from ..native.values import Ptr, Unk, Unsupported, V, f32_bits, f64_bits, unk
+from ..native.values import Method, Ptr, Unk, Unsupported, V, f32_bits, f64_bits, unk
 
 ENUM_TEXT = re.compile(r"^\[(-?\d+)\]\s*(.*)$")
 PRIMITIVES = {
@@ -90,6 +92,17 @@ class Layouts:
 
     def is_enum(self, type_name):
         return self.record(type_name).get("parent") == "System.Enum"
+
+    def is_interface(self, type_name):
+        return INTERFACE_FLAG in self.record(type_name).get("flags", "")
+
+    def interface_method(self, type_name, index):
+        """(name, il2cpp record) of an interface's index-th method, or None."""
+        methods = sorted(
+            self.record(type_name).get("methods", {}).items(),
+            key=lambda item: item[1].get("id", 0),
+        )
+        return methods[index] if 0 <= index < len(methods) else None
 
     def is_struct(self, type_name):
         """A value type with dumped fields (not a primitive, enum or float vector)."""
@@ -160,6 +173,7 @@ def element_type(type_name):
 class HObj:
     type_name = "?"
     path = "?"
+    exported = False  # built from an exported user file (Heap.convert/user_file)
 
     def read(self, off, size, heap):
         raise NotImplementedError
@@ -199,6 +213,8 @@ class UnkObj(HObj):
         self.type_name, self.path = type_name, path
 
     def read(self, off, size, heap):
+        if off == 0 and size == 8 and heap.layouts.is_interface(self.type_name):
+            return V(Ptr(heap.shared(TypeDescriptor, self.type_name)))
         layout = heap.layouts.fields(self.type_name) if self.type_name else {}
         if off in layout:
             name, ftype = layout[off]
@@ -223,6 +239,33 @@ class UnkObj(HObj):
                     )
                 return unk(f"{self.path}.{name}+0x{off - start:x}")
         return unk(f"{self.path}+0x{off:x}")
+
+
+class TypeDescriptor(HObj):
+    """Type word of an object known only by its interface type; its interface
+    dispatch table sits at INTERFACE_TABLE_OFFSET."""
+
+    def __init__(self, type_name):
+        self.type_name, self.path = None, f"{type_name} 的类型信息"
+        self.interface = type_name
+
+    def read(self, off, size, heap):
+        if off == INTERFACE_TABLE_OFFSET and size == 8:
+            return V(Ptr(heap.shared(DispatchTable, self.interface)))
+        return unk(f"{self.path}+{off:#x}")
+
+
+class DispatchTable(HObj):
+    """Interface dispatch table: slot k is the interface's k-th method."""
+
+    def __init__(self, type_name):
+        self.type_name, self.path = None, f"{type_name} 的接口表"
+        self.interface = type_name
+
+    def read(self, off, size, heap):
+        if off >= 0 and off % 8 == 0 and size == 8:
+            return V(Method(self.interface, off // 8))
+        return unk(f"{self.path}+{off:#x}")
 
 
 class SynthObj(HObj):
@@ -440,6 +483,13 @@ class Heap:
             self.unknowns[key] = UnkObj(type_name, path)
         return self.unknowns[key]
 
+    def shared(self, kind, type_name):
+        """One object of a kind per type (interface type words and tables)."""
+        key = (kind, type_name)
+        if key not in self.unknowns:
+            self.unknowns[key] = kind(type_name)
+        return self.unknowns[key]
+
     def user_file(self, relative):
         """Root object of an exported user file (relative to natives/STM)."""
         if relative not in self.files:
@@ -450,6 +500,7 @@ class Heap:
             self.files[relative] = JsonObj(
                 type_name, data, type_name.rsplit(".", 1)[-1]
             )
+            self.files[relative].exported = True
         return self.files[relative]
 
     def value_view(self, type_name, data, path):
@@ -493,5 +544,6 @@ class Heap:
                 obj = JsonObj(type_name, data, path)
         else:
             return unk(path, prov)
+        obj.exported = True
         self.objects[key] = (obj, value)
         return V(Ptr(obj))

@@ -8,7 +8,9 @@ from ..config import SCHEMA_VERSION
 
 # Shard and string-table layout of the committed link directory.
 INDEX_NAME = "index.json"
-INTERNED = ("conditions", "sources", "opaque")
+INTERNED = ("conditions", "compared", "sources", "opaque")
+# Parts of a link holding evaluated paths: values per level, usage tracing.
+EVALUATED = ("results", "usage")
 
 
 def shard_name(category):
@@ -78,15 +80,15 @@ def write_shards(document, directory):
         packed_links = []
         for link in links:
             link = dict(link)
-            if "results" in link:
-                results = link["results"]
-                link["results"] = dict(
-                    results,
-                    groups=[
-                        dict(group, paths=[pack(p) for p in group["paths"]])
-                        for group in results["groups"]
-                    ],
-                )
+            for part in EVALUATED:
+                if part in link:
+                    link[part] = dict(
+                        link[part],
+                        groups=[
+                            dict(group, paths=[pack(p) for p in group["paths"]])
+                            for group in link[part]["groups"]
+                        ],
+                    )
             packed_links.append(link)
         name = shard_name(category)
         shard = dict(

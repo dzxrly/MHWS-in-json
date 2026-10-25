@@ -146,7 +146,7 @@ python -B -m sdk.enemy_logic_exporter new-monster --enemy <新怪物ID>         
 游戏没有“技能 → 效果数值”的数据表：SkillData 的四个数值槽没有名称，`PlayerSkillParam` 等参数文件里的字段也不带技能 ID，二者只在原生代码中连接。这个工具先扫描 EXE，找出以技能 ID 调用技能读取方法的全部函数；再在“只装备该技能、取某一等级”的情境下，按真实指令执行这些函数（布尔与枚举参数逐一枚举），记录返回值、运行时条件以及数值来自哪个 SkillData 槽位、参数文件字段或 EXE 常量。结果写入 `src/processed_data/skill_details/data/skill_links/`（`index.json` 加按技能类别拆分的分片），构建 PROCESSED_DATA 时据此生成 `SkillDetails.xlsx`。
 
 ```powershell
-python -B -m sdk.skill_effect_exporter extract -e <dump 出的 EXE> -i <il2cpp_dump.json>   # 全部技能，约 20 分钟，写入正式位置
+python -B -m sdk.skill_effect_exporter extract -e <dump 出的 EXE> -i <il2cpp_dump.json>   # 全部技能，约 30 分钟，写入正式位置
 python -B -m sdk.skill_effect_exporter extract -s HunterSkill_019 -o .tmp/skill-effects/try.json   # 调试单个技能
 python -m src.processed_data.skill_details                                         # 只重建 SkillDetails.xlsx
 ```
@@ -157,8 +157,13 @@ python -m src.processed_data.skill_details                                      
 - 依赖与上面的虚拟环境相同（Capstone）。
 - 读取猎人装备武器类型（`HunterCharacter._HunterComp.Prepare.<WeaponBuilder>k__BackingField._EquippedWeaponType`）或弩弹种类（`app.WeaponGunDef.SHELL_TYPE`、`SHELL_PARAM_TYPE`，包括由调用返回或写入 `out` 参数的情况）的函数，按每种取值分别求值，链路 JSON 把取值记为参数“武器”“弹种”“弹药参数类型”。清单是 `sdk/skill_effect_exporter/config.py` 中的 `DIMENSIONS`。
 - 有些 `cHunterSkill` 取值函数只返回等级或倍率，实际效果由调用它的函数决定，例如 `getSkillDodgeNoHitLv` 的调用方 `getDodgeNoHitTime` 给出各回避动作的无敌时间。读取的技能不超过 `MAX_ACCESSOR_SKILLS` 个的取值函数，其调用方也会求值，链路中的用法记为 `accessor`。
-- 超过路径或指令上限的函数，会只保留仍能走到技能读取点的路径重新求值，其他调用按不透明调用处理；这些路径标记为 `focused`。“只追踪可能经过技能读取点的路径仍超限”表示技能可能在此处（该武器或弹种下）起作用，但数值仍不完整。
+- 超过路径或指令上限的函数，会只保留仍能走到技能读取点的路径重新求值，其他调用按不透明调用处理；这些路径标记为 `focused`。“只追踪可能经过技能读取点的路径仍超限”表示技能可能在此处（该武器或弹种下）起作用，但数值仍不完整。传入技能参数（参数块或从中读出的值）的调用仍按真实代码执行。聚焦求值仍超限时改为窄聚焦：到达读取点之前，两个分支都能到达读取点时只走更近的一个，即只沿一种先前运行时条件的组合追踪（路径标记 `narrow`，仍超限时详情为“只沿最近分支追踪到技能读取点仍超限”）。`cHunterSkill.update` 这类逐帧处理的大函数按这种方式求值。
 - 结果相同、条件只差一个条件及其否定的路径会合并，不影响结果的条件不再列出。每个情形最多保留 `MAX_RECORDED_PATHS` 条路径，条件少的优先，最后一行注明未列出的条数。
+- 用途追踪：除 `getSkill*`/`isSkill*` 取值函数本身外，每条链路在最高等级再求值一次，把技能读取调用（`getSkillValue`、`getSkillLevelCore`、`checkSkillActive` 或被调用的取值函数）换成有名字的未知量，例如 `技能等级〈HunterSkill_019〉()`。链路的 `usage` 字段说明技能数值在什么条件下与什么比较、相乘、写入哪里；数值本身仍在 `results` 中。
+- 没有任何已求值路径从中取值的参数字段（静态扫描经 `PlayerGlobalParam` 单例读取的指令得到），会在读取它且使用技能的函数中、以读取指令为聚焦点再求值一次，链路的用法记为 `param`。例如弹道强化 Lv3 在会心距离命中时攻击力 +5，是在弩炮和弓的命中处理函数里读取的。若这类调用方读取了取值函数没有读到的数据，技能效果表也会列出它，并按这些数据命名效果。只被本身不使用技能的函数读取的字段（如 `cHunterSkillParamInfo.beginKnight`、`cHunterSkill.beginRyunyu`），经两层以内调用它的、使用技能的函数求值，以这些调用为聚焦点，数值归到调用方检查的技能。
+- 分叉条件比较了来自游戏数据的值时（如心眼的肉质阈值 `_Shingan_MeatThreshold`），路径在 `compared` 中列出它。
+- `index.json` 中有 `coverage`：按技能参数文件（`PlayerSkillParam`、`PlayerMealSkillParam` 等 `PlayerGlobalParam` 中类型名以 `SkillParam` 结尾的字段）列出每个字段的读取函数，以及哪些技能的路径返回了它（`value`）、把它写入运行时状态（`write`）或在条件中比较了它（`compare`）；按技能列出非零的 SkillData 槽位和以这三种方式用到的槽位。三种用法都没有的，就是表格可能仍然漏掉的效果。
+- 技能效果表也会列出处理函数写入运行时状态的数值（如技能发动时写入的持续时间，效果名以“写入”开头并保留字段名），以及只在取值函数之外读到的数值。两者都只在该数据项还没有列出、且没有其他技能的链路用到它时才列出，避免汇总多个技能的函数把其他技能的数据算进来。
 - 输出不记录游戏版本或摘要；游戏或 `MHWS-in-json` 更新后要重新运行 `extract`。
 - 汇总多个技能的函数（如攻击力合计）依赖其他技能的计时器等运行时状态，链路 JSON 中可能记为 `too_many_paths`；同一技能的精确数值通常由 `getSkill*` 读取函数给出。
 - 需要人工说明的技能写在 `sdk/skill_effect_exporter/notes.py`；版本相关的布局常量集中在 `sdk/skill_effect_exporter/config.py`。游戏更新后的检查步骤见 [技能效果 SDK 维护说明](../skill_effect_exporter/AGENTS.md)。

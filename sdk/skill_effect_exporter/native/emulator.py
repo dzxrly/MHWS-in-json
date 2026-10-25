@@ -20,6 +20,7 @@ from capstone import x86_const as X
 
 from ..config import (
     ARGUMENT_REGISTERS,
+    MAX_NARROW_FORKS,
     CALLER_STACK_ARGUMENT,
     ENTRY_STACK_PHASE,
     MAX_CALL_DEPTH,
@@ -29,7 +30,7 @@ from ..config import (
     MAX_TOTAL_STEPS,
     REFERENCE_TAG_BIT,
 )
-from .values import Ptr, Unk, Unsupported, V, f32, f32_bits, unk
+from .values import Method, Ptr, Unk, Unsupported, V, f32, f32_bits, unk
 
 MASK = {1: 0xFF, 2: 0xFFFF, 4: 0xFFFFFFFF, 8: 0xFFFFFFFFFFFFFFFF}
 GPR64 = (
@@ -242,6 +243,7 @@ class Flags:
         self.label, self.kind, self.prov = label, kind, prov
         self.candidates = None
         self.carry_unknown = False  # CF kept by inc/dec from an unknown comparison
+        self.stale = None  # why no condition can be read from these flags
         if label is not None:
             self.candidates = (
                 list(candidates) if candidates is not None else _feasible(kind)
@@ -260,6 +262,7 @@ class Flags:
             label=self.label, kind=self.kind, prov=self.prov, candidates=candidates
         )
         flags.carry_unknown = self.carry_unknown
+        flags.stale = self.stale
         return flags
 
     def holds(self, cc):
@@ -370,9 +373,11 @@ class State:
         self.rip = 0
         self.depth = 0
         self.conditions = []
+        self.condition_prov = frozenset()  # data the conditions compared
         self.snapshot = None  # state before the outermost pending inline call
         self.loop_forks = {}  # branch address -> forks this path took there
         self.focus_reached = False  # passed a focus site (see Emulator.focus)
+        self.after_forks = 0  # forks since then (narrowed focus)
         self.opaque = []
         self.steps = 0
         # (object id, offset) -> (object, offset, size, V); globals keyed by
@@ -413,12 +418,25 @@ class Emulator:
         self.skip_calls = set(skip_calls)  # stack cookie checks and similar no-ops
         self.inline_ok = inline_ok or (lambda address: True)
         self.globals = globals_ or {}  # rip-relative address -> V (pointer slots)
-        # Focused evaluation: (start, end, reaching, sites). Until a path passes
-        # a site in the evaluated function itself, it keeps only branches that
-        # can still reach one; the conditions it takes are still recorded.
+        # Focused evaluation: (start, end, reaching, sites), reaching mapping an
+        # instruction to its distance from a site. Until a path passes a site
+        # in the evaluated function itself, it keeps only branches that can
+        # still reach one; the conditions it takes are still recorded. Narrow:
+        # of two branches that both reach a site, only the nearer one is taken,
+        # also after a site; other branches after a site fork MAX_NARROW_FORKS
+        # times per path (at any call depth), then take the side that still
+        # reaches a site, or else the side nearer a return of its function.
         self.focus = None
+        self.narrow = False
+        # instruction -> instructions to a return or tail jump of its function
+        self.exit_distance = lambda address: 0
         self.negations = {}  # condition text -> its negation, for merging paths
         self.skill_calls = frozenset()  # skill-argument methods, inline when focused
+        # Root paths of the skill parameter files (PlayerSkillParam, ...): a
+        # focused run also inlines calls given an exported object under them.
+        self.param_roots = frozenset()
+        self.usage = {}  # call site in the evaluated function -> name of its result
+        self.type_names = {}  # runtime type descriptor address -> type name
         self.signature = lambda address: None  # callee -> il2cpp method record
 
     # ------------------------------------------------------------ decoding
@@ -541,6 +559,9 @@ class Emulator:
                 lambda: self.global_value(target, size),
             )
         if kind == "unknown":
+            written = st.writes.get(("unknown", rest[0]))
+            if written is not None and written[2] == size:
+                return written[3]  # this path stored there (same address text)
             return unk(f"[{rest[0]}]", rest[1])
         ptr = rest[0]
         if ptr.obj is STACK:
@@ -561,6 +582,17 @@ class Emulator:
                 int.from_bytes(raw, "little"),
                 frozenset({f"EXE 常量 {target:#x}:{raw.hex()}"}),
             )
+        if size == 8:
+            # A writable global the dump holds a type descriptor in: named by
+            # the type, so exact-type checks read as such (still not a constant).
+            name = self.type_names.get(
+                int.from_bytes(self.pe.read(target, 8), "little")
+            )
+            if name is not None and name.endswith("Exception"):
+                # Loaded to construct the exception the path is about to throw.
+                raise PathEnd("throws", f"构造异常 {name}")
+            if name is not None:
+                return unk(f"类型 {name}")
         return unk(f"全局量 {target:#x}")
 
     def store(self, st, insn, mem, size, value):
@@ -765,6 +797,8 @@ class Emulator:
             raise Unsupported(f"imul 后读取未定义的标志（{cc}）")
         if flags.carry_unknown and cc in CARRY_CODES:
             raise Unsupported(f"inc/dec 后读取 CF（{cc}），它来自更早的未知比较")
+        if flags.stale:
+            raise Unsupported(f"{flags.stale}（{cc}）")
         left, right = flags.label
         texts = []
         for rel in (relation, negated):
@@ -782,9 +816,28 @@ class Emulator:
             )
         return texts
 
+    @staticmethod
+    def decided(st, taken, not_taken):
+        """True/False when this path already took the same condition or its
+        negation on the same runtime fields; None otherwise. Conditions on
+        opaque call results ("f()") are not compared: each call may differ,
+        and so are shortened texts."""
+        if "()" in taken or taken.endswith("..."):
+            return None
+        if taken in st.conditions:
+            return True
+        if not_taken in st.conditions:
+            return False
+        return None
+
     def may_reach(self, address):
         start, end, reaching, _ = self.focus
         return not start <= address < end or address in reaching
+
+    def distance(self, address):
+        """Instructions from address to the nearest focus site (0 outside the function)."""
+        start, end, reaching, _ = self.focus
+        return reaching[address] if start <= address < end else 0
 
     @staticmethod
     def count_fork(st, insn):
@@ -805,13 +858,42 @@ class Emulator:
             st.flags = flags.narrowed(true or false)
             return
         taken, not_taken = self.condition_texts(flags, cc)
+        decided = self.decided(st, taken, not_taken)
+        if decided is not None:
+            st.rip = target if decided else fallthrough
+            st.flags = flags.narrowed(true if decided else false)
+            return
+        st.condition_prov = st.condition_prov | flags.prov
         if self.focus is not None and st.depth == 0 and not st.focus_reached:
             to_target, to_next = self.may_reach(target), self.may_reach(fallthrough)
+            if to_target and to_next and self.narrow:
+                to_target = self.distance(target) <= self.distance(fallthrough)
+                to_next = not to_target
             if to_target != to_next:
                 st.conditions.append(taken if to_target else not_taken)
                 st.flags = flags.narrowed(true if to_target else false)
                 st.rip = target if to_target else fallthrough
                 return
+        elif self.narrow and st.focus_reached:
+            to_target = None
+            if st.depth == 0 and self.may_reach(target) and self.may_reach(fallthrough):
+                # Both lead to further sites: toward the nearer one.
+                to_target = self.distance(target) <= self.distance(fallthrough)
+            elif st.after_forks >= MAX_NARROW_FORKS:
+                if st.depth == 0 and self.may_reach(target) != self.may_reach(
+                    fallthrough
+                ):
+                    to_target = self.may_reach(target)
+                else:
+                    to_target = self.exit_distance(target) <= self.exit_distance(
+                        fallthrough
+                    )
+            if to_target is not None:
+                st.conditions.append(taken if to_target else not_taken)
+                st.flags = flags.narrowed(true if to_target else false)
+                st.rip = target if to_target else fallthrough
+                return
+            st.after_forks += 1
         self.count_fork(st, insn)
         self.negations[taken], self.negations[not_taken] = not_taken, taken
         other = st.clone()
@@ -833,8 +915,13 @@ class Emulator:
         if not false or not true:
             st.flags = flags.narrowed(true or false)
             return bool(true)
-        self.count_fork(st, insn)
         taken, not_taken = self.condition_texts(flags, cc)
+        decided = self.decided(st, taken, not_taken)
+        if decided is not None:
+            st.flags = flags.narrowed(true if decided else false)
+            return decided
+        st.condition_prov = st.condition_prov | flags.prov
+        self.count_fork(st, insn)
         self.negations[taken], self.negations[not_taken] = not_taken, taken
         other = st.clone()
         other.conditions.append(not_taken)
@@ -906,23 +993,47 @@ class Emulator:
             results.append(result)
         return results
 
-    def opaque_effects(self, st, callee):
-        """A call whose body is not emulated: volatile state becomes unknown."""
-        name = (
-            self.names.get(callee, f"sub_{callee:x}")
-            if isinstance(callee, int)
-            else callee
+    def interface_method(self, st, insn, op):
+        """(name, il2cpp record) of an interface method called through op, if
+        the call target was read from an interface's dispatch table."""
+        try:
+            target = self.read_op(st, insn, op, 8)
+        except (PathEnd, Unsupported):
+            return None
+        if not isinstance(target.val, Method):
+            return None
+        found = self.heap.layouts.interface_method(
+            target.val.type_name, target.val.index
         )
+        if found is None:
+            return None
+        return f"{target.val.type_name}.{found[0]}", found[1]
+
+    def opaque_effects(self, st, callee, *, record=None, name=None):
+        """A call whose body is not emulated: volatile state becomes unknown.
+        A reference the callee is declared to return is an unknown object of
+        that type, so later field reads are named (and a cHunterSkill resolves
+        to the scenario's)."""
+        if name is None:
+            name = (
+                self.names.get(callee, f"sub_{callee:x}")
+                if isinstance(callee, int)
+                else callee
+            )
         st.opaque.append(name)
-        record = self.signature(callee) if isinstance(callee, int) else None
+        if record is None and isinstance(callee, int):
+            record = self.signature(callee)
         outputs = self.out_arguments(st, record, name) if record else []
         for reg in VOLATILE:
             st.regs[reg] = unk(f"{name}() 后的 {reg}")
         st.regs["rax"] = unk(f"{name}()")
         returns = record.get("returns", {}).get("type") if record else None
         value = self.dimension_value(returns)
+        layouts = self.heap.layouts
         if value is not None:  # e.g. the weapon or ammo kind a getter returns
             st.regs["rax"] = value
+        elif returns and layouts.record(returns) and not layouts.is_value_type(returns):
+            st.regs["rax"] = V(Ptr(self.heap.unknown(returns, f"{name}()")))
         for pointer, size, value in outputs:
             self.write_through(st, pointer, size, value)
         st.vregs[0] = [unk(f"{name}()")] + unknown_lanes(f"{name}() 后的 xmm0")[1:]
@@ -1048,7 +1159,11 @@ class Emulator:
                     st.rip = target.val
                     return None
                 raise Unsupported(f"间接跳转 {insn.address:#x}")
-            self.opaque_effects(st, f"间接调用@{insn.address:#x}")
+            method = self.interface_method(st, insn, ops[0])
+            if method is not None:
+                self.opaque_effects(st, method[0], record=method[1])
+            else:
+                self.opaque_effects(st, f"间接调用@{insn.address:#x}")
             st.rip = nxt
             return None
         if m.startswith("j"):
@@ -1089,11 +1204,18 @@ class Emulator:
             if target in self.intercept:
                 self.intercept[target](self, st)
             return self.resume_at(st, resume, return_type)
+        label = self.usage.get(insn.address) if st.depth == 0 else None
+        if label is not None:
+            # Usage tracing: the skill read stays a named unknown, so the
+            # caller's conditions and results show what it is applied to.
+            self.opaque_effects(st, target, name=label)
+            return self.resume_at(st, resume, return_type)
         unfocused = (
             self.focus is not None
             and st.depth == 0
             and insn.address not in self.focus[3]
             and target not in self.skill_calls
+            and not self.passes_parameters(st)
         )
         if st.depth >= MAX_CALL_DEPTH or not self.inline_ok(target) or unfocused:
             # In a focused evaluation only the skill's own call and the skill
@@ -1112,6 +1234,24 @@ class Emulator:
             st.depth += 1
         st.rip = target
         return None
+
+    def passes_parameters(self, st):
+        """Whether a call's arguments include skill parameters: a parameter
+        block (PlayerSkillParam._PowerAwakeData handed to its begin method)
+        or a value read from one, in an integer or float argument register."""
+        values = [st.regs.get(register) for register in ARGUMENT_REGISTERS]
+        values += [st.vregs[k][0] for k in (1, 2, 3) if k in st.vregs]
+        for value in filter(None, values):
+            if isinstance(value.val, Ptr):
+                obj = value.val.obj
+                exported = getattr(obj, "exported", False)  # not the stack
+                if exported and obj.path.split(".", 1)[0] in self.param_roots:
+                    return True
+            if any(
+                source.split(".", 1)[0] in self.param_roots for source in value.prov
+            ):
+                return True
+        return False
 
     def resume_at(self, st, resume, return_type):
         if resume == "exit":
@@ -1169,6 +1309,7 @@ class Emulator:
             value=value,
             prov=prov,
             conditions=st.conditions,
+            condition_prov=st.condition_prov,
             opaque=st.opaque,
             writes=[self.describe_write(entry) for entry in st.writes.values()],
         )
@@ -1435,6 +1576,51 @@ class Emulator:
                         else kind == "shr" and (a.val & MASK[size]) >> (bits - 1)
                     )
                 )
+
+    def _rotate(self, st, insn, ops, kind):
+        """ror / rol: only CF (and OF for a count of 1) change; ZF, SF and PF
+        keep the previous instruction's values."""
+        size = ops[0].size
+        bits = 8 * size
+        a = self.read_op(st, insn, ops[0])
+        count = self.read_op(st, insn, ops[1], 1) if len(ops) > 1 else V(1)
+        if not isinstance(count.val, int):
+            raise Unsupported("未知循环移位量")
+        n = (count.val & (63 if size == 8 else 31)) % bits
+        masked = count.val & (63 if size == 8 else 31)
+        if not masked:
+            return  # no change to the operand or the flags
+        if not isinstance(a.val, int):
+            self.write_op(st, insn, ops[0], unk(f"({name_of(a)} {kind} {n})", a.prov))
+            st.flags = Flags(label=("循环移位后的标志", "?"), kind="any")
+            st.flags.stale = f"{kind} 未知值后读取标志"
+            return
+        v = a.val & MASK[size]
+        if kind == "ror":
+            r = ((v >> n) | (v << (bits - n))) & MASK[size]
+            cf, of = r >> (bits - 1), (r >> (bits - 1)) ^ ((r >> (bits - 2)) & 1)
+        else:
+            r = ((v << n) | (v >> (bits - n))) & MASK[size]
+            cf = r & 1
+            of = (r >> (bits - 1)) ^ cf
+        self.write_op(st, insn, ops[0], V(r, a.prov))
+        old = st.flags
+        if old.label is None:
+            st.flags = Flags(old.zf, old.sf, cf, of if masked == 1 else old.of, old.pf)
+            return
+        # OF is undefined for counts other than 1: both values stay possible.
+        ofs = (of,) if masked == 1 else (0, 1)
+        candidates = sorted(
+            {(z, s, cf, o, p) for z, s, _, _, p in old.candidates for o in ofs}
+        )
+        st.flags = old.narrowed(candidates)
+        st.flags.carry_unknown = False
+
+    def op_ror(self, st, insn, ops, _):
+        self._rotate(st, insn, ops, "ror")
+
+    def op_rol(self, st, insn, ops, _):
+        self._rotate(st, insn, ops, "rol")
 
     def op_shl(self, st, insn, ops, _):
         self._shift(st, insn, ops, "shl")
@@ -1850,6 +2036,62 @@ class Emulator:
     op_addss, op_subss, op_mulss, op_divss = op_vaddss, op_vsubss, op_vmulss, op_vdivss
     op_maxss, op_minss = op_vmaxss, op_vminss
 
+    def _compare_mask(self, st, insn, ops, worklist, name):
+        """vcmp<predicate>ss: lane 0 becomes all ones where the predicate holds
+        (Python float comparisons are false on NaN, as the ordered predicates);
+        the other lanes come from the first source. With an unknown operand the
+        path forks like a branch: one copy has the mask set, one cleared."""
+        predicate = COMPARE_PREDICATES[name]
+        base = self.vget(st, ops[1].reg if len(ops) == 3 else ops[0].reg)
+        src = ops[-1]
+        b = (
+            self.vget(st, src.reg)[0]
+            if src.type == X.X86_OP_REG
+            else self.load(st, insn, src.mem, 4)
+        )
+        prov = base[0].prov | b.prov
+        fa, fb = self.lane_float(base[0]), self.lane_float(b)
+        lanes = list(base)
+        if fa is not None and fb is not None:
+            lanes[0] = V(MASK[4] if predicate(fa, fb) else 0, prov)
+            self.vput(st, ops[0].reg, lanes, 16)
+            return
+        left = name_of(base[0]) if fa is None else repr(fa)
+        right = name_of(b) if fb is None else repr(fb)
+        taken = shorten(f"{name}({left}, {right})", 240)
+        not_taken = shorten(f"not {name}({left}, {right})", 240)
+        decided = self.decided(st, taken, not_taken)
+        outcomes = (decided,) if decided is not None else (True, False)
+        if decided is None:
+            self.count_fork(st, insn)
+            self.negations[taken], self.negations[not_taken] = not_taken, taken
+            st.condition_prov = st.condition_prov | prov
+        for outcome in outcomes[1:]:
+            other = st.clone()
+            other.conditions.append(not_taken)
+            other_lanes = list(lanes)
+            other_lanes[0] = V(0, prov)
+            self.vput(other, ops[0].reg, other_lanes, 16)
+            other.rip = insn.address + insn.size
+            worklist.append(other)
+        if decided is None:
+            st.conditions.append(taken)
+        lanes[0] = V(MASK[4] if outcomes[0] else 0, prov)
+        self.vput(st, ops[0].reg, lanes, 16)
+
+    def op_vblendvps(self, st, insn, ops, _):
+        """dst = per lane, src2 where the mask lane's sign bit is set, else src1."""
+        width = max(ops[0].size, 16)
+        first = self.vget(st, ops[1].reg)
+        second = self._vsrc(st, insn, ops[2], width)
+        mask = self.vget(st, ops[3].reg)
+        lanes = []
+        for x, y, m in zip(first, second, mask[: width // 4]):
+            if not isinstance(m.val, int):
+                raise Unsupported(f"vblendvps 掩码未知 @ {insn.address:#x}")
+            lanes.append(y if m.val >> 31 & 1 else x)
+        self.vput(st, ops[0].reg, lanes, width)
+
     # Scalar doubles occupy lanes 0-1.
     @staticmethod
     def lane_double(lanes):
@@ -1939,7 +2181,14 @@ class Emulator:
             else self.vload(st, insn, src.mem, 8)
         )
         if a is None or b is None:
-            st.flags = Flags(label=("double", "double"), kind="float", prov=pa | pb)
+            left = name_of(self.vget(st, ops[0].reg)[0]) if a is None else repr(a)
+            other = (
+                self.vget(st, src.reg)
+                if src.type == X.X86_OP_REG
+                else self.vload(st, insn, src.mem, 8)
+            )
+            right = name_of(other[0]) if b is None else repr(b)
+            st.flags = Flags(label=(left, right), kind="float", prov=pa | pb)
         elif a != a or b != b:
             st.flags = Flags(zf=1, pf=1, cf=1, prov=pa | pb)
         else:
@@ -2111,7 +2360,7 @@ class Emulator:
             d = struct.unpack("<d", struct.pack("<Q", lo.val | hi.val << 32))[0]
             lanes[0] = V(f32_bits(d), lo.prov | hi.prov)
         else:
-            lanes[0] = unk("double", lo.prov)
+            lanes[0] = unk(name_of(lo), lo.prov | hi.prov)
         self.vput(st, ops[0].reg, lanes, 16)
 
     def op_vucomiss(self, st, insn, ops, _):
@@ -2216,6 +2465,30 @@ class Emulator:
                 lane.prov,
             )
         self.vput(st, ops[0].reg, lanes, 16)
+
+
+COMPARE_PREDICATES = {
+    "eq": lambda x, y: x == y,
+    "lt": lambda x, y: x < y,
+    "le": lambda x, y: x <= y,
+    "unord": lambda x, y: x != x or y != y,
+    "neq": lambda x, y: not x == y,
+    "nlt": lambda x, y: not x < y,
+    "nle": lambda x, y: not x <= y,
+    "ord": lambda x, y: x == x and y == y,
+    "ge": lambda x, y: x >= y,
+    "gt": lambda x, y: x > y,
+    "nge": lambda x, y: not x >= y,
+    "ngt": lambda x, y: not x > y,
+}
+for _name in COMPARE_PREDICATES:
+    setattr(
+        Emulator,
+        f"op_vcmp{_name}ss",
+        lambda self, st, insn, ops, worklist, n=_name: self._compare_mask(
+            st, insn, ops, worklist, n
+        ),
+    )
 
 
 class _Mem:

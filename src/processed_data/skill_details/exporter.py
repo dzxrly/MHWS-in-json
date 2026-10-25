@@ -64,6 +64,8 @@ READING_NOTES = [
     "没有把握翻译的动作、射击类型保留游戏内部名称（如 QUICK_SHOT、EX_FIELD），效果名称中的英文同理",
     "只列出从游戏参数读取到的数值；只有发动条件、没有数值的技能在“技能”表中标为“未提取到”",
     "“代码名称”是游戏中读取该数值的函数名，便于核对",
+    "效果以“写入”开头的行，是技能发动等处理写入运行时字段的数值（如持续时间），名称保留代码中的字段名；同一字段按情形写入不同数据时，括号中注明数据字段",
+    "技能自身的取值函数没有读到、只在命中处理等函数中读到的数据（如弹道强化 Lv3 的攻击力加算）也单独列出，按数据字段命名",
 ]
 
 
@@ -94,12 +96,10 @@ def load_links(directory: Path = LINKS_DIR) -> dict:
 
 def unpack_link(link: dict, strings: list, constants: list) -> dict:
     """Replace string and constant table positions by their values."""
-    if "results" not in link:
-        return link
 
     def path(item):
         item = dict(item)
-        for field in ("conditions", "sources", "opaque"):
+        for field in ("conditions", "compared", "sources", "opaque"):
             if field in item:
                 item[field] = [strings[i] for i in item[field]]
         for field in ("expression", "detail"):
@@ -127,12 +127,15 @@ def unpack_link(link: dict, strings: list, constants: list) -> dict:
             ]
         return item
 
-    results = link["results"]
-    groups = [
-        dict(group, paths=[path(p) for p in group["paths"]])
-        for group in results["groups"]
-    ]
-    return dict(link, results=dict(results, groups=groups))
+    link = dict(link)
+    for part in ("results", "usage"):
+        if part in link:
+            groups = [
+                dict(group, paths=[path(p) for p in group["paths"]])
+                for group in link[part]["groups"]
+            ]
+            link[part] = dict(link[part], groups=groups)
+    return link
 
 
 def cartesian_blocks(points: list[tuple]) -> list[list[set]]:
@@ -168,7 +171,9 @@ def own_values(paths: list[dict]) -> list[dict]:
     paths = [p for p in paths if sourced(p)]
     own = []
     for path in paths:
-        roots = {re.split(r"[.\[]", source, 1)[0] for source in path["sources"]}
+        roots = {
+            re.split(r"[.\[]", source, maxsplit=1)[0] for source in path["sources"]
+        }
         if (
             roots & OWN_SOURCES
             and not roots & OTHER_SOURCES
@@ -182,20 +187,51 @@ def bare_method(function: dict) -> str:
     return re.sub(r"\d+$", "", function.get("method") or "")
 
 
-def effect_links(links: dict) -> dict[str, list[dict]]:
-    """Per skill, the links shown in the simplified sheet.
+def source_keys(link: dict) -> set[str]:
+    """The skill's own data items a link's shown values come from, without the
+    level: "PlayerSkillParam._Field" or "SkillData[HunterSkill_X]._value[i]"."""
+    keys = set()
+    for group in link["results"]["groups"]:
+        for path in own_values(group["paths"]):
+            for source in path["sources"]:
+                slot = re.match(r"SkillData\[(\S+) [^\]]*\]\.(_value\[\d+\])", source)
+                if slot:
+                    keys.add(f"SkillData[{slot.group(1)}].{slot.group(2)}")
+                elif re.split(r"[.\[]", source, maxsplit=1)[0] in OWN_SOURCES:
+                    keys.add(".".join(re.split(r"[.\[]", source)[:2]))
+    return keys
+
+
+def effect_links(links: dict) -> dict[str, list[tuple[dict, str]]]:
+    """Per skill, the links shown in the simplified sheet with their effect names.
 
     Only links with data-sourced values count. Level getters are dropped when the
     skill has anything else, and the skill's own getters (getSkill*/isSkill*)
-    win over callers that combine them with other state."""
+    win over callers that combine them with other state. A caller still shows
+    when it reads data items of the skill that no shown getter reads (a bonus
+    computed inside a hit handler); it is named after those items. Such an
+    item counts only when no other skill's links use it: a function summing
+    many skills evaluates the others' data in every scenario, so those items
+    are not this skill's."""
     functions = links["functions"]
     chosen: dict[str, list[dict]] = {}
+    users: dict[str, set] = {}  # data item -> skills whose links use it
     for link in links["links"]:
         results = link.get("results")
         if results and any(
             sourced(p) for group in results["groups"] for p in group["paths"]
         ):
             chosen.setdefault(link["skill"], []).append(link)
+        for item in [link, *written_links(link)]:
+            if item.get("results"):
+                for key in source_keys(item):
+                    users.setdefault(key, set()).add(link["skill"])
+
+    def own_extra(keys, skill, covered):
+        return sorted(k for k in keys - covered if users[k] == {skill})
+
+    named: dict[str, list[tuple[dict, str]]] = {}
+    shown_items: dict[str, set] = {}  # skill -> data items already shown
     for skill, own in chosen.items():
         method = {id(l): bare_method(functions[l["function"]]) for l in own}
         effects = [
@@ -206,8 +242,94 @@ def effect_links(links: dict) -> dict[str, list[dict]]:
             for l in effects
             if method[id(l)].lower().startswith(("getskill", "isskill"))
         ]
-        chosen[skill] = direct or effects
-    return chosen
+        shown = direct or effects
+        named[skill] = [
+            (l, effect_name(functions[l["function"]]["method"])) for l in shown
+        ]
+        covered = set().union(*(source_keys(l) for l in shown))
+        for link in effects:
+            if any(link is l for l in shown):
+                continue
+            extra = own_extra(source_keys(link), skill, covered)
+            if extra:
+                named[skill].append((link, item_effect_name(extra)))
+                covered.update(extra)
+        shown_items[skill] = covered
+    # Values a handler writes into runtime state (a duration stored when the
+    # skill activates), from data items nothing above shows.
+    writes: dict[tuple[str, str], list[tuple[dict, list[str]]]] = {}
+    for link in links["links"]:
+        for written in written_links(link):
+            covered = shown_items.setdefault(link["skill"], set())
+            extra = own_extra(source_keys(written), link["skill"], covered)
+            if extra:
+                # Named by the runtime field written, kept as in the code.
+                target = ".".join(written["written"].split(".")[-2:])
+                writes.setdefault((link["skill"], target), []).append((written, extra))
+                covered.update(extra)
+    for (skill, target), entries in writes.items():
+        for written, extra in entries:
+            # Different data written to one field (a timer set from one of two
+            # parameters by situation): each row names its data.
+            fields = "、".join(key.split(".", 1)[1] for key in extra)
+            name = (
+                f"写入 {target}" if len(entries) == 1 else f"写入 {target}（{fields}）"
+            )
+            named.setdefault(skill, []).append((written, name))
+    return named
+
+
+def written_links(link: dict) -> list[dict]:
+    """One pseudo-link per runtime field the link's paths write a data-sourced
+    number to; its paths return that number under the same conditions. Only
+    fields of a known declared type count: without it the written bits cannot
+    be read as a number (a float stored to an unnamed offset)."""
+    targets: dict[str, list[dict]] = {}
+    for group in (link.get("results") or {}).get("groups", []):
+        per_target: dict[str, list[dict]] = {}
+        for path in group["paths"]:
+            if path["status"] != "ok":
+                continue
+            for write in path.get("writes", []):
+                value = write["value"]
+                if (
+                    isinstance(value, str)
+                    or not write.get("sources")
+                    or not write.get("type")
+                    # a flag set from the skill level, not a parameter value
+                    or all(s.endswith("._SkillLv") for s in write["sources"])
+                ):
+                    continue
+                per_target.setdefault(write["target"], []).append(
+                    dict(
+                        status="ok",
+                        value=value,
+                        sources=write["sources"],
+                        conditions=path.get("conditions", []),
+                    )
+                )
+        for target, paths in per_target.items():
+            targets.setdefault(target, []).append(
+                dict(group, paths=paths, written=target)
+            )
+    return [
+        dict(link, results=dict(link["results"], groups=groups), written=target)
+        for target, groups in targets.items()
+    ]
+
+
+def item_effect_name(keys: list[str]) -> str:
+    """Effect name of data items: a parameter field is named like a getter of
+    the same words (per-weapon digits dropped), a SkillData slot by its index."""
+    names = []
+    for key in keys:
+        root, item = key.split(".", 1)
+        if root.startswith("SkillData"):
+            slot = re.search(r"\d+", item).group()
+            names.append(f"数值槽 {slot}")
+        else:
+            names.append(effect_name("getSkill" + re.sub(r"Wp\d\d", "", item)))
+    return "、".join(dict.fromkeys(names))
 
 
 def effect_points(link: dict) -> tuple[list[str], dict, dict]:
@@ -354,7 +476,7 @@ def build_sheets(
     for skill_id in order:
         ja_name, zh_name, explain = names.get(skill_id, ("", "", ""))
         rows = []
-        for link in chosen.get(skill_id, []):
+        for link, effect in chosen.get(skill_id, []):
             function = functions[link["function"]]
             dims, domains, points = effect_points(link)
             # Per level, points with the same values share one row.
@@ -375,9 +497,14 @@ def build_sheets(
                                 "数值": cell_value(set(values)),
                                 "适用": applies,
                                 "等级说明": level_explain.get((skill_id, level), ""),
-                                "效果": effect_name(function["method"]),
-                                "备注": (
-                                    "数值随战斗状态不同" if len(values) > 1 else ""
+                                "效果": effect,
+                                "备注": "；".join(
+                                    note
+                                    for note, shown in (
+                                        ("数值随战斗状态不同", len(values) > 1),
+                                        ("技能发动等处理写入的数值", "written" in link),
+                                    )
+                                    if shown
                                 ),
                                 "代码名称": bare_method(function),
                             }

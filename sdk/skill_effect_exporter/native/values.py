@@ -24,6 +24,15 @@ class Ptr:
 
 
 @dataclass(frozen=True)
+class Method:
+    """Slot ``index`` of an interface's dispatch table, read from an object of
+    that interface type: an indirect call through it calls that method."""
+
+    type_name: str
+    index: int
+
+
+@dataclass(frozen=True)
 class V:
     """A register or memory value: int bits, Ptr or Unk, plus provenance."""
 

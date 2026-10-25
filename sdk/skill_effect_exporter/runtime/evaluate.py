@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import itertools
+import math
 
 from ..config import (
     ARGUMENT_REGISTERS,
@@ -10,6 +11,7 @@ from ..config import (
     HUNTER_SKILL,
     MAX_ARGUMENT_COMBINATIONS,
     MAX_ENUM_VALUES,
+    OPAQUE_CALL_PREFIXES,
     OUT_PARAMETER_AREA,
     OUT_PARAMETER_STRIDE,
 )
@@ -59,7 +61,19 @@ class Evaluator:
         self.names = dict(index.names)
         self.negations = {}  # shared by every run: condition text -> its negation
         self.signatures = {}  # callee address -> il2cpp method record, on demand
+        self.exits = {}  # function start -> distances to its exits, on demand
         self.skill_calls = frozenset()  # set by extract: skill-argument methods
+        self.param_roots = frozenset()  # set by extract: skill parameter file names
+
+    def exit_distance(self, address):
+        """Instructions from address to a return or tail jump of its function."""
+        index = self.world.index
+        start = index.owner(address)
+        if start is None:
+            return 0
+        if start not in self.exits:
+            self.exits[start] = index.reaching(start, index.exits(start))
+        return self.exits[start].get(address, math.inf)
 
     def signature(self, address):
         """il2cpp method record of a callee (returns, params, flags), or None."""
@@ -80,7 +94,7 @@ class Evaluator:
             name = self.names.get(address)
             if name is None:
                 return True  # unnamed helper bodies (inlined C# getters, BCL helpers)
-            return not name.startswith(("System.Threading", "via.", "ace.cGameObject"))
+            return not name.startswith(OPAQUE_CALL_PREFIXES)
 
         return Emulator(
             self.world.pe,
@@ -91,12 +105,18 @@ class Evaluator:
             globals_=scenario.globals,
         )
 
-    def run(self, scenario, function, info, args, sites=None):
-        """Evaluate function once; with sites, only paths through one of them."""
+    def run(self, scenario, function, info, args, sites=None, usage=None, narrow=False):
+        """Evaluate function once; with sites, only paths through one of them
+        (narrow: one branch combination before the site, see Emulator.narrow).
+        usage: call site -> name; those calls stay unknowns of that name."""
         emulator = self.emulator(scenario)
         emulator.negations = self.negations
         emulator.signature = self.signature
         emulator.skill_calls = self.skill_calls
+        emulator.param_roots = self.param_roots
+        emulator.usage = dict(usage or {})
+        emulator.type_names = self.world.index.type_addresses()
+        emulator.narrow = narrow
         if sites:
             start = int(function["address"], 16)
             emulator.focus = (
@@ -105,6 +125,8 @@ class Evaluator:
                 self.world.index.reaching(start, sites),
                 frozenset(sites),
             )
+            if narrow:
+                emulator.exit_distance = self.exit_distance
         params = info.get("params", [])
         static = "Static" in info.get("flags", "")
         returns = info.get("returns", {}).get("type", "System.Void")

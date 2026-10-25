@@ -170,6 +170,8 @@ WORDS = {
     "Bless": "加护",
     "Guard": "防御",
     "Power": "",
+    "Data": "",
+    "Pack": "",
     "Hate": "仇恨",
     "Dodge": "回避",
     "Dist": "距离",
