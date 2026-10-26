@@ -67,6 +67,7 @@ def skill_menu(session):
         [
             "全量提取（写入 src/processed_data/skill_details/data，约 30 分钟）",
             "调试指定技能（输出到 .tmp）",
+            "更新数值含义与说明（技能模块 → index.json，不重新求值）",
             "重建 SkillDetails.xlsx",
             "返回",
         ],
@@ -82,6 +83,8 @@ def skill_menu(session):
         output = ask_text("输出目录", f"{TRY_DIR}/try")
         flags = [arg for skill in skills.split() for arg in ("-s", skill)]
         run(SKILL, "extract", *session.inputs(), *flags, "-o", output)
+    elif action.startswith("更新"):
+        run(SKILL, "annotate")
     else:
         run("src.processed_data.skill_details")
 

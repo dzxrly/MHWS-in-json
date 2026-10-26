@@ -4,7 +4,7 @@ Effect names are built from the getter's method name: the words are split, the
 known ones translated through WORDS, and the skill's own codename words (which
 the sheet already shows as the skill name) dropped through SKILL_WORDS. Words in
 neither table are kept as they are so a missing translation stays visible.
-EFFECT_NAMES overrides names the word-by-word reading gets wrong.
+The name is a fallback: an effect's meaning in its skill module (效果) replaces it.
 """
 
 import re
@@ -232,64 +232,6 @@ SKILL_WORDS = {*"""Acc Area Armor Art Artillery Assault Autumn Awake Bacteria Ba
     Super Takumi Technical Timing Toishi Tough Upper Used Violent Wave Waza
     Wazamono Wind Winter Wp Yell Auto Ability Shot Ammo Heat""".split()}
 
-# Method name (without the trailing metadata number) -> effect name.
-EFFECT_NAMES = {
-    "getSkillAttackAdd": "攻击力加算",
-    "getSkillAttackRate": "攻击力倍率",
-    "getSkillCriticalAdd": "会心率加算",
-    "getSkillDefenseAdd": "防御力加算",
-    "getSkillDefenseRate": "防御力倍率",
-    "getSkillDefenseAttrAdd": "全属性耐性加算",
-    "getSkillGunnerAmmo_Special": "特殊射击倍率",
-    "getSkillBallisticBeginWideRate_Bow": "最佳距离起点倍率",
-    "getSkillBallisticBeginWideRate_Gun": "最佳距离起点倍率",
-    "getSkillBallisticEndWideRate_Bow": "最佳距离终点倍率",
-    "getSkillBallisticEndWideRate_Gun": "最佳距离终点倍率",
-    "getSkillSuperCriticalAttackRate": "会心伤害倍率",
-    "getSkillAttrCriticalRate": "属性会心伤害倍率",
-    "getSkillElementCriticalRate": "属性会心伤害倍率",
-    "getSkillWazamonoPercent": "会心时不消耗锋利度概率",
-    "getSkillCriticalNoKireRunning": "会心时不消耗锋利度（随机判定）",
-    "getSkillShinganPercent": "发动概率",
-    "getSkillDodgeNoHitLv": "回避无敌等级",
-    "getDodgeNoHitTime": "回避无敌时间",
-    "getDodgeDistRate": "回避距离倍率",
-    "calcContinuousAttackAddAttack": "攻击力加算",
-    "calcContinuousAttackAddElem": "属性值加算",
-    "getSkillResistQuake_L": "防震（大震动）",
-    "getSkillResistQuake_S": "防震（小震动）",
-    "getSkillResistQuake_SS": "防震（微震动）",
-    "getSkillResistWind_Dragon": "风压耐性（龙风压）",
-    "getSkillResistWind_L": "风压耐性（大风压）",
-    "getSkillResistWind_S": "风压耐性（小风压）",
-    "getSkillEarPlugRate_L": "听觉保护（大咆哮）倍率",
-    "getSkillEarPlugRate_S": "听觉保护（小咆哮）倍率",
-    "getSkillHoneyHunter_Add_Max": "额外获得数量上限",
-    "getSkillHoneyHunter_Add_Min": "额外获得数量下限",
-    "getSkillDiligentAttack_5_Add": "攻击力加算（5 次）",
-    "getSkillDiligentAttack_10_Add": "攻击力加算（10 次）",
-    "getSkillDiligentAttack_20_Add": "攻击力加算（20 次）",
-    "getSkillDiligentAttack_30_Add": "攻击力加算（30 次）",
-    "getSkillDiligentDefense_5_Add": "防御力加算（5 次）",
-    "getSkillDiligentDefense_10_Add": "防御力加算（10 次）",
-    "getSkillDiligentDefense_20_Add": "防御力加算（20 次）",
-    "getSkillDiligentDefense_30_Add": "防御力加算（30 次）",
-    "getSkillSuperGuts_NoUsedAttackRate": "未触发时攻击力倍率",
-    "getSkillSuperGuts_NoUsedDefenseRate": "未触发时防御力倍率",
-    "getSkillSuperGuts_UsedAttrAdd": "触发后属性耐性加算",
-    "getSkillSuperGuts_UsedDefenseRate": "触发后防御力倍率",
-    "getSkillManzokuNoUseRate": "不消耗概率",
-    "getSkillHunterLifeMeatGrillMusicGameJustTiming": "烤肉判定时机",
-    "getSkillHunterLifeMeatGrillMusicGameInputCD": "烤肉输入冷却",
-    "getSkillHunterLifeMeatGrillBurnTime": "烤焦时间",
-    "isSkillReloadUpAddAmmo": "额外装填一发",
-    "getSkillReloadUpMotionSpeed": "装填动作速度",
-    "getSkillGuardPowerDamageRateEnableGuard": "可防御攻击的伤害倍率",
-    "getskillGuardAbility_MaxGuardPowerAdd": "最大防御性能加算",
-    "getSkillGuardAbility_GuardPowerAdd": "防御性能加算",
-    "getSkillGuardPowerDamageRate": "防御时伤害倍率",
-}
-
 
 # Weapon words that narrow an effect; shown as a trailing "（弓）".
 QUALIFIERS = {
@@ -312,48 +254,10 @@ PHRASES = [
     ("耐力受到倍率", "耐力消耗倍率"),
     ("红色体力速度倍率", "红色体力回复速度倍率"),
 ]
-EFFECT_NAMES |= {
-    "getSkill218AttackRate_Bow": "攻击力倍率（弓）",
-    "getSkill218AttackRate_Gun": "攻击力倍率（弩炮）",
-    "getSkillArtilleryAttackAddRateWp07Shot": "铳枪炮击攻击力倍率",
-    "getSkillArtilleryFireAttackAddWp07Shot": "铳枪炮击火属性加算",
-    "getSkillArtilleryAttackRateWp09Grenade": "盾斧榴弹瓶攻击力倍率",
-    "getSkillArtilleryWp07RyuugekiTimerRate": "铳枪龙击炮冷却时间倍率",
-    "getSkillAutoRecoverIntervalTime": "自动回复间隔时间",
-    "getSkillLowerIntimidationRate": "倍率（Lower）",
-    "getSkillUpperIntimidationRate": "倍率（Upper）",
-    "getSkillAttrResistanceMaxTimeRate": "属性异常持续时间倍率",
-    "getSkillDefenseDownResistanceMaxTimeRate": "防御力降低持续时间倍率",
-    "getSkillEexplorerLuck_AddRate": "额外报酬倍率",
-    "getSkillBloodJoyAdd": "数值加算",
-    "getSkillBubbleToishiCriticalAdd_Bubble": "会心率加算（泡沫）",
-    "getSkillBubbleToishiCriticalAdd_Water": "会心率加算（水）",
-    "getSkillChallengerAttrAttrAdd": "属性值加算",
-    "getSkillContinuousAttackReinforceTimeAdd": "持续时间加算",
-    "getSkillCounterAttack_ActiveTime": "发动时间",
-    "getSkillDischargeCriticalTime": "会心率提升持续时间",
-    "getSkillElecStorageTimeAdd": "持续时间加算",
-    "getSkillGunnerAmmo_Rapid_LightEnVariableLastShotRate": "速射最后一发倍率（轻弩）",
-    "getSkillHeavyArmorBlessRate": "加护倍率",
-    "getSkillMantleStrengtheningDefenseAttrAdd": "属性耐性加算",
-    "getSkillOtomoPowerUpAttackRate": "随从攻击力倍率",
-    "getSkillOtomoPowerUpDefensekRate": "随从防御力倍率",
-    "getSkillPowerProlongeTimeRate": "强化状态持续时间倍率",
-    "getSkillPowerProlongeExEmote00TimeRate": "强化状态持续时间倍率（ExEmote00）",
-    "getSkillPowerProlongeDarkBladeTimeRate": "强化状态持续时间倍率（DarkBlade）",
-    "getSkillRestraintResistanceRate": "束缚耐性倍率",
-    "getSkillRoastCorn_FireAdd": "火属性值加算",
-    "getSkillToishiBoostDurationTime": "强化持续时间",
-    "getSkillToishiHighSpeedCount": "快速磨刀次数",
-    "getSkillWeakAttackHitCriticalAdd": "弱点命中会心率加算",
-    "getSkillWeakAttackScarHitCriticalAdd": "伤口命中会心率加算",
-}
 
 
 def effect_name(method: str) -> str:
     method = re.sub(r"\d+$", "", method)
-    if method in EFFECT_NAMES:
-        return EFFECT_NAMES[method]
     body = re.sub(r"^(getSkill|getskill|isSkill|get|calc)", "", method)
     body = body.replace("ShotGun", "_ShotGun_").replace("BowGun", "_BowGun_")
     words = []

@@ -13,7 +13,7 @@ import re
 import uuid
 from pathlib import Path
 
-from ..config import (
+from ...config import (
     ARRAY_DATA_OFFSET,
     ARRAY_LENGTH_OFFSET,
     BOX_HEADER,
@@ -24,9 +24,20 @@ from ..config import (
     LIST_SIZE_OFFSET,
     LIST_VERSION_OFFSET,
     VEC3_SIZE,
+    VTABLE_OFFSET,
 )
 
-from ..native.values import Method, Ptr, Unk, Unsupported, V, f32_bits, f64_bits, unk
+from ..native.values import (
+    Method,
+    Ptr,
+    Unk,
+    Unsupported,
+    V,
+    VirtualMethod,
+    f32_bits,
+    f64_bits,
+    unk,
+)
 
 ENUM_TEXT = re.compile(r"^\[(-?\d+)\]\s*(.*)$")
 PRIMITIVES = {
@@ -103,6 +114,23 @@ class Layouts:
             key=lambda item: item[1].get("id", 0),
         )
         return methods[index] if 0 <= index < len(methods) else None
+
+    def ancestry(self, type_name):
+        """The type and its bases, most derived first."""
+        chain, name = [], type_name
+        while name and name not in chain:
+            chain.append(name)
+            name = self.record(name).get("parent")
+        return chain
+
+    def virtual_method(self, type_name, index):
+        """Function address of an object's virtual method in vtable slot index
+        (il2cpp vtable_index), searched from the most derived type, or None."""
+        for name in self.ancestry(type_name):
+            for info in self.record(name).get("methods", {}).values():
+                if info.get("vtable_index") == index and info.get("function"):
+                    return int(info["function"], 16)
+        return None
 
     def is_struct(self, type_name):
         """A value type with dumped fields (not a primitive, enum or float vector)."""
@@ -225,6 +253,9 @@ class UnkObj(HObj):
                 if dimension in heap.inputs:
                     return heap.inputs[dimension]
             if not heap.layouts.is_value_type(ftype):
+                state = heap.states.get((self.type_name, name))
+                if state is not None:
+                    return V(Ptr(heap.state_object(*state, path)))
                 return V(Ptr(heap.unknown(ftype, path)))
             if heap.layouts.is_struct(ftype):
                 return UnkObj(ftype, path).read(BOX_HEADER, size, heap)
@@ -268,6 +299,21 @@ class DispatchTable(HObj):
         return unk(f"{self.path}+{off:#x}")
 
 
+class ClassDescriptor(HObj):
+    """Type word of an object whose runtime type is known; vtable slot k sits
+    at VTABLE_OFFSET + 8k."""
+
+    def __init__(self, type_name):
+        self.type_name, self.path = None, f"{type_name} 的类型信息"
+        self.runtime_type = type_name
+
+    def read(self, off, size, heap):
+        slot, rest = divmod(off - VTABLE_OFFSET, 8)
+        if off >= VTABLE_OFFSET and not rest and size == 8:
+            return V(VirtualMethod(self.runtime_type, slot))
+        return unk(f"{self.path}+{off:#x}")
+
+
 class SynthObj(HObj):
     """Object assembled from exports for a scenario (hunter skill state)."""
 
@@ -279,6 +325,17 @@ class SynthObj(HObj):
         if off in self.values:
             return self.values[off]
         return UnkObj(self.type_name, self.path).read(off, size, heap)
+
+
+class StateObj(SynthObj):
+    """A per-skill state object of config.SKILL_STATE_OWNER, of the runtime
+    type its constructor allocates: only the skill-enum fields the constructor
+    sets are known; its type word resolves virtual calls."""
+
+    def read(self, off, size, heap):
+        if off == 0 and size == 8:
+            return V(Ptr(heap.shared(ClassDescriptor, self.type_name)))
+        return super().read(off, size, heap)
 
 
 class JsonObj(HObj):
@@ -464,6 +521,9 @@ class Heap:
         self.singletons = (
             {}
         )  # type -> object every unknown reference of that type resolves to
+        # (owner type, field) -> (runtime type, {offset: V}): per-skill state
+        # objects (StateObj) an unknown owner's field holds.
+        self.states = {}
 
     def dimension_of(self, type_name, field_name, field_type):
         """Name of the scenario dimension a runtime field supplies, if any."""
@@ -481,6 +541,12 @@ class Heap:
         key = (type_name, path)
         if key not in self.unknowns:
             self.unknowns[key] = UnkObj(type_name, path)
+        return self.unknowns[key]
+
+    def state_object(self, type_name, values, path):
+        key = (StateObj, path)
+        if key not in self.unknowns:
+            self.unknowns[key] = StateObj(type_name, path, values)
         return self.unknowns[key]
 
     def shared(self, kind, type_name):

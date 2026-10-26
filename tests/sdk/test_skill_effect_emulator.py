@@ -3,12 +3,20 @@
 import struct
 import unittest
 
-from sdk.skill_effect_exporter.native.emulator import STACK, Emulator
-from sdk.skill_effect_exporter.native.values import Ptr, V, f32_bits
-from sdk.skill_effect_exporter.runtime.heap import Heap, JsonObj, Layouts, SynthObj
+from sdk.skill_effect_exporter.shared.native.emulator import STACK, Emulator
+from sdk.skill_effect_exporter.shared.native.values import Ptr, V, f32_bits
+from sdk.skill_effect_exporter.shared.runtime.heap import (
+    Heap,
+    JsonObj,
+    Layouts,
+    SynthObj,
+)
 from sdk.skill_effect_exporter.config import MAX_RECORDED_PATHS
-from sdk.skill_effect_exporter.native.scan import indexed_fields
-from sdk.skill_effect_exporter.workflow.extract import limit_recorded, merge_paths
+from sdk.skill_effect_exporter.shared.native.scan import indexed_fields
+from sdk.skill_effect_exporter.shared.workflow.extract import (
+    limit_recorded,
+    merge_paths,
+)
 
 BASE = 0x140001000
 CONSTANT = 0x140002000
@@ -30,6 +38,16 @@ class FakeMetadata:
                 "set_Pair2": dict(id=2, returns=dict(type="System.Void")),
                 "get_Pair1": dict(id=1, returns=dict(type="Pair")),
             },
+        ),
+        # A state holder whose field holds a cDerived (declared as its base);
+        # vtable slot 0 is overridden at BASE + 0xB.
+        "Owner": dict(fields={"_Info": dict(type="cInfo", offset_from_base="0x10")}),
+        "cInfo": dict(
+            methods={"beginSkill": dict(vtable_index=0, function=hex(BASE + 0xA))}
+        ),
+        "cDerived": dict(
+            parent="cInfo",
+            methods={"beginSkill": dict(vtable_index=0, function=hex(BASE + 0xB))},
         ),
         "Param": dict(
             fields={
@@ -396,6 +414,18 @@ class EmulatorTests(unittest.TestCase):
 
         (result,) = run(code, setup, "System.Int32")
         self.assertEqual(result["value"].name, "IHolder.get_Pair1().b")
+
+    def test_virtual_call_on_state_object_runs_the_override(self):
+        # mov rax,[rdx+0x10]; mov rcx,[rax]; call [rcx+0x40]; ret;
+        # override: mov eax,[rax+0x18]; ret (the base's slot 0 is the first ret)
+        code = bytes.fromhex("488b4210" "488b08" "ff5140" "c3" "8b4018" "c3")
+
+        def setup(st, heap):
+            heap.states = {("Owner", "_Info"): ("cDerived", {0x18: V(7)})}
+            st.regs["rdx"] = V(Ptr(heap.unknown("Owner", "owner")))
+
+        (result,) = run(code, setup, "System.Int32")
+        self.assertEqual(result["value"], 7)
 
     def test_condition_taken_again_does_not_fork(self):
         # mov eax,[rdx+0x10]; cmp eax,3; jg one; mov ecx,[rdx+0x10]; cmp ecx,3;

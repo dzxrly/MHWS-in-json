@@ -9,6 +9,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 # Layout version of the link directory (index.json + shards).
 SCHEMA_VERSION = 1
+# Game version the reviewed statements were checked against: notes, the
+# evidence of declared and skipped functions in the skill modules. After a
+# game update, re-check them (AGENTS.md) and then change it here; it is not
+# compared with the game files.
+GAME_VERSION = "1.42.0.2"
 DEFAULT_NATIVES = ROOT / "MHWS-in-json/natives"
 DEFAULT_OUTPUT = ROOT / "src/processed_data/skill_details/data/skill_links"
 TMP_DIR = ROOT / ".tmp"
@@ -38,6 +43,10 @@ MEANING_FIELDS = ("效果", "作用于", "计算", "条件", "单位", "依据",
 # PlayerGlobalParam fields whose type name ends so hold skill parameters
 # (PlayerSkillParam, PlayerMealSkillParam, ...): scanned for coverage.
 SKILL_PARAM_SUFFIX = "SkillParam"
+# Skill parameter fields that only configure visual effects (read by
+# HunterSkillDef.getSkillCommonEffectColor, an opaque call): never a skill
+# value, so their read sites are no focus targets for unvalued fields.
+DISPLAY_PARAM_FIELDS = ("_CommonEffectSetting",)
 
 # cHunterSkill methods whose bodies identify shared runtime structures.
 VALUE_HELPER = "getSkillValue"  # loads HunterSkillDef.SkillToGroupSkill first
@@ -46,6 +55,10 @@ REMAP_BUILDER = "createSkillToGroupSkill"  # (skill, group) pairs as immediates
 
 # Methods taking a skill identity; their call sites name the skills a caller uses.
 SKILL_PARAM_TYPES = (SKILL_ENUM, SKILL_FIXED_ENUM)
+# Holder of per-skill state objects: its constructor allocates one object per
+# skill (cInfo or a subclass) and sets the object's skill-enum field, which
+# later code passes to the skill helpers instead of an immediate.
+SKILL_STATE_OWNER = "app.cHunterSkillParamInfo"
 # One native body shared by more methods than this is a generic stub, not a skill helper.
 MAX_HELPER_ALIASES = 4
 
@@ -67,6 +80,10 @@ REFERENCE_TAG_BIT = 63  # tagged references; btr 63 / and 0x7fff... clear it
 # HunterCharacter._ContextHolder: slot 0 is IHunterContextHolder.get_Hunter).
 INTERFACE_TABLE_OFFSET = -0x20
 INTERFACE_FLAG = "ClassSemanticsMask"  # il2cpp type flags of an interface
+# Virtual calls: mov rax,[obj]; call [rax+VTABLE_OFFSET+8*k] calls the method
+# with il2cpp vtable_index k of obj's runtime type (checked on
+# cHunterSkillParamInfo.beginDisaster: cInfo.beginSkill has index 4, +0x60).
+VTABLE_OFFSET = 0x40
 # A float-vector native type and its exported float count.
 FLOAT_VECTORS = {
     "via.vec2": 2,
@@ -115,6 +132,7 @@ OPAQUE_CALL_PREFIXES = (
     "app.cHunterEffect",
     "app.cEffectController",
     "app.cHunterSkill.callBodyEffect",
+    "app.HunterSkillDef.getSkillCommonEffectColor",  # reads via.UserData internals
     "app.SoundPlayerInfoHolder",
 )
 

@@ -18,7 +18,7 @@ from capstone import x86_const as X
 
 from sdk.enemy_logic_exporter.shared.native.pe import address_catalog
 
-from ..config import (
+from ...config import (
     ARGUMENT_REGISTERS,
     ARRAY_DATA_OFFSET,
     CALLER_STACK_ARGUMENT,
@@ -269,6 +269,72 @@ class NativeIndex:
                 op = insn.operands[0]
                 if op.type != X.X86_OP_IMM or not start <= op.imm < end:
                     found.append(insn.address)
+        return found
+
+    def state_objects(self, type_name, layouts):
+        """field -> (allocated type, {field offset: immediate}) for the objects
+        the constructor of type_name allocates and stores in its own fields:
+        ``mov rdx, [rip+G]`` (a type descriptor), the allocator call, the new
+        object's immediate field stores, then ``mov [this+F], obj`` (other
+        calls, such as write barriers, only clobber volatile registers). Only
+        objects with immediate stores and fields whose declared type is the
+        allocated type or one of its bases count; a constructor that matches
+        none raises (pattern changed)."""
+        ctor = [
+            int(info["function"], 16)
+            for name, info in layouts.record(type_name).get("methods", {}).items()
+            if method_stem(name) == ".ctor" and info.get("function")
+        ]
+        if len(ctor) != 1:
+            raise ValueError(f"{type_name} 的构造函数应唯一，实际 {len(ctor)} 个")
+        fields = layouts.fields(type_name)
+        types = self.type_addresses()
+        found, allocated, holders, typed = {}, None, set(), None
+        for insn in self.disasm(ctor[0]):
+            ops = insn.operands
+            if insn.mnemonic == "call":
+                if typed:
+                    allocated, holders, typed = (typed, {}), {"rax"}, None
+                else:
+                    holders -= set(VOLATILE)
+                continue
+            if insn.mnemonic != "mov" or len(ops) != 2:
+                if ops and ops[0].type == X.X86_OP_REG:
+                    holders.discard(GPR.get(self.cs.reg_name(ops[0].reg)))
+                continue
+            dst, src = ops
+            if dst.type == X.X86_OP_REG:
+                name = GPR.get(self.cs.reg_name(dst.reg))
+                source = (
+                    GPR.get(self.cs.reg_name(src.reg))
+                    if src.type == X.X86_OP_REG
+                    else None
+                )
+                if src.type == X.X86_OP_MEM and self.cs.reg_name(src.mem.base) == "rip":
+                    target = insn.address + insn.size + src.mem.disp
+                    pointer = int.from_bytes(self.pe.read(target, 8), "little")
+                    if name == "rdx" and pointer in types:
+                        typed = types[pointer]
+                if source in holders:
+                    holders.add(name)
+                else:
+                    holders.discard(name)
+                continue
+            if dst.type != X.X86_OP_MEM or allocated is None:
+                continue
+            base = GPR.get(self.cs.reg_name(dst.mem.base))
+            if base in holders and src.type == X.X86_OP_IMM:
+                allocated[1][dst.mem.disp] = src.imm
+            elif (
+                src.type == X.X86_OP_REG
+                and allocated[1]
+                and GPR.get(self.cs.reg_name(src.reg)) in holders
+                and dst.mem.disp in fields
+                and fields[dst.mem.disp][1] in layouts.ancestry(allocated[0])
+            ):
+                found[fields[dst.mem.disp][0]] = (allocated[0], dict(allocated[1]))
+        if not found:
+            raise ValueError(f"{type_name} 的构造函数中没有找到分配并存入字段的对象")
         return found
 
     def owner(self, address):

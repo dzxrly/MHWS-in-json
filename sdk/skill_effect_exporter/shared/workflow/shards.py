@@ -4,7 +4,7 @@ import json
 from collections import defaultdict
 from pathlib import Path
 
-from ..config import SCHEMA_VERSION
+from ...config import SCHEMA_VERSION
 
 # Shard and string-table layout of the committed link directory.
 INDEX_NAME = "index.json"

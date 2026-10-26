@@ -148,10 +148,13 @@ python -B -m sdk.enemy_logic_exporter new-monster --enemy <新魔物ID>         
 ```powershell
 python -B -m sdk.skill_effect_exporter extract -e <dump 出的 EXE> -i <il2cpp_dump.json>   # 全部技能，約 30 分鐘，寫入正式位置
 python -B -m sdk.skill_effect_exporter extract -s HunterSkill_019 -o .tmp/skill-effects/try.json   # 除錯單個技能
+python -B -m sdk.skill_effect_exporter extract --all-links -o .tmp/skill-effects/all   # 也求值技能模組跳過的函式（遊戲更新後核對）
+python -B -m sdk.skill_effect_exporter annotate                                    # 只把技能模組的數值含義與說明寫進 index.json，不重新求值
+python -B -m sdk.skill_effect_exporter new-skill -s HunterSkill_250                # 為技能表新增的技能產生空模組
 python -m src.processed_data.skill_details                                         # 只重建 SkillDetails.xlsx
 ```
 
-- `SkillDetails.xlsx` 的「技能效果」表每列是一個技能等級（`Lv.X`）的一個效果，列出遊戲內的技能說明與等級說明，以及適用的武器、彈種或動作（「【武器】彈種」）。表中只保留從遊戲參數讀取到的數值，優先採用技能自身的 `getSkill*` 取值函式，不採用組合多個來源的函式；只在未裝備技能或疊加餐點效果時出現的數值不列出。效果名稱由取值函式名翻譯而來（`src/processed_data/skill_details/labels.py`，名稱為簡體中文），最後一欄保留函式名。數值為「a / b」表示數值隨戰鬥狀態變化，例如連擊的命中段數。
+- `SkillDetails.xlsx` 的「技能效果」表每列是一個技能等級（`Lv.X`）的一個效果，列出遊戲內的技能說明與等級說明，以及適用的武器、彈種或動作（「【武器】彈種」）。表中只保留從遊戲參數讀取到的數值，優先採用技能自身的 `getSkill*` 取值函式，不採用組合多個來源的函式；只在未裝備技能或疊加餐點效果時出現的數值不列出。每個技能在 `sdk/skill_effect_exporter/skills/hunterskill_<編號>.py` 有獨立模組，寫明它每個顯示效果的數值含義（`MEANINGS`：名稱、作用於、計算、條件、單位、依據，以及數值所隨情形的名稱）和已核實的說明（`NOTES`）；`extract` 把它們寫進 `index.json`，修改模組後用 `annotate` 單獨更新。沒有寫含義的效果按取值函式名翻譯命名（`src/processed_data/skill_details/labels.py`，名稱為簡體中文），最後一欄保留函式名。數值隨情形（如連擊的命中次數）變化時按情形分列；只有程式碼中找不到區分條件時才保留「a / b」。
 - 表格不列出的函式位址、參數、執行期條件、資料來源、EXE 常數和未模擬的呼叫保留在鏈路 JSON 中。
 
 - 相依套件與上面的虛擬環境相同（Capstone）。
@@ -166,4 +169,4 @@ python -m src.processed_data.skill_details                                      
 - 技能效果表也會列出處理函式寫入執行時狀態的數值（如技能發動時寫入的持續時間，效果名以「写入」開頭並保留欄位名），以及只在取值函式之外讀到的數值。兩者都只在該資料項還沒有列出、且沒有其他技能的鏈路用到它時才列出，避免彙總多個技能的函式把其他技能的資料算進來。
 - 輸出不記錄遊戲版本或摘要；遊戲或 `MHWS-in-json` 更新後要重新執行 `extract`。
 - 彙總多個技能的函式（如攻擊力合計）依賴其他技能的計時器等執行期狀態，鏈路 JSON 中可能記為 `too_many_paths`；同一技能的精確數值通常由 `getSkill*` 讀取函式給出。
-- 需要人工說明的技能寫在 `sdk/skill_effect_exporter/notes.py`；版本相關的佈局常數集中在 `sdk/skill_effect_exporter/config.py`。遊戲更新後的檢查步驟見 [技能效果 SDK 維護說明](../skill_effect_exporter/AGENTS.md)（簡體中文）。
+- 與敵人邏輯 SDK 相同，共通程式碼在 `sdk/skill_effect_exporter/shared/`，每個技能在 `skills/` 有獨立模組：它的提取步驟（`extract`，以及所有技能的鏈路求完後執行的 `extract_parameters`；多數只是呼叫共通步驟的薄入口，只屬於這個技能的特殊處理寫在這裡，如掃描無法對應到技能的函式及核對依據 `DECLARED_METHODS`，以及得不到本技能可顯示數值、只記錄鏈路不求值的函式 `SKIPPED_FUNCTIONS`）、顯示效果的數值含義和說明。對所有技能成立的說明寫在 `notes.py`，版本相關的佈局常數集中在 `config.py`，二者都在 `sdk/skill_effect_exporter/` 根部。遊戲更新後的檢查步驟見 [技能效果 SDK 維護說明](../skill_effect_exporter/AGENTS.md)（簡體中文）。

@@ -95,8 +95,16 @@ python -m src.processed_data.enemy_battle_logic --preview-all --output .tmp/batt
 
 然後開啟 `.tmp/battle-preview/enemy_battle_logic/index.html`，頁面可離線使用。
 
+`SkillDetails.xlsx` 中的技能效果數值也可以產生為單個離線網頁（簡體中文），資料來自同一份技能效果鏈路 JSON：
+
+```powershell
+python -m src.processed_data.skill_details.web --output .tmp/skill-web
+```
+
+開啟 `.tmp/skill-web/skill_details/index.html`。技能按類別列出，可按名稱、效果和武器搜尋；每個效果一張小表，欄是技能等級，列是適用的武器、彈種、動作或情形，旁邊給出數值含義（作用於、計算、條件、單位），程式碼依據可展開查看。
+
 ## 資料說明
 
-- `SkillDetails.xlsx` 給出每個技能的效果數值。「技能效果」頁每列是一個技能在某一等級（`Lv.1`、`Lv.2`……）的一個效果，列出遊戲內的技能說明與等級說明、效果數值，以及適用的武器、彈種或動作（寫作「【武器】彈種」）。只列出從遊戲參數讀取到的數值，按「只裝備該技能」的情境求得；數值為「a / b」表示隨戰鬥狀態變化。「技能」頁合併 SkillCommonData 與 SkillData。名稱提供日文與簡體中文，說明和效果名稱只提供簡體中文。
+- `SkillDetails.xlsx` 給出每個技能的效果數值。「技能效果」頁每列是一個技能在某一等級（`Lv.1`、`Lv.2`……）的一個效果，列出遊戲內的技能說明與等級說明、效果數值，以及適用的武器、彈種或動作（寫作「【武器】彈種」）。只列出從遊戲參數讀取到的數值，按「只裝備該技能」的情境求得。數值隨情形（如連續命中次數）不同時分列列出，情形寫在「条件」欄開頭；只在其他效果（飯技、狩獵笛旋律、武器自身狀態、其他技能的資料）生效時才出現的數值不列出；隨機判定寫作發動機率（如 80%）。只有程式碼中找不到區分條件時才保留「a / b」。「作用于」「计算」「条件」「单位」欄（數值作用於什麼、怎樣計算、何時生效、單位）來自 SDK 中每個技能的模組 `sdk/skill_effect_exporter/skills/hunterskill_<編號>.py` 裡人工整理的數值含義，由 SDK 寫進鏈路 JSON，依據程式碼中每個數值的用途寫出；`python -m src.processed_data.skill_details --meanings-report <檔案.md>` 列出每個效果的含義及其用途證據。「技能」頁合併 SkillCommonData 與 SkillData。名稱提供日文與簡體中文，說明和效果名稱只提供簡體中文。
 - `MissionData.xlsx` 中每個任務完成條件佔一列，其餘任務欄位縱向合併。缺少對應語言文字時回退英文，無名稱的魔物保留 `EM` 編號。`SoloHealth` 列出可能的初始單人最大血量，計入任務難度、隨機血量檔位和`Legendary` 倍率；無法確定目標時留空。
 - `WeaponActionValues.xlsx` 需要格式為 `mhws_static_action_request_set_map_v2` 的 `MHWS-in-json/ActionMap.json`。使用同版本輸入執行 `motlist-to-json action-map` 可重新產生，也可透過 `MHWS_ACTION_MAP_PATH` 指定其他檔案。每條對映各佔一列，未對映的 requestSet 保留，`MappingName` 留空。`MappingConfidence` 表示證據類別。日語以外的語言版本會在 `MappingName` 前增加日語名稱欄 `MappingNameJa`。

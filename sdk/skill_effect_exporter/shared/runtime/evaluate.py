@@ -5,7 +5,7 @@ from __future__ import annotations
 import itertools
 import math
 
-from ..config import (
+from ...config import (
     ARGUMENT_REGISTERS,
     FIRST_STACK_ARGUMENT,
     HUNTER_SKILL,
@@ -15,7 +15,7 @@ from ..config import (
     OUT_PARAMETER_AREA,
     OUT_PARAMETER_STRIDE,
 )
-from ..native.emulator import STACK, Emulator, Stack, unknown_lanes
+from ..native.emulator import STACK, Emulator, Stack, decoder, unknown_lanes
 from ..native.values import Ptr, V, unk
 
 FLOAT_TYPES = ("System.Single", "System.Double")
@@ -64,6 +64,8 @@ class Evaluator:
         self.exits = {}  # function start -> distances to its exits, on demand
         self.skill_calls = frozenset()  # set by extract: skill-argument methods
         self.param_roots = frozenset()  # set by extract: skill parameter file names
+        self.decoded = {}  # instruction cache shared by every emulator
+        self.cs = decoder()  # and their disassembler
 
     def exit_distance(self, address):
         """Instructions from address to a return or tail jump of its function."""
@@ -103,6 +105,8 @@ class Evaluator:
             skip_calls={self.world.cookie},
             inline_ok=inline_ok,
             globals_=scenario.globals,
+            decoded=self.decoded,
+            cs=self.cs,
         )
 
     def run(self, scenario, function, info, args, sites=None, usage=None, narrow=False):
@@ -117,6 +121,7 @@ class Evaluator:
         emulator.usage = dict(usage or {})
         emulator.type_names = self.world.index.type_addresses()
         emulator.narrow = narrow
+        emulator.param_focus = function["type"] == HUNTER_SKILL
         if sites:
             start = int(function["address"], 16)
             emulator.focus = (

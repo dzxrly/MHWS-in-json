@@ -148,10 +148,13 @@ python -B -m sdk.enemy_logic_exporter new-monster --enemy <新怪物ID>         
 ```powershell
 python -B -m sdk.skill_effect_exporter extract -e <dump 出的 EXE> -i <il2cpp_dump.json>   # 全部技能，约 30 分钟，写入正式位置
 python -B -m sdk.skill_effect_exporter extract -s HunterSkill_019 -o .tmp/skill-effects/try.json   # 调试单个技能
+python -B -m sdk.skill_effect_exporter extract --all-links -o .tmp/skill-effects/all   # 也求值技能模块跳过的函数（游戏更新后核对）
+python -B -m sdk.skill_effect_exporter annotate                                    # 只把技能模块的数值含义与说明写进 index.json，不重新求值
+python -B -m sdk.skill_effect_exporter new-skill -s HunterSkill_250                # 为技能表新增的技能生成空模块
 python -m src.processed_data.skill_details                                         # 只重建 SkillDetails.xlsx
 ```
 
-- `SkillDetails.xlsx` 的“技能效果”表每行是一个技能等级（`Lv.X`）的一个效果，列出游戏内的技能说明与等级说明，以及适用的武器、弹种或动作（“【武器】弹种”）。表中只保留从游戏参数读取到的数值，优先采用技能自身的 `getSkill*` 取值函数，不采用组合多个来源的函数；只在未装备技能或叠加餐点效果时出现的数值不列出。效果名称由取值函数名翻译而来（`src/processed_data/skill_details/labels.py`），最后一列保留函数名。数值为“a / b”表示数值随战斗状态变化，例如连击的命中段数。
+- `SkillDetails.xlsx` 的“技能效果”表每行是一个技能等级（`Lv.X`）的一个效果，列出游戏内的技能说明与等级说明，以及适用的武器、弹种或动作（“【武器】弹种”）。表中只保留从游戏参数读取到的数值，优先采用技能自身的 `getSkill*` 取值函数，不采用组合多个来源的函数；只在未装备技能或叠加餐点效果时出现的数值不列出。每个技能在 `sdk/skill_effect_exporter/skills/hunterskill_<编号>.py` 有独立模块，写明它每个显示效果的数值含义（`MEANINGS`：名称、作用于、计算、条件、单位、依据，以及数值所随情形的名称）和已核实的说明（`NOTES`）；`extract` 把它们写进 `index.json`，修改模块后用 `annotate` 单独更新。没有写含义的效果按取值函数名翻译命名（`src/processed_data/skill_details/labels.py`），最后一列保留函数名。数值随情形（如连击的命中次数）变化时按情形分行；只有代码中找不到区分条件时才保留“a / b”。
 - 表格不列出的函数地址、参数、运行时条件、数据来源、EXE 常量和未模拟的调用保留在链路 JSON 中。
 
 - 依赖与上面的虚拟环境相同（Capstone）。
@@ -166,4 +169,4 @@ python -m src.processed_data.skill_details                                      
 - 技能效果表也会列出处理函数写入运行时状态的数值（如技能发动时写入的持续时间，效果名以“写入”开头并保留字段名），以及只在取值函数之外读到的数值。两者都只在该数据项还没有列出、且没有其他技能的链路用到它时才列出，避免汇总多个技能的函数把其他技能的数据算进来。
 - 输出不记录游戏版本或摘要；游戏或 `MHWS-in-json` 更新后要重新运行 `extract`。
 - 汇总多个技能的函数（如攻击力合计）依赖其他技能的计时器等运行时状态，链路 JSON 中可能记为 `too_many_paths`；同一技能的精确数值通常由 `getSkill*` 读取函数给出。
-- 需要人工说明的技能写在 `sdk/skill_effect_exporter/notes.py`；版本相关的布局常量集中在 `sdk/skill_effect_exporter/config.py`。游戏更新后的检查步骤见 [技能效果 SDK 维护说明](../skill_effect_exporter/AGENTS.md)。
+- 与敌人逻辑 SDK 相同，共通代码在 `sdk/skill_effect_exporter/shared/`，每个技能在 `skills/` 有独立模块：它的提取步骤（`extract`，以及所有技能的链路求完后运行的 `extract_parameters`；多数只是调用共通步骤的薄入口，只属于这个技能的特殊处理写在这里，如扫描无法对应到技能的函数及核对依据 `DECLARED_METHODS`，以及得不到本技能可显示数值、只记录链路不求值的函数 `SKIPPED_FUNCTIONS`）、显示效果的数值含义和说明。对所有技能成立的说明写在 `notes.py`，版本相关的布局常量集中在 `config.py`，二者都在 `sdk/skill_effect_exporter/` 根部。游戏更新后的检查步骤见 [技能效果 SDK 维护说明](../skill_effect_exporter/AGENTS.md)。

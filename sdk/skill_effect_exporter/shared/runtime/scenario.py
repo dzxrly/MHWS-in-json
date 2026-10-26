@@ -14,7 +14,7 @@ import json
 import re
 from collections import defaultdict
 
-from ..config import (
+from ...config import (
     ARRAY_DATA_OFFSET,
     ARRAY_LENGTH_OFFSET,
     BOX_HEADER,
@@ -34,6 +34,7 @@ from ..config import (
     SKILL_DATA_ROW,
     SKILL_ENUM,
     SKILL_FIXED_ENUM,
+    SKILL_STATE_OWNER,
     DIMENSIONS,
 )
 from .heap import (
@@ -125,6 +126,20 @@ class SkillWorld:
         self.remap_setter = setter
         self.table_slot, self.cookie = index.value_helper_globals()
         self.chain_root, self.chain_offsets = index.param_chain()
+        # Per-skill state objects: their runtime type and skill-enum fields as
+        # the owner's constructor sets them; other initial values are runtime
+        # state and stay unknown.
+        self.states = {}
+        found = index.state_objects(SKILL_STATE_OWNER, self.layouts)
+        for field, (type_name, stores) in found.items():
+            layout = self.layouts.fields(type_name)
+            values = {
+                off: V(imm & 0xFFFFFFFF)
+                for off, imm in stores.items()
+                if off in layout and layout[off][1] == SKILL_ENUM
+            }
+            if values:
+                self.states[(SKILL_STATE_OWNER, field)] = (type_name, values)
 
     def rows(self, relative, row_type):
         document = json.loads((self.natives / relative).read_text(encoding="utf-8"))
@@ -181,6 +196,7 @@ class Scenario:
         self.world, self.skill, self.level = world, skill, level
         self.heap = Heap(world.layouts, world.natives)
         self.heap.dimensions = DIMENSIONS
+        self.heap.states = world.states
         layouts = world.layouts
         count = max(world.runtime.values()) + 1
         holder_elements = []

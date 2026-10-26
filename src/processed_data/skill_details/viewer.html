@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="icon" href="data:," />
+    <title>荒野技能效果数值</title>
+    <style>
+      __CSS__
+    </style>
+  </head>
+  <body>
+    <header class="top">
+      <div>
+        <p class="eyebrow">怪物猎人：荒野</p>
+        <h1>技能效果数值</h1>
+      </div>
+      <p class="scope">__SCOPE__</p>
+    </header>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="filters">
+          <input id="search" type="search" placeholder="搜索技能、效果或武器" aria-label="搜索技能、效果或武器" autocomplete="off" />
+          <div id="categories" class="chips" role="group" aria-label="技能类别"></div>
+          <label class="toggle"><input id="show-empty" type="checkbox" /> 显示未提取到数值的技能</label>
+          <output id="count" aria-live="polite"></output>
+        </div>
+        <nav id="list" aria-label="技能列表"></nav>
+      </aside>
+      <main id="detail" tabindex="-1"></main>
+    </div>
+    <footer class="notes">
+      <details>
+        <summary>阅读说明</summary>
+        <ul id="reading-notes"></ul>
+        <h2>数据说明</h2>
+        <ul id="general-notes"></ul>
+      </details>
+      <p>数值来自游戏代码的离线模拟求值，与 SkillDetails.xlsx 使用同一份技能效果链路。本页是单个 HTML 文件，可离线打开。</p>
+    </footer>
+    <script id="data" type="application/json">__DATA__</script>
+    <script>
+      __JS__
+    </script>
+  </body>
+</html>

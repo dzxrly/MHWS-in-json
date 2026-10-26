@@ -18,7 +18,7 @@ import struct
 from capstone import CS_ARCH_X86, CS_MODE_64, Cs
 from capstone import x86_const as X
 
-from ..config import (
+from ...config import (
     ARGUMENT_REGISTERS,
     MAX_NARROW_FORKS,
     CALLER_STACK_ARGUMENT,
@@ -30,7 +30,17 @@ from ..config import (
     MAX_TOTAL_STEPS,
     REFERENCE_TAG_BIT,
 )
-from .values import Method, Ptr, Unk, Unsupported, V, f32, f32_bits, unk
+from .values import (
+    Method,
+    Ptr,
+    Unk,
+    Unsupported,
+    V,
+    VirtualMethod,
+    f32,
+    f32_bits,
+    unk,
+)
 
 MASK = {1: 0xFF, 2: 0xFFFF, 4: 0xFFFFFFFF, 8: 0xFFFFFFFFFFFFFFFF}
 GPR64 = (
@@ -348,6 +358,16 @@ class _StackRef:
 
 
 STACK = _StackRef()
+MAX_INSTRUCTION = 15  # longest x86 instruction in bytes
+
+
+def decoder():
+    """A Capstone x86-64 disassembler with operand details. An extraction
+    keeps one (Evaluator.cs) instead of opening a handle per evaluation, and
+    decodes only the wanted instruction."""
+    cs = Cs(CS_ARCH_X86, CS_MODE_64)
+    cs.detail = True
+    return cs
 
 
 class Partial:
@@ -377,6 +397,7 @@ class State:
         self.snapshot = None  # state before the outermost pending inline call
         self.loop_forks = {}  # branch address -> forks this path took there
         self.focus_reached = False  # passed a focus site (see Emulator.focus)
+        self.param_read = False  # read a skill parameter block (Emulator.param_focus)
         self.after_forks = 0  # forks since then (narrowed focus)
         self.opaque = []
         self.steps = 0
@@ -407,11 +428,15 @@ class Emulator:
         skip_calls=(),
         inline_ok=None,
         globals_=None,
+        decoded=None,
+        cs=None,
     ):
         self.pe, self.heap, self.names = pe, heap, names
-        self.cs = Cs(CS_ARCH_X86, CS_MODE_64)
-        self.cs.detail = True
-        self.cache = {}
+        # address -> decoded instruction, and the disassembler: one of each for
+        # all emulators of an extraction instead of opening and closing a
+        # Capstone handle per evaluation (see decoder()).
+        self.cache = {} if decoded is None else decoded
+        self.cs = cs or decoder()
         self.intercept = (
             intercept or {}
         )  # address -> fn(emulator, state) handling the call
@@ -435,6 +460,9 @@ class Emulator:
         # Root paths of the skill parameter files (PlayerSkillParam, ...): a
         # focused run also inlines calls given an exported object under them.
         self.param_roots = frozenset()
+        # Focused runs of the skill's own cHunterSkill methods: a path that
+        # read a skill parameter block keeps branches that miss the sites.
+        self.param_focus = False
         self.usage = {}  # call site in the evaluated function -> name of its result
         self.type_names = {}  # runtime type descriptor address -> type name
         self.signature = lambda address: None  # callee -> il2cpp method record
@@ -442,8 +470,10 @@ class Emulator:
     # ------------------------------------------------------------ decoding
     def insn(self, address):
         if address not in self.cache:
-            code = self.pe.read(address, 16)
-            decoded = next(self.cs.disasm(code, address), None)
+            code = self.pe.read(address, MAX_INSTRUCTION)
+            # count=1: only this instruction, not the following ones that the
+            # read cuts off at its end.
+            decoded = next(self.cs.disasm(code, address, 1), None)
             if decoded is None:
                 raise Unsupported(f"无法解码 {address:#x}")
             self.cache[address] = decoded
@@ -566,6 +596,11 @@ class Emulator:
         ptr = rest[0]
         if ptr.obj is STACK:
             return st.stack.read(ptr.off, size, self.heap)
+        if self.param_focus and not st.focus_reached and self.is_parameter(ptr.obj):
+            # The skill's own method reading its parameters is about the skill
+            # even on a branch that skips the level read (连击 below 5 hits):
+            # such a path is no longer dropped for not reaching a site.
+            st.param_read = True
 
         def original():
             value = ptr.obj.read(ptr.off, size, self.heap)
@@ -869,7 +904,7 @@ class Emulator:
             if to_target and to_next and self.narrow:
                 to_target = self.distance(target) <= self.distance(fallthrough)
                 to_next = not to_target
-            if to_target != to_next:
+            if to_target != to_next and not st.param_read:
                 st.conditions.append(taken if to_target else not_taken)
                 st.flags = flags.narrowed(true if to_target else false)
                 st.rip = target if to_target else fallthrough
@@ -1009,6 +1044,17 @@ class Emulator:
             return None
         return f"{target.val.type_name}.{found[0]}", found[1]
 
+    def virtual_method(self, st, insn, op):
+        """Function address of the override called through op, if the target
+        was read from the vtable of an object whose runtime type is known."""
+        try:
+            target = self.read_op(st, insn, op, 8)
+        except (PathEnd, Unsupported):
+            return None
+        if not isinstance(target.val, VirtualMethod):
+            return None
+        return self.heap.layouts.virtual_method(target.val.type_name, target.val.index)
+
     def opaque_effects(self, st, callee, *, record=None, name=None):
         """A call whose body is not emulated: volatile state becomes unknown.
         A reference the callee is declared to return is an unknown object of
@@ -1099,7 +1145,7 @@ class Emulator:
             if self.focus is not None and st.depth == 0 and not st.focus_reached:
                 if st.rip in self.focus[3]:
                     st.focus_reached = True
-                elif not self.may_reach(st.rip):
+                elif not self.may_reach(st.rip) and not st.param_read:
                     raise PathEnd("dropped")
             insn = self.insn(st.rip)
             nxt = insn.address + insn.size
@@ -1150,7 +1196,9 @@ class Emulator:
                 st, insn, target, nxt if m == "call" else None, return_type
             )
         if m in ("call", "jmp"):
-            # Indirect: virtual call or jump table; the result stays unknown.
+            # Indirect: a jump table, a virtual call on an object of known
+            # runtime type (inlined), or another virtual or interface call
+            # (opaque: the result stays unknown).
             if m == "jmp":
                 target = self.read_op(st, insn, ops[0], 8)
                 if isinstance(target.val, int) and self.same_function(
@@ -1158,6 +1206,12 @@ class Emulator:
                 ):
                     st.rip = target.val
                     return None
+            override = self.virtual_method(st, insn, ops[0])
+            if override is not None:
+                return self.call(
+                    st, insn, override, nxt if m == "call" else None, return_type
+                )
+            if m == "jmp":
                 raise Unsupported(f"间接跳转 {insn.address:#x}")
             method = self.interface_method(st, insn, ops[0])
             if method is not None:
@@ -1235,6 +1289,13 @@ class Emulator:
         st.rip = target
         return None
 
+    def is_parameter(self, obj):
+        """An exported object under a skill parameter file (PlayerSkillParam...)."""
+        return (
+            getattr(obj, "exported", False)
+            and obj.path.split(".", 1)[0] in self.param_roots
+        )
+
     def passes_parameters(self, st):
         """Whether a call's arguments include skill parameters: a parameter
         block (PlayerSkillParam._PowerAwakeData handed to its begin method)
@@ -1242,11 +1303,8 @@ class Emulator:
         values = [st.regs.get(register) for register in ARGUMENT_REGISTERS]
         values += [st.vregs[k][0] for k in (1, 2, 3) if k in st.vregs]
         for value in filter(None, values):
-            if isinstance(value.val, Ptr):
-                obj = value.val.obj
-                exported = getattr(obj, "exported", False)  # not the stack
-                if exported and obj.path.split(".", 1)[0] in self.param_roots:
-                    return True
+            if isinstance(value.val, Ptr) and self.is_parameter(value.val.obj):
+                return True
             if any(
                 source.split(".", 1)[0] in self.param_roots for source in value.prov
             ):

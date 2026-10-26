@@ -33,6 +33,15 @@ class Method:
 
 
 @dataclass(frozen=True)
+class VirtualMethod:
+    """Vtable slot ``index`` read from an object whose runtime type is known:
+    an indirect call through it calls that type's override."""
+
+    type_name: str
+    index: int
+
+
+@dataclass(frozen=True)
 class V:
     """A register or memory value: int bits, Ptr or Unk, plus provenance."""
 
