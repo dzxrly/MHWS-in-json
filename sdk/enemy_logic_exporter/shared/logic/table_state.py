@@ -68,6 +68,7 @@ class TableHistory:
         self.candidates = {}
         self.evidence = []
         self.complete_discovery = False
+        self.local_pairs = []
 
     def key(self, offset):
         return "table_history:" + self.export_type + ":" + self.fields[offset]
@@ -131,6 +132,8 @@ class TableHistory:
 
     def history_cases(self):
         """Explicit predicates; an unmatched or absent history remains unknown."""
+        if self.local_pairs:
+            return []
         result = []
         for values, sites in sorted(self.candidates.items()):
             mapping = {offset: value for offset, value in values}
@@ -165,6 +168,25 @@ class TableHistory:
                 )
             )
         return result
+
+    def pair_for(self, address, size):
+        """Return the pair actually read here; unrelated pairs stay untouched."""
+        return next(
+            (pair for pair in self.local_pairs if pair.private_field(address, size)),
+            None,
+        )
+
+    def input_definitions(self):
+        return {
+            self.key(offset): dict(
+                label="前次随机区间" + ("上界" if "Max_" in name else "下界"),
+                number=True,
+                min=-1,
+                max=0x7FFFFFFF,
+                hint=f"{self.export_type}.{name}；仅在此处读取该历史，其他记录不设默认值",
+            )
+            for offset, name in self.fields.items()
+        }
 
 
 def _switch_targets(probe, ins, state):
@@ -210,7 +232,7 @@ def _switch_targets(probe, ins, state):
     return sorted(targets) if targets <= probe.ins.keys() else []
 
 
-def _discover(machine, history):
+def _discover(machine, history, *, reviewed_calls=False):
     """Reuse the native evaluator, without treating candidate paths as semantics."""
     from .machine import Machine, Boundary
 
@@ -321,7 +343,31 @@ def _discover(machine, history):
         if ins.mnemonic == "call":
             event = probe.event(ins, state)
             handled, value = history.call(event, state)
-            if not handled and event["target"] != ("random_generator",):
+            variable_write = False
+            if (
+                reviewed_calls
+                and not handled
+                and event["target"] != ("random_generator",)
+            ):
+                from .command_effects import reviewed_command_effect
+
+                bound = probe.bind(event)
+                if bound and bound.get("commandType"):
+                    effect = reviewed_command_effect(
+                        bound,
+                        probe.command_evidence.get(bound["commandType"]),
+                        probe.variable_catalog,
+                    )
+                    variable_write = effect is not None and effect.get("effect") in {
+                        "set_float_value",
+                        "set_bool_value",
+                        "set_timer_state",
+                    }
+            if (
+                not handled
+                and not variable_write
+                and event["target"] != ("random_generator",)
+            ):
                 # Discovery needs only the interval read/constant write region.
                 # It does not execute, or assume effects for, game commands.
                 continue
@@ -383,7 +429,7 @@ def _import_name(pe, address):
     return None
 
 
-def _constructor_case(machine, history):
+def _constructor_case(machine, history, *, allow_avx_fill=False):
     found = _method(machine.metadata, history.export_type + ".Param", ".ctor")
     if found is None:
         return
@@ -442,6 +488,47 @@ def _constructor_case(machine, history):
                 for off in history.fields
                 if start <= off and off + 4 <= start + length
             }
+    if (
+        allow_avx_fill
+        and len(instructions) >= 4
+        and instructions[-2].mnemonic == "vzeroupper"
+        and instructions[-1].mnemonic == "ret"
+    ):
+        zero, ones = instructions[:2]
+        if (
+            zero.mnemonic == "vxorps"
+            and ones.mnemonic == "vcmptrueps"
+            and len(zero.operands) == len(ones.operands) == 3
+            and all(op.type == CS_OP_REG for op in (*zero.operands, *ones.operands))
+            and len(
+                {zero.reg_name(op.reg)[3:] for op in zero.operands}
+                | {ones.reg_name(op.reg)[3:] for op in ones.operands}
+            )
+            == 1
+        ):
+            fills = []
+            for ins in instructions[2:-2]:
+                op = ins.operands
+                if not (
+                    ins.mnemonic == "vmovups"
+                    and len(op) == 2
+                    and op[0].type == CS_OP_MEM
+                    and op[1].type == CS_OP_REG
+                    and ins.reg_name(op[0].mem.base) == "rdx"
+                    and not op[0].mem.index
+                    and ins.reg_name(op[1].reg) == ones.reg_name(ones.operands[0].reg)
+                ):
+                    break
+                fills.append((op[0].mem.disp, op[0].size))
+            else:
+                values = {
+                    off: -1
+                    for off in history.fields
+                    if any(
+                        start <= off and off + 4 <= start + size
+                        for start, size in fills
+                    )
+                }
     if set(values) == set(history.fields):
         body = b"".join(ins.bytes for ins in instructions)
         history.evidence.append(
@@ -454,8 +541,8 @@ def _constructor_case(machine, history):
         )
 
 
-def recover_table_history(machine):
-    """Recover one actually used Max/Min pair, or leave the native boundary."""
+def recover_table_history(machine, *, local=False):
+    """Recover an interval, or explicitly enabled pairs at their actual reads."""
     metadata = machine.metadata
     if metadata is None or machine.pe is None:
         return None
@@ -516,9 +603,50 @@ def recover_table_history(machine):
         fields,
     )
     # First discover accesses with all metadata fields, then keep only one pair.
-    _discover(machine, history)
+    _discover(machine, history, reviewed_calls=local)
     used = {off: fields[off] for off in history.read_offsets}
     suffixes = {name.rsplit("_", 1)[1] for name in used.values()}
+    source_evidence = dict(
+        type=owner,
+        method=machine.row.get("method"),
+        address=machine.row["address"],
+        end=machine.row.get("end"),
+    )
+    if local and len(suffixes) > 1:
+        if not history.complete_discovery:
+            return None
+        history.fields = used
+        history.evidence = [source_evidence, proof]
+        for suffix in sorted(suffixes):
+            pair_fields = {
+                off: name
+                for off, name in used.items()
+                if name.rsplit("_", 1)[1] == suffix
+            }
+            if (
+                len(pair_fields) != 2
+                or not any("Max_" in n for n in pair_fields.values())
+                or not any("Min_" in n for n in pair_fields.values())
+            ):
+                return None
+            pair = TableHistory(
+                owner,
+                history.dictionary_offset,
+                history.runtime_offset,
+                lookup,
+                pair_fields,
+            )
+            _discover(machine, pair, reviewed_calls=True)
+            if (
+                not pair.complete_discovery
+                or not pair.candidates
+                or set(pair_fields) != pair.read_offsets
+            ):
+                return None
+            pair.evidence = [source_evidence, proof]
+            _constructor_case(machine, pair, allow_avx_fill=True)
+            history.local_pairs.append(pair)
+        return history
     if (
         len(used) != 2
         or len(suffixes) != 1
@@ -531,14 +659,7 @@ def recover_table_history(machine):
     _discover(machine, history)
     if not history.complete_discovery or not history.candidates:
         return None
-    history.evidence.append(
-        dict(
-            type=owner,
-            method=machine.row.get("method"),
-            address=machine.row["address"],
-            end=machine.row.get("end"),
-        )
-    )
+    history.evidence.append(source_evidence)
     history.evidence.append(proof)
     _constructor_case(machine, history)
     return history

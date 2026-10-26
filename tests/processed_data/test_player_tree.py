@@ -14,6 +14,24 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class PlayerTreeTests(unittest.TestCase):
+    def test_boolean_command_effect_preserves_snapshot_and_declares_its_write(self):
+        compiler = PlayerCompiler(dict(tables=[], rules=dict(rules=[])))
+        result = compiler.node(
+            "table",
+            dict(
+                id="write",
+                kind="mutation",
+                effect="apply_boolean_command_effects",
+                summary="更新吸收状态",
+                stateUpdates={"extend:fixture._State": 5},
+                next="continue",
+            ),
+        )
+        self.assertFalse(result["invalidateSnapshot"])
+        self.assertEqual(result["title"], "更新吸收状态")
+        self.assertEqual(result["stateUpdates"], {"extend:fixture._State": 5})
+        self.assertEqual(result["next"], "table/continue")
+
     def test_declared_updates_change_later_checks_and_invalidate_old_assumptions(self):
         script = r"""
 const assert = require('node:assert/strict');
@@ -45,6 +63,20 @@ const action=step(view,initial(view,{id:'action'},{[history]:41,'float:g':1}));
 assert.equal(action.children[0].state.inputs[history],41);
 assert.equal(action.children[0].state.inputs['float:g'],undefined);
 assert.equal(applyUpdates({stateUpdates:{[history]:null}},{[history]:41})[history],undefined);
+// A true Boolean command writes before its successor and invalidates only
+// assumptions about the changed field; its false branch leaves state alone.
+const field='extend:fixture._State';
+nodes.checkState={kind:'condition',sourceRef:'checkState',condition:{op:'compare',key:field,operator:'eq',value:4},true:'boolWrite',false:'end'};
+nodes.boolWrite={kind:'mutation',sourceRef:'boolWrite',effect:'apply_boolean_command_effects',stateUpdates:{[field]:5},next:'checkStateAgain',invalidateSnapshot:false};
+nodes.checkStateAgain={kind:'condition',sourceRef:'checkStateAgain',condition:{op:'compare',key:field,operator:'eq',value:4},true:'action',false:'end'};
+const checked=step(view,initial(view,{id:'checkState'},{[field]:4,'float:g':2}));
+const afterBool=step(view,checked.children[0].state);
+assert.equal(afterBool.truth,false);
+assert.equal(afterBool.children[0].state.inputs[field],5);
+assert.equal(afterBool.children[0].state.inputs['float:g'],2);
+const rejected=step(view,initial(view,{id:'checkState'},{[field]:3}));
+assert.equal(rejected.truth,false);
+assert.equal(rejected.children[0].state.inputs[field],3);
 nodes.dynamic={kind:'mutation',sourceRef:'dynamic',title:'请求选定的越障动作',dynamicAction:true,invalidateSnapshot:true,next:'end'};
 assert.equal(step(view,initial(view,{id:'dynamic'},{})).title,'请求选定的越障动作');
 }).catch(error=>{console.error(error);process.exit(1);});

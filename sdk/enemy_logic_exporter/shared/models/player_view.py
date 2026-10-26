@@ -1303,6 +1303,7 @@ class PlayerCompiler:
                 "request_dynamic_action",
                 "read_action_dispatch",
                 "apply_native_field_writes",
+                "apply_boolean_command_effects",
                 "write_table_history",
                 "skip_dynamic_action_request",
             }:
@@ -1340,6 +1341,7 @@ class PlayerCompiler:
                 "set_bool_value",
                 "read_action_dispatch",
                 "write_table_history",
+                "apply_boolean_command_effects",
                 "skip_dynamic_action_request",
             )
             if (

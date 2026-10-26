@@ -134,6 +134,7 @@ class NativeRecipeContext:
         self.native_cache, self.record_cache, self.pool_cache = {}, {}, {}
         self.command_cache = {}
         self.command_write_cache = {}
+        self.boolean_command_cache = {}
         self.leaf_cache = {}
         self.method_names = None
         self.stack = ExitStack()
@@ -151,6 +152,10 @@ class NativeRecipeContext:
             from ..logic.field_checks import verify_recovered_conditions
 
             verify_recovered_conditions(self.pe, self.metadata)
+            from ..logic.monster_rules import hooks
+
+            for verify in hooks("verify_native_recipes"):
+                verify(self.pe, self.metadata)
         except BaseException:
             self.stack.close()
             raise
@@ -436,6 +441,15 @@ class NativeRecipeContext:
                         for recover in hooks("recover_command_effects")
                         for write in recover(row, self.metadata, self.pe)
                     ]
+                    booleans = [
+                        result
+                        for recover in hooks("recover_boolean_command_effect")
+                        if (result := recover(row, self.metadata, self.pe)) is not None
+                    ]
+                    if len(booleans) > 1:
+                        raise ValueError("布尔命令副作用有多个专用配方")
+                    if booleans:
+                        self.boolean_command_cache[command_type] = booleans[0]
                     found = evidence(row)
                     break
                 current = (self.metadata.get(current) or {}).get("parent")
@@ -549,9 +563,20 @@ class NativeRecipeContext:
                 if (proof := self.command_evidence(factory["_OrderType"])) is not None
             }
             machine.command_writes = self.command_write_cache
+            machine.boolean_commands = self.boolean_command_cache
             from ..logic.table_state import recover_table_history
+            from ..logic.monster_rules import hooks
 
-            machine.table_history = recover_table_history(machine)
+            policies = [
+                policy
+                for recover in hooks("table_history_policy")
+                if (policy := recover(row)) is not None
+            ]
+            if len(policies) > 1:
+                raise ValueError("私有随机历史有多个专用恢复策略")
+            machine.table_history = recover_table_history(
+                machine, local=bool(policies and policies[0].get("local"))
+            )
             moduli = {
                 int(v, 0) for v in re.findall(r"% (0x[0-9a-f]+|\d+)", record["code"])
             }

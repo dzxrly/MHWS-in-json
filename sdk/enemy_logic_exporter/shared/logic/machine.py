@@ -91,6 +91,7 @@ class Machine:
         self.command_writes = {}
         self.integer_inputs = {}
         self.table_history = None
+        self.boolean_commands = {}
 
     def event_key(self, event, state, bound=None):
         """Return the semantic node key of one call context, or None.
@@ -999,6 +1000,9 @@ class Machine:
                 return self.add_unknown(
                     address, "执行到当前已校验方法范围外；需核实该实际目标"
                 )
+            history = self.history_read(ins, s)
+            if history is not None:
+                return history
             if s["flags"] and "integer_compare" in s["flags"]:
                 suffix = (
                     ins.mnemonic[1:]
@@ -1110,7 +1114,22 @@ class Machine:
                             )
                             return key
                 if e["target"] == ("random_generator",):
-                    key = self.event_key(e, s)
+                    pair = None
+                    history_read = self.random_history_pair(ins, e, s)
+                    if history_read is not None:
+                        pair, prefix_proof = history_read
+                        values = tuple(
+                            (off, self.load(pointer(pair.owner, off), 4, s))
+                            for off in sorted(pair.fields)
+                        )
+                        if any(value is None for _, value in values):
+                            return self.history_read(
+                                ins, s, pair_hint=pair, prefix_proof=prefix_proof
+                            )
+                        context = ("private_interval", values)
+                    else:
+                        context = None
+                    key = self.event_key(e, s, context)
                     if key is None:
                         return self.add_unknown(
                             address,
@@ -1138,10 +1157,23 @@ class Machine:
                         reason="正在核实随机余数分支",
                         nativeSite=e["site"],
                     )
-                    choices = [
-                        self.walk(address + ins.size, self.complete_call(s, e, value))
-                        for value in range(self.random_modulus)
-                    ]
+                    if pair is not None:
+                        choices = self.random_history_choices(ins, e, s, key)
+                        if choices is None:
+                            self.nodes[key] = dict(
+                                id=key,
+                                kind="unknown",
+                                nativeSite=e["site"],
+                                reason="当前随机区间未能逐余数证明在下一实际调用前收敛；保留未知",
+                            )
+                            return key
+                    else:
+                        choices = [
+                            self.walk(
+                                address + ins.size, self.complete_call(s, e, value)
+                            )
+                            for value in range(self.random_modulus)
+                        ]
                     groups = []
                     for value, target in enumerate(choices):
                         if groups and groups[-1][2] == target:
@@ -1245,6 +1277,36 @@ class Machine:
                         )
 
                         proof = self.command_evidence.get(bound["commandType"])
+                        boolean = self.boolean_commands.get(bound["commandType"])
+                        if boolean is not None:
+                            if self.command_return(bound) != BOOLEAN_TYPE:
+                                raise ValueError("带副作用布尔命令的返回类型变化")
+                            self.nodes[key] = dict(
+                                id=key,
+                                kind="condition",
+                                **copy.deepcopy(boolean["condition"]),
+                                **binding,
+                            )
+                            effect = key + "-true-update"
+                            self.nodes[key]["true"] = effect
+                            self.nodes[key]["false"] = self.walk(
+                                address + ins.size, self.complete_call(s, e, 0)
+                            )
+                            self.nodes[effect] = dict(
+                                id=effect,
+                                kind="mutation",
+                                effect="apply_boolean_command_effects",
+                                stateUpdates=dict(boolean["onTrue"]),
+                                summary=boolean["effectSummary"],
+                                semanticEvidence=copy.deepcopy(
+                                    boolean["condition"]["semanticEvidence"]
+                                ),
+                                nativeSite=e["site"],
+                                next=self.walk(
+                                    address + ins.size, self.complete_call(s, e, 1)
+                                ),
+                            )
+                            return key
                         detail = reviewed_command_effect(
                             bound, proof, self.variable_catalog
                         )
@@ -1629,6 +1691,250 @@ class Machine:
                     return key
                 return self.add_unknown(ins.address, str(error))
         return self.add_unknown(address, "本条路径超过有界追踪长度；需展开循环语义")
+
+    def random_history_pair(self, ins, event, state):
+        """Find a mandatory pair read after this draw's pure straight-line prefix."""
+        from capstone import CS_AC_READ, CS_AC_WRITE
+
+        if self.table_history is None or not self.table_history.local_pairs:
+            return None
+        probe = copy.deepcopy(state)
+        probe = self.complete_call(probe, event, None)
+        address = ins.address + ins.size
+        prefix = []
+        for _ in range(20):
+            current = self.ins.get(address)
+            if current is None or current.mnemonic not in {
+                "mov",
+                "movsxd",
+                "lea",
+                "imul",
+                "shr",
+                "shl",
+                "sar",
+                "sub",
+                "add",
+                "and",
+                "or",
+                "xor",
+            }:
+                return None
+            for operand in current.operands:
+                if operand.type != CS_OP_MEM:
+                    continue
+                if operand.access & CS_AC_WRITE:
+                    return None
+                location = self.address(current, operand, probe)
+                pair = self.table_history.pair_for(location, operand.size)
+                if pair is not None:
+                    if operand.access & CS_AC_READ:
+                        return pair, dict(
+                            kind="random_draw_then_mandatory_interval_read",
+                            randomSite=hex(ins.address),
+                            readSite=hex(current.address),
+                            prefix=prefix,
+                            readBytes=current.bytes.hex(),
+                            scope="当前实际随机调用之后，直线前缀仅计算寄存器或读取内存；没有分支、调用及内存写入",
+                        )
+            prefix.append(dict(address=hex(current.address), bytes=current.bytes.hex()))
+            try:
+                address = self.step(current, probe)
+            except Boundary:
+                return None
+        return None
+
+    def random_history_choices(self, ins, event, state, key):
+        """Prove each remainder's short write/call region before walking it once."""
+        from capstone import CS_AC_WRITE
+
+        groups, choices = {}, []
+        for value in range(self.random_modulus):
+            current = self.complete_call(state, event, value)
+            address = ins.address + ins.size
+            writes = []
+            for _ in range(96):
+                operation = self.ins.get(address)
+                if operation is None:
+                    return None
+                if operation.mnemonic == "call":
+                    call = self.event(operation, current)
+                    if not writes or call["target"] is None:
+                        return None
+                    # This is an exact convergence check using the same native
+                    # call ABI the normal walker already applies: argument and
+                    # target identities match, and no live post-call state differs.
+                    following = self.complete_call(current, call, None)
+                    signature = repr(
+                        (address, call["target"], call["arguments"], writes, following)
+                    )
+                    if signature not in groups:
+                        groups[signature] = (len(groups), address, current, writes)
+                    choices.append(groups[signature][0])
+                    break
+                if operation.mnemonic.startswith("ret"):
+                    return None
+                for operand in operation.operands:
+                    if operand.type != CS_OP_MEM or not operand.access & CS_AC_WRITE:
+                        continue
+                    destination = self.address(operation, operand, current)
+                    private = self.table_history.private_field(
+                        destination, operand.size
+                    )
+                    if not private and not (
+                        isinstance(destination, tuple)
+                        and destination[:2] == ("pointer", "stack")
+                    ):
+                        return None
+                try:
+                    address = self.step(operation, current)
+                except Boundary:
+                    return None
+                updates = current.pop("history_updates", {})
+                if updates:
+                    if any(value is None for value in updates.values()):
+                        return None
+                    writes.append(
+                        (hex(operation.address), tuple(sorted(updates.items())))
+                    )
+            else:
+                return None
+        resolved = {}
+        for number, call_address, selected, writes in groups.values():
+            target = self.walk(call_address, selected)
+            for index in reversed(range(len(writes))):
+                site, updates = writes[index]
+                identity = key + "-native-history-" + str(number) + "-" + str(index)
+                self.nodes[identity] = dict(
+                    id=identity,
+                    kind="mutation",
+                    effect="write_table_history",
+                    summary="记录本次随机选择区间",
+                    nativeSite=site,
+                    stateUpdates=dict(updates),
+                    next=target,
+                    nativeRandomRegionProof=dict(
+                        kind="all_remainders_converge_before_actual_call",
+                        modulus=self.random_modulus,
+                        checkedRemainders=self.random_modulus,
+                        remainders=[
+                            value
+                            for value, group in enumerate(choices)
+                            if group == number
+                        ],
+                        callSite=hex(call_address),
+                        scope="仅合并实际调用目标、参数、逐条历史写入和正常调用后状态完全相同的余数",
+                    ),
+                )
+                target = identity
+            resolved[number] = target
+        return [resolved[number] for number in choices]
+
+    def history_read(self, ins, state, *, pair_hint=None, prefix_proof=None):
+        """Split only the private interval actually read by this instruction."""
+        from capstone import CS_AC_READ
+
+        if self.table_history is None or not self.table_history.local_pairs:
+            return None
+        reads = (
+            [(pair_hint, None, 0)]
+            if pair_hint is not None
+            else [
+                (
+                    self.table_history.pair_for(
+                        location := self.address(ins, operand, state), operand.size
+                    ),
+                    location,
+                    operand.size,
+                )
+                for operand in ins.operands
+                if operand.type == CS_OP_MEM and operand.access & CS_AC_READ
+            ]
+        )
+        for pair, address, size in reads:
+            if (
+                pair is None
+                or address is not None
+                and self.load(address, size, state) is not None
+            ):
+                continue
+            if pair_hint is None:
+                return self.add_unknown(
+                    ins.address,
+                    "私有随机历史读取缺少可核实的直线随机前缀；保留原生边界",
+                )
+            key = self.event_key(
+                dict(
+                    site=hex(ins.address),
+                    target=("history_read", tuple(sorted(pair.fields))),
+                    arguments=[],
+                ),
+                state,
+            )
+            if key is None:
+                return self.add_unknown(
+                    ins.address, "局部历史读取的后续上下文尚未证明等价"
+                )
+            if key in self.nodes:
+                return key
+            fallback = key + "-history-unknown"
+            self.nodes[fallback] = dict(
+                id=fallback,
+                kind="unknown",
+                reason="此处读取的前次随机区间不在已核实候选中；其他历史记录不作默认赋值",
+                nativeSite=hex(ins.address),
+            )
+            cases = []
+            for case in pair.history_cases():
+                if all(
+                    (known := self.load(pointer(owner, offset), width, state)) is None
+                    or isinstance(known, int)
+                    and known & ((1 << (width * 8)) - 1) == value
+                    for (owner, offset, width), value in case["values"].items()
+                ):
+                    cases.append(case)
+            if not cases:
+                return fallback
+            self.nodes[key] = dict(
+                id=key, kind="unknown", reason="正在恢复局部历史分派"
+            )
+            for index, case in enumerate(cases):
+                case_key = key if index == 0 else key + "-history-" + str(index)
+                selected = copy.deepcopy(state)
+                # Prior interval writes are already explicit semantic updates.
+                # Keep other pairs as runtime facts at their next actual read,
+                # instead of accumulating a product of unrelated entry cases.
+                for cell in list(selected["mem"]):
+                    owner, start, width = cell
+                    if owner == self.table_history.owner and any(
+                        off not in pair.fields
+                        and start < off + 4
+                        and off < start + width
+                        for off in self.table_history.fields
+                    ):
+                        del selected["mem"][cell]
+                selected["mem"].update(case["values"])
+                self.nodes[case_key] = dict(
+                    id=case_key,
+                    kind="condition",
+                    summary="按此处使用的前次随机记录继续",
+                    expression=case["expression"],
+                    inputDefinitions=pair.input_definitions(),
+                    historyCaseLocal=True,
+                    nativeHistoryReadProof=copy.deepcopy(prefix_proof),
+                    nativeSite=hex(ins.address),
+                    semanticEvidence=[
+                        {k: row[k] for k in ("type", "method", "address", "end")}
+                        for row in pair.evidence
+                    ],
+                    true=self.walk(ins.address, selected),
+                    false=(
+                        key + "-history-" + str(index + 1)
+                        if index + 1 < len(cases)
+                        else fallback
+                    ),
+                )
+            return key
+        return None
 
     def build(self):
         self.state(0)

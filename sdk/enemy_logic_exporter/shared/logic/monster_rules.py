@@ -8,6 +8,12 @@ Shared code holds no monster constants. A module in ``monster/`` may declare:
   truth over the bound Extend state (see predicates.py).
 - ``RULE_SPECS``: curation tuples in the RULE_SPECS format of config.py.
 - ``recover_command_effects(row, metadata, pe)``: reviewed native writes.
+- ``recover_boolean_command_effect(row, metadata, pe)``: a reviewed
+  condition and the field writes on its true return path.
+- ``verify_native_recipes(pe, metadata)``: check a module's native recipes
+  against the current methods, bytes, fields and resource-independent constants.
+- ``table_history_policy(row)``: opt a reviewed native table into local
+  expansion of multiple private intervals at their actual read instructions.
 - ``prepare_player_graph(graph, registry)``: checks before the player view.
 - ``recover_condition(node, enemy_id, resources)``: reviewed conditions of
   its own commands (not the common prefix); may add ``sceneInput`` or

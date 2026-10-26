@@ -9,6 +9,106 @@ UNIQUE_SPEC = dict(
     package="STM/GameDesign/Enemy/CommonData/StageResident/Data/{enemy}_StageResident.user.3.json",
     fields=["_Unique", "_GenusInfo"],
 )
+ABSORBED_ACTION_COMMAND = "app.Em0160_00BTableCommand.cCanAbsorbedAction"
+ABSORBED_STATE_KEY = "extend:app.cEm0160Extend._AbsorbCocoonState"
+LOCAL_HISTORY_TABLE = "table_b703035f_fa40_4c4c_a4eb_629aa0247b36"
+LOCAL_HISTORY_EXPORT = "app.Em0160_00_BTable_CommonAttack_Export"
+
+
+def table_history_policy(row):
+    if (
+        row["type"] == LOCAL_HISTORY_EXPORT
+        and row["method"].startswith(LOCAL_HISTORY_TABLE)
+        and row["method"][len(LOCAL_HISTORY_TABLE) :].isdigit()
+    ):
+        return dict(local=True)
+    return None
+
+
+def _absorbed_action_proof():
+    import json
+    from ..shared.config import EVIDENCE_DIR
+
+    return json.loads(
+        (EVIDENCE_DIR / "em0160_absorbed_action.v1.json").read_text(encoding="utf-8")
+    )
+
+
+def verify_native_recipes(pe, metadata):
+    proof = _absorbed_action_proof()
+    row = proof["command"]
+    method = (metadata.get(row["type"]) or {}).get("methods", {}).get(row["method"], {})
+    start, end = int(row["address"], 16), int(row["end"], 16)
+    if (
+        int(method.get("function", "0"), 16) != start
+        or method.get("returns", {}).get("type") != "System.Boolean"
+        or [p.get("type") for p in method.get("params", [])]
+        != ["ace.btable.cCommandWork"]
+        or pe.read(start, end - start).hex() != row["nativeBytes"]
+    ):
+        raise ValueError("锁刃龙吸收后动作判断的原生实现变化")
+    for symbol in proof["classSymbols"]:
+        actual = (metadata.get(symbol["type"]) or {}).get("address")
+        if not actual or int.from_bytes(
+            pe.read(int(symbol["slot"], 16), 8), "little"
+        ) != int(actual, 16):
+            raise ValueError("锁刃龙吸收后动作判断的类型检查变化")
+    for owner, fields in proof["layouts"].items():
+        for name, expected in fields.items():
+            field = metadata.fields(owner).get(name, {})
+            if (
+                field.get("type") != expected["type"]
+                or field.get("offset_from_base") != expected["offset"]
+            ):
+                raise ValueError("锁刃龙吸收后动作判断的字段布局变化")
+    enum = proof["stateEnum"]
+    fields = (metadata.get(enum["type"]) or {}).get("fields", {})
+    if any(
+        fields.get(name, {}).get("default") != enum[name]
+        for name in ("WAIT_ACTION", "AFTER")
+    ):
+        raise ValueError("锁刃龙吸收后状态枚举变化")
+    return True
+
+
+def recover_boolean_command_effect(row, metadata, pe):
+    if row["type"] != ABSORBED_ACTION_COMMAND:
+        return None
+    verify_native_recipes(pe, metadata)
+    proof = _absorbed_action_proof()
+    if any(
+        row.get(key) != proof["command"][key]
+        for key in ("type", "method", "address", "end")
+    ):
+        raise ValueError("锁刃龙吸收后动作判断的方法上下文不匹配")
+    from ..shared.logic.expressions import compare
+    from ..shared.logic.field_checks import reviewed_condition
+
+    state = proof["stateEnum"]
+    evidence = [
+        {key: proof["command"][key] for key in ("type", "method", "address", "end")}
+    ]
+    return dict(
+        condition=reviewed_condition(
+            compare(
+                ABSORBED_STATE_KEY, state["WAIT_ACTION"], source="等待吸收后的动作"
+            ),
+            evidence,
+            summary="吸收状态为 WAIT_ACTION 时推进到 AFTER",
+            extend="app.cEm0160Extend",
+            inputs={
+                ABSORBED_STATE_KEY: dict(
+                    label="吸收茧状态",
+                    options=[
+                        dict(label=name, value=value)
+                        for name, value in metadata.enum(state["type"])[1].items()
+                    ],
+                )
+            },
+        ),
+        onTrue={ABSORBED_STATE_KEY: state["AFTER"]},
+        effectSummary="将吸收茧状态从 WAIT_ACTION 推进到 AFTER",
+    )
 
 
 def recover_condition(node, enemy_id, resources):

@@ -103,6 +103,10 @@ Compound conditions short-circuit in native order. The player view applies revie
 
 Recovered intervals update along the selected path and survive an action. Only histories supported by evidence are expanded; other histories remain unknown. A constructor default is not the value on every table entry, and these selections must not be treated as independent draws.
 
+For reviewed tables with several independent intervals, each interval is expanded where native code reads it; the model does not enumerate their combinations at table entry. A reviewed Boolean command that writes state applies that write on its actual return branch before continuing.
+
+Spatial conditions retain their query contracts. The player inputs describe the relevant ray hits, filtered voxel result or timer-derived remaining percentage; the offline viewer does not query the game's live map or advance its timer. Unknown hit classification names remain internal numeric values.
+
 Large full research models use compact JSON to retain all logic. If the compact file still exceeds 25 MiB, extraction fails and requires deduplication or sharding.
 
 ### After a game update
