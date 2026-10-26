@@ -97,7 +97,7 @@ def enemy_menu(session):
             "提取全部怪物并生成玩家视图",
             "统计未知条件（census / uncertainty）",
             "发布到网页模型目录（publish）",
-            "构建怪物行动逻辑网页",
+            "生成网站数据（使用已发布的网页模型）",
             "返回",
         ],
     )
@@ -128,7 +128,7 @@ def enemy_menu(session):
         ).ask():
             run(ENEMY, "publish", "-m", view)
     else:
-        run("src.processed_data.enemy_battle_logic", "--output", f"{ENEMY_DIR}/site")
+        run("src.site_data")
 
 
 def ask_path(message, current):

@@ -33,17 +33,43 @@ Set paths, languages, and version in [config.py](config.py). The script takes no
 ```text
 src/
   database/        # Database workbooks
-  processed_data/  # Processed workbooks, JSON datasets, and battle graph pages
+  processed_data/  # Processed workbooks and JSON datasets; battle graph models
   shared/          # Source data, text, RCOL, Excel, and logging utilities
   pipeline/        # Export, validation, packaging, and publication
+  site_data/       # JSON read by the website (the only link to web/)
 sdk/
   il2cpp/          # IL2CPP upload and download tools
   enemy_logic_exporter/
     shared/        # Python: native, resources, logic, models, workflow
     data/          # JSON: evidence/, models/, rules.v1.json
     monster/       # One entry per monster and variant
+web/               # Vite + Vue website; reads only the JSON of src/site_data
 tests/
 ```
+
+## Website
+
+[mhws-info.eggtargaryen.com](https://mhws-info.eggtargaryen.com/) gathers the information sites, in Simplified Chinese only: monster battle logic (34 monsters; variants have their own pages, the training target is excluded) and skill effect values (from the same skill effect link JSON as `SkillDetails.xlsx`).
+
+`sdk/`, `src/` and `web/` do not import each other; they exchange JSON only. `python -m src.site_data` writes the JSON the site reads into `src/site_data/data/` (not committed), and the web build copies that folder into the site's `data/`. The release export writes the same files into `website/` of PROCESSED_DATA:
+
+```text
+site.json                          build date, commit, preview flag
+enemy_battle_logic/index.json      monster list
+enemy_battle_logic/<enemyId>.json  one monster: graph and technical diagram
+skill_details/skills.json          skill effect values and their meanings
+```
+
+`web/` is a Vite + Vue app with the home page and one route per information site (`/enemy_battle_logic/`, `/skill_details/`). It needs Node.js 22 or later, not the SDK. Build the whole site into `web/dist`:
+
+```powershell
+python -m src.site_data && npm --prefix web ci && npm --prefix web run build
+npm --prefix web run preview         # browse it at http://localhost:4173
+```
+
+`npm --prefix web run dev` serves the same JSON while editing. `MHWS_SITE_DATA` points the build at another data folder, such as `website/` of a release. `python -m src.site_data --enemy-models <model folder> --preview` writes models the SDK has not published.
+
+To add an information site, write its JSON from `src/site_data` (a module called from `export_site_data`), then declare its title, home page card and routes in `web/src/sites/<site>/index.js` and list it in `web/src/sites.js`.
 
 ## Release archives
 
@@ -71,12 +97,14 @@ SkillDetails.xlsx
 amulet_pool.json
 graphic_preset.xlsx
 skill_pool.json
-enemy_battle_logic/index.html
-enemy_battle_logic/EM0001_00_0.html
+website/site.json
+website/enemy_battle_logic/index.json
+website/enemy_battle_logic/EM0001_00_0.json
 ...
+website/skill_details/skills.json
 ```
 
-The battle graph bundle consists of an index and 34 monster pages. Variants have separate pages; the training target is excluded. Online battle graphs: [mhws-monsters-ai.eggtargaryen.com](https://mhws-monsters-ai.eggtargaryen.com/).
+`website/` holds the JSON the [website](#website) reads; the pages themselves are not in the release.
 
 `MHWS-in-json_<version>.zip` contains the source JSON, packaged separately from the workbooks.
 
@@ -87,21 +115,7 @@ The `sdk/` directory is an offline SDK that reads the game files; `python -m sdk
 - Monster battle logic (`sdk.enemy_logic_exporter`) extracts monster battle logic into the graph JSON behind the battle pages. The 34 models in `src/processed_data/enemy_battle_logic/models` keep unresolved branches marked.
 - Skill effects (`sdk.skill_effect_exporter`) finds the native functions that use each skill, evaluates them per level, and writes the skill effect link JSON behind `SkillDetails.xlsx`.
 
-The SDK needs the game EXE dumped from memory (e.g. `MonsterHunterWilds_dump.exe`) and the REFramework `il2cpp_dump.json`, which you provide; it records no game version. Setup (`sdk/setup_env.ps1`) and usage: [SDK guide](sdk/README.md). Rebuilding the pages or workbooks does not need the SDK:
-
-```powershell
-python -m src.processed_data.enemy_battle_logic --preview-all --output .tmp/battle-preview
-```
-
-Then open `.tmp/battle-preview/enemy_battle_logic/index.html`; the pages work offline.
-
-The skill effect values of `SkillDetails.xlsx` can also be read as a single offline page (in Simplified Chinese), built from the same skill effect link JSON:
-
-```powershell
-python -m src.processed_data.skill_details.web --output .tmp/skill-web
-```
-
-Open `.tmp/skill-web/skill_details/index.html`. Skills are listed by category with a search over names, effects and weapons; each effect gets a small table with the levels as columns and one row per weapon, ammo kind, action or situation, next to its meaning (applies to, calculation, condition, unit). The code basis of each effect is shown on demand.
+The SDK needs the game EXE dumped from memory (e.g. `MonsterHunterWilds_dump.exe`) and the REFramework `il2cpp_dump.json`, which you provide; it records no game version. Setup (`sdk/setup_env.ps1`) and usage: [SDK guide](sdk/README.md). Rebuilding the [website](#website) or the workbooks does not need the SDK.
 
 ## Data notes
 

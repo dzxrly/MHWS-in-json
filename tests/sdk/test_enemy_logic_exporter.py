@@ -1,11 +1,9 @@
 """Preserve graph topology across compound layout."""
 
 from copy import deepcopy
-import json
 import unittest
 
 from src.processed_data.enemy_battle_logic.diagram import combined_diagram, node_id
-from src.processed_data.enemy_battle_logic.viewer import render_html
 
 
 class DiagramTests(unittest.TestCase):
@@ -59,19 +57,6 @@ class DiagramTests(unittest.TestCase):
         self.assertEqual(resume["targets"], [node_id("a", "1")])
         self.assertTrue(resume["continuation"])
         self.assertFalse(any(edge["sources"] == [node_id("b", "1")] for edge in edges))
-
-    def test_offline_html_embeds_library_and_escapes_source_text(self):
-        graph = self.graph()
-        graph["tables"][1]["nodes"][0]["reason"] = "</script><script>bad</script>"
-        html = render_html(graph)
-        self.assertNotIn("<script src=", html)
-        self.assertNotIn("</script><script>bad", html)
-        self.assertIn("elkjs 0.11.1", html)
-        self.assertIn("Eclipse Public License", html)
-        payload = html.split('<script id="data" type="application/json">')[1].split(
-            "</script>"
-        )[0]
-        self.assertEqual(json.loads(payload)["graph"], graph)
 
 
 if __name__ == "__main__":

@@ -67,15 +67,16 @@ Function addresses come from `sdk/enemy_logic_exporter/data/profile.json`, which
 
 ### Build the pages only
 
-No SDK dependencies or game files are needed:
+No SDK dependencies or game files are needed. The pages are part of the [website](../README.md#website):
 
 ```powershell
-python -m src.processed_data.enemy_battle_logic                     # release build into output/processed_data
-python -m src.processed_data.enemy_battle_logic --preview-all --output .tmp/battle-preview
-python -m src.processed_data.enemy_battle_logic --template <model.json> --output .tmp/one
+python -m src.site_data                                         # release data, all 34 monsters
+python -m src.site_data --enemy-models <folder> --preview       # some monsters, e.g. freshly extracted models
+python -m src.site_data --enemy-template <model.json>           # one monster
+npm --prefix web run dev                                       # browse at http://localhost:5173
 ```
 
-Open `enemy_battle_logic/index.html` in the output folder. The pages work offline.
+The JSON goes to `src/site_data/data/`, which the web build copies into the site; see the [website](../README.md#website) for the build command.
 
 ### Re-extract after a code change
 
@@ -89,7 +90,7 @@ python -B -m sdk.enemy_logic_exporter player-view -m "$w/s1" -o "$w/s1p"        
 python -B -m sdk.enemy_logic_exporter census -m "$w/s1p"                         # conditions with unknown parts, by command and reason
 python -B -m sdk.enemy_logic_exporter uncertainty -m "$w/s1p"                    # player-tree conditions still undecided with all inputs known
 python -B -m sdk.enemy_logic_exporter publish -m "$w/s1p"                        # write the web models
-python -B -m src.processed_data.enemy_battle_logic --output "$w/site"
+python -B -m src.site_data                                                       # website JSON into src/site_data/data
 python -B -m unittest discover -s tests/sdk -t .
 ```
 

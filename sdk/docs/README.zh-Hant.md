@@ -70,12 +70,13 @@ SDK 只讀取遊戲檔案，不執行遊戲、不注入。它從 EXE 的 x64 指
 不需要 SDK 相依套件和遊戲檔案：
 
 ```powershell
-python -m src.processed_data.enemy_battle_logic                     # 正式建置，輸出到 output/processed_data
-python -m src.processed_data.enemy_battle_logic --preview-all --output .tmp/battle-preview
-python -m src.processed_data.enemy_battle_logic --template <模型.json> --output .tmp/one
+python -m src.site_data                                         # 正式資料，全部 34 個魔物
+python -m src.site_data --enemy-models <目錄> --preview         # 部分魔物，如剛提取的模型
+python -m src.site_data --enemy-template <模型.json>            # 單個魔物
+npm --prefix web run dev                                       # 在 http://localhost:5173 瀏覽
 ```
 
-開啟輸出目錄下的 `enemy_battle_logic/index.html` 瀏覽。頁面可離線使用。
+JSON 寫入 `src/site_data/data/`，網站建置時複製進站點；建置命令見[網站](../../docs/README.zh-Hant.md#網站)。
 
 ### 修改程式碼後重新提取
 
@@ -89,7 +90,7 @@ python -B -m sdk.enemy_logic_exporter player-view -m "$w/s1" -o "$w/s1p"        
 python -B -m sdk.enemy_logic_exporter census -m "$w/s1p"                         # 含未知部分的條件，按命令與原因分組
 python -B -m sdk.enemy_logic_exporter uncertainty -m "$w/s1p"                    # 玩家戰鬥樹中輸入都已知後仍無法判定的條件
 python -B -m sdk.enemy_logic_exporter publish -m "$w/s1p"                        # 寫入網頁模型目錄
-python -B -m src.processed_data.enemy_battle_logic --output "$w/site"
+python -B -m src.site_data                                                       # 網站 JSON 寫入 src/site_data/data
 python -B -m unittest discover -s tests/sdk -t .
 ```
 

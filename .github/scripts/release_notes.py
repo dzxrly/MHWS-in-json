@@ -25,6 +25,18 @@ PYREUSER3_BADGE = """<a href="https://github.com/dzxrly/PyREUser3">
   </picture>
 </a>"""
 
+# The website is linked from the notes; its pages are not release assets.
+# Set to None when the project has no website to link.
+WEBSITE_SECTION: dict[str, str] | None = {
+    "heading": "Website",
+    "description": (
+        "Monster battle logic and skill effect values, browsable online. "
+        "The release carries only the site's data (PROCESSED_DATA, website/)."
+    ),
+    "url": "https://mhws-info.eggtargaryen.com/",
+    "link_text": "Open the website",
+}
+
 # Set to None when the project has no language-specific release assets.
 LANGUAGE_ASSET_SECTION: dict[str, object] | None = {
     "heading": "DATABASE",
@@ -166,6 +178,8 @@ def build_release_notes(
         )
     if changelog:
         lines.extend(_changelog_lines(changelog, repository, server_url))
+    if WEBSITE_SECTION:
+        lines.extend(_website_lines(WEBSITE_SECTION))
     if LANGUAGE_ASSET_SECTION:
         lines.extend(
             _language_asset_lines(
@@ -258,6 +272,14 @@ def _changelog_lines(
 
     lines.append("")
     return lines
+
+
+def _website_lines(section: dict[str, str]) -> list[str]:
+    heading = _config_string(section, "heading")
+    description = _config_string(section, "description")
+    url = _config_string(section, "url")
+    link_text = _config_string(section, "link_text")
+    return [f"## {heading}", "", description, "", f"[{link_text}]({url})", ""]
 
 
 def _language_asset_lines(

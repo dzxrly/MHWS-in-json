@@ -1,0 +1,120 @@
+/* Material 3 Expressive tokens, shared with eggtargaryen.com and its blog. */
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("../assets/JetBrainsMono-Regular.woff2") format("woff2");
+  font-display: swap;
+  font-weight: 400;
+}
+
+:root {
+  color-scheme: light;
+  --primary: #006a8e;
+  --on-primary: #ffffff;
+  --primary-container: #c6e7ff;
+  --on-primary-container: #001e2c;
+  --secondary: #58636d;
+  --secondary-container: #dce4ec;
+  --on-secondary-container: #151d24;
+  --tertiary: #806b57;
+  --tertiary-container: #f4dec9;
+  --on-tertiary-container: #2c1708;
+  --error: #ba1a1a;
+  --error-container: #ffdad6;
+  --on-error-container: #410002;
+  --background: #f8faff;
+  --surface-lowest: #ffffff;
+  --surface: #f0f4fa;
+  --surface-hover: #e8edf5;
+  --surface-high: #dee6ef;
+  --on-surface: #171c21;
+  --on-surface-variant: #414850;
+  --outline: #707780;
+  --outline-variant: #c4cdd6;
+  --scrim: rgb(18 29 38 / 32%);
+  --bg-wash-1: rgba(198, 231, 255, 0.78);
+  --bg-wash-2: rgba(244, 222, 201, 0.38);
+  --bg-wash-3: rgba(221, 227, 235, 0.58);
+  --shadow: 0 2px 6px rgb(18 29 38 / 4%);
+  --shadow-hover: 0 12px 30px rgb(18 29 38 / 9%);
+  --radius: 28px;
+  --radius-large: 36px;
+  --radius-small: 16px;
+  --motion: cubic-bezier(0.2, 0, 0, 1);
+  --motion-bounce: cubic-bezier(0.2, 0, 0, 1.2);
+  --font:
+    "Noto Sans", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui,
+    sans-serif;
+  --mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+  --header-height: 88px;
+
+  /* Decision tree and flow chart roles, tuned to the scheme above. */
+  --canvas: #f4f7fc;
+  --node: #ffffff;
+  --group: #e3eaf2;
+  --edge: #a8b3bd;
+  --edge-false: #c98a86;
+  --edge-resume: #9583bd;
+  --k-entry: #4c6377;
+  --k-condition: #2b7a59;
+  --k-weighted_random: #8b6a12;
+  --k-action: #006a8e;
+  --k-mutation: #6d55a5;
+  --k-unknown: #ba1a1a;
+  --k-flow: #707780;
+  --match: #c77700;
+  --value: #00516d;
+  --unsure: #8b6a12;
+  --unsure-soft: #fbefd2;
+  --highlight: #fff1c9;
+}
+
+.dark {
+  color-scheme: dark;
+  --primary: #83d1f7;
+  --on-primary: #003548;
+  --primary-container: #004d67;
+  --on-primary-container: #c6e7ff;
+  --secondary: #bcc7d1;
+  --secondary-container: #3b4853;
+  --on-secondary-container: #dce4ec;
+  --tertiary: #e2c1a6;
+  --tertiary-container: #5c4431;
+  --on-tertiary-container: #f4dec9;
+  --error: #ffb4ab;
+  --error-container: #93000a;
+  --on-error-container: #ffdad6;
+  --background: #0c141a;
+  --surface-lowest: #0f191f;
+  --surface: #141f27;
+  --surface-hover: #1c2a34;
+  --surface-high: #273741;
+  --on-surface: #dee6ec;
+  --on-surface-variant: #bac7d1;
+  --outline: #8b9ba7;
+  --outline-variant: #3d505e;
+  --scrim: rgb(0 0 0 / 55%);
+  --bg-wash-1: rgba(0, 77, 103, 0.78);
+  --bg-wash-2: rgba(92, 68, 49, 0.38);
+  --bg-wash-3: rgba(61, 80, 94, 0.58);
+  --shadow: 0 2px 6px rgb(0 0 0 / 12%);
+  --shadow-hover: 0 12px 30px rgb(0 0 0 / 22%);
+
+  --canvas: #111b22;
+  --node: #1a262f;
+  --group: #22313b;
+  --edge: #5a6b78;
+  --edge-false: #a26f6b;
+  --edge-resume: #8c7bb6;
+  --k-entry: #9fb8cc;
+  --k-condition: #6fcf9f;
+  --k-weighted_random: #e2bd5b;
+  --k-action: #83d1f7;
+  --k-mutation: #c2aaf2;
+  --k-unknown: #ffb4ab;
+  --k-flow: #8b9ba7;
+  --match: #ffb95c;
+  --value: #b4e5ff;
+  --unsure: #e2bd5b;
+  --unsure-soft: #3a3016;
+  --highlight: #3b3320;
+}

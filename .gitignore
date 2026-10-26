@@ -184,3 +184,11 @@ MHWS-in-json/natives/STM/GameDesign/Enemy/**/Data/*Constraint*.json
 
 .tmp/
 .ai-memory.toml
+
+# Web site: npm packages at any depth, build output and Node caches.
+node_modules/
+web/dist/
+# JSON written by python -m src.site_data for the website build.
+src/site_data/data/
+.cache/
+.vite/

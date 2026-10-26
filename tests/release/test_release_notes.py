@@ -178,12 +178,24 @@ class ReleaseNotesTests(unittest.TestCase):
             processed.index("[Download PROCESSED_DATA (ZIP)]"),
             processed.index("<summary>Files in ZIP"),
         )
-        self.assertIn(
-            "- `enemy_battle_logic/`: 3 files (2 `.json`, 1 `.html`)", processed
-        )
-        self.assertIn("- `skill_details/index.html`", processed)
-        self.assertNotIn("EM0001_00_0", processed)
+        self.assertIn("- `nested/`: 3 files (2 `.json`, 1 `.xlsx`)", processed)
+        self.assertIn("- `single/only.json`", processed)
+        self.assertNotIn("nested/a.json", processed)
         self.assertTrue(processed.rstrip().endswith("</details>"))
+
+    def test_notes_link_the_website_before_the_downloads(self) -> None:
+        version = "website-version"
+        output_dir = self._create_assets(version)
+        notes = build_release_notes(
+            output_dir, "owner/repository", f"database-{version}", version
+        )
+        website = release_notes.WEBSITE_SECTION
+        if website is None:
+            self.fail("Project configuration requires a website section")
+
+        self.assertIn(f"[{website['link_text']}]({website['url']})", notes)
+        self.assertLess(notes.index("## Website"), notes.index("## DATABASE"))
+        self.assertNotIn(".html", notes)
 
     def test_language_archives_must_have_the_same_file_list(self) -> None:
         version = "different-files"
@@ -265,10 +277,10 @@ class ReleaseNotesTests(unittest.TestCase):
             elif asset.startswith("PROCESSED_DATA_"):
                 files = (
                     "EnemyActionNames.xlsx",
-                    "enemy_battle_logic/EM0001_00_0.html",
-                    "enemy_battle_logic/EM0001_00_0.json",
-                    "enemy_battle_logic/index.json",
-                    "skill_details/index.html",
+                    "nested/a.json",
+                    "nested/b.json",
+                    "nested/c.xlsx",
+                    "single/only.json",
                     "skill_pool.json",
                 )
             else:

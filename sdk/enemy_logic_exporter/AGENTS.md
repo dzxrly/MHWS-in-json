@@ -1,6 +1,6 @@
 # 怪物行动逻辑提取与维护
 
-本目录是离线研究 SDK，代码统一使用 Python。它读取从内存 dump 出的游戏 EXE（如 `MonsterHunterWilds_dump.exe`，不使用原版 EXE）和 REFramework 的 IL2CPP JSON，提取原生方法证据，再用人工核实过的配方固化语义与控制流。公共分析代码位于 `shared/`，按原生证据、游戏资源、语义恢复、模型构建和离线流程分组；JSON 文件统一放在 `data/`。每个大型怪物（含独立变种，排除训练靶）在 `monster/<完整ID小写>.py` 有独立入口。与单只怪物强相关的常量和处理代码只放在它自己的模块里，例如专用命令的字段、偏移、枚举含义、阶段与状态规则和原生配方；`shared/` 只放共通逻辑，以及向怪物模块分派的接口（`shared/logic/monster_rules.py`），不写任何怪物编号或专用常量；名单本身是数据（`data/roster.v1.json`），由 `roster` 从 EnemyData 与 BTableList 生成。大多数怪物的判断都能由共通规则和自动恢复的 `leafRules` 覆盖，它们的模块只是调用共通配方的薄入口，这是正常的；只有出现必须人工核实的专用命令、阶段或状态时，才在该怪物模块中加入常量和处理函数，并通过 `monster_rules.py` 的钩子接入。SDK 与 `src` 之间只通过 JSON 文件交接，双方禁止导入或调用对方的代码。网页构建器位于 `src/processed_data/enemy_battle_logic`，只读取已解析的图 JSON，不能读取游戏资源、IL2CPP 或 EXE。
+本目录是离线研究 SDK，代码统一使用 Python。它读取从内存 dump 出的游戏 EXE（如 `MonsterHunterWilds_dump.exe`，不使用原版 EXE）和 REFramework 的 IL2CPP JSON，提取原生方法证据，再用人工核实过的配方固化语义与控制流。公共分析代码位于 `shared/`，按原生证据、游戏资源、语义恢复、模型构建和离线流程分组；JSON 文件统一放在 `data/`。每个大型怪物（含独立变种，排除训练靶）在 `monster/<完整ID小写>.py` 有独立入口。与单只怪物强相关的常量和处理代码只放在它自己的模块里，例如专用命令的字段、偏移、枚举含义、阶段与状态规则和原生配方；`shared/` 只放共通逻辑，以及向怪物模块分派的接口（`shared/logic/monster_rules.py`），不写任何怪物编号或专用常量；名单本身是数据（`data/roster.v1.json`），由 `roster` 从 EnemyData 与 BTableList 生成。大多数怪物的判断都能由共通规则和自动恢复的 `leafRules` 覆盖，它们的模块只是调用共通配方的薄入口，这是正常的；只有出现必须人工核实的专用命令、阶段或状态时，才在该怪物模块中加入常量和处理函数，并通过 `monster_rules.py` 的钩子接入。SDK 与 `src`、`web` 之间只通过 JSON 文件交接，双方禁止导入或调用对方的代码。模型与校验位于 `src/processed_data/enemy_battle_logic`，网站 JSON 由 `src/site_data/enemy_battle_logic.py` 写出，页面位于 `web/src/sites/enemy_battle_logic` 且只读取这份 JSON；它们都不能读取游戏资源、IL2CPP 或 EXE。
 
 ## 维护边界
 
@@ -67,7 +67,7 @@
 
 ### 7. 交付：SDK 与网页只通过 JSON 交接
 
-完整研究模型（含原生证据、恢复证明）只放在 `.tmp`；`publish` 删除研究字段并共享重复值后写入 `src/processed_data/enemy_battle_logic/models`。`src` 只读取这些 JSON 构建单棵可交互树，CI 不读取 EXE、IL2CPP 或资源；构建网页不导入 SDK（回归测试会安装 `sdk/requirements.txt` 并运行 `tests/sdk`，缺少依赖时测试失败而不是跳过）。发布工作流只在合并到默认分支（或手动触发于默认分支）时构建 Pages 和 Release；PR 只运行校验与构建，不发布。
+完整研究模型（含原生证据、恢复证明）只放在 `.tmp`；`publish` 删除研究字段并共享重复值后写入 `src/processed_data/enemy_battle_logic/models`。`src/site_data` 只读取这些 JSON 写出网站数据（`src/site_data/data/`，发布时为 PROCESSED_DATA 的 `website/`），`web/src/sites/enemy_battle_logic` 用它画单棵可交互树；CI 不读取 EXE、IL2CPP 或资源，构建网站不导入 SDK（回归测试会安装 `sdk/requirements.txt` 并运行 `tests/sdk`，缺少依赖时测试失败而不是跳过）。Cloudflare Pages 从 Git 推送构建并部署网站；发布工作流在 PR 和默认分支上都构建一次网站作为校验，只在合并到默认分支（或手动触发于默认分支）时发布 Release，Release 链接网站并附带网站 JSON，不含网页。
 
 ### 必须坚持的原则
 
@@ -151,7 +151,7 @@
 
 面向使用者的同一套步骤写在 `sdk/docs/README.zh-Hans.md`、`sdk/README.md`、`sdk/docs/README.zh-Hant.md`；本节修改后要同步这三份文档。
 
-只考虑 Windows。普通网页构建（`python -m src.processed_data.enemy_battle_logic`）只需要 Python 标准库与仓库内 JSON；下面的研究依赖只在重新提取时需要。已验证组合：Python 3.13、Capstone 5.0.6、PyGhidra 3.0.2、Ghidra 12.0.4 及其支持的 JDK。JVM 只是 Ghidra 的运行依赖，本项目不写 Java。
+只考虑 Windows。网站构建（`python -m src.site_data` 加 `npm --prefix web run build`）只需要仓库内数据、`requirements.txt` 与 Node.js；下面的研究依赖只在重新提取时需要。已验证组合：Python 3.13、Capstone 5.0.6、PyGhidra 3.0.2、Ghidra 12.0.4 及其支持的 JDK。JVM 只是 Ghidra 的运行依赖，本项目不写 Java。
 
 ### 换机步骤
 
@@ -234,27 +234,28 @@ python -m sdk.enemy_logic_exporter recover --exe $exe --index "$work/full-run/na
 
 ```powershell
 python -m sdk.enemy_logic_exporter extract --enemy EM0002_00_0 --exe $exe --index "$work/full-run/native/index.json" --helpers "$work/per-monster/helpers/index.json" --inventory "$work/full-run/result/inventory.json" --requests "$work/full-run/result/action-requests.json" --output "$work/extracted"
-python -m src.processed_data.enemy_battle_logic --template "$work/extracted/em0002_00_0.v1.json" --output "$work/preview"
+python -m src.site_data --enemy-template "$work/extracted/em0002_00_0.v1.json"
 
 python -m sdk.enemy_logic_exporter extract-all --exe $exe --index "$work/full-run/native/index.json" --helpers "$work/per-monster/helpers/index.json" --inventory "$work/full-run/result/inventory.json" --requests "$work/full-run/result/action-requests.json" --output "$work/all-extracted"
-python -m src.processed_data.enemy_battle_logic --models "$work/all-extracted" --preview-all --output "$work/all-preview"
+python -m src.site_data --enemy-models "$work/all-extracted" --preview
+npm --prefix web run dev
 ```
 
-现有研究缓存可通过 `--work-dir .tmp/enemy-action-tree` 复用。确认生成结果和差异后，用 `publish` 把 `.tmp` 中的完整研究模型写成网页模型并更新 `src/processed_data/enemy_battle_logic/models`（见下文“发布模型”）。该目录不保存待绑定模板或判断规则文件。预览结果位于 `$work/preview/enemy_battle_logic`。不要将伪 C、EXE 或 Ghidra 缓存作为正式构建依赖。
+现有研究缓存可通过 `--work-dir .tmp/enemy-action-tree` 复用。确认生成结果和差异后，用 `publish` 把 `.tmp` 中的完整研究模型写成网页模型并更新 `src/processed_data/enemy_battle_logic/models`（见下文“发布模型”）。该目录不保存待绑定模板或判断规则文件。预览数据写入 `src/site_data/data`，用 `npm --prefix web run dev` 浏览；再运行不带参数的 `python -m src.site_data` 恢复正式数据。不要将伪 C、EXE 或 Ghidra 缓存作为正式构建依赖。
 
 已提取的完整研究模型可独立更新玩家展示字段，无需重新提取原生代码。`player-view` 只接受 `.tmp` 中的完整模型，拒绝已发布的精简模型：
 
 ```powershell
 python -m sdk.enemy_logic_exporter player-view --models "$work/all-extracted" --output "$work/player-models"
 python -m sdk.enemy_logic_exporter publish --models "$work/player-models"
-python -m src.processed_data.enemy_battle_logic --output "$work/player-preview"
+python -m src.site_data
 ```
 
 `playerView` 保存声明式条件、准确的分支与动作继续位置。情境（`scenario`）明确写出：单人或作为主机的玩家是当前目标，怪物处于战斗 AI 状态，没有待切换状态，也没有待处理或已存在的诱导、骑乘、登场、退场中断，行为表动作请求未被屏蔽；这些都是可见的情境输入，不是隐含假设。计时器检查按 `variableCatalog` 的初始值作为“计时器到期”输入，布尔变量比较作为“行为表布尔变量”输入，浮点变量比较按阈值区间作为“行为表浮点变量”输入，站立状态与专用状态命令合成为“当前姿态”输入，`leafRules` 恢复的专用字段作为“专用状态 <字段>”输入（枚举字段显示枚举名），专用等级值作为“专用等级值 <类别>”输入，`cSetDest` 的返回结果按资源参数作为“能设置移动目的地（<类别>）”输入，地形高低与遮挡判定作为单个布尔输入，随机余数分支标为“随机”类别并给出按均匀分布估算的比例（随机源分布未核实）。入口按 `schedulerSlots` 分组：普通战斗选招之外，每个行为表槽（受击、闪光、骑乘、状态提示等）都是独立入口并列出请求它的 AI 状态或中断；没有已证实上游的局部树单独归入“接入位置待核查”组，不伪造接入线。命令上下文、目标模块与目标玩家有效性在“目标是该玩家、正在战斗”的情境中作为显式情境输入，不再让每个条件都显示为未知。网页把整只怪物画成同一棵可交互树：怪物 → 分组 → 行为表 → 条件分支 → 动作，节点就地展开或收起，内部检查保留为小节点，相同判断状态只在首次出现处展开，其他位置显示“同前”并可跳转；顶部可搜索动作/条件、按距离角度和怒/疲劳等设定情境。SDK 与网页端继续只通过 JSON 交接。动作说明名来自已绑定动作类的解释，不代表官方招式名或游戏内验证。游戏资源中没有动作中文名，也没有分支参数名：没有说明名的动作直接以 ActionID 中的类名为标题（`nameStatus=unresolved`），每个动作节点都带 `technicalName`，网页显示为副标题并可搜索。`technicalName` 在同一怪物内唯一：同类的分支参数按 `_BranchedParamsList` 中的位置写成“分支参数 n”，参数类与动作类不同时注明参数类，变种请求其他怪物 ActionID 表中的动作时注明“<主人> 动作表”，同一表中重复的类名再附加动作 GUID 前 8 位。不要用“未命名动作 N”之类的序号代替。
 
-正式流水线只交付 `enemy_battle_logic/index.html` 和各怪物的 `<enemyId>.html`，语义模型与图数据内嵌在离线页面中。Pages 和压缩包均使用这同一份输出，不另外发布研究索引、伪 C 或重复 JSON。同一怪物只能有一个正式模型；重复版本、来源冲突、断开的连接或图数据不一致会阻止发布。CI 构建网页时只读取已解析的图 JSON，不读取资源、IL2CPP、EXE，也不运行 SDK；SDK 依赖只为回归测试安装。网页显示离线提取时记录的来源核对状态；CI 的 JSON 校验不能证明之后的游戏原生代码没有变化。
+网站只发布 `data/enemy_battle_logic/index.json` 和各怪物的 `<enemyId>.json`（语义模型加技术图数据），由网站的怪物页面读取；发布压缩包不含网页，也不另外发布研究索引、伪 C 或重复 JSON。同一怪物只能有一个正式模型；重复版本、来源冲突、断开的连接或图数据不一致会阻止发布。CI 构建网站时只读取已解析的图 JSON，不读取资源、IL2CPP、EXE，也不运行 SDK；SDK 依赖只为回归测试安装。网页显示离线提取时记录的来源核对状态；CI 的 JSON 校验不能证明之后的游戏原生代码没有变化。
 
-正式范围是 EnemyData 中基础编号小于 1000 的完整 ID，排除训练靶 `EM0165_00_0`，当前为 34 个。全部怪物统一使用语义行动图；不得用资源清单或原生方法索引替代。默认构建校验 34 个模型、实际连接、方法/动作请求覆盖和 HTML 内容一致性；按用户已确认的发布范围保留 partial 图，不再以全部语义审核完成或完整 Combat 总入口作为网页发布前提。发现记录与摘要必须一致。这些静态验收不代替人工语义审核或游戏内验证。
+正式范围是 EnemyData 中基础编号小于 1000 的完整 ID，排除训练靶 `EM0165_00_0`，当前为 34 个。全部怪物统一使用语义行动图；不得用资源清单或原生方法索引替代。默认构建校验 34 个模型、实际连接、方法/动作请求覆盖和网页数据一致性；按用户已确认的发布范围保留 partial 图，不再以全部语义审核完成或完整 Combat 总入口作为网页发布前提。发现记录与摘要必须一致。这些静态验收不代替人工语义审核或游戏内验证。
 
 当前网页模型目录已有 34 份实际提取的 partial 图 JSON，均为 `publish` 生成的精简格式，未知分支和接入关系继续保留。显式 `--template` 或 `--preview-all` 可在 `.tmp` 生成单个或部分怪物预览；默认全量构建仍要求全部 34 个身份及结构检查通过。图保留 Combat 进入、更新、BTable 切换、中断和恢复的实际已核实部分，异步请求只连接到等待调度的目标，不当作同步调用。未知命令的真实 void 调用方连续流可保留，但其副作用仍标未知；未恢复的 Boolean 不能伪造为 0 或整个命令的 opaque 运行时布尔输入。
 
@@ -304,7 +305,7 @@ $w = '.tmp/enemy-logic-exporter/fix'
 & $py -B -m sdk.enemy_logic_exporter census --models "$w/s1p"          # 全部含未知部分的条件，按命令与原因分组
 & $py -B -m sdk.enemy_logic_exporter uncertainty --models "$w/s1p"     # 玩家战斗树中输入都已知后仍无法判定的条件
 & $py -B -m sdk.enemy_logic_exporter publish --models "$w/s1p"
-& $py -B -m src.processed_data.enemy_battle_logic --output "$w/site"
+& $py -B -m src.site_data                                              # 网站 JSON，写入 src/site_data/data
 & $py -B -m unittest discover -s tests/sdk -t .
 ```
 
@@ -349,7 +350,7 @@ $w = '.tmp/enemy-logic-exporter/fix'
 
 ### 网页标签约定
 
-- 标签写玩家能直接读懂的短语，不放字段路径、优先级符号或括号里的规则说明；这些内容放进输入的 `hint`，网页在标签旁显示“?”按钮，点开后显示说明（`player_viewer.js`）。例如“当前姿态”的 `hint` 解释专用状态、额外状态、普通站立状态三层的优先关系。
+- 标签写玩家能直接读懂的短语，不放字段路径、优先级符号或括号里的规则说明；这些内容放进输入的 `hint`，网页在标签旁显示“?”按钮，点开后显示说明（`web/src/sites/enemy_battle_logic/MonsterPage.vue`）。例如“当前姿态”的 `hint` 解释专用状态、额外状态、普通站立状态三层的优先关系。
 - 专有名词（怪物、部位、gimmick 等）只用 `*.msg.23.json` 中的官方名称；找不到时显示原类名或枚举名，并在 `hint` 里说明这是游戏内部名称，不自行翻译。
 - 行为表计时器与变量用资源中的 `ExportValueName` 命名；资源未命名时用 GUID 前 8 位区分，完整 GUID、初始值、生命周期写在 `hint` 中。
 - 标签也出现在树上的分支文字里（“<标签>：<选项>”“<标签>成立”），修改后要在浏览器中检查分支文字是否通顺。
@@ -360,4 +361,4 @@ $w = '.tmp/enemy-logic-exporter/fix'
 
 ## 技术图绘制约定
 
-技术图由工具栏切换，用于核对原始子表。一个怪物的全部已恢复子表出现在同一张图中，以子表分组，共享子表只画一次。用固定版本的 elkjs 分层布局，先排列每个子表，再排列子表之间的调用关系；库与许可证嵌入单文件 HTML，不调用 CDN。跨表调用线从分组边框引出，标明实际调用节点和目标入口；精确节点 ID 仍保留在图数据中。普通实线为条件、调用与后续逻辑；虚线表示调用/动作保存的恢复位置。它是继续执行位置的说明，不是绕过被调用逻辑的执行边。不能将共享子表的所有结束节点连接到所有调用方，这会制造不存在的路径；实际返回由调用栈决定。
+技术图由工具栏切换，用于核对原始子表。一个怪物的全部已恢复子表出现在同一张图中，以子表分组，共享子表只画一次。用固定版本的 elkjs（`web/package.json` 锁定 0.11.1）分层布局，先排列每个子表，再排列子表之间的调用关系；库随网站一起构建，打开技术图时才加载，不调用 CDN。跨表调用线从分组边框引出，标明实际调用节点和目标入口；精确节点 ID 仍保留在图数据中。普通实线为条件、调用与后续逻辑；虚线表示调用/动作保存的恢复位置。它是继续执行位置的说明，不是绕过被调用逻辑的执行边。不能将共享子表的所有结束节点连接到所有调用方，这会制造不存在的路径；实际返回由调用栈决定。

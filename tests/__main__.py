@@ -8,7 +8,15 @@ from config import BASE_DIR
 def main() -> int:
     suite = unittest.TestSuite()
     loader = unittest.TestLoader()
-    for area in ("database", "processed_data", "shared", "pipeline", "release", "sdk"):
+    for area in (
+        "database",
+        "processed_data",
+        "shared",
+        "pipeline",
+        "release",
+        "sdk",
+        "site_data",
+    ):
         suite.addTests(
             loader.discover(str(BASE_DIR / "tests" / area), top_level_dir=str(BASE_DIR))
         )

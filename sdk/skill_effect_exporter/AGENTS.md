@@ -122,7 +122,7 @@ python -B -m sdk.skill_effect_exporter new-skill -s HunterSkill_250  # 为新增
    - `getSkillValue` 开头读取 `SkillToGroupSkill`（`mov rax,[rip+X]; movsxd rdx,r8d; mov eax,[rax+rdx*4+ARRAY_DATA_OFFSET]`）与结尾 `xor rcx,rsp; call 栈保护检查`；
    - `get__SkillParam` 仍是三次读取后 `ret` 的单例链；
    - `createSkillToGroupSkill` 仍以 `r8d/r9d` 成对立即数调用同一个写入函数（少于 10 对视为模式变化）。
-3. 核对 `config.py` 的布局常量：用一个已知函数（如 `getSkillBallisticBeginWideRate_Gun`）确认数组长度在 `ARRAY_LENGTH_OFFSET`、元素从 `ARRAY_DATA_OFFSET` 开始；`List`1` 的 `_items/_size/_version` 偏移与 il2cpp 字段记录一致；`via.rds.Mandrake` 的 `v/m` 字段与 `EquipSkillInfo._SkillLv` 仍按 `v / m` 解码（见 `getSkillLevelCore`）。
+3. 核对 `config.py` 的布局常量：用一个已知函数（如 `getSkillBallisticBeginWideRate_Gun`）确认数组长度在 `ARRAY_LENGTH_OFFSET`、元素从 `ARRAY_DATA_OFFSET` 开始；``List`1`` 的 `_items/_size/_version` 偏移与 il2cpp 字段记录一致；`via.rds.Mandrake` 的 `v/m` 字段与 `EquipSkillInfo._SkillLv` 仍按 `v / m` 解码（见 `getSkillLevelCore`）。
 4. 与上一版输出比较 `stats`（各状态的路径数）和关键技能的数值（攻击 `getSkillAttackRate/Add`、弹道强化 `getSkillBallistic*`、恨击 `getSkillViolentAddDamage`）。新出现的 `unsupported` 先看详情：缺指令就在 `native/emulator.py` 补完整语义，缺数据形式就在 `runtime/heap.py` 补对象模型。
 5. 用 `extract --all-links -o .tmp/...` 再运行一次，核对技能模块 `SKIPPED_FUNCTIONS` 中的函数仍然没有本技能可显示的数值（与正常运行的表格行一致），否则删去对应跳过项。复核 `DECLARED_METHODS` 的依据（状态对象的 `_Skill`、调用关系）是否仍成立。
 6. 复核 `notes.py` 与各技能模块 `NOTES` 中每条说明对应的代码是否仍成立，全部复核后再把 `config.GAME_VERSION` 改为新版本（说明、声明与跳过依据中的版本号都引用它）；`remapDifferences` 有变化时同步更新说明。用 `python -m src.processed_data.skill_details --meanings-report <文件.md>` 核对各技能模块的 `MEANINGS`：新出现的效果补写含义，“已不再显示的条目”从模块中删除，然后运行 `annotate`。

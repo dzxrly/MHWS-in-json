@@ -1,11 +1,7 @@
-"""Validate rendered HTML against the frozen graph contract."""
+"""Validate frozen graph JSON against the model contract."""
 
-from html.parser import HTMLParser
-import json
-from pathlib import Path
 import re
-from .definitions import INDEX_NAME, EXPECTED_ENEMY_IDS, TRAINING_ENEMY_ID
-from .diagram import combined_diagram
+from .definitions import TRAINING_ENEMY_ID
 from .weights import weighted_pool, candidate_node_id
 from .values import scalar
 from .expressions import validate_expression, expression_unknown
@@ -194,91 +190,3 @@ def validate_graph(graph):
         "globalCombatEntryRecovered", False
     ) != combat_entry_recovered(graph):
         raise ValueError("战斗入口恢复标志与实际入口证据不一致")
-
-
-class EmbeddedGraph(HTMLParser):
-    def __init__(self, script_id="data"):
-        super().__init__(convert_charrefs=False)
-        self.script_id = script_id
-        self.capturing = False
-        self.payloads = []
-        self.external_scripts = []
-
-    def handle_starttag(self, tag, attributes):
-        attrs = dict(attributes)
-        if tag == "script":
-            if attrs.get("src"):
-                self.external_scripts.append(attrs["src"])
-            self.capturing = (
-                attrs.get("id") == self.script_id
-                and attrs.get("type") == "application/json"
-            )
-            if self.capturing:
-                self.payloads.append("")
-
-    def handle_endtag(self, tag):
-        if tag == "script":
-            self.capturing = False
-
-    def handle_data(self, value):
-        if self.capturing:
-            self.payloads[-1] += value
-
-
-def embedded_data(html, script_id="data"):
-    parser = EmbeddedGraph(script_id)
-    parser.feed(html)
-    if parser.external_scripts or len(parser.payloads) != 1:
-        raise ValueError("HTML 缺少唯一内嵌模型或依赖外部脚本")
-    return json.loads(parser.payloads[0])
-
-
-def validate_html(html, document):
-    payload = embedded_data(html)
-    if payload.get("graph") != document or payload.get("diagram") != combined_diagram(
-        document, compact_details=bool(document.get("playerView"))
-    ):
-        raise ValueError("HTML 与行动模型的内容或连接不一致")
-
-
-def validate_bundle(processed_dir, *, require_release=True):
-    folder = (Path(processed_dir) / INDEX_NAME).parent
-    index = embedded_data(
-        (Path(processed_dir) / INDEX_NAME).read_text(encoding="utf-8"), "bundle"
-    )
-    if index.get("schemaVersion") != 1 or not index.get("monsters"):
-        raise ValueError("HTML 怪物索引无效")
-    expected = {"index.html"}
-    seen = set()
-    for item in index["monsters"]:
-        enemy_id = item["enemyId"]
-        if (
-            enemy_id in seen
-            or not re.fullmatch(r"EM\d{4}_\d{2}_\d+", enemy_id)
-            or item["html"] != f"{enemy_id}.html"
-        ):
-            raise ValueError("HTML 索引怪物标识重复或文件名无效")
-        seen.add(enemy_id)
-        expected.add(item["html"])
-        html = (folder / item["html"]).read_text(encoding="utf-8")
-        payload = embedded_data(html)
-        document = payload.get("graph")
-        if not document or document.get("artifactKind") != "extracted_battle_graph":
-            raise ValueError("HTML 未使用 SDK 离线提取的图 JSON")
-        if (
-            document is None
-            or any(
-                document[key] != item[key]
-                for key in ("enemyId", "enemyName", "logicStatus")
-            )
-            or document.get("coverage") != item["coverage"]
-        ):
-            raise ValueError("HTML 索引与怪物页面不一致")
-        validate_graph(document)
-        validate_html(html, document)
-    actual = {path.name for path in folder.iterdir() if path.is_file()}
-    if actual != expected:
-        raise ValueError("行动图发布目录只允许索引与怪物 HTML")
-    if require_release and seen != set(EXPECTED_ENEMY_IDS):
-        raise ValueError("行动图发布必须包含全部 34 个怪物")
-    return index

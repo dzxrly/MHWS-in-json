@@ -41,12 +41,6 @@ from src.shared.log import Timings
 def export_all() -> list[Path]:
     if not NATIVES_DIR.is_dir():
         raise FileNotFoundError(f"Natives directory not found: {NATIVES_DIR}")
-    from src.processed_data.enemy_battle_logic.definitions import (
-        read_models,
-        require_model_set,
-    )
-
-    require_model_set(read_models())
     version = _version()
     timings = Timings()
     repository = SourceRepository(NATIVES_DIR)

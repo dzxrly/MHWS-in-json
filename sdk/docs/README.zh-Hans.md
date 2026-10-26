@@ -70,12 +70,13 @@ SDK 只读取游戏文件，不运行游戏、不注入。它从 EXE 的 x64 指
 不需要 SDK 依赖和游戏文件：
 
 ```powershell
-python -m src.processed_data.enemy_battle_logic                     # 正式构建，输出到 output/processed_data
-python -m src.processed_data.enemy_battle_logic --preview-all --output .tmp/battle-preview
-python -m src.processed_data.enemy_battle_logic --template <模型.json> --output .tmp/one
+python -m src.site_data                                         # 正式数据，全部 34 个怪物
+python -m src.site_data --enemy-models <目录> --preview         # 部分怪物，如刚提取的模型
+python -m src.site_data --enemy-template <模型.json>            # 单个怪物
+npm --prefix web run dev                                       # 在 http://localhost:5173 浏览
 ```
 
-打开输出目录下的 `enemy_battle_logic/index.html` 浏览。页面可离线使用。
+JSON 写入 `src/site_data/data/`，网站构建时复制进站点；构建命令见[网站](../../docs/README.zh-Hans.md#网站)。
 
 ### 修改代码后重新提取
 
@@ -89,7 +90,7 @@ python -B -m sdk.enemy_logic_exporter player-view -m "$w/s1" -o "$w/s1p"        
 python -B -m sdk.enemy_logic_exporter census -m "$w/s1p"                         # 含未知部分的条件，按命令与原因分组
 python -B -m sdk.enemy_logic_exporter uncertainty -m "$w/s1p"                    # 玩家战斗树中输入都已知后仍无法判定的条件
 python -B -m sdk.enemy_logic_exporter publish -m "$w/s1p"                        # 写入网页模型目录
-python -B -m src.processed_data.enemy_battle_logic --output "$w/site"
+python -B -m src.site_data                                                       # 网站 JSON 写入 src/site_data/data
 python -B -m unittest discover -s tests/sdk -t .
 ```
 

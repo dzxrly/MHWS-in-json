@@ -33,17 +33,43 @@ python main.py
 ```text
 src/
   database/        # 資料庫活頁簿
-  processed_data/  # 後處理活頁簿、JSON 資料集和行動圖網頁
+  processed_data/  # 後處理活頁簿與 JSON 資料集；行動圖模型
   shared/          # 來源資料、文字、RCOL、Excel 和日誌工具
   pipeline/        # 匯出、驗證、打包和發布
+  site_data/       # 網站讀取的 JSON（與 web/ 的唯一介面）
 sdk/
   il2cpp/          # IL2CPP 上傳與下載工具
   enemy_logic_exporter/
     shared/        # Python：native、resources、logic、models、workflow
     data/          # JSON：evidence/、models/、rules.v1.json
     monster/       # 每個魔物和變種的獨立入口
+web/               # Vite + Vue 網站，只讀取 src/site_data 產生的 JSON
 tests/
 ```
+
+## 網站
+
+[mhws-info.eggtargaryen.com](https://mhws-info.eggtargaryen.com/) 匯集各資訊站，只提供簡體中文：魔物行動邏輯（34 隻魔物，變種各有獨立頁面，不包含訓練靶）和技能效果數值（與 `SkillDetails.xlsx` 使用同一份技能效果鏈路 JSON）。
+
+`sdk/`、`src/` 與 `web/` 互不匯入程式碼，只透過 JSON 傳遞資料。`python -m src.site_data` 把網站讀取的 JSON 寫入 `src/site_data/data/`（不提交到 Git），網站建置時把這個目錄複製到站點的 `data/`。發布匯出把同樣的檔案寫入 PROCESSED_DATA 的 `website/`：
+
+```text
+site.json                          部署日期、提交、是否為預覽
+enemy_battle_logic/index.json      魔物列表
+enemy_battle_logic/<enemyId>.json  單隻魔物的行動圖與技術圖資料
+skill_details/skills.json          技能效果數值及其含義
+```
+
+`web/` 是 Vite + Vue 應用程式，首頁和每個資訊站各占一個路由（`/enemy_battle_logic/`、`/skill_details/`）。建置需要 Node.js 22 或更新版本，不需要 SDK。建置全站，輸出到 `web/dist`：
+
+```powershell
+python -m src.site_data && npm --prefix web ci && npm --prefix web run build
+npm --prefix web run preview         # 在本機開啟 http://localhost:4173
+```
+
+修改頁面時用 `npm --prefix web run dev`，讀取同一份 JSON。`MHWS_SITE_DATA` 可讓建置改用其他資料目錄，例如發布包中的 `website/`。`python -m src.site_data --enemy-models <模型目錄> --preview` 可寫入 SDK 尚未發布的模型。
+
+新增資訊站時，在 `src/site_data` 中寫出它的 JSON（由 `export_site_data` 呼叫），再在 `web/src/sites/<站點>/index.js` 中宣告標題、首頁卡片和路由，並加入 `web/src/sites.js`。
 
 ## 發布壓縮檔
 
@@ -71,12 +97,14 @@ SkillDetails.xlsx
 amulet_pool.json
 graphic_preset.xlsx
 skill_pool.json
-enemy_battle_logic/index.html
-enemy_battle_logic/EM0001_00_0.html
+website/site.json
+website/enemy_battle_logic/index.json
+website/enemy_battle_logic/EM0001_00_0.json
 ...
+website/skill_details/skills.json
 ```
 
-行動圖包含一個索引和 34 個魔物頁面。變種各有獨立頁面，不包含訓練靶。線上行動圖網站：[mhws-monsters-ai.eggtargaryen.com](https://mhws-monsters-ai.eggtargaryen.com/)。
+`website/` 是[網站](#網站)讀取的 JSON；發布包不含網頁本身。
 
 `MHWS-in-json_<版本>.zip` 包含來源 JSON，與活頁簿分開打包。
 
@@ -87,21 +115,7 @@ enemy_battle_logic/EM0001_00_0.html
 - 魔物行動邏輯（`sdk.enemy_logic_exporter`）：從遊戲檔案中提取魔物行動邏輯，產生行動圖網頁使用的 JSON。`src/processed_data/enemy_battle_logic/models` 中的 34 份模型保留未知分支的標記。
 - 技能效果（`sdk.skill_effect_exporter`）：找出原生程式碼中使用每個技能的函式並按等級求值，產生 `SkillDetails.xlsx` 使用的技能效果鏈路 JSON。
 
-SDK 需要使用者提供從記憶體 dump 出的遊戲 EXE（如 `MonsterHunterWilds_dump.exe`）和 REFramework `il2cpp_dump.json`，不記錄遊戲版本。環境建立（`sdk/setup_env.ps1`）與用法見 [SDK 使用說明](../sdk/docs/README.zh-Hant.md)。只重新產生網頁或表格時不需要 SDK：
-
-```powershell
-python -m src.processed_data.enemy_battle_logic --preview-all --output .tmp/battle-preview
-```
-
-然後開啟 `.tmp/battle-preview/enemy_battle_logic/index.html`，頁面可離線使用。
-
-`SkillDetails.xlsx` 中的技能效果數值也可以產生為單個離線網頁（簡體中文），資料來自同一份技能效果鏈路 JSON：
-
-```powershell
-python -m src.processed_data.skill_details.web --output .tmp/skill-web
-```
-
-開啟 `.tmp/skill-web/skill_details/index.html`。技能按類別列出，可按名稱、效果和武器搜尋；每個效果一張小表，欄是技能等級，列是適用的武器、彈種、動作或情形，旁邊給出數值含義（作用於、計算、條件、單位），程式碼依據可展開查看。
+SDK 需要使用者提供從記憶體 dump 出的遊戲 EXE（如 `MonsterHunterWilds_dump.exe`）和 REFramework `il2cpp_dump.json`，不記錄遊戲版本。環境建立（`sdk/setup_env.ps1`）與用法見 [SDK 使用說明](../sdk/docs/README.zh-Hant.md)。只重新產生[網站](#網站)或表格時不需要 SDK。
 
 ## 資料說明
 
