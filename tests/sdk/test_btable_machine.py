@@ -6,6 +6,42 @@ from unittest.mock import patch
 
 
 class BTableMachineTests(unittest.TestCase):
+    def test_parameterless_phase_effect_does_not_create_a_null_argument_slot(self):
+        from types import SimpleNamespace
+        from sdk.enemy_logic_exporter.shared.logic.machine import Machine
+        from sdk.enemy_logic_exporter.shared.config import NO_ARGUMENT_TYPES
+
+        native = bytes.fromhex("e8fb000000b801000000c3")
+        row = dict(
+            type="fixture",
+            method="phase",
+            address="0x1000",
+            end=hex(0x1000 + len(native)),
+            nativeSha256=hashlib.sha256(native).hexdigest(),
+        )
+        factory = dict(
+            _OrderType="fixture.phase", _ArgumentType=next(iter(NO_ARGUMENT_TYPES))
+        )
+        machine = Machine(
+            row, native, SimpleNamespace(read=lambda *_: b""), {}, [factory], {}, {}
+        )
+        machine.reviewed_effects = True
+        machine.command_writes["fixture.phase"] = [
+            dict(value=dict(kind="self_extend_field"))
+        ]
+        bound = dict(
+            commandType="fixture.phase",
+            commandIndex=0,
+            argumentIndex=None,
+            argumentType="",
+            predicate={},
+        )
+        with patch.object(machine, "bind", return_value=bound):
+            entry = machine.walk(0x1000, machine.initial(0))
+        self.assertEqual(machine.nodes[entry]["kind"], "mutation")
+        self.assertEqual(machine.nodes[entry]["effect"], "apply_native_field_writes")
+        self.assertNotIn("argumentIndex", machine.nodes[entry])
+
     def entry_push(self, *, conflicting_position=False):
         from types import SimpleNamespace
         from sdk.enemy_logic_exporter.shared.logic.machine import Machine

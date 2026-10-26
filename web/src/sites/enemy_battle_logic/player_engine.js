@@ -31,11 +31,6 @@ export function compare(value, operator, expected) {
 export function evaluate(expression, inputs) {
   if (!expression) return null;
   if (expression.op === "compare") return compare(inputs[expression.key], expression.operator, expression.value);
-  if (expression.op === "compare_inputs") {
-    const other = inputs[expression.otherKey];
-    if (typeof other !== "number" || !Number.isFinite(other)) return null;
-    return compare(inputs[expression.key], expression.operator, other + (expression.offset || 0));
-  }
   if (expression.op === "not") { const value = evaluate(expression.item, inputs); return value === null ? null : !value; }
   if (expression.op === "all" || expression.op === "any") {
     const values = expression.items.map(item => evaluate(item, inputs));

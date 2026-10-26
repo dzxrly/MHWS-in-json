@@ -14,6 +14,29 @@ from sdk.enemy_logic_exporter.shared.logic.predicates import RuleRegistry
 
 
 class CompoundConditionsTests(TestCase):
+    def test_nested_reviewed_scene_query_keeps_its_input_definition(self):
+        recovered = dict(
+            sceneInput="fixture_scene",
+            summary="已核实的局部方位查询",
+            expression=dict(
+                kind="runtime",
+                key="fixture_scene:query",
+                source="reviewed query output",
+            ),
+        )
+        factory = dict(_OrderType="fixture.Query", _ArgumentType="fixture.Arg")
+        with patch(
+            "sdk.enemy_logic_exporter.shared.logic.compound_conditions.recover_condition",
+            return_value=recovered,
+        ):
+            result = self.recover(
+                "cCommandOr", [self.child(1, "fixture.Arg", {})], {1: factory}
+            )
+        self.assertIs(
+            result["inputDefinitions"]["fixture_scene:query"]["boolean"], True
+        )
+        self.assertEqual(result["expression"]["items"][0], recovered["expression"])
+
     def recover(self, command, children, factories):
         return recover_compound_condition(
             dict(

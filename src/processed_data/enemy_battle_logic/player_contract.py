@@ -37,18 +37,11 @@ def validate_player_view(graph):
                 expression(item)
         elif op == "not":
             expression(value["item"])
-        elif op in ("compare", "compare_inputs"):
+        elif op == "compare":
             if (
                 value.get("operator") not in ("eq", "ne", "lt", "le", "gt", "ge")
                 or not value.get("key")
-                or (op == "compare" and "value" not in value)
-                or (
-                    op == "compare_inputs"
-                    and (
-                        not value.get("otherKey")
-                        or type(value.get("offset", 0)) not in (int, float)
-                    )
-                )
+                or "value" not in value
             ):
                 raise ValueError("玩家条件比较无效")
         elif op != "unknown" or not value.get("reason"):

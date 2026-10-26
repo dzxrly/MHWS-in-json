@@ -53,6 +53,59 @@ def bind_action_node(node, body, argument, resources, names):
     return None
 
 
+def dynamic_request_guards(table):
+    """Expand a reviewed void request's internal guard, keeping caller next."""
+    additions = []
+    ids = {node["id"] for node in table["nodes"]}
+    for node in list(table["nodes"]):
+        if not node.get("dynamicAction"):
+            continue
+        key = node["id"]
+        guard_key, skipped_key = key + "-request-guard", key + "-request-skipped"
+        if guard_key in ids:
+            continue
+        if (
+            node.get("returnType") != "System.Void"
+            or "next" not in node
+            or not node.get("requestGuard")
+        ):
+            raise ValueError("动态动作请求缺少已核实的 void 守卫或调用方继续位置")
+        for other in table["nodes"]:
+            for role in ("true", "false", "next", "resume", "fallback"):
+                if other.get(role) == key:
+                    other[role] = guard_key
+            for candidate in other.get("candidates", []):
+                field = "nodeId" if "nodeId" in candidate else "id"
+                if candidate[field] == key:
+                    candidate[field] = guard_key
+        if table["entry"] == key:
+            table["entry"] = guard_key
+        additions.extend(
+            [
+                dict(
+                    id=guard_key,
+                    kind="condition",
+                    summary="有效命令工作且未屏蔽动作请求？",
+                    expression=deepcopy(node["requestGuard"]),
+                    true=key,
+                    false=skipped_key,
+                    semanticEvidence=deepcopy(node["semanticEvidence"]),
+                    nativeSite=node["nativeSite"],
+                ),
+                dict(
+                    id=skipped_key,
+                    kind="mutation",
+                    effect="skip_dynamic_action_request",
+                    summary="本次未发出所选动作请求",
+                    next=node["next"],
+                    nativeSite=node["nativeSite"],
+                ),
+            ]
+        )
+        ids.update((guard_key, skipped_key))
+    table["nodes"].extend(additions)
+
+
 def referenced_enemy_names(graph, resources):
     """Official names of the EM IDs that resource arguments compare against."""
     names = {}
@@ -213,6 +266,7 @@ def build_chain(
                 if (
                     recovered is None
                     and node["kind"] == "condition"
+                    and expression_unknown(node.get("expression", dict(kind="unknown")))
                     and leaf
                     and not leaf["argumentField"]
                 ):
@@ -309,6 +363,8 @@ def build_chain(
                     node["variableGuid"] = scalar(argument["_TargetVariableIndex"])
                     node["method"] = scalar(argument["_Method"])
                     node["value"] = scalar(argument["_Value"])
+    for table in graph["tables"]:
+        dynamic_request_guards(table)
     # After binding: resource arguments name the compared enemies.
     graph["enemyNames"] = referenced_enemy_names(graph, resources)
     # Timer and variable GUIDs are known only once arguments are bound.

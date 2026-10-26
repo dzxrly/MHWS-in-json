@@ -208,6 +208,10 @@ class Machine:
             handled, value = self.table_history.load(address, size, s)
             if handled:
                 return value
+        if self.reviewed_effects and isinstance(owner, tuple):
+            value = self.resource_bool_argument(owner, offset, size)
+            if value is not None:
+                return value
         if owner == "export":
             if offset == EXPORT_RUNTIME_ROOT:
                 return 0xABCDEF
@@ -243,6 +247,58 @@ class Machine:
         if owner == "random_vtable" and offset == 0:
             return ("random_generator",)
         return dereference(address) if size == 8 else None
+
+    def resource_bool_argument(self, owner, offset, size):
+        """Read only the verified BoolArg's GUID/value wrappers after inlining."""
+        from .command_effects import BOOL_COMMAND, receipt as effect_receipt
+        from .values import scalar
+        from ..resources.reader import typed
+
+        if owner[0] not in {"argument", "argument_value"}:
+            return None
+        index = owner[1]
+        if type(index) is not int or not 0 <= index < len(
+            self.body.get("_CommandArgArray", [])
+        ):
+            return None
+        argument_type, argument = typed(self.body["_CommandArgArray"][index])
+        if argument_type != BOOL_COMMAND + "Arg":
+            return None
+        layout = effect_receipt()["layouts"][argument_type]
+        if owner[0] == "argument":
+            for name, field in layout.items():
+                if offset == int(field["offset"], 16) and size == 8:
+                    return pointer(("argument_value", index, name))
+            return None
+        name = owner[2]
+        if name not in layout:
+            return None
+        wrapper = argument[name]
+        wrapper_type = next(iter(wrapper))
+        field = (
+            self.metadata.fields(wrapper_type).get("_Value", {})
+            if self.metadata is not None
+            else {}
+        )
+        expected_type = (
+            "System.Guid" if name == "_TargetVariableIndex" else "System.Boolean"
+        )
+        if field.get("type") != expected_type or not field.get("offset_from_base"):
+            return None
+        start = int(field["offset_from_base"], 16)
+        value = scalar(wrapper)
+        raw = (
+            uuid.UUID(value).bytes_le
+            if expected_type == "System.Guid" and isinstance(value, str)
+            else (
+                bytes([int(value)])
+                if expected_type == "System.Boolean" and type(value) is bool
+                else b""
+            )
+        )
+        if 0 <= offset - start and offset - start + size <= len(raw):
+            return int.from_bytes(raw[offset - start : offset - start + size], "little")
+        return None
 
     def read(self, ins, op, s):
         if op.type == CS_OP_IMM:
@@ -1179,6 +1235,8 @@ class Machine:
                         expectedArgumentType=bound.get("argumentType", ""),
                         nativeSite=e["site"],
                     )
+                    if bound.get("argumentIndex") is None:
+                        binding.pop("argumentIndex")
                     if self.reviewed_effects:
                         from .command_effects import (
                             reviewed_command_effect,

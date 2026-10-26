@@ -39,8 +39,6 @@ const before=step(view,initial(view,{id:'before'},{'float:g':0}));
 const after=step(view,before.children[0].state);
 assert.equal(after.truth,true);assert.equal(after.children.length,1);
 assert.equal(after.children[0].state.inputs['float:g'],1);
-assert.equal(evaluate({op:'compare_inputs',key:'x',otherKey:'y',operator:'lt',offset:1},{x:2,y:2}),true);
-assert.equal(evaluate({op:'compare_inputs',key:'x',otherKey:'y',operator:'lt'},{x:2}),null);
 const history='table_history:fixture:max';
 view.persistentState=[history];
 const action=step(view,initial(view,{id:'action'},{[history]:41,'float:g':1}));

@@ -80,6 +80,27 @@ def recover_compound_condition(node, enemy_id, resources, body, registry, leaves
         if recovered is not None:
             evidence.extend(recovered.get("semanticEvidence", []))
             definitions.update(recovered.get("inputDefinitions", {}))
+            scene = recovered.get("sceneInput")
+            if scene:
+
+                def register_scene(expression):
+                    if expression.get("kind") == "runtime" and expression.get(
+                        "key", ""
+                    ).startswith(scene + ":"):
+                        definitions.setdefault(
+                            expression["key"],
+                            dict(
+                                label=recovered["summary"],
+                                boolean=True,
+                                hint=expression["source"],
+                            ),
+                        )
+                    for item in expression.get("items", []):
+                        register_scene(item)
+                    if "item" in expression:
+                        register_scene(expression["item"])
+
+                register_scene(recovered["expression"])
             return recovered["expression"]
         leaf = leaves.get(command)
         if leaf and leaf.get("argumentType") in (None, argument_type):

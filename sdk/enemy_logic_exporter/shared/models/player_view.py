@@ -376,6 +376,13 @@ class PlayerCompiler:
         self.graph = graph
         self.inputs = {}
         self.input_definitions = {}
+        self.history_tables = {
+            table["tableGuid"]
+            for table in graph["tables"]
+            if any(
+                node.get("effect") == "write_table_history" for node in table["nodes"]
+            )
+        }
         self.thresholds = {}
         self.timers = graph.get("variableCatalog", {})
         self.extend_enums = {
@@ -812,16 +819,6 @@ class PlayerCompiler:
                     return comparison(
                         key, expression.get("operator", "eq"), right["value"]
                     )
-                other = right.get("key")
-                if other in self.input_definitions:
-                    self.inputs.setdefault(other, dict(self.input_definitions[other]))
-                    return dict(
-                        op="compare_inputs",
-                        key=key,
-                        otherKey=other,
-                        operator=expression.get("operator", "eq"),
-                        offset=right.get("offset", 0),
-                    )
             if operand.get("kind") == "runtime" and key in SCENARIO_GUARDS:
                 return comparison(key, "eq", True)
             if operand.get("kind") == "runtime" and key in SCENARIO_FACTS:
@@ -1040,13 +1037,6 @@ class PlayerCompiler:
 
     def describe(self, expression):
         op = expression["op"]
-        if op == "compare_inputs":
-            left = self.inputs[expression["key"]]["label"]
-            right = self.inputs[expression["otherKey"]]["label"]
-            offset = expression.get("offset", 0)
-            return f"{left} {RELATION_SYMBOLS[expression['operator']]} {right}" + (
-                f" {offset:+g}" if offset else ""
-            )
         if op == "compare":
             key, value = expression["key"], expression["value"]
             if key == "ordinary_combat_snapshot":
@@ -1168,6 +1158,15 @@ class PlayerCompiler:
         random_keys = [k for k in keys if str(k).startswith("random_uint32_mod_")]
         if random_keys and len(comparisons) == 1 and comparisons[0]["operator"] == "le":
             test = comparisons[0]
+            if self.table is not None and self.table[0] in self.history_tables:
+                return dict(
+                    category="random",
+                    title="依据本次随机值继续",
+                    trueLabel=f"原始随机余数 ≤ {test['value']}",
+                    falseLabel=f"原始随机余数 > {test['value']}",
+                    snapshotGuard=False,
+                    compact=False,
+                )
             modulus = int(test["key"].split(":", 1)[0].rsplit("_", 1)[-1])
             hit = min(max(int(test["value"]) + 1, 0), modulus)
             return dict(
@@ -1305,6 +1304,7 @@ class PlayerCompiler:
                 "read_action_dispatch",
                 "apply_native_field_writes",
                 "write_table_history",
+                "skip_dynamic_action_request",
             }:
                 result["title"] = node["summary"]
             if node.get("variableUpdate"):
@@ -1340,6 +1340,7 @@ class PlayerCompiler:
                 "set_bool_value",
                 "read_action_dispatch",
                 "write_table_history",
+                "skip_dynamic_action_request",
             )
             if (
                 effect == "write_context_field"

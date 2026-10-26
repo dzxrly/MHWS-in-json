@@ -103,6 +103,8 @@ Compound conditions short-circuit in native order. The player view applies revie
 
 Recovered intervals update along the selected path and survive an action. Only histories supported by evidence are expanded; other histories remain unknown. A constructor default is not the value on every table entry, and these selections must not be treated as independent draws.
 
+Large full research models use compact JSON to retain all logic. If the compact file still exceeds 25 MiB, extraction fails and requires deduplication or sharding.
+
 ### After a game update
 
 You need the new dumped EXE, its IL2CPP dump, re-exported resources, and Ghidra.

@@ -248,3 +248,38 @@ class ReviewedCommandEffectTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class DynamicRequestGuardTests(unittest.TestCase):
+    def test_void_guard_preserves_caller_continuation_for_both_outcomes(self):
+        from sdk.enemy_logic_exporter.shared.models.builder import (
+            dynamic_request_guards,
+        )
+
+        table = dict(
+            entry="before",
+            nodes=[
+                dict(id="before", kind="mutation", next="request"),
+                dict(
+                    id="request",
+                    kind="mutation",
+                    dynamicAction=True,
+                    returnType="System.Void",
+                    next="end",
+                    nativeSite="0x1234",
+                    semanticEvidence={},
+                    requestGuard=dict(
+                        kind="runtime", key="allowed", source="reviewed guard"
+                    ),
+                ),
+                dict(id="end", kind="return"),
+            ],
+        )
+        dynamic_request_guards(table)
+        nodes = {node["id"]: node for node in table["nodes"]}
+        guard = nodes[nodes["before"]["next"]]
+        self.assertEqual(guard["true"], "request")
+        self.assertEqual(nodes[guard["false"]]["next"], "end")
+        self.assertEqual(nodes["request"]["next"], "end")
+        dynamic_request_guards(table)
+        self.assertEqual(len(table["nodes"]), 5)
