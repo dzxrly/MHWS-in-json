@@ -9,6 +9,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 # Layout version of the link directory (index.json + shards).
 SCHEMA_VERSION = 1
+# Game version the reviewed statements were checked against: notes, the
+# evidence of declared and skipped functions in the skill modules. After a
+# game update, re-check them (AGENTS.md) and then change it here; it is not
+# compared with the game files.
+GAME_VERSION = "1.42.0.2"
 DEFAULT_NATIVES = ROOT / "MHWS-in-json/natives"
 DEFAULT_OUTPUT = ROOT / "src/processed_data/skill_details/data/skill_links"
 TMP_DIR = ROOT / ".tmp"
@@ -30,6 +35,18 @@ EQUIP_DATA_HOLDER = "app.EquipDataHolder"
 SKILL_COMMON_ROW = "app.user_data.SkillCommonData.cData"
 SKILL_DATA_ROW = "app.user_data.SkillData.cData"
 PLAYER_GLOBAL_TYPE = "app.user_data.PlayerGlobalParam"
+# Fields of a reviewed effect meaning in a skill module (skills/<id>.py
+# MEANINGS): the effect name, what the value applies to, how, when, its unit,
+# the code it was read from, and "情形": code text -> name of the situation a
+# split value belongs to (a condition, a data field, "参数1=true").
+MEANING_FIELDS = ("效果", "作用于", "计算", "条件", "单位", "依据", "情形")
+# PlayerGlobalParam fields whose type name ends so hold skill parameters
+# (PlayerSkillParam, PlayerMealSkillParam, ...): scanned for coverage.
+SKILL_PARAM_SUFFIX = "SkillParam"
+# Skill parameter fields that only configure visual effects (read by
+# HunterSkillDef.getSkillCommonEffectColor, an opaque call): never a skill
+# value, so their read sites are no focus targets for unvalued fields.
+DISPLAY_PARAM_FIELDS = ("_CommonEffectSetting",)
 
 # cHunterSkill methods whose bodies identify shared runtime structures.
 VALUE_HELPER = "getSkillValue"  # loads HunterSkillDef.SkillToGroupSkill first
@@ -38,6 +55,10 @@ REMAP_BUILDER = "createSkillToGroupSkill"  # (skill, group) pairs as immediates
 
 # Methods taking a skill identity; their call sites name the skills a caller uses.
 SKILL_PARAM_TYPES = (SKILL_ENUM, SKILL_FIXED_ENUM)
+# Holder of per-skill state objects: its constructor allocates one object per
+# skill (cInfo or a subclass) and sets the object's skill-enum field, which
+# later code passes to the skill helpers instead of an immediate.
+SKILL_STATE_OWNER = "app.cHunterSkillParamInfo"
 # One native body shared by more methods than this is a generic stub, not a skill helper.
 MAX_HELPER_ALIASES = 4
 
@@ -54,6 +75,15 @@ LIST_VERSION_OFFSET = 0x1C  # List`1._version
 OBJECT_HEADER_WORD = 0x8  # checked for its sign by getSkillLevelCore (tagged reference)
 BOX_HEADER = 0x10  # value-type field offsets in the dump include this header
 REFERENCE_TAG_BIT = 63  # tagged references; btr 63 / and 0x7fff... clear it
+# Interface calls: mov rax,[obj]; mov rax,[rax+INTERFACE_TABLE_OFFSET]; call
+# [rax+8*k] calls the interface's k-th method in declaration order (checked on
+# HunterCharacter._ContextHolder: slot 0 is IHunterContextHolder.get_Hunter).
+INTERFACE_TABLE_OFFSET = -0x20
+INTERFACE_FLAG = "ClassSemanticsMask"  # il2cpp type flags of an interface
+# Virtual calls: mov rax,[obj]; call [rax+VTABLE_OFFSET+8*k] calls the method
+# with il2cpp vtable_index k of obj's runtime type (checked on
+# cHunterSkillParamInfo.beginDisaster: cInfo.beginSkill has index 4, +0x60).
+VTABLE_OFFSET = 0x40
 # A float-vector native type and its exported float count.
 FLOAT_VECTORS = {
     "via.vec2": 2,
@@ -78,8 +108,33 @@ OUT_PARAMETER_STRIDE = 0x10
 # Byte scan for direct calls and jumps; executable section flag of PE headers.
 CALL_OPCODES = rb"[\xe8\xe9]"
 EXECUTABLE_SECTION = 0x20000000
-# REFramework dumps indent method records by 12 spaces.
+# REFramework dumps indent method records by 12 spaces and type records by 4;
+# a type's runtime descriptor address is its first 8-space "address" key,
+# which follows "RSZ" in serializable types.
 METHOD_RECORD = rb'^ {12}"([^"\r\n]+)": \{'
+TYPE_RECORD = rb'^ {4}"([^"\r\n]+)": \{'
+TYPE_ADDRESS = rb'^ {8}"address": "([0-9a-f]+)"'
+
+# Callees that always run opaque (their results named after them): threading
+# and engine internals, network session queries (spin locks), and calls that
+# only log messages or play effects, whose many branches never feed a skill
+# value back.
+OPAQUE_CALL_PREFIXES = (
+    "System.Threading",
+    "via.",
+    "ace.cGameObject",
+    "app.Net",
+    "app.ChatManager",
+    "app.ChatLogUtil",
+    "app.MessageUtil",
+    "app.GUI",
+    "app.cGUI",
+    "app.cHunterEffect",
+    "app.cEffectController",
+    "app.cHunterSkill.callBodyEffect",
+    "app.HunterSkillDef.getSkillCommonEffectColor",  # reads via.UserData internals
+    "app.SoundPlayerInfoHolder",
+)
 
 # Callers that only display or replicate skill state: kept as links, not evaluated.
 EVALUATE_SKIP_PREFIXES = (
@@ -113,8 +168,19 @@ MAX_ENUM_VALUES = 40
 # Callers of a cHunterSkill accessor are evaluated for the skills it reads,
 # unless it reads more than this many (sums over many skills, like calcAttackRate).
 MAX_ACCESSOR_SKILLS = 2
+# Narrowed focus (Emulator.narrow): after passing a site, a path forks this
+# often at most (the skill's own block follows the site); later branches take
+# the side nearer the function's return.
+MAX_NARROW_FORKS = 3
+# Functions that read skill parameters without using a skill are attributed
+# to the skill-using functions calling them within this many calls.
+MAX_READER_DEPTH = 2
 # Paths kept per case after merging; the ones with fewest conditions first.
 MAX_RECORDED_PATHS = 32
+# Usage tracing (how a function applies the skill's values) runs once at the
+# highest level; paths per case and argument cases kept.
+MAX_USAGE_PATHS = 16
+MAX_USAGE_COMBINATIONS = 8
 
 # Scenario dimensions: runtime values that choose between per-weapon or
 # per-ammo parameters. A function that reads one is evaluated once per enum

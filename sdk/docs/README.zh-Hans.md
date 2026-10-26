@@ -70,12 +70,14 @@ SDK 只读取游戏文件，不运行游戏、不注入。它从 EXE 的 x64 指
 不需要 SDK 依赖和游戏文件：
 
 ```powershell
-python -m src.processed_data.enemy_battle_logic                     # 正式构建，输出到 output/processed_data
-python -m src.processed_data.enemy_battle_logic --preview-all --output .tmp/battle-preview
-python -m src.processed_data.enemy_battle_logic --template <模型.json> --output .tmp/one
+python -m src.site_data                                         # 正式数据，全部 34 个怪物
+python -m src.site_data --enemy-models <目录> --preview --output .tmp/site-preview   # 部分怪物，如刚提取的模型
+python -m src.site_data --enemy-template <模型.json> --output .tmp/site-preview      # 单个怪物
+$env:MHWS_SITE_DATA = (Resolve-Path .tmp/site-preview)        # 网站改为显示预览数据
+npm --prefix web run dev                                       # 在 http://localhost:5173 浏览
 ```
 
-打开输出目录下的 `enemy_battle_logic/index.html` 浏览。页面可离线使用。
+不带 `--output` 时重写已提交的 `src/site_data/data/`，`publish` 之后一并提交；预览必须写到其他目录。网站命令见[网站](../../docs/README.zh-Hans.md#网站)。
 
 ### 修改代码后重新提取
 
@@ -89,7 +91,7 @@ python -B -m sdk.enemy_logic_exporter player-view -m "$w/s1" -o "$w/s1p"        
 python -B -m sdk.enemy_logic_exporter census -m "$w/s1p"                         # 含未知部分的条件，按命令与原因分组
 python -B -m sdk.enemy_logic_exporter uncertainty -m "$w/s1p"                    # 玩家战斗树中输入都已知后仍无法判定的条件
 python -B -m sdk.enemy_logic_exporter publish -m "$w/s1p"                        # 写入网页模型目录
-python -B -m src.processed_data.enemy_battle_logic --output "$w/site"
+python -B -m src.site_data                                                       # 网站 JSON，提交 src/site_data/data
 python -B -m unittest discover -s tests/sdk -t .
 ```
 
@@ -146,19 +148,27 @@ python -B -m sdk.enemy_logic_exporter new-monster --enemy <新怪物ID>         
 游戏没有“技能 → 效果数值”的数据表：SkillData 的四个数值槽没有名称，`PlayerSkillParam` 等参数文件里的字段也不带技能 ID，二者只在原生代码中连接。这个工具先扫描 EXE，找出以技能 ID 调用技能读取方法的全部函数；再在“只装备该技能、取某一等级”的情境下，按真实指令执行这些函数（布尔与枚举参数逐一枚举），记录返回值、运行时条件以及数值来自哪个 SkillData 槽位、参数文件字段或 EXE 常量。结果写入 `src/processed_data/skill_details/data/skill_links/`（`index.json` 加按技能类别拆分的分片），构建 PROCESSED_DATA 时据此生成 `SkillDetails.xlsx`。
 
 ```powershell
-python -B -m sdk.skill_effect_exporter extract -e <dump 出的 EXE> -i <il2cpp_dump.json>   # 全部技能，约 20 分钟，写入正式位置
+python -B -m sdk.skill_effect_exporter extract -e <dump 出的 EXE> -i <il2cpp_dump.json>   # 全部技能，约 30 分钟，写入正式位置
 python -B -m sdk.skill_effect_exporter extract -s HunterSkill_019 -o .tmp/skill-effects/try.json   # 调试单个技能
+python -B -m sdk.skill_effect_exporter extract --all-links -o .tmp/skill-effects/all   # 也求值技能模块跳过的函数（游戏更新后核对）
+python -B -m sdk.skill_effect_exporter annotate                                    # 只把技能模块的数值含义与说明写进 index.json，不重新求值
+python -B -m sdk.skill_effect_exporter new-skill -s HunterSkill_250                # 为技能表新增的技能生成空模块
 python -m src.processed_data.skill_details                                         # 只重建 SkillDetails.xlsx
 ```
 
-- `SkillDetails.xlsx` 的“技能效果”表每行是一个技能等级（`Lv.X`）的一个效果，列出游戏内的技能说明与等级说明，以及适用的武器、弹种或动作（“【武器】弹种”）。表中只保留从游戏参数读取到的数值，优先采用技能自身的 `getSkill*` 取值函数，不采用组合多个来源的函数；只在未装备技能或叠加餐点效果时出现的数值不列出。效果名称由取值函数名翻译而来（`src/processed_data/skill_details/labels.py`），最后一列保留函数名。数值为“a / b”表示数值随战斗状态变化，例如连击的命中段数。
+- `SkillDetails.xlsx` 的“技能效果”表每行是一个技能等级（`Lv.X`）的一个效果，列出游戏内的技能说明与等级说明，以及适用的武器、弹种或动作（“【武器】弹种”）。表中只保留从游戏参数读取到的数值，优先采用技能自身的 `getSkill*` 取值函数，不采用组合多个来源的函数；只在未装备技能或叠加餐点效果时出现的数值不列出。每个技能在 `sdk/skill_effect_exporter/skills/hunterskill_<编号>.py` 有独立模块，写明它每个显示效果的数值含义（`MEANINGS`：名称、作用于、计算、条件、单位、依据，以及数值所随情形的名称）和已核实的说明（`NOTES`）；`extract` 把它们写进 `index.json`，修改模块后用 `annotate` 单独更新。没有写含义的效果按取值函数名翻译命名（`src/processed_data/skill_details/labels.py`），最后一列保留函数名。数值随情形（如连击的命中次数）变化时按情形分行；只有代码中找不到区分条件时才保留“a / b”。
 - 表格不列出的函数地址、参数、运行时条件、数据来源、EXE 常量和未模拟的调用保留在链路 JSON 中。
 
 - 依赖与上面的虚拟环境相同（Capstone）。
 - 读取猎人装备武器类型（`HunterCharacter._HunterComp.Prepare.<WeaponBuilder>k__BackingField._EquippedWeaponType`）或弩弹种类（`app.WeaponGunDef.SHELL_TYPE`、`SHELL_PARAM_TYPE`，包括由调用返回或写入 `out` 参数的情况）的函数，按每种取值分别求值，链路 JSON 把取值记为参数“武器”“弹种”“弹药参数类型”。清单是 `sdk/skill_effect_exporter/config.py` 中的 `DIMENSIONS`。
 - 有些 `cHunterSkill` 取值函数只返回等级或倍率，实际效果由调用它的函数决定，例如 `getSkillDodgeNoHitLv` 的调用方 `getDodgeNoHitTime` 给出各回避动作的无敌时间。读取的技能不超过 `MAX_ACCESSOR_SKILLS` 个的取值函数，其调用方也会求值，链路中的用法记为 `accessor`。
-- 超过路径或指令上限的函数，会只保留仍能走到技能读取点的路径重新求值，其他调用按不透明调用处理；这些路径标记为 `focused`。“只追踪可能经过技能读取点的路径仍超限”表示技能可能在此处（该武器或弹种下）起作用，但数值仍不完整。
+- 超过路径或指令上限的函数，会只保留仍能走到技能读取点的路径重新求值，其他调用按不透明调用处理；这些路径标记为 `focused`。“只追踪可能经过技能读取点的路径仍超限”表示技能可能在此处（该武器或弹种下）起作用，但数值仍不完整。传入技能参数（参数块或从中读出的值）的调用仍按真实代码执行。聚焦求值仍超限时改为窄聚焦：到达读取点之前，两个分支都能到达读取点时只走更近的一个，即只沿一种先前运行时条件的组合追踪（路径标记 `narrow`，仍超限时详情为“只沿最近分支追踪到技能读取点仍超限”）。`cHunterSkill.update` 这类逐帧处理的大函数按这种方式求值。
 - 结果相同、条件只差一个条件及其否定的路径会合并，不影响结果的条件不再列出。每个情形最多保留 `MAX_RECORDED_PATHS` 条路径，条件少的优先，最后一行注明未列出的条数。
+- 用途追踪：除 `getSkill*`/`isSkill*` 取值函数本身外，每条链路在最高等级再求值一次，把技能读取调用（`getSkillValue`、`getSkillLevelCore`、`checkSkillActive` 或被调用的取值函数）换成有名字的未知量，例如 `技能等级〈HunterSkill_019〉()`。链路的 `usage` 字段说明技能数值在什么条件下与什么比较、相乘、写入哪里；数值本身仍在 `results` 中。
+- 没有任何已求值路径从中取值的参数字段（静态扫描经 `PlayerGlobalParam` 单例读取的指令得到），会在读取它且使用技能的函数中、以读取指令为聚焦点再求值一次，链路的用法记为 `param`。例如弹道强化 Lv3 在会心距离命中时攻击力 +5，是在弩炮和弓的命中处理函数里读取的。若这类调用方读取了取值函数没有读到的数据，技能效果表也会列出它，并按这些数据命名效果。只被本身不使用技能的函数读取的字段（如 `cHunterSkillParamInfo.beginKnight`、`cHunterSkill.beginRyunyu`），经两层以内调用它的、使用技能的函数求值，以这些调用为聚焦点，数值归到调用方检查的技能。
+- 分叉条件比较了来自游戏数据的值时（如心眼的肉质阈值 `_Shingan_MeatThreshold`），路径在 `compared` 中列出它。
+- `index.json` 中有 `coverage`：按技能参数文件（`PlayerSkillParam`、`PlayerMealSkillParam` 等 `PlayerGlobalParam` 中类型名以 `SkillParam` 结尾的字段）列出每个字段的读取函数，以及哪些技能的路径返回了它（`value`）、把它写入运行时状态（`write`）或在条件中比较了它（`compare`）；按技能列出非零的 SkillData 槽位和以这三种方式用到的槽位。三种用法都没有的，就是表格可能仍然漏掉的效果。
+- 技能效果表也会列出处理函数写入运行时状态的数值（如技能发动时写入的持续时间，效果名以“写入”开头并保留字段名），以及只在取值函数之外读到的数值。两者都只在该数据项还没有列出、且没有其他技能的链路用到它时才列出，避免汇总多个技能的函数把其他技能的数据算进来。
 - 输出不记录游戏版本或摘要；游戏或 `MHWS-in-json` 更新后要重新运行 `extract`。
 - 汇总多个技能的函数（如攻击力合计）依赖其他技能的计时器等运行时状态，链路 JSON 中可能记为 `too_many_paths`；同一技能的精确数值通常由 `getSkill*` 读取函数给出。
-- 需要人工说明的技能写在 `sdk/skill_effect_exporter/notes.py`；版本相关的布局常量集中在 `sdk/skill_effect_exporter/config.py`。游戏更新后的检查步骤见 [技能效果 SDK 维护说明](../skill_effect_exporter/AGENTS.md)。
+- 与敌人逻辑 SDK 相同，共通代码在 `sdk/skill_effect_exporter/shared/`，每个技能在 `skills/` 有独立模块：它的提取步骤（`extract`，以及所有技能的链路求完后运行的 `extract_parameters`；多数只是调用共通步骤的薄入口，只属于这个技能的特殊处理写在这里，如扫描无法对应到技能的函数及核对依据 `DECLARED_METHODS`，以及得不到本技能可显示数值、只记录链路不求值的函数 `SKIPPED_FUNCTIONS`）、显示效果的数值含义和说明。对所有技能成立的说明写在 `notes.py`，版本相关的布局常量集中在 `config.py`，二者都在 `sdk/skill_effect_exporter/` 根部。游戏更新后的检查步骤见 [技能效果 SDK 维护说明](../skill_effect_exporter/AGENTS.md)。

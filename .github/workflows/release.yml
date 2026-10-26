@@ -2,7 +2,9 @@ name: Build database release
 
 # Pull requests only validate (tests and a full export). Releases are published
 # after a push to the default branch or a manual run on the default branch.
-# Cloudflare Pages builds the battle website independently from Git pushes.
+# Cloudflare Pages builds and deploys the website (web/) from Git pushes; here
+# the same build only checks it. Releases link to the site and carry its data
+# as JSON (PROCESSED_DATA), not its pages.
 on:
   push:
     branches: [main]
@@ -37,10 +39,19 @@ jobs:
             requirements.txt
             sdk/requirements.txt
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
       - name: Show tool versions
         run: |
           python --version
           python -m pip --version
+          node --version
+          npm --version
           gh --version
 
       # The SDK dependencies are installed too: tests/sdk must run, never skip.
@@ -58,11 +69,15 @@ jobs:
           $version = "$(Get-Date -AsUTC -Format 'yyyyMMdd-HHmmss')-$($env:GITHUB_SHA.Substring(0, 7))"
           "RELEASE_VERSION=$version" >> $env:GITHUB_ENV
 
-      # Battle HTML reads only offline-extracted JSON committed under src models.
-      # Do not run the offline SDK or provide EXE/IL2CPP/resource inputs to the
-      # battle HTML builder here; the SDK packages above are only for the tests.
-      - name: Export database and processed data (battle HTML from frozen JSON)
+      - name: Export database and processed data
         run: python main.py
+
+      # web/ reads only the committed JSON in src/site_data/data (the tests
+      # check it is current); no Python, SDK, EXE, IL2CPP or resource inputs.
+      - name: Build website (same command as Cloudflare Pages)
+        run: |
+          npm --prefix web ci
+          npm --prefix web run build
 
       - name: Publish release
         if: env.PUBLISH == 'true'

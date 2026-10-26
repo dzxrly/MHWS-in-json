@@ -8,8 +8,6 @@ from .model_io import load_model
 
 MODEL_DIR = Path(__file__).with_name("models")
 DEFAULT_TEMPLATE = MODEL_DIR / "em0001_00_0.v1.json"
-BUNDLE_DIR = "enemy_battle_logic"
-INDEX_NAME = f"{BUNDLE_DIR}/index.html"
 from .scope import EXPECTED_ENEMY_IDS, TRAINING_ENEMY_ID
 
 
@@ -17,10 +15,6 @@ from .scope import EXPECTED_ENEMY_IDS, TRAINING_ENEMY_ID
 class ModelSpec:
     enemy_id: str
     path: Path
-
-    @property
-    def output_names(self):
-        return (f"{BUNDLE_DIR}/{self.enemy_id}.html",)
 
 
 def read_models(models_dir=MODEL_DIR, *, template_path=None):
@@ -46,15 +40,6 @@ def read_models(models_dir=MODEL_DIR, *, template_path=None):
             raise ValueError("训练靶不能进入正式怪物行动模型")
         specs.append(ModelSpec(enemy_id, path))
     return tuple(specs)
-
-
-def output_names(models_dir=MODEL_DIR):
-    # Do not parse every model at module import or shrink the release contract to
-    # whichever files happen to exist in the working tree.
-    return (
-        INDEX_NAME,
-        *(f"{BUNDLE_DIR}/{enemy_id}.html" for enemy_id in EXPECTED_ENEMY_IDS),
-    )
 
 
 def require_model_set(specs, expected=EXPECTED_ENEMY_IDS):

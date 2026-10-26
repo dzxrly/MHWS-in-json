@@ -1,0 +1,35 @@
+"""HunterSkill_081 龙耐性: extraction steps, meanings of its shown effect values, notes."""
+
+SKILL_ID = "HunterSkill_081"
+
+# Shown effect key (src effect_links) -> meaning; see config.MEANING_FIELDS.
+MEANINGS = {
+    "getSkillDragonResistanceAttrAdd": {
+        "效果": "龙耐性加算",
+        "作用于": "龙耐性",
+        "计算": "加算（SkillData 槽 0），并入属性耐性加算汇总",
+        "单位": "点",
+        "依据": "cHunterSkill.calcAttrDefenseAdd",
+    },
+    "getSkillDragonResistanceDefenseAdd": {
+        "效果": "防御力加算",
+        "作用于": "防御力",
+        "计算": "加算（SkillData 槽 1），并入防御力加算汇总",
+        "条件": "Lv3 起不为 0",
+        "单位": "点",
+        "依据": "cHunterSkill.calcDefenseAdd",
+    },
+}
+
+# Verified statements shown in the 技能 sheet; each names config.GAME_VERSION.
+NOTES = []
+
+
+def extract(context):
+    """Links of the functions using this skill and of its accessors' callers."""
+    return context.extract_skill(SKILL_ID)
+
+
+def extract_parameters(context):
+    """Parameter fields no path valued, focused where they are read."""
+    return context.extract_parameters(SKILL_ID)

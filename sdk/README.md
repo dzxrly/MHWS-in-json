@@ -67,15 +67,17 @@ Function addresses come from `sdk/enemy_logic_exporter/data/profile.json`, which
 
 ### Build the pages only
 
-No SDK dependencies or game files are needed:
+No SDK dependencies or game files are needed. The pages are part of the [website](../README.md#website):
 
 ```powershell
-python -m src.processed_data.enemy_battle_logic                     # release build into output/processed_data
-python -m src.processed_data.enemy_battle_logic --preview-all --output .tmp/battle-preview
-python -m src.processed_data.enemy_battle_logic --template <model.json> --output .tmp/one
+python -m src.site_data                                         # release data, all 34 monsters
+python -m src.site_data --enemy-models <folder> --preview --output .tmp/site-preview   # some monsters, e.g. freshly extracted
+python -m src.site_data --enemy-template <model.json> --output .tmp/site-preview       # one monster
+$env:MHWS_SITE_DATA = (Resolve-Path .tmp/site-preview)        # show the preview instead of the committed data
+npm --prefix web run dev                                       # browse at http://localhost:5173
 ```
 
-Open `enemy_battle_logic/index.html` in the output folder. The pages work offline.
+Without `--output` it rewrites the committed `src/site_data/data/`; commit it after `publish`. Previews must go elsewhere. See the [website](../README.md#website) for the web commands.
 
 ### Re-extract after a code change
 
@@ -89,7 +91,7 @@ python -B -m sdk.enemy_logic_exporter player-view -m "$w/s1" -o "$w/s1p"        
 python -B -m sdk.enemy_logic_exporter census -m "$w/s1p"                         # conditions with unknown parts, by command and reason
 python -B -m sdk.enemy_logic_exporter uncertainty -m "$w/s1p"                    # player-tree conditions still undecided with all inputs known
 python -B -m sdk.enemy_logic_exporter publish -m "$w/s1p"                        # write the web models
-python -B -m src.processed_data.enemy_battle_logic --output "$w/site"
+python -B -m src.site_data                                                       # website JSON; commit src/site_data/data
 python -B -m unittest discover -s tests/sdk -t .
 ```
 
@@ -146,18 +148,26 @@ Then run [Re-extract after a code change](#re-extract-after-a-code-change). Ever
 The game has no table mapping skills to effect values: the four SkillData value slots are unnamed, and fields in parameter files such as `PlayerSkillParam` carry no skill ID; the two are only connected in native code. This tool scans the EXE for every function that calls a skill accessor with a skill ID. It then executes those functions instruction by instruction in a scenario where only that skill is equipped at one level, enumerating Boolean and enum arguments. For each result it records the return value, the runtime conditions, and whether the number came from a SkillData slot, a parameter file field, or an EXE constant. The result goes to `src/processed_data/skill_details/data/skill_links/` (`index.json` plus one shard per skill category); the PROCESSED_DATA build turns it into `SkillDetails.xlsx`.
 
 ```powershell
-python -B -m sdk.skill_effect_exporter extract -e <dumped EXE> -i <il2cpp_dump.json>   # all skills, about 20 minutes, writes the committed location
+python -B -m sdk.skill_effect_exporter extract -e <dumped EXE> -i <il2cpp_dump.json>   # all skills, about 30 minutes, writes the committed location
 python -B -m sdk.skill_effect_exporter extract -s HunterSkill_019 -o .tmp/skill-effects/try.json   # debug one skill
+python -B -m sdk.skill_effect_exporter extract --all-links -o .tmp/skill-effects/all   # also evaluate the functions skill modules skip (after a game update)
+python -B -m sdk.skill_effect_exporter annotate                                    # copy the skill modules' meanings and notes into index.json, no evaluation
+python -B -m sdk.skill_effect_exporter new-skill -s HunterSkill_250                # empty module for a skill new to the skill table
 python -m src.processed_data.skill_details                                         # rebuild SkillDetails.xlsx only
 ```
 
-- The 技能效果 (effects) sheet of `SkillDetails.xlsx` has one row per skill level (`Lv.X`) and effect, with the in-game skill and level descriptions and the weapons, ammo kinds or actions it applies to ("【weapon】ammo"). It keeps only numbers read from game parameters, prefers the skill's own `getSkill*` accessors over functions that combine several sources, and leaves out values that only appear without the skill or with a meal effect on top. Effect names are built from the accessor name (`src/processed_data/skill_details/labels.py`); the accessor name itself is in the last column. A value "a / b" means the value depends on the battle state, such as the hit count for 连击 (Burst).
+- The 技能效果 (effects) sheet of `SkillDetails.xlsx` has one row per skill level (`Lv.X`) and effect, with the in-game skill and level descriptions and the weapons, ammo kinds or actions it applies to ("【weapon】ammo"). It keeps only numbers read from game parameters, prefers the skill's own `getSkill*` accessors over functions that combine several sources, and leaves out values that only appear without the skill or with a meal effect on top. Each skill has a module `sdk/skill_effect_exporter/skills/hunterskill_<n>.py` holding the reviewed meaning of each of its shown effects (`MEANINGS`: name, what it applies to, how, when, unit, the code it was read from, and names for the situations a value depends on) and verified notes (`NOTES`); `extract` copies them into `index.json`, and `annotate` does only that after editing a module. Effects without a meaning are named from the accessor name (`src/processed_data/skill_details/labels.py`); the accessor name itself is in the last column. A value that depends on the situation, such as the hit count for 连击 (Burst), gets one row per situation; "a / b" remains only where nothing in the code tells the values apart.
 - The link JSON keeps what the workbook leaves out: function addresses, arguments, runtime conditions, data sources, EXE constants and functions not emulated.
 - It uses the same virtual environment (Capstone).
 - A function that reads the hunter's equipped weapon type (`HunterCharacter._HunterComp.Prepare.<WeaponBuilder>k__BackingField._EquippedWeaponType`) or a bowgun ammo kind (`app.WeaponGunDef.SHELL_TYPE` or `SHELL_PARAM_TYPE`, also when a call returns it or writes it to an `out` argument) is evaluated once per value. The link JSON records the value as the argument "武器", "弹种" or "弹药参数类型". The list is `DIMENSIONS` in `sdk/skill_effect_exporter/config.py`.
 - Some `cHunterSkill` accessors return a level or a rate whose effect is decided by their callers, for example `getSkillDodgeNoHitLv`, whose caller `getDodgeNoHitTime` gives the invulnerable time per dodge action. Callers of accessors that read at most `MAX_ACCESSOR_SKILLS` skills are evaluated as well; their links record the use as `accessor`.
-- A function that exceeds the path or instruction limits is evaluated again keeping only the paths that can still reach the skill's call site, with other calls left opaque; those paths are marked `focused`. "只追踪可能经过技能读取点的路径仍超限" means the skill may be used there (for that weapon or ammo kind) but its number is still incomplete.
+- A function that exceeds the path or instruction limits is evaluated again keeping only the paths that can still reach the skill's call site, with other calls left opaque; those paths are marked `focused`. "只追踪可能经过技能读取点的路径仍超限" means the skill may be used there (for that weapon or ammo kind) but its number is still incomplete. Calls given skill parameters (a parameter block or a value read from one) still run inline. When the focused run exceeds a limit too, it is narrowed: before the call site, of two branches that both lead there only the nearer one is taken, so one combination of the earlier runtime conditions is followed (paths marked `narrow`, details "只沿最近分支追踪到技能读取点仍超限" when even that is too large). Large per-frame functions such as `cHunterSkill.update` are evaluated this way.
 - Paths with the same result whose conditions differ only in one condition and its negation are merged, so conditions that do not change the result are left out. At most `MAX_RECORDED_PATHS` paths are kept per case, those with the fewest conditions first; a final row says how many were left out.
+- Usage tracing: each link except the `getSkill*`/`isSkill*` accessors themselves is evaluated once more at the highest level with the skill reads (`getSkillValue`, `getSkillLevelCore`, `checkSkillActive`, or a called accessor) replaced by named unknowns such as `技能等级〈HunterSkill_019〉()`. Its `usage` field shows what the skill's values are compared with, multiplied by and written to, under which conditions; the numbers themselves stay in `results`.
+- Parameter fields that no evaluated path read a value from (found by a static scan of reads through the `PlayerGlobalParam` singleton) are evaluated again in the functions that read them and use a skill, focused on the read instruction; these links record the use as `param`. For example the +5 attack of Ballistics (弹道强化) level 3 at critical distance is read inside the bowgun and bow hit handlers. The effects sheet also shows such a caller when it reads data the skill's accessors do not, named after that data. A field read only by a function that uses no skill itself (`cHunterSkillParamInfo.beginKnight`, `cHunterSkill.beginRyunyu`) is evaluated through the skill-using functions that call it within two calls, focused on those calls, so the value is attributed to the skill those callers check.
+- When a branch compares a value from the game data (such as the hitzone threshold of Mind's Eye, `_Shingan_MeatThreshold`), the path lists it under `compared`.
+- `index.json` has a `coverage` section: for each skill parameter file (`PlayerSkillParam`, `PlayerMealSkillParam` and the other `PlayerGlobalParam` fields whose type ends in `SkillParam`), every field with the functions that read it and the skills whose paths returned it (`value`), wrote it to runtime state (`write`) or compared it (`compare`); for each skill, the non-zero SkillData slots and the slots used in the same three ways. Items with none of these are effects the workbook may still miss.
+- The effects sheet also lists numbers a handler writes into runtime state (a duration stored when the skill activates; effect names starting with "写入" keep the field name), and values only read outside the skill's accessors. Either shows only when the data item is not already shown and no other skill's links use it, which keeps functions that sum many skills from adding other skills' data.
 - The output records no game version or digests; run `extract` again after updating the game or `MHWS-in-json`.
 - Functions that add up many skills (such as total attack) depend on other skills' timers and other runtime state, so the link JSON may record them as `too_many_paths`; the exact numbers of a skill usually come from its `getSkill*` accessors.
-- Skills that need a written explanation are listed in `sdk/skill_effect_exporter/notes.py`; version-dependent layout constants live in `sdk/skill_effect_exporter/config.py`. What to check after a game update is in the [skill effect SDK maintenance notes](skill_effect_exporter/AGENTS.md) (Chinese).
+- Like the enemy logic SDK, shared code is in `sdk/skill_effect_exporter/shared/` and each skill has its own module in `skills/`: its extraction steps (`extract`, then `extract_parameters` once every skill's links exist; mostly thin calls of the shared steps, with any handling that belongs to that skill alone, such as functions the scan cannot tie to the skill, listed in `DECLARED_METHODS` with the reviewed evidence, and functions that give the skill no shown value, listed in `SKIPPED_FUNCTIONS` and kept as links without being evaluated), the meanings of its shown effects and its notes. Notes that hold for every skill are in `notes.py` and version-dependent layout constants in `config.py`, both at the top of `sdk/skill_effect_exporter/`. What to check after a game update is in the [skill effect SDK maintenance notes](skill_effect_exporter/AGENTS.md) (Chinese).

@@ -1,0 +1,87 @@
+@property --background {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #f8faff;
+}
+@property --bg-wash-1 {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: rgba(198, 231, 255, 0.78);
+}
+@property --bg-wash-2 {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: rgba(244, 222, 201, 0.38);
+}
+@property --bg-wash-3 {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: rgba(221, 227, 235, 0.58);
+}
+
+/* The slowly drifting colour wash of the home site, fixed behind every page. */
+.site-background {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(145deg, var(--bg-wash-1), transparent 34%),
+    linear-gradient(25deg, var(--bg-wash-2), transparent 42%),
+    linear-gradient(315deg, var(--bg-wash-3), transparent 46%),
+    var(--background);
+  background-size:
+    220% 220%,
+    240% 240%,
+    260% 260%,
+    100% 100%;
+  background-position:
+    0% 0%,
+    100% 0%,
+    50% 100%,
+    0% 0%;
+  background-repeat: no-repeat;
+  animation: home-bg-wave 28s ease-in-out infinite;
+  transition:
+    --background 700ms var(--motion),
+    --bg-wash-1 700ms var(--motion),
+    --bg-wash-2 700ms var(--motion),
+    --bg-wash-3 700ms var(--motion);
+}
+@keyframes home-bg-wave {
+  0% {
+    background-position:
+      0% 0%,
+      100% 0%,
+      50% 100%,
+      0% 0%;
+  }
+  25% {
+    background-position:
+      55% 45%,
+      60% 35%,
+      25% 65%,
+      0% 0%;
+  }
+  50% {
+    background-position:
+      100% 100%,
+      0% 100%,
+      100% 0%,
+      0% 0%;
+  }
+  75% {
+    background-position:
+      35% 70%,
+      45% 55%,
+      70% 30%,
+      0% 0%;
+  }
+  100% {
+    background-position:
+      0% 0%,
+      100% 0%,
+      50% 100%,
+      0% 0%;
+  }
+}

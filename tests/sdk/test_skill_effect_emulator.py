@@ -3,11 +3,20 @@
 import struct
 import unittest
 
-from sdk.skill_effect_exporter.native.emulator import STACK, Emulator
-from sdk.skill_effect_exporter.native.values import Ptr, V, f32_bits
-from sdk.skill_effect_exporter.runtime.heap import Heap, JsonObj, Layouts, SynthObj
+from sdk.skill_effect_exporter.shared.native.emulator import STACK, Emulator
+from sdk.skill_effect_exporter.shared.native.values import Ptr, V, f32_bits
+from sdk.skill_effect_exporter.shared.runtime.heap import (
+    Heap,
+    JsonObj,
+    Layouts,
+    SynthObj,
+)
 from sdk.skill_effect_exporter.config import MAX_RECORDED_PATHS
-from sdk.skill_effect_exporter.workflow.extract import limit_recorded, merge_paths
+from sdk.skill_effect_exporter.shared.native.scan import indexed_fields
+from sdk.skill_effect_exporter.shared.workflow.extract import (
+    limit_recorded,
+    merge_paths,
+)
 
 BASE = 0x140001000
 CONSTANT = 0x140002000
@@ -22,7 +31,31 @@ class FakeMetadata:
                 "a": dict(type="System.Int32", offset_from_base="0x10"),
                 "b": dict(type="System.Int32", offset_from_base="0x14"),
             }
-        )
+        ),
+        "IHolder": dict(
+            flags="Public | ClassSemanticsMask | Abstract",
+            methods={
+                "set_Pair2": dict(id=2, returns=dict(type="System.Void")),
+                "get_Pair1": dict(id=1, returns=dict(type="Pair")),
+            },
+        ),
+        # A state holder whose field holds a cDerived (declared as its base);
+        # vtable slot 0 is overridden at BASE + 0xB.
+        "Owner": dict(fields={"_Info": dict(type="cInfo", offset_from_base="0x10")}),
+        "cInfo": dict(
+            methods={"beginSkill": dict(vtable_index=0, function=hex(BASE + 0xA))}
+        ),
+        "cDerived": dict(
+            parent="cInfo",
+            methods={"beginSkill": dict(vtable_index=0, function=hex(BASE + 0xB))},
+        ),
+        "Param": dict(
+            fields={
+                f"_Wp{n}Add": dict(type="System.Single", offset_from_base=hex(off))
+                for n, off in ((11, 0x10), (12, 0x14), (13, 0x18))
+            }
+            | {"_Other": dict(type="System.Single", offset_from_base="0x1c")}
+        ),
     }
 
     def get(self, name):
@@ -53,9 +86,10 @@ class FakePE:
         )
 
 
-def run(code, setup, returns, constants=b""):
+def run(code, setup, returns, constants=b"", usage=None):
     heap = Heap(Layouts(FakeMetadata()), ".")
     emulator = Emulator(FakePE(code, constants), heap, {})
+    emulator.usage = usage or {}
 
     def seed(st):
         st.regs["rsp"] = V(Ptr(STACK, 0))
@@ -329,6 +363,151 @@ class EmulatorTests(unittest.TestCase):
         self.assertAlmostEqual(result["value"], 1.02, places=6)
         self.assertIn("SkillData._value[0]", result["prov"])
         self.assertTrue(any(p.startswith("EXE 常量") for p in result["prov"]))
+
+    def test_ror_of_known_value(self):
+        # mov eax,6; ror eax,1; ret
+        code = bytes.fromhex("b806000000" "d1c8" "c3")
+        (result,) = run(code, lambda st, heap: None, "System.Int32")
+        self.assertEqual(result["value"], 3)
+
+    def test_flags_after_ror_of_unknown_are_unsupported(self):
+        # mov eax,[rdx+0x10]; ror eax,1; jc +3; xor eax,eax; ret; mov eax,1; ret
+        code = bytes.fromhex("8b4210" "d1c8" "7203" "31c0" "c3" "b801000000" "c3")
+
+        def setup(st, heap):
+            st.regs["rdx"] = V(Ptr(heap.unknown("t", "状态")))
+
+        (result,) = run(code, setup, "System.Int32")
+        self.assertEqual(result["status"], "unsupported")
+
+    def test_compare_mask_selects_with_blend(self):
+        # vxorps xmm2,xmm2,xmm2; vcmpnless xmm2,xmm1,xmm2;
+        # vblendvps xmm0,xmm3,xmm1,xmm2; ret  ->  xmm1 > 0 ? xmm1 : xmm3
+        code = bytes.fromhex("c5e857d2" "c5f2c2d206" "c4e3614ac120" "c3")
+        for given, expected in ((2.0, 2.0), (-1.0, 5.0)):
+
+            def setup(st, heap, given=given):
+                st.vregs[1] = [V(f32_bits(given))] + [V(0)] * 7
+                st.vregs[3] = [V(f32_bits(5.0))] * 8
+
+            (result,) = run(code, setup, "System.Single")
+            self.assertEqual(result["value"], expected)
+
+    def test_compare_mask_on_unknown_forks(self):
+        code = bytes.fromhex("c5e857d2" "c5f2c2d206" "c4e3614ac120" "c3")
+
+        def setup(st, heap):
+            st.vregs[1] = [heap.unknown("t", "状态").read(0x10, 4, heap)] + [V(0)] * 7
+            st.vregs[3] = [V(f32_bits(5.0))] * 8
+
+        results = run(code, setup, "System.Single")
+        by_condition = {r["conditions"][0]: r["value"] for r in results}
+        self.assertEqual(by_condition["not nle(状态+0x10, 0.0)"], 5.0)
+        self.assertEqual(by_condition["nle(状态+0x10, 0.0)"].name, "状态+0x10")
+
+    def test_interface_call_returns_typed_object(self):
+        # mov rax,[rdx]; mov rax,[rax-0x20]; call [rax]; mov eax,[rax+0x14]; ret
+        code = bytes.fromhex("488b02" "488b40e0" "ff10" "8b4014" "c3")
+
+        def setup(st, heap):
+            st.regs["rdx"] = V(Ptr(heap.unknown("IHolder", "holder")))
+
+        (result,) = run(code, setup, "System.Int32")
+        self.assertEqual(result["value"].name, "IHolder.get_Pair1().b")
+
+    def test_virtual_call_on_state_object_runs_the_override(self):
+        # mov rax,[rdx+0x10]; mov rcx,[rax]; call [rcx+0x40]; ret;
+        # override: mov eax,[rax+0x18]; ret (the base's slot 0 is the first ret)
+        code = bytes.fromhex("488b4210" "488b08" "ff5140" "c3" "8b4018" "c3")
+
+        def setup(st, heap):
+            heap.states = {("Owner", "_Info"): ("cDerived", {0x18: V(7)})}
+            st.regs["rdx"] = V(Ptr(heap.unknown("Owner", "owner")))
+
+        (result,) = run(code, setup, "System.Int32")
+        self.assertEqual(result["value"], 7)
+
+    def test_condition_taken_again_does_not_fork(self):
+        # mov eax,[rdx+0x10]; cmp eax,3; jg one; mov ecx,[rdx+0x10]; cmp ecx,3;
+        # jg two; xor eax,eax; ret; one: mov eax,1; ret; two: mov eax,2; ret
+        code = bytes.fromhex(
+            "8b4210"
+            "83f803"
+            "7f0b"
+            "8b4a10"
+            "83f903"
+            "7f09"
+            "31c0"
+            "c3"
+            "b801000000"
+            "c3"
+            "b802000000"
+            "c3"
+        )
+
+        def setup(st, heap):
+            st.regs["rdx"] = V(Ptr(heap.unknown("t", "状态")))
+
+        values = sorted(r["value"] for r in run(code, setup, "System.Int32"))
+        self.assertEqual(values, [0, 1])
+
+    def test_usage_site_result_is_named(self):
+        # call +1 (a ret); ret: the call at BASE is a traced skill read
+        code = bytes.fromhex("e801000000" "c3" "c3")
+        (result,) = run(
+            code, lambda st, heap: None, "System.Int32", usage={BASE: "技能等级〈S〉"}
+        )
+        self.assertEqual(result["value"].name, "技能等级〈S〉()")
+
+    def test_narrow_focus_takes_the_branch_nearer_the_site(self):
+        # mov eax,[rdx+0x10]; cmp eax,3; jg site; nop x3; site: mov eax,1; ret
+        code = bytes.fromhex("8b4210" "83f803" "7f03" "909090" "b801000000" "c3")
+        site = BASE + 0xB
+        reaching = {
+            BASE + k: d
+            for k, d in ((0, 3), (3, 2), (6, 1), (8, 3), (9, 2), (10, 1), (11, 0))
+        }
+
+        def evaluate(narrow):
+            heap = Heap(Layouts(FakeMetadata()), ".")
+            emulator = Emulator(FakePE(code), heap, {})
+            emulator.focus = (BASE, BASE + len(code), reaching, frozenset({site}))
+            emulator.narrow = narrow
+
+            def seed(st):
+                st.regs["rsp"] = V(Ptr(STACK, 0))
+                st.stack.write(0, 8, V("exit"))
+                st.regs["rdx"] = V(Ptr(heap.unknown("t", "状态")))
+
+            return emulator.run(BASE, seed, "System.Int32")
+
+        self.assertEqual(len(evaluate(False)), 2)
+        (result,) = evaluate(True)
+        self.assertEqual(result["conditions"], ["状态+0x10 > 3"])
+
+    def test_loading_an_exception_type_ends_the_path_as_thrown(self):
+        # mov rax,[rip+X] (a writable global holding a type descriptor); ret
+        code = bytes.fromhex("488b05") + struct.pack("<i", ZERO_FILLED - BASE - 7)
+        code += bytes.fromhex("c3")
+        heap = Heap(Layouts(FakeMetadata()), ".")
+        emulator = Emulator(FakePE(code), heap, {})
+        # The zero-filled global reads as descriptor address 0.
+        emulator.type_names = {0: "System.ArgumentOutOfRangeException"}
+
+        def seed(st):
+            st.regs["rsp"] = V(Ptr(STACK, 0))
+            st.stack.write(0, 8, V("exit"))
+
+        (result,) = emulator.run(BASE, seed, "System.Int64")
+        self.assertEqual(result["status"], "throws")
+
+    def test_indexed_read_covers_per_weapon_fields(self):
+        layouts = Layouts(FakeMetadata())
+        layout = layouts.fields("Param")
+        self.assertEqual(
+            indexed_fields(layout, 0x14, 4, layouts), ["_Wp12Add", "_Wp13Add"]
+        )
+        self.assertEqual(indexed_fields(layout, 0x14, 0, layouts), ["_Wp12Add"])
 
 
 if __name__ == "__main__":

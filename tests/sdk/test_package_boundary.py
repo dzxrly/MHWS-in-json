@@ -2,6 +2,7 @@
 
 import ast
 from pathlib import Path
+import re
 import subprocess
 import sys
 import tempfile
@@ -46,6 +47,41 @@ class PackageBoundaryTests(unittest.TestCase):
                         str(path),
                     )
 
+    def test_web_is_a_separate_app_that_reads_only_json(self):
+        web = ROOT / "web"
+        sources = [
+            path
+            for path in web.rglob("*")
+            if path.is_file()
+            and "node_modules" not in path.parts
+            and "dist" not in path.relative_to(web).parts[:1]
+        ]
+        self.assertFalse([p for p in sources if p.suffix == ".py"])
+        imports = re.compile(r"""(?:from|import\(?)\s*["']([^"']+)["']""")
+        for path in sources:
+            if path.suffix not in (".js", ".vue"):
+                continue
+            for target in imports.findall(path.read_text(encoding="utf-8")):
+                if target.startswith("."):
+                    resolved = (path.parent / target).resolve()
+                    self.assertTrue(resolved.is_relative_to(web), f"{path}: {target}")
+        for folder in ("src", "sdk", "tests"):
+            for path in (ROOT / folder).rglob("*.py"):
+                for node in ast.walk(ast.parse(path.read_text(encoding="utf8"))):
+                    names = (
+                        [node.module or ""]
+                        if isinstance(node, ast.ImportFrom)
+                        else (
+                            [a.name for a in node.names]
+                            if isinstance(node, ast.Import)
+                            else []
+                        )
+                    )
+                    self.assertFalse(
+                        any(n == "web" or n.startswith("web.") for n in names),
+                        str(path),
+                    )
+
     def test_packages_work_with_the_other_package_blocked(self):
         scratch = ROOT / ".tmp/test-runs"
         scratch.mkdir(parents=True, exist_ok=True)
@@ -57,7 +93,7 @@ class PackageBoundaryTests(unittest.TestCase):
                 ),
                 (
                     "sdk",
-                    f"from src.processed_data.enemy_battle_logic.exporter import export_battle_logic; from src.processed_data.enemy_battle_logic.definitions import DEFAULT_TEMPLATE; export_battle_logic({directory!r}, template_path=DEFAULT_TEMPLATE)",
+                    f"from src.site_data.enemy_battle_logic import export_battle_data; from src.processed_data.enemy_battle_logic.definitions import DEFAULT_TEMPLATE; export_battle_data({directory!r}, template_path=DEFAULT_TEMPLATE)",
                 ),
             )
             for forbidden, body in cases:

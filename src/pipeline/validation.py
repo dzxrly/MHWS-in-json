@@ -8,12 +8,6 @@ from zipfile import ZipFile
 from xml.etree import ElementTree
 
 import openpyxl
-from src.processed_data.enemy_battle_logic.definitions import (
-    INDEX_NAME as BATTLE_INDEX_NAME,
-)
-from src.processed_data.enemy_battle_logic.validation import (
-    validate_bundle as validate_battle_bundle,
-)
 
 
 def validate_outputs(
@@ -39,8 +33,6 @@ def validate_outputs(
         elif path.suffix == ".json":
             with path.open(encoding="utf-8") as handle:
                 json.load(handle)
-        if path.as_posix().endswith("/" + BATTLE_INDEX_NAME):
-            validate_battle_bundle(path.parent.parent)
         records.append(
             {
                 "path": relative,

@@ -65,8 +65,9 @@ def skill_menu(session):
     action = choose(
         "技能效果 SDK",
         [
-            "全量提取（写入 src/processed_data/skill_details/data，约 20 分钟）",
+            "全量提取（写入 src/processed_data/skill_details/data，约 30 分钟）",
             "调试指定技能（输出到 .tmp）",
+            "更新数值含义与说明（技能模块 → index.json，不重新求值）",
             "重建 SkillDetails.xlsx",
             "返回",
         ],
@@ -82,6 +83,8 @@ def skill_menu(session):
         output = ask_text("输出目录", f"{TRY_DIR}/try")
         flags = [arg for skill in skills.split() for arg in ("-s", skill)]
         run(SKILL, "extract", *session.inputs(), *flags, "-o", output)
+    elif action.startswith("更新"):
+        run(SKILL, "annotate")
     else:
         run("src.processed_data.skill_details")
 
@@ -94,7 +97,7 @@ def enemy_menu(session):
             "提取全部怪物并生成玩家视图",
             "统计未知条件（census / uncertainty）",
             "发布到网页模型目录（publish）",
-            "构建怪物行动逻辑网页",
+            "生成网站数据（使用已发布的网页模型）",
             "返回",
         ],
     )
@@ -125,7 +128,7 @@ def enemy_menu(session):
         ).ask():
             run(ENEMY, "publish", "-m", view)
     else:
-        run("src.processed_data.enemy_battle_logic", "--output", f"{ENEMY_DIR}/site")
+        run("src.site_data")
 
 
 def ask_path(message, current):

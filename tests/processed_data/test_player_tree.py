@@ -181,8 +181,8 @@ class PlayerTreeTests(unittest.TestCase):
     def test_browser_filter_and_continuation_semantics(self):
         script = r"""
 const assert = require('node:assert/strict');
-require(process.argv[1]);
-const {compare, evaluate, initial, step} = BattlePlayer;
+const {pathToFileURL} = require('node:url');
+import(pathToFileURL(process.argv[1]).href).then(({compare, evaluate, initial, step}) => {
 const interval = (min,max,minClosed=false,maxClosed=false) => ({min,max,minClosed,maxClosed});
 assert.equal(compare(interval(8,11), 'lt',11),true);
 assert.equal(compare(interval(8,11), 'gt',8),true);
@@ -271,13 +271,14 @@ settledView.scenario.persistent=[];
 const actedAgain=step(settledView,initial(settledView,{id:'act'},{d:5}));
 assert.equal(step(settledView,actedAgain.children[0].state).sourceRef,'check');
 console.log('player engine boundaries and continuations passed');
+}).catch(error => { console.error(error); process.exit(1); });
 """
         result = subprocess.run(
             [
                 shutil.which("node"),
                 "-e",
                 script,
-                str(ROOT / "src/processed_data/enemy_battle_logic/player_engine.js"),
+                str(ROOT / "web/src/sites/enemy_battle_logic/player_engine.js"),
             ],
             cwd=ROOT,
             capture_output=True,
