@@ -10,7 +10,9 @@ import "./graph.css";
 
 const props = defineProps({ enemyId: { type: String, required: true } });
 
-const payload = shallowRef(null);
+// tree.json and tables.json load with the page; flow.json only with the flow chart.
+const graph = shallowRef(null);
+const diagram = shallowRef(null);
 const error = ref(null);
 const mode = ref("tree");
 let tree = null;
@@ -40,7 +42,6 @@ const table = ref("");
 const entry = ref("");
 const direction = ref("DOWN");
 
-const graph = computed(() => payload.value?.graph);
 const hasTree = computed(() => !!graph.value?.playerView);
 const fields = computed(() =>
   Object.entries(graph.value?.playerView?.inputs ?? {})
@@ -49,11 +50,11 @@ const fields = computed(() =>
 );
 const mainFields = computed(() => fields.value.filter((field) => !field.extra));
 const extraFields = computed(() => fields.value.filter((field) => field.extra));
-const tables = computed(() => payload.value?.diagram.layout.children ?? []);
+const tables = computed(() => diagram.value?.layout.children ?? []);
 const entryPoints = computed(() => {
-  const diagram = payload.value?.diagram;
-  if (!diagram) return [];
-  return diagram.entryPoints.length ? diagram.entryPoints : [{ target: diagram.entry, name: "模型当前入口" }];
+  const value = diagram.value;
+  if (!value) return [];
+  return value.entryPoints.length ? value.entryPoints : [{ target: value.entry, name: "模型当前入口" }];
 });
 const scope = computed(() => {
   const coverage = graph.value?.coverage;
@@ -74,20 +75,23 @@ watch(
   () => props.enemyId,
   async (enemyId) => {
     teardown();
-    payload.value = null;
+    graph.value = diagram.value = null;
     error.value = null;
     selected.value = false;
     flowInfo.value = null;
     for (const key of Object.keys(choices)) delete choices[key];
     try {
-      const data = await loadJson(`enemy_battle_logic/${enemyId}.json`);
+      const [tree, tables] = await Promise.all([
+        loadJson(`enemy_battle_logic/${enemyId}/tree.json`),
+        loadJson(`enemy_battle_logic/${enemyId}/tables.json`),
+      ]);
       if (enemyId !== props.enemyId) return;
-      payload.value = data;
-      document.title = `${data.graph.enemyName || enemyId} · 行动逻辑 · ${SITE_TITLE}`;
-      mode.value = data.graph.playerView ? "tree" : "flow";
+      graph.value = { ...tree, tables };
+      document.title = `${tree.enemyName || enemyId} · 行动逻辑 · ${SITE_TITLE}`;
+      mode.value = tree.playerView ? "tree" : "flow";
       await nextTick();
       if (mode.value === "tree") startTree();
-      else startFlow();
+      else await startFlow();
     } catch (failure) {
       error.value = failure;
     }
@@ -110,10 +114,17 @@ function startTree() {
     },
   });
 }
-function startFlow() {
+async function startFlow() {
+  const enemyId = props.enemyId;
+  if (!diagram.value) {
+    flowStatus.value = "正在加载流程图数据…";
+    const loaded = await loadJson(`enemy_battle_logic/${enemyId}/flow.json`);
+    if (enemyId !== props.enemyId || flow) return;
+    diagram.value = loaded;
+  }
   flow = createTechnicalGraph({
     graph: graph.value,
-    diagram: payload.value.diagram,
+    diagram: diagram.value,
     viewport: flowViewport.value,
     svg: flowSvg.value,
     scene: flowScene.value,
@@ -130,7 +141,7 @@ function startFlow() {
 async function showMode(next) {
   mode.value = next;
   await nextTick();
-  if (next === "flow" && !flow) startFlow();
+  if (next === "flow" && !flow) startFlow().catch((failure) => (flowStatus.value = failure.message));
 }
 function choose(field, value) {
   choices[field.key] = value;
@@ -143,7 +154,7 @@ function toggleHint(key) {
 </script>
 
 <template>
-  <LoadState v-if="!payload" :error="error" label="正在加载怪物数据，较大的怪物约 15 MB…" />
+  <LoadState v-if="!graph" :error="error" label="正在加载怪物数据，较大的怪物约 10 MB…" />
   <div v-else class="monster">
     <div class="monster-bar">
       <RouterLink class="icon-button small" to="/enemy_battle_logic/" aria-label="返回全部怪物"><Icon name="back" /></RouterLink>

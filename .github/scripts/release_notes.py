@@ -31,7 +31,7 @@ WEBSITE_SECTION: dict[str, str] | None = {
     "heading": "Website",
     "description": (
         "Monster battle logic and skill effect values, browsable online. "
-        "The release carries only the site's data (PROCESSED_DATA, website/)."
+        "Its data is in PROCESSED_DATA as enemy_battle_logic.json and skill_details.json."
     ),
     "url": "https://mhws-info.eggtargaryen.com/",
     "link_text": "Open the website",

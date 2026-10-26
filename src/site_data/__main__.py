@@ -1,4 +1,9 @@
-"""python -m src.site_data [--enemy-models ... | --enemy-template ...] [--preview]"""
+"""python -m src.site_data: regenerate the committed website JSON.
+
+A preview of models the SDK has not published goes elsewhere, so the committed
+data stays the release data, e.g.
+``python -m src.site_data --enemy-models <dir> --preview --output .tmp/site-preview``.
+"""
 
 import argparse
 import json
@@ -26,6 +31,9 @@ def main():
         "--preview", action="store_true", help="允许怪物图只包含部分怪物"
     )
     args = parser.parse_args()
+    preview = args.preview or args.enemy_template or args.enemy_models != MODEL_DIR
+    if preview and args.output.resolve() == DEFAULT_DIR.resolve():
+        parser.error("预览数据不能写入已提交的网站数据目录，请用 --output 指定其他目录")
     site = export_site_data(
         args.output,
         SourceRepository(args.natives),

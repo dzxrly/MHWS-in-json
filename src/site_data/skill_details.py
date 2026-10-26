@@ -172,10 +172,14 @@ def build_site_data(
 
 
 def export_skill_data(
-    output_dir: Path, repository: SourceRepository, text_source: TextSource
+    output_dir: Path,
+    repository: SourceRepository,
+    text_source: TextSource,
+    name: str = OUTPUT_NAME,
 ) -> Path:
+    """The page data; the release ships the same content as one file."""
     data = build_site_data(repository, text_source, load_links())
-    path = Path(output_dir) / OUTPUT_NAME
+    path = Path(output_dir) / name
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(
         json.dumps(data, ensure_ascii=False, separators=(",", ":")), encoding="utf-8"

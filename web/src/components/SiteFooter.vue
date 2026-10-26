@@ -1,19 +1,18 @@
 <script setup>
-import { computed } from "vue";
-import { siteInfo } from "../composables/data.js";
-
-const commitUrl = computed(
-  () => siteInfo.value && `https://github.com/${siteInfo.value.repository}/commit/${siteInfo.value.commit}`,
-);
+/* global __BUILD__ */
+// Date and commit of this build, set by vite.config.js.
+const build = __BUILD__;
+const commitUrl = `https://github.com/dzxrly/MHWS-in-json/commit/${build.commit}`;
 </script>
 
 <template>
   <footer class="site-footer">
-    <span v-if="siteInfo"
-      >部署日期：{{ siteInfo.builtOn }}（<a :href="commitUrl" target="_blank" rel="noopener noreferrer">{{
-        siteInfo.commit.slice(0, 7)
-      }}</a
-      >）</span
+    <span
+      >部署日期：{{ build.date
+      }}<template v-if="build.commit"
+        >（<a :href="commitUrl" target="_blank" rel="noopener noreferrer">{{ build.commit.slice(0, 7) }}</a
+        >）</template
+      ></span
     >
   </footer>
 </template>

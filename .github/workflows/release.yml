@@ -3,8 +3,8 @@ name: Build database release
 # Pull requests only validate (tests and a full export). Releases are published
 # after a push to the default branch or a manual run on the default branch.
 # Cloudflare Pages builds and deploys the website (web/) from Git pushes; here
-# the same build only checks it. Releases link to the site and carry its JSON
-# (PROCESSED_DATA website/), not its pages.
+# the same build only checks it. Releases link to the site and carry its data
+# as JSON (PROCESSED_DATA), not its pages.
 on:
   push:
     branches: [main]
@@ -72,13 +72,9 @@ jobs:
       - name: Export database and processed data
         run: python main.py
 
-      # web/ reads only the JSON that the export wrote to website/; it is built
-      # from offline-extracted models committed under src. Do not run the
-      # offline SDK or provide EXE/IL2CPP/resource inputs here; the SDK
-      # packages above are only for the tests.
-      - name: Build website from the exported JSON
-        env:
-          MHWS_SITE_DATA: ${{ github.workspace }}/output/processed_data/website
+      # web/ reads only the committed JSON in src/site_data/data (the tests
+      # check it is current); no Python, SDK, EXE, IL2CPP or resource inputs.
+      - name: Build website (same command as Cloudflare Pages)
         run: |
           npm --prefix web ci
           npm --prefix web run build

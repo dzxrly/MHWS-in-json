@@ -10,9 +10,8 @@ from src.processed_data.skill_details.exporter import (
     export_skill_details,
 )
 from src.site_data import (
-    PROCESSED_FOLDER as SITE_DATA_FOLDER,
-    export_site_data,
-    output_names as site_data_names,
+    RELEASE_NAMES as SITE_DATA_NAMES,
+    export_release_files as export_site_data_files,
 )
 from src.shared.amulets import AmuletCatalog
 from src.shared.languages import language_code
@@ -29,7 +28,7 @@ OUTPUT_NAMES = (
     "LightBowgun.xlsx",
     "EnemyActionNames.xlsx",
     SKILL_DETAILS_OUTPUT_NAME,
-    *(f"{SITE_DATA_FOLDER}/{name}" for name in site_data_names()),
+    *SITE_DATA_NAMES,
 )
 
 
@@ -78,5 +77,5 @@ def export_processed(
     with timings.measure("processed/skill_details"):
         export_skill_details(output_dir, repository, text_source)
     with timings.measure("processed/site_data"):
-        export_site_data(output_dir / SITE_DATA_FOLDER, repository, text_source)
+        export_site_data_files(output_dir, repository, text_source)
     return [output_dir / name for name in OUTPUT_NAMES]

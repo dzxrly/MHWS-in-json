@@ -43,7 +43,7 @@ sdk/
     shared/        # Python：native、resources、logic、models、workflow
     data/          # JSON：evidence/、models/、rules.v1.json
     monster/       # 每个怪物和变种的独立入口
-web/               # Vite + Vue 网站，只读取 src/site_data 生成的 JSON
+web/               # Vite + Vue 网站，只读取 src/site_data 中已提交的 JSON
 tests/
 ```
 
@@ -51,23 +51,28 @@ tests/
 
 [mhws-info.eggtargaryen.com](https://mhws-info.eggtargaryen.com/) 汇集各信息站，只提供简体中文：怪物行动逻辑（34 只怪物，变种各有独立页面，不包含训练靶）和技能效果数值（与 `SkillDetails.xlsx` 使用同一份技能效果链路 JSON）。
 
-`sdk/`、`src/` 与 `web/` 互不导入代码，只通过 JSON 传递数据。`python -m src.site_data` 把网站读取的 JSON 写入 `src/site_data/data/`（不提交到 Git），网站构建时把这个目录复制到站点的 `data/`。发布导出把同样的文件写入 PROCESSED_DATA 的 `website/`：
+`sdk/`、`src/` 与 `web/` 互不导入代码，只通过 JSON 传递数据。网站读取提交在 `src/site_data/data/` 中的 JSON，其中只保留页面显示需要的内容，并拆分成多个文件，单个文件不超过约 7 MB：
 
 ```text
-site.json                          部署日期、提交、是否为预览
-enemy_battle_logic/index.json      怪物列表
-enemy_battle_logic/<enemyId>.json  单只怪物的行动图与技术图数据
-skill_details/skills.json          技能效果数值及其含义
+site.json                                    格式版本、是否为预览
+enemy_battle_logic/index.json                怪物列表
+enemy_battle_logic/<enemyId>/tree.json       决策树与名称
+enemy_battle_logic/<enemyId>/tables.json     行为表节点（原始数据）
+enemy_battle_logic/<enemyId>/flow.json       技术流程图
+skill_details/skills.json                    技能效果数值及其含义
 ```
 
-`web/` 是 Vite + Vue 应用，首页和每个信息站各占一个路由（`/enemy_battle_logic/`、`/skill_details/`）。构建需要 Node.js 22 或更新版本，不需要 SDK。构建全站，输出到 `web/dist`：
+怪物模型或技能效果链路变化后，离线运行 `python -m src.site_data` 重新生成并提交；数据过期时测试会失败。发布包改以两个完整的单文件提供同一份数据（见下文）。
+
+`web/` 是 Vite + Vue 应用，首页和每个信息站各占一个路由（`/enemy_battle_logic/`、`/skill_details/`）。构建只需要 Node.js 22 或更新版本，不需要 Python；构建时把 JSON 复制到站点的 `data/`：
 
 ```powershell
-python -m src.site_data && npm --prefix web ci && npm --prefix web run build
+npm --prefix web ci
+npm --prefix web run build           # 输出到 web/dist
 npm --prefix web run preview         # 在本机打开 http://localhost:4173
 ```
 
-修改页面时用 `npm --prefix web run dev`，读取同一份 JSON。`MHWS_SITE_DATA` 可让构建改用其他数据目录，例如发布包中的 `website/`。`python -m src.site_data --enemy-models <模型目录> --preview` 可写入 SDK 尚未发布的模型。
+修改页面时用 `npm --prefix web run dev`，读取同一份 JSON。`MHWS_SITE_DATA` 可让网站改用其他数据目录，例如 SDK 尚未发布的模型的预览（`python -m src.site_data --enemy-models <模型目录> --preview --output .tmp/site-preview`）。
 
 新增信息站时，在 `src/site_data` 中写出它的 JSON（由 `export_site_data` 调用），再在 `web/src/sites/<站点>/index.js` 中声明标题、首页卡片和路由，并加入 `web/src/sites.js`。
 
@@ -95,16 +100,13 @@ HeavyBowgun.xlsx
 LightBowgun.xlsx
 SkillDetails.xlsx
 amulet_pool.json
+enemy_battle_logic.json
 graphic_preset.xlsx
+skill_details.json
 skill_pool.json
-website/site.json
-website/enemy_battle_logic/index.json
-website/enemy_battle_logic/EM0001_00_0.json
-...
-website/skill_details/skills.json
 ```
 
-`website/` 是[网站](#网站)读取的 JSON；发布包不含网页本身。
+`enemy_battle_logic.json` 是全部怪物的完整行动图，`skill_details.json` 是技能效果数值，各为单个文件；[网站](#网站)读取的是同一份数据精简拆分后的副本，发布包不含网页本身。
 
 `MHWS-in-json_<版本>.zip` 包含源 JSON，与工作簿分开打包。
 

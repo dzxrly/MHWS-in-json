@@ -71,12 +71,13 @@ SDK 只讀取遊戲檔案，不執行遊戲、不注入。它從 EXE 的 x64 指
 
 ```powershell
 python -m src.site_data                                         # 正式資料，全部 34 個魔物
-python -m src.site_data --enemy-models <目錄> --preview         # 部分魔物，如剛提取的模型
-python -m src.site_data --enemy-template <模型.json>            # 單個魔物
+python -m src.site_data --enemy-models <目錄> --preview --output .tmp/site-preview   # 部分魔物，如剛提取的模型
+python -m src.site_data --enemy-template <模型.json> --output .tmp/site-preview      # 單個魔物
+$env:MHWS_SITE_DATA = (Resolve-Path .tmp/site-preview)        # 網站改為顯示預覽資料
 npm --prefix web run dev                                       # 在 http://localhost:5173 瀏覽
 ```
 
-JSON 寫入 `src/site_data/data/`，網站建置時複製進站點；建置命令見[網站](../../docs/README.zh-Hant.md#網站)。
+不帶 `--output` 時重寫已提交的 `src/site_data/data/`，`publish` 之後一併提交；預覽必須寫到其他目錄。網站命令見[網站](../../docs/README.zh-Hant.md#網站)。
 
 ### 修改程式碼後重新提取
 
@@ -90,7 +91,7 @@ python -B -m sdk.enemy_logic_exporter player-view -m "$w/s1" -o "$w/s1p"        
 python -B -m sdk.enemy_logic_exporter census -m "$w/s1p"                         # 含未知部分的條件，按命令與原因分組
 python -B -m sdk.enemy_logic_exporter uncertainty -m "$w/s1p"                    # 玩家戰鬥樹中輸入都已知後仍無法判定的條件
 python -B -m sdk.enemy_logic_exporter publish -m "$w/s1p"                        # 寫入網頁模型目錄
-python -B -m src.site_data                                                       # 網站 JSON 寫入 src/site_data/data
+python -B -m src.site_data                                                       # 網站 JSON，提交 src/site_data/data
 python -B -m unittest discover -s tests/sdk -t .
 ```
 

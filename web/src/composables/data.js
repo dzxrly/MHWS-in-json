@@ -7,7 +7,7 @@ export async function loadJson(path) {
   return response.json();
 }
 
-// Build date, commit and preview flag, shared by the home page and footer.
+// The data package's preview flag, shown on the home page.
 export const siteInfo = ref(null);
 loadJson("site.json").then(
   (info) => (siteInfo.value = info),

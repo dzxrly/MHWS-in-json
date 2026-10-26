@@ -1,4 +1,4 @@
-"""Validate the site's monster data: graph structure and page payloads."""
+"""Validate the site's monster data: graph structure and the split page files."""
 
 from copy import deepcopy
 import json
@@ -11,12 +11,16 @@ from src.processed_data.enemy_battle_logic.definitions import (
     EXPECTED_ENEMY_IDS,
     read_models,
 )
+from src.processed_data.enemy_battle_logic.diagram import combined_diagram
 from src.processed_data.enemy_battle_logic.model_io import load_model
 from src.processed_data.enemy_battle_logic.validation import validate_graph
 from src.site_data.enemy_battle_logic import (
+    PAGE_FILES,
+    TABLE_FIELDS,
+    TREE_FIELDS,
     export_battle_data,
+    page_files,
     validate_bundle,
-    validate_payload,
 )
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -58,11 +62,12 @@ class BattleReleaseTests(unittest.TestCase):
                 cls.data,
                 template_path=DEFAULT_TEMPLATE,
             )
-        cls.text = (cls.data / "enemy_battle_logic/EM0001_00_0.json").read_text(
-            encoding="utf-8"
-        )
-        cls.payload = json.loads(cls.text)
-        cls.graph = cls.payload["graph"]
+        folder = cls.data / "enemy_battle_logic/EM0001_00_0"
+        cls.files = {
+            name: (folder / name).read_text(encoding="utf-8") for name in PAGE_FILES
+        }
+        cls.text = "".join(cls.files.values())
+        cls.graph = load_model(DEFAULT_TEMPLATE)
 
     def test_research_guard_ignores_checkout_ancestor_names(self):
         for checkout_name in ("MHWS-in-json", "sdk"):
@@ -89,8 +94,7 @@ class BattleReleaseTests(unittest.TestCase):
         self.assertFalse(index["releaseReady"])
         self.assertEqual({p.suffix for p in self.paths}, {".json"})
         self.assertEqual(
-            self.graph["coverage"],
-            load_model(DEFAULT_TEMPLATE)["coverage"],
+            json.loads(self.files["tree.json"])["coverage"], self.graph["coverage"]
         )
         self.assertEqual(len(index["monsters"]), 1)
         self.assertNotIn("enemy_native_model", self.text)
@@ -184,15 +188,30 @@ class BattleReleaseTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate_graph(incorrect)
 
-    def test_payload_must_carry_the_same_graph_and_diagram(self):
-        validate_payload(self.payload, self.graph)
-        changed = deepcopy(self.graph)
-        changed["logicStatus"] = changed["logicStatus"] + "_changed"
-        with self.assertRaises(ValueError):
-            validate_payload(self.payload, changed)
-        stale = dict(self.payload, diagram=dict(self.payload["diagram"], entry="x"))
-        with self.assertRaises(ValueError):
-            validate_payload(stale, self.graph)
+    def test_pages_keep_only_the_fields_the_site_reads(self):
+        written = {name: json.loads(text) for name, text in self.files.items()}
+        self.assertEqual(written, json.loads(json.dumps(page_files(self.graph))))
+        self.assertLessEqual(set(written["tree.json"]), set(TREE_FIELDS))
+        self.assertEqual(written["tree.json"]["playerView"], self.graph["playerView"])
+        self.assertTrue(
+            all(set(table) <= set(TABLE_FIELDS) for table in written["tables.json"])
+        )
+        self.assertEqual(
+            [table["nodes"] for table in written["tables.json"]],
+            [table["nodes"] for table in self.graph["tables"]],
+        )
+        self.assertEqual(
+            written["flow.json"],
+            json.loads(json.dumps(combined_diagram(self.graph, compact_details=True))),
+        )
+
+    def test_bundle_rejects_a_missing_page_file(self):
+        with tempfile.TemporaryDirectory(dir=self.stage) as directory:
+            copy = Path(directory)
+            export_battle_data(copy, template_path=DEFAULT_TEMPLATE)
+            (copy / "enemy_battle_logic/EM0001_00_0/flow.json").unlink()
+            with self.assertRaisesRegex(ValueError, "三个 JSON"):
+                validate_bundle(copy, require_release=False)
 
     def test_output_folder_must_start_empty(self):
         with self.assertRaisesRegex(ValueError, "必须为空"):

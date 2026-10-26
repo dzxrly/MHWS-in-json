@@ -43,7 +43,7 @@ sdk/
     shared/        # Python: native, resources, logic, models, workflow
     data/          # JSON: evidence/, models/, rules.v1.json
     monster/       # One entry per monster and variant
-web/               # Vite + Vue website; reads only the JSON of src/site_data
+web/               # Vite + Vue website; reads only the committed JSON of src/site_data
 tests/
 ```
 
@@ -51,23 +51,28 @@ tests/
 
 [mhws-info.eggtargaryen.com](https://mhws-info.eggtargaryen.com/) gathers the information sites, in Simplified Chinese only: monster battle logic (34 monsters; variants have their own pages, the training target is excluded) and skill effect values (from the same skill effect link JSON as `SkillDetails.xlsx`).
 
-`sdk/`, `src/` and `web/` do not import each other; they exchange JSON only. `python -m src.site_data` writes the JSON the site reads into `src/site_data/data/` (not committed), and the web build copies that folder into the site's `data/`. The release export writes the same files into `website/` of PROCESSED_DATA:
+`sdk/`, `src/` and `web/` do not import each other; they exchange JSON only. The site reads the JSON committed in `src/site_data/data/`, which holds only what the pages show, split so that no file exceeds about 7 MB:
 
 ```text
-site.json                          build date, commit, preview flag
-enemy_battle_logic/index.json      monster list
-enemy_battle_logic/<enemyId>.json  one monster: graph and technical diagram
-skill_details/skills.json          skill effect values and their meanings
+site.json                                    schema version, preview flag
+enemy_battle_logic/index.json                monster list
+enemy_battle_logic/<enemyId>/tree.json       decision tree and names
+enemy_battle_logic/<enemyId>/tables.json     behaviour table nodes (raw data)
+enemy_battle_logic/<enemyId>/flow.json       technical flow chart
+skill_details/skills.json                    skill effect values and their meanings
 ```
 
-`web/` is a Vite + Vue app with the home page and one route per information site (`/enemy_battle_logic/`, `/skill_details/`). It needs Node.js 22 or later, not the SDK. Build the whole site into `web/dist`:
+Regenerate it offline with `python -m src.site_data` after the monster models or the skill links change, and commit it; the tests fail while it is out of date. The release carries the same data as two complete single files instead (see below).
+
+`web/` is a Vite + Vue app with the home page and one route per information site (`/enemy_battle_logic/`, `/skill_details/`). Building it needs only Node.js 22 or later, no Python; the build copies the JSON into the site's `data/`:
 
 ```powershell
-python -m src.site_data && npm --prefix web ci && npm --prefix web run build
+npm --prefix web ci
+npm --prefix web run build           # into web/dist
 npm --prefix web run preview         # browse it at http://localhost:4173
 ```
 
-`npm --prefix web run dev` serves the same JSON while editing. `MHWS_SITE_DATA` points the build at another data folder, such as `website/` of a release. `python -m src.site_data --enemy-models <model folder> --preview` writes models the SDK has not published.
+`npm --prefix web run dev` serves the same JSON while editing. `MHWS_SITE_DATA` points the site at another data folder, such as a preview of models the SDK has not published (`python -m src.site_data --enemy-models <model folder> --preview --output .tmp/site-preview`).
 
 To add an information site, write its JSON from `src/site_data` (a module called from `export_site_data`), then declare its title, home page card and routes in `web/src/sites/<site>/index.js` and list it in `web/src/sites.js`.
 
@@ -95,16 +100,13 @@ HeavyBowgun.xlsx
 LightBowgun.xlsx
 SkillDetails.xlsx
 amulet_pool.json
+enemy_battle_logic.json
 graphic_preset.xlsx
+skill_details.json
 skill_pool.json
-website/site.json
-website/enemy_battle_logic/index.json
-website/enemy_battle_logic/EM0001_00_0.json
-...
-website/skill_details/skills.json
 ```
 
-`website/` holds the JSON the [website](#website) reads; the pages themselves are not in the release.
+`enemy_battle_logic.json` holds every monster's full battle graph and `skill_details.json` the skill effect values, each as one file; the [website](#website) reads a trimmed, split copy of the same data, and its pages are not in the release.
 
 `MHWS-in-json_<version>.zip` contains the source JSON, packaged separately from the workbooks.
 

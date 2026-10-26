@@ -71,12 +71,13 @@ No SDK dependencies or game files are needed. The pages are part of the [website
 
 ```powershell
 python -m src.site_data                                         # release data, all 34 monsters
-python -m src.site_data --enemy-models <folder> --preview       # some monsters, e.g. freshly extracted models
-python -m src.site_data --enemy-template <model.json>           # one monster
+python -m src.site_data --enemy-models <folder> --preview --output .tmp/site-preview   # some monsters, e.g. freshly extracted
+python -m src.site_data --enemy-template <model.json> --output .tmp/site-preview       # one monster
+$env:MHWS_SITE_DATA = (Resolve-Path .tmp/site-preview)        # show the preview instead of the committed data
 npm --prefix web run dev                                       # browse at http://localhost:5173
 ```
 
-The JSON goes to `src/site_data/data/`, which the web build copies into the site; see the [website](../README.md#website) for the build command.
+Without `--output` it rewrites the committed `src/site_data/data/`; commit it after `publish`. Previews must go elsewhere. See the [website](../README.md#website) for the web commands.
 
 ### Re-extract after a code change
 
@@ -90,7 +91,7 @@ python -B -m sdk.enemy_logic_exporter player-view -m "$w/s1" -o "$w/s1p"        
 python -B -m sdk.enemy_logic_exporter census -m "$w/s1p"                         # conditions with unknown parts, by command and reason
 python -B -m sdk.enemy_logic_exporter uncertainty -m "$w/s1p"                    # player-tree conditions still undecided with all inputs known
 python -B -m sdk.enemy_logic_exporter publish -m "$w/s1p"                        # write the web models
-python -B -m src.site_data                                                       # website JSON into src/site_data/data
+python -B -m src.site_data                                                       # website JSON; commit src/site_data/data
 python -B -m unittest discover -s tests/sdk -t .
 ```
 
