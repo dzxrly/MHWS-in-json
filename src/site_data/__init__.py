@@ -63,7 +63,7 @@ def export_site_data(
         if not (output_dir / SITE_NAME).is_file():
             raise ValueError(f"输出目录不是网站数据目录，拒绝覆盖：{output_dir}")
         shutil.rmtree(output_dir)
-    output_dir.mkdir(parents=True)
+    output_dir.mkdir(parents=True, exist_ok=True)
     export_skill_data(output_dir, repository, text_source)
     export_battle_data(
         output_dir,

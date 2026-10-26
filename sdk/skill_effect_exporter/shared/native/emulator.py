@@ -856,8 +856,9 @@ class Emulator:
         """True/False when this path already took the same condition or its
         negation on the same runtime fields; None otherwise. Conditions on
         opaque call results ("f()") are not compared: each call may differ,
-        and so are shortened texts."""
-        if "()" in taken or taken.endswith("..."):
+        and so are texts with a shortened operand or comparison: distinct
+        expressions can share what is kept."""
+        if "()" in taken or "..." in taken:
             return None
         if taken in st.conditions:
             return True
