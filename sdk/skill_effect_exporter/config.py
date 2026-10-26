@@ -30,6 +30,11 @@ EQUIP_DATA_HOLDER = "app.EquipDataHolder"
 SKILL_COMMON_ROW = "app.user_data.SkillCommonData.cData"
 SKILL_DATA_ROW = "app.user_data.SkillData.cData"
 PLAYER_GLOBAL_TYPE = "app.user_data.PlayerGlobalParam"
+# Fields of a reviewed effect meaning in a skill module (skills/<id>.py
+# MEANINGS): the effect name, what the value applies to, how, when, its unit,
+# the code it was read from, and "情形": code text -> name of the situation a
+# split value belongs to (a condition, a data field, "参数1=true").
+MEANING_FIELDS = ("效果", "作用于", "计算", "条件", "单位", "依据", "情形")
 # PlayerGlobalParam fields whose type name ends so hold skill parameters
 # (PlayerSkillParam, PlayerMealSkillParam, ...): scanned for coverage.
 SKILL_PARAM_SUFFIX = "SkillParam"

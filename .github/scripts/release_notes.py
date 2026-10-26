@@ -3,11 +3,12 @@ import json
 import os
 import subprocess
 import sys
+from collections import Counter
+from collections.abc import Iterable
 from dataclasses import dataclass
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from urllib.parse import quote
 from zipfile import ZipFile
-
 
 # Project configuration: edit only this block when reusing the script.
 RELEASE_TAG_PATTERN = "database-*"
@@ -289,18 +290,9 @@ def _language_asset_lines(
         "",
         description,
         "",
+        "| Language | Download |",
+        "| --- | --- |",
     ]
-    if section.get("list_files"):
-        manifests = {
-            tuple(_archive_files(assets[asset]))
-            for _, _, asset in language_assets
-        }
-        if len(manifests) != 1:
-            raise ValueError(f"{heading} language archives contain different files")
-        lines.extend(["Files in each ZIP:", ""])
-        lines.extend(f"- `{filename}`" for filename in next(iter(manifests)))
-        lines.append("")
-    lines.extend(["| Language | Download |", "| --- | --- |"])
     for language_code, language_name, asset in language_assets:
         asset_url = _repository_url(
             server_url,
@@ -312,6 +304,13 @@ def _language_asset_lines(
         )
         lines.append(f"| {language_name} | [{link_text}]({asset_url}) |")
     lines.append("")
+    if section.get("list_files"):
+        manifests = {
+            tuple(_archive_files(assets[asset])) for _, _, asset in language_assets
+        }
+        if len(manifests) != 1:
+            raise ValueError(f"{heading} language archives contain different files")
+        lines.extend(_archive_listing_lines("Files in each ZIP", next(iter(manifests))))
     return lines
 
 
@@ -342,13 +341,51 @@ def _asset_section_lines(
         "",
         description,
         "",
+        f"[{link_text}]({asset_url})",
+        "",
     ]
     if section.get("list_files"):
-        lines.extend(["Files in ZIP:", ""])
-        lines.extend(f"- `{filename}`" for filename in _archive_files(assets[asset]))
-        lines.append("")
-    lines.extend([f"[{link_text}]({asset_url})", ""])
+        lines.extend(
+            _archive_listing_lines("Files in ZIP", _archive_files(assets[asset]))
+        )
     return lines
+
+
+def _archive_listing_lines(label: str, files: Iterable[str]) -> list[str]:
+    # Name top-level files; summarize each folder in one line so the list stays short.
+    top_level = []
+    folders: dict[str, list[str]] = {}
+    for filename in files:
+        folder, separator, _ = filename.partition("/")
+        if separator:
+            folders.setdefault(folder, []).append(filename)
+        else:
+            top_level.append(filename)
+
+    total = len(top_level) + sum(len(nested) for nested in folders.values())
+    lines = [
+        "<details>",
+        f"<summary>{label} ({_count(total, 'file')})</summary>",
+        "",
+    ]
+    lines.extend(f"- `{filename}`" for filename in top_level)
+    for folder, nested in folders.items():
+        if len(nested) == 1:
+            lines.append(f"- `{nested[0]}`")
+            continue
+        extensions = Counter(
+            PurePosixPath(filename).suffix or "(no extension)" for filename in nested
+        )
+        breakdown = ", ".join(
+            f"{count} `{extension}`" for extension, count in extensions.most_common()
+        )
+        lines.append(f"- `{folder}/`: {_count(len(nested), 'file')} ({breakdown})")
+    lines.extend(["", "</details>", ""])
+    return lines
+
+
+def _count(value: int, noun: str) -> str:
+    return f"{value} {noun}" if value == 1 else f"{value} {noun}s"
 
 
 def _archive_files(archive: Path) -> list[str]:
@@ -366,7 +403,9 @@ def _language_assets(
     languages: dict[str, str],
 ) -> list[tuple[str, str, str]]:
     if filename_template.count("{code}") != 1:
-        raise ValueError("Language filename template must contain one {code} placeholder")
+        raise ValueError(
+            "Language filename template must contain one {code} placeholder"
+        )
     prefix_template, suffix_template = filename_template.split("{code}")
     prefix = _format_asset_filename(prefix_template, version=version)
     suffix = _format_asset_filename(suffix_template, version=version)
@@ -378,7 +417,9 @@ def _language_assets(
             found[language_code] = asset
 
     if not found:
-        raise ValueError("No configured language archives found in the output directory")
+        raise ValueError(
+            "No configured language archives found in the output directory"
+        )
 
     missing_names = sorted(set(found) - set(languages))
     if missing_names:

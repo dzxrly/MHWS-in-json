@@ -111,9 +111,15 @@ class ReleaseNotesTests(unittest.TestCase):
         self.assertIn("## DATABASE", result.stdout)
         self.assertIn("## MHWS-in-json", result.stdout)
         self.assertIn("## PROCESSED_DATA", result.stdout)
-        self.assertIn("Files in each ZIP:\n\n- `FullText.xlsx`", result.stdout)
+        self.assertIn(
+            "<summary>Files in each ZIP (2 files)</summary>\n\n- `FullText.xlsx`",
+            result.stdout,
+        )
         self.assertIn("- `MissionData.xlsx`", result.stdout)
-        self.assertIn("Files in ZIP:\n\n- `EnemyActionNames.xlsx`", result.stdout)
+        self.assertIn(
+            "<summary>Files in ZIP (6 files)</summary>\n\n- `EnemyActionNames.xlsx`",
+            result.stdout,
+        )
         self.assertIn("- `skill_pool.json`", result.stdout)
         self.assertIn("no other language editions are provided.", result.stdout)
         self.assertFalse((output_dir / "release-notes.md").exists())
@@ -155,6 +161,29 @@ class ReleaseNotesTests(unittest.TestCase):
         self.assertIn("## What's Changed", payload["notes"])
         self.assertIn("日本語", payload["notes"])
         self.assertEqual(len(payload["assets"]), 3)
+
+    def test_download_links_precede_collapsed_folder_summaries(self) -> None:
+        version = "layout-version"
+        output_dir = self._create_assets(version)
+        notes = build_release_notes(
+            output_dir, "owner/repository", f"database-{version}", version
+        )
+        processed = notes[notes.index("## PROCESSED_DATA") :]
+
+        self.assertLess(
+            notes.index("| Language | Download |"),
+            notes.index("<summary>Files in each ZIP"),
+        )
+        self.assertLess(
+            processed.index("[Download PROCESSED_DATA (ZIP)]"),
+            processed.index("<summary>Files in ZIP"),
+        )
+        self.assertIn(
+            "- `enemy_battle_logic/`: 3 files (2 `.json`, 1 `.html`)", processed
+        )
+        self.assertIn("- `skill_details/index.html`", processed)
+        self.assertNotIn("EM0001_00_0", processed)
+        self.assertTrue(processed.rstrip().endswith("</details>"))
 
     def test_language_archives_must_have_the_same_file_list(self) -> None:
         version = "different-files"
@@ -234,7 +263,14 @@ class ReleaseNotesTests(unittest.TestCase):
             if asset.startswith("DATABASE_"):
                 files = ("FullText.xlsx", "MissionData.xlsx")
             elif asset.startswith("PROCESSED_DATA_"):
-                files = ("EnemyActionNames.xlsx", "skill_pool.json")
+                files = (
+                    "EnemyActionNames.xlsx",
+                    "enemy_battle_logic/EM0001_00_0.html",
+                    "enemy_battle_logic/EM0001_00_0.json",
+                    "enemy_battle_logic/index.json",
+                    "skill_details/index.html",
+                    "skill_pool.json",
+                )
             else:
                 files = ("MHWS-in-json/Enums_Internal.json",)
             with ZipFile(output_dir / asset, "w") as archive:
