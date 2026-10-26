@@ -14,6 +14,57 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class PlayerTreeTests(unittest.TestCase):
+    def test_declared_updates_change_later_checks_and_invalidate_old_assumptions(self):
+        script = r"""
+const assert = require('node:assert/strict');
+const {pathToFileURL} = require('node:url');
+import(pathToFileURL(process.argv[1]).href).then(({applyUpdates, initial, step, evaluate}) => {
+const update={variable:'g',kind:'float',operation:'add',value:1,min:0,max:10,definitionStatus:'bound',readOnly:false};
+assert.equal(applyUpdates({variableUpdate:update},{'float:g':9.5})['float:g'],10);
+assert.equal(applyUpdates({variableUpdate:update},{})['float:g'],undefined);
+const guard={op:'compare',key:'valid',operator:'eq',value:true};
+assert.equal(applyUpdates({variableUpdate:update,updateGuard:guard},{valid:false,'float:g':0})['float:g'],0);
+assert.equal(applyUpdates({variableUpdate:update,updateGuard:guard},{'float:g':0})['float:g'],undefined);
+assert.equal(applyUpdates({variableUpdate:{...update,readOnly:true}},{'float:g':0})['float:g'],0);
+assert.equal(applyUpdates({variableUpdate:{variable:'b',kind:'bool',operation:'assign',value:false,definitionStatus:'bound',readOnly:false}},{'variable:b':true})['variable:b'],false);
+assert.equal(applyUpdates({variableUpdate:{variable:'t',kind:'timer',operation:'activate',default:60,definitionStatus:'bound',readOnly:false}},{'timer:t':true})['timer:t'],false);
+const nodes={
+ before:{kind:'condition',sourceRef:'before',condition:{op:'compare',key:'float:g',operator:'lt',value:1},true:'write',false:'end'},
+ write:{kind:'mutation',sourceRef:'write',next:'after',variableUpdate:update,invalidateSnapshot:false},
+ after:{kind:'condition',sourceRef:'after',condition:{op:'compare',key:'float:g',operator:'eq',value:1},true:'action',false:'end'},
+ action:{kind:'action',sourceRef:'action',title:'A',resume:'end'},end:{kind:'return',sourceRef:'end'}
+};
+const view={nodes,scenario:{inputs:{}}};
+const before=step(view,initial(view,{id:'before'},{'float:g':0}));
+const after=step(view,before.children[0].state);
+assert.equal(after.truth,true);assert.equal(after.children.length,1);
+assert.equal(after.children[0].state.inputs['float:g'],1);
+assert.equal(evaluate({op:'compare_inputs',key:'x',otherKey:'y',operator:'lt',offset:1},{x:2,y:2}),true);
+assert.equal(evaluate({op:'compare_inputs',key:'x',otherKey:'y',operator:'lt'},{x:2}),null);
+const history='table_history:fixture:max';
+view.persistentState=[history];
+const action=step(view,initial(view,{id:'action'},{[history]:41,'float:g':1}));
+assert.equal(action.children[0].state.inputs[history],41);
+assert.equal(action.children[0].state.inputs['float:g'],undefined);
+assert.equal(applyUpdates({stateUpdates:{[history]:null}},{[history]:41})[history],undefined);
+nodes.dynamic={kind:'mutation',sourceRef:'dynamic',title:'请求选定的越障动作',dynamicAction:true,invalidateSnapshot:true,next:'end'};
+assert.equal(step(view,initial(view,{id:'dynamic'},{})).title,'请求选定的越障动作');
+}).catch(error=>{console.error(error);process.exit(1);});
+"""
+        result = subprocess.run(
+            [
+                shutil.which("node"),
+                "-e",
+                script,
+                str(ROOT / "web/src/sites/enemy_battle_logic/player_engine.js"),
+            ],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+
     def test_unexplained_actions_are_named_by_class_and_parameter_set(self):
         from sdk.enemy_logic_exporter.shared.models.player_view import (
             technical_action_names,

@@ -13,6 +13,7 @@ from .audit import combat_entry_recovered
 from ..logic.expressions import evaluate_expression, expression_unknown
 from ..resources.action_names import ActionNames
 from ..logic.common_conditions import recover_condition
+from ..logic.compound_conditions import recover_compound_condition
 from ..logic.commands import leaf_expression
 from .player_view import build_player_view
 from ..resources.variables import referenced_variables
@@ -259,7 +260,14 @@ def build_chain(
                     "expression" not in node
                     and node["predicate"]["status"] != "verified"
                 ):
-                    recovered = recover_condition(node, model["enemyId"], resources)
+                    recovered = recover_compound_condition(
+                        node,
+                        model["enemyId"],
+                        resources,
+                        body,
+                        registry,
+                        model.get("leafRules", {}),
+                    ) or recover_condition(node, model["enemyId"], resources)
                     if recovered is not None:
                         node.update(recovered)
                     leaf = model.get("leafRules", {}).get(command_type)

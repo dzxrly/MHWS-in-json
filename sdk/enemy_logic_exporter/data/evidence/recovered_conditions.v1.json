@@ -1,0 +1,811 @@
+{
+  "schemaVersion": 1,
+  "evidence": {
+    "depletion_ready_end": [
+      {
+        "type": "app.btable.EmCommonCommand.cCheckDepletionReadyEnd",
+        "method": "onExecute1237124",
+        "address": "0x14976bf90",
+        "end": "0x14976bfe0"
+      },
+      {
+        "type": "app.cEnemyActivateValueBase",
+        "method": "isReadyEnd266925",
+        "address": "0x14b470ee0",
+        "end": "0x14b470ee3"
+      }
+    ],
+    "self_reward_rank": [
+      {
+        "type": "app.btable.EmCommonCommand.cCheckSelfType",
+        "method": "onExecute1236726",
+        "address": "0x1487d7950",
+        "end": "0x1487d7ac1"
+      },
+      {
+        "type": "app.cEnemyContext",
+        "method": "get_DifficultyRate721295",
+        "address": "0x145cc7a70",
+        "end": "0x145cc7c34"
+      },
+      {
+        "type": "app.QuestDef",
+        "method": "getEM_REWARD_RANKFromFixed227905",
+        "address": "0x144921820",
+        "end": "0x1449218e6"
+      }
+    ],
+    "snow_squad_count": [
+      {
+        "type": "app.btable.Em0022_00BTableCommand.cCheckEm1023Count",
+        "method": "onExecute1233706",
+        "address": "0x1447458e0",
+        "end": "0x14474597e"
+      }
+    ],
+    "snow_servant_count": [
+      {
+        "type": "app.btable.Em0022_00BTableCommand.cCheckServantCount",
+        "method": "onExecute1233708",
+        "address": "0x144a1f3b0",
+        "end": "0x144a1f4d6"
+      }
+    ],
+    "frozen_wall": [
+      {
+        "type": "app.btable.Em0162_00BTableCommand.cCheckDestWall",
+        "method": "onExecute1234469",
+        "address": "0x146756230",
+        "end": "0x1467563e8"
+      },
+      {
+        "type": "app.VoxelDataManager",
+        "method": "getDataInfoEm338340",
+        "address": "0x145702080",
+        "end": "0x145702144"
+      },
+      {
+        "type": "app.VoxelDataManager",
+        "method": "getWallInfoArrayActive338307",
+        "address": "0x145700a70",
+        "end": "0x145700d0d"
+      }
+    ],
+    "frozen_gimmick": [
+      {
+        "type": "app.btable.Em0162_00BTableCommand.cCheckDestShutterGimmick",
+        "method": "onExecute1234480",
+        "address": "0x147612a60",
+        "end": "0x147612ebf"
+      },
+      {
+        "type": "app.cFindGimmick",
+        "method": "getGimmicktListID432726",
+        "address": "0x149cef0d0",
+        "end": "0x149cef216"
+      }
+    ],
+    "sea_swim_hunter_count": [
+      {
+        "type": "app.btable.Em0046_00BTableCommand.cCheckSwimHunterNum",
+        "method": "onExecute1233775",
+        "address": "0x14a38c750",
+        "end": "0x14a38c7a5"
+      },
+      {
+        "type": "app.cEm0046_00Extend",
+        "method": "getHunterNumInWater578377",
+        "address": "0x1440b00f0",
+        "end": "0x1440b02fd"
+      }
+    ],
+    "sea_hunter_in_water": [
+      {
+        "type": "app.btable.Em0046_00BTableCommand.cCheckHunterInWater",
+        "method": "onExecute1233759",
+        "address": "0x14918bcb0",
+        "end": "0x14918bcfb"
+      },
+      {
+        "type": "app.cEm0046_00Extend",
+        "method": "getHunterNumInWater578377",
+        "address": "0x1440b00f0",
+        "end": "0x1440b02fd"
+      }
+    ],
+    "sea_story_mission": [
+      {
+        "type": "app.btable.Em0046_00BTableCommand.cIsStroyQuest",
+        "method": "onExecute1233779",
+        "address": "0x143ec4360",
+        "end": "0x143ec4395"
+      },
+      {
+        "type": "app.MissionManager",
+        "method": "getEnableMainMissionID639452",
+        "address": "0x1499b18b0",
+        "end": "0x1499b192d"
+      }
+    ],
+    "doshaguma_mode": [
+      {
+        "type": "app.btable.Em0150_00BTableCommand.cCheckModeChange",
+        "method": "onExecute1234055",
+        "address": "0x1487d5410",
+        "end": "0x1487d54fa"
+      },
+      {
+        "type": "app.cEm0150_00Extend",
+        "method": "onExtensionSetup596665",
+        "address": "0x146d36270",
+        "end": "0x146d36363"
+      },
+      {
+        "type": "app.EnemyParamHolder",
+        "method": "get_Unique579575",
+        "address": "0x145bddcd0",
+        "end": "0x145bddd00"
+      },
+      {
+        "type": "app.cHealthManager",
+        "method": "get_HealthNormalized41695",
+        "address": "0x1463417a0",
+        "end": "0x14634182f"
+      }
+    ],
+    "ajarakan_blazing": [
+      {
+        "type": "app.btable.Em0159_00BTableCommand.cCheckEnterBlazingMode",
+        "method": "onExecute1234329",
+        "address": "0x144d29bc0",
+        "end": "0x144d29c10"
+      },
+      {
+        "type": "app.cEm0159_00Extend",
+        "method": "checkEnterBlazingMode598479",
+        "address": "0x145fd9110",
+        "end": "0x145fd9150"
+      },
+      {
+        "type": "app.cEm0159_00Extend",
+        "method": "onExtensionSetup598399",
+        "address": "0x145fd5000",
+        "end": "0x145fd50f3"
+      },
+      {
+        "type": "app.EnemyParamHolder",
+        "method": "get_Unique579575",
+        "address": "0x145bddcd0",
+        "end": "0x145bddd00"
+      },
+      {
+        "type": "app.cEnemyContext",
+        "method": "get_IsTired721270",
+        "address": "0x145cc7880",
+        "end": "0x145cc78eb"
+      }
+    ],
+    "rey_dau_max_charge": [
+      {
+        "type": "app.Em0156_00BTableCommand.cCheckTransRailgunChargeMax",
+        "method": "onExecute1146024",
+        "address": "0x1466c2230",
+        "end": "0x1466c2295"
+      },
+      {
+        "type": "app.cEnemyContext",
+        "method": "get_IsTired721270",
+        "address": "0x145cc7880",
+        "end": "0x145cc78eb"
+      }
+    ],
+    "arkveld_unleash": [
+      {
+        "type": "app.Em0160_00BTableCommand.cCheckChangeMode",
+        "method": "onExecute1149452",
+        "address": "0x146355f00",
+        "end": "0x146355fc4"
+      },
+      {
+        "type": "app.cEm0160Extend",
+        "method": "onExtensionSetup546352",
+        "address": "0x1475636e0",
+        "end": "0x1475637d8"
+      },
+      {
+        "type": "app.EnemyParamHolder",
+        "method": "get_Unique579575",
+        "address": "0x145bddcd0",
+        "end": "0x145bddd00"
+      },
+      {
+        "type": "app.cHealthManager",
+        "method": "get_HealthNormalized41695",
+        "address": "0x1463417a0",
+        "end": "0x14634182f"
+      }
+    ],
+    "gore_state_change": [
+      {
+        "type": "app.btable.Em0071_00BTableCommand.cCheckStateChange",
+        "method": "onExecute1233905",
+        "address": "0x1484b0990",
+        "end": "0x1484b09e0"
+      },
+      {
+        "type": "app.cEm0071_00Extend",
+        "method": "onExtensionSetup542576",
+        "address": "0x147bb3730",
+        "end": "0x147bb383b"
+      },
+      {
+        "type": "app.EnemyParamHolder",
+        "method": "get_Unique579575",
+        "address": "0x145bddcd0",
+        "end": "0x145bddd00"
+      },
+      {
+        "type": "app.cHealthManager",
+        "method": "get_HealthNormalized41695",
+        "address": "0x1463417a0",
+        "end": "0x14634182f"
+      },
+      {
+        "type": "app.cEnemyContext",
+        "method": "get_IsTired721270",
+        "address": "0x145cc7880",
+        "end": "0x145cc78eb"
+      }
+    ]
+  },
+  "nativeProofs": {
+    "depletion_ready_end": [
+      {
+        "address": "0x14976bf90",
+        "end": "0x14976bfe0",
+        "bytes": "4d85c0740f498b00488b00483b059e28fb0a740331c0c3498b4028488b4068488b4040488b8038010000488b5028807a610074e0488b02488b809000000048ffe0cccccccccccccccccccccccccccccc"
+      },
+      {
+        "address": "0x14b470ee0",
+        "end": "0x14b470ee3",
+        "bytes": "b001c3"
+      }
+    ],
+    "self_reward_rank": [
+      {
+        "address": "0x1487d7950",
+        "end": "0x1487d7ac1",
+        "bytes": "5657534883ec30488b05e27dee0b4831e048894424284d85c0740f498b00488b00483b05c86ef40b741931ff488b4c24284831e1e8671c950289f84883c4305b5f5ec3498b41188b401031ffffc883f80677d94889ce488d0d57356605486304814801c8ffe0498b4028488b7868498b5920488b4c24284831e1e8211c95024889f14889fa4989d84883c4305b5f5ee95cf0a4ff498b4028488b7868498b5930488b4c24284831e1e8f31b95024889f14889fa4989d84883c4305b5f5ee93ef1a4ff498b4028488b40684885c00f8457ffffff498b4928488b4040488b80080100008b404ceb23498b4028488b40684885c00f8432ffffff498b4938488b4040488b80080100008b4050488b49103b4110eb55498b4028488b40684885c00f8406ffffff498b7940488b50404889f1e8ecff4efd488b40104885c074058b5010eb05ba0051acb84c8d4424244889f1e87c9d14fcb90100000084c074048b4c2424488b47103b4810400f94c7e9bbfeffff"
+      },
+      {
+        "address": "0x145cc7a70",
+        "end": "0x145cc7c34",
+        "bytes": "5657534883ec504889d6488b05bf7c9f0e4831e048894424484883ba3003000000741f488bb630030000488b4c24484831e1e8491b46054889f04883c4505b5f5ec3488b8608010000837854027542488b3deae0bb0e8b460885c00f88570100004839be3003000074b94885ff74084889f9e8e9003405488b8e300300004889c8f0480fb1be3003000075ebe9140100004889cf8b8640030000488b8e48030000c5f81005579bb60e488d54243889028b864403000089420448894a08488d5c2428c5f811034889f94989d8e88faa37fa84c07446488b3d64e0bb0e8b460885c00f88d10000004839be300300000f842fffffff4885ff74084889f9e85f003405488b8e300300004889c8f0480fb1be3003000075ebe98a000000488b05eed5bb0e488b80c8000000488b40688b8e400300004c8b8e48030000488b50484c8d4424384189088b8644030000418940044d8948084889f94989d9e8716a2000488d0ddadfbb0e84c0480f45cb488b398b460885c078424839be300300000f84a0feffff4885ff74084889f9e8d0ff3305488b8e300300004889c8f0480fb1be3003000075eb4885c90f8475feffffe8bd1d3405e96bfeffff4889be30030000e95ffeffff"
+      },
+      {
+        "address": "0x144921820",
+        "end": "0x1449218e6",
+        "bytes": "b00181fa805860d47f1e81fa8070df917637b90100000081fa0051acb8756b490fbaf03f418908c381fa80e242427e2f31c981fa80a9ab6174e581fa002fce777557b909000000ebd6b90200000074cf81fa0085be907565b904000000ebc081fa8033d8127507b908000000ebb1b90300000081fa80e2424274a481fa80877c36753ab90a000000eb9581fac0bafcd17519b907000000eb8681fa0044dc70751cb905000000e974ffffff81fa805860d4750ab906000000e962ffffff31c931c0e959ffffff"
+      }
+    ],
+    "snow_squad_count": [
+      {
+        "address": "0x1447458e0",
+        "end": "0x14474597e",
+        "bytes": "564883ec204c89ce488b1591f81310498b4028488b4068488b40404c8b80e8010000e8d9a5a5fb4885c0741b488b88980000004885c9740f488b11488b12483b152b72fd0f740831c04883c4205ec3488b4060488b40288b402831d283791cff0f95c229d0488b4e108b491083f902741583f901741c85c975cd488b4e183b41100f9dc0ebc3488b4e183b41100f94c0ebb7488b4e183b41100f9ec0ebab"
+      }
+    ],
+    "snow_servant_count": [
+      {
+        "address": "0x144a1f3b0",
+        "end": "0x144a1f4d6",
+        "bytes": "41574156415541545657534883ec204c89ce4c89c34989ce488b15b15de60f498b4028488b4068488b40404c8b80e8010000e859695b0531ff4885c00f84d20000004989c7488b50304c89f1e81faff8024c89f14889c2e8444f5e0685c07e764189c449c1e4034531ed31ff498b57304c89f1e8f8aef8024a8d14284883c2204c89f14531c0e8e5397afb4885c0743d488b4030488b4040488b4b28488b4968488b4940488b8900010000488b4914398868030000750f48c1e92039886c0300000f94c0eb0231c00fb6c001c74983c5084d39ec7596488b46108b401083f802741683f801741e85c07527488b46183b7810400f9dc7eb1c488b46183b7810400f94c7eb0f488b46183b7810400f9ec7eb0231ff89f84883c4205b5f5e415c415d415e415fc3"
+      }
+    ],
+    "frozen_wall": [
+      {
+        "address": "0x146756230",
+        "end": "0x1467563e8",
+        "bytes": "4157415641554154565755534881eca8000000c5f829b42490000000488b05ed94f60d4831e048898424880000004d85c0740f498b00488b00483b05d085fc0d743131db488b8c24880000004831e1e86c339d0489d8c5f828b424900000004881c4a80000005b5d5f5e415c415d415e415fc34c89ce498b40284c8b48684d85c974bf4889cf488b05a3a60a0e488b5860488d44245848c700000000004889442440c644243801c74424300000a040c744242800004842c6442420004c8d4424604889dae887bdfafe84c00f8471ffffff4c8d4424504c8d4c24604889f94889dae85aa7fafe84c00f8454ffffff488b442450448b70184585f60f8e42ffffff41bf300000004c8d2563a54e074c8d2d4ca54e0731ed488b4c24508b41184839c57311488b49104a8d14394883c2104c01f9eb2b488b15c58af90d4889f94531c0e86ae08c044889f94889c2e8cf7ed104488b4424508b40184c89e94c89e28b1ac5fa10314839e8771d488b158f8af90d4889f94531c0e834e08c044889f94889c2e8997ed104f7c300210000750b488b4610c5f82e7010761748ffc54983c73031db4939ee0f856affffffe993feffffb301e98cfeffff"
+      },
+      {
+        "address": "0x145702080",
+        "end": "0x145702144",
+        "bytes": "534883ec708a8424b8000000448a9424a00000004c8b1da5d6fb0e4931e34c895c24684d8b5918c4c17a104318c4c17b104b104584d274174d8b514041807a5000740cc4c17a104268c4c17b104a604c8b9424c0000000c5fa109c24b0000000c5fa109424a8000000c5f8134c2450c5fa1144245884c0740d498b4140488b8000030000eb0231c04c895424404889442438c5fa115c2430c5fa11542428488d4424504889442420e8339af3ff89c3488b4c24684831e1e8b474a20589d84883c4705bc3"
+      },
+      {
+        "address": "0x145700a70",
+        "end": "0x145700d0d",
+        "bytes": "4157415641554154565755534881eca8000000c5f829b424900000004c89c64889cf488b05a7ecfb0e4831e0488984248800000049b8ffffffffffffff7f488b426849634918488d0c4948c1e1044801c14883c1208b4008480fbaf13f4c8b6118498b4424204c8ba8800000004963691448c1e504458a7c2d294180ff0f44887c242b77484889f9e8033f44034889c3488b1509a3040f4889f94531c0e8ce3892054989c64889f94889c241b810000000e8fa1f5a074885f678274c893649b9ffffffffffffff7f4c21ceeb5f4885f60f885d01000048c70600000000e98101000049b9ffffffffffffff7f4c21ce4c393674384d85f674124c89f1e85f70900549b9ffffffffffffff7f488b0e4889c8f04c0fb13675f34885c9740fe84e8e900549b9ffffffffffffff7f4901ed4983c520488d6c24304c8d7424604883c3284531ffc5c857f6498b442428498b4c2430496355004c01fa0fb74c5120488d0c49c5fa1044c820c5f82ec60f82ae000000488d04c84883c020488b16c5fc10059bfc5308c5fc1145004c21c8488b481048894d10c5f81000c5f8114500c5fb104bf8c5fa1003ff421c488b421048634a183b481c7329448d410144894218488d0c4948c1e104c5f8134c0820c5fa11440828c5fc104500c5fc11440830eb40c5f8105500c4c1781116488b451049894610488b451849894618c5f8134c2450c5fa114424584889f94c8d442450c5f877e8fa0da00449b9ffffffffffffff7f49ffc74883c3104983ff100f8517ffffffeb304c21c6488b0e4885c9742531d24889c8f0480fb116741431d2488b0e4889c8f0480fb11675f34885c97405e80d8d9005807c242b100f92c3488b8c24880000004831e1c5f877e80289a20589d8c5f828b424900000004881c4a80000005b5d5f5e415c415d415e415fc3"
+      }
+    ],
+    "frozen_gimmick": [
+      {
+        "address": "0x147612a60",
+        "end": "0x147612ebf",
+        "bytes": "4157415641554154565755534881ecb8000000c5f829b424a0000000488b05bdcc0a0d4831e048898424980000004d85c074124c89c7498b00488b00483b059dbd100d743131ed488b8c24980000004831e1e8396bb10389e8c5f828b424a00000004881c4b80000005b5d5f5e415c415d415e415fc3488b4728488b4078488b40104885c074be488b00488b00483b051458100d75af4889ce498b4110c5fa104010c5fa59f0488b054b36210d488b506841b854030000e8b4c56d024989c78b6818488b052f36210d488b50684889f141b855030000e895c56d024989c64531e4837818004d0f44f4488b050836210d488b50684889f141b84e030000e86ec56d024889c383781800490f44dc4d85ff0f840c01000085ed0f8404010000458b6f184585ed0f8ef70000004c8da4248000000031ed418b47184839c50f83b7000000498b4710488b44e8204885c00f84c2000000488b40104885c00f84b5000000488b48184885c90f84e00200004c89e2e82a4d9f038b8424800000008b8c248800000089442470894c2474488b4720488b48184885c90f84b10200004c89e2e8fb4c9f038b8424800000008b8c248800000089442460894c24644c89e14889f24c8d4424704c8d4c2460e860715d02c5fa10842480000000c5fa108c2484000000c5f259c9c5fa59c0c5fa58c1c5f82ef07222e94d020000488b15d0c10d0d4889f14531c0e87517a1034889f14889c2e8dab5e50348ffc54939ed0f8513ffffff4d85f60f8407010000418b6e1885ed0f8efb0000004c8dbc24800000004c8d6c24404531e4418b46184939c40f83b5000000498b46104a8b44e0204885c00f84c0000000488b40104885c00f84b3000000488b48184885c90f84ce0100004c89fae8184c9f038b8424800000008b8c248800000089442450894c2454488b4720488b48184885c90f849f0100004c89fae8e94b9f038b8424800000008b8c248800000089442440894c24444c89f94889f24c8d4424504d89e9e850705d02c5fa10842480000000c5fa108c2484000000c5f259c9c5fa59c0c5fa58c1c5f82ef07222e93d010000488b15c0c00d0d4889f14531c0e86516a1034889f14889c2e8cab4e50349ffc44c39e50f8515ffffff4885db0f840afdffff448b6b184585ed0f8efdfcffff4c8db424800000004c8d6424204531ff31ed8b43184939c70f83b2000000488b43104a8b44f8204885c00f84bd000000488b40104885c00f84b0000000488b48184885c90f84bc0000004c89f2e8064b9f038b8424800000008b8c248800000089442430894c2434488b4720488b48184885c90f848d0000004c89f2e8d74a9f038b8424800000008b8c248800000089442420894c24244c89f14889f24c8d4424304d89e1e83e6f5d02c5fa10842480000000c5fa108c2484000000c5f259c9c5fa59c0c5fa58c1c5f82ef0721feb2e488b15b1bf0d0d4889f14531c0e85615a1034889f14889c2e8bbb3e50349ffc74d39fd0f8519ffffffe901fcffff40b501e9f9fbffff4889f1ba460000004531c0e812c3e503cc"
+      },
+      {
+        "address": "0x149cef0d0",
+        "end": "0x149cef216",
+        "bytes": "41574156415541545657534883ec304489c64889d7488b0554069d0a4831e04889442428488b5a204c8d7c24204d85ff781448895c242049bef8ffffffffffff7f4d21feeb3649bef8ffffffffffff7f4d21fe49391e74244885db74084889d9e89b8a3101498b0e4889c8f0490fb11e75f34885c97405e894a831014d8b26e8cc6331014c63e843807c2c58007821751a498d5c24104889d9e8321f31f684c074094889d9ff155d1b930443fe442c58488b47104863ce488b74c820498b3e4885ff7462e88763310148988a4c075884c97e21fec9884c075875194883c7104889f9e8a91e31f684c074094889f9ff15641e93044d85ff792d498b0e4885c9742531d24889c8f0490fb116741431d2498b0e4889c8f0490fb11675f34885c97405e8eaa73101488b4c24284831e1e8eda343014889f04883c4305b5f5e415c415d415e415fc3"
+      }
+    ],
+    "sea_swim_hunter_count": [
+      {
+        "address": "0x14a38c750",
+        "end": "0x14a38c7a5",
+        "bytes": "564883ec204d85c0740f498b00488b00483b05d920390a740831c04883c4205ec3498b4028488b4078488b50104885d274e7488b02488b00483b0549b9380a75d84c89cee85739d2f9488b4e103b41100f94c0ebc6"
+      },
+      {
+        "address": "0x1440b00f0",
+        "end": "0x1440b02fd",
+        "bytes": "415741565657534883ec50c5f8297424404889ce488b0535f660104831e04889442438488b15561e68104531c0e8be42f7064889c7c74028feffffff4889f1e8ecef030789472cc6473100837f28fe751a89c34889f1e8d5ef030739c3750cc74728000000004889fbeb27488b150e1e68104889f14531c0e87342f7064889c3c74028000000004889f1e8a1ef030789432c8a47318843304889f14889dae83d4f000031ff84c00f84fb00000031ff4c8d742420c5c857f64c8b7b104d85ff0f84b200000049837f10000f84a7000000498b97880300004885d20f8497000000488b02488b40e04889f1ff1048837850000f8480000000498b9788030000488b02488b40e04889f1ff10488b405048837810007462498b9788030000488b02488b40e04889f1ff10488b4050488b401048837810007440498b9788030000488b02488b40e04889f1ff10488b4050488b4010488b4010488b4010c5f8104010c5f8294424204c89f1e8832cfafbc5f96ec0c5f82ef072154889f14889dae85e4e000084c00f852effffffeb1c498b97980300004889f141b8a8000000e8ff5c16fc0fb6c001c7ebcf8b432883c00483f8067739488d0d72129609486304814801c8ffe0c74328ffffffff488b5320eb0bc74328ffffffff488b53184885d2740c488b02488b40d84889f1ff10488b4c24384831e1e80793070789f8c5f8287424404883c4505b5f5e415e415fc3"
+      }
+    ],
+    "sea_hunter_in_water": [
+      {
+        "address": "0x14918bcb0",
+        "end": "0x14918bcfb",
+        "bytes": "4883ec284d85c0740f498b00488b00483b057a2b590b740731c04883c428c3498b4028488b4078488b50104885d274e8488b02488b00483b05ebc3580b75d9e8fc43f2fa85c00f9fc0ebcf"
+      },
+      {
+        "address": "0x1440b00f0",
+        "end": "0x1440b02fd",
+        "bytes": "415741565657534883ec50c5f8297424404889ce488b0535f660104831e04889442438488b15561e68104531c0e8be42f7064889c7c74028feffffff4889f1e8ecef030789472cc6473100837f28fe751a89c34889f1e8d5ef030739c3750cc74728000000004889fbeb27488b150e1e68104889f14531c0e87342f7064889c3c74028000000004889f1e8a1ef030789432c8a47318843304889f14889dae83d4f000031ff84c00f84fb00000031ff4c8d742420c5c857f64c8b7b104d85ff0f84b200000049837f10000f84a7000000498b97880300004885d20f8497000000488b02488b40e04889f1ff1048837850000f8480000000498b9788030000488b02488b40e04889f1ff10488b405048837810007462498b9788030000488b02488b40e04889f1ff10488b4050488b401048837810007440498b9788030000488b02488b40e04889f1ff10488b4050488b4010488b4010488b4010c5f8104010c5f8294424204c89f1e8832cfafbc5f96ec0c5f82ef072154889f14889dae85e4e000084c00f852effffffeb1c498b97980300004889f141b8a8000000e8ff5c16fc0fb6c001c7ebcf8b432883c00483f8067739488d0d72129609486304814801c8ffe0c74328ffffffff488b5320eb0bc74328ffffffff488b53184885d2740c488b02488b40d84889f1ff10488b4c24384831e1e80793070789f8c5f8287424404883c4505b5f5e415e415fc3"
+      }
+    ],
+    "sea_story_mission": [
+      {
+        "address": "0x143ec4360",
+        "end": "0x143ec4395",
+        "bytes": "4883ec284d85c0740f498b00488b00483b05caa48510740431c0eb14488b15cd629b10e828d5ae053d0c0200000f94c04883c428c3"
+      },
+      {
+        "address": "0x1499b18b0",
+        "end": "0x1499b192d",
+        "bytes": "5657534883ec304889cee8516a0c00bfffffffff4885c0745a4889c38b401885c07e50488b531089442420bfac0200004889f141b8ac0200004531c9e8df8d5ffd85c0792e837b18007409488b43108b7820eb1f488b1525d5d30a31ff4889f14531c0e8c82a67014889f14889c2e82dc9ab0189f84883c4305b5f5ec3"
+      }
+    ],
+    "doshaguma_mode": [
+      {
+        "address": "0x1487d5410",
+        "end": "0x1487d54fa",
+        "bytes": "5657534883ec30c5f8297424204d85c074124c89c7498b00488b00483b050e94f40b741031c0c5f8287424204883c4305b5f5ec34889ce488b4f28488b4178488b58104885db74dc488b03488b00483b056b2df40b75cd83bb840000000174c4488b4360488b4968488b4940488b89080100008379500074064883c018eb21c5fa107014488b15d5f1050c4889f1e81d4f900083f801750c488b43604883c010c5fa1030c5fa1005746d2105c5f82ec60f876effffffc5ca5af6488b4728488b4068488b4038488b50104889f1e8bec2b6fdc5fa5ac0c5cb5e0d52802105c5f92ec80f97c0e93cffffff"
+      },
+      {
+        "address": "0x146d36270",
+        "end": "0x146d36363",
+        "bytes": "56574883ec284889d6e8e23ec8ff488b4610488b7860488b4768488b48104885c9740a807939000f84b8000000488b4030488b40284885c07415488b08488b0931ff483b0db7699e0d480f44f8eb0231ff8b460885c0782e48397e60742c4885ff74084889f9e8f5182d04488b4e604889c8f0480fb17e6075f14885c9740be8ec362d04eb0448897e60488b4610488b4068488b4040488b8068020000488b78188b460885c0783248397e6874304885ff74084889f9e8a5182d04488b4e684889c8f0480fb17e6875f14885c9740f4883c4285f5ee996362d0448897e684883c4285f5ec3e826c12df9488b4768e93affffff"
+      },
+      {
+        "address": "0x145bddcd0",
+        "end": "0x145bddd00",
+        "bytes": "564883ec20488b4268488b48104885c9740680793900740a488b40304883c4205ec34889d6e8864743fa488b4668ebe8"
+      },
+      {
+        "address": "0x1463417a0",
+        "end": "0x14634182f",
+        "bytes": "56574883ec58c5f8297424404889d6488b058adf370e4831e04889442438488b4218c5f8104010488d7c2420c5f829074889f9e80817d1f9c5f96ef0488b4610c5f8104010c5f82907488d4c2420e8ed16d1f9c5f96ec0c5fa5ecec5e857d2c5fac2c206c5f854c1c5cac2ca06c5f054f0488b4c24384831e1e8d27dde04c5f828c6c5f8287424404883c4585f5ec3"
+      },
+      {
+        "address": "0x14d9ec230",
+        "end": "0x14d9ec234",
+        "bytes": "6f12833a",
+        "role": "floating threshold constants"
+      },
+      {
+        "address": "0x14d9ed540",
+        "end": "0x14d9ed548",
+        "bytes": "0000000000005940",
+        "role": "floating threshold constants"
+      }
+    ],
+    "ajarakan_blazing": [
+      {
+        "address": "0x144d29bc0",
+        "end": "0x144d29c10",
+        "bytes": "4d85c0740f498b00488b00483b056e4c9f0f740331c0c3498b4028488b4078488b40104885c07418488b104c8b0231d24c3b05a1e69e0f480f44d0e910f52a0131d2e909f52a01cccccccccccccccccc"
+      },
+      {
+        "address": "0x145fd9110",
+        "end": "0x145fd9150",
+        "bytes": "4883ec2880baba00000000752cc5fa108288000000488b4278c5f82e40107219488b4210488b4068488b5040e83fe7ceff89c1b00184c9740231c04883c428c3"
+      },
+      {
+        "address": "0x145fd5000",
+        "end": "0x145fd50f3",
+        "bytes": "56574883ec284889d6e8a28dc0ff488b4610488b7860488b4768488b48104885c9740a807939000f84b8000000488b4030488b40284885c07415488b08488b0931ff483b0d5f7d740e480f44f8eb0231ff8b460885c0782e48397e78742c4885ff74084889f9e8652b0305488b4e784889c8f0480fb17e7875f14885c9740be85c490305eb0448897e78488b4610488b4068488b4040488b8068020000488b78188b460885c0783248397e7074304885ff74084889f9e8152b0305488b4e704889c8f0480fb17e7075f14885c9740f4883c4285f5ee90649030548897e704883c4285f5ec3e896d303fa488b4768e93affffff"
+      },
+      {
+        "address": "0x145bddcd0",
+        "end": "0x145bddd00",
+        "bytes": "564883ec20488b4268488b48104885c9740680793900740a488b40304883c4205ec34889d6e8864743fa488b4668ebe8"
+      },
+      {
+        "address": "0x145cc7880",
+        "end": "0x145cc78eb",
+        "bytes": "56574883ec28488b82380100004885c0743c488378200074354889d64889cf488b92e802000041b87d000000e88fa039fa84c07519488b96d80200004889f941b87d000000e8c6e654fa84c0740931c04883c4285f5ec3488b8638010000488b4020837858010f94c0ebe5"
+      }
+    ],
+    "rey_dau_max_charge": [
+      {
+        "address": "0x1466c2230",
+        "end": "0x1466c2295",
+        "bytes": "564883ec204d85c074474c89c6498b00488b00483b05f6c5050e7535488b4628488b4068488b5040e8235660ff84c07520488b4628488b4078488b40104885c0740f488b08488b09483b0db95f050e740831c04883c4205ec380b8f6000000000f95c0ebee"
+      },
+      {
+        "address": "0x145cc7880",
+        "end": "0x145cc78eb",
+        "bytes": "56574883ec28488b82380100004885c0743c488378200074354889d64889cf488b92e802000041b87d000000e88fa039fa84c07519488b96d80200004889f941b87d000000e8c6e654fa84c0740931c04883c4285f5ec3488b8638010000488b4020837858010f94c0ebe5"
+      }
+    ],
+    "arkveld_unleash": [
+      {
+        "address": "0x146355f00",
+        "end": "0x146355fc4",
+        "bytes": "5657534883ec30c5f8297424204d85c074714c89c7498b00488b00483b051e893c0e755f4889ce488b4728488b4868488b4940488b8908010000837950027543488b4078488b58104885db7436488b03488b08488b1556233c0ee851b3cc0484c0742083bb20010000017417488b4350c5fa104040c5fa100db3626907c5f82ec8761031c0c5f8287424204883c4305b5f5ec3c5fa5af0488b4728488b4068488b4038488b50104889f1e8f1b7feffc5fa5ac0c5cb5e0d85756907c5f92ec80f97c0ebc1"
+      },
+      {
+        "address": "0x1475636e0",
+        "end": "0x1475637d8",
+        "bytes": "5657534883ec204889d6488b4210488b7860488b4768488b48104885c9740a807939000f84c1000000488b4030488b58204885db741c488b03488b08488b1595961b0de888dbab0331ff84c0480f45fbeb0231ff8b460885c0782e48397e50742c4885ff74084889f9e88244aa03488b4e504889c8f0480fb17e5075f14885c9740be87962aa03eb0448897e50488b4610488b4068488b4040488b8068020000488b78188b460885c0783348397e5874314885ff74084889f9e83244aa03488b4e584889c8f0480fb17e5875f14885c974104883c4205b5f5ee92262aa0348897e584883c4205b5f5ec3e8b1ecaaf8488b4768e931ffffff"
+      },
+      {
+        "address": "0x145bddcd0",
+        "end": "0x145bddd00",
+        "bytes": "564883ec20488b4268488b48104885c9740680793900740a488b40304883c4205ec34889d6e8864743fa488b4668ebe8"
+      },
+      {
+        "address": "0x1463417a0",
+        "end": "0x14634182f",
+        "bytes": "56574883ec58c5f8297424404889d6488b058adf370e4831e04889442438488b4218c5f8104010488d7c2420c5f829074889f9e80817d1f9c5f96ef0488b4610c5f8104010c5f82907488d4c2420e8ed16d1f9c5f96ec0c5fa5ecec5e857d2c5fac2c206c5f854c1c5cac2ca06c5f054f0488b4c24384831e1e8d27dde04c5f828c6c5f8287424404883c4585f5ec3"
+      },
+      {
+        "address": "0x14d9ec230",
+        "end": "0x14d9ec234",
+        "bytes": "6f12833a",
+        "role": "floating threshold constants"
+      },
+      {
+        "address": "0x14d9ed540",
+        "end": "0x14d9ed548",
+        "bytes": "0000000000005940",
+        "role": "floating threshold constants"
+      }
+    ],
+    "gore_state_change": [
+      {
+        "address": "0x1484b0990",
+        "end": "0x1484b09e0",
+        "bytes": "4d85c0743d498b00488b00483b059ede260c752e498b4028488b4078488b50104885d2741d488b02488b00483b055677260c750e498b4110837810010f844e6570ff31c0c3cccccccccccccccccccccc"
+      },
+      {
+        "address": "0x147bb3730",
+        "end": "0x147bb383b",
+        "bytes": "56574883ec284889d6e86281c4ff488b4610488b7860488b4768488b48104885c9740a807939000f84d0000000488b4030488b40284885c07415488b08488b0931ff483b0d3f94b60c480f44f8eb0231ff8b460885c078374839bec000000074354885ff74084889f9e832444503488b8ec00000004889c8f0480fb1bec000000075eb4885c9740ee823624503eb074889bec0000000488b4610488b4068488b4040488b8068020000488b78188b460885c0783b4839be8000000074394885ff74084889f9e8d6434503488b8e800000004889c8f0480fb1be8000000075eb4885c974124883c4285f5ee9c16145034889be800000004883c4285f5ec3e84eec45f8488b4768e922ffffff"
+      },
+      {
+        "address": "0x145bddcd0",
+        "end": "0x145bddd00",
+        "bytes": "564883ec20488b4268488b48104885c9740680793900740a488b40304883c4205ec34889d6e8864743fa488b4668ebe8"
+      },
+      {
+        "address": "0x1463417a0",
+        "end": "0x14634182f",
+        "bytes": "56574883ec58c5f8297424404889d6488b058adf370e4831e04889442438488b4218c5f8104010488d7c2420c5f829074889f9e80817d1f9c5f96ef0488b4610c5f8104010c5f82907488d4c2420e8ed16d1f9c5f96ec0c5fa5ecec5e857d2c5fac2c206c5f854c1c5cac2ca06c5f054f0488b4c24384831e1e8d27dde04c5f828c6c5f8287424404883c4585f5ec3"
+      },
+      {
+        "address": "0x145cc7880",
+        "end": "0x145cc78eb",
+        "bytes": "56574883ec28488b82380100004885c0743c488378200074354889d64889cf488b92e802000041b87d000000e88fa039fa84c07519488b96d80200004889f941b87d000000e8c6e654fa84c0740931c04883c4285f5ec3488b8638010000488b4020837858010f94c0ebe5"
+      },
+      {
+        "address": "0x147bb6f20",
+        "end": "0x147bb7018",
+        "bytes": "56574883ec2883baec00000002741b4889d74889ce488b4210488b4068488b5040e83a0911fe84c0740731c0e9a20000008b87dc00000085c07409488b8fc0000000eb5d488b4710488b4068488b4038488b50104889f1e824a878fe488b4710488b8fc0000000488b4068488b4040488b80080100000fb6401883e001c5f22a4c8130c5fa5ac0c5fb59059165e305c5f25ac9b001c5f92ec877388b87dc000000c5fa1087d8000000488b49108b511839c27e04770aeb2285d2741effca89d0488b49104898488b44c120c5f82e40100f93c04883c4285f5ec3488b152f7eb30c4889f14531c0e8d4d346034889f14889c2e839728b03cc",
+        "role": "SUPER transition implementation reached by the command tail jump"
+      },
+      {
+        "address": "0x14d9ec230",
+        "end": "0x14d9ec234",
+        "bytes": "6f12833a",
+        "role": "floating threshold constants"
+      },
+      {
+        "address": "0x14d9ed540",
+        "end": "0x14d9ed548",
+        "bytes": "0000000000005940",
+        "role": "floating threshold constants"
+      }
+    ]
+  },
+  "fieldChecks": [
+    {
+      "type": "app.cEnemyContext",
+      "field": "Basic",
+      "fieldType": "app.cEmModuleBasic",
+      "offset": "0x108"
+    },
+    {
+      "type": "app.cEnemyContext",
+      "field": "Conditions",
+      "fieldType": "app.cEmModuleConditions",
+      "offset": "0x138"
+    },
+    {
+      "type": "app.cEnemyContext",
+      "field": "CreatedOwner",
+      "fieldType": "app.TARGET_ACCESS_KEY",
+      "offset": "0x368"
+    },
+    {
+      "type": "app.cEnemyContext",
+      "field": "Group",
+      "fieldType": "app.cEmModuleGroup",
+      "offset": "0x1e8"
+    },
+    {
+      "type": "app.cEnemyContext",
+      "field": "Target",
+      "fieldType": "app.cEmModuleTarget",
+      "offset": "0x100"
+    },
+    {
+      "type": "app.cEmModuleConditions",
+      "field": "<Depletion>k__BackingField",
+      "fieldType": "app.cEnemyDepletionCondition",
+      "offset": "0x28"
+    },
+    {
+      "type": "app.cEnemyActivateValueBase",
+      "field": "_IsReadyEndFrag",
+      "fieldType": "System.Boolean",
+      "offset": "0x61"
+    },
+    {
+      "type": "app.cEnemySquadManageInfo",
+      "field": "_MemberList",
+      "fieldType": "app.cManagedArray`1<app.TARGET_ACCESS_KEY>",
+      "offset": "0x60"
+    },
+    {
+      "type": "app.cEm0022_00GroupExtend",
+      "field": "_Em0022SysIndex",
+      "fieldType": "System.Int32",
+      "offset": "0x1c"
+    },
+    {
+      "type": "app.cManagedArray`1<app.TARGET_ACCESS_KEY>",
+      "field": "_IdxMgr",
+      "fieldType": "app.cValidIndexManager",
+      "offset": "0x28"
+    },
+    {
+      "type": "app.cValidIndexManager",
+      "field": "<Count>k__BackingField",
+      "fieldType": "System.Int32",
+      "offset": "0x28"
+    },
+    {
+      "type": "app.cEmModuleTarget",
+      "field": "_This",
+      "fieldType": "app.TARGET_ACCESS_KEY",
+      "offset": "0x14"
+    },
+    {
+      "type": "app.VoxelDataManager.WALL_INFO",
+      "field": "_Data",
+      "fieldType": "app.user_data.AppVoxelData.WALL_DATA",
+      "offset": "0x20"
+    },
+    {
+      "type": "app.user_data.AppVoxelData.WALL_DATA",
+      "field": "_Dist",
+      "fieldType": "System.Single",
+      "offset": "0x10"
+    },
+    {
+      "type": "app.user_data.AppVoxelData.WALL_DATA",
+      "field": "_MaskBits",
+      "fieldType": "System.UInt32",
+      "offset": "0x20"
+    },
+    {
+      "type": "app.EnemyParamHolder",
+      "field": "_StageResident",
+      "fieldType": "app.user_data.EnemyStageResident",
+      "offset": "0x68"
+    },
+    {
+      "type": "app.user_data.EnemyStageResident",
+      "field": "_Unique",
+      "fieldType": "app.user_data.EmParamUnique",
+      "offset": "0x30"
+    },
+    {
+      "type": "app.user_data.EmParamUnique",
+      "field": "_GenusInfo",
+      "fieldType": "app.cEnemyParamUniqueInfo",
+      "offset": "0x20"
+    },
+    {
+      "type": "app.user_data.EmParamUnique",
+      "field": "_SpeciesInfo",
+      "fieldType": "app.cEnemyParamUniqueInfo",
+      "offset": "0x28"
+    },
+    {
+      "type": "app.cEm0150_00Extend",
+      "field": "<ParamUnique>k__BackingField",
+      "fieldType": "app.cEm0150_00ParamUniqueInfo",
+      "offset": "0x60"
+    },
+    {
+      "type": "app.cEm0150_00Extend",
+      "field": "Mode",
+      "fieldType": "app.Em0150_00Def.MODE",
+      "offset": "0x84"
+    },
+    {
+      "type": "app.cEm0150_00ParamUniqueInfo",
+      "field": "ModeChangeThreshold_Lower",
+      "fieldType": "System.Single",
+      "offset": "0x10"
+    },
+    {
+      "type": "app.cEm0150_00ParamUniqueInfo",
+      "field": "ModeChangeThreshold_Upper",
+      "fieldType": "System.Single",
+      "offset": "0x14"
+    },
+    {
+      "type": "app.cEm0150_00ParamUniqueInfo",
+      "field": "ModeChangeThreshold_Legendary",
+      "fieldType": "System.Single",
+      "offset": "0x18"
+    },
+    {
+      "type": "app.cEm0156_00Extend",
+      "field": "_IsCanTransMaxRailgunCharge",
+      "fieldType": "System.Boolean",
+      "offset": "0xf6"
+    },
+    {
+      "type": "app.cEm0159_00Extend",
+      "field": "<ParamUnique>k__BackingField",
+      "fieldType": "app.cEm0159_00ParamUniqueInfo",
+      "offset": "0x78"
+    },
+    {
+      "type": "app.cEm0159_00Extend",
+      "field": "_IsBlazingMode",
+      "fieldType": "System.Boolean",
+      "offset": "0xba"
+    },
+    {
+      "type": "app.cEm0159_00Extend",
+      "field": "_BlazingModeAccumulatedValue",
+      "fieldType": "System.Single",
+      "offset": "0x88"
+    },
+    {
+      "type": "app.cEm0159_00ParamUniqueInfo",
+      "field": "BlazingModeThreshold",
+      "fieldType": "System.Single",
+      "offset": "0x10"
+    },
+    {
+      "type": "app.cEm0160Extend",
+      "field": "<ParamUnique>k__BackingField",
+      "fieldType": "app.cEm0160ParamUniqueInfo",
+      "offset": "0x50"
+    },
+    {
+      "type": "app.cEm0160Extend",
+      "field": "_Mode",
+      "fieldType": "app.cEm0160Extend.MODE",
+      "offset": "0x120"
+    },
+    {
+      "type": "app.cEm0160ParamUniqueInfo",
+      "field": "UnleashModeChangeThreshold",
+      "fieldType": "System.Single",
+      "offset": "0x40"
+    },
+    {
+      "type": "app.cEm0071_00Extend",
+      "field": "<ParamUnique>k__BackingField",
+      "fieldType": "app.cEm0071_00ParamUniqueInfo",
+      "offset": "0xc0"
+    },
+    {
+      "type": "app.cEm0071_00Extend",
+      "field": "<State>k__BackingField",
+      "fieldType": "app.Em0071Def.STATE",
+      "offset": "0xec"
+    },
+    {
+      "type": "app.cEm0071_00Extend",
+      "field": "<VirusValue>k__BackingField",
+      "fieldType": "System.Single",
+      "offset": "0xd8"
+    },
+    {
+      "type": "app.cEm0071_00Extend",
+      "field": "_TransformedCount",
+      "fieldType": "System.Int32",
+      "offset": "0xdc"
+    },
+    {
+      "type": "app.cEm0071ParamUniqueInfo",
+      "field": "SafeTransVital",
+      "fieldType": "System.Int32",
+      "offset": "0x30"
+    },
+    {
+      "type": "app.cEm0071ParamUniqueInfo",
+      "field": "SafeTransVital_Fes",
+      "fieldType": "System.Int32",
+      "offset": "0x34"
+    },
+    {
+      "type": "app.cEm0071ParamUniqueInfo",
+      "field": "TransformPointInfo",
+      "fieldType": "System.Collections.Generic.List`1<app.cEm0071ParamUniqueInfo.TransformedInfo>",
+      "offset": "0x10"
+    },
+    {
+      "type": "app.cEm0071ParamUniqueInfo.TransformedInfo",
+      "field": "TransformValue",
+      "fieldType": "System.Single",
+      "offset": "0x10"
+    }
+  ],
+  "depletionDispatch": {
+    "type": "app.cEnemyDepletionCondition",
+    "parent": "app.cEnemyActivateValueBase"
+  },
+  "enumChecks": [
+    {
+      "type": "app.GimmickDef.ID",
+      "field": "GM607_000_00",
+      "value": 852
+    },
+    {
+      "type": "app.GimmickDef.ID",
+      "field": "GM607_001_00",
+      "value": 853
+    },
+    {
+      "type": "app.GimmickDef.ID",
+      "field": "GM601_000_00",
+      "value": 846
+    },
+    {
+      "type": "app.MissionIDList.ID",
+      "field": "MISSION_720015",
+      "value": 524
+    },
+    {
+      "type": "app.EnemyDef.LEGENDARY_ID",
+      "field": "KING",
+      "value": 2
+    },
+    {
+      "type": "app.Em0150_00Def.MODE",
+      "field": "SUPER_BURST",
+      "value": 1
+    },
+    {
+      "type": "app.cEm0160Extend.MODE",
+      "field": "UNLEASH",
+      "value": 1
+    },
+    {
+      "type": "app.Em0071Def.STATE",
+      "field": "SUPER",
+      "value": 2
+    }
+  ]
+}

@@ -97,6 +97,12 @@ python -B -m unittest discover -s tests/sdk -t .
 
 Compare `unknownConditions` from `census` and `total.uncertain` from `uncertainty` before and after every change. `player-view` only accepts full models from `.tmp`, not published ones.
 
+Compound conditions short-circuit in native order. The player view applies reviewed variable updates and resource limits before evaluating later conditions that read them. Ordinary state inputs still need confirmation after an action or an effect whose implementation is only partly recovered.
+
+> Previous random interval: the last selection range saved in a behaviour table's private parameters, used to redirect the next random value.
+
+Recovered intervals update along the selected path and survive an action. Only histories supported by evidence are expanded; other histories remain unknown. A constructor default is not the value on every table entry, and these selections must not be treated as independent draws.
+
 ### After a game update
 
 You need the new dumped EXE, its IL2CPP dump, re-exported resources, and Ghidra.

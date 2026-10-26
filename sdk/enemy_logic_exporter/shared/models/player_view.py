@@ -375,6 +375,7 @@ class PlayerCompiler:
     def __init__(self, graph):
         self.graph = graph
         self.inputs = {}
+        self.input_definitions = {}
         self.thresholds = {}
         self.timers = graph.get("variableCatalog", {})
         self.extend_enums = {
@@ -392,6 +393,8 @@ class PlayerCompiler:
         # Enum names declared by monster-module condition recipes.
         for table in graph["tables"]:
             for node in table["nodes"]:
+                for key, definition in node.get("inputDefinitions", {}).items():
+                    self.input_definitions[key] = dict(definition)
                 for key, names in (node.get("inputEnums") or {}).items():
                     self.extend_enums.setdefault(key, {}).update(names)
         self.rules = {r["commandType"]: r for r in graph["rules"]["rules"]}
@@ -797,6 +800,28 @@ class PlayerCompiler:
                 "self_current_area_no": ("self_current_area_no", "怪物所在区域编号"),
             }
             key = operand.get("key")
+            if operand.get("kind") == "runtime" and key in self.input_definitions:
+                definition = dict(self.input_definitions[key])
+                if definition.pop("boolean", False):
+                    definition["options"] = [
+                        dict(label="是", value=True),
+                        dict(label="否", value=False),
+                    ]
+                self.inputs.setdefault(key, definition)
+                if right.get("kind") == "constant":
+                    return comparison(
+                        key, expression.get("operator", "eq"), right["value"]
+                    )
+                other = right.get("key")
+                if other in self.input_definitions:
+                    self.inputs.setdefault(other, dict(self.input_definitions[other]))
+                    return dict(
+                        op="compare_inputs",
+                        key=key,
+                        otherKey=other,
+                        operator=expression.get("operator", "eq"),
+                        offset=right.get("offset", 0),
+                    )
             if operand.get("kind") == "runtime" and key in SCENARIO_GUARDS:
                 return comparison(key, "eq", True)
             if operand.get("kind") == "runtime" and key in SCENARIO_FACTS:
@@ -1015,6 +1040,13 @@ class PlayerCompiler:
 
     def describe(self, expression):
         op = expression["op"]
+        if op == "compare_inputs":
+            left = self.inputs[expression["key"]]["label"]
+            right = self.inputs[expression["otherKey"]]["label"]
+            offset = expression.get("offset", 0)
+            return f"{left} {RELATION_SYMBOLS[expression['operator']]} {right}" + (
+                f" {offset:+g}" if offset else ""
+            )
         if op == "compare":
             key, value = expression["key"], expression["value"]
             if key == "ordinary_combat_snapshot":
@@ -1265,10 +1297,49 @@ class PlayerCompiler:
                 "request_actor_helper_skipped_then_yield": "等待动作调度",
             }
             result.update(title=titles.get(effect, "更新战斗状态"), effect=effect)
+            if node.get("summary") and effect in {
+                "set_float_value",
+                "set_bool_value",
+                "set_timer_state",
+                "request_dynamic_action",
+                "read_action_dispatch",
+                "apply_native_field_writes",
+                "write_table_history",
+            }:
+                result["title"] = node["summary"]
+            if node.get("variableUpdate"):
+                result["variableUpdate"] = dict(node["variableUpdate"])
+                if node.get("commandGuard"):
+                    result["updateGuard"] = self.expression(node["commandGuard"])
+            if node.get("stateUpdates"):
+                result["stateUpdates"] = dict(node["stateUpdates"])
+            if node.get("dynamicAction"):
+                result["dynamicAction"] = True
+                result["note"] = node["implementationBoundary"]
+            elif node.get("implementationBoundary"):
+                result["note"] = node["implementationBoundary"]
+            if effect == "apply_native_field_writes":
+                result["fieldUpdates"] = [
+                    dict(
+                        key="extend:"
+                        + write["destination"]["contextType"]
+                        + "."
+                        + write["destination"]["field"],
+                        sourceKey="extend:"
+                        + write["value"]["contextType"]
+                        + "."
+                        + write["value"]["field"],
+                    )
+                    for write in node["partialImplementationEffects"]
+                    if write["value"]["kind"] == "self_extend_field"
+                ]
             result["invalidateSnapshot"] = effect not in (
                 "set_destination",
                 "set_timer_state",
                 "set_float_value",
+                "set_bool_value",
+                "read_action_dispatch",
+                "write_table_history",
             )
             if (
                 effect == "write_context_field"
@@ -1466,6 +1537,11 @@ def build_player_view(graph):
             persistent=sorted({"self_enemy_id", *SCENARIO_GUARDS, *SCENARIO_FACTS}),
         ),
         inputs=compiler.inputs,
+        persistentState=sorted(
+            key
+            for key in compiler.inputs
+            if key.startswith(("table_param:", "table_history:"))
+        ),
         entries=entries,
         nodes=nodes,
         coverage=dict(

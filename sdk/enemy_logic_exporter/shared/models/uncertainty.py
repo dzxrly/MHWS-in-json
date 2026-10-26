@@ -16,6 +16,12 @@ GROUP = "与玩家战斗"
 
 def evaluate(expression, scenario, inputs):
     op = expression.get("op")
+    if op == "compare_inputs":
+        return (
+            INPUT
+            if all(key in inputs for key in (expression["key"], expression["otherKey"]))
+            else None
+        )
     if op == "compare":
         key = expression["key"]
         if key in scenario:

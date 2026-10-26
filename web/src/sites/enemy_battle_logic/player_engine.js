@@ -31,6 +31,11 @@ export function compare(value, operator, expected) {
 export function evaluate(expression, inputs) {
   if (!expression) return null;
   if (expression.op === "compare") return compare(inputs[expression.key], expression.operator, expression.value);
+  if (expression.op === "compare_inputs") {
+    const other = inputs[expression.otherKey];
+    if (typeof other !== "number" || !Number.isFinite(other)) return null;
+    return compare(inputs[expression.key], expression.operator, other + (expression.offset || 0));
+  }
   if (expression.op === "not") { const value = evaluate(expression.item, inputs); return value === null ? null : !value; }
   if (expression.op === "all" || expression.op === "any") {
     const values = expression.items.map(item => evaluate(item, inputs));
@@ -75,8 +80,49 @@ function restrict(expression, truth, inputs, fields) {
 }
 // Standing scenario assumptions survive an action; snapshot inputs do not.
 function standing(view, inputs) {
-  const keys = view.scenario?.persistent || [];
+  const keys = [...(view.scenario?.persistent || []), ...(view.persistentState || [])];
   return Object.fromEntries(keys.filter(key => key in inputs).map(key => [key, inputs[key]]));
+}
+export function applyUpdates(node, supplied) {
+  const inputs = { ...supplied };
+  const update = node.variableUpdate;
+  if (update) {
+    const key = `${update.kind === "float" ? "float" : update.kind === "bool" ? "variable" : "timer"}:${update.variable}`;
+    const guard = node.updateGuard ? evaluate(node.updateGuard, supplied) : true;
+    if (guard === false) { /* Native null-work guard leaves the value untouched. */ }
+    else if (guard === null || update.definitionStatus !== "bound") delete inputs[key];
+    else if (!update.readOnly) {
+      if (update.kind === "bool") inputs[key] = update.value;
+      else if (update.kind === "timer") {
+        if (update.operation === "activate" || update.operation === "assign") {
+          const value = update.operation === "activate" ? update.default : update.value;
+          inputs[key] = value <= 0;
+        }
+      } else {
+        const value = inputs[key];
+        const calculate = old => Math.max(update.min, Math.min(update.max,
+          update.operation === "assign" ? Math.fround(update.value) : Math.fround(Math.fround(old) + (update.operation === "add" ? 1 : -1) * Math.fround(update.value))));
+        if (update.operation === "assign") inputs[key] = calculate(0);
+        else if (typeof value === "number" && Number.isFinite(value)) inputs[key] = calculate(value);
+        else if (value && typeof value === "object" && Number.isFinite(value.min) && (value.max === null || Number.isFinite(value.max))) {
+          inputs[key] = { min: calculate(value.min), max: calculate(value.max === null ? Infinity : value.max), minClosed: true, maxClosed: true };
+        } else delete inputs[key];
+      }
+    }
+  }
+  for (const [key, value] of Object.entries(node.stateUpdates || {})) {
+    if (value === null) delete inputs[key]; else inputs[key] = value;
+  }
+  for (const update of node.fieldUpdates || []) {
+    if (update.sourceKey in inputs) inputs[update.key] = inputs[update.sourceKey];
+    else delete inputs[update.key];
+  }
+  return inputs;
+}
+function usesChangedInput(expression, changed) {
+  if (changed.has(expression.key) || changed.has(expression.otherKey)) return true;
+  if (expression.item && usesChangedInput(expression.item, changed)) return true;
+  return (expression.items || []).some(item => usesChangedInput(item, changed));
 }
 export function step(view, supplied) {
   let state = { ...supplied, stack: supplied.stack.slice(), seen: supplied.seen.slice(), assumptions: { ...supplied.assumptions } };
@@ -99,10 +145,15 @@ export function step(view, supplied) {
       state = next(position.key, { stack });
       continue;
     }
-    if (node.kind === "mutation" && node.next && !node.dispatch) {
+    if (node.kind === "mutation" && node.next && !node.dispatch && !node.dynamicAction) {
       via.push({ sourceRef: node.sourceRef, kind: "mutation", title: node.title, invalidateSnapshot: node.invalidateSnapshot });
-      const stable = Object.fromEntries(Object.entries(state.assumptions).filter(([token]) => JSON.parse(token)[1] === null));
-      state = next(node.next, node.invalidateSnapshot ? { inputs: standing(view, state.inputs), assumptions: {}, afterAction: true } : { assumptions: stable });
+      const inputs = applyUpdates(node, state.inputs);
+      const changed = new Set([...Object.keys(inputs), ...Object.keys(state.inputs)].filter(key => JSON.stringify(inputs[key]) !== JSON.stringify(state.inputs[key])));
+      const stable = Object.fromEntries(Object.entries(state.assumptions).filter(([token]) => {
+        const [expression, scope] = JSON.parse(token);
+        return scope === null && !usesChangedInput(expression, changed);
+      }));
+      state = next(node.next, node.invalidateSnapshot ? { inputs: standing(view, inputs), assumptions: {}, afterAction: true } : { inputs, assumptions: stable });
       continue;
     }
     if (node.kind === "condition" && node.presentation?.compact) {

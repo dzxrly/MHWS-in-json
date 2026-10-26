@@ -133,6 +133,7 @@ class NativeRecipeContext:
             self.helper_rows[row["type"]].append(row)
         self.native_cache, self.record_cache, self.pool_cache = {}, {}, {}
         self.command_cache = {}
+        self.command_write_cache = {}
         self.leaf_cache = {}
         self.method_names = None
         self.stack = ExitStack()
@@ -141,6 +142,15 @@ class NativeRecipeContext:
         try:
             self.pe = self.stack.enter_context(PE(self.exe))
             self.metadata = self.stack.enter_context(Il2cppMetadata(self.metadata_path))
+            from ..logic.compound_conditions import verify_compound_conditions
+
+            verify_compound_conditions(self.pe, self.metadata)
+            from ..logic.command_effects import verify_command_effects
+
+            verify_command_effects(self.pe, self.metadata)
+            from ..logic.field_checks import verify_recovered_conditions
+
+            verify_recovered_conditions(self.pe, self.metadata)
         except BaseException:
             self.stack.close()
             raise
@@ -419,6 +429,13 @@ class NativeRecipeContext:
                     ):
                         raise ValueError("命令实现与当前元数据不匹配：" + current)
                     self.native(row)
+                    from ..logic.monster_rules import hooks
+
+                    self.command_write_cache[command_type] = [
+                        write
+                        for recover in hooks("recover_command_effects")
+                        for write in recover(row, self.metadata, self.pe)
+                    ]
                     found = evidence(row)
                     break
                 current = (self.metadata.get(current) or {}).get("parent")
@@ -522,11 +539,19 @@ class NativeRecipeContext:
                 imports[row["type"]],
             )
             machine.metadata = self.metadata
+            machine.reviewed_effects = True
+            from ..resources.variables import variable_index
+
+            machine.variable_catalog = variable_index(self.resources)
             machine.command_evidence = {
                 factory["_OrderType"]: proof
                 for factory in self.resources.factories(body)
                 if (proof := self.command_evidence(factory["_OrderType"])) is not None
             }
+            machine.command_writes = self.command_write_cache
+            from ..logic.table_state import recover_table_history
+
+            machine.table_history = recover_table_history(machine)
             moduli = {
                 int(v, 0) for v in re.findall(r"% (0x[0-9a-f]+|\d+)", record["code"])
             }

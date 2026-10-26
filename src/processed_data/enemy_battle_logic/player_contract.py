@@ -21,6 +21,8 @@ def validate_player_view(graph):
     if not set(scenario.get("persistent", ())) <= set(scenario.get("inputs", {})):
         raise ValueError("常驻情境前提必须是情境输入")
     nodes = view["nodes"]
+    if not set(view.get("persistentState", [])) <= set(view["inputs"]):
+        raise ValueError("常驻行为表内部状态缺少输入定义")
     if set(nodes) != set(originals):
         raise ValueError("玩家行动树遗漏或新增了无来源节点")
 
@@ -35,11 +37,18 @@ def validate_player_view(graph):
                 expression(item)
         elif op == "not":
             expression(value["item"])
-        elif op == "compare":
+        elif op in ("compare", "compare_inputs"):
             if (
                 value.get("operator") not in ("eq", "ne", "lt", "le", "gt", "ge")
                 or not value.get("key")
-                or "value" not in value
+                or (op == "compare" and "value" not in value)
+                or (
+                    op == "compare_inputs"
+                    and (
+                        not value.get("otherKey")
+                        or type(value.get("offset", 0)) not in (int, float)
+                    )
+                )
             ):
                 raise ValueError("玩家条件比较无效")
         elif op != "unknown" or not value.get("reason"):
@@ -96,6 +105,12 @@ def validate_player_view(graph):
             actual = [(c["id"], c["target"], c["weight"]) for c in node["candidates"]]
             if actual != expected:
                 raise ValueError("玩家候选槽或权重改变")
+        if node["kind"] == "mutation":
+            if node.get("updateGuard"):
+                expression(node["updateGuard"])
+            for field in ("variableUpdate", "stateUpdates", "dynamicAction"):
+                if node.get(field) != source.get(field):
+                    raise ValueError("玩家状态更新改变了 SDK 声明的作用")
     for entry in view["entries"]:
         if entry.get("id") not in nodes or entry.get("relation") not in (
             "local_verified",

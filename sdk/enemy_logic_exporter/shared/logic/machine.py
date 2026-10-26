@@ -7,6 +7,7 @@ the walk. Command implementations and random selectors still require review.
 import copy
 import hashlib
 import json
+import uuid
 from capstone import Cs, CS_ARCH_X86, CS_MODE_64, CS_OP_IMM, CS_OP_MEM, CS_OP_REG
 from ..native.bindings import register, pointer, add, dereference
 from ..workflow.semantic_recovery import command_binding
@@ -85,6 +86,11 @@ class Machine:
         self.event_contexts = {}
         self.proofs = {}
         self.proof_depth = 0
+        self.reviewed_effects = False
+        self.variable_catalog = {}
+        self.command_writes = {}
+        self.integer_inputs = {}
+        self.table_history = None
 
     def event_key(self, event, state, bound=None):
         """Return the semantic node key of one call context, or None.
@@ -198,6 +204,10 @@ class Machine:
                     return (value >> ((offset - start) * 8)) & ((1 << (size * 8)) - 1)
                 if offset == start and size == width:
                     return value
+        if self.table_history is not None:
+            handled, value = self.table_history.load(address, size, s)
+            if handled:
+                return value
         if owner == "export":
             if offset == EXPORT_RUNTIME_ROOT:
                 return 0xABCDEF
@@ -218,6 +228,14 @@ class Machine:
             return 0
         if owner == "command_work" and offset == COMMAND_WORK_RANDOM:
             return pointer("random_holder")
+        if owner == "command_work" and self.reviewed_effects:
+            from .command_effects import receipt as effect_receipt
+
+            field = effect_receipt()["layouts"]["ace.btable.cCommandWork"][
+                "<VariableStorage>k__BackingField"
+            ]
+            if offset == int(field["offset"], 16):
+                return pointer("variable_storage")
         if owner == "random_holder" and offset == 0:
             return pointer("random_instance")
         if owner == "random_instance" and offset == OBJECT_VTABLE_FROM_INTERFACE:
@@ -234,7 +252,16 @@ class Machine:
             if isinstance(value, int):
                 shift = 8 if ins.reg_name(op.reg) in {"ah", "bh", "ch", "dh"} else 0
                 return (value >> shift) & ((1 << (8 * op.size)) - 1)
-            return value if op.size == 8 else None
+            return (
+                value
+                if op.size == 8
+                or (
+                    isinstance(value, tuple)
+                    and value[0] == "integer_input"
+                    and op.size == 4
+                )
+                else None
+            )
         if op.type == CS_OP_MEM:
             return self.load(self.address(ins, op, s), op.size, s)
         return None
@@ -266,10 +293,14 @@ class Machine:
                 ):
                     del s["mem"][key]
             s["mem"][(owner, offset, op.size)] = value
+            if self.table_history is not None:
+                updates = self.table_history.updates(address, op.size, value)
+                if updates:
+                    s.setdefault("history_updates", {}).update(updates)
 
     def truth(self, mnemonic, s):
         f = s["flags"]
-        if not f:
+        if not f or "integer_compare" in f:
             return None
         if mnemonic in {"a", "ae", "b", "be"} and f["c"] is None:
             return None
@@ -340,6 +371,32 @@ class Machine:
                 detail=str(error),
             )
         target = event["target"]
+        if bound is None and self.reviewed_effects and isinstance(target, int):
+            # The compiler may call the reviewed onExecute directly, with no
+            # command-object argument. Require both function identity and the
+            # table's exact factory/argument slot before reconstructing it.
+            candidates = [
+                i
+                for i, factory in enumerate(self.factories)
+                if int(
+                    self.command_evidence.get(factory["_OrderType"], {}).get(
+                        "address", "0"
+                    ),
+                    16,
+                )
+                == target
+            ]
+            if len(candidates) == 1:
+                synthetic = dict(
+                    event,
+                    arguments=[
+                        *event["arguments"],
+                        pointer(("command", candidates[0])),
+                    ],
+                )
+                bound = command_binding(
+                    synthetic, self.body, self.factories, self.registry
+                )
         if isinstance(target, tuple) and target[0] == "command_method":
             factory = self.factories[target[1]]
             if factory.get("_ArgumentType") in NO_ARGUMENT_TYPES:
@@ -369,11 +426,17 @@ class Machine:
         if isinstance(out, tuple) and out[:2] == ("pointer", "stack"):
             s["mem"][("stack", out[2], 4)] = 0
             s["mem"][("stack", out[2] + 4, 8)] = (
-                None if boolean is None else int(boolean)
+                boolean
+                if isinstance(boolean, tuple)
+                else None if boolean is None else int(boolean)
             )
             s["regs"]["rax"] = out
         else:
-            s["regs"]["rax"] = None if boolean is None else int(boolean)
+            s["regs"]["rax"] = (
+                boolean
+                if isinstance(boolean, tuple)
+                else None if boolean is None else int(boolean)
+            )
         return s
 
     def position(self, p, s):
@@ -612,7 +675,11 @@ class Machine:
             return nxt
         if m == "btr" and len(op) == 2 and op[1].type == CS_OP_IMM and op[1].imm == 63:
             value = self.read(ins, op[0], s)
-            if isinstance(value, tuple) and value[:2] == ("pointer", "stack"):
+            if isinstance(value, tuple) and (
+                value[:2] == ("pointer", "stack")
+                or self.table_history is not None
+                and self.table_history.tagged_reference(value)
+            ):
                 return nxt
             if isinstance(value, int):
                 self.write(ins, op[0], value & ~(1 << 63), s)
@@ -652,6 +719,17 @@ class Machine:
             and len(op) >= 2
         ):
             a, b = self.read(ins, op[0], s), self.read(ins, op[1], s)
+            if m == "cmp" and (
+                isinstance(a, tuple)
+                and a[0] == "integer_input"
+                and isinstance(b, int)
+                or isinstance(b, tuple)
+                and b[0] == "integer_input"
+                and isinstance(a, int)
+            ):
+                symbol, constant = (a, b) if isinstance(a, tuple) else (b, a)
+                s["flags"] = dict(integer_compare=(symbol[1], constant & 0xFFFFFFFF))
+                return nxt
             if m == "imul" and len(op) == 3:
                 a, b = self.read(ins, op[1], s), self.read(ins, op[2], s)
             if (
@@ -865,12 +943,116 @@ class Machine:
                 return self.add_unknown(
                     address, "执行到当前已校验方法范围外；需核实该实际目标"
                 )
+            if s["flags"] and "integer_compare" in s["flags"]:
+                suffix = (
+                    ins.mnemonic[1:]
+                    if ins.mnemonic.startswith("j")
+                    else (
+                        ins.mnemonic[3:]
+                        if ins.mnemonic.startswith("set")
+                        else ins.mnemonic[4:] if ins.mnemonic.startswith("cmov") else ""
+                    )
+                )
+                if suffix in {"e", "z", "ne", "nz"}:
+                    input_key, value = s["flags"]["integer_compare"]
+                    key = self.event_key(
+                        dict(
+                            site=hex(ins.address),
+                            target=("integer_compare", input_key, value),
+                            arguments=[],
+                        ),
+                        s,
+                    )
+                    if key is None:
+                        return self.add_unknown(
+                            address, "整数分派比较的后续上下文尚未证明等价"
+                        )
+                    if key in self.nodes:
+                        return key
+                    self.nodes[key] = dict(
+                        id=key,
+                        kind="condition",
+                        nativeSite=hex(ins.address),
+                        summary="按此前选定的动作分派",
+                        expression=dict(
+                            kind="compare",
+                            operator="eq" if suffix in {"e", "z"} else "ne",
+                            left=dict(
+                                kind="runtime",
+                                key=input_key,
+                                source="已核实整数命令的返回值",
+                            ),
+                            right=dict(kind="constant", value=value),
+                        ),
+                        inputDefinitions={input_key: self.integer_inputs[input_key]},
+                    )
+                    for truth, role in ((True, "true"), (False, "false")):
+                        state = copy.deepcopy(s)
+                        state["flags"] = None
+                        after = ins.address + ins.size
+                        if ins.mnemonic.startswith("j"):
+                            after = ins.operands[0].imm if truth else after
+                        elif ins.mnemonic.startswith("set"):
+                            self.write(ins, ins.operands[0], int(truth), state)
+                        elif truth:
+                            self.write(
+                                ins,
+                                ins.operands[0],
+                                self.read(ins, ins.operands[1], state),
+                                state,
+                            )
+                        self.nodes[key][role] = self.walk(after, state)
+                    return key
             signature = (address, repr(s["regs"]), repr(s["mem"]))
             if signature in seen:
                 return self.add_unknown(address, "循环的更新或退出条件尚未恢复")
             seen.add(signature)
             if ins.mnemonic == "call":
                 e = self.event(ins, s)
+                if self.table_history is not None:
+                    handled, value = self.table_history.call(e, s)
+                    if handled:
+                        s = self.complete_call(s, e, None)
+                        s["regs"]["rax"] = value
+                        address += ins.size
+                        continue
+                if self.reviewed_effects and isinstance(e["target"], int):
+                    from .command_effects import (
+                        storage_effect,
+                        receipt as effect_receipt,
+                    )
+
+                    helpers = effect_receipt()["helpers"]
+                    if e["target"] == int(helpers["bool"]["address"], 16) and e[
+                        "arguments"
+                    ][1] == pointer("variable_storage"):
+                        raw = [
+                            self.load(add(e["arguments"][2], i), 1, s)
+                            for i in range(16)
+                        ]
+                        value = e["arguments"][3]
+                        if all(isinstance(v, int) for v in raw) and isinstance(
+                            value, int
+                        ):
+                            variable = str(uuid.UUID(bytes_le=bytes(raw)))
+                            detail = storage_effect(
+                                e["target"],
+                                variable,
+                                bool(value & 0xFF),
+                                variable_catalog=self.variable_catalog,
+                            )
+                            key = self.event_key(e, s)
+                            if key is None:
+                                return self.add_unknown(
+                                    address, "直接变量写入的调用上下文尚未证明等价"
+                                )
+                            if key in self.nodes:
+                                return key
+                            self.nodes[key] = dict(detail, id=key, nativeSite=e["site"])
+                            self.nodes[key]["next"] = self.walk(
+                                address + ins.size, self.complete_call(s, e, None)
+                            )
+                            return key
                 if e["target"] == ("random_generator",):
                     key = self.event_key(e, s)
                     if key is None:
@@ -997,6 +1179,77 @@ class Machine:
                         expectedArgumentType=bound.get("argumentType", ""),
                         nativeSite=e["site"],
                     )
+                    if self.reviewed_effects:
+                        from .command_effects import (
+                            reviewed_command_effect,
+                            dynamic_request_details,
+                            action_switch_details,
+                        )
+
+                        proof = self.command_evidence.get(bound["commandType"])
+                        detail = reviewed_command_effect(
+                            bound, proof, self.variable_catalog
+                        )
+                        if detail is not None:
+                            self.nodes[key] = dict(detail, id=key, **binding)
+                            self.nodes[key]["next"] = self.walk(
+                                address + ins.size, self.complete_call(s, e, None)
+                            )
+                            return key
+                        detail = dynamic_request_details(bound, proof)
+                        if detail is not None:
+                            self.nodes[key] = dict(
+                                detail,
+                                id=key,
+                                kind="mutation",
+                                dynamicAction=True,
+                                **binding,
+                            )
+                            self.nodes[key]["next"] = self.walk(
+                                address + ins.size, self.complete_call(s, e, None)
+                            )
+                            return key
+                        detail = action_switch_details(bound, proof)
+                        if detail is not None:
+                            input_key = detail["runtimeKey"]
+                            self.integer_inputs[input_key] = dict(
+                                label=detail["inputLabel"],
+                                number=True,
+                                min=0,
+                                max=0xFFFFFFFF,
+                                hint=detail["packing"]
+                                + "；"
+                                + detail["implementationBoundary"],
+                            )
+                            self.nodes[key] = dict(
+                                id=key,
+                                kind="mutation",
+                                effect="read_action_dispatch",
+                                summary="读取受击动作分派编号",
+                                semanticEvidence=detail["semanticEvidence"],
+                                **binding,
+                            )
+                            self.nodes[key]["next"] = self.walk(
+                                address + ins.size,
+                                self.complete_call(s, e, ("integer_input", input_key)),
+                            )
+                            return key
+                        writes = self.command_writes.get(bound["commandType"])
+                        if writes:
+                            self.nodes[key] = dict(
+                                id=key,
+                                kind="mutation",
+                                effect="apply_native_field_writes",
+                                summary="应用请求的战斗阶段",
+                                partialImplementationEffects=copy.deepcopy(writes),
+                                commandEffectsComplete=False,
+                                implementationBoundary="仅记录已经核实的字段复制；阶段回调与网络同步仍保留证据范围",
+                                **binding,
+                            )
+                            self.nodes[key]["next"] = self.walk(
+                                address + ins.size, self.complete_call(s, e, None)
+                            )
+                            return key
                     if command in {"cRequestAction", "cRequestActionSync"}:
                         if (
                             command == "cRequestActionSync"
@@ -1173,6 +1426,10 @@ class Machine:
                         command.startswith("cCheck")
                         or command.startswith("cCompare")
                         or (
+                            command in {"cCommandAnd", "cCommandOr"}
+                            and self.command_return(bound) == BOOLEAN_TYPE
+                        )
+                        or (
                             command.startswith("cIs")
                             and self.command_return(bound) == BOOLEAN_TYPE
                         )
@@ -1276,6 +1533,30 @@ class Machine:
                 continue
             try:
                 address = self.step(ins, s)
+                updates = s.pop("history_updates", {})
+                if updates:
+                    event = dict(
+                        site=hex(ins.address),
+                        target=("history_write", tuple(sorted(updates.items()))),
+                        arguments=[],
+                    )
+                    key = self.event_key(event, s)
+                    if key is None:
+                        return self.add_unknown(
+                            ins.address, "前次随机区间写入的后续上下文尚未证明等价"
+                        )
+                    if key in self.nodes:
+                        return key
+                    self.nodes[key] = dict(
+                        id=key,
+                        kind="mutation",
+                        effect="write_table_history",
+                        summary="记录本次随机选择区间",
+                        nativeSite=hex(ins.address),
+                        stateUpdates=updates,
+                    )
+                    self.nodes[key]["next"] = self.walk(address, s)
+                    return key
             except Boundary as error:
                 from .combat_position import recover_entry_push
 
@@ -1295,7 +1576,52 @@ class Machine:
         self.state(0)
         while self.pending:
             key, address, state = self.pending.pop(0)
-            self.states[key] = self.walk(address, state)
+            cases = (
+                self.table_history.history_cases()
+                if self.table_history is not None
+                else []
+            )
+            if not cases:
+                self.states[key] = self.walk(address, state)
+                continue
+            fallback = "history-" + key + "-unknown"
+            self.nodes[fallback] = dict(
+                id=fallback,
+                kind="unknown",
+                reason="前次随机区间不在本表已核实的候选历史中；保留未知，不使用固定初值",
+            )
+            self.states[key] = "history-" + key + "-0"
+            definitions = {
+                self.table_history.key(offset): dict(
+                    label="前次随机区间" + ("上界" if "Max_" in name else "下界"),
+                    number=True,
+                    min=-1,
+                    max=0x7FFFFFFF,
+                    hint=f"{self.table_history.export_type}.{name}；初次构造为-1，后续按本表已保存值判断",
+                )
+                for offset, name in self.table_history.fields.items()
+            }
+            for i, case in enumerate(cases):
+                case_key = "history-" + key + "-" + str(i)
+                selected = copy.deepcopy(state)
+                selected["mem"].update(case["values"])
+                self.nodes[case_key] = dict(
+                    id=case_key,
+                    kind="condition",
+                    summary="按此前的随机选择记录继续",
+                    expression=case["expression"],
+                    inputDefinitions=definitions,
+                    semanticEvidence=[
+                        {k: row[k] for k in ("type", "method", "address", "end")}
+                        for row in self.table_history.evidence
+                    ],
+                    true=self.walk(address, selected),
+                    false=(
+                        "history-" + key + "-" + str(i + 1)
+                        if i + 1 < len(cases)
+                        else fallback
+                    ),
+                )
 
         def resolve(key):
             seen = set()

@@ -31,7 +31,69 @@ def recover_condition(node, enemy_id, resources):
     """Reviewed field-comparison commands of this monster (FIELD_CHECKS)."""
     from ..shared.logic.field_checks import declared_condition
 
-    return declared_condition(FIELD_CHECKS, node)
+    water = _recover_hunters_or_mission(node)
+    return water if water is not None else declared_condition(FIELD_CHECKS, node)
+
+
+SWIM_HUNTER_COMMAND = "app.btable.Em0046_00BTableCommand.cCheckSwimHunterNum"
+HUNTER_WATER_COMMAND = "app.btable.Em0046_00BTableCommand.cCheckHunterInWater"
+STORY_COMMAND = "app.btable.Em0046_00BTableCommand.cIsStroyQuest"
+STORY_MISSION_ID = 524  # MissionIDList.ID.MISSION_720015
+
+
+def _recover_hunters_or_mission(node):
+    from ..shared.logic.expressions import compare
+    from ..shared.logic.field_checks import condition_evidence, reviewed_condition
+    from ..shared.logic.values import scalar
+
+    command = node.get("commandType")
+    if command == STORY_COMMAND:
+        key = "enabled_main_mission_id"
+        return reviewed_condition(
+            compare(
+                key,
+                STORY_MISSION_ID,
+                source="MissionManager.getEnableMainMissionID()，MISSION_720015",
+            ),
+            condition_evidence("sea_story_mission"),
+            summary="当前启用的主线任务为 MISSION_720015",
+            inputs={
+                key: dict(
+                    label="当前启用的主线任务枚举值", number=True, min=-1, max=None
+                )
+            },
+        )
+    if command not in (SWIM_HUNTER_COMMAND, HUNTER_WATER_COMMAND):
+        return None
+    count = (
+        scalar(node["argument"]["_CheckHunterNum"])
+        if command == SWIM_HUNTER_COMMAND
+        else 0
+    )
+    if type(count) is not int:
+        return None
+    operator = "eq" if command == SWIM_HUNTER_COMMAND else "gt"
+    key = "em0046_hunters_in_water"
+    return reviewed_condition(
+        compare(
+            key,
+            count,
+            operator,
+            source="cEm0046_00Extend.getHunterNumInWater：上下文与水体数据有效、水相关量为正且 ContinueFlag 168 成立的猎人数",
+        ),
+        condition_evidence(
+            "sea_swim_hunter_count"
+            if command == SWIM_HUNTER_COMMAND
+            else "sea_hunter_in_water"
+        ),
+        summary=f"符合水中判据的猎人数 {'=' if operator == 'eq' else '>'} {count}",
+        extend="app.cEm0046_00Extend",
+        inputs={
+            key: dict(
+                label="符合水中判据的猎人数", number=True, min=0, max=None, unit="人"
+            )
+        },
+    )
 
 
 # Verified Extend rule of this monster (game 1.42.0.2); the record lives in
@@ -99,7 +161,7 @@ def build_model(
     *,
     requests_path=None,
     inventory_path=None,
-    context=None
+    context=None,
 ):
     """Extract this EM from its real slot/import closure and typed native calls."""
     from ..shared.models.native_recipe import build_monster

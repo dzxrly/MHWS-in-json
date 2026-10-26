@@ -214,6 +214,22 @@ class Resources:
             result.extend(typed(f)[1] for f in orders["_CommandFactories"])
         return result
 
+    def factories_by_hash(self, table):
+        """Resolve nested condition commands through this table's order bank."""
+        bank = self.read(self.reference(table["_OrderBank"]))
+        result = {}
+        for item in bank["_OrderLists"]:
+            orders = self.read(self.reference(typed(item)[1]["_OrderList"]))
+            hashes, factories = orders["_CommandHashList"], orders["_CommandFactories"]
+            if len(hashes) != len(factories):
+                raise ValueError("命令哈希列表与工厂列表长度不一致")
+            for identity, factory in zip(hashes, factories):
+                factory = typed(factory)[1]
+                if identity in result and result[identity] != factory:
+                    raise ValueError("同一命令哈希对应不同工厂")
+                result[identity] = factory
+        return result
+
     def timer(self, table, guid):
         bank = self.read(self.reference(table["_OrderBank"]))
         sources = set()

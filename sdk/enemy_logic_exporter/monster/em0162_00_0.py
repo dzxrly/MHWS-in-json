@@ -54,6 +54,95 @@ BREAK_PARTS_EVIDENCE = dict(
 # PARTS_BREAK name -> element read by the native switch.
 BREAK_PARTS_ELEMENTS = {"TAIL_LOST": 7, "HEAD": 0, "CORE_WAIST": 8, "CORE_MAIN": 10}
 
+DEST_WALL_COMMAND = "app.btable.Em0162_00BTableCommand.cCheckDestWall"
+DEST_GIMMICK_COMMAND = "app.btable.Em0162_00BTableCommand.cCheckDestShutterGimmick"
+DEST_GIMMICK_IDS = ("GM607_000_00", "GM607_001_00", "GM601_000_00")
+WALL_EXCLUDE_MASK = 0x2100
+
+
+def _recover_destination_scene(node):
+    from ..shared.logic.expressions import combined, compare, runtime
+    from ..shared.logic.field_checks import condition_evidence, reviewed_condition
+    from ..shared.logic.values import scalar
+
+    command = node.get("commandType")
+    if command not in (DEST_WALL_COMMAND, DEST_GIMMICK_COMMAND):
+        return None
+    threshold = scalar(node["argument"]["_CheckDest"])
+    if type(threshold) not in (int, float):
+        return None
+    if command == DEST_WALL_COMMAND:
+        found = "em0162_active_wall_query_found"
+        count = "em0162_eligible_wall_count"
+        distance = "em0162_nearest_eligible_wall_distance"
+        expression = combined(
+            "all",
+            runtime(found, "自身 getDataInfoEm 与 getWallInfoArrayActive 均成功"),
+            compare(
+                count,
+                0,
+                "gt",
+                source=f"有效 WALL_INFO 中 (_Data._MaskBits & {WALL_EXCLUDE_MASK:#x}) == 0 的数量",
+            ),
+            compare(distance, threshold, "le", source="上述有效墙体的最小 _Data._Dist"),
+        )
+        inputs = {
+            found: dict(label="自身位置的活动墙体查询成功", boolean=True),
+            count: dict(
+                label="未设置 0x2100 屏蔽位的有效墙体数", number=True, min=0, max=None
+            ),
+            distance: dict(
+                label="这些墙体中最小的墙体距离",
+                number=True,
+                min=0,
+                max=None,
+                unit="命令距离单位",
+            ),
+        }
+        result = reviewed_condition(
+            expression,
+            condition_evidence("frozen_wall"),
+            summary=f"活动墙体查询成功，且未被 0x2100 屏蔽的墙体距离 ≤ {threshold:g}",
+            inputs=inputs,
+        )
+    else:
+        count = "em0162_shutter_gimmick_count"
+        distance = "em0162_nearest_shutter_gimmick_xz"
+        expression = combined(
+            "all",
+            compare(count, 0, "gt", source="三类机关中对象与场景实体均有效的数量"),
+            compare(
+                distance,
+                abs(threshold),
+                "le",
+                source="这些机关到怪物自身的最小 XZ 平面距离；原生比较距离平方与资源阈值平方",
+            ),
+        )
+        inputs = {
+            count: dict(
+                label="GM607_000_00、GM607_001_00、GM601_000_00 的有效对象数",
+                number=True,
+                min=0,
+                max=None,
+            ),
+            distance: dict(
+                label="这些机关到怪物自身的最小水平距离",
+                number=True,
+                min=0,
+                max=None,
+                unit="命令距离单位",
+            ),
+        }
+        result = reviewed_condition(
+            expression,
+            condition_evidence("frozen_gimmick"),
+            summary=f"三类指定机关中有对象与怪物自身的水平距离 ≤ {abs(threshold):g}",
+            extend="app.cEm0162_00Extend",
+            inputs=inputs,
+        )
+        result["gimmickTypes"] = list(DEST_GIMMICK_IDS)
+    return result
+
 
 def _recover_break_parts(node):
     from copy import deepcopy
@@ -83,6 +172,9 @@ def _recover_break_parts(node):
 
 def recover_condition(node, enemy_id, resources):
     """Reviewed position and part checks, shown as scene inputs per argument."""
+    scene = _recover_destination_scene(node)
+    if scene is not None:
+        return scene
     if node.get("commandType") == BREAK_PARTS_COMMAND:
         return _recover_break_parts(node)
     if node.get("commandType") != LEG_JOINT_COMMAND:
@@ -134,7 +226,7 @@ def build_model(
     *,
     requests_path=None,
     inventory_path=None,
-    context=None
+    context=None,
 ):
     """Extract this EM from its real slot/import closure and typed native calls."""
     from ..shared.models.native_recipe import build_monster
