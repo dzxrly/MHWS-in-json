@@ -19,6 +19,13 @@
 
 </div>
 
+## 網站
+
+[mhws-info.eggtargaryen.com](https://mhws-info.eggtargaryen.com/)（只提供簡體中文）：
+
+- 魔物行動邏輯：每隻魔物的出招決策樹，可按距離、角度和狀態篩選。共 34 隻魔物，變種各有獨立頁面。
+- 技能效果數值：每個技能在各等級下的效果數值與生效條件。
+
 ## 執行
 
 ```powershell
@@ -31,50 +38,24 @@ python main.py
 ## 程式碼結構
 
 ```text
+main.py, config.py           # 入口與設定
+MHWS-in-json/                # 來源 JSON
 src/
-  database/        # 資料庫活頁簿
-  processed_data/  # 後處理活頁簿與 JSON 資料集；行動圖模型
-  shared/          # 來源資料、文字、RCOL、Excel 和日誌工具
-  pipeline/        # 匯出、驗證、打包和發布
-  site_data/       # 網站讀取的 JSON（與 web/ 的唯一介面）
-sdk/
-  il2cpp/          # IL2CPP 上傳與下載工具
-  enemy_logic_exporter/
-    shared/        # Python：native、resources、logic、models、workflow
-    data/          # JSON：evidence/、models/、rules.v1.json
-    monster/       # 每個魔物和變種的獨立入口
-web/               # Vite + Vue 網站，只讀取 src/site_data 中已提交的 JSON
+  database/                  # 資料庫活頁簿
+  processed_data/            # 後處理活頁簿與 JSON；魔物行動模型
+  shared/                    # 來源資料、文字、RCOL、Excel 和日誌工具
+  pipeline/                  # 匯出、驗證、打包和發布
+  site_data/                 # 網站資料；產生的 data/ 已提交
+sdk/                         # 讀取遊戲檔案的離線 SDK
+  enemy_logic_exporter/      # 魔物行動邏輯
+    shared/  data/  monster/ #   共用程式碼、規則與證據、每隻魔物一個模組
+  skill_effect_exporter/     # 技能效果數值
+    shared/  skills/         #   原生程式碼模擬與流程、每個技能一個模組
+web/                         # 網站（Vite + Vue）；src/sites/ 中每個資訊站一個目錄
 tests/
 ```
 
-## 網站
-
-[mhws-info.eggtargaryen.com](https://mhws-info.eggtargaryen.com/) 匯集各資訊站，只提供簡體中文：魔物行動邏輯（34 隻魔物，變種各有獨立頁面，不包含訓練靶）和技能效果數值（與 `SkillDetails.xlsx` 使用同一份技能效果鏈路 JSON）。
-
-`sdk/`、`src/` 與 `web/` 互不匯入程式碼，只透過 JSON 傳遞資料。網站讀取提交在 `src/site_data/data/` 中的 JSON，其中只保留頁面顯示需要的內容，並拆分成多個檔案，單個檔案不超過約 7 MB：
-
-```text
-site.json                                    格式版本、是否為預覽
-enemy_battle_logic/index.json                魔物列表
-enemy_battle_logic/<enemyId>/tree.json       決策樹與名稱
-enemy_battle_logic/<enemyId>/tables.json     行為表節點（原始資料）
-enemy_battle_logic/<enemyId>/flow.json       技術流程圖
-skill_details/skills.json                    技能效果數值及其含義
-```
-
-魔物模型或技能效果鏈路變化後，離線執行 `python -m src.site_data` 重新產生並提交；資料過期時測試會失敗。發布包改以兩個完整的單檔提供同一份資料（見下文）。
-
-`web/` 是 Vite + Vue 應用程式，首頁和每個資訊站各占一個路由（`/enemy_battle_logic/`、`/skill_details/`）。建置只需要 Node.js 22 或更新版本，不需要 Python；建置時把 JSON 複製到站點的 `data/`：
-
-```powershell
-npm --prefix web ci
-npm --prefix web run build           # 輸出到 web/dist
-npm --prefix web run preview         # 在本機開啟 http://localhost:4173
-```
-
-修改頁面時用 `npm --prefix web run dev`，讀取同一份 JSON。`MHWS_SITE_DATA` 可讓網站改用其他資料目錄，例如 SDK 尚未發布的模型的預覽（`python -m src.site_data --enemy-models <模型目錄> --preview --output .tmp/site-preview`）。
-
-新增資訊站時，在 `src/site_data` 中寫出它的 JSON（由 `export_site_data` 呼叫），再在 `web/src/sites/<站點>/index.js` 中宣告標題、首頁卡片和路由，並加入 `web/src/sites.js`。
+魔物模型或技能效果變化後，執行 `python -m src.site_data` 重新產生網站資料並提交；資料過期時測試會失敗。建置網站只需要 Node.js 22 或更新版本：先 `npm --prefix web ci`，再 `npm --prefix web run build`。
 
 ## 發布壓縮檔
 
@@ -106,7 +87,7 @@ skill_details.json
 skill_pool.json
 ```
 
-`enemy_battle_logic.json` 是全部魔物的完整行動圖，`skill_details.json` 是技能效果數值，各為單個檔案；[網站](#網站)讀取的是同一份資料精簡拆分後的副本，發布包不含網頁本身。
+`enemy_battle_logic.json` 和 `skill_details.json` 是[網站](#網站)背後的完整資料。
 
 `MHWS-in-json_<版本>.zip` 包含來源 JSON，與活頁簿分開打包。
 
@@ -117,10 +98,10 @@ skill_pool.json
 - 魔物行動邏輯（`sdk.enemy_logic_exporter`）：從遊戲檔案中提取魔物行動邏輯，產生行動圖網頁使用的 JSON。`src/processed_data/enemy_battle_logic/models` 中的 34 份模型保留未知分支的標記。
 - 技能效果（`sdk.skill_effect_exporter`）：找出原生程式碼中使用每個技能的函式並按等級求值，產生 `SkillDetails.xlsx` 使用的技能效果鏈路 JSON。
 
-SDK 需要使用者提供從記憶體 dump 出的遊戲 EXE（如 `MonsterHunterWilds_dump.exe`）和 REFramework `il2cpp_dump.json`，不記錄遊戲版本。環境建立（`sdk/setup_env.ps1`）與用法見 [SDK 使用說明](../sdk/docs/README.zh-Hant.md)。只重新產生[網站](#網站)或表格時不需要 SDK。
+SDK 需要使用者提供從記憶體 dump 出的遊戲 EXE（如 `MonsterHunterWilds_dump.exe`）和 REFramework `il2cpp_dump.json`，不記錄遊戲版本。環境建立（`sdk/setup_env.ps1`）與用法見 [SDK 使用說明](../sdk/docs/README.zh-Hant.md)。只重新產生網站或表格時不需要 SDK。
 
 ## 資料說明
 
-- `SkillDetails.xlsx` 給出每個技能的效果數值。「技能效果」頁每列是一個技能在某一等級（`Lv.1`、`Lv.2`……）的一個效果，列出遊戲內的技能說明與等級說明、效果數值，以及適用的武器、彈種或動作（寫作「【武器】彈種」）。只列出從遊戲參數讀取到的數值，按「只裝備該技能」的情境求得。數值隨情形（如連續命中次數）不同時分列列出，情形寫在「条件」欄開頭；只在其他效果（飯技、狩獵笛旋律、武器自身狀態、其他技能的資料）生效時才出現的數值不列出；隨機判定寫作發動機率（如 80%）。只有程式碼中找不到區分條件時才保留「a / b」。「作用于」「计算」「条件」「单位」欄（數值作用於什麼、怎樣計算、何時生效、單位）來自 SDK 中每個技能的模組 `sdk/skill_effect_exporter/skills/hunterskill_<編號>.py` 裡人工整理的數值含義，由 SDK 寫進鏈路 JSON，依據程式碼中每個數值的用途寫出；`python -m src.processed_data.skill_details --meanings-report <檔案.md>` 列出每個效果的含義及其用途證據。「技能」頁合併 SkillCommonData 與 SkillData。名稱提供日文與簡體中文，說明和效果名稱只提供簡體中文。
-- `MissionData.xlsx` 中每個任務完成條件佔一列，其餘任務欄位縱向合併。缺少對應語言文字時回退英文，無名稱的魔物保留 `EM` 編號。`SoloHealth` 列出可能的初始單人最大血量，計入任務難度、隨機血量檔位和`Legendary` 倍率；無法確定目標時留空。
-- `WeaponActionValues.xlsx` 需要格式為 `mhws_static_action_request_set_map_v2` 的 `MHWS-in-json/ActionMap.json`。使用同版本輸入執行 `motlist-to-json action-map` 可重新產生，也可透過 `MHWS_ACTION_MAP_PATH` 指定其他檔案。每條對映各佔一列，未對映的 requestSet 保留，`MappingName` 留空。`MappingConfidence` 表示證據類別。日語以外的語言版本會在 `MappingName` 前增加日語名稱欄 `MappingNameJa`。
+- `SkillDetails.xlsx`：每列是一個技能在某一等級的一個效果，列出數值、作用對象、計算方式、生效條件和單位。數值按「只裝備該技能」求得；隨情形變化的數值按情形分列列出。
+- `MissionData.xlsx`：每個任務完成條件佔一列。`SoloHealth` 列出可能的初始單人最大血量，計入任務難度、隨機血量檔位和 Legendary 倍率。
+- `WeaponActionValues.xlsx` 需要 `MHWS-in-json/ActionMap.json`，可使用同版本輸入執行 `motlist-to-json action-map` 重新產生，或透過 `MHWS_ACTION_MAP_PATH` 指定其他檔案。未對映到的動作 `MappingName` 留空。
