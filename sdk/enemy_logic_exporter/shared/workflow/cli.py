@@ -254,13 +254,16 @@ def parser():
     return result
 
 
-def main():
-    args = parser().parse_args()
+def _run(args):
     work = args.work_dir.resolve()
     if args.command in ("extract", "extract-all"):
         from .environment import STANDARD_INPUTS, fill_standard_inputs
 
         fill_standard_inputs(args, work, STANDARD_INPUTS)
+        from .runtime_log import active_run
+
+        if (diagnostics := active_run()) is not None:
+            diagnostics.inputs(vars(args))
         required = ("index", "helpers") + (
             ("inventory", "requests") if args.command == "extract-all" else ()
         )
@@ -529,3 +532,12 @@ def main():
                 dict(enemyId=args.enemy, graphs=[str(target)]), ensure_ascii=False
             )
         )
+
+
+def main():
+    args = parser().parse_args()
+    from .runtime_log import diagnostic_run
+
+    with diagnostic_run(args.command, args.work_dir, vars(args)) as logger:
+        logger.inputs(vars(args))
+        return _run(args)

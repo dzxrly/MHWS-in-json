@@ -55,4 +55,7 @@ def freeze_native_model(
     graph = extract_model(enemy_id, natives, rules_path=rules_path, model=model)
     verify_rows(exe, native_evidence(graph))
     graph["nativeVerification"] = "matched"
+    from .runtime_log import record_graph
+
+    record_graph(graph)
     return encode_model(graph)

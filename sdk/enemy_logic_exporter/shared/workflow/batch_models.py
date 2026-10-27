@@ -70,6 +70,9 @@ def extract_all_models(
                 context.native(row)
             graph["nativeVerification"] = "matched"
             validate_graph(graph)
+            from .runtime_log import record_graph
+
+            record_graph(graph)
             try:
                 validate_release_graph(graph)
                 eligible, reason = True, ""

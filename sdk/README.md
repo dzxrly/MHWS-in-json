@@ -137,6 +137,14 @@ Unfair eligibility uses the verified player action attribute, two navigation que
 
 Large full research models use compact JSON to retain all logic. If the compact file still exceeds 25 MiB, extraction fails and requires deduplication or sharding.
 
+### Runtime diagnostics
+
+> JSONL stores one JSON event per line. These diagnostic files are separate from model JSON.
+
+After argument parsing, every monster SDK command writes a run log to `<work-dir>/logs/<command>-<UTC time>-<pid>-<run id>.jsonl` and prints its absolute path. The default work directory is `.tmp/enemy-logic-exporter`; `--work-dir` comes before the subcommand, and `MHWS_SDK_WORK_DIR` also configures it. Extraction records native/table context, declared and matched manual policies, requested and active capabilities, and unknown summaries; errors retain their traceback and original failure behavior. Existing unknowns can remain in successful exports. If a log cannot be created or written, the SDK prints a warning and preserves the command result; the log may be missing or incomplete.
+
+The reviewed `LOCAL_HISTORY_TABLES` / `FORMULA_HISTORY_TABLES` UUID policies remain in each monster module. The logs help an LLM trace update failures back through the current resource import closure, IL2CPP method identity and native instructions. See the [table UUID and update investigation guide](enemy_logic_exporter/AGENTS.md#table-uuid-人工策略运行日志与更新反查). Logs and research prototypes stay in `.tmp`, outside published model data.
+
 ### After a game update
 
 You need the new dumped EXE, its IL2CPP dump, re-exported resources, and Ghidra.

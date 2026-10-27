@@ -143,6 +143,13 @@ class NativeRecipeContext:
         try:
             self.pe = self.stack.enter_context(PE(self.exe))
             self.metadata = self.stack.enter_context(Il2cppMetadata(self.metadata_path))
+            from ..workflow.runtime_log import active_run
+
+            if (diagnostics := active_run()) is not None:
+                diagnostics.manual_catalog(
+                    self.metadata, self.rows, self.monsters, self.resource_records
+                )
+                diagnostics.set_stage("native_recipe_validation")
             from ..logic.compound_conditions import verify_compound_conditions
 
             verify_compound_conditions(self.pe, self.metadata)
@@ -168,12 +175,18 @@ class NativeRecipeContext:
         except BaseException:
             self.stack.close()
             raise
+        if diagnostics is not None:
+            diagnostics.set_stage("native_recipe_ready")
         return self
 
     def __exit__(self, *args):
         self.stack.close()
 
     def native(self, row):
+        from ..workflow.runtime_log import active_run
+
+        if (diagnostics := active_run()) is not None:
+            diagnostics.set_method(row)
         # Cache rows may carry a digest of the bytes they were analysed from.
         key = row["address"], row["end"], row.get("nativeSha256")
         if key not in self.native_cache:
@@ -468,6 +481,11 @@ class NativeRecipeContext:
     def build_enemy(self, enemy_id, native_owner):
         from ..logic.machine import Machine
         from ..logic.selectors import recover_selectors
+        from ..workflow.runtime_log import active_run
+
+        diagnostics = active_run()
+        if diagnostics is not None:
+            diagnostics.set_stage("build_enemy:" + enemy_id)
 
         monster = self.monsters[enemy_id]
         combat = monster["slots"]["COMBAT"]
@@ -551,6 +569,11 @@ class NativeRecipeContext:
         tables, selectors, selector_boundaries = [], [], []
         for record in records:
             row, source = record["row"], record["resource"]
+            log_context = dict(
+                enemy_id=enemy_id, table_guid=record["tableGuid"], resource=source
+            )
+            if diagnostics is not None:
+                diagnostics.set_method(row, **log_context)
             body = self.resources.read(source)
             machine = Machine(
                 row,
@@ -583,12 +606,23 @@ class NativeRecipeContext:
             ]
             if len(policies) > 1:
                 raise ValueError("私有随机历史有多个专用恢复策略")
+            if diagnostics is not None:
+                diagnostics.history_requested(
+                    row, policies[0] if policies else None, **log_context
+                )
             machine.table_history = recover_table_history(
                 machine, local=bool(policies and policies[0].get("local"))
             )
             from ..logic.table_history_formula import prepare_history_formula
 
             prepare_history_formula(machine, machine.table_history)
+            if diagnostics is not None:
+                diagnostics.history_enabled(
+                    row,
+                    policies[0] if policies else None,
+                    machine.table_history,
+                    **log_context,
+                )
             moduli = {
                 int(v, 0) for v in re.findall(r"% (0x[0-9a-f]+|\d+)", record["code"])
             }
