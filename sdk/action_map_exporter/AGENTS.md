@@ -9,7 +9,7 @@
 - 不运行游戏或 EXE，不注入或 Hook；EXE 只作为字节数据读取。
 - SDK 与 `src`、`web` 只通过 JSON 交接，不能互相导入。不要依赖另一仓库的 Python 模块、PAK、Release list、原始 PFB/MOTBANK、REE-Lib 或 .NET。
 - 调试输出与一次性脚本放在项目根目录 `.tmp`，不提交 EXE、IL2CPP、反汇编缓存。
-- `motlist-to-json` 负责独立格式转换，本目录独立检查所需资源及其引用闭包。无关 PFB 失败不阻断 ActionMap；必需资源缺失、引用歧义与损坏格式必须报错，不能使用旧文件静默兜底。
+- `motlist-to-json` 负责独立格式转换，本目录独立检查所需资源及其引用闭包。无关 PFB 失败或重复版本不阻断 ActionMap；只在实际解析所需 PFB 时检查版本歧义。必需根文件及任意层子 PFB 缺失、引用歧义与损坏格式必须在写出前报错，并指出缺失资源或候选文件及引用来源，不能使用旧文件静默兜底。
 - Schema 在 `data/action-map-v2.schema.json`，生成端测试在 `tests/sdk/action_map`；`src/shared/action_values/action_map.py` 独立检查消费契约。两端字段、枚举和精确身份规则变化时同步维护。
 - 只有直接游戏代码或资源证据支持的关系才能标记为 `proven`；推导关系保留 `derived` 或 `structural`。继承、运行时规则、未解析动作和条件均须保留，不能为提高覆盖率而升级证据等级。
 - 保持确定性排序与原子写出。生成失败时保留原输出；临时生成使用 `-o .tmp/action-map/ActionMap.json`。

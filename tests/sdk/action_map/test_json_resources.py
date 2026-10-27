@@ -121,11 +121,10 @@ class JsonResourcesTests(unittest.TestCase):
                 root,
                 [
                     "GameDesign/Player/ActionData/Wp00/Shell/Root.pfb",
-                    "Missing.pfb",
                 ],
             )
             self.assertEqual(len(catalog.documents), 2)
-            self.assertEqual(catalog.missing_prefabs, ("Missing.pfb",))
+            self.assertEqual(catalog.missing_prefabs, ())
             document = catalog.find(
                 "natives/STM/GameDesign/Player/ActionData/Wp00/Shell/Root.pfb.18"
             )
@@ -150,6 +149,61 @@ class JsonResourcesTests(unittest.TestCase):
             )
             with self.assertRaisesRegex(ValueError, "同一 PFB"):
                 PfbResourceCatalog.load_from_directory(root, ["Other/Child.pfb"])
+
+    def test_required_prefab_roots_and_nested_dependencies_must_exist(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            with self.assertRaisesRegex(FileNotFoundError, "missing.pfb"):
+                PfbResourceCatalog.load_from_directory(root, ["Missing.pfb"])
+            write(
+                root,
+                "STM/Root.pfb.18.json",
+                {"_format": "mhws_pfb_v1", "resources": ["Other/Child.pfb"]},
+            )
+            write(
+                root,
+                "STM/Other/Child.pfb.18.json",
+                {"_format": "mhws_pfb_v1", "resources": ["Missing.pfb"]},
+            )
+            with self.assertRaisesRegex(
+                FileNotFoundError, r"missing.pfb.*Other/Child.pfb.18"
+            ):
+                PfbResourceCatalog.load_from_directory(root, ["Root.pfb"])
+
+    def test_unrelated_duplicate_and_malformed_prefabs_are_outside_closure(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            write(
+                root,
+                "STM/Needed.pfb.18.json",
+                {"_format": "mhws_pfb_v1", "resources": []},
+            )
+            for version in (18, 19):
+                write(root, f"STM/Unrelated.pfb.{version}.json", {})
+            (root / "STM/Unrelated.pfb.18.json").write_text(
+                "not JSON", encoding="utf-8"
+            )
+            catalog = PfbResourceCatalog.load_from_directory(root, ["Needed.pfb"])
+            self.assertEqual([d.prefab_path for d in catalog.documents], ["Needed.pfb"])
+
+    def test_required_nested_prefab_ambiguity_is_rejected_at_reference(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            write(
+                root,
+                "STM/Needed.pfb.18.json",
+                {"_format": "mhws_pfb_v1", "resources": ["Other/Child.pfb"]},
+            )
+            for version in (18, 19):
+                write(
+                    root,
+                    f"STM/Other/Child.pfb.{version}.json",
+                    {"_format": "mhws_pfb_v1", "resources": []},
+                )
+            with self.assertRaisesRegex(
+                ValueError, r"同一 PFB other/child.pfb.*Needed.pfb.18"
+            ):
+                PfbResourceCatalog.load_from_directory(root, ["Needed.pfb"])
 
     def test_malformed_prefab_does_not_become_an_empty_resource_table(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -221,6 +275,65 @@ class ExportBoundaryTests(unittest.TestCase):
                     build_action_map(options)
                 resource.assert_not_called()
             self.assertEqual(output.read_bytes(), b"previous")
+
+    def test_required_prefab_failure_preserves_previous_action_map(self):
+        for ambiguous in (False, True):
+            with self.subTest(
+                ambiguous=ambiguous
+            ), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                exe, metadata, output = (
+                    root / name
+                    for name in ("dump.exe", "metadata.json", "ActionMap.json")
+                )
+                exe.write_bytes(b"fixture")
+                metadata.write_text("{}", encoding="utf-8")
+                output.write_bytes(b"previous")
+                write(
+                    root,
+                    "STM/Needed.pfb.18.json",
+                    {"_format": "mhws_pfb_v1", "resources": ["Child.pfb"]},
+                )
+                if ambiguous:
+                    for version in (18, 19):
+                        write(
+                            root,
+                            f"STM/Child.pfb.{version}.json",
+                            {"_format": "mhws_pfb_v1", "resources": []},
+                        )
+                stubs = {
+                    "shared.native_validation.load_native_metadata": object(),
+                    "shared.native_validation.verify_native_rules": None,
+                    "builder.ActionDataCatalog.load": SimpleNamespace(
+                        actions=[], natives_directory=root
+                    ),
+                    "builder.MotbankCatalog.load_from_directory": SimpleNamespace(
+                        entries=[]
+                    ),
+                    "builder.MotlistJsonCatalog.load": SimpleNamespace(documents=[]),
+                    "builder.MotionTargetCatalog.build": SimpleNamespace(targets=[]),
+                    "builder.MotionGroupCatalog.load": SimpleNamespace(
+                        groups=[], verified_extends=0
+                    ),
+                    "builder.RequestSetCatalog.load": SimpleNamespace(records=[]),
+                    "builder.TrackColliderCatalog.load": SimpleNamespace(routes=[]),
+                    "builder.ShellCatalog.load": SimpleNamespace(
+                        entries=[SimpleNamespace(prefab_path="Needed.pfb")]
+                    ),
+                }
+                with contextlib.ExitStack() as stack:
+                    for target, result in stubs.items():
+                        stack.enter_context(
+                            patch(
+                                "sdk.action_map_exporter." + target, return_value=result
+                            )
+                        )
+                    with self.assertRaises(
+                        ValueError if ambiguous else FileNotFoundError
+                    ):
+                        build_action_map(ActionMapOptions(exe, metadata, root, output))
+                self.assertEqual(output.read_bytes(), b"previous")
+                self.assertEqual(list(root.glob("*.tmp")), [])
 
     def test_production_package_imports_no_consumer_or_retired_runtime(self):
         package = Path(__file__).resolve().parents[3] / "sdk/action_map_exporter"

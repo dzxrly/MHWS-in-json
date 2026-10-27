@@ -39,26 +39,36 @@ class PfbResourceCatalog:
         }
         if not requested:
             return cls([])
-        paths: dict[str, Path] = {}
+        paths: dict[str, list[Path]] = {}
         for path in sorted(root.rglob("*.pfb.*.json"), key=lambda p: str(p).casefold()):
             key = canonical_prefab_path(path.relative_to(root).as_posix()).casefold()
-            if key in paths:
-                raise ValueError(f"多个 JSON 对应同一 PFB {key}: {paths[key]}, {path}")
-            paths[key] = path
+            paths.setdefault(key, []).append(path)
         selected = {
             key for key in paths if key.startswith(_ACTION_DATA_PREFIX.casefold())
         } | set(requested)
-        pending = list(sorted(selected))
+        pending = [
+            (key, "请求资源" if key in requested else "Player/ActionData")
+            for key in sorted(selected)
+        ]
         documents: dict[str, PfbResourceDocument] = {}
         visited: set[str] = set()
         while pending:
-            key = pending.pop()
+            key, origin = pending.pop()
             if key in visited:
                 continue
             visited.add(key)
-            path = paths.get(key)
-            if path is None:
-                continue
+            candidates = paths.get(key, [])
+            if not candidates:
+                raise FileNotFoundError(
+                    f"所需 PFB JSON 缺失: {key}（引用来源: {origin}）"
+                )
+            if len(candidates) != 1:
+                raise ValueError(
+                    f"多个 JSON 对应同一 PFB {key}: "
+                    + ", ".join(str(path) for path in candidates)
+                    + f"（引用来源: {origin}）"
+                )
+            path = candidates[0]
             data = json.loads(path.read_text(encoding="utf-8"))
             if not isinstance(data, dict) or data.get("_format") != PFB_FORMAT:
                 raise ValueError(f"不是 {PFB_FORMAT} PFB JSON: {path}")
@@ -82,18 +92,12 @@ class PfbResourceCatalog:
             )
             documents[key] = document
             pending.extend(
-                canonical_prefab_path(p).casefold()
+                (canonical_prefab_path(p).casefold(), document.archive_path)
                 for p in document.resources
                 if ".pfb" in p.casefold()
             )
         return cls(
             sorted(documents.values(), key=lambda d: d.prefab_path.casefold()),
-            tuple(
-                sorted(
-                    (requested[k] for k in requested if k not in documents),
-                    key=str.casefold,
-                )
-            ),
         )
 
     def find(self, prefab_path: str) -> PfbResourceDocument | None:
