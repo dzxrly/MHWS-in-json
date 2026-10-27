@@ -12,13 +12,23 @@ LOCAL_HISTORY_TABLES = {
 }
 
 
+FORMULA_HISTORY_TABLES = {
+    "app.Em0002_00_BTable_Life_Export": ("table_55840a74_9f97_4b4b_b22b_2b051f3869a0",)
+}
+
+
 def table_history_policy(row):
     method = row["method"]
-    stems = LOCAL_HISTORY_TABLES.get(row["type"], ())
-    local = any(
-        method.startswith(stem) and method[len(stem) :].isdigit() for stem in stems
-    )
-    return dict(local=True) if local else None
+    policy = {}
+    local = LOCAL_HISTORY_TABLES.get(row["type"], ())
+    if any(method.startswith(stem) and method[len(stem) :].isdigit() for stem in local):
+        policy["local"] = True
+    formula = FORMULA_HISTORY_TABLES.get(row["type"], ())
+    if any(
+        method.startswith(stem) and method[len(stem) :].isdigit() for stem in formula
+    ):
+        policy["formula"] = True
+    return policy or None
 
 
 # Version-specific native identities used by this recipe (game 1.42.0.2).

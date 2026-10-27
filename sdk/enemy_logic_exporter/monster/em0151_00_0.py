@@ -11,13 +11,25 @@ LOCAL_HISTORY_TABLES = {
 }
 
 
+FORMULA_HISTORY_TABLES = {
+    "app.Em0151_00_BTable_AttackStay_Export": (
+        "table_99d48ac8_85b4_4b8f_a107_7da23c5f5889",
+    )
+}
+
+
 def table_history_policy(row):
     method = row["method"]
-    stems = LOCAL_HISTORY_TABLES.get(row["type"], ())
-    local = any(
-        method.startswith(stem) and method[len(stem) :].isdigit() for stem in stems
-    )
-    return dict(local=True) if local else None
+    policy = {}
+    local = LOCAL_HISTORY_TABLES.get(row["type"], ())
+    if any(method.startswith(stem) and method[len(stem) :].isdigit() for stem in local):
+        policy["local"] = True
+    formula = FORMULA_HISTORY_TABLES.get(row["type"], ())
+    if any(
+        method.startswith(stem) and method[len(stem) :].isdigit() for stem in formula
+    ):
+        policy["formula"] = True
+    return policy or None
 
 
 def extract(context):

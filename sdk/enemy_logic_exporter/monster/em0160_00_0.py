@@ -17,8 +17,15 @@ LOCAL_HISTORY_TABLES = (
     "table_0d7f8b3f_9c2b_457a_83f6_40eddaa80312",
 )
 FORMULA_HISTORY_TABLES = (
+    "table_0d7f8b3f_9c2b_457a_83f6_40eddaa80312",
+    "table_1905f867_cfa1_45b8_9090_96153d27452c",
+    "table_4d746cec_d65b_4a7c_83de_480f89f3ba02",
     "table_5a438c68_cd51_4292_ac34_b1406d7fa238",
     "table_70850a29_17cd_4bc1_b942_ac6177bb861c",
+    "table_9538cc7e_e559_4e5a_9a27_e5edf682174d",
+    "table_b703035f_fa40_4c4c_a4eb_629aa0247b36",
+    "table_bf378c81_ebc0_473d_b47b_ffc66f67ac77",
+    "table_d56a9f9d_b460_432b_9c4f_70c9afe9c517",
 )
 LOCAL_HISTORY_EXPORT = "app.Em0160_00_BTable_CommonAttack_Export"
 

@@ -14,6 +14,24 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class PlayerTreeTests(unittest.TestCase):
+    def test_target_native_boundary_preserves_normal_return_contract(self):
+        compiler = PlayerCompiler(dict(tables=[], rules=dict(rules=[])))
+        boundary = compiler.node(
+            "t",
+            dict(
+                id="call",
+                kind="unknown",
+                boundaryKind="native_call_effects",
+                reason="持有调度尚未闭合",
+                continuationKind="normal_return",
+                next="tail",
+            ),
+        )
+        self.assertEqual(boundary["continuationKind"], "normal_return")
+        self.assertEqual(boundary["note"], "持有调度尚未闭合")
+        self.assertEqual(boundary["next"], "t/tail")
+        self.assertNotIn("resume", boundary)
+
     def test_partial_request_boundary_uses_normal_return_and_delays_tail_writes(self):
         compiler = PlayerCompiler(dict(tables=[], rules=dict(rules=[])))
         boundary = compiler.node(
@@ -117,6 +135,33 @@ const before=step(view,initial(view,{id:'first'},{[draw]:1,[high]:-1,[low]:-1}))
 assert.equal(before.truth,true);
 const after=step(view,before.children[0].state);
 assert.equal(after.sourceRef,'second');assert.equal(after.truth,false);assert.equal(after.children.length,1);
+// Interleaved pairs survive both another pair's write and action resumption.
+const aMax='table_history:pairA:max',aMin='table_history:pairA:min',bMax='table_history:pairB:max',bMin='table_history:pairB:min';
+const aDraw='drawA',bDraw='drawB';
+const pair=(maxKey,minKey,drawKey)=>({op:'table_history_interval',maxKey,minKey,drawKey,modulus:100,threshold:50});
+const interleaved={scenario:{inputs:{}},persistentState:[aMax,aMin,bMax,bMin],nodes:{
+ A:{kind:'condition',sourceRef:'A',condition:pair(aMax,aMin,aDraw),true:'writeA',false:'done'},
+ writeA:{kind:'mutation',sourceRef:'writeA',stateUpdates:{[aMax]:51,[aMin]:0},invalidateSnapshot:false,next:'actionA'},
+ actionA:{kind:'action',sourceRef:'actionA',resume:'B'},
+ B:{kind:'condition',sourceRef:'B',condition:pair(bMax,bMin,bDraw),true:'done',false:'writeB'},
+ writeB:{kind:'mutation',sourceRef:'writeB',stateUpdates:{[bMax]:101,[bMin]:50},invalidateSnapshot:false,next:'actionB'},
+ actionB:{kind:'action',sourceRef:'actionB',resume:'againA'},
+ againA:{kind:'condition',sourceRef:'againA',condition:pair(aMax,aMin,aDraw),true:'done',false:'done'},
+ done:{kind:'return',sourceRef:'done'}
+}};
+const firstA=step(interleaved,initial(interleaved,{id:'A'},{[aMax]:-1,[aMin]:-1,[bMax]:-1,[bMin]:-1,[aDraw]:1}));
+assert.equal(firstA.truth,true);
+const actionA=step(interleaved,firstA.children[0].state);
+assert.equal(actionA.sourceRef,'actionA');
+const stateB=actionA.children[0].state;stateB.inputs[bDraw]=99;
+const firstB=step(interleaved,stateB);assert.equal(firstB.truth,false);
+const actionB=step(interleaved,firstB.children[0].state);
+assert.equal(actionB.sourceRef,'actionB');
+const stateAgain=actionB.children[0].state;stateAgain.inputs[aDraw]=1;
+const again=step(interleaved,stateAgain);
+assert.equal(again.truth,false); // A still has (51,0); B's (101,50) cannot replace it.
+assert.equal(again.children[0].state.inputs[aMax],51);
+assert.equal(again.children[0].state.inputs[bMax],101);
 }).catch(e=>{console.error(e);process.exit(1)});
 """
         result = subprocess.run(

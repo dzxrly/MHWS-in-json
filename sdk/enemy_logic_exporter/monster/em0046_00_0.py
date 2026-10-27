@@ -18,6 +18,22 @@ SWIM_TIMEOUT_KEY = "extend:app.cEm0046_00Extend._SwimCombatTimer._Param._IsTimeO
 SWIM_TIMER_EPSILON = 1.1920928955078125e-7
 
 
+FORMULA_HISTORY_TABLES = {
+    "app.Em0046_00_BTable_Life_Export": ("table_9fcfce5d_de75_40ed_94a2_9019e106addc",)
+}
+
+
+def table_history_policy(row):
+    method = row["method"]
+    policy = {}
+    formula = FORMULA_HISTORY_TABLES.get(row["type"], ())
+    if any(
+        method.startswith(stem) and method[len(stem) :].isdigit() for stem in formula
+    ):
+        policy["formula"] = True
+    return policy or None
+
+
 def _geometry_proof():
     import json
     from ..shared.config import EVIDENCE_DIR
@@ -258,8 +274,8 @@ FIELD_CHECKS = {
             dict(
                 type="app.btable.Em0046_00BTableCommand.cIsSwimCombatPhase",
                 method="onExecute1233781",
-                address="0x144195220",
-                end="0x144195270",
+                address="0x144194fe0",
+                end="0x144195030",
             )
         ],
         summary="IsSwimCombatPhase 成立且 DoneSwimCombatPhaseEndAction 不成立",

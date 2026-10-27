@@ -250,6 +250,8 @@ def build_chain(
                 recovered = None
                 if (
                     node["kind"] == "condition"
+                    and not node.get("reviewedBooleanCommand")
+                    and not node.get("reviewedTargetCommand")
                     and node.get("expectedCommandType")
                     and expression_unknown(node.get("expression", dict(kind="unknown")))
                 ):
@@ -266,6 +268,8 @@ def build_chain(
                 if (
                     recovered is None
                     and node["kind"] == "condition"
+                    and not node.get("reviewedBooleanCommand")
+                    and not node.get("reviewedTargetCommand")
                     and expression_unknown(node.get("expression", dict(kind="unknown")))
                     and leaf
                     and not leaf["argumentField"]
@@ -354,6 +358,24 @@ def build_chain(
                             sourceResource=source,
                         )
                     )
+            elif (
+                node["kind"] == "unknown"
+                and isinstance(node.get("parameterBindingBoundary"), dict)
+                and node["parameterBindingBoundary"].get("reason")
+                == "missing_action_parameter_guid"
+            ):
+                # Rebinding an extracted graph must retain this existing
+                # unknown request in the census without retrying or guessing
+                # its missing parameter. The local list starts empty each run.
+                action_binding_boundaries.append(
+                    dict(
+                        node["parameterBindingBoundary"],
+                        tableGuid=table["tableGuid"],
+                        node=node["id"],
+                        requestSite=node.get("requestSite"),
+                        sourceResource=source,
+                    )
+                )
             elif node["kind"] == "mutation":
                 if node["effect"] == "set_timer_state":
                     node["timerGuid"] = scalar(argument["_TargetVariableIndex"])

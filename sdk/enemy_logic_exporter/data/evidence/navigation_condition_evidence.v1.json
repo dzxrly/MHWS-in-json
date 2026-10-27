@@ -5,94 +5,213 @@
       {
         "type": "app.btable.EmCommonCommand.cCheckDestinationRelation",
         "method": "onExecute1237100",
-        "address": "0x147cb8e40",
-        "end": "0x147cb8ec5"
+        "address": "0x147cb8c00",
+        "end": "0x147cb8c85"
       },
       {
         "type": "app.EnemyUtil",
         "method": "checkRelation869213",
-        "address": "0x1456355e0",
-        "end": "0x145635bc5"
+        "address": "0x1456353a0",
+        "end": "0x145635985"
       },
       {
         "type": "native.helper",
         "method": "attribute_bit_test",
-        "address": "0x14b10c220",
-        "end": "0x14b10c24a"
+        "address": "0x14b10d040",
+        "end": "0x14b10d06a"
       },
       {
         "type": "native.helper",
         "method": "vec3_subtract",
-        "address": "0x14b10aa00",
-        "end": "0x14b10aa2e"
+        "address": "0x14b10b820",
+        "end": "0x14b10b84e"
       },
       {
         "type": "native.helper",
         "method": "wall_attribute_copy",
-        "address": "0x1459dad30",
-        "end": "0x1459dad4b"
+        "address": "0x1459daaf0",
+        "end": "0x1459dab0b"
       }
     ],
     "unfair_active": [
       {
         "type": "app.btable.EmCommonCommand.cCheckUnfairRoutineActive",
         "method": "onExecute1237081",
-        "address": "0x146758520",
-        "end": "0x146758678"
+        "address": "0x1467582e0",
+        "end": "0x146758438",
+        "nativeBytes": "5657534881ec80000000488b054f84f80d4831e048894424784d85c074124c89c6498b00488b00483b053275fe0d741c31db488b4c24784831e1e8f1209d0489d84881c4800000005b5f5ec34889cf488b4628488b4068488b40404c8b8000010000c744242000000000488d5c24504889d94889fa41b101e853292700488b03488944244031db83f8ff74a648b9ffffffff000000804821c8759731db488d5424404889f94531c04531c9e840b6d4014885c00f8479ffffff4c8b40184d85c00f846affffff49837810000f845fffffff488b4628488b5068c5f828052f38090e4c8d4c2450c4c1782901c5fa10053538090ec5fb100d2538090ec4c17b114910c4c17a114118488b053ab56f07488d4c244848890131db885c243048894c2428885c2420c6442438014889f9e8bee8edfe84c00f84f8feffff488b4628488b4068488b4040488b8078020000c6404401b301e9dafeffff",
+        "signature": {
+          "params": [
+            "ace.btable.cCommandWork"
+          ],
+          "returns": "System.Boolean"
+        }
       },
       {
         "type": "app.EnemyUtil",
         "method": "checkTargetCharaUnfair869230",
-        "address": "0x145636f10",
-        "end": "0x145637808"
+        "address": "0x145636cd0",
+        "end": "0x1456375c8",
+        "nativeBytes": "4157415641554154565755534881ec28020000c57829a42410020000c578299c2400020000c578299424f0010000c578298c24e0010000c578298424d0010000c5f829bc24c0010000c5f829b424b00100004c89c34889d74889ce488b842498020000488b0d069a0a0f4831e148898c24a8010000458a21c4c17a107118c4c17b107910440fb628c57a1040044c8b7240498b96e80200004889f141b881000000e85aaca2fa84c07519498b96d80200004889f141b881000000e811f3bdfa84c0746731ed488b8c24a80100004831e1e86b36af0589e8c5f828b424b0010000c5f828bc24c0010000c578288424d0010000c578288c24e0010000c578289424f0010000c578289c2400020000c57828a424100200004881c4280200005b5d5f5e415c415d415e415fc380bc24a8020000007429488b4740488b80d80100008b481483f90d0f8478ffffff83f90a750d83b8e0000000040f8466ffffff41b7014885db0f841f03000048837b10000f8414030000488b83e0000000488b50204889f1e8198ce3014885c074364989c6488b00488b08488b15a4eb0f0fe82fb39e0584c0741d498b56704889f141b81d000000e849aba2fa40b50184c00f8503ffffff80bc2490020000000f84b5020000488b4740488b8078020000807813000f84a0020000488b8b90030000488b4958488b49104823482048894c24580f84820200004c8b7018418b463c40b501413b46340f8eadfeffff488b15e11b130f4889f14531c0e8d6e39e054989c78b400885c078294d39771074274c89f1e89e1b9d05498b4f104889c8f04d0fb1771075f14885c9740be895399d05eb044d89771048bdffffffffffffff7f4d8b47104c8dbc24e80000004889f14c89fae8fe232101498b47104c8db4240001000049894610c4c1781007c4c17829064c8d7df94d21f7b001c46279180da2833b08c57a1015feed5f08894424544889f14c89f2e8bb6bf10384c00f84aa010000498b6f10488b4740488b8078020000488b50184889f14989e8e8c5c011004885c0741848b9ffffffffffffff7f4821c8c57a105808c57b1020eb27488b1569910d0f4889f14531c0e8e6e29e054889f14889c2e87b80e305c4411857e4c4412057db48856c24587484488b43104885c00f84a4050000488b48184885c90f8497050000488dac24400100004889eae8b0179d05c5fa10842448010000c5fb108c2440010000c5fb118c24d0000000c5fa118424d8000000c57813a424c0000000c57a119c24c80000004889e94889f24c8d8424d00000004c8d8c24c0000000e89f47ad05c5fb10842440010000c5fb118424b0000000c5fa10842448010000c5fa118424b8000000488b4718c5fa104018c5fb104810c5fb118c24a0000000c5fa118424a8000000c57813a42490000000c57a119c24980000004889e94889f24c8d8424a00000004c8d8c2490000000e82e47ad05c5fa10842448010000c5fb108c2440010000c5fb118c2480000000c5fa118424880000004889f1488d9424b00000004c8d842480000000e802325100c5b054c040b50131c0c4c1782ec20f8244feffffe94efcffff40b501f6442454010f8540fcffff4531ff488b4740488b800801000083785400400f95c5488b05eea71e0f4c8b70604584e40f84770300004000ed488b0dffe9210f31c083b9880100000d0f94c14585ed750e88c8488d0d258d6008c57a1004814080c5024584ff740ac5fa1005db893b08eb1931c04883bb10010000000f94c0488d0d018d6008c5fa1004814c8d4c2470c4c1781339c4c17a117108488b053dc78108488d8c24a001000048890148894c244040886c2430c57a11442428c5fa114424204c8d8424400100004889f14c89f2e8e14a000040b50184c00f846bfbffff488b474080bc249002000000750a80bc24a0020000007470488b8808010000837948137463488b88d8010000837914007556498b466848638c2458010000488d0c4948c1e1044801c14883c1208b4008480fbaf13f488b4118488b4820488b4038488b8980000000486394245401000048c1e2040fb64c112af644c826200f85e7faffff488b4740488b8008010000837854027452498b466848638c2458010000488d0c4948c1e1044801c14883c1208b4008480fbaf13f488b4118488b4820488b4038488b8980000000486394245401000048c1e2040fb64c112af644c821040f8584faffff4c8d4c2460c4c1781339c4c17a117108488b0500c68108488d8c249801000048890148894c2440c644243001c74424280000a040c7442420000020414c8d8424200100004889f14c89f2e8a049000084c07452498b466848638c2438010000488d0c4948c1e1044801c14883c1208b4008480fbaf13f488b4118488b4820488b4038488b8980000000486394243401000048c1e2040fb64c112af644c823080f85dff9ffff488b4740488b80d8010000837814020f85c8f9ffff4584ff0f8546010000488b43104885c00f84d6010000488b48184885c90f84c90100004c8db424800100004c89f2e8e2139d05c4c17a104608c4c17b100ec4c178133ec4c17a1176084c8d8c2470010000c4c17b1109c4c17a1141084c8db424600100004c8d8424800100004c89f14889f2e8de43ad05c4c17a1006c4c17a104e04c4c17a105608c5f259c9c5fa59c0c5fa58c1c5ea59cac5f258c0c5fa100dd1d53c08c5f82ec80f86a1000000488b93d0000000488b02488b40e84889f1ff10488b4018488b4f40488b89d80100008b91e0000000448b0534f0180f85d278134139d07e0e488b4820480fa3d10f82d4f8ffff8b0d0ff0180f85c90f88dd0000004139c80f8ed400000041b80100000049d3e039ca0f84aef8ffff4c2340200f84a2f8ffffe99ff8ffff4584ff0f8594f8ffff488b83100100004885c0746bc5fa107018c5fb107810e965fcffff488b155fec260f4c8d842480010000c4c1781338c4c17a1170084889f141b902000000e8bea28d04488b4f40488b89d80100008b89e000000039c80f8438f8ffff8b1573ef180f39d00f842cf8ffff39d10f8522f8ffffe91ff8ffff488b43104885c07438488b48184885c9742f4c8da424400100004c89e2e848129d05c4c17b103c24c4c17a10742408e9d5fbffff39ca0f85e1f7ffffe9def7ffff4889f1ba460000004531c0e8298ae305cc",
+        "signature": {
+          "params": [
+            "app.cEnemyContextHolder",
+            "app.HunterCharacter",
+            "System.Nullable`1<via.vec3>",
+            "System.Boolean",
+            "System.Nullable`1<System.Single>",
+            "System.Boolean",
+            "System.Boolean"
+          ],
+          "returns": "System.Boolean"
+        }
+      },
+      {
+        "type": "app.CharacterBase",
+        "method": "get_BaseActionController728344",
+        "address": "0x1448b3470",
+        "end": "0x1448b347c",
+        "nativeBytes": "488b82e0000000488b4020c3",
+        "signature": {
+          "params": [],
+          "returns": "ace.cActionController"
+        }
+      },
+      {
+        "type": "ace.cActionController",
+        "method": "get_CurrentAction246641",
+        "address": "0x14746fa70",
+        "end": "0x14746fac5",
+        "nativeBytes": "564883ec208b423485c078234889ce8b4a3885c97819488b52203942187618488b5210488b44c220488b44c820eb0231c04883c4205ec3488b1582032a0d4889f14531c0e81758bb034889f14889c2e8acf5ff03cc",
+        "signature": {
+          "params": [],
+          "returns": "ace.cActionBase"
+        }
+      },
+      {
+        "type": "app.CharacterBase",
+        "method": "get_GroundInfo728354",
+        "address": "0x14b796840",
+        "end": "0x14b796848",
+        "nativeBytes": "488b8210010000c3",
+        "signature": {
+          "params": [],
+          "returns": "app.cGroundInfo"
+        }
+      },
+      {
+        "type": "app.CharacterBase",
+        "method": "get_CharacterContextHolder728301",
+        "address": "0x14b76ebe0",
+        "end": "0x14b76ebe8",
+        "nativeBytes": "488b82d0000000c3",
+        "signature": {
+          "params": [],
+          "returns": "app.ICharacterContextHolder"
+        }
+      },
+      {
+        "type": "app.CharacterBase",
+        "method": "get_CharaContext728303",
+        "address": "0x14492a1b0",
+        "end": "0x14492a1c4",
+        "nativeBytes": "488b92d0000000488b02488b40e8488b0048ffe0",
+        "signature": {
+          "params": [],
+          "returns": "app.cCharacterContext"
+        }
+      },
+      {
+        "type": "app.cPlayerContextHolder",
+        "method": "get_Chara322009",
+        "address": "0x14b109560",
+        "end": "0x14b109565",
+        "nativeBytes": "488b4238c3",
+        "signature": {
+          "params": [],
+          "returns": "app.cCharacterContext"
+        }
+      },
+      {
+        "type": "app.VoxelDataManager",
+        "method": "getDataInfoForNav338334",
+        "address": "0x14563bd00",
+        "end": "0x14563c0f4",
+        "nativeBytes": "4157415641554154565755534881ecb8010000c578298424a0010000c5f829bc2490010000c5f829b424800100004c89c64889d74889cb8a842430020000488b8c2440020000488b15f3490a0f4831e2488994247801000041bf00000080c4c17a107108c4c17b1039c57a104104803900488d0df8473b0848898c242001000048898c24f000000048898c24c000000048898c2490000000488b0d91a1110fc5f857c0c5fc11842450010000c784245801000000000080488b494048898c2450010000888424680100004889bc24600100000f846c010000488b05c13d180f488b0d0270120f4c8db424200100004d897e08488b494049890e41c7461001000000498946288b4808c5f877e800b19c05498946204c8dac24500100004d896e18488d4424704c8930c744245000000000c7442450000000804c8d4c2460c4c1781339c4c17a117108c4c17a2cc84889442428894c24204889d94889fa4989f0e83ca2a5ff40b50184c00f85440200004c8d742460c4c178133ec4c17a1176084c8d7c24504889d94c89fa4d89f0e81efaac05488b05073d180f488b0d486f120f4c8da424f0000000ba000000804989542408488b494049890c2441c74424100100000049894424288b4808e840b09c0549894424204d896c2418488d4424404c8920418b4f08894c2478498b0f41bf0000008048894c2470c784248800000000000000c7842488000000000000808b4c247841894e08488b4c247049890ec4417a11460c48894424204c8d4c24604889d94889fa4989f0e8f4a7a5ff84c00f856f010000c57a10842420020000488b054c3c180f488b0d8d6e120f4c8db424c00000004d897e08488b494049890e41c7461001000000498946288b4808c5f877e88baf9c05498946204c8dac24500100004d896e18488d4424704c8930c744244000000000c7442440000000804c8d4c2460c4c1781339c4c17a117108c4c17a2cc84889442428894c24204889d94889fa4989f0e8c7a0a5ff40b50184c00f85cf000000c57a108424280200004c8d742460c4c178133ec4c17a117608bd000000804c8d7c24404889d94c89fa4d89f0e89bf8ac05488b05843b180f488b0dc56d120f4c8da4249000000049896c2408488b494049890c2441c74424100100000049894424288b4808e8c2ae9c0549894424204d896c2418488d8424880000004c8920418b4f08894c2478498b0f48894c2470c744243800000000c7442438000000808b4c247841894e08488b4c247049890ec4417a11460c48894424204c8d4c24604889d94889fa4989f0e87fa6a5ff89c5488b8c24780100004831e1e84de3ae0589e8c5f828b42480010000c5f828bc2490010000c578288424a00100004881c4b80100005b5d5f5e415c415d415e415fc3",
+        "signature": {
+          "params": [
+            "ace.voxel.cVoxelBufferBase.DATA_INFO",
+            "via.vec3",
+            "System.Single",
+            "System.Single",
+            "System.Byte",
+            "System.Func`2<ace.voxel.cVoxelBufferBase.DATA_INFO,System.Boolean>",
+            "System.Nullable`1<System.Single>"
+          ],
+          "returns": "System.Boolean"
+        }
+      },
+      {
+        "type": "app.EnemyManager",
+        "method": "getAreaNoNearPoint611329",
+        "address": "0x149f11800",
+        "end": "0x149f11afc",
+        "nativeBytes": "4157415641554154565755534881ec38010000c578298c2420010000c57829842410010000c5f829bc2400010000c5f829b424f00000004489cf48895424284989ce488b05f7ee7c0a4831e048898424e8000000c4c17a107008c4c17b10388b35774c8b0a4c8dbc2490000000c4c17b113fc4c17a1177084c8da424d00000004c89e24d89f8e825a01f01488b05defa7f0a488b50384c89f1e842e010f6c7401020000000c7402002000000418b4c240841894f08498b0c2449890f488b0ddd898b0a41c7470c0000000048894424204c8d7c24304c8d8424900000004c89fa41b901000000e8152b83004d8b3f4d85ff74084c89f9e8c58f0f014c89f9e82d51200185c00f84a70100004c89f9e81d51200185c00f8497010000c1e70831edc57a10057ce1ad034c8da424900000004c8d6c2430c4413057c94c89f989eae81c512001c5f82800c5f829442430c5f8284010c5f829442440c5f8284020c5f829442450c5f8284030c5f8294424604c89e14c89eae886051001c5fa108424b4000000c4c1782ec10f87120100004c89f989eae8980414014885c00f84ff000000488b58384885db0f84f2000000488b03488b00483b0545bb840a0f85df000000448b83a40000004109f8488b442428488b8018020000488b50104c89f14d89e9e88a7cedfb488b4c2430488d51104c8d41184883c11484c0488d05307e8e0a480f44d0488d05297e8e0a480f44c8488d05227e8e0a4c0f44c0c4c17a1000c5fa1009c5fa1012c5fa11942480000000c5fa118c2484000000c5fa11842488000000c5f8137c2470c5fa117424784c89e94c89f24c8d8424800000004c8d4c2470e8ba9d1f01c5fa10442430c5fa104c2434c5fa10542438c5f259c9c5fa59c0c5fa58c1c5ea59cac5f258c0c5fa51c0c5782ec0760a8bb3a4000000c57828c0ffc54c89f9e8864f200139c50f8288feffff488b8c24e80000004831e1e84e89210189f0c5f828b424f0000000c5f828bc2400010000c57828842410010000c578288c24200100004881c4380100005b5d5f5e415c415d415e415fc3",
+        "signature": {
+          "params": [
+            "via.vec3",
+            "app.FieldDef.STAGE"
+          ],
+          "returns": "System.Int32"
+        }
       }
     ],
     "occluded": [
       {
         "type": "app.btable.EmCommonCommand.cCheckOccludedToDest",
         "method": "onExecute1237038",
-        "address": "0x144748d80",
-        "end": "0x144748e78"
+        "address": "0x144748b40",
+        "end": "0x144748c38"
       },
       {
         "type": "app.cEmModuleTarget",
         "method": "checkOccluded544377",
-        "address": "0x1469cc4b0",
-        "end": "0x1469cc712"
+        "address": "0x1469cc270",
+        "end": "0x1469cc4d2"
       }
     ],
     "terrain_rise": [
       {
         "type": "app.btable.EmCommonCommand.cCheckRise",
         "method": "onExecute1237192",
-        "address": "0x146e50cb0",
-        "end": "0x146e50e90"
+        "address": "0x146e50a70",
+        "end": "0x146e50c50"
       },
       {
         "type": "app.cEnemyBTableCommandWork",
         "method": "get_TargetPosition577920",
-        "address": "0x1440c6680",
-        "end": "0x1440c673b"
+        "address": "0x1440c6440",
+        "end": "0x1440c64fb"
       }
     ],
     "terrain_to_destination": [
       {
         "type": "app.btable.EmCommonCommand.cCheckTerrainToDestination",
         "method": "onExecute1237196",
-        "address": "0x1476150f0",
-        "end": "0x147615361"
+        "address": "0x147614eb0",
+        "end": "0x147615121"
       },
       {
         "type": "app.cEnemyBTableCommandWork",
         "method": "get_TargetPosition577920",
-        "address": "0x1440c6680",
-        "end": "0x1440c673b"
+        "address": "0x1440c6440",
+        "end": "0x1440c64fb"
       },
       {
         "type": "native.helper",
         "method": "vec3_subtract",
-        "address": "0x14b10aa00",
-        "end": "0x14b10aa2e"
+        "address": "0x14b10b820",
+        "end": "0x14b10b84e"
       }
     ]
   },
@@ -101,7 +220,7 @@
       "manager": "全局量+0x60 处的 app.VoxelDataManager 实例（其方法的 this），且该实例 +0x10 不为空",
       "dataInfoQuery": {
         "method": "app.VoxelDataManager.getDataInfoEmAuto",
-        "address": "0x1457018e0",
+        "address": "0x1457016a0",
         "holder": "EnemyAccessor.ContextHolder",
         "position": "cEnemyContextHolder.Transform（cContextTransform）._Position",
         "booleanArgument": true,
@@ -118,12 +237,12 @@
       },
       "ceilingQuery": {
         "method": "app.VoxelDataManager.getCeilingDist",
-        "address": "0x1457010a0",
+        "address": "0x145700e60",
         "dataInfo": "本次 dataInfoQuery 输出"
       },
       "wallQuery": {
         "method": "app.VoxelDataManager.isBlockByWall(DATA_INFO, vec3, Single)",
-        "address": "0x145700f80",
+        "address": "0x145700d40",
         "vector": "get_TargetPosition − ThisObject.Transform 位置",
         "length": "该向量的水平长度 sqrt(x²+z²)"
       },
@@ -133,7 +252,7 @@
     "destination_relation": {
       "navigationQuery": {
         "method": "app.VoxelDataManager.getDataInfoForNav",
-        "address": "0x14563bf40",
+        "address": "0x14563bd00",
         "position": "holder.Transform.Pos",
         "nativeFloatArguments": [
           50.0,
@@ -148,7 +267,7 @@
       },
       "wallQuery": {
         "method": "app.VoxelDataManager.getWallInfoNearVector",
-        "address": "0x145507880",
+        "address": "0x145507640",
         "vector": "destination-self",
         "dataInfo": "本次navigationQuery输出"
       },
@@ -167,12 +286,216 @@
           "name": "TERRAIN_CHARACTER",
           "value": 0
         },
-        "componentTypeGlobal": "0x1547277c8",
+        "componentTypeGlobal": "0x1547487c8",
         "componentTypeStatus": "unknown",
         "endpointDistanceOffset": 1.0,
         "scope": "回退的组件身份与查询构造未完整核实，保留unknown"
       },
       "runtimeInputPolicy": "缺少原始字段/位值/查询输出时保持未知；禁止传入整个命令的最终布尔结果"
+    },
+    "unfair_active": {
+      "scope": "cCheckUnfairRoutineActive onExecute call to EnemyUtil.checkTargetCharaUnfair only; no identification with a stealth/surprise attack",
+      "arguments": {
+        "nullablePositionHasValue": false,
+        "checkUnfairZone": false,
+        "nullableFloatHasValue": false,
+        "checkVoxelStage101Bit53": false,
+        "checkStageExclusions": true
+      },
+      "position": "CharacterBase.get_GroundInfo().Pos if non-null; otherwise HunterCharacter.GameObject.Transform.Pos. Current native getters prove +0x110 is GroundInfo and +0xd0 is CharacterContextHolder; do not substitute reflected inherited offsets.",
+      "firstQuery": {
+        "method": "app.VoxelDataManager.getDataInfoForNav",
+        "point": "selected position",
+        "floatArguments": [
+          "15 if GroundInfo exists else 20",
+          "10 if global current stage is ST405(13), else 3"
+        ],
+        "byteArgument": "2 for BOSS(0), otherwise 4",
+        "failureResult": true,
+        "attribute": "AppVoxelData._NavNodeAttrArray[VOXEL_DATA._IndexNavNodeAttr], UInt64 bit10; used only for non-ANIMAL category"
+      },
+      "secondQuery": {
+        "method": "app.VoxelDataManager.getDataInfoForNav",
+        "point": "same selected position",
+        "floatArguments": [
+          10,
+          5
+        ],
+        "byteArgument": 1,
+        "attribute": "same lookup in the second returned DATA_INFO, UInt64 bit27",
+        "failureResult": "continue to stage-specific region relation"
+      },
+      "areaRelation": {
+        "stage": "ST103(2) only",
+        "distanceSquared": "float((dx*dx+dy*dy)+dz*dz), selected point minus hunter Transform.Pos; near iff strictly <0.25",
+        "near": "not(valid self area in [0,255) and player merged-combat-area bit(self area & 63)) and (self area==17 or merged bit17)",
+        "far": "EnemyManager.getAreaNoNearPoint(selected point,ST103)!=self area and (returned area==17 or self area==17)",
+        "bits": "cCharacterContext.FieldAreaInfo._MergedAreaBit_EnemyCombatArea, UInt64; area17 shares the same bit in both reads"
+      },
+      "referenceBoundary": "When the selected point needs Transform.Pos, or the ST103 distance branch reads it, a missing GameObject/Transform calls error handler 0x46 and has no normal Boolean return. The formula retains an explicit unknown on exactly those branches. Other input query results refer only to normal native returns.",
+      "unresolvedNames": "The semantic editor labels of NavNodeAttrArray bit10 and bit27 are not established; keep their verified raw member/bit identities."
+    }
+  },
+  "unfairConstants": {
+    "specialCombatArea": 17,
+    "combatAreaLimit": 255,
+    "nearGroundDistanceSquared": 0.25
+  },
+  "unfairFieldChecks": [
+    {
+      "type": "app.cCharacterContext",
+      "field": "<FieldAreaInfo>k__BackingField",
+      "fieldType": "app.cFieldAreaInfo",
+      "offset": "0x18"
+    },
+    {
+      "type": "app.cFieldAreaInfo",
+      "field": "_MergedAreaBit_EnemyCombatArea",
+      "fieldType": "ace.BIT_FLAG64",
+      "offset": "0x20"
+    },
+    {
+      "type": "app.cHunterActionBase",
+      "field": "_Attr",
+      "fieldType": "ace.Bitset`1<app.HunterDef.ACTION_ATTR>",
+      "offset": "0x70"
+    },
+    {
+      "type": "app.cEmModuleBasic",
+      "field": "Category",
+      "fieldType": "app.EnemyDef.CATEGORY",
+      "offset": "0x54"
+    },
+    {
+      "type": "app.user_data.AppVoxelData",
+      "field": "_NavNodeAttrArray",
+      "fieldType": "System.UInt64[]",
+      "offset": "0x38"
+    },
+    {
+      "type": "app.user_data.AppVoxelData.VOXEL_DATA",
+      "field": "_IndexNavNodeAttr",
+      "fieldType": "System.Byte",
+      "offset": "0x1a"
+    }
+  ],
+  "unfairEnumChecks": [
+    {
+      "type": "app.FieldDef.STAGE",
+      "field": "ST103",
+      "value": 2
+    },
+    {
+      "type": "app.FieldDef.STAGE",
+      "field": "ST405",
+      "value": 13
+    },
+    {
+      "type": "app.FieldDef.STAGE",
+      "field": "ST402",
+      "value": 10
+    },
+    {
+      "type": "app.EnemyDef.CATEGORY",
+      "field": "ANIMAL",
+      "value": 2
+    },
+    {
+      "type": "app.HunterDef.ACTION_ATTR",
+      "field": "TARZAN_ATTACH",
+      "value": 29
+    },
+    {
+      "type": "app.cFieldAreaInfo",
+      "field": "AREA_BIT_NUM",
+      "value": 64
+    }
+  ],
+  "unfairRipChecks": [
+    {
+      "type": "app.EnemyUtil",
+      "method": "checkTargetCharaUnfair",
+      "instructionOffset": "0x7d1",
+      "kind": "Int32",
+      "constant": "combatAreaLimit"
+    },
+    {
+      "type": "app.EnemyUtil",
+      "method": "checkTargetCharaUnfair",
+      "instructionOffset": "0x7ef",
+      "kind": "Int32",
+      "constant": "specialCombatArea"
+    },
+    {
+      "type": "app.EnemyUtil",
+      "method": "checkTargetCharaUnfair",
+      "instructionOffset": "0x88b",
+      "kind": "Int32",
+      "constant": "specialCombatArea"
+    },
+    {
+      "type": "app.EnemyUtil",
+      "method": "checkTargetCharaUnfair",
+      "instructionOffset": "0x797",
+      "kind": "Single",
+      "constant": "nearGroundDistanceSquared"
+    },
+    {
+      "type": "app.EnemyUtil",
+      "method": "checkTargetCharaUnfair",
+      "instructionOffset": "0x195",
+      "kind": "class",
+      "classType": "app.cHunterActionBase"
+    },
+    {
+      "type": "app.EnemyUtil",
+      "method": "checkTargetCharaUnfair",
+      "instructionOffset": "0x4cc",
+      "kind": "Single",
+      "value": 3.0
+    },
+    {
+      "type": "app.EnemyUtil",
+      "method": "checkTargetCharaUnfair",
+      "instructionOffset": "0x4cc",
+      "kind": "Single",
+      "readOffset": 4,
+      "value": 10.0
+    },
+    {
+      "type": "app.EnemyUtil",
+      "method": "checkTargetCharaUnfair",
+      "instructionOffset": "0x4f8",
+      "kind": "Single",
+      "value": 15.0
+    },
+    {
+      "type": "app.EnemyUtil",
+      "method": "checkTargetCharaUnfair",
+      "instructionOffset": "0x4f8",
+      "kind": "Single",
+      "readOffset": 4,
+      "value": 20.0
+    },
+    {
+      "type": "app.btable.EmCommonCommand.cCheckUnfairRoutineActive",
+      "method": "onExecute",
+      "instructionOffset": "0xd9",
+      "kind": "Byte",
+      "value": 0
+    },
+    {
+      "type": "app.btable.EmCommonCommand.cCheckUnfairRoutineActive",
+      "method": "onExecute",
+      "instructionOffset": "0x107",
+      "kind": "Byte",
+      "value": 0
+    }
+  ],
+  "nativeUpdateReview": {
+    "app.EnemyManager::getAreaNoNearPoint": {
+      "scope": "visible caller and reviewed wrappers on normal return",
+      "retainedBoundary": "Missing scene result stays unknown; visible count/item wrappers retain receiver virtual tail dispatch and its unresolved runtime behavior. No fixed area result or complete virtual implementation equivalence is asserted."
     }
   }
 }

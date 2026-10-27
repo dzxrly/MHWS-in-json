@@ -11,13 +11,26 @@ LOCAL_HISTORY_TABLES = {
 }
 
 
+FORMULA_HISTORY_TABLES = {
+    "app.Em0156_00_BTable_CommonAttack_Export": (
+        "table_40810e3e_afaf_4ba2_a92a_c687e305f20f",
+    ),
+    "app.Em0156_00_BTable_Life_Export": ("table_21143526_b31a_4b97_91f0_6ea43bbb9d30",),
+}
+
+
 def table_history_policy(row):
     method = row["method"]
-    stems = LOCAL_HISTORY_TABLES.get(row["type"], ())
-    local = any(
-        method.startswith(stem) and method[len(stem) :].isdigit() for stem in stems
-    )
-    return dict(local=True) if local else None
+    policy = {}
+    local = LOCAL_HISTORY_TABLES.get(row["type"], ())
+    if any(method.startswith(stem) and method[len(stem) :].isdigit() for stem in local):
+        policy["local"] = True
+    formula = FORMULA_HISTORY_TABLES.get(row["type"], ())
+    if any(
+        method.startswith(stem) and method[len(stem) :].isdigit() for stem in formula
+    ):
+        policy["formula"] = True
+    return policy or None
 
 
 MAX_RAILGUN_COMMAND = "app.Em0156_00BTableCommand.cCheckTransRailgunChargeMax"

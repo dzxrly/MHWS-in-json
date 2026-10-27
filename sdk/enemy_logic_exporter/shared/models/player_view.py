@@ -1330,6 +1330,8 @@ class PlayerCompiler:
                 "apply_native_field_writes",
                 "apply_boolean_command_effects",
                 "update_target_positions",
+                "request_exclusive_point",
+                "write_native_direction",
                 "request_desire_recovery",
                 "apply_desire_recovery_tail_writes",
                 "write_table_history",
@@ -1411,6 +1413,12 @@ class PlayerCompiler:
                     "commandEffectsComplete",
                 ):
                     result[field] = deepcopy(node[field])
+            if node.get("boundaryKind") == "native_call_effects":
+                result.update(
+                    note=node["reason"],
+                    boundaryKind="native_call_effects",
+                    continuationKind=node["continuationKind"],
+                )
             if "resume" in node and node.get("parameterBindingBoundary"):
                 result.update(
                     title="动作身份待核查",

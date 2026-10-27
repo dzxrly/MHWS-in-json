@@ -2,7 +2,9 @@
 
 from copy import deepcopy
 import json
+import struct
 import unittest
+from unittest.mock import patch
 
 from sdk.enemy_logic_exporter.shared.config import EVIDENCE_DIR
 from sdk.enemy_logic_exporter.shared.logic.command_effects import (
@@ -239,11 +241,53 @@ class ReviewedCommandEffectTests(unittest.TestCase):
         self.assertEqual(effects[0]["value"]["field"], "_RequestPhase")
         self.assertIn("仍保留边界", effects[0]["guard"])
         helper = proof["methods"][1]
+        self.assertEqual(
+            effects[0]["instructionSite"],
+            hex(int(helper["address"], 16) + int(proof["storeSiteOffset"], 16)),
+        )
+        self.assertEqual(
+            effects[0]["callerBranchSite"],
+            hex(int(command["address"], 16) + int(proof["tailBranchOffset"], 16)),
+        )
         pe.ranges[int(helper["address"], 16)] = b"\x00" * len(
             bytes.fromhex(helper["nativeBytes"])
         )
         with self.assertRaisesRegex(ValueError, "原生字节"):
             recover_phase_apply(command, metadata, pe)
+
+    def test_em0164_phase_sites_follow_verified_method_entries_after_relocation(self):
+        proof = json.loads(
+            (EVIDENCE_DIR / "em0164_phase_apply.v1.json").read_text(encoding="utf8")
+        )
+        command, helper = proof["methods"]
+        for row, delta in ((command, 0x1000), (helper, 0x2000)):
+            for field in ("address", "end"):
+                row[field] = hex(int(row[field], 16) + delta)
+        offset = int(proof["tailBranchOffset"], 16)
+        code = bytearray.fromhex(command["nativeBytes"])
+        self.assertEqual(code[offset : offset + 2], b"\x0f\x84")
+        struct.pack_into(
+            "<i",
+            code,
+            offset + 2,
+            int(helper["address"], 16) - (int(command["address"], 16) + offset + 6),
+        )
+        command["nativeBytes"] = code.hex()
+        pe, metadata = PE(proof["methods"]), Metadata(proof)
+        with patch("pathlib.Path.read_text", return_value=json.dumps(proof)):
+            effect = recover_phase_apply(command, metadata, pe)[0]
+        self.assertEqual(
+            effect["instructionSite"],
+            hex(int(helper["address"], 16) + int(proof["storeSiteOffset"], 16)),
+        )
+        self.assertEqual(
+            effect["callerBranchSite"],
+            hex(int(command["address"], 16) + int(proof["tailBranchOffset"], 16)),
+        )
+        proof["tailBranchOffset"] = hex(offset + 1)
+        with patch("pathlib.Path.read_text", return_value=json.dumps(proof)):
+            with self.assertRaisesRegex(ValueError, "尾跳"):
+                recover_phase_apply(command, metadata, pe)
 
 
 if __name__ == "__main__":

@@ -152,6 +152,9 @@ class NativeRecipeContext:
             from ..logic.target_command_effects import verify_target_command_effects
 
             verify_target_command_effects(self.pe, self.metadata)
+            from ..logic.navigation_conditions import verify_navigation_conditions
+
+            verify_navigation_conditions(self.pe, self.metadata)
             from ..logic.desire_recover import verify_desire_recover
 
             verify_desire_recover(self.pe, self.metadata)

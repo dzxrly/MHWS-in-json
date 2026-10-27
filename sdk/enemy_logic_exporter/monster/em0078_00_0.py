@@ -8,6 +8,24 @@ HILL_EVIDENCE_FILE = "em0078_hill.v1.json"
 HILL_ATTRIBUTE = 0x2000
 
 
+FORMULA_HISTORY_TABLES = {
+    "app.Em0078_00_BTable_Unique01_Export": (
+        "table_355b5380_e73c_410e_bf06_7409785b2b05",
+    )
+}
+
+
+def table_history_policy(row):
+    method = row["method"]
+    policy = {}
+    formula = FORMULA_HISTORY_TABLES.get(row["type"], ())
+    if any(
+        method.startswith(stem) and method[len(stem) :].isdigit() for stem in formula
+    ):
+        policy["formula"] = True
+    return policy or None
+
+
 def _hill_proof():
     import json
     from ..shared.config import EVIDENCE_DIR
@@ -152,8 +170,8 @@ FIELD_CHECKS = {
             dict(
                 type="app.btable.Em0078_00BTableCommand.cCheckUnusedHill",
                 method="onExecute1233936",
-                address="0x144d29ad0",
-                end="0x144d29b10",
+                address="0x144d29890",
+                end="0x144d298d0",
             )
         ],
         summary="Phase 为 MIDFIELD 且 IsUnusedHill 成立",

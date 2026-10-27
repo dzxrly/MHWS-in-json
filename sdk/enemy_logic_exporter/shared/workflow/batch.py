@@ -16,7 +16,13 @@ def export_native_index(exe, metadata_path, output):
     if not in_tmp(output):
         raise ValueError("原生研究索引只能输出到项目 .tmp")
     rows, skipped = [], []
-    prefixes = [module.NATIVE_OWNER for module in iter_monsters()]
+    modules = iter_monsters()
+    # Combat can reuse another variant's owner while a different BTable slot
+    # still belongs to this monster's own export class.
+    prefixes = sorted(
+        {module.NATIVE_OWNER for module in modules}
+        | {"Em" + module.ENEMY_ID[2:9] for module in modules}
+    )
     with Il2cppMetadata(metadata_path) as metadata, PE(exe) as pe:
         aliases = address_catalog(metadata)
         pe.method_starts = sorted(aliases)

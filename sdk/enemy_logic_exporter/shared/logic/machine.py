@@ -1044,6 +1044,12 @@ class Machine:
 
     def target_command_nodes(self, key, binding, detail, event, following, state):
         """Keep guard failure, successful writes and native exceptions distinct."""
+        if "nativeGraph" in detail:
+            from .target_command_graph import attach_target_graph
+
+            return attach_target_graph(
+                self, key, binding, detail, event, following, state
+            )
         condition = dict(
             kind="condition",
             inputDefinitions=copy.deepcopy(detail["inputDefinitions"]),
@@ -1089,6 +1095,65 @@ class Machine:
         self.nodes[update]["next"] = self.walk(
             following, self.complete_call(state, event, 1)
         )
+        return key
+
+    def boolean_command_nodes(self, key, binding, detail, event, following, state):
+        """Separate failed guards from both normal Boolean result writes."""
+        condition = copy.deepcopy(detail["condition"])
+        body = key + "-body" if detail.get("guard") else key
+        self.nodes[body] = dict(condition, id=body, kind="condition", **binding)
+        for truth, branch, writes in (
+            (1, "true", detail.get("onTrue", {})),
+            (0, "false", detail.get("onFalse", {})),
+        ):
+            continuation = self.walk(following, self.complete_call(state, event, truth))
+            if not writes:
+                self.nodes[body][branch] = continuation
+                continue
+            effect = key + "-" + branch + "-update"
+            self.nodes[body][branch] = effect
+            self.nodes[effect] = dict(
+                id=effect,
+                kind="mutation",
+                effect="apply_boolean_command_effects",
+                stateUpdates=dict(writes),
+                summary=detail["effectSummary"],
+                semanticEvidence=copy.deepcopy(condition["semanticEvidence"]),
+                nativeSite=event["site"],
+                next=continuation,
+            )
+        if detail.get("guard"):
+            self.nodes[key] = dict(
+                copy.deepcopy(detail["guard"]), id=key, kind="condition", **binding
+            )
+            self.nodes[key]["false"] = self.walk(
+                following, self.complete_call(state, event, 0)
+            )
+            success = body
+            if detail.get("normalPrecondition"):
+                references, failure = key + "-references", key + "-exception"
+                self.nodes[references] = dict(
+                    id=references,
+                    kind="condition",
+                    expression=copy.deepcopy(detail["normalPrecondition"]),
+                    inputDefinitions=copy.deepcopy(
+                        condition.get("inputDefinitions", {})
+                    ),
+                    semanticEvidence=copy.deepcopy(condition["semanticEvidence"]),
+                    summary="检查抓取状态写入所需引用",
+                    true=body,
+                    false=failure,
+                    **binding,
+                )
+                self.nodes[failure] = dict(
+                    id=failure,
+                    kind="unknown",
+                    reason=detail["exceptionBoundary"],
+                    boundaryKind="native_exception",
+                    semanticEvidence=copy.deepcopy(condition["semanticEvidence"]),
+                )
+                success = references
+            self.nodes[key]["true"] = success
         return key
 
     def walk(self, address, s):
@@ -1233,40 +1298,58 @@ class Machine:
 
                     formula = recover_history_formula(self, ins, e, s)
                     if formula is not None:
-                        key = self.event_key(e, s, ("full_domain_private_interval",))
+                        key = self.event_key(
+                            e, formula["entryState"], ("full_domain_private_interval",)
+                        )
                         if key is None:
                             return self.add_unknown(
                                 address, "全域历史公式的调用上下文尚不能证明等价"
                             )
                         if key in self.nodes:
                             return key
-                        self.nodes[key] = dict(
-                            id=key,
-                            kind="condition",
-                            expression=formula["expression"],
-                            inputDefinitions=formula["inputDefinitions"],
-                            nativeHistoryFormula=dict(
-                                formula["nativeProof"],
-                                continuations=[
-                                    dict(
-                                        truth=b["truth"],
-                                        nativeCall=hex(b["address"]),
-                                        nativePath=b["nativePath"],
-                                        writes=b["writes"],
-                                    )
-                                    for b in formula["buckets"]
-                                ],
-                            ),
-                            summary="依据前次记录重定向本次随机余数",
-                            nativeSite=e["site"],
+                        decisions = formula["decisions"]
+                        decision_keys = [
+                            key if index == 0 else key + "-threshold-" + str(index)
+                            for index in range(len(decisions))
+                        ]
+                        bucket_keys = {}
+                        for index, decision in enumerate(decisions):
+                            selected = decision_keys[index]
+                            self.nodes[selected] = dict(
+                                id=selected,
+                                kind="condition",
+                                expression=decision["expression"],
+                                inputDefinitions=formula["inputDefinitions"],
+                                summary="依据前次记录重定向本次随机余数",
+                                nativeSite=e["site"],
+                            )
+                            for role in ("true", "false"):
+                                branch = decision[role]
+                                if "decision" in branch:
+                                    self.nodes[selected][role] = decision_keys[
+                                        branch["decision"]
+                                    ]
+                                else:
+                                    bucket_keys[branch["bucket"]] = (selected, role)
+                        self.nodes[key]["nativeHistoryFormula"] = dict(
+                            formula["nativeProof"],
+                            continuations=[
+                                dict(
+                                    truth=b["truth"],
+                                    **{b["continuationKind"]: hex(b["address"])},
+                                    nativePath=b["nativePath"],
+                                    writes=b["writes"],
+                                )
+                                for b in formula["buckets"]
+                            ],
                         )
-                        for bucket in formula["buckets"]:
-                            role = "true" if bucket["truth"] else "false"
-                            previous = self.nodes[key]
+                        for bucket_index, bucket in enumerate(formula["buckets"]):
+                            source, role = bucket_keys[bucket_index]
+                            previous = self.nodes[source]
                             edge = role
                             for index, write in enumerate(bucket["writes"]):
                                 update = (
-                                    key + "-" + role + "-history-write-" + str(index)
+                                    source + "-" + role + "-history-write-" + str(index)
                                 )
                                 previous[edge] = update
                                 self.nodes[update] = dict(
@@ -1458,7 +1541,7 @@ class Machine:
 
                         target = target_command_effect(bound, proof)
                         if target is not None:
-                            if self.command_return(bound) != BOOLEAN_TYPE:
+                            if self.command_return(bound) != target["returnType"]:
                                 raise ValueError("目标更新命令的返回类型变化")
                             return self.target_command_nodes(
                                 key, binding, target, e, address + ins.size, s
@@ -1467,32 +1550,9 @@ class Machine:
                         if boolean is not None:
                             if self.command_return(bound) != BOOLEAN_TYPE:
                                 raise ValueError("带副作用布尔命令的返回类型变化")
-                            self.nodes[key] = dict(
-                                id=key,
-                                kind="condition",
-                                **copy.deepcopy(boolean["condition"]),
-                                **binding,
+                            return self.boolean_command_nodes(
+                                key, binding, boolean, e, address + ins.size, s
                             )
-                            effect = key + "-true-update"
-                            self.nodes[key]["true"] = effect
-                            self.nodes[key]["false"] = self.walk(
-                                address + ins.size, self.complete_call(s, e, 0)
-                            )
-                            self.nodes[effect] = dict(
-                                id=effect,
-                                kind="mutation",
-                                effect="apply_boolean_command_effects",
-                                stateUpdates=dict(boolean["onTrue"]),
-                                summary=boolean["effectSummary"],
-                                semanticEvidence=copy.deepcopy(
-                                    boolean["condition"]["semanticEvidence"]
-                                ),
-                                nativeSite=e["site"],
-                                next=self.walk(
-                                    address + ins.size, self.complete_call(s, e, 1)
-                                ),
-                            )
-                            return key
                         detail = reviewed_command_effect(
                             bound, proof, self.variable_catalog
                         )

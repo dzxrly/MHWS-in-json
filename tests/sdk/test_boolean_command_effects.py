@@ -17,7 +17,9 @@ class BooleanCommandEffectTests(unittest.TestCase):
             type=arkveld.LOCAL_HISTORY_EXPORT,
             method=arkveld.LOCAL_HISTORY_TABLE + "1089978",
         )
-        self.assertEqual(arkveld.table_history_policy(row), dict(local=True))
+        self.assertEqual(
+            arkveld.table_history_policy(row), dict(local=True, formula=True)
+        )
         self.assertIsNone(
             arkveld.table_history_policy(dict(row, method=row["method"] + "_extra"))
         )

@@ -3,20 +3,50 @@
   "command": {
     "type": "app.Em0160_00BTableCommand.cCanAbsorbedAction",
     "method": "onExecute1149450",
-    "address": "0x14606cf90",
-    "end": "0x14606cfef",
-    "nativeBytes": "564883ec204d85c0740f498b00488b00483b0599186b0e740831c04883c4205ec3498b4028488b4078488b70104885f674e7488b06488b08488b15e1b26a0ee8dc42fb0484c074d183bea80000000475c8c786a800000005000000b001ebbc"
+    "address": "0x14606cd50",
+    "end": "0x14606cdaf",
+    "nativeBytes": "564883ec204d85c0740f498b00488b00483b05d92a6d0e740831c04883c4205ec3498b4028488b4078488b70104885f674e7488b06488b08488b1521c56c0ee80c54fb0484c074d183bea80000000475c8c786a800000005000000b001ebbc"
   },
   "classSymbols": [
-    {"type": "app.cEnemyBTableCommandWork", "slot": "0x15471e840"},
-    {"type": "app.cEm0160Extend", "slot": "0x1547182b0"}
+    {
+      "type": "app.cEnemyBTableCommandWork",
+      "slot": "0x15473f840"
+    },
+    {
+      "type": "app.cEm0160Extend",
+      "slot": "0x1547392b0"
+    }
   ],
   "layouts": {
-    "app.cEnemyBTableCommandWork": {"<Accessor>k__BackingField": {"type": "app.EnemyAccessor", "offset": "0x28"}},
-    "app.EnemyAccessor": {"<Extend>k__BackingField": {"type": "app.cEnemyExtendHolder", "offset": "0x78"}},
-    "app.cEnemyExtendHolder": {"<Base>k__BackingField": {"type": "app.cEnemyExtendBase", "offset": "0x10"}},
-    "app.cEm0160Extend": {"_AbsorbCocoonState": {"type": "app.cEm0160Extend.ABSORB_COCOON_STATE", "offset": "0xa8"}}
+    "app.cEnemyBTableCommandWork": {
+      "<Accessor>k__BackingField": {
+        "type": "app.EnemyAccessor",
+        "offset": "0x28"
+      }
+    },
+    "app.EnemyAccessor": {
+      "<Extend>k__BackingField": {
+        "type": "app.cEnemyExtendHolder",
+        "offset": "0x78"
+      }
+    },
+    "app.cEnemyExtendHolder": {
+      "<Base>k__BackingField": {
+        "type": "app.cEnemyExtendBase",
+        "offset": "0x10"
+      }
+    },
+    "app.cEm0160Extend": {
+      "_AbsorbCocoonState": {
+        "type": "app.cEm0160Extend.ABSORB_COCOON_STATE",
+        "offset": "0xa8"
+      }
+    }
   },
-  "stateEnum": {"type": "app.cEm0160Extend.ABSORB_COCOON_STATE", "WAIT_ACTION": 4, "AFTER": 5},
+  "stateEnum": {
+    "type": "app.cEm0160Extend.ABSORB_COCOON_STATE",
+    "WAIT_ACTION": 4,
+    "AFTER": 5
+  },
   "scope": "有效命令工作及匹配的本怪物 Extend 下，WAIT_ACTION 先写 AFTER 再返回 true；其他路径 false 且不写状态。"
 }

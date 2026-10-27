@@ -50,6 +50,7 @@ sdk/                         # Offline SDK that reads the game files
   enemy_logic_exporter/      # Monster battle logic
     shared/  data/  monster/ #   shared code, rules and evidence, one module per monster
   skill_effect_exporter/     # Skill effect values
+  action_map_exporter/       # ActionMap v2
     shared/  skills/         #   native emulation and workflow, one module per skill
 web/                         # Website (Vite + Vue); src/sites/ holds one folder per site
 tests/
@@ -97,6 +98,7 @@ The `sdk/` directory is an offline SDK that reads the game files; `python -m sdk
 
 - Monster battle logic (`sdk.enemy_logic_exporter`) extracts monster battle logic into the graph JSON behind the battle pages. The 34 models in `src/processed_data/enemy_battle_logic/models` keep unresolved branches marked.
 - Skill effects (`sdk.skill_effect_exporter`) finds the native functions that use each skill, evaluates them per level, and writes the skill effect link JSON behind `SkillDetails.xlsx`.
+- Weapon action mapping (`sdk.action_map_exporter`) builds `MHWS-in-json/ActionMap.json` from matching dumps and converted JSON, for the action names in `WeaponActionValues.xlsx`.
 
 The SDK needs the game EXE dumped from memory (e.g. `MonsterHunterWilds_dump.exe`) and the REFramework `il2cpp_dump.json`, which you provide; it records no game version. Setup (`sdk/setup_env.ps1`) and usage: [SDK guide](sdk/README.md). Rebuilding the website or the workbooks does not need the SDK.
 
@@ -104,4 +106,4 @@ The SDK needs the game EXE dumped from memory (e.g. `MonsterHunterWilds_dump.exe
 
 - `SkillDetails.xlsx`: each row is one effect of a skill at one level, with its value, what it applies to, how it is calculated, when it applies, and its unit. Values assume only that skill is equipped; a value that depends on the situation gets one row per situation.
 - `MissionData.xlsx`: one row per quest clear condition. `SoloHealth` lists the possible initial solo maximum HP values, counting quest difficulty, random health grades, and Legendary modifiers.
-- `WeaponActionValues.xlsx` needs `MHWS-in-json/ActionMap.json`; rebuild it with `motlist-to-json action-map` from the same game version, or point `MHWS_ACTION_MAP_PATH` at another file. Actions without a match keep a blank `MappingName`.
+- `WeaponActionValues.xlsx` needs `MHWS-in-json/ActionMap.json`; rebuild it with `python -m sdk.action_map_exporter extract` from the same game version, or point `MHWS_ACTION_MAP_PATH` at another file. Actions without a match keep a blank `MappingName`.

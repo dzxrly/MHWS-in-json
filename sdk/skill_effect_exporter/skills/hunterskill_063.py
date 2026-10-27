@@ -33,7 +33,7 @@ SKIPPED_FUNCTIONS = [
     (
         "app.cHunterHealth",
         "requestDamage",
-        f"{GAME_VERSION} 全量求值 640 种情形（路径：完成 592、未列出 8）都没有得到来自本技能数据、可在表格显示的数值；只记录链路，不再求值（extract --all-links 时照常求值）",
+        f"{GAME_VERSION} --all-links 复核 2 个常规链路范围，结果记录 320 种等级/参数情形（路径记录：完成 592、截断 8）；已记录路径未取得本技能可显示数值，超限与截断等边界继续保留。常规提取只记录链路，--all-links 时照常求值。",
     ),
 ]
 

@@ -7,10 +7,19 @@ its current boundary and name every external callee, so a retargeted call, an
 appended tail or a different function length all count as changes.
 """
 
+import ast
+from collections import Counter
 import json
 from pathlib import Path
 
-from ..config import ACTIVE_PROFILE_PATH, EVIDENCE_DIR, RULES_PATH, SYMBOL_SPECS
+from ..config import (
+    ACTIVE_PROFILE_PATH,
+    EVIDENCE_DIR,
+    MONSTER_MODULE_DIR,
+    ROOT,
+    RULES_PATH,
+    SYMBOL_SPECS,
+)
 from ..native.metadata import Il2cppMetadata
 from ..native.pe import PE, address_catalog
 from ..native.symbols import (
@@ -54,6 +63,22 @@ def _unique_pattern(pe, address):
     return None
 
 
+def _digest_variants(entry):
+    """Legacy profiles authorize one range; newer entries may authorize several."""
+    return entry.get("rowVariants", [entry])
+
+
+def _merge_digest(result, key, entry):
+    variants = list(_digest_variants(result[key])) if key in result else []
+    for variant in _digest_variants(entry):
+        if variant not in variants:
+            variants.append(dict(variant))
+    variants.sort(key=lambda row: (int(row["address"], 16), row["rowLength"]))
+    result[key] = dict(variants[0])
+    if len(variants) > 1:
+        result[key]["rowVariants"] = variants
+
+
 def evidence_digests(pe, metadata, names):
     """Whole-function digests of every evidence row at its current address."""
     result = {}
@@ -71,7 +96,7 @@ def evidence_digests(pe, metadata, names):
             if not metadata.get(row["type"]):
                 # Unnamed helpers are found again by their masked opening bytes.
                 entry["pattern"] = _unique_pattern(pe, start)
-            result[row["type"] + "::" + row["method"]] = entry
+            _merge_digest(result, row["type"] + "::" + row["method"], entry)
     return dict(sorted(result.items()))
 
 
@@ -124,6 +149,140 @@ def _same_function(pe, address, old, names):
     )
 
 
+def _source_path(path):
+    path = Path(path).resolve()
+    return path.relative_to(ROOT).as_posix() if path.is_relative_to(ROOT) else str(path)
+
+
+def _uncovered_json_dependencies(document, path):
+    """Report address records outside the standard method-row shape."""
+    result = []
+
+    def visit(value, pointer=""):
+        if isinstance(value, dict):
+            kind = None
+            if {"type", "method", "address", "end"} <= set(value):
+                pass
+            elif (
+                "slot" in value
+                and isinstance(value["slot"], str)
+                and value["slot"].startswith("0x")
+            ):
+                kind = "class_symbol_slot"
+            elif isinstance(value.get("address"), str) and value["address"].startswith(
+                "0x"
+            ):
+                kind = (
+                    "constant_address"
+                    if "constants" in pointer.split("/")
+                    else "native_fragment" if "end" in value else "address_reference"
+                )
+            if kind:
+                result.append(
+                    dict(
+                        file=_source_path(path),
+                        path=pointer or "/",
+                        kind=kind,
+                        dependency={
+                            key: value[key]
+                            for key in ("type", "method", "address", "end", "slot")
+                            if key in value
+                        },
+                        reason="缺少标准方法身份或独立定位配方；本工具只报告，不自动改写",
+                    )
+                )
+            for key, item in value.items():
+                escaped = str(key).replace("~", "~0").replace("/", "~1")
+                visit(item, pointer + "/" + escaped)
+        elif isinstance(value, list):
+            for index, item in enumerate(value):
+                visit(item, pointer + "/" + str(index))
+
+    visit(document)
+    return result
+
+
+def _uncovered_python_dependencies():
+    """Inspect monster literals with AST only; never import those modules."""
+    result = []
+    missing = object()
+    for path in sorted(MONSTER_MODULE_DIR.glob("*.py")):
+        tree = ast.parse(path.read_text(encoding="utf-8-sig"), filename=str(path))
+        values = {}
+
+        def literal(node):
+            if isinstance(node, ast.Constant):
+                return node.value
+            if isinstance(node, ast.Name):
+                return values.get(node.id, missing)
+            return missing
+
+        for statement in tree.body:
+            if isinstance(statement, ast.Assign):
+                value = literal(statement.value)
+                for target in statement.targets:
+                    if isinstance(target, ast.Name) and value is not missing:
+                        values[target.id] = value
+        for node in ast.walk(tree):
+            items = []
+            if isinstance(node, ast.Dict):
+                items = [
+                    (literal(key), literal(value))
+                    for key, value in zip(node.keys, node.values)
+                    if key is not None
+                ]
+            elif (
+                isinstance(node, ast.Call)
+                and isinstance(node.func, ast.Name)
+                and node.func.id == "dict"
+            ):
+                items = [
+                    (keyword.arg, literal(keyword.value))
+                    for keyword in node.keywords
+                    if keyword.arg is not None
+                ]
+            row = {
+                key: value
+                for key, value in items
+                if isinstance(key, str) and value is not missing
+            }
+            if isinstance(row.get("address"), str) and isinstance(row.get("end"), str):
+                complete = {"type", "method", "address", "end"} <= set(row)
+                result.append(
+                    dict(
+                        file=_source_path(path),
+                        line=node.lineno,
+                        kind=(
+                            "python_method_range" if complete else "python_native_range"
+                        ),
+                        dependency={
+                            key: row[key]
+                            for key in ("type", "method", "address", "end")
+                            if key in row
+                        },
+                        reason="Python 内嵌证据不会由 JSON 迁移器改写；需人工同步或迁入标准证据文档",
+                    )
+                )
+            elif isinstance(node, (ast.Tuple, ast.List)) and len(node.elts) == 2:
+                owner, method = (literal(item) for item in node.elts)
+                if (
+                    isinstance(owner, str)
+                    and "." in owner
+                    and isinstance(method, str)
+                    and method_stem(method) != method
+                ):
+                    result.append(
+                        dict(
+                            file=_source_path(path),
+                            line=node.lineno,
+                            kind="python_method_name",
+                            dependency=dict(type=owner, method=method),
+                            reason="Python 方法名白名单保留数字后缀，不随 JSON 证据迁移",
+                        )
+                    )
+    return result
+
+
 def migrate_evidence(exe, metadata_path, previous_path, profile_path, *, apply=False):
     """Relocate every evidence row whose whole function is unchanged."""
     previous = _read(previous_path)
@@ -134,22 +293,72 @@ def migrate_evidence(exe, metadata_path, previous_path, profile_path, *, apply=F
         )
     old_digests = previous.get("evidenceDigests", {})
     new_digests = dict(target.get("evidenceDigests", {}))
-    report = dict(migrated=0, unchanged=0, review=[], files={})
+    report = dict(
+        migrated=0,
+        unchanged=0,
+        nativeBytesRefreshed=0,
+        bytesRefreshed=0,
+        applied=apply,
+        review=[],
+        files={},
+        unsupportedDependencies=[],
+    )
+    method_rows = 0
     with PE(exe) as pe, Il2cppMetadata(metadata_path) as metadata:
         names = CallNames(pe, metadata, address_catalog(metadata))
         for path in evidence_documents():
             document = _read(path)
+            report["unsupportedDependencies"].extend(
+                _uncovered_json_dependencies(document, path)
+            )
             pending, renames = [], {}
             for row in evidence_rows(document):
+                method_rows += 1
                 key = row["type"] + "::" + row["method"]
-                old = old_digests.get(key)
-                if old is None:
+                registered = old_digests.get(key)
+                if registered is None:
                     pending.append(
                         dict(
                             row=key, reason="上一版本 profile 缺少该证据行的规范化摘要"
                         )
                     )
                     continue
+                old_start = int(row["address"], 16)
+                row_length = int(row["end"], 16) - old_start
+                variants = _digest_variants(registered)
+                matching_ranges = [
+                    variant
+                    for variant in variants
+                    if int(variant["address"], 16) == old_start
+                    and variant["rowLength"] == row_length
+                ]
+                if len(matching_ranges) != 1:
+                    pending.append(
+                        dict(
+                            row=key,
+                            reason=(
+                                "上一版本 profile 未登记该证据行范围，需用旧 EXE 核对并刷新摘要"
+                                if not matching_ranges
+                                else "上一版本 profile 对该证据行范围有多份不同证明，需要人工复核"
+                            ),
+                            address=row["address"],
+                            end=row["end"],
+                            rowLength=row_length,
+                            availableRanges=[
+                                dict(
+                                    address=variant["address"],
+                                    end=hex(
+                                        int(variant["address"], 16)
+                                        + variant["rowLength"]
+                                    ),
+                                    rowLength=variant["rowLength"],
+                                )
+                                for variant in variants
+                            ],
+                        )
+                    )
+                    continue
+                old = matching_ranges[0]
                 candidates = _candidates(metadata, row)
                 if not candidates and old.get("pattern"):
                     # Unnamed helpers carry a relocation-masked opening pattern.
@@ -177,13 +386,44 @@ def migrate_evidence(exe, metadata_path, previous_path, profile_path, *, apply=F
                     address=hex(address),
                     end=hex(end),
                 )
+                byte_fields = [
+                    field for field in ("nativeBytes", "bytes") if field in row
+                ]
+                if byte_fields:
+                    data = pe.read(address, old["rowLength"])
+                    invalid_fields = []
+                    for field in byte_fields:
+                        try:
+                            original = bytes.fromhex(row[field])
+                        except (TypeError, ValueError):
+                            original = b""
+                        if len(original) != old["rowLength"]:
+                            invalid_fields.append(field)
+                    if invalid_fields or len(data) != old["rowLength"]:
+                        pending.append(
+                            dict(
+                                row=key,
+                                reason="原生字节证据长度与行范围不一致，不能自动刷新",
+                                fields=invalid_fields or byte_fields,
+                            )
+                        )
+                        continue
+                    # Count existing fields separately, including in preview;
+                    # neither spelling grants a new row range or proof.
+                    for field in byte_fields:
+                        updated[field] = data.hex()
+                        report[field + "Refreshed"] += row[field] != updated[field]
                 if all(row[k] == v for k, v in updated.items()):
                     report["unchanged"] += 1
                 else:
                     report["migrated"] += 1
                 if row["method"] != name:
                     renames[row["method"]] = name
-                new_digests[row["type"] + "::" + name] = dict(old, address=hex(address))
+                _merge_digest(
+                    new_digests,
+                    row["type"] + "::" + name,
+                    dict(old, address=hex(address)),
+                )
                 if apply:
                     row.update(updated)
             report["files"][Path(path).name] = dict(review=len(pending))
@@ -195,6 +435,15 @@ def migrate_evidence(exe, metadata_path, previous_path, profile_path, *, apply=F
         target["evidenceDigests"] = dict(sorted(new_digests.items()))
         target["digestScheme"] = DIGEST_SCHEME
         _write(profile_path, target, indent=1)
+    report["unsupportedDependencies"].extend(_uncovered_python_dependencies())
+    kinds = Counter(row["kind"] for row in report["unsupportedDependencies"])
+    report["coverage"] = dict(
+        status="partial" if kinds else "standard_method_rows_only",
+        standardMethodRows=method_rows,
+        unsupportedDependencyCount=sum(kinds.values()),
+        unsupportedByKind=dict(sorted(kinds.items())),
+        scope="自动迁移仅覆盖标准 JSON 方法行；其余 JSON 地址记录、怪物 Python 字面方法范围与方法名对只报告。动态 Python 值和未登记引用不在此静态清单内。",
+    )
     return report
 
 

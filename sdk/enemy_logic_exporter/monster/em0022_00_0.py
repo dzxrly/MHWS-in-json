@@ -17,8 +17,8 @@ FIELD_CHECKS = {
             dict(
                 type="app.btable.Em0022_00BTableCommand.cCheckNest",
                 method="onExecute1233721",
-                address="0x1453933d0",
-                end="0x145393400",
+                address="0x145393190",
+                end="0x1453931c0",
             )
         ],
         summary="怪物位于地图 3 的区域 14",
@@ -33,13 +33,32 @@ FIELD_CHECKS = {
             dict(
                 type="app.btable.Em0022_00BTableCommand.cCheckThrowBall",
                 method="onExecute1233725",
-                address="0x1459df9f0",
-                end="0x1459dfa30",
+                address="0x1459df7b0",
+                end="0x1459df7f0",
             )
         ],
         summary="怪物不在地图 3 的区域 4",
     ),
 }
+
+
+FORMULA_HISTORY_TABLES = {
+    "app.Em0022_00_BTable_CommonAttack_Export": (
+        "table_14307a99_b47d_42ba_80d3_729489e9247a",
+    ),
+    "app.Em0022_00_BTable_Life_Export": ("table_1ec993b5_de43_4558_ab33_ccb68d9ce785",),
+}
+
+
+def table_history_policy(row):
+    method = row["method"]
+    policy = {}
+    formula = FORMULA_HISTORY_TABLES.get(row["type"], ())
+    if any(
+        method.startswith(stem) and method[len(stem) :].isdigit() for stem in formula
+    ):
+        policy["formula"] = True
+    return policy or None
 
 
 def recover_condition(node, enemy_id, resources):

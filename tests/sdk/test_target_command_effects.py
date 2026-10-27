@@ -79,12 +79,36 @@ class ProofPE:
             for row in [*proof["methods"], *proof["nativeProofs"], *proof["constants"]]
         }
         for row in proof["classSymbols"]:
-            self.ranges[int(row["slot"], 16)] = int(
-                metadata.get(row["type"])["address"], 16
-            ).to_bytes(8, "little")
+            if "sourceType" in row:
+                from capstone import Cs, CS_ARCH_X86, CS_MODE_64
+
+                source = next(
+                    method
+                    for method in proof["methods"]
+                    if method["type"] == row["sourceType"]
+                    and method["method"].startswith(row["sourceMethod"])
+                )
+                offset = int(row["instructionOffset"], 16)
+                decoder = Cs(CS_ARCH_X86, CS_MODE_64)
+                decoder.detail = True
+                ins = next(
+                    decoder.disasm(
+                        bytes.fromhex(source["nativeBytes"])[offset : offset + 16],
+                        int(source["address"], 16) + offset,
+                    )
+                )
+                slot = ins.address + ins.size + ins.operands[1].mem.disp
+            else:
+                slot = int(row["slot"], 16)
+            self.ranges[slot] = int(metadata.get(row["type"])["address"], 16).to_bytes(
+                8, "little"
+            )
 
     def read(self, address, size):
-        return self.ranges[address][:size]
+        for start, data in self.ranges.items():
+            if start <= address < start + len(data):
+                return data[address - start : address - start + size]
+        return b""
 
 
 class TargetCommandEffectsTests(unittest.TestCase):

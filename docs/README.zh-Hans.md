@@ -50,6 +50,7 @@ sdk/                         # 读取游戏文件的离线 SDK
   enemy_logic_exporter/      # 怪物行动逻辑
     shared/  data/  monster/ #   公共代码、规则与证据、每只怪物一个模块
   skill_effect_exporter/     # 技能效果数值
+  action_map_exporter/       # ActionMap v2
     shared/  skills/         #   原生代码模拟与流程、每个技能一个模块
 web/                         # 网站（Vite + Vue）；src/sites/ 中每个信息站一个目录
 tests/
@@ -97,6 +98,7 @@ skill_pool.json
 
 - 怪物行动逻辑（`sdk.enemy_logic_exporter`）：从游戏文件中提取怪物行动逻辑，生成行动图网页使用的 JSON。`src/processed_data/enemy_battle_logic/models` 中的 34 份模型保留未知分支的标记。
 - 技能效果（`sdk.skill_effect_exporter`）：找出原生代码中使用每个技能的函数并按等级求值，生成 `SkillDetails.xlsx` 使用的技能效果链路 JSON。
+- 武器动作映射（`sdk.action_map_exporter`）：用匹配的 dump 和转换后的 JSON 生成 `MHWS-in-json/ActionMap.json`，为 `WeaponActionValues.xlsx` 提供动作名称。
 
 SDK 需要使用者提供从内存 dump 出的游戏 EXE（如 `MonsterHunterWilds_dump.exe`）和 REFramework `il2cpp_dump.json`，不记录游戏版本。环境搭建（`sdk/setup_env.ps1`）与用法见 [SDK 使用说明](../sdk/docs/README.zh-Hans.md)。只重新生成网站或表格时不需要 SDK。
 
@@ -104,4 +106,4 @@ SDK 需要使用者提供从内存 dump 出的游戏 EXE（如 `MonsterHunterWil
 
 - `SkillDetails.xlsx`：每行是一个技能在某一等级的一个效果，列出数值、作用对象、计算方式、生效条件和单位。数值按“只装备该技能”求得；随情形变化的数值按情形分行列出。
 - `MissionData.xlsx`：每个任务完成条件占一行。`SoloHealth` 列出可能的初始单人最大血量，计入任务难度、随机血量档位和 Legendary 倍率。
-- `WeaponActionValues.xlsx` 需要 `MHWS-in-json/ActionMap.json`，可使用同版本输入运行 `motlist-to-json action-map` 重新生成，或通过 `MHWS_ACTION_MAP_PATH` 指定其他文件。未匹配到的动作 `MappingName` 留空。
+- `WeaponActionValues.xlsx` 需要 `MHWS-in-json/ActionMap.json`，可使用同版本输入运行 `python -m sdk.action_map_exporter extract` 重新生成，或通过 `MHWS_ACTION_MAP_PATH` 指定其他文件。未匹配到的动作 `MappingName` 留空。

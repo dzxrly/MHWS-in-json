@@ -13,13 +13,29 @@ FIELD_CHECKS = {
             dict(
                 type="app.Em0157_00BTableCommand.cCheckVeilCladTimer",
                 method="onExecute1146696",
-                address="0x145317460",
-                end="0x1453174b0",
+                address="0x145317220",
+                end="0x145317270",
             )
         ],
         summary="AllVeilPurgeTimer 已超时",
     ),
 }
+
+
+FORMULA_HISTORY_TABLES = {
+    "app.Em0157_00_BTable_Life_Export": ("table_0e8062bb_7bab_4787_a3f2_0bc23791a59d",)
+}
+
+
+def table_history_policy(row):
+    method = row["method"]
+    policy = {}
+    formula = FORMULA_HISTORY_TABLES.get(row["type"], ())
+    if any(
+        method.startswith(stem) and method[len(stem) :].isdigit() for stem in formula
+    ):
+        policy["formula"] = True
+    return policy or None
 
 
 def recover_condition(node, enemy_id, resources):

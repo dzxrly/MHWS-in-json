@@ -236,6 +236,7 @@ class TableHistory:
         self.fields = fields
         self.read_offsets = set()
         self.read_sites = {}
+        self.escaped_sites = set()
         self.candidates = {}
         self.evidence = []
         self.identity_evidence = []
@@ -411,6 +412,15 @@ def _discover(machine, history, *, reviewed_calls=False):
     from .machine import Machine, Boundary
 
     class Probe(Machine):
+        def event(self, ins, state):
+            event = Machine.event(self, ins, state)
+            if event["target"] not in {history.lookup, ("random_generator",)} and any(
+                isinstance(arg, tuple) and arg[:2] == ("pointer", history.owner)
+                for arg in event["arguments"]
+            ):
+                history.escaped_sites.add(ins.address)
+            return event
+
         def read(self, ins, operand, state):
             if operand.type == CS_OP_MEM:
                 fields = history.private_field(
@@ -444,9 +454,17 @@ def _discover(machine, history, *, reviewed_calls=False):
         def write(self, ins, operand, value, state):
             fields = []
             if operand.type == CS_OP_MEM:
-                fields = history.private_field(
-                    self.address(ins, operand, state), operand.size
-                )
+                location = self.address(ins, operand, state)
+                fields = history.private_field(location, operand.size)
+                if (
+                    isinstance(value, tuple)
+                    and value[:2] == ("pointer", history.owner)
+                    and not (
+                        isinstance(location, tuple)
+                        and location[:2] == ("pointer", "stack")
+                    )
+                ):
+                    history.escaped_sites.add(ins.address)
             Machine.write(self, ins, operand, value, state)
             if fields:
                 state.setdefault("history_written", set()).update(
@@ -772,8 +790,9 @@ def _param_setup_identity(machine, dictionary_offset, runtime_offset, lookup):
         return None
     body = pe.read(start, end - start)
     native = list(_decoder().disasm(body, start))
-    if len(native) != 36 or sum(ins.size for ins in native) != len(body):
+    if len(native) not in (31, 36) or sum(ins.size for ins in native) != len(body):
         return None
+    inline = len(native) == 31
     expected = [
         ("push", "r14"),
         ("push", "rsi"),
@@ -812,12 +831,84 @@ def _param_setup_identity(machine, dictionary_offset, runtime_offset, lookup):
         ("pop", "r14"),
         ("ret", ""),
     ]
+    constructor_proof = None
+    if inline:
+        private = {
+            name: field
+            for name, field in param.get("fields", {}).items()
+            if "default" not in field
+        }
+        pairs = {
+            name.rsplit("_", 1)[-1]
+            for name in private
+            if re.fullmatch(r"BefoRandom(?:Max|Min)_\d+", name)
+        }
+        if (
+            len(private) != 2
+            or len(pairs) != 1
+            or {
+                (
+                    re.sub(r"_\d+$", "", name),
+                    field.get("type"),
+                    field.get("offset_from_base"),
+                )
+                for name, field in private.items()
+            }
+            != {
+                ("BefoRandomMax", "System.Int32", "0x10"),
+                ("BefoRandomMin", "System.Int32", "0x14"),
+            }
+        ):
+            return None
+        constructor_body = bytes.fromhex("48c74210ffffffffc3")
+        if pe.read(constructor_address, len(constructor_body)) != constructor_body:
+            return None
+        constructor_proof = _native_evidence(
+            pe,
+            owner + ".Param",
+            constructor_name,
+            constructor_address,
+            constructor_body,
+        )
+        expected = [
+            ("push", "rsi"),
+            ("push", "rdi"),
+            ("push", "rbx"),
+            ("sub", "rsp,0x30"),
+            ("mov", "rbx,r8"),
+            ("mov", "rdi,rdx"),
+            ("mov", "rsi,rcx"),
+            ("mov", f"rdx,qwordptr[r8+{dictionary_offset:#x}]"),
+            ("mov", f"r8d,dwordptr[rdi+{runtime_offset:#x}]"),
+            ("call", hex(lookup)),
+            ("test", "rax,rax"),
+            ("jne", hex(native[25].address)),
+            ("mov", f"rbx,qwordptr[rbx+{dictionary_offset:#x}]"),
+            ("mov", f"edi,dwordptr[rdi+{runtime_offset:#x}]"),
+            None,
+            ("mov", "rcx,rsi"),
+            ("xor", "r8d,r8d"),
+            ("call", hex(allocate)),
+            ("mov", "qwordptr[rax+0x10],0xffffffffffffffff"),
+            ("mov", "byteptr[rsp+0x20],2"),
+            ("mov", "rcx,rsi"),
+            ("mov", "rdx,rbx"),
+            ("mov", "r8d,edi"),
+            ("mov", "r9,rax"),
+            ("call", hex(insert_address)),
+            ("nop", ""),
+            ("add", "rsp,0x30"),
+            ("pop", "rbx"),
+            ("pop", "rdi"),
+            ("pop", "rsi"),
+            ("ret", ""),
+        ]
     if any(
         value is not None and (ins.mnemonic, ins.op_str.replace(" ", "")) != value
         for ins, value in zip(native, expected)
     ):
         return None
-    load = native[15]
+    load = native[14 if inline else 15]
     op = load.operands
     if not (
         load.mnemonic == "mov"
@@ -833,7 +924,7 @@ def _param_setup_identity(machine, dictionary_offset, runtime_offset, lookup):
     slot = load.address + load.size + op[1].mem.disp
     if int.from_bytes(pe.read(slot, 8), "little") != int(param["address"], 16):
         return None
-    return dict(
+    proof = dict(
         _native_evidence(pe, owner, setup_name, start, body),
         kind="typed_param_dictionary_setup",
         paramType=owner + ".Param",
@@ -857,6 +948,10 @@ def _param_setup_identity(machine, dictionary_offset, runtime_offset, lookup):
         existingItem="preserved",
         fieldValues="not_assumed",
     )
+    if constructor_proof is not None:
+        proof["constructor"]["inlined"] = True
+        proof["constructorEvidence"] = constructor_proof
+    return proof
 
 
 def recover_table_history(machine, *, local=False):

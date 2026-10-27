@@ -17,13 +17,29 @@ FIELD_CHECKS = {
             dict(
                 type="app.btable.Em0155_00BTableCommand.cCheckContractionDownReturnTimer",
                 method="onExecute1234220",
-                address="0x149d9a910",
-                end="0x149d9a950",
+                address="0x149d9a6d0",
+                end="0x149d9a710",
             )
         ],
         summary="ContractionDownReturnTimer 已启用且已超时",
     ),
 }
+
+
+FORMULA_HISTORY_TABLES = {
+    "app.Em0155_00_BTable_Life_Export": ("table_3a5ee9fd_7aac_490a_91a5_1ca5cb91b78a",)
+}
+
+
+def table_history_policy(row):
+    method = row["method"]
+    policy = {}
+    formula = FORMULA_HISTORY_TABLES.get(row["type"], ())
+    if any(
+        method.startswith(stem) and method[len(stem) :].isdigit() for stem in formula
+    ):
+        policy["formula"] = True
+    return policy or None
 
 
 def recover_condition(node, enemy_id, resources):

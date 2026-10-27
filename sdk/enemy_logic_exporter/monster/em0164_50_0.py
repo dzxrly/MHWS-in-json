@@ -11,13 +11,28 @@ LOCAL_HISTORY_TABLES = {
 }
 
 
+FORMULA_HISTORY_TABLES = {
+    "app.Em0164_50_BTable_CommonAttack_Export": (
+        "table_15d686bd_db74_4c0c_8255_ea925fdb08a9",
+        "table_1b08d3be_6146_4db4_8577_562cdd3002dd",
+        "table_84605383_ea43_45a2_86be_cbe1b23a0d28",
+        "table_8c11405a_72a5_4986_97a6_ca656d7bb1bd",
+    )
+}
+
+
 def table_history_policy(row):
     method = row["method"]
-    stems = LOCAL_HISTORY_TABLES.get(row["type"], ())
-    local = any(
-        method.startswith(stem) and method[len(stem) :].isdigit() for stem in stems
-    )
-    return dict(local=True) if local else None
+    policy = {}
+    local = LOCAL_HISTORY_TABLES.get(row["type"], ())
+    if any(method.startswith(stem) and method[len(stem) :].isdigit() for stem in local):
+        policy["local"] = True
+    formula = FORMULA_HISTORY_TABLES.get(row["type"], ())
+    if any(
+        method.startswith(stem) and method[len(stem) :].isdigit() for stem in formula
+    ):
+        policy["formula"] = True
+    return policy or None
 
 
 # Parameterless Em0164_50 commands (game 1.42.0.2); onExecute reads the Extend
@@ -35,19 +50,19 @@ EXTEND_CHECKS = {
     "cIsRequestChangeBattlePhase": (
         "isRequestChangeBattlePhase()",
         "_RequestPhase 与 _CurrentPhase 不同",
-        dict(method="onExecute1234525", address="0x1464034b0", end="0x1464034f0"),
+        dict(method="onExecute1234525", address="0x146403270", end="0x1464032b0"),
         dict(
             method="isRequestChangeBattlePhase554076",
-            address="0x14c91db30",
-            end="0x14c91db40",
+            address="0x14c91eb00",
+            end="0x14c91eb10",
         ),
     ),
     "cCheckRampage": (
         "isRampagePartsState(HEAD)",
         "_IsEnchantControllerSetuped 且 _EnchantController[HEAD]._PartsState 为 RAMPAGE",
-        dict(method="onExecute1234533", address="0x147346eb0", end="0x147346f00"),
+        dict(method="onExecute1234533", address="0x147346c70", end="0x147346cc0"),
         dict(
-            method="isRampagePartsState554032", address="0x1490a5520", end="0x1490a553d"
+            method="isRampagePartsState554032", address="0x1490a52e0", end="0x1490a52fd"
         ),
     ),
 }
@@ -90,7 +105,17 @@ def recover_phase_apply(row, metadata, pe):
             raise ValueError("EM0164 阶段字段布局变化")
     decoder = Cs(CS_ARCH_X86, CS_MODE_64)
     decoder.detail = True
-    site = int(proof["tailBranch"], 16)
+    command_start = int(command["address"], 16)
+    helper_start = int(helper["address"], 16)
+    site = command_start + int(proof["tailBranchOffset"], 16)
+    copy_site = helper_start + int(proof["fieldCopyOffset"], 16)
+    store_site = helper_start + int(proof["storeSiteOffset"], 16)
+    if not (
+        command_start <= site <= int(command["end"], 16) - 6
+        and helper_start <= copy_site <= int(helper["end"], 16) - 12
+        and copy_site < store_site < copy_site + 12
+    ):
+        raise ValueError("EM0164 阶段应用指令位置超出方法范围")
     branch = next(decoder.disasm(pe.read(site, 6), site), None)
     if (
         branch is None
@@ -99,7 +124,13 @@ def recover_phase_apply(row, metadata, pe):
         or branch.operands[0].imm != int(helper["address"], 16)
     ):
         raise ValueError("EM0164 阶段应用尾跳变化")
-    if pe.read(int(proof["fieldCopy"], 16), 12).hex() != proof["copyBytes"]:
+    copy = pe.read(copy_site, 12)
+    stores = list(decoder.disasm(copy, copy_site))
+    if (
+        copy.hex() != proof["copyBytes"]
+        or len(stores) != 2
+        or stores[1].address != store_site
+    ):
         raise ValueError("EM0164 阶段字段复制变化")
     fields = proof["layouts"][EXTEND]
     return [
@@ -118,14 +149,14 @@ def recover_phase_apply(row, metadata, pe):
                 offset=fields["_RequestPhase"]["offset"],
             ),
             nativeExpression="mov eax,[rdx+0x110]; mov [rdx+0x10c],eax",
-            instructionSite=proof["storeSite"],
+            instructionSite=hex(store_site),
             evidence={
                 key: command[key] for key in ("type", "method", "address", "end")
             },
             supportingEvidence={
                 key: helper[key] for key in ("type", "method", "address", "end")
             },
-            callerBranchSite=proof["tailBranch"],
+            callerBranchSite=hex(site),
             semanticStatus="individual_native_field_write_from_verified_tail",
             guard="命令工作及自身 Extend 非空且精确类型匹配后，将请求阶段复制为当前阶段；附着计时器、末阶段回调与同步处理仍保留边界",
         )

@@ -8,6 +8,8 @@ from ..native.bindings import pointer, register
 
 MOD_PREFIX = bytes.fromhex("89c14869c91f85eb5148c1e9256bc96429c8")
 MAX_REMAINDER = bytes.fromhex("89c84869c01f85eb5148c1e8256bc06429c189c8")
+MOD_PREFIX_110 = bytes.fromhex("89c1d1e94869c995204f0948c1e9216bc96e29c8")
+MOD_PREFIX_90 = bytes.fromhex("89c1d1e9bab7600bb6480fafd148c1ea256bca5a29c8")
 
 
 def evaluate_interval(expression, context):
@@ -44,62 +46,83 @@ def validate_interval(expression):
 
 
 def _pattern(machine, history, call):
-    """Recognize exact scalar arithmetic; addresses/register Param bases relocate."""
+    """Prove the scalar interval, including flag-preserving compiler scheduling."""
     instructions = machine.ins
+    native = {}
     address = call.address + call.size
-    native = []
 
-    def take_bytes(expected):
-        nonlocal address
+    def remember(ins):
+        native[ins.address] = ins
+        return ins.address + ins.size
+
+    def take_bytes(at, expected):
         consumed = b""
         while len(consumed) < len(expected):
-            ins = instructions.get(address)
+            ins = instructions.get(at)
             if ins is None:
-                return False
+                return None
             consumed += ins.bytes
-            native.append(ins)
-            address += ins.size
-        return consumed == expected
+            at = remember(ins)
+        return at if consumed == expected else None
 
-    if not take_bytes(MOD_PREFIX):
+    def safe(ins, protected=()):
+        if ins is None or ins.mnemonic not in {"mov", "movabs", "lea"}:
+            return False
+        if ins.operands[0].type != CS_OP_REG:
+            return False
+        reads, writes = ins.regs_access()
+        # An inserted instruction may not consume or overwrite the formula.
+        return not set(protected) & {register(ins, r) for r in (*reads, *writes)}
+
+    def seek(at, predicate, protected=()):
+        for _ in range(9):
+            ins = instructions.get(at)
+            if ins is None:
+                return None
+            if predicate(ins):
+                return ins
+            if not safe(ins, protected):
+                return None
+            at = remember(ins)
         return None
-    ins = instructions.get(address)
-    pointer_load = None
-    if ins is not None and ins.mnemonic == "mov" and ins.operands[0].size == 8:
-        op = ins.operands
-        if not (
-            op[0].type == CS_OP_REG
-            and op[1].type == CS_OP_MEM
-            and ins.reg_name(op[1].mem.base) == "rsp"
-            and not op[1].mem.index
-        ):
-            return None
-        pointer_load = ins
-        native.append(ins)
-        address += ins.size
-        ins = instructions.get(address)
-    if ins is None or ins.mnemonic != "mov":
-        return None
-    op = ins.operands
-    if not (
-        len(op) == 2
-        and op[0].type == CS_OP_REG
-        and ins.reg_name(op[0].reg) == "ecx"
-        and op[1].type == CS_OP_MEM
-        and op[1].size == 4
-        and not op[1].mem.index
+
+    modulus = None
+    for divisor, expected in (
+        (100, MOD_PREFIX),
+        (110, MOD_PREFIX_110),
+        (90, MOD_PREFIX_90),
     ):
+        matched = take_bytes(address, expected)
+        if matched is not None:
+            modulus, address = divisor, matched
+            break
+    if modulus is None:
         return None
-    maximum = ins
-    max_offset, base = op[1].mem.disp, op[1].mem.base
-    name = history.fields.get(max_offset, "")
-    if not name.startswith("BefoRandomMax_"):
+
+    def is_max(ins):
+        op = ins.operands
+        return (
+            ins.mnemonic == "mov"
+            and len(op) == 2
+            and op[0].type == CS_OP_REG
+            and op[0].size == 4
+            and register(ins, op[0].reg) not in {"rax", "rsp", "rip"}
+            and op[1].type == CS_OP_MEM
+            and op[1].size == 4
+            and not op[1].mem.index
+            and history.fields.get(op[1].mem.disp, "").startswith("BefoRandomMax_")
+        )
+
+    maximum = seek(address, is_max, {"rax"})
+    if maximum is None:
         return None
-    suffix = name.rsplit("_", 1)[1]
+    prefix_end = maximum.address
+    max_offset = maximum.operands[1].mem.disp
+    max_reg = maximum.reg_name(maximum.operands[0].reg)
+    max_root = register(maximum, maximum.operands[0].reg)
+    suffix = history.fields[max_offset].rsplit("_", 1)[1]
     minimum_fields = [
-        off
-        for off, field in history.fields.items()
-        if field == "BefoRandomMin_" + suffix
+        o for o, n in history.fields.items() if n == "BefoRandomMin_" + suffix
     ]
     if len(minimum_fields) != 1 or set(history.fields) != {
         max_offset,
@@ -107,74 +130,159 @@ def _pattern(machine, history, call):
     }:
         return None
     min_offset = minimum_fields[0]
-    native.append(ins)
-    address += ins.size
-    if not take_bytes(bytes.fromhex("39c8")):
+    address = remember(maximum)
+    comparison = seek(
+        address,
+        lambda x: x.mnemonic == "cmp" and x.op_str == "eax, " + max_reg,
+        {"rax", max_root},
+    )
+    if comparison is None:
         return None
-    upper = instructions.get(address)
-    if upper is None or upper.mnemonic != "jge" or upper.operands[0].type != CS_OP_IMM:
+    address = remember(comparison)
+    upper = seek(address, lambda x: x.mnemonic == "jge", {"rax", max_root})
+    if upper is None or upper.operands[0].type != CS_OP_IMM:
         return None
-    native.append(upper)
-    address += upper.size
-    minimum = instructions.get(address)
-    if minimum is None or minimum.mnemonic != "cmp":
+    address = remember(upper)
+
+    def is_min(ins):
+        op = ins.operands
+        return (
+            ins.mnemonic == "cmp"
+            and len(op) == 2
+            and op[0].type == CS_OP_REG
+            and ins.reg_name(op[0].reg) == "eax"
+            and op[1].type == CS_OP_MEM
+            and op[1].size == 4
+            and not op[1].mem.index
+            and op[1].mem.disp == min_offset
+        )
+
+    minimum = seek(address, is_min, {"rax", max_root})
+    if minimum is None:
         return None
-    op = minimum.operands
-    if not (
-        len(op) == 2
-        and op[0].type == CS_OP_REG
-        and minimum.reg_name(op[0].reg) == "eax"
-        and op[1].type == CS_OP_MEM
-        and op[1].size == 4
-        and op[1].mem.base == base
-        and not op[1].mem.index
-        and op[1].mem.disp == min_offset
-    ):
+    address = remember(minimum)
+    lower = seek(address, lambda x: x.mnemonic == "jle", {"rax", max_root})
+    if lower is None or lower.operands[0].type != CS_OP_IMM:
         return None
-    native.append(minimum)
-    address += minimum.size
-    lower = instructions.get(address)
-    if (
-        lower is None
-        or lower.mnemonic != "jle"
-        or lower.operands[0].type != CS_OP_IMM
-        or lower.operands[0].imm != upper.operands[0].imm
-    ):
+    address = remember(lower)
+    remap_start = address
+    # Keep the exact unsigned reciprocal arithmetic; only the proven Max
+    # register changes. No signed division or sample-derived modulo is accepted.
+    expected = [
+        ("mov", "eax, " + max_reg),
+        ("imul", "rax, rax, 0x51eb851f"),
+        ("shr", "rax, 0x25"),
+        ("imul", "eax, eax, 0x64"),
+        ("sub", max_reg + ", eax"),
+        ("mov", "eax, " + max_reg),
+    ]
+    if modulus == 110:
+        expected = [
+            ("mov", "eax, " + max_reg),
+            ("shr", "eax, 1"),
+            ("imul", "rax, rax, 0x94f2095"),
+            ("shr", "rax, 0x21"),
+            ("imul", "eax, eax, 0x6e"),
+            ("sub", max_reg + ", eax"),
+            ("mov", "eax, " + max_reg),
+        ]
+    elif modulus == 90:
+        if max_root == "rdx":
+            return None
+        expected = [
+            ("mov", "eax, " + max_reg),
+            ("shr", "eax, 1"),
+            ("mov", "edx, 0xb60b60b7"),
+            ("imul", "rdx, rax"),
+            ("shr", "rdx, 0x25"),
+            ("imul", "eax, edx, 0x5a"),
+            ("sub", max_reg + ", eax"),
+            ("mov", "eax, " + max_reg),
+        ]
+    for mnemonic, operands in expected:
+        ins = instructions.get(address)
+        if ins is None or (ins.mnemonic, ins.op_str) != (mnemonic, operands):
+            return None
+        address = remember(ins)
+
+    def threshold(ins):
+        op = ins.operands
+        return (
+            ins.mnemonic == "cmp"
+            and len(op) == 2
+            and op[0].type == CS_OP_REG
+            and ins.reg_name(op[0].reg) == "eax"
+            and op[1].type == CS_OP_IMM
+            and 0 <= op[1].imm < modulus
+        )
+
+    def join(at):
+        seen = set()
+        for _ in range(16):
+            if at in seen:
+                return None
+            seen.add(at)
+            ins = instructions.get(at)
+            if ins is None:
+                return None
+            if threshold(ins):
+                return at
+            if ins.mnemonic == "jmp" and ins.operands[0].type == CS_OP_IMM:
+                remember(ins)
+                at = ins.operands[0].imm
+            elif safe(ins, {"rax", max_root}):
+                at = remember(ins)
+            else:
+                return None
         return None
-    native.append(lower)
-    address += lower.size
-    if not take_bytes(MAX_REMAINDER) or address != upper.operands[0].imm:
+
+    joins = [join(x) for x in (upper.operands[0].imm, lower.operands[0].imm, address)]
+    if None in joins or len(set(joins)) != 1:
         return None
-    threshold = instructions.get(address)
-    if threshold is None or threshold.mnemonic != "cmp":
+    threshold_start = joins[0]
+    splits, leaves = [], []
+    address = threshold_start
+    for _ in range(16):
+        comparison = instructions.get(address)
+        if comparison is None or not threshold(comparison):
+            return None
+        value = comparison.operands[1].imm
+        if splits and value <= splits[-1]["threshold"]:
+            return None
+        address = remember(comparison)
+        branch = seek(address, lambda x: x.mnemonic == "jbe", {"rax"})
+        if branch is None or branch.operands[0].type != CS_OP_IMM:
+            return None
+        address = remember(branch)
+        splits.append(
+            dict(threshold=value, compare=comparison.address, branch=branch.address)
+        )
+        leaves.append(branch.operands[0].imm)
+        following = instructions.get(address)
+        if following is None:
+            return None
+        if not threshold(following):
+            leaves.append(address)
+            break
+    else:
         return None
-    op = threshold.operands
-    if not (
-        len(op) == 2
-        and op[0].type == CS_OP_REG
-        and threshold.reg_name(op[0].reg) == "eax"
-        and op[1].type == CS_OP_IMM
-        and 0 <= op[1].imm < 100
-    ):
-        return None
-    native.append(threshold)
-    branch = instructions.get(address + threshold.size)
-    if (
-        branch is None
-        or branch.mnemonic != "jbe"
-        or branch.operands[0].type != CS_OP_IMM
-    ):
-        return None
-    native.append(branch)
     return dict(
         randomSite=call.address,
+        modulus=modulus,
         maxOffset=max_offset,
         minOffset=min_offset,
         maxRead=maximum.address,
         minRead=minimum.address,
-        prefixEnd=maximum.address,
-        threshold=op[1].imm,
-        branches={True: branch.operands[0].imm, False: branch.address + branch.size},
+        prefixEnd=prefix_end,
+        threshold=splits[0]["threshold"],
+        thresholdStart=threshold_start,
+        maxRegister=max_root,
+        upper=upper.address,
+        lower=lower.address,
+        remapStart=remap_start,
+        splits=splits,
+        leaves=leaves,
+        branches={True: leaves[0], False: leaves[-1]},
         nativeProof=dict(
             kind="uint32_mod_signed_open_interval_remap",
             nativeMethod={
@@ -182,18 +290,19 @@ def _pattern(machine, history, call):
             },
             instructions=[
                 dict(address=hex(x.address), nativeBytes=x.bytes.hex())
-                for x in [call, *native]
+                for x in [call, *[native[k] for k in sorted(native)]]
             ],
-            modulus=100,
-            guard="int32(Min) < uint32(draw)%100 < int32(Max)",
-            remap="guard ? uint32(Max)%100 : uint32(draw)%100",
-            threshold=op[1].imm,
+            modulus=modulus,
+            guard=f"int32(Min) < uint32(draw)%{modulus} < int32(Max)",
+            remap=f"guard ? uint32(Max)%{modulus} : uint32(draw)%{modulus}",
+            thresholds=[s["threshold"] for s in splits],
+            threshold=splits[0]["threshold"],
         ),
     )
 
 
 def prepare_history_formula(machine, history, *, enabled=None):
-    """Opt-in only after every discovered private read belongs to a matched block."""
+    """Opt in only when every discovered private read has a proven interval."""
     if enabled is None:
         from .monster_rules import hooks
 
@@ -207,52 +316,113 @@ def prepare_history_formula(machine, history, *, enabled=None):
         enabled = bool(policies and policies[0].get("formula"))
     if not enabled:
         return False
-    if history is None or history.local_pairs or not history.complete_discovery:
-        raise ValueError("已审核随机公式缺少完整单区间读取证据")
-    specs = {
-        ins.address: spec
-        for ins in machine.ins.values()
-        if ins.mnemonic == "call"
-        and (spec := _pattern(machine, history, ins)) is not None
-    }
-    covered = {}
-    for spec in specs.values():
-        covered[spec["maxRead"]] = {spec["maxOffset"]}
-        covered[spec["minRead"]] = {spec["minOffset"]}
-    if not specs or not history.read_sites or covered != history.read_sites:
-        raise ValueError("已审核随机公式的原生形状或全部Param读取位置变化")
+    if history is None or not history.complete_discovery or history.escaped_sites:
+        raise ValueError("已审核随机公式缺少完整区间读取证据")
+    specs, covered = {}, {}
+    pairs = history.local_pairs or [history]
+    for pair in pairs:
+        if pair.escaped_sites:
+            raise ValueError("私有Param逃逸，不能投影其历史字段")
+        pair_specs = {
+            ins.address: spec
+            for ins in machine.ins.values()
+            if ins.mnemonic == "call"
+            and (spec := _pattern(machine, pair, ins)) is not None
+        }
+        pair_covered = {}
+        for spec in pair_specs.values():
+            pair_covered[spec["maxRead"]] = {spec["maxOffset"]}
+            pair_covered[spec["minRead"]] = {spec["minOffset"]}
+            spec["history"] = pair
+        if not pair_specs or not pair.read_sites or pair_covered != pair.read_sites:
+            raise ValueError("已审核随机公式的原生形状或全部Param读取位置变化")
+        if specs.keys() & pair_specs.keys():
+            raise ValueError("同一随机调用对应多组私有区间")
+        specs.update(pair_specs)
+        covered.update(pair_covered)
+    if covered != history.read_sites:
+        raise ValueError("已审核随机公式的全部Param读取位置变化")
+    for pair in pairs:
+        pair.formula_enabled = True
     history.formula_specs = specs
     history.formula_enabled = True
     return True
 
 
 def recover_history_formula(machine, ins, event, state):
-    """Return two proven fixed-write continuations at their first actual call."""
+    """Keep one draw and prove each real continuation without skipping checks."""
     from .machine import Boundary, Machine
 
-    history = machine.table_history
-    if history is None or not history.formula_enabled:
+    manager = machine.table_history
+    if manager is None or not manager.formula_enabled:
         return None
-    spec = history.formula_specs.get(ins.address)
+    spec = manager.formula_specs.get(ins.address)
     if spec is None or event["target"] != ("random_generator",):
         return None
-    working = machine.complete_call(state, event, None)
-    address = ins.address + ins.size
-    while address != spec["prefixEnd"]:
-        operation = machine.ins[address]
-        address = machine.step(operation, working)
-    maximum = machine.ins[spec["maxRead"]]
-    minimum = machine.ins[spec["minRead"]]
-    if machine.address(maximum, maximum.operands[1], working) != pointer(
-        history.owner, spec["maxOffset"]
-    ) or machine.address(minimum, minimum.operands[1], working) != pointer(
-        history.owner, spec["minOffset"]
-    ):
-        raise ValueError("已审核随机公式的Param对象绑定变化")
-    working["regs"]["rax"] = working["regs"]["rcx"] = None
-    working["flags"] = None
-    if working.get("history_updates"):
+    history = spec["history"]
+
+    def project(selected):
+        # Every discovered read is covered by an explicit formula input. Keep
+        # its real value in JSON persistent state, rather than accumulating a
+        # Cartesian product of unrelated local pairs in native machine memory.
+        selected = deepcopy(selected)
+        for key in list(selected["mem"]):
+            owner, offset, size = key
+            if owner == manager.owner and any(
+                offset < off + 4 and off < offset + size for off in manager.fields
+            ):
+                del selected["mem"][key]
+        return selected
+
+    entry_state = project(state)
+    initial = machine.complete_call(entry_state, event, None)
+    initial["regs"]["rax"] = None
+    if initial.get("history_updates"):
         raise ValueError("进入随机公式前还有未输出的历史写入")
+
+    # Execute all three guard paths using unknown Int32 fields, retaining actual
+    # flag-preserving instructions. Exact state equality proves their common
+    # continuation; no sampled history stands in for an unbounded domain.
+    prefix_states, prefix_paths = [], []
+    for upper_taken, lower_taken in ((True, False), (False, True), (False, False)):
+        selected = deepcopy(initial)
+        address, seen, path = ins.address + ins.size, set(), []
+        try:
+            for _ in range(128):
+                if address == spec["thresholdStart"]:
+                    break
+                if address in seen or address not in machine.ins:
+                    raise Boundary("formula prefix loops or leaves method")
+                seen.add(address)
+                operation = machine.ins[address]
+                path.append(
+                    dict(address=hex(address), nativeBytes=operation.bytes.hex())
+                )
+                if address == spec["maxRead"]:
+                    if machine.address(
+                        operation, operation.operands[1], selected
+                    ) != pointer(history.owner, spec["maxOffset"]):
+                        raise Boundary("maximum is not this typed Param")
+                if address == spec["minRead"]:
+                    if machine.address(
+                        operation, operation.operands[1], selected
+                    ) != pointer(history.owner, spec["minOffset"]):
+                        raise Boundary("minimum is not this typed Param")
+                if address in (spec["upper"], spec["lower"]):
+                    taken = upper_taken if address == spec["upper"] else lower_taken
+                    address = (
+                        operation.operands[0].imm if taken else address + operation.size
+                    )
+                else:
+                    address = machine.step(operation, selected)
+            else:
+                raise Boundary("formula prefix exceeds bound")
+        except Boundary as error:
+            raise ValueError("已审核随机公式前缀绑定未闭合：" + str(error)) from error
+        selected["regs"]["rax"] = selected["regs"][spec["maxRegister"]] = None
+        selected["flags"] = None
+        prefix_states.append(selected)
+        prefix_paths.append(path)
 
     class Probe(Machine):
         def load(self, location, size, selected):
@@ -260,7 +430,7 @@ def recover_history_formula(machine, ins, event, state):
                 "pointer",
                 history.owner,
             ):
-                fields = history.private_field(location, size)
+                fields = manager.private_field(location, size)
                 if (
                     not fields
                     or len(fields) * 4 != size
@@ -272,11 +442,15 @@ def recover_history_formula(machine, ins, event, state):
         def write(self, operation, operand, value, selected):
             if operand.type == CS_OP_MEM:
                 location = self.address(operation, operand, selected)
-                fields = history.private_field(location, operand.size)
+                fields = manager.private_field(location, operand.size)
                 if fields:
-                    if type(value) is not int or sum(4 for _ in fields) != operand.size:
+                    if (
+                        type(value) is not int
+                        or sum(4 for _ in fields) != operand.size
+                        or not {off for off, _ in fields} <= set(history.fields)
+                    ):
                         raise Boundary(
-                            "private write is not a complete fixed Int32 store"
+                            "private write is not a complete fixed pair store"
                         )
                     self.written.update(off for off, _ in fields)
                 elif not (
@@ -285,38 +459,49 @@ def recover_history_formula(machine, ins, event, state):
                     raise Boundary("branch has an unreviewed external write")
             return Machine.write(self, operation, operand, value, selected)
 
-    buckets = []
-    for truth, start in spec["branches"].items():
+    def recover_bucket(index, start, working):
         probe = object.__new__(Probe)
         probe.__dict__ = dict(machine.__dict__)
         probe.written = set()
         selected = deepcopy(working)
-        address, dirty, writes, path, seen = start, {"rax", "rcx"}, [], [], set()
+        dirty = {"rax", spec["maxRegister"]}
+        # Compiler-scheduled MOV/LEA between a threshold CMP and JBE is part
+        # of every path through that decision, including the final high bucket.
+        for split in spec["splits"][: min(index + 1, len(spec["splits"]))]:
+            scheduled = split["compare"]
+            while scheduled != split["branch"]:
+                operation = probe.ins[scheduled]
+                scheduled = probe.step(operation, selected)
+                if (
+                    operation.mnemonic in {"mov", "movabs", "lea"}
+                    and operation.operands[0].size >= 4
+                ):
+                    dirty.discard(register(operation, operation.operands[0].reg))
+        selected["flags"] = None
+        address, writes, path, seen = start, [], [], set()
         try:
             for _ in range(96):
                 if address in seen or address not in probe.ins:
                     raise Boundary("branch loops or leaves the method")
                 seen.add(address)
                 operation = probe.ins[address]
+                complete = set(history.fields) == probe.written
                 if operation.mnemonic == "call":
                     call = probe.event(operation, selected)
                     if (
-                        set(history.fields) != probe.written
+                        not complete
                         or call["target"] is None
                         or any(arg is None for arg in call["arguments"])
                     ):
                         raise Boundary(
                             "fixed writes or actual call arguments are incomplete"
                         )
-                    buckets.append(
-                        dict(
-                            truth=truth,
-                            address=address,
-                            state=selected,
-                            writes=writes,
-                            nativePath=path,
-                        )
-                    )
+                    if any(
+                        isinstance(arg, tuple) and arg[:2] == ("pointer", history.owner)
+                        for arg in call["arguments"]
+                    ):
+                        raise Boundary("private Param escapes to a call")
+                    stop_kind = "nativeCall"
                     break
                 if operation.mnemonic not in {
                     "mov",
@@ -327,7 +512,12 @@ def recover_history_formula(machine, ins, event, state):
                     "sub",
                     "jmp",
                 }:
-                    raise Boundary("branch is not a reviewed fixed-write prefix")
+                    if not complete:
+                        raise Boundary("branch checks before fixed history writes")
+                    # Resume exactly here. In particular the operator's +0xc6
+                    # guard remains a real Machine.walk branch with its state.
+                    stop_kind = "nativeContinuation"
+                    break
                 reads, _ = operation.regs_access()
                 clearing = (
                     operation.mnemonic == "xor"
@@ -344,7 +534,8 @@ def recover_history_formula(machine, ins, event, state):
                 )
                 address = probe.step(operation, selected)
                 if (
-                    operation.operands[0].type == CS_OP_REG
+                    operation.operands
+                    and operation.operands[0].type == CS_OP_REG
                     and operation.operands[0].size >= 4
                 ):
                     dirty.discard(register(operation, operation.operands[0].reg))
@@ -359,16 +550,56 @@ def recover_history_formula(machine, ins, event, state):
             raise ValueError(
                 "已审核随机公式后继未能证明独立于输入历史：" + str(error)
             ) from error
-    return dict(
-        expression=dict(
+        return dict(
+            truth=index == 0,
+            address=address,
+            state=project(selected),
+            writes=writes,
+            nativePath=path,
+            continuationKind=stop_kind,
+        )
+
+    buckets = []
+    for index, start in enumerate(spec["leaves"]):
+        candidates = [
+            recover_bucket(index, start, working) for working in prefix_states
+        ]
+        # Inserted pointer reloads may differ at the threshold. They may be
+        # forgotten only when all guard paths reach this exact actual call or
+        # continuation with the same complete state and ordered writes.
+        if any(candidate != candidates[0] for candidate in candidates[1:]):
+            raise ValueError("随机区间各guard路径的真实后继状态或写入不相同")
+        buckets.append(candidates[0])
+
+    def expression(threshold):
+        return dict(
             kind="table_history_interval",
-            drawKey=f"random_uint32_mod_100:{hex(ins.address)}",
+            drawKey=f"random_uint32_mod_{spec['modulus']}:{hex(ins.address)}",
             maxKey=history.key(spec["maxOffset"]),
             minKey=history.key(spec["minOffset"]),
-            modulus=100,
-            threshold=spec["threshold"],
-        ),
+            modulus=spec["modulus"],
+            threshold=threshold,
+        )
+
+    decisions = [
+        dict(
+            expression=expression(split["threshold"]),
+            true=dict(bucket=index),
+            false=(
+                dict(decision=index + 1)
+                if index + 1 < len(spec["splits"])
+                else dict(bucket=index + 1)
+            ),
+        )
+        for index, split in enumerate(spec["splits"])
+    ]
+    proof = deepcopy(spec["nativeProof"])
+    proof["guardPaths"] = prefix_paths
+    return dict(
+        expression=decisions[0]["expression"],
+        decisions=decisions,
+        entryState=entry_state,
         inputDefinitions=history.input_definitions(),
-        nativeProof=deepcopy(spec["nativeProof"]),
+        nativeProof=proof,
         buckets=buckets,
     )

@@ -11,13 +11,26 @@ LOCAL_HISTORY_TABLES = {
 }
 
 
+FORMULA_HISTORY_TABLES = {
+    "app.Em0159_00_BTable_AttackStay_Export": (
+        "table_37c7f1a3_064d_4ebe_85ba_56eccb1cb976",
+    ),
+    "app.Em0159_00_BTable_Life_Export": ("table_f27fcc59_d333_4580_a0c8_42c20ccde69f",),
+}
+
+
 def table_history_policy(row):
     method = row["method"]
-    stems = LOCAL_HISTORY_TABLES.get(row["type"], ())
-    local = any(
-        method.startswith(stem) and method[len(stem) :].isdigit() for stem in stems
-    )
-    return dict(local=True) if local else None
+    policy = {}
+    local = LOCAL_HISTORY_TABLES.get(row["type"], ())
+    if any(method.startswith(stem) and method[len(stem) :].isdigit() for stem in local):
+        policy["local"] = True
+    formula = FORMULA_HISTORY_TABLES.get(row["type"], ())
+    if any(
+        method.startswith(stem) and method[len(stem) :].isdigit() for stem in formula
+    ):
+        policy["formula"] = True
+    return policy or None
 
 
 BLAZING_COMMAND = "app.btable.Em0159_00BTableCommand.cCheckEnterBlazingMode"

@@ -11,13 +11,26 @@ LOCAL_HISTORY_TABLES = {
 }
 
 
+FORMULA_HISTORY_TABLES = {
+    "app.Em0154_00_BTable_AttackStay_Export": (
+        "table_0d9ef720_1ec4_4f34_af19_653d2a1ec787",
+    ),
+    "app.Em0154_00_BTable_Life_Export": ("table_68e04108_dcb7_4f07_823b_23548cd70926",),
+}
+
+
 def table_history_policy(row):
     method = row["method"]
-    stems = LOCAL_HISTORY_TABLES.get(row["type"], ())
-    local = any(
-        method.startswith(stem) and method[len(stem) :].isdigit() for stem in stems
-    )
-    return dict(local=True) if local else None
+    policy = {}
+    local = LOCAL_HISTORY_TABLES.get(row["type"], ())
+    if any(method.startswith(stem) and method[len(stem) :].isdigit() for stem in local):
+        policy["local"] = True
+    formula = FORMULA_HISTORY_TABLES.get(row["type"], ())
+    if any(
+        method.startswith(stem) and method[len(stem) :].isdigit() for stem in formula
+    ):
+        policy["formula"] = True
+    return policy or None
 
 
 SIDE_WALK_COMMAND = "app.Em0154_00BTableCommand.cSideWalkOffset"

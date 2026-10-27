@@ -8,8 +8,9 @@
 |---|---|---|
 | `sdk.enemy_logic_exporter` | 從 dump 出的遊戲 EXE、IL2CPP 中繼資料和資源匯出中提取魔物行動邏輯，產生網頁使用的行動圖 JSON | dump 出的 EXE、IL2CPP 中繼資料、`MHWS-in-json` 資源；部分命令還需要 Ghidra |
 | `sdk.skill_effect_exporter` | 找出原生程式碼中使用每個技能的函式，按技能等級求值，產生技能效果鏈路 JSON（`SkillDetails.xlsx` 的資料來源） | dump 出的 EXE、IL2CPP 中繼資料、`MHWS-in-json` 資源 |
+| `sdk.action_map_exporter` | 產生 `WeaponActionValues.xlsx` 使用的武器動作與精確碰撞 requestSet 對映 | dump 出的 EXE、IL2CPP 中繼資料、轉換後的 MOTBANK/MOTLIST/PFB/RCOL/USER JSON |
 
-兩項功能讀取的都是從記憶體 dump 出的遊戲 EXE（例如 `MonsterHunterWilds_dump.exe`），產生 REFramework 的 `il2cpp_dump.json` 之前本來就會得到它；不使用原版 `MonsterHunterWilds.exe`。這兩個檔案都由使用者提供，倉庫和 Release 都不保存副本，SDK 也不猜測路徑：用 `-e/--exe`、`-i/--il2cpp` 指定，或設環境變數 `MHWS_EXE`、`MHWS_IL2CPP`。SDK 不記錄遊戲版本或檔案摘要；遊戲更新後，程式碼或資料對不上的地方會直接報錯（符號無法定位、原生位元組不一致等），按「[遊戲更新後](#遊戲更新後)」處理。
+三項功能讀取的都是從記憶體 dump 出的遊戲 EXE（例如 `MonsterHunterWilds_dump.exe`），產生 REFramework 的 `il2cpp_dump.json` 之前本來就會得到它；不使用原版 `MonsterHunterWilds.exe`。這兩個檔案都由使用者提供，倉庫和 Release 都不保存副本，SDK 也不猜測路徑：用 `-e/--exe`、`-i/--il2cpp` 指定，或設環境變數 `MHWS_EXE`、`MHWS_IL2CPP`。SDK 不記錄遊戲版本或檔案摘要；遊戲更新後，程式碼或資料對不上的地方會直接報錯（符號無法定位、原生位元組不一致等），按「[遊戲更新後](#遊戲更新後)」處理。
 
 只想重新產生網頁或表格、不改動提取結果時，不需要 SDK：建置器只讀取倉庫中已提交的 JSON（見「[只建置網頁](#只建置網頁)」）。
 
@@ -27,7 +28,7 @@
 ## 建置環境（Windows）
 
 1. 安裝 Python 3.13（勾選 `py` 啟動器）與 Git，複製倉庫。
-2. 在專案根目錄執行安裝腳本。它在 `.tmp/sdk-venv` 建立虛擬環境，安裝固定版本的相依套件（Capstone、PyGhidra、questionary、rich），最後執行環境檢查：
+2. 在專案根目錄執行安裝腳本。它在 `.tmp/sdk-venv` 建立虛擬環境，安裝固定版本的相依套件（Capstone、iced-x86、ijson、mmh3、PyGhidra、questionary、rich），最後執行環境檢查：
 
    ```powershell
    powershell -ExecutionPolicy Bypass -File sdk/setup_env.ps1 -Exe <dump 出的 EXE> -Il2cpp <il2cpp_dump.json>
@@ -53,11 +54,26 @@
 
 ## 選單介面（TUI）
 
-`python -m sdk` 開啟常用工作的選單：環境檢查、技能效果提取（全部或指定技能）、重建 `SkillDetails.xlsx`、魔物提取與玩家視圖、未知條件統計、發布與建置行動邏輯網頁，以及 SDK 測試。用方向鍵和 Enter 選擇（選單文字為簡體中文）。每個操作先印出要執行的完整命令列再執行，同樣的步驟可以直接寫進腳本。選單啟動時讀取 `MHWS_EXE`、`MHWS_IL2CPP`；未設定時先詢問 dump 出的 EXE 與 IL2CPP dump 的路徑，「设置 EXE 与 il2cpp 路径」可在本次工作階段中修改。發布前會先確認，避免誤覆蓋已提交的模型。耗時的步驟（技能提取、`extract-all`、`player-view`、`publish`）會顯示進度條，給出已完成數量、用時與預計剩餘時間，選單和命令列中都會顯示（`sdk/progress.py`）。安裝腳本會把專案根目錄登記到虛擬環境中（`mhws_sdk.pth`），因此選單可以在任意目錄啟動；此前建立的環境需要重新執行一次安裝腳本。
+`python -m sdk` 開啟常用工作的選單：環境檢查、技能效果提取（全部或指定技能）、重建 `SkillDetails.xlsx`、武器動作對映、魔物提取與玩家視圖、未知條件統計、發布與建置行動邏輯網頁，以及 SDK 測試。用方向鍵和 Enter 選擇（選單文字為簡體中文）。每個操作先印出要執行的完整命令列再執行，同樣的步驟可以直接寫進腳本。選單啟動時讀取 `MHWS_EXE`、`MHWS_IL2CPP`；未設定時先詢問 dump 出的 EXE 與 IL2CPP dump 的路徑，「设置 EXE 与 il2cpp 路径」可在本次工作階段中修改。發布前會先確認，避免誤覆蓋已提交的模型。耗時的步驟（技能提取、`extract-all`、`player-view`、`publish`）會顯示進度條，給出已完成數量、用時與預計剩餘時間，選單和命令列中都會顯示（`sdk/progress.py`）。安裝腳本會把專案根目錄登記到虛擬環境中（`mhws_sdk.pth`），因此選單可以在任意目錄啟動；此前建立的環境需要重新執行一次安裝腳本。
 
 ```powershell
 .tmp/sdk-venv/Scripts/python.exe -m sdk
 ```
+
+## 武器動作對映 SDK（`sdk.action_map_exporter`）
+
+> ActionMap 是將武器動作名稱連接到精確碰撞 requestSet 身分的靜態 JSON；身分包含 scope、RCOL 路徑、requestSet ID、key hash 和來源序號。表格建置器只讀取這份 JSON。
+
+```powershell
+python -B -m sdk.action_map_exporter extract
+python -B -m sdk.action_map_exporter extract -e <dump 出的 EXE> -i <il2cpp_dump.json> -n MHWS-in-json/natives -o .tmp/action-map/ActionMap.json
+```
+
+預設寫入 `MHWS-in-json/ActionMap.json`。先用 `motlist-to-json` 轉換資源，再用匹配的 dump 執行本命令。SDK 直接讀取轉換後的 JSON，不再需要 PAK、Release list、原始 PFB/MOTBANK、REE-Lib 或 .NET。它檢查自身必要的資源及引用閉包，無關 PFB 轉換失敗不會阻斷產生；必要檔案缺失、身分有歧義或原生規則發生變化時明確失敗，保留原輸出。
+
+每次產生只串流讀取一次 IL2CPP JSON，原生規則校驗和動作方法選擇共用這份索引；只保留方法索引和規則所需的型別記錄。
+
+v2 對映契約保留證據等級、條件、未解析項及原生證據。產生前按方法身分、正規化指令、引用表和中繼資料核對依賴版本的碰撞規則，遊戲更新後規則變化需要複核。Schema 位於 `sdk/action_map_exporter/data`，產生端測試位於 `tests/sdk/action_map`；`src` 獨立驗證 JSON。遊戲更新時依序複製新版 JSON、重建 ActionMap、重新提取技能與魔物 JSON，再建置表格和網站。維護規則見 [AGENTS.md](../action_map_exporter/AGENTS.md)。
 
 ## 魔物行動邏輯 SDK（`sdk.enemy_logic_exporter`）
 
@@ -107,7 +123,7 @@ python -B -m unittest discover -s tests/sdk -t .
 
 對於已核實的多組獨立區間，在原生程式實際讀取各組的位置分別展開，不在表入口列舉全部組合。已核實的布林命令若帶有狀態寫入，會在實際發生寫入的回傳分支上先更新狀態，再繼續判斷。
 
-私有參數的型別化查找與隨機區間發現分別核實：前者依據本匯出型別的 setup、配置、建構及字典插入鏈，只提供物件身分，不提供欄位預設值。明確審核的全域區間公式保留 Int32 有號歷史、uint32 取餘和嚴格開區間比較；頁面只執行 JSON 宣告的運算。公式證明範圍之外的私有讀取仍保留各自邊界。
+私有參數的型別化查找與隨機區間發現分別核實：前者依據本匯出型別的 setup、配置、建構及字典插入鏈，同時支援經過嚴格核對的明確建構子和建構子內聯形式，只提供物件身分，不設定進表預設值。已審核的全域區間公式保留 Int32 有號歷史、uint32 取餘和嚴格開區間比較。多閾值共用同一次抽樣；獨立區間分別保存歷史，跨動作也不互相覆寫。歷史寫入後的原生檢查仍從真實位置執行。只有全部讀取被涵蓋、Param 指標未逸出、寫入為已證明常數且各重新映射路徑後繼一致時才接入；其餘讀取繼續保留邊界。頁面只執行 JSON 宣告的運算。
 
 `cRequestActionDesireRecover` 記錄原始請求來源與受網路歸屬限制的請求約定，同時保留最終動作 ID、快取和轉換副作用未知的邊界。三項已核實尾部寫入只在該邊界正常回傳後套用。資源中的恢復型別標籤不決定目前原生實作的模式。
 
@@ -115,13 +131,17 @@ python -B -m unittest discover -s tests/sdk -t .
 
 已核實的側向目標和障礙攀爬目標命令保留原生前提、目標寫入順序與向量公式。引用缺失引發的例外路徑單獨保留邊界，與普通回傳假區分。目標寫入後，目前選招快照失效；頁面記錄公式，不計算遊戲座標或導航結果。各魔物不同的角度換算保留在各自配方中。
 
+共通投擲目標實作也用於已核對的闢獸參數佈局，保留兩次獨立 Nullable 位置查詢、按陣列順序選擇首個合格物件、Character setter 的不寫入前提，以及其後仍未完整恢復的偵測器與持有請求。闢獸牆面目標命令保留 void 回傳、獨占點申請、備用牆面狀態，以及早於最終目標 setter 的方向寫入；未閉合的候選集合、管理器副作用和幾何運算仍明確保留。這些邊界僅在正常回傳後繼續。兩種專用抓取檢查保留不同條件；毒怪鳥在命令主體正常回傳的真假兩側更新捕獲標誌，外層 guard 失敗時不寫。
+
+Unfair 資格使用已核實的玩家動作屬性、兩次導航查詢、原始節點屬性位和 ST103 區域關係。TARZAN_ATTACH 名稱和未命名導航位不被翻譯為假定的偷襲動作或地形類別。正常資格鏈可由宣告的輸入求值；缺失 Transform 引用仍保留明確的例外邊界。
+
 較大的完整研究模型會以緊湊格式寫出以保留全部邏輯；緊湊後仍超過 25 MiB 時會報錯，要求去重或分片。
 
 ### 遊戲更新後
 
 需要新的 dump 出的 EXE、對應的 IL2CPP dump、重新匯出的資源，以及 Ghidra。
 
-符號重新定位不能涵蓋全部配方依賴。目前證據遷移器會更新標準方法身分及範圍，但不會重新整理內嵌 `nativeBytes`，也不會重新定位缺少標準方法身分的輔助指令片段、常數位址或型別槽；部分配方還保留完整數字後綴方法名。因此，遷移報告沒有複核項也不代表全部配方證明已遷移，提取前仍需逐類核對這些依賴。新增配方後，應趁對應舊 EXE 仍可讀取時重新整理目前 profile 的證據摘要；新版本遷移無法補造缺失的舊摘要。
+證據遷移器只有在完整函式的規範化程式碼、長度及被呼叫方身分唯一匹配後，才更新標準方法列及其已有的 `nativeBytes`、`bytes`，並保留原證據列長度。`nativeBytesRefreshed`、`bytesRefreshed` 分別統計兩欄位的擬重新整理數量，報告模式也計數；`applied` 表示是否指定了 `--apply`。輔助指令片段、常數位址、型別槽和 Python 字面方法範圍列在 `unsupportedDependencies` 中，`coverage` 給出涵蓋範圍與數量；這些依賴不會被自動重新定位。`review` 為空只涉及標準方法列，不代表全部配方證明已遷移。新增配方後，應趁對應舊 EXE 仍可讀取時重新整理目前 profile 的證據摘要；新版本遷移無法補造缺失的舊摘要。
 
 ```powershell
 python -B -m sdk.enemy_logic_exporter check-env
@@ -137,6 +157,12 @@ python -B -m sdk.enemy_logic_exporter roster --write
 python -B -m sdk.enemy_logic_exporter new-monster --enemy <新魔物ID>          # 名單新增的每隻魔物
 ```
 
+同一方法具有多種證據範圍時，profile 在 `rowVariants` 中分別保存各個舊範圍。遷移按舊位址和列長度選擇；未登記的範圍需要對應舊 EXE 和人工複核，不依據新位元組字串補造舊授權。
+
+> PE（Portable Executable，可攜式可執行檔）是 Windows EXE 格式；這裡僅透過檔案標頭定位區段、資料目錄和函式邊界。
+
+PE 檔案的區段名稱可以隨 dump 改變。常量讀取按執行緒區域儲存、載入設定和延遲匯入目錄共同所屬的區段定位，其他可寫執行階段資料仍保持未知。沒有展開資訊的短函式用有界控制流程恢復結束位置；遇到未閉合的間接跳躍或解碼失敗時保留保守範圍。摘要方案 3 始終保留顯式證據範圍；升級方案必須用舊 EXE、舊中繼資料和舊證據原件重新計算舊證明。
+
 之後按「修改程式碼後重新提取」跑一遍。`migrate-evidence` 列出的待複核項和 `resolve-symbols` 報告的 `changed` 項必須逐條核對原生程式碼。詳細的核對順序見 [SDK 維護說明](../enemy_logic_exporter/AGENTS.md)（簡體中文）。
 
 ### 命令一覽
@@ -150,7 +176,7 @@ python -B -m sdk.enemy_logic_exporter new-monster --enemy <新魔物ID>         
 | `uncertainty` | 統計玩家戰鬥樹中無法判定的條件 | 帶玩家視圖的完整模型 |
 | `publish` | 刪除研究欄位、共享重複值，寫入 `src/processed_data/enemy_battle_logic/models` | 帶玩家視圖的完整模型 |
 | `resolve-symbols` | 按目前 EXE 重新產生符號位址 profile（預設寫入 `data/profile.json`） | EXE、dump |
-| `migrate-evidence` | 遷移程式碼未變的證據列，其餘列入人工複核 | EXE、dump、新 profile |
+| `migrate-evidence` | 遷移程式碼未變的標準方法證據並重新整理位元組，報告待複核項及未涵蓋依賴 | EXE、dump、新 profile |
 | `scheduler-slots` | 恢復 AI 狀態與中斷請求的行為表槽 | EXE、dump |
 | `roster` / `new-monster` | 更新大型魔物名單；為新魔物產生入口模組 | 資源 |
 | `analyze` | 全量資源與原生證據分析，產生研究快取 | EXE、dump、資源、Ghidra |
@@ -166,6 +192,12 @@ python -B -m sdk.enemy_logic_exporter new-monster --enemy <新魔物ID>         
 - **只能輸出到 `.tmp`**：研究輸出必須位於專案 `.tmp` 內，這是為了不把大型證據快取提交到 Git。
 
 ## 技能效果 SDK（`sdk.skill_effect_exporter`）
+
+本次選定技能函式的入口若跳到 dump 映像外的不可讀程式碼，提取會在寫出前失敗。需要取得完整 dump；不能透過修改映像基址或跳過入口來確定缺失行為。
+
+> Hook（函式攔截）透過修改執行中的遊戲程序來接管函式呼叫，其中包括改寫函式入口指令。記憶體 dump 可能包含這些改寫後的指令。
+
+匯出記憶體 dump 前，停用會註冊 Hook 的 autorun 指令碼和 DLL 外掛，再重新啟動遊戲，確保這些元件未在本次程序中載入。收起 REFramework 介面或停止擷取回呼不會撤銷已有 Hook。三個 SDK 功能統一使用這份純淨 dump，提取時不需要第二份 EXE。
 
 遊戲沒有「技能 → 效果數值」的資料表：SkillData 的四個數值槽沒有名稱，`PlayerSkillParam` 等參數檔案裡的欄位也不帶技能 ID，二者只在原生程式碼中連接。這個工具先掃描 EXE，找出以技能 ID 呼叫技能讀取方法的全部函式；再在「只裝備該技能、取某一等級」的情境下，按真實指令執行這些函式（布林與列舉參數逐一列舉），記錄回傳值、執行期條件以及數值來自哪個 SkillData 槽位、參數檔案欄位或 EXE 常數。結果寫入 `src/processed_data/skill_details/data/skill_links/`（`index.json` 加按技能類別拆分的分片），建置 PROCESSED_DATA 時據此產生 `SkillDetails.xlsx`。
 

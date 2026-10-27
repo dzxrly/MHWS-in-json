@@ -21,6 +21,7 @@ from sdk.enemy_logic_exporter.shared.workflow.environment import (
 ROOT = Path(__file__).resolve().parents[1]
 ENEMY = "sdk.enemy_logic_exporter"
 SKILL = "sdk.skill_effect_exporter"
+ACTION_MAP = "sdk.action_map_exporter"
 TRY_DIR = ".tmp/skill-effects"
 ENEMY_DIR = ".tmp/enemy-logic-exporter/tui"
 
@@ -131,6 +132,19 @@ def enemy_menu(session):
         run("src.site_data")
 
 
+def action_map_menu(session):
+    action = choose(
+        "武器动作映射 SDK",
+        ["生成 ActionMap.json（供动作值表使用）", "试生成到 .tmp", "返回"],
+    )
+    if action is None or action == "返回":
+        return
+    args = ["extract", *session.inputs()]
+    if action.startswith("试生成"):
+        args += ["-o", ".tmp/action-map/ActionMap.json"]
+    run(ACTION_MAP, *args)
+
+
 def ask_path(message, current):
     """A file path typed or pasted by the user (quotes from "Copy as path" removed)."""
     answer = ask_text(message, str(current or ""))
@@ -160,6 +174,7 @@ def main():
             [
                 "检查环境",
                 "技能效果",
+                "武器动作映射",
                 "怪物行动逻辑",
                 "设置 EXE 与 il2cpp 路径",
                 "运行 SDK 测试",
@@ -172,6 +187,8 @@ def main():
             run(ENEMY, "check-env", *session.inputs())
         elif action == "技能效果":
             skill_menu(session)
+        elif action == "武器动作映射":
+            action_map_menu(session)
         elif action == "怪物行动逻辑":
             enemy_menu(session)
         elif action.startswith("设置"):

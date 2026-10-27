@@ -438,7 +438,12 @@ class TableHistoryTests(unittest.TestCase):
                 "fixture.Export",
                 0x98,
                 0x30,
-                0x145DEA2D0,
+                int(
+                    next(iter(q.metadata.get(DICT_TYPE)["methods"].values()))[
+                        "function"
+                    ],
+                    16,
+                ),
                 {16: "BefoRandomMax_17", 20: "BefoRandomMin_17"},
             )
             with patch.object(

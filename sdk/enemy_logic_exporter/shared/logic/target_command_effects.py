@@ -80,15 +80,46 @@ def verify_target_receipt(pe, metadata, name):
             raise ValueError("目标更新命令的枚举变化：" + row["type"])
     for row in proof["classSymbols"]:
         address = (metadata.get(row["type"]) or {}).get("address")
-        if not address or int.from_bytes(
-            pe.read(int(row["slot"], 16), 8), "little"
-        ) != int(address, 16):
+        slot = row.get("slot")
+        if "sourceType" in row:
+            from capstone import CS_OP_MEM
+            from ..native.symbols import instructions, method_stem
+
+            source = next(
+                method
+                for method in proof["methods"]
+                if method["type"] == row["sourceType"]
+                and method_stem(method["method"]) == row["sourceMethod"]
+            )
+            pc = int(source["address"], 16) + int(row["instructionOffset"], 16)
+            if not int(source["address"], 16) <= pc < int(source["end"], 16):
+                raise ValueError("目标更新命令的类型来源超出已审核方法范围")
+            native, _ = instructions(pe, pc, pc + 16)
+            ins = native[0] if native else None
+            if (
+                ins is None
+                or ins.address + ins.size > int(source["end"], 16)
+                or ins.mnemonic != "cmp"
+                or len(ins.operands) != 2
+                or ins.operands[1].type != CS_OP_MEM
+                or ins.reg_name(ins.operands[1].mem.base) != "rip"
+                or ins.operands[1].mem.index
+            ):
+                raise ValueError("目标更新命令的类型来源指令变化：" + row["type"])
+            slot = hex(ins.address + ins.size + ins.operands[1].mem.disp)
+        if not address or int.from_bytes(pe.read(int(slot, 16), 8), "little") != int(
+            address, 16
+        ):
             raise ValueError("目标更新命令的原生类型检查变化：" + row["type"])
     return True
 
 
 def verify_target_command_effects(pe, metadata):
-    return verify_target_receipt(pe, metadata, OBSTACLE_RECEIPT)
+    from .throw_target import RECEIPT
+
+    for name in (OBSTACLE_RECEIPT, RECEIPT):
+        verify_target_receipt(pe, metadata, name)
+    return True
 
 
 def _evidence(name):
@@ -160,6 +191,10 @@ def _mutation(updates, evidence, summary, exception_boundary):
 
 def reviewed_target_command_effect(bound, evidence):
     """The common obstacle command: its Boolean is independent of queries."""
+    from .throw_target import COMMAND, throw_target_effect
+
+    if bound.get("commandType") == COMMAND:
+        return throw_target_effect(bound, evidence)
     if bound.get("commandType") != OBSTACLE_COMMAND:
         return None
     _match(OBSTACLE_COMMAND, evidence, OBSTACLE_RECEIPT)

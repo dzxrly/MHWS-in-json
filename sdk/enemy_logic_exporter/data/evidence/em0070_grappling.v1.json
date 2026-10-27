@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 1,
+  "scope": "Partial cGrapplingCheck semantics; manager collection query remains unknown.",
+  "methods": [
+    {
+      "type": "app.btable.Em0070_00BTableCommand.cGrapplingCheck",
+      "method": "onExecute1233862",
+      "methodBaseName": "onExecute",
+      "address": "0x149ae0e20",
+      "end": "0x149ae0fff",
+      "returns": "System.Boolean",
+      "parameters": [
+        "ace.btable.cCommandWork"
+      ],
+      "implFlags": "HasThis",
+      "nativeBytes": "41565657534881ec88000000c5f97f7c2470c5f829742460488b0501f9bf0a4831e048894424584d85c074124c89c3498b00488b00483b05e4e9c50a742a31ff488b4c24584831e1e8a395640189f8c5f828742460c5f8287c24704881c4880000005b5f5e415ec34889ce488b4328488b4068488b40404c8b8000010000c7442420000000004c8d7424404c89f14889f241b101e8f79deefc31ff4889f14c89f24531c0e867206ef64885c07492488b40304885c07487488b4040488b8808030000807927000f8472ffffff488b8808010000837948050f8561ffffff488b4b28488b4968488b4940488b890801000040b70183794c050f8443ffffff488b8028010000488b40388b481c85c97e2131d24c8b44d02041837818007e0b41837820000f8418ffffff48ffc24839d175e1488b05f9a6db0a4c8b8078010000c5c857f64983783800741a488d7c24484889f94889f2e8a77055fc488b1fc5fa7e7f08eb0631dbc5c1efff488d54244848891ac5f9d67a084c8d442430c4c17829304889f1e8485b7ef631ff84c00f85aefeffffc5f97ef885c00f8ea2feffff89c048ffc84889d9480fbaf13f488b09488b4930488b4940488b91080100004883e8010f92c1837a4805400f94c70f846efeffff4883c30884c974c9e961feffff",
+      "parameterModifiers": [
+        null
+      ]
+    },
+    {
+      "type": "app.cEmModuleTarget",
+      "method": "getTarget544350",
+      "methodBaseName": "getTarget",
+      "address": "0x1469cacb0",
+      "end": "0x1469caee0",
+      "returns": "app.TARGET_ACCESS_KEY",
+      "parameters": [
+        "System.Boolean",
+        "app.cEmModuleTarget.TARGET_ORDER"
+      ],
+      "implFlags": "HasThis",
+      "nativeBytes": "4889c848634c2428498b5038488b4cca204584c974068379780175064883c160eb07488d0d5fa3df0d488b09488908c3488b42384963c9488b4cc8204584c0740831c08379780275038b4158c3cccccc4889c848634c2430498b5038488b4cca20807c242800740683797802752d4c8b41384d63c949c1e1054b8d0c084883c130c5f82841f0c5f829004b8d14084883c2344d01c84983c038eb21c5f828059d0ee20dc5f829004c8d05aa0ee20d488d159f0ee20d488d0d940ee20dc4c17a1000c5fa100ac5fa1011c5fa115010c5fa114814c5fa114018c7401c00000000c34889c848634c2430498b5038488b4cca20807c242800740683797802752d4c8b41404d63c949c1e1054b8d0c084883c130c5f82841f0c5f829004b8d14084883c2344d01c84983c038eb21c5f828050d0ee20dc5f829004c8d051a0ee20d488d150f0ee20d488d0d040ee20dc4c17a1000c5fa100ac5fa1011c5fa115010c5fa114814c5fa114018c7401c00000000c34863442428488b4a38488b44c1204584c9740683787802750880787c000f95c0c331c0c3cccccccccccccccccccccccc4863442428488b4a38488b44c120490fbaf03f41c700000000004584c97406837878027512488b48308b491041890880787e000f95c0c331c0c3cccccccccccc4863442428488b4a38488b44c1204584c9740683787802750880787d000f95c0c331c0c3cccccccccccccccccccccccc488b42384963c9488b44c8204584c07406837878037505488b4048c331c0c3cc",
+      "parameterModifiers": [
+        null,
+        null
+      ]
+    },
+    {
+      "type": "app.TargetAccessKeyUtil",
+      "method": "getEnemyManageInfo1226798",
+      "methodBaseName": "getEnemyManageInfo",
+      "address": "0x1401c2f30",
+      "end": "0x1401c3024",
+      "returns": "app.cEnemyManageInfo",
+      "parameters": [
+        "app.TARGET_ACCESS_KEY",
+        "System.Boolean"
+      ],
+      "implFlags": "",
+      "nativeBytes": "4156565755534883ec20833a010f85bf0000004489c34989d64889cf8b720431d241b80a00000041b904000000e84e6c8e0781e6ff030000418b6e044889f9ba0a00000041b80800000041b904000000e82b6c8e07c1ed0a488b05f1316e14488b88c0000000488d41208b510885d2783e488b4910ba0000001c23512c81fa000000147525488b490848c1e92681e1ffff0300488b1586e66e14488d0c4948c1e10448837c0a20007405480fbae83f40382c30751d488b1594316e1484db741f488b82d0000000488b4018488b44f020eb0231c04883c4205b5d5f5e415ec34889f94189f04883c4205b5d5f5e415ee98c2ae109",
+      "parameterModifiers": [
+        "ByRef",
+        null
+      ]
+    }
+  ],
+  "fieldChecks": [
+    {
+      "type": "app.cEnemyBTableCommandWork",
+      "field": "<Accessor>k__BackingField",
+      "fieldType": "app.EnemyAccessor",
+      "offset": "0x28"
+    },
+    {
+      "type": "app.EnemyAccessor",
+      "field": "<ContextHolder>k__BackingField",
+      "fieldType": "app.cEnemyContextHolder",
+      "offset": "0x68"
+    },
+    {
+      "type": "app.cEnemyContextHolder",
+      "field": "_Em",
+      "fieldType": "app.cEnemyContext",
+      "offset": "0x40"
+    },
+    {
+      "type": "app.cEnemyContext",
+      "field": "Basic",
+      "fieldType": "app.cEmModuleBasic",
+      "offset": "0x108"
+    },
+    {
+      "type": "app.cEnemyContext",
+      "field": "Parts",
+      "fieldType": "app.cEmModuleParts",
+      "offset": "0x128"
+    },
+    {
+      "type": "app.cEnemyContext",
+      "field": "Target",
+      "fieldType": "app.cEmModuleTarget",
+      "offset": "0x100"
+    },
+    {
+      "type": "app.cEnemyContext",
+      "field": "_FlagArray",
+      "fieldType": "System.Boolean[]",
+      "offset": "0x308"
+    },
+    {
+      "type": "app.cEmModuleBasic",
+      "field": "EmID",
+      "fieldType": "app.EnemyDef.ID",
+      "offset": "0x48"
+    },
+    {
+      "type": "app.cEmModuleBasic",
+      "field": "RoleID",
+      "fieldType": "app.EnemyDef.ROLE_ID",
+      "offset": "0x4c"
+    },
+    {
+      "type": "app.cEmModuleParts",
+      "field": "_BreakParts",
+      "fieldType": "app.cEmModuleParts.cBreakParts[]",
+      "offset": "0x38"
+    },
+    {
+      "type": "app.cEmModuleParts.cBreakParts",
+      "field": "_BreakCount",
+      "fieldType": "System.Int32",
+      "offset": "0x18"
+    },
+    {
+      "type": "app.cEmModuleParts.cBreakParts",
+      "field": "_BreakParamIndex",
+      "fieldType": "System.Int32",
+      "offset": "0x20"
+    }
+  ],
+  "enumChecks": [
+    {
+      "type": "app.EnemyDef.ID",
+      "field": "EM0009_00_0",
+      "value": 5
+    },
+    {
+      "type": "app.EnemyDef.ID",
+      "field": "EM0070_00_0",
+      "value": 9
+    },
+    {
+      "type": "app.EnemyDef.ROLE_ID",
+      "field": "ROLE_COLLAB_01",
+      "value": 5
+    },
+    {
+      "type": "app.EnemyDef.FLAG_BIT",
+      "field": "DONE_CONTEXT_SETUP_END",
+      "value": 7
+    }
+  ],
+  "classChecks": [
+    {
+      "methodBaseName": "onExecute",
+      "instructionOffset": 53,
+      "operandIndex": 1,
+      "expectedType": "app.cEnemyBTableCommandWork"
+    }
+  ]
+}

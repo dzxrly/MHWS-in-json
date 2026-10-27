@@ -11,13 +11,31 @@ LOCAL_HISTORY_TABLES = {
 }
 
 
+FORMULA_HISTORY_TABLES = {
+    "app.Em0162_00_BTable_AttackStay_Export": (
+        "table_11a0fc60_9576_419b_af13_e523ee7ba55c",
+    ),
+    "app.Em0162_00_BTable_Combat_Export": (
+        "table_b6287534_5a09_4dda_88e8_e018de4f2760",
+    ),
+    "app.Em0162_00_BTable_CommonAttack_Export": (
+        "table_d3967d58_a6d6_4c3b_8693_8010d1d7f1cf",
+    ),
+}
+
+
 def table_history_policy(row):
     method = row["method"]
-    stems = LOCAL_HISTORY_TABLES.get(row["type"], ())
-    local = any(
-        method.startswith(stem) and method[len(stem) :].isdigit() for stem in stems
-    )
-    return dict(local=True) if local else None
+    policy = {}
+    local = LOCAL_HISTORY_TABLES.get(row["type"], ())
+    if any(method.startswith(stem) and method[len(stem) :].isdigit() for stem in local):
+        policy["local"] = True
+    formula = FORMULA_HISTORY_TABLES.get(row["type"], ())
+    if any(
+        method.startswith(stem) and method[len(stem) :].isdigit() for stem in formula
+    ):
+        policy["formula"] = True
+    return policy or None
 
 
 # cCheckTargetFromLegJoint (game 1.42.0.2). onExecute picks the leg joint by
@@ -31,20 +49,20 @@ LEG_JOINT_EVIDENCE = (
     dict(
         type=LEG_JOINT_COMMAND,
         method="onExecute1234370",
-        address="0x1484b0bf0",
-        end="0x1484b0f24",
+        address="0x1484b09b0",
+        end="0x1484b0ce4",
     ),
     dict(
         type=LEG_JOINT_COMMAND,
         method="checkTargetPos1234372",
-        address="0x1484b0f30",
-        end="0x1484b11e8",
+        address="0x1484b0cf0",
+        end="0x1484b0fa8",
     ),
     dict(
         type="app.AppMath",
         method="diffRad1120814",
-        address="0x144b88520",
-        end="0x144b8877f",
+        address="0x144b882e0",
+        end="0x144b8853f",
     ),
 )
 # Em0162 leg enum names; the game messages have no text for them.
@@ -65,8 +83,8 @@ BREAK_PARTS_COMMAND = "app.btable.Em0162_00BTableCommand.cCheckBreakParts"
 BREAK_PARTS_EVIDENCE = dict(
     type=BREAK_PARTS_COMMAND,
     method="onExecute1234385",
-    address="0x148de7150",
-    end="0x148de71f0",
+    address="0x148de6f10",
+    end="0x148de6fb0",
 )
 # PARTS_BREAK name -> element read by the native switch.
 BREAK_PARTS_ELEMENTS = {"TAIL_LOST": 7, "HEAD": 0, "CORE_WAIST": 8, "CORE_MAIN": 10}

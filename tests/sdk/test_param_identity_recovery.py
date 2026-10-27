@@ -28,6 +28,10 @@ def with_setup(
     wrong_insert_key=False,
     unknown_field=False,
     throw_behavior=2,
+    inline=False,
+    wrong_inline_offset=False,
+    wrong_inline_object=False,
+    wrong_inline_value=False,
 ):
     fixture = existing_fixture()
     base = int(fixture.row["address"], 16)
@@ -40,7 +44,9 @@ def with_setup(
         ins.operands[0].imm for ins in fixture.ins.values() if ins.mnemonic == "call"
     )
     native = bytearray.fromhex(
-        "41565657534883ec284c89c34889d74889ce498b9098000000448b4730"
+        "5657534883ec304c89c34889d74889ce498b9098000000448b4730"
+        if inline
+        else "41565657534883ec284c89c34889d74889ce498b9098000000448b4730"
     )
 
     def call(target):
@@ -53,17 +59,34 @@ def with_setup(
     native.extend(b"\x48\x8b\x15" + struct.pack("<i", slot - setup - len(native) - 7))
     native.extend(bytes.fromhex("4889f14531c0"))
     call(symbol("managed_object_allocate"))
-    native.extend(bytes.fromhex("4989c64889f14889c2"))
-    call(constructor)
+    if inline:
+        native.extend(bytes.fromhex("48c740"))
+        native.extend(bytes([0x14 if wrong_inline_offset else 0x10]))
+        native.extend(struct.pack("<i", -2 if wrong_inline_value else -1))
+    else:
+        native.extend(bytes.fromhex("4989c64889f14889c2"))
+        call(constructor)
     native.extend(bytes.fromhex("c6442420024889f14889da"))
     native.extend(bytes.fromhex("4189c8" if wrong_insert_key else "4189f8"))
-    native.extend(bytes.fromhex("4d89f1"))
+    native.extend(
+        bytes.fromhex("4989c9" if wrong_inline_object else "4989c1")
+        if inline
+        else bytes.fromhex("4d89f1")
+    )
     call(symbol("btable_param_try_insert"))
     native[present_jump] = len(native) - present_jump - 1
-    native.extend(bytes.fromhex("904883c4285b5f5e415ec3"))
+    native.extend(
+        bytes.fromhex("904883c4305b5f5ec3" if inline else "904883c4285b5f5e415ec3")
+    )
     setup_bytes = bytes(native)
     original_get, original_read = fixture.metadata.get, fixture.pe.read
     param = dict(original_get(owner + ".Param"), address=hex(klass))
+    if inline:
+        param["fields"] = {
+            name: field
+            for name, field in param["fields"].items()
+            if field.get("offset_from_base") in {"0x10", "0x14"}
+        }
     param["methods"] = {
         ".ctor1": dict(function=hex(constructor)[2:], returns=dict(type="System.Void"))
     }
@@ -112,7 +135,11 @@ def with_setup(
             else (
                 struct.pack("<Q", klass + int(wrong_class))[:size]
                 if address == slot
-                else original_read(address, size)
+                else (
+                    bytes.fromhex("48c74210ffffffffc3")[:size]
+                    if inline and address == constructor
+                    else original_read(address, size)
+                )
             )
         ),
         end=lambda address: (
@@ -160,6 +187,32 @@ class ParamIdentityTests(unittest.TestCase):
 
     def test_changed_class_symbol_cannot_supply_typed_identity(self):
         self.assertIsNone(recover_table_history(with_setup(wrong_class=True)))
+
+    def test_inline_setup_proves_identity_but_not_current_field_values(self):
+        history = recover_table_history(with_setup(inline=True))
+        self.assertIsNotNone(history)
+        self.assertEqual(history.fields, {})
+        self.assertEqual(history.history_cases(), [])
+        proof = history.identity_evidence[0]
+        self.assertTrue(proof["constructor"]["inlined"])
+        self.assertEqual(
+            proof["constructorEvidence"]["nativeBytes"], "48c74210ffffffffc3"
+        )
+        self.assertEqual(proof["existingItem"], "preserved")
+        self.assertEqual(proof["fieldValues"], "not_assumed")
+
+    def test_inline_setup_rejects_changed_object_initialization_or_layout(self):
+        for change in (
+            {"wrong_inline_offset": True},
+            {"wrong_inline_value": True},
+            {"wrong_inline_object": True},
+            {"wrong_class": True},
+            {"unknown_field": True},
+        ):
+            with self.subTest(change=change):
+                self.assertIsNone(
+                    recover_table_history(with_setup(inline=True, **change))
+                )
 
     def test_changed_dictionary_key_dataflow_cannot_supply_typed_identity(self):
         self.assertIsNone(recover_table_history(with_setup(wrong_insert_key=True)))
