@@ -69,7 +69,7 @@ python -B -m sdk.action_map_exporter extract
 python -B -m sdk.action_map_exporter extract -e <dump 出的 EXE> -i <il2cpp_dump.json> -n MHWS-in-json/natives -o .tmp/action-map/ActionMap.json
 ```
 
-默认写入 `MHWS-in-json/ActionMap.json`。先用 `motlist-to-json` 转换资源，再用匹配的 dump 运行本命令。SDK 直接读取转换后的 JSON，不再需要 PAK、Release list、原始 PFB/MOTBANK、REE-Lib 或 .NET。它检查自身必需的资源及引用闭包，无关 PFB 转换失败不会阻断生成；必需文件（包括引用的子 PFB）缺失、闭包内身份有歧义或原生规则发生变化时明确失败，保留原输出。闭包之外的无关 PFB 存在重复版本时，不阻断生成。
+默认写入 `MHWS-in-json/ActionMap.json`。先准备转换后的资源 JSON，再用匹配的 dump 运行本命令。SDK 直接读取转换后的 JSON，不再需要 PAK、Release list、原始 PFB/MOTBANK、REE-Lib 或 .NET。它检查自身必需的资源及引用闭包，无关 PFB 转换失败不会阻断生成；必需文件（包括引用的子 PFB）缺失、闭包内身份有歧义或原生规则发生变化时明确失败，保留原输出。闭包之外的无关 PFB 存在重复版本时，不阻断生成。
 
 每次生成只流式读取一次 IL2CPP JSON，原生规则校验和动作方法选择共用这份索引；只保留方法索引和规则所需的类型记录。
 

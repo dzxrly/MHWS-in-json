@@ -69,7 +69,7 @@ python -B -m sdk.action_map_exporter extract
 python -B -m sdk.action_map_exporter extract -e <dumped EXE> -i <il2cpp_dump.json> -n MHWS-in-json/natives -o .tmp/action-map/ActionMap.json
 ```
 
-The default output is `MHWS-in-json/ActionMap.json`. First convert the resources with `motlist-to-json`, then run this command with matching dumps. The SDK reads the converted JSON directly; it needs no PAK, release list, raw PFB/MOTBANK, REE-Lib or .NET runtime. It checks its required resources and their reference closure, so an unrelated PFB conversion failure does not prevent generation. Missing required files (including referenced child PFBs), ambiguous identities within the required closure and changed native rules fail explicitly, leaving the previous output intact. Duplicate versions of unrelated PFBs outside that closure do not block generation.
+The default output is `MHWS-in-json/ActionMap.json`. First export the converted resource JSON, then run this command with matching dumps. The SDK reads the converted JSON directly; it needs no PAK, release list, raw PFB/MOTBANK, REE-Lib or .NET runtime. It checks its required resources and their reference closure, so an unrelated PFB conversion failure does not prevent generation. Missing required files (including referenced child PFBs), ambiguous identities within the required closure and changed native rules fail explicitly, leaving the previous output intact. Duplicate versions of unrelated PFBs outside that closure do not block generation.
 
 Native rule checks and action method selection share one streaming read of the IL2CPP JSON during each build; the build retains a method index and only the type records needed by the rules.
 
