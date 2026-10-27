@@ -6,6 +6,31 @@ from ..shared.resources.reader import typed
 ENEMY_ID = "EM0002_00_0"
 NATIVE_OWNER = "Em0002_00"
 
+# Reviewed native methods; local histories are split only at their actual reads.
+LOCAL_HISTORY_TABLES = {
+    "app.Em0002_00_BTable_Life_Export": ("table_55840a74_9f97_4b4b_b22b_2b051f3869a0",),
+}
+
+
+FORMULA_HISTORY_TABLES = {
+    "app.Em0002_00_BTable_Life_Export": ("table_55840a74_9f97_4b4b_b22b_2b051f3869a0",)
+}
+
+
+def table_history_policy(row):
+    method = row["method"]
+    policy = {}
+    local = LOCAL_HISTORY_TABLES.get(row["type"], ())
+    if any(method.startswith(stem) and method[len(stem) :].isdigit() for stem in local):
+        policy["local"] = True
+    formula = FORMULA_HISTORY_TABLES.get(row["type"], ())
+    if any(
+        method.startswith(stem) and method[len(stem) :].isdigit() for stem in formula
+    ):
+        policy["formula"] = True
+    return policy or None
+
+
 # Version-specific native identities used by this recipe (game 1.42.0.2).
 COMBAT_EXPORT = "app.Em0002_00_BTable_Combat_Export"
 TABLE_METHOD_PREFIX = "table_"

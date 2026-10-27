@@ -36,6 +36,13 @@ def receipt():
     )
 
 
+@lru_cache(maxsize=1)
+def recovered_receipt():
+    return json.loads(
+        (EVIDENCE_DIR / "recovered_conditions.v1.json").read_text(encoding="utf-8")
+    )
+
+
 def enum_name(value):
     return str(scalar(value)).split("] ", 1)[-1]
 
@@ -137,7 +144,21 @@ def recover_condition(node, enemy_id, resources):
     selected = FIELDS["selected_target"]
     key = command.rsplit(".", 1)[-1]
     extra = {}
-    if key == "cCheckSelfType":
+    if key == "cCheckDepletionReadyEnd":
+        # The current exact Depletion type inherits isReadyEnd() == true;
+        # this is its readiness flag, not its active/fatigue state.
+        evidence = recovered_receipt()["evidence"]["depletion_ready_end"]
+        flag = "context:Conditions.Depletion._IsReadyEndFrag"
+        return dict(
+            expression=combined(
+                "all", guard, runtime(flag, "Depletion 的结束就绪标志")
+            ),
+            summary="能量枯竭的结束就绪标志已设置",
+            semanticStatus="reviewed_native_semantics",
+            semanticEvidence=deepcopy(evidence),
+            inputDefinitions={flag: dict(label="能量枯竭结束就绪", boolean=True)},
+        )
+    elif key == "cCheckSelfType":
         category = enum_number(argument["_EditCategory"])
         evidence = "self_type"
         if category == 2:
@@ -168,6 +189,27 @@ def recover_condition(node, enemy_id, resources):
             )
             summary = "自身历战分类为 " + str(
                 scalar(typed(argument["LegendaryID"])[1]["_EditArg"])
+            )
+        elif category == 7:
+            value = enum_number(typed(argument["RewardRank"])[1]["_EditArg"])
+            if type(value) is not int or not 0 <= value <= 10:
+                return None
+            # The input is the native conversion's output: missing or invalid
+            # serialized rank becomes 1, rather than a quest/legendary rank.
+            rank = "self_effective_reward_rank"
+            expression = compare(
+                rank,
+                value,
+                source="get_DifficultyRate()._RewardRank 经 getEM_REWARD_RANKFromFixed 转换；缺失或失败时为 1",
+            )
+            summary = f"怪物当前报酬等级为 {value}"
+            extra["inputDefinitions"] = {
+                rank: dict(
+                    label="怪物当前报酬等级（原生转换后）", number=True, min=0, max=10
+                )
+            }
+            extra["semanticEvidence"] = deepcopy(
+                recovered_receipt()["evidence"]["self_reward_rank"]
             )
         elif category == 1:
             value = enum_number(typed(argument["Enemy"])[1]["_EditArg"])
@@ -460,6 +502,8 @@ def recover_condition(node, enemy_id, resources):
         expression=expression,
         summary=summary,
         semanticStatus="reviewed_native_semantics",
-        semanticEvidence=deepcopy(receipt()["evidence"][evidence]),
+        semanticEvidence=deepcopy(
+            extra.pop("semanticEvidence", receipt()["evidence"][evidence])
+        ),
         **extra,
     )

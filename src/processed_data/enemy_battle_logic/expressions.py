@@ -28,6 +28,18 @@ def validate_expression(expression):
     elif kind == "runtime":
         if not expression.get("key") or not expression.get("source"):
             raise ValueError("运行时条件必须保留输入键和来源")
+    elif kind == "table_history_interval":
+        if (
+            any(
+                not isinstance(expression.get(key), str) or not expression[key]
+                for key in ("drawKey", "maxKey", "minKey")
+            )
+            or type(expression.get("modulus")) is not int
+            or not 0 < expression["modulus"] <= 0xFFFFFFFF
+            or type(expression.get("threshold")) is not int
+            or not 0 <= expression["threshold"] < expression["modulus"]
+        ):
+            raise ValueError("前次随机区间公式声明无效")
     elif kind == "compare":
         if expression.get("operator") not in ("eq", "ne", "lt", "le", "gt", "ge"):
             raise ValueError("未知比较运算")

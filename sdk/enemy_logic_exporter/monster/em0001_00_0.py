@@ -27,8 +27,8 @@ FIELD_CHECKS = {
             dict(
                 type="app.btable.Em0001_00BTableCommand.cIsCheckNeedMoveForLeadEgg",
                 method="onExecute1233624",
-                address="0x1450a7890",
-                end="0x1450a7910",
+                address="0x1450a7650",
+                end="0x1450a76d0",
             )
         ],
         summary="非战斗 AI 状态下有诱导中断，诱导类型为 EGG，且 Egg._IsTargetUnfiar 不成立",
@@ -38,6 +38,22 @@ FIELD_CHECKS = {
         },
     ),
 }
+
+
+FORMULA_HISTORY_TABLES = {
+    "app.Em0001_00_BTable_Life_Export": ("table_e9017f9c_e4a8_4d4c_97f2_0d87a3e065a0",)
+}
+
+
+def table_history_policy(row):
+    method = row["method"]
+    policy = {}
+    formula = FORMULA_HISTORY_TABLES.get(row["type"], ())
+    if any(
+        method.startswith(stem) and method[len(stem) :].isdigit() for stem in formula
+    ):
+        policy["formula"] = True
+    return policy or None
 
 
 def recover_condition(node, enemy_id, resources):

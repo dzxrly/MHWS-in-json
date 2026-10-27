@@ -13,6 +13,8 @@ from __future__ import annotations
 import time
 from collections import defaultdict
 
+from capstone import x86_const as X
+
 from ...config import (
     DISPLAY_PARAM_FIELDS,
     EVALUATE_SKIP_PREFIXES,
@@ -196,6 +198,50 @@ class SkillContext:
     def skills(self):
         """Skills with planned links, in ID order (the selected ones only)."""
         return [s for s in sorted(self.plan) if self.selected(s)]
+
+    def preflight_entries(self, modules):
+        """Reject selected entry jumps whose target the supplied dump omits.
+
+        This checks planned links and the selected modules' declared methods,
+        before evaluating any of them. Other unknown paths remain ordinary
+        partial results; an entry jump outside the readable dump cannot supply
+        the selected function's implementation.
+        """
+        addresses = {
+            address
+            for skill, items in self.plan.items()
+            if self.selected(skill)
+            for _, address, _, _, _ in items
+        }
+        for skill, module in modules.items():
+            if self.selected(skill):
+                for type_name, method, *_ in getattr(module, "DECLARED_METHODS", ()):
+                    _, address, _ = self.index.method(type_name, method)
+                    addresses.add(address)
+        missing = []
+        pe = self.index.pe
+        for address in sorted(addresses):
+            instructions = self.index.disasm(address)
+            if not instructions:
+                continue
+            first = instructions[0]
+            if first.mnemonic != "jmp" or first.operands[0].type != X.X86_OP_IMM:
+                continue
+            target = first.operands[0].imm
+            if pe.contains(target) and pe.read(target, 1):
+                continue
+            identity = " / ".join(
+                f"{type_name}.{method}"
+                for type_name, method in self.index.catalog.get(address, ())
+            )
+            missing.append(
+                f"{identity or '未命名函数'}：入口 {address:#x} → 目标 {target:#x}"
+            )
+        if missing:
+            raise ValueError(
+                "输入 dump 缺失以下函数入口直接 JMP 的目标，无法提取所选函数；"
+                "请提供包含目标代码的 dump。未写出技能链路：\n" + "\n".join(missing)
+            )
 
     # ------------------------------------------------------------ evaluation
     def describe(self, address):

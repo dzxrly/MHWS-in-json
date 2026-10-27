@@ -4,12 +4,15 @@
 
 ## 维护边界
 
+> PE（Portable Executable，可移植可执行文件）是 Windows EXE 格式；这里仅通过其文件头定位节、数据目录和函数边界。
+
 - 不运行游戏、EXE、注入或 Hook。Ghidra 只将 EXE 当作数据读取。
 - 调试代码、反编译结果、Ghidra 项目、截图及测试输出统一放在项目根目录 `.tmp`。默认工作目录是 `.tmp/enemy-logic-exporter`。
 - 不复制 EXE 或完整 IL2CPP dump 到 Git；不提交 `.tmp` 中的证据缓存。
+- 完整研究模型超过普通缩进格式的 25 MiB 上限时先紧凑写出，不删节点或字段；紧凑后仍超过上限则报错，要求去重或分片。
 - EM166 的历史图与原始分析只能作为对照，不能作为其他怪物图的节点、连接或判断依据。
 - 原生地址、参数索引、字段偏移、静态权重地址、方法名后缀均随游戏更新变化。更新后要重新生成 profile 并核对，不能只改地址绕过检查。
-- 证据行以“类型 + 方法名 + 起止地址”标识（`config.EVIDENCE_KEYS`），按当前 EXE 的原生字节核对；代码和 `data/` 中的 JSON 不逐行保存 SHA-256。SDK 不记录游戏版本，也不保存 EXE 与 il2cpp 的文件摘要：游戏更新后，符号无法定位或原生字节不一致时命令直接报错，按“游戏更新与扩展”处理。EXE 是 dump 出的内存镜像，节属性反映运行时保护：`.sdata` 中装有导入表而被标为可写，`pe.CONSTANT_SECTIONS` 仍把它当作只读常量；按字节特征查找 helper 只扫描可执行节，避免匹配 `.text1` 中解密后的保护壳代码。资源文件与模型分片不再保存字节摘要；`.tmp` 研究缓存保留内容寻址摘要（原生字节、压缩体），只在缓存内部使用。
+- 证据行以“类型 + 方法名 + 起止地址”标识（`config.EVIDENCE_KEYS`），按当前 EXE 的原生字节核对；代码和 `data/` 中的 JSON 不逐行保存 SHA-256。SDK 不记录游戏版本，也不保存 EXE 与 il2cpp 的文件摘要：游戏更新后，符号无法定位或原生字节不一致时命令直接报错，按“游戏更新与扩展”处理。EXE 是 dump 出的内存镜像，节名和属性反映保护壳及运行时状态，更新后可以重命名。常量段按线程局部存储、加载配置、延迟导入三个目录共同所属的非执行段定位，不能按 `.sdata` 等节名判断，也不能把其他可写段放行；原生求值仍受运行时数据阈值限制。按字节特征查找 helper 只扫描可执行节。资源文件与模型分片不再保存字节摘要；`.tmp` 研究缓存保留内容寻址摘要（原生字节、压缩体），只在缓存内部使用。
 - 怪物名、部位名、gimmick 等专有名称使用游戏消息（`*.msg.23.json`，简体中文列）中的官方文本，由 `Resources.message`、`enemy_name`、`part_name` 读取；找不到对应条目时显示原始类名或枚举名，不自行翻译。
 - 保留用户已有暂存改动；本目录的迁移或维护不自动授权提交、推送或发布。
 - **同步更新用户文档**：面向使用者的说明在 `sdk/README.md`（英文）、`sdk/docs/README.zh-Hans.md`、`sdk/docs/README.zh-Hant.md`，三份内容必须一致；三份 README 的“项目工具”一节只保留简介并链接到它们。新增、删除或改名命令与参数，改变默认路径、环境变量、依赖版本、安装脚本、输出位置或报错信息时，在同一次改动中更新三份 SDK 文档（必要时也更新 README 简介），并更新本文件。只改 AGENTS.md 不算完成。
@@ -36,6 +39,13 @@
 - 子表调用前的返回位置保存是内联的 `Stack<POSITION>.Push`（`combat_position.py` 用扩容 helper 字节和全部容量路径证明），返回位置由调用栈决定，不能把子表所有出口连到所有调用方。
 - Push 前对位置变更委托（operator+0x40 `OnChangedCurrnetPosition`）的空检查不是游戏分支：`Machine.position_callback_branch` 分别以空列表、空委托和一个静态回调重放，三者到达同一语义节点才继续，回调副作用标为未核实。
 - 返回布尔的 `cIs*` 命令与 `cCheck*`/`cCompare*` 一样建立判断节点（返回类型由匹配元数据核实）。
+- `cCommandAnd` / `cCommandOr` 按本表 OrderBank 的命令哈希绑定子条件，保留原生短路顺序；当前空列表两者均返回假。`cActionSwitch` 的 Int32 返回值用于动作编号分派，不能当布尔返回。
+- 变量赋值、加减和计时器操作由 `command_effects.py` 的当前字节、布局与枚举证据核对；浮点更新使用资源上下限，缺实时旧值保持未知。玩家视图只执行 SDK 声明的更新，并清除依赖旧值的条件假设；阶段提交仍有回调边界时使旧快照失效。
+- `table_state.py` 恢复本导出表私有 Param 中、当前方法实际读取且发现成对常量写入的前次随机区间。单一区间按明确历史条件重放；怪物模块明确启用并核实的多组独立区间，在各组实际读取位置分别展开，不在表入口枚举全部组合，也不沿机器状态累积其他组的具体值。保留其他历史未知出口；构造初值只是一种情况，不能当每次入表的固定值。已知区间写入形成 `stateUpdates`，动作结束后保留该内部记录，不将依赖历史的选择解释为独立抽样。
+- 返回布尔且带状态写入的命令，通过怪物模块的 `recover_boolean_command_effect` 核对后，将写入放在实际发生的返回分支。`apply_boolean_command_effects` 只改变声明的 `stateUpdates` 并清除相关旧假设，不使无关的即时输入失效。
+- 历史分派只在 `prove_history_free_pc` 证明从该 PC 到真实返回不读取或泄漏私有 Param 时省去；表级 `historyGateElisions` 记录完整指令路径，只保留在研究模型。已枚举候选结果相同不能替代此证明，失败时保留原候选与未知兜底。
+- 透明 helper 在命令绑定前排除，不能把其残留的命令指针识别为游戏命令。64 位整数加类型化指针只按完整指针位移处理，不扩展为 32 位截断或 SUB 交换。
+- 目标写入由公共或怪物模块的 `recover_target_command_effect` 提供精确 guard、正常引用前提、向量来源与写入顺序；`target_command_effects.py` 校验当前原生字节、签名和布局。普通 false 与引用缺失异常分别建模；调用者是否使用返回值由真实指令决定。`update_target_positions` 在玩家视图中保留 `targetUpdates` 并使普通快照失效，不运行目标模块或导航，也不将 setter 调用成功解释为移动成功。
 - 同一调用指令若参数、目标或保存位置不同，保留独立节点（`<地址>-variant-N`）；不同机器状态只有在隔离重放得到相同语义子图时才合并（重放等价合并），否则保留边界。
 - 遇到无法证明的输入（未知寄存器来源、未核实的 helper、动态参数）就抛出 `Boundary` 停在该处，记录原因。宁可留下可见的未知，也不猜测后继。
 
@@ -57,13 +67,20 @@
 
 降低不确定性的固定顺序：`uncertainty` 找出影响最大的命令 → 阅读反编译/反汇编核实其原生语义 → 写成规则、公共条件或可自动恢复的模式 → 在 `player_view.py` 中编译为情境或玩家输入 → 重新提取并对比统计。不能为了减少未知而把未核实的判断写成固定值。
 
-### 6. 构建无关：一切地址都由“身份”重新推导
+### 6. 原生身份与游戏更新边界
 
 游戏更新会移动地址、改变方法后缀、加入新怪物和新逻辑。设计上：
 
 - 代码只声明**身份**（`SYMBOL_SPECS`：类型 + 去后缀方法名 + 参数类型；无名 helper 用屏蔽重定位的字节特征加锚点调用关系），地址由 `resolve-symbols` 按当前 EXE 解析到 `data/profile.json`。
 - 证据行用**整函数规范化摘要**判断“代码是否没变”：屏蔽重定位，外部被调方记为稳定身份，并核对函数长度。只有能证明未变的行才自动迁移，其余进入人工复核。
 - 名单、入口模块、网页名单都是数据驱动的（`roster`、`new-monster`、`models/roster.json`）；新槽、新命令先以“未分类/未知”显示出来，提醒补充，而不是静默丢失。
+- `migrate-evidence` 只有在整函数规范化代码、长度和被调方身份唯一匹配后，才更新标准方法行及原有 `nativeBytes`、`bytes`，保留旧行长度。任一已有字节字段的长度或格式不合法时整行拒绝迁移；`nativeBytesRefreshed` 和 `bytesRefreshed` 分别统计两字段的拟刷新计数（包括预览），`applied` 表示是否请求 `--apply`；未被自动迁移的原生片段、常量、类型槽及怪物 Python 字面方法范围在 `unsupportedDependencies` 和 `coverage` 中明确列出。Python 只读 AST，不导入模块；动态表达式与未登记字符串不在此清单内。没有 review 项只表示标准方法行没有待复核，不等于全部配方完成迁移。新增配方后须在对应旧 EXE 尚可读取时刷新 profile 证据摘要；不得用新字节直接替换旧证明来冒充语义未变。摘要方案 3 对无展开信息的短函数按有界控制流恢复实际结束位置，遇到未闭合的间接跳转或解码失败仍保持保守范围；标准证据行的显式范围始终完整保留。升级摘要方案时须用旧 EXE、旧元数据及旧证据原件重新计算旧证明，不能只修改方案编号。
+- Param 对象身份可独立于历史区间恢复，但必须证明本 export 的 setup 使用同一 RuntimeID 分配、构造并插入准确 Param 类型；分配 helper 以 profile 特征和调用锚点解析，不写裸地址。全域历史公式只在显式策略和全部已发现私有读位点符合审核指令模式时启用；未知或不受支持的读取继续保留边界，不将发现队列耗尽当作生命周期写入闭集。
+- setup 支持严格核对的36条显式构造和31条内联构造两种形式；内联形式还核对准确的双Int32布局及构造器指令。全域公式支持已证明的90/100/110取模、多阈值同一次抽样、实际随机点的多组独立历史。仅在全部发现读取均为公式且指针无逃逸时投影删除机器内存中的历史常量，JSON持久历史和逐条写入必须保留；不清寄存器/栈，不放宽事件上下文等价。各重映射路径到达相同完整状态后才合并，历史写后实际检查用原位 `walk` 继续。
+- 同一类型/方法的不同旧证据范围在profile的 `rowVariants` 中独立保存，迁移按旧地址及行长度选择，不能让后一个方法行覆盖前一范围。未登记变体需用旧EXE核对刷新；旧单范围profile只授权原已登记范围。保留原证明的完整长度，不能借实际函数短于旧证据范围就缩短核对。
+- `target_command_graph` 只把已经核实的目标命令阶段接回真实调用方；Boolean与void退出分别处理。未闭合原生调用只用 `normal_return` 的 `next`，异常无后继，不能借用动作结束的 `resume`。投掷目标的Character setter guard失败不写，但仍进入持有请求；墙面方向写早于后续位置读取和最终setter，不能合成原子写入。布尔命令可声明独立guard及onFalse；毒怪鸟捕获标志在主体真假返回均写，外guard失败不写。
+- Unfair正常资格链用玩家动作TARZAN_ATTACH属性位、两次导航查询原始bit10/bit27及ST103区域关系表达；导航位的正式语义名称未知，不命名成具体地形，也不由TARZAN_ATTACH字符串推断偷袭。异常Transform引用继续保留unknown。新增常量和类引用从当前方法的RIP指令解析，不增加全局地址名单。
+- `request_desire_recovery` 保持部分恢复声明，最终转换后的动作 ID 及缓存/FieldPitfall 副作用仍由显式 unknown 边界承载。三项已知尾写放在该边界正常返回后的 mutation；网络归属只限制 actor 请求 helper，不能阻止正常尾写，也不能用资源 `_EditType` 推断执行模式。
 
 ### 7. 交付：SDK 与网页只通过 JSON 交接
 
@@ -121,7 +138,7 @@
 | `shared/logic/formula.py` | 通用“字段公式”识别器：对命令 `onExecute` 的伪 C 做符号求值，只接受声明、赋值、`if`/`else`、`return`、同块内向前 `goto`、类型化读取、比较、`&&`/`||`/`!`、强制转换与 `CONCATxy`；`&&`/`||` 按 C 短路顺序分叉，未执行的操作数里的赋值不会泄漏到其他路径；栈保护（局部缓冲区与 `stack_cookie_check`）忽略，紧跟 `swi(3)` 陷阱的调用视为该路径不返回。读取按元数据命名为 `context:<路径>` 或 `extend:<Extend 类型>.<路径>`（含值类型结构体内字段、基础类型数组的常量下标，`CONTEXT_ARRAY_INDEX_ENUMS` 中的数组下标显示枚举名），已有情境键的字段经 `CONTEXT_KEY_ALIASES` 复用同一个键；命令工作、Extend、目标模块的存在与精确类型检查映射为情境守卫。遇到其他函数调用、循环、变量下标、与非类型全局量比较等即放弃，命令保持未知。结果作为 `kind=formula` 的 `leafRules`；`command_leaf` 的顺序是：Extend 字段识别器 → 本识别器 → x64 识别器（`native_formula.py`，完整模式）→ 单次读取的 Context 字段识别器（要求函数体除命令工作守卫、该次读取和匹配的返回外没有任何其他读取或比较，否则放弃，避免丢掉额外分支条件）→ x64 识别器的部分模式 |
 | `shared/logic/native_formula.py` | x64 层字段公式识别器：用 Capstone 从命令 `onExecute` 的真实入口寄存器（rcx 线程、rdx 命令、r8 命令工作、r9 参数）逐条符号执行，**跟进直接调用与尾跳转进入被调函数自身的指令**，因此 getter、谓词 helper 按它实际收到的寄存器展开，不按名字信任，也不包装成不透明布尔输入。接受寄存器/栈传送、类型化读取、`lea`、常量指针运算、整数与 `ucomiss/comiss` 比较、条件跳转、`setcc`/`cmovcc`（与跳转一样分叉）、栈 cookie 检查、类继承检查 helper（`isa`，按守卫命名）、整字段符号位测试、Boolean 字段的第 0 位测试、构造异常后紧跟 `int3` 的抛出序列（该路径返回 false，与伪 C 识别器一致）；移位后的宽读取按字节拆回各字段（如 `Nullable<int>` 的 `_HasValue`/`_Value`），值类型字段的读取下降到首个成员；一次读取跨两个字段的等值比较（如 `cmp rax, imm` 同时比较两个 Int32）拆成两个字段分别比较，其他读取宽度与字段不符的比较一律拒绝（`split_wide`）；其他对象字段的空指针检查记为运行时键 `<字段键>#exists`（网页显示“…对象存在”），不当作守卫；比较对象若是运行时全局量，只有当字段所属值类型的 `.cctor` 是只含 `mov [rip+x], imm` 的直线代码、且该类型恰有一个同类型静态字段（如 `TARGET_ACCESS_KEY.INVALID`）时才代入常量，并把 `.cctor` 记入 `staticConstants` 证据。条件码两侧都是常量时直接定值（剪掉不可能路径）；无符号比较改写为带非负条件的有符号比较；读空指针的路径记为显式未知。遇到堆内存写入、路径过多、返回地址不平衡即整条放弃（`Fatal`）。**部分模式**下，变量下标、循环、间接调用、不支持的指令等只让“从最近分支起的这条路径”变成显式未知（`unknownPaths` 记录原因，`semanticStatus=native_x64_field_formula_partial`），其他路径保留已核实的字段条件；只有已知部分仍读取怪物状态时才接受。内联的 helper（含尾跳转进入的函数）记入 `inlinedHelpers`（类型、方法、起止地址），随模型核对原生字节。**资源参数分叉**：读取枚举类（`cEditFieldEnum`，最多 `MAX_ENUM_FORK` 个取值）或 Boolean 类资源参数时，按元数据声明的每个取值各执行一遍，之后的 `switch`、跳转表（只读段中的表项）、按参数下标查常量表和参数转换 helper 都变成常量；其他取值记为显式未知。`formula.instantiate` 代入节点自己的参数后用 `fold` 判定常量比较、折叠 all/any/not（枚举值按 32 位比较），所以每个节点只保留自己的分支，可能整体定值为 `kind=constant`（玩家视图写成空的 all/any，网页显示“按此处的资源参数，条件恒成立/恒不成立”）。**整数语义**：`field ± 常量` 只接受等值和“减常量后无符号比较”的区间写法；带符号位常量的无符号比较按有符号值精确改写；两侧都是常量时按位宽和符号判定；`cdqe`/`cwde`/`movsx` 做符号扩展；`inc/dec/neg/not/shl/shr/sar/imul` 只计算常量；`bt` 只接受两个常量；`btr reg, 63` 作用于局部变量地址时保持指针（Windows 用户态地址第 63 位为 0）。**引用根**（`REFERENCE_LOOKUPS`，按类型、去后缀方法名、参数与返回类型从元数据定位）：`TargetAccessKeyUtil.getEnemyManageInfo(TARGET_ACCESS_KEY, Boolean)` 的结果记为“键所指的怪物”，键必须是 `TARGET_ACCESS_KEY` 类型字段（或其栈上副本），否则若键是 `.cctor` 可证明的静态常量（如 `INVALID`）就写回常量并执行原函数；`EnemyManager.findSquad(cEmModuleGroup)` 的结果记为“本怪物所在小队”。之后的读取仍逐条执行并按元数据命名，键形如 `ref0:<键字段>/<路径>`、`squad:context:Group.<路径>`（`ref0`/`ref1` 为查找标志），玩家视图显示为“本怪物所在小队 LeaderKey 指向的怪物：…”。查找函数无论经调用、跳转还是条件尾跳转进入，都在循环开头统一处理。部分模式下单个无法命名的比较只把该比较记为未知（`unknown_unnamed`），公式中仍含未知时状态记为 partial。**数组元素**：下标寄存器来自字段（或窄字段加常数）时，地址记为 `("elem", 数组, 下标, 比例, 位移)`，按元数据 `T[]` 的元素宽度命名为 `_items[<下标字段键>±k]`（对象引用数组与 8 字节基础类型数组也支持常量下标；`List`1` 的 `s_emptyArray` 与 `_items` 同偏移，按 BCL 的 `s_` 静态命名约定排除）。原生类型（`via.*`）没有字段元数据时，若某个无参 getter 的整个函数体是 `mov reg, [rdx+偏移]; ret`，该偏移按属性名命名（如 `PointData.get_Attributes` → `Attributes`），getter 记入 `inlinedHelpers` 核对字节。**位掩码**：字段与常量掩码的测试记为原子 `("bits", 字段, 掩码)`，运行时键为 `<字段键>&0x<掩码>`（`config.BITS_SEPARATOR`）；`and` 后与常量的相等按空闲位枚举（最多 `MAX_MASK_FREE_BITS` 位，如 `x & ~1 == 8` 即 x 为 8 或 9），无符号 `<1`/`>=1` 为零测试。**字段间比较**：两侧都是按自身宽度读取的字段（或不会回绕的窄字段加常数、常值虚 getter）时，有符号比较直接记为 `compare`（右侧为 runtime，可带整数 `offset`），无符号比较按两侧符号精确拆分；对象引用之间只接受相等比较；只有 `NativeNamer.relations` 启用，伪 C 识别器不受影响。**常值虚函数**：`call [类头 + 槽]` 中槽 = `VTABLE_METHODS_OFFSET` + 8×`vtable_index`（以 `cRelayInfo` 的 `get_RelayType`/`getPos` 两个槽核对过），按对象声明类型找到该槽方法，声明类型、祖先与全部子类（`Il2cppMetadata.subclasses`）的每个实现都必须是 `mov eax, imm; ret` 或 `xor eax, eax; ret`，结果记为 `("vcall", …)`，命名为 `<对象路径>.<方法名>()`，各实现记入 `virtualMethods` 与 `inlinedHelpers`；其他间接调用仍拒绝。**进位**：常量操作数的 `adc`/`sbb` 按 CF 分叉。**异常**：异常构造后调用的写入线程挂起异常的 helper（字节为 `mov rax,[rcx+0x50]; mov [rax+0x18],rdx; ret`，`config.THREAD_EXCEPTION_HOLDER`/`PENDING_EXCEPTION`）与 `int3` 一样视为抛出，该 helper 记入证据。**路径合并**：普通内联超过 `MAX_STEPS` 时自动以合并模式重跑：直接调用的被调函数只执行一次，返回时易失寄存器与标志按 Windows x64 约定置为不透明，返回状态只差 `al` 布尔值时合成为一个条件，否则按完全相同的返回状态共享续行；同一地址的相同机器状态复用结果（合并模式不使用路径事实剪枝，只损失化简，不影响正确性），分支在续行重复时按 (t∧A)∨(¬t∧((u∧A)∨R)) = ((t∨u)∧A)∨(¬t∧R) 共享；默认模式的输出逐字节不变（`evaluate(merge=...)` 可强制模式）。按多个资源参数分叉的模板可能很大（如 `cCheckAreaMoveFixedRouteActionPoint` 约 1.4 MB 紧凑 JSON，研究模型按缩进写出后更大）：`builder.py` 在节点实例化之后，把紧凑 JSON 超过 `config.LEAF_FORMULA_LIMIT_BYTES` 的模板从模型中删去，只留 `formulaOmitted`（字节数、SHA-256、原因）；各节点仍保存按自身参数实例化的完整表达式，模板可按证据行重新生成。因此不能从已保存的研究模型重新实例化这类命令，需要重新提取 |
 | `shared/logic/field_checks.py` | 由怪物模块声明的“字段比较组合”配方：布尔字段、整数/枚举字段与常量比较，经 all/any/not 组合；字段可为 `extend:`（本怪物 Extend）、`context:`（cEnemyContext 下路径）或情境中已有的键（如 AI 状态、`self_current_area_no`）。模块只需写 `FIELD_CHECKS` 表并在 `recover_condition` 中调用 `declared_condition`，本文件不含怪物常量 |
-| `shared/logic/monster_rules.py` | 汇总怪物模块声明的专用内容并分派，自身不含怪物常量。`RULE_KINDS`（`{kind: dict(compile=..., evaluate=...)}`）由 `player_view.py` 编译成玩家条件，由 `predicates.py` 求值；`RULE_SPECS` 交给规则整理命令；`recover_command_effects(row, metadata, pe)` 交给命令实现目录；`prepare_player_graph(graph, registry)` 在生成玩家视图前调用；`recover_condition(node, enemy_id, resources)` 恢复非公共前缀的专用条件（无参数命令以空参数调用），可附带 `sceneInput`，或以 `inputEnums` 为专用状态输入提供枚举名。规则记录本身仍是 JSON，统一放在 `data/rules.v1.json`，便于证据迁移 |
+| `shared/logic/monster_rules.py` | 汇总怪物模块声明的专用内容并分派，自身不含怪物常量。`RULE_KINDS`（`{kind: dict(compile=..., evaluate=...)}`）由 `player_view.py` 编译成玩家条件，由 `predicates.py` 求值；`RULE_SPECS` 交给规则整理命令；`recover_command_effects(row, metadata, pe)` 交给命令实现目录；`recover_boolean_command_effect(row, metadata, pe)` 恢复判断及其返回分支写入；`verify_native_recipes(pe, metadata)` 在原生研究上下文打开时核对模块证据；`table_history_policy(row)` 由模块声明已审核的局部历史展开；`prepare_player_graph(graph, registry)` 在生成玩家视图前调用；`recover_condition(node, enemy_id, resources)` 恢复非公共前缀的专用条件（无参数命令以空参数调用），可附带 `sceneInput`，或以 `inputEnums` 为专用状态输入提供枚举名。规则记录本身仍是 JSON，统一放在 `data/rules.v1.json`，便于证据迁移 |
 | `monster/em0021_00_0.py`、`em0022_00_0.py`、`em0046_00_0.py`、`em0071_00_0.py`、`em0078_00_0.py` | 各怪物专用判断的常量与处理代码：桃毛兽王蘑菇类型与拿取物品、雪狮子王断牙数、海龙电力等级、黑蚀龙内部状态（只声明整理表，求值用共通的字段相等）、巨戟龙阶段（区域移动结束前 FINAL 按 MIDFIELD 判断） |
 | `monster/em0001_00_0.py`、`em0022_00_0.py`、`em0046_00_0.py`、`em0078_00_0.py`、`em0152_00_0.py`、`em0155_00_0.py`、`em0157_00_0.py`、`em0163_00_0.py` 的 `FIELD_CHECKS` | 逐条按反编译核实的字段组合配方，例如雌火龙蛋诱导前提、所在地图/区域（巢穴、投掷雪球）、海龙游泳战斗阶段、巨戟龙 IsUnusedHill、EnchantType、各计时器的启用与超时 |
 | `monster/em0158_00_0.py` | 狱焰蛸缠绕状态：`_BodyWrapState`、各触手 `_TentacleWrapInfos[<CHECK_TYPE>].State`、缠油/着火计时器 `_IsTimeOut`、`checkFireAnyTentacle()` 与 `checkLostTentacleCount()`，经 `recover_condition` 作为专用状态输入（含无参数命令） |
@@ -132,7 +149,44 @@
 | `shared/logic/scheduler_slots.py` | 扫描 `cEmAIState*`/`cEmAIInterrupt*`/控制器方法中对 `requestChangeBTable`、`requestJumpBTable`、`requestChangeBTableVerify` 的直接调用，只接受请求前、同方法内未跨调用的立即数槽参数；专用中断按 `EnemyDef..cctor` 的初始化字节映射 `UNIQUE_00/01`。结果写入 `data/evidence/scheduler_slots.v1.json`，模型以 `schedulerSlots` 记录每个槽由哪些状态请求 |
 | `__main__.py`、`shared/workflow/cli.py` | 离线 CLI 入口 |
 
-`manifest`、`decompile`、`verify` 可用于新构建研究。34 个独立模块均可通过 `build_model` 提取自身实际 BTableList、导入闭包和原生方法，公共机器追踪器不提供预先编造的怪物行为。当前 34 份已解析图合计覆盖 7,763 个原生方法上下文、8,171 个子表、123,246 个节点和 5,325 个权重选择点；复用资源按其所在模型分别计数。仍保留 1,347 个未知流程节点、625 个含未知表达式的条件和 68 个选择器边界；玩家战斗树中在全部玩家输入已知时仍无法判定的条件为 174 个（`uncertainty` 统计），另有 330 个随机分支按概率展示；同一调用位置的不同机器状态只有在隔离重放得到相同语义子图时才复用节点，否则保留边界。动作说明名绑定到资源、请求 GUID 与参数变体；实例 GUID 和基础 GUID 分别保留。Shell 原名及注释按资源与 UID 保存，未核实触发关系时不绑定到具体动作。全局 Combat 事件保持 partial，不能把导出成功描述为完整战斗 AI 已恢复。
+`manifest`、`decompile`、`verify` 可用于新构建研究。34 个独立模块均可通过 `build_model` 提取自身实际 BTableList、导入闭包和原生方法，公共机器追踪器不提供预先编造的怪物行为。当前输出的覆盖数量、未知流程与条件、选择器边界以完整模型的 `coverage`、`selectionBoundaries` 和 `extract-all` 回执为准；复用资源按其所在模型分别计数。玩家战斗树中在全部玩家输入已知时仍无法判定的条件及随机分支由 `uncertainty` 命令统计，不在维护说明中保存易过期的汇总数字。同一调用位置的不同机器状态只有在隔离重放得到相同语义子图时才复用节点，否则保留边界。动作说明名绑定到资源、请求 GUID 与参数变体；实例 GUID 和基础 GUID 分别保留。Shell 原名及注释按资源与 UID 保存，未核实触发关系时不绑定到具体动作。全局 Combat 事件保持 partial，不能把导出成功描述为完整战斗 AI 已恢复。
+
+## table UUID 人工策略、运行日志与更新反查
+
+> `table_<UUID>` 指行为表导出类中的一个原生子表方法；UUID（通用唯一标识符）是该编译子表的身份。同一资源文件可以对应多个子表。方法末尾的十进制数字是 IL2CPP 导出后缀，原生地址是本次 dump 中的位置，三者应分别核对；子表 UUID 与动作 GUID、动作参数 GUID 不是同一身份。
+>
+> JSONL 是每行一个 JSON 对象的日志格式。运行日志记录诊断事件，与正式模型 JSON 分开；模型中已有未知不等于命令执行失败。
+
+### 现行策略怎样生效
+
+- 人工许可保留在各自的 `monster/<id>.py`。`LOCAL_HISTORY_TABLES` 允许已审核表在实际读取位置恢复局部历史及多组区间；`FORMULA_HISTORY_TABLES` 允许已审核的全域区间公式。两种许可分别生效，不能因一种成立就推断另一种也成立。
+- `table_history_policy(row)` 同时核对 `row.type` 与完整 `table_<UUID>` 名称部分，并要求其后是数字后缀。更新时保留 UUID 与数字后缀的边界，不能用删除末尾全部数字的办法处理可能以数字结尾的 UUID。
+- `shared/models/native_recipe.py` 收集策略，交给 `table_state.recover_table_history` 和 `table_history_formula.prepare_history_formula`。UUID 只选择已审核恢复策略；参数对象身份、RuntimeID 字典查找、字段布局、当前指令、成对读写、signed/unsigned 比较、取余、实际后继等仍须按代码核对。策略不提供固定的运行时历史值，也不直接制造动作或连接。
+- 构造初值只是一种可能历史，不能作为每次进表的默认值。历史写入要保留 `stateUpdates`，动作让出后的真实续接、目标写入的 guard 与异常边界也要保留。
+- 本次保留现行人工策略。`.tmp/history-auto-trial` 是未采用的研究原型，不能作为生产资格入口导入。发现队列耗尽本身不是“全部相关调用、读取及生命周期已经证明”的依据；人工复核仍需检查截断、未展开调用、间接跳转和指针逃逸。不能仅以 `complete_discovery`、图大小或未知总数不变代替这项检查。
+
+### 每次运行先读日志
+
+怪物 SDK 的 CLI 在参数解析成功后，自动将本次日志写到 `<work-dir>/logs/<命令>-<UTC时间>-<进程号>-<运行标识>.jsonl`，终端打印绝对路径。`--work-dir` 是主命令参数，应放在子命令前；默认目录是 `.tmp/enemy-logic-exporter`，也可用 `MHWS_SDK_WORK_DIR` 指定。日志不写进正式模型目录，也不提交 Git。日志无法写入时仅打印警告，不改变原命令的执行结果；此时日志可能缺失或不完整。
+
+所有命令记录输入、结束状态或原始异常；`extract` / `extract-all` 还记录当前资源表、原生方法、人工许可的声明与匹配状态、请求和实际启用的能力，以及未知边界的汇总和位置。读取时注意：
+
+1. 先确认输入路径和最后的结束／错误事件，找到本次日志，而不是沿用旧构建的地址。 日志汇总行可能较长，先逐行解析 JSONL，再按事件、怪物、类型和方法筛选；不要把整份日志或完整汇总行直接粘贴进对话。
+2. 人工策略的声明匹配与本次选中范围分开看：未选中怪物、未进入导入闭包、基础表被变种复用，都不能直接当作 UUID 丢失。真正的类型、方法或缓存失配应单独处理。
+3. “请求启用”不等于“实际恢复成功”。缺少后续启用／模型事件时，继续查看异常与最后的原生方法上下文；不要把日志缺项解释为成功。
+4. 已有未知可在成功导出中继续出现。优先调查本次新增的类别、位置与覆盖退化，保留尚未证明的边界，不为清空日志而补默认值或扩大透明调用集合。
+
+### 游戏更新后如何反查
+
+1. 保留上一构建的 dump、IL2CPP、profile 和已验证模型作为对照。按后文“游戏更新与扩展”先跑 `check-env`、`resolve-symbols` 和不带 `--apply` 的 `migrate-evidence`，处理字节、布局、符号和缓存失配；旧证明不能从新字节倒推补造。
+2. 从日志取得怪物 ID、资源路径、导出类型、完整方法名、表 UUID、地址范围和原生停点。在资源中沿 BTableList、导入闭包及 `_ExportBTableType` 找到实际 owner；同一怪物可能复用基础怪物的表，不能只搜索自身编号。
+3. 在当前 IL2CPP 的该导出类型中枚举 `table_` 方法，核对 UUID、数字后缀、参数／返回签名和当前地址。优先用现有 `Il2cppMetadata.get(owner)` 定位单个类型，或定向 `rg`；不把约 2GB 元数据全文读进 PowerShell。
+4. 用当前 EXE 与元数据生成的原生索引、manifest 或反编译缓存查看完整方法，并追踪实际调用、字段偏移和读写位置。资源中的 `_Tables._DataArray=[]` 不能还原内部控制图；参数数组顺序也不是执行顺序。
+5. 若只是后缀／地址变化，仍须确认整函数规范化代码、被调方、布局及配方守卫一致，再按迁移流程刷新。若 UUID／导出类型变化，按资源关系、Param setup／RuntimeID、随机区间形状、动作绑定和续接寻找候选；候选不唯一就保留未核实状态。若指令或参数语义改变，先修核实过的恢复规则，不能只替换 UUID、地址或证明字节让校验通过。
+6. 重新提取受影响模型，逐项比较动作身份与参数、节点和边、`true/false/next/resume`、调用返回位置、同次抽样、候选顺序和权重、历史／目标写入、guard、异常及情境输入失效范围；同时对比 `census`、`uncertainty` 和可达流程未知。未知数下降也可能是下游节点被截断，需检查具体关系。
+7. 相关测试和模型对照通过后，再按现有流程 `player-view`、`publish` 并更新站点。日志记录和诊断本身不授予额外恢复资格，也不增加“有未知就禁止整个模型”的门槛。
+
+交给后续 LLM 的最小材料是：本次 JSONL 路径、当前 dump／IL2CPP／资源路径、缓存／profile 位置、出问题的怪物及表身份、上一份已验证模型，以及具体错误或退化关系。让它先按上述链路读取本地证据，再修改对应怪物策略或共通恢复规则；不需要粘贴整个 EXE 或元数据文件。
 
 ## 随游戏更新变化的常量
 

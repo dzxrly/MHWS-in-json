@@ -12,6 +12,13 @@ def evaluate_expression(expression, registry, context):
         return registry.evaluate(expression["predicate"], context)
     if kind == "unknown":
         return Outcome(None, expression["reason"])
+    if kind == "table_history_interval":
+        from .table_history_formula import evaluate_interval
+
+        return Outcome(
+            evaluate_interval(expression, context),
+            "按 uint32 余数、Int32 严格开区间及已核实重映射判断；缺值保留未知",
+        )
     if kind == "not":
         result = evaluate_expression(expression["item"], registry, context)
         return Outcome(
@@ -83,6 +90,10 @@ def validate_expression(expression):
     elif kind == "runtime":
         if not expression.get("key") or not expression.get("source"):
             raise ValueError("运行时条件必须保留输入键和来源")
+    elif kind == "table_history_interval":
+        from .table_history_formula import validate_interval
+
+        validate_interval(expression)
     elif kind == "compare":
         if expression.get("operator") not in ("eq", "ne", "lt", "le", "gt", "ge"):
             raise ValueError("未知比较运算")

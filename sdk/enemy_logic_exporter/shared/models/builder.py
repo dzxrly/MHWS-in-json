@@ -13,6 +13,7 @@ from .audit import combat_entry_recovered
 from ..logic.expressions import evaluate_expression, expression_unknown
 from ..resources.action_names import ActionNames
 from ..logic.common_conditions import recover_condition
+from ..logic.compound_conditions import recover_compound_condition
 from ..logic.commands import leaf_expression
 from .player_view import build_player_view
 from ..resources.variables import referenced_variables
@@ -50,6 +51,59 @@ def bind_action_node(node, body, argument, resources, names):
         )
         return error.context
     return None
+
+
+def dynamic_request_guards(table):
+    """Expand a reviewed void request's internal guard, keeping caller next."""
+    additions = []
+    ids = {node["id"] for node in table["nodes"]}
+    for node in list(table["nodes"]):
+        if not node.get("dynamicAction"):
+            continue
+        key = node["id"]
+        guard_key, skipped_key = key + "-request-guard", key + "-request-skipped"
+        if guard_key in ids:
+            continue
+        if (
+            node.get("returnType") != "System.Void"
+            or "next" not in node
+            or not node.get("requestGuard")
+        ):
+            raise ValueError("动态动作请求缺少已核实的 void 守卫或调用方继续位置")
+        for other in table["nodes"]:
+            for role in ("true", "false", "next", "resume", "fallback"):
+                if other.get(role) == key:
+                    other[role] = guard_key
+            for candidate in other.get("candidates", []):
+                field = "nodeId" if "nodeId" in candidate else "id"
+                if candidate[field] == key:
+                    candidate[field] = guard_key
+        if table["entry"] == key:
+            table["entry"] = guard_key
+        additions.extend(
+            [
+                dict(
+                    id=guard_key,
+                    kind="condition",
+                    summary="有效命令工作且未屏蔽动作请求？",
+                    expression=deepcopy(node["requestGuard"]),
+                    true=key,
+                    false=skipped_key,
+                    semanticEvidence=deepcopy(node["semanticEvidence"]),
+                    nativeSite=node["nativeSite"],
+                ),
+                dict(
+                    id=skipped_key,
+                    kind="mutation",
+                    effect="skip_dynamic_action_request",
+                    summary="本次未发出所选动作请求",
+                    next=node["next"],
+                    nativeSite=node["nativeSite"],
+                ),
+            ]
+        )
+        ids.update((guard_key, skipped_key))
+    table["nodes"].extend(additions)
 
 
 def referenced_enemy_names(graph, resources):
@@ -196,6 +250,8 @@ def build_chain(
                 recovered = None
                 if (
                     node["kind"] == "condition"
+                    and not node.get("reviewedBooleanCommand")
+                    and not node.get("reviewedTargetCommand")
                     and node.get("expectedCommandType")
                     and expression_unknown(node.get("expression", dict(kind="unknown")))
                 ):
@@ -212,6 +268,9 @@ def build_chain(
                 if (
                     recovered is None
                     and node["kind"] == "condition"
+                    and not node.get("reviewedBooleanCommand")
+                    and not node.get("reviewedTargetCommand")
+                    and expression_unknown(node.get("expression", dict(kind="unknown")))
                     and leaf
                     and not leaf["argumentField"]
                 ):
@@ -259,7 +318,14 @@ def build_chain(
                     "expression" not in node
                     and node["predicate"]["status"] != "verified"
                 ):
-                    recovered = recover_condition(node, model["enemyId"], resources)
+                    recovered = recover_compound_condition(
+                        node,
+                        model["enemyId"],
+                        resources,
+                        body,
+                        registry,
+                        model.get("leafRules", {}),
+                    ) or recover_condition(node, model["enemyId"], resources)
                     if recovered is not None:
                         node.update(recovered)
                     leaf = model.get("leafRules", {}).get(command_type)
@@ -292,6 +358,24 @@ def build_chain(
                             sourceResource=source,
                         )
                     )
+            elif (
+                node["kind"] == "unknown"
+                and isinstance(node.get("parameterBindingBoundary"), dict)
+                and node["parameterBindingBoundary"].get("reason")
+                == "missing_action_parameter_guid"
+            ):
+                # Rebinding an extracted graph must retain this existing
+                # unknown request in the census without retrying or guessing
+                # its missing parameter. The local list starts empty each run.
+                action_binding_boundaries.append(
+                    dict(
+                        node["parameterBindingBoundary"],
+                        tableGuid=table["tableGuid"],
+                        node=node["id"],
+                        requestSite=node.get("requestSite"),
+                        sourceResource=source,
+                    )
+                )
             elif node["kind"] == "mutation":
                 if node["effect"] == "set_timer_state":
                     node["timerGuid"] = scalar(argument["_TargetVariableIndex"])
@@ -301,6 +385,8 @@ def build_chain(
                     node["variableGuid"] = scalar(argument["_TargetVariableIndex"])
                     node["method"] = scalar(argument["_Method"])
                     node["value"] = scalar(argument["_Value"])
+    for table in graph["tables"]:
+        dynamic_request_guards(table)
     # After binding: resource arguments name the compared enemies.
     graph["enemyNames"] = referenced_enemy_names(graph, resources)
     # Timer and variable GUIDs are known only once arguments are bound.

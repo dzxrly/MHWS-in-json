@@ -790,6 +790,7 @@ STATE_SIGN_LABELS = dict(
 PUBLISHED_STORAGE_FORMAT = "shared-values-v1"
 RESEARCH_ONLY_MODEL_FIELDS = ("selectionRecovery", "standStates")
 RESEARCH_ONLY_NODE_FIELDS = (
+    "nativeHistoryFormula",
     "nativeNodeIdentity",
     "nativeSite",
     "nativeContinuation",
@@ -846,6 +847,18 @@ SYMBOL_SPECS = {
     "action_param_apply": Method("ace.user_data.ActionParam", "applyParamCore"),
     "manager_setup_table": Method("ace.btable.cManager", "setupTable"),
     "manager_clear": Method("ace.btable.cManager", "clear"),
+    "btable_create": Method(
+        "ace.btable.cExportBTableBase", "create", ("ace.btable.user_data.BTable",)
+    ),
+    "btable_param_try_insert": Method(
+        "System.Collections.Generic.Dictionary`2<System.Int32,ace.btable.cExportBTableBase.cExportBTableParam>",
+        "TryInsert",
+        (
+            "System.Int32",
+            "ace.btable.cExportBTableBase.cExportBTableParam",
+            "System.Collections.Generic.InsertionBehavior",
+        ),
+    ),
     "resume_jump_btable": Method("app.cEmAIUpdateBTable", "resumeJumpBTable"),
     "area_target_child": Method(
         "app.cEmModuleArea", "setTargetAreaChidl_CurrentAreaChild"
@@ -887,6 +900,7 @@ SYMBOL_SPECS = {
     "pool_pair_construct": Helper(),
     "pool_array_copy": Helper(),
     "array_allocate": Helper(),
+    "managed_object_allocate": Helper(anchors=("btable_create",)),
     "static_ref_acquire": Helper(),
     "static_ref_release": Helper(),
     "area_schedule_helper": Helper(anchors=("combat_on_enter",)),

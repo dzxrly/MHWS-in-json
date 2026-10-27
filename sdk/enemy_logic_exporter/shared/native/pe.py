@@ -9,10 +9,11 @@ import struct
 
 SECTION_WRITABLE = 0x80000000
 SECTION_EXECUTABLE = 0x20000000
-# The EXE is dumped from memory, so section flags show the runtime protection.
-# .sdata holds the read-only constants but the dump marks it writable, because
-# the loader fills the import table inside it.
-CONSTANT_SECTIONS = (b".sdata",)
+# These directories jointly locate the reviewed constants section in the
+# supplied MHWS memory dumps. Section names are randomized between builds.
+# Ordinary mutable sections never inherit this exception. The formula reader
+# independently rejects addresses at/after its reviewed runtime-data boundary.
+CONSTANT_DATA_DIRECTORIES = (9, 10, 13)  # TLS, load config, delay imports
 
 
 class PE:
@@ -45,6 +46,31 @@ class PE:
                 )
                 for i in range(count)
             ]
+            directory_sections = []
+            directory_count = struct.unpack_from("<I", self.data, opt + 108)[0]
+            for directory in CONSTANT_DATA_DIRECTORIES:
+                if directory >= directory_count or 112 + (directory + 1) * 8 > optsize:
+                    directory_sections.append(None)
+                    continue
+                rva, size = struct.unpack_from(
+                    "<II", self.data, opt + 112 + directory * 8
+                )
+                matches = [
+                    index
+                    for index, (virtual_size, start, raw_size, _) in enumerate(
+                        self.sections
+                    )
+                    if rva
+                    and size
+                    and start <= rva
+                    and rva + size <= start + min(virtual_size, raw_size)
+                ]
+                directory_sections.append(matches[0] if len(matches) == 1 else None)
+            self.constant_sections = set()
+            if len(set(directory_sections)) == 1 and directory_sections[0] is not None:
+                index = directory_sections[0]
+                if not self.section_flags[index] & SECTION_EXECUTABLE:
+                    self.constant_sections.add(index)
             rva, size = struct.unpack_from("<II", self.data, opt + 112 + 3 * 8)
             self.functions = sorted(
                 (self.base + start, self.base + end)
@@ -55,6 +81,7 @@ class PE:
             )
             self.starts = [start for start, _ in self.functions]
             self.method_starts = []
+            self._leaf_end_cache = {}
         except Exception:
             self.close()
             raise
@@ -86,19 +113,20 @@ class PE:
     def read_only(self, address, size):
         """True when [address, address+size) lies in one constant section."""
         rva = address - self.base
-        for (virtual_size, virtual_address, _, _), flags, name in zip(
-            self.sections, self.section_flags, self.section_names
+        for index, ((virtual_size, virtual_address, _, _), flags) in enumerate(
+            zip(self.sections, self.section_flags)
         ):
             if virtual_address <= rva and rva + size <= virtual_address + virtual_size:
-                return not flags & SECTION_WRITABLE or name in CONSTANT_SECTIONS
+                return not flags & SECTION_WRITABLE or index in self.constant_sections
         return False
 
     def end(self, address):
         index = bisect.bisect_right(self.starts, address) - 1
-        if (
+        has_unwind = (
             index >= 0
             and self.functions[index][0] <= address < self.functions[index][1]
-        ):
+        )
+        if has_unwind:
             end = self.functions[index][1]
         else:
             # Unwind-less leaf functions require manual review of this provisional bound.
@@ -113,6 +141,69 @@ class PE:
         following = bisect.bisect_right(self.method_starts, address)
         if following < len(self.method_starts):
             end = min(end, self.method_starts[following])
+        if not has_unwind:
+            key = (address, end)
+            if key not in self._leaf_end_cache:
+                self._leaf_end_cache[key] = self._closed_leaf_end(address, end)
+            end = self._leaf_end_cache[key] or end
+        return end
+
+    def _closed_leaf_end(self, start, limit):
+        """Close all direct paths; unresolved indirect flow keeps the old bound.
+
+        Only unwind-less entry points use this. An explicit evidence row still
+        keeps its own original range even when its method ends sooner.
+        """
+        from capstone import (
+            Cs,
+            CS_ARCH_X86,
+            CS_MODE_64,
+            CS_GRP_JUMP,
+            CS_GRP_RET,
+            CS_OP_IMM,
+        )
+
+        decoder = Cs(CS_ARCH_X86, CS_MODE_64)
+        decoder.detail = True
+        pending, visited, owners = [start], set(), {}
+        end = start
+        while pending:
+            address = pending.pop()
+            if address in visited:
+                continue
+            if not start <= address < limit or address in owners:
+                return None
+            instruction = next(
+                decoder.disasm(
+                    self.read(address, min(15, limit - address)), address, 1
+                ),
+                None,
+            )
+            if instruction is None:
+                return None
+            following = address + instruction.size
+            if any(byte in owners for byte in range(address, following)):
+                return None
+            owners.update((byte, address) for byte in range(address, following))
+            visited.add(address)
+            end = max(end, following)
+            if instruction.group(CS_GRP_RET) or instruction.mnemonic in ("int3", "ud2"):
+                continue
+            if instruction.group(CS_GRP_JUMP):
+                if (
+                    not instruction.operands
+                    or instruction.operands[0].type != CS_OP_IMM
+                ):
+                    return None
+                target = instruction.operands[0].imm
+                if start <= target < limit:
+                    pending.append(target)
+                elif instruction.mnemonic != "jmp":
+                    # A conditional edge outside the provisional range needs review.
+                    return None
+                if instruction.mnemonic == "jmp":
+                    continue
+            pending.append(following)
         return end
 
     def __enter__(self):

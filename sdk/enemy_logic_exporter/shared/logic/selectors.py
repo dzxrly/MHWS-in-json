@@ -25,6 +25,8 @@ ARGUMENTS_FIELD = rf"\+ {EXPORT_ARGUMENTS:#x}\)"
 ARGUMENT_SLOT = ARGUMENTS_FIELD + rf" \+ {ARRAY_ELEMENTS:#x}"
 POOL_WEIGHT_TEXT = f" + {POOL_WEIGHT:#x}"
 POOL_WEIGHT_PATTERN = re.escape(POOL_WEIGHT_TEXT)
+# Observed Ghidra names for the contents of a static pool pointer slot.
+POOL_GLOBAL_PREFIX = r"(?:lRam0000000|_DAT_)"
 
 
 class SelectorBoundary(ValueError):
@@ -347,7 +349,10 @@ def _filter_arguments(machine, block, pool, route, body):
         if len(offsets) != 1:
             raise SelectorBoundary("动态参数或筛选索引需要专项核查")
         offset = next(iter(offsets))
-        if offset < ARRAY_ELEMENTS or (offset - ARRAY_ELEMENTS) % REFERENCE_ARRAY_STRIDE:
+        if (
+            offset < ARRAY_ELEMENTS
+            or (offset - ARRAY_ELEMENTS) % REFERENCE_ARRAY_STRIDE
+        ):
             raise SelectorBoundary("跳过参数的原生偏移不匹配参数数组布局")
         indices = [(offset - ARRAY_ELEMENTS) // REFERENCE_ARRAY_STRIDE]
         mode = "shared"
@@ -365,7 +370,7 @@ def _filter_arguments(machine, block, pool, route, body):
 
 def _selection_form(block, address, code):
     """Require the observed uint32/modulo/strict-weight selection form."""
-    pool = f"lRam0000000{address:x}"
+    pool = rf"{POOL_GLOBAL_PREFIX}{address:x}"
     required = (
         rf"{pool} \+ {ARRAY_LENGTH:#x}",
         rf"{pool} \+ {POOL_WEIGHT:#x}",
@@ -405,7 +410,11 @@ def recover_selectors(machine, code, pools, body):
     blocks = _outer_blocks(code)
     evidence, boundaries = [], []
     for pc, block in blocks.items():
-        references = set(re.findall(r"lRam0000000(1[0-9a-f]+)" + POOL_WEIGHT_PATTERN, block))
+        references = set(
+            re.findall(
+                POOL_GLOBAL_PREFIX + r"(1[0-9a-f]+)" + POOL_WEIGHT_PATTERN, block
+            )
+        )
         if not references:
             continue
         boundary = machine.walk(start, machine.initial(pc))

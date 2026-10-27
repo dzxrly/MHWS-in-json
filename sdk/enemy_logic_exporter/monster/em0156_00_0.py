@@ -3,6 +3,61 @@
 ENEMY_ID = "EM0156_00_0"
 NATIVE_OWNER = "Em0156_00"
 
+# Reviewed native methods; local histories are split only at their actual reads.
+LOCAL_HISTORY_TABLES = {
+    "app.Em0156_00_BTable_CommonAttack_Export": (
+        "table_40810e3e_afaf_4ba2_a92a_c687e305f20f",
+    ),
+}
+
+
+FORMULA_HISTORY_TABLES = {
+    "app.Em0156_00_BTable_CommonAttack_Export": (
+        "table_40810e3e_afaf_4ba2_a92a_c687e305f20f",
+    ),
+    "app.Em0156_00_BTable_Life_Export": ("table_21143526_b31a_4b97_91f0_6ea43bbb9d30",),
+}
+
+
+def table_history_policy(row):
+    method = row["method"]
+    policy = {}
+    local = LOCAL_HISTORY_TABLES.get(row["type"], ())
+    if any(method.startswith(stem) and method[len(stem) :].isdigit() for stem in local):
+        policy["local"] = True
+    formula = FORMULA_HISTORY_TABLES.get(row["type"], ())
+    if any(
+        method.startswith(stem) and method[len(stem) :].isdigit() for stem in formula
+    ):
+        policy["formula"] = True
+    return policy or None
+
+
+MAX_RAILGUN_COMMAND = "app.Em0156_00BTableCommand.cCheckTransRailgunChargeMax"
+
+
+def recover_condition(node, enemy_id, resources):
+    if node.get("commandType") != MAX_RAILGUN_COMMAND:
+        return None
+    from ..shared.logic.expressions import combined, invert, runtime
+    from ..shared.logic.field_checks import condition_evidence, reviewed_condition
+
+    ready = "extend:app.cEm0156_00Extend._IsCanTransMaxRailgunCharge"
+    return reviewed_condition(
+        combined(
+            "all",
+            invert(runtime("tired", "cEnemyContext.get_IsTired()")),
+            runtime(ready, "Extend +0xf6 的最大蓄电转移许可标志"),
+        ),
+        condition_evidence("rey_dau_max_charge"),
+        summary="不疲劳，且允许转入最大电磁炮蓄电",
+        extend="app.cEm0156_00Extend",
+        inputs={
+            "tired": dict(label="疲劳状态", boolean=True),
+            ready: dict(label="允许转入最大电磁炮蓄电", boolean=True),
+        },
+    )
+
 
 def extract(context):
     """Select this monster's declared tables, imports and native method contexts."""

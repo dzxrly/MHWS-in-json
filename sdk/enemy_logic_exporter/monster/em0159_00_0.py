@@ -3,6 +3,80 @@
 ENEMY_ID = "EM0159_00_0"
 NATIVE_OWNER = "Em0159_00"
 
+# Reviewed native methods; local histories are split only at their actual reads.
+LOCAL_HISTORY_TABLES = {
+    "app.Em0159_00_BTable_AttackStay_Export": (
+        "table_37c7f1a3_064d_4ebe_85ba_56eccb1cb976",
+    ),
+}
+
+
+FORMULA_HISTORY_TABLES = {
+    "app.Em0159_00_BTable_AttackStay_Export": (
+        "table_37c7f1a3_064d_4ebe_85ba_56eccb1cb976",
+    ),
+    "app.Em0159_00_BTable_Life_Export": ("table_f27fcc59_d333_4580_a0c8_42c20ccde69f",),
+}
+
+
+def table_history_policy(row):
+    method = row["method"]
+    policy = {}
+    local = LOCAL_HISTORY_TABLES.get(row["type"], ())
+    if any(method.startswith(stem) and method[len(stem) :].isdigit() for stem in local):
+        policy["local"] = True
+    formula = FORMULA_HISTORY_TABLES.get(row["type"], ())
+    if any(
+        method.startswith(stem) and method[len(stem) :].isdigit() for stem in formula
+    ):
+        policy["formula"] = True
+    return policy or None
+
+
+BLAZING_COMMAND = "app.btable.Em0159_00BTableCommand.cCheckEnterBlazingMode"
+UNIQUE_SPEC = dict(
+    package="STM/GameDesign/Enemy/CommonData/StageResident/Data/{enemy}_StageResident.user.3.json",
+    fields=["_Unique", "_SpeciesInfo"],
+)
+
+
+def recover_condition(node, enemy_id, resources):
+    if node.get("commandType") != BLAZING_COMMAND:
+        return None
+    from ..shared.logic.expressions import combined, compare, invert, runtime
+    from ..shared.logic.field_checks import condition_evidence, reviewed_condition
+
+    parameters, sources = resources.package_value(enemy_id, UNIQUE_SPEC)
+    threshold = parameters["BlazingModeThreshold"]
+    if type(threshold) not in (int, float):
+        raise ValueError("赫猿兽燃烧模式的累积阈值不是数值")
+    mode = "extend:app.cEm0159_00Extend._IsBlazingMode"
+    accumulated = "extend:app.cEm0159_00Extend._BlazingModeAccumulatedValue"
+    result = reviewed_condition(
+        combined(
+            "all",
+            invert(runtime(mode, "当前燃烧模式标志")),
+            compare(
+                accumulated,
+                threshold,
+                "ge",
+                source="燃烧累积值与 ParamUnique.BlazingModeThreshold 比较，包含相等",
+            ),
+            invert(runtime("tired", "cEnemyContext.get_IsTired()")),
+        ),
+        condition_evidence("ajarakan_blazing"),
+        summary=f"尚未进入燃烧模式、燃烧累积值 ≥ {threshold:g}，且不疲劳",
+        extend="app.cEm0159_00Extend",
+        inputs={
+            mode: dict(label="正在燃烧模式", boolean=True),
+            accumulated: dict(label="燃烧模式累积值", number=True, min=0, max=None),
+            "tired": dict(label="疲劳状态", boolean=True),
+        },
+    )
+    result["parameterSources"] = sources
+    result["parameterBinding"] = UNIQUE_SPEC
+    return result
+
 
 def extract(context):
     """Select this monster's declared tables, imports and native method contexts."""
@@ -18,7 +92,7 @@ def build_model(
     *,
     requests_path=None,
     inventory_path=None,
-    context=None
+    context=None,
 ):
     """Extract this EM from its real slot/import closure and typed native calls."""
     from ..shared.models.native_recipe import build_monster

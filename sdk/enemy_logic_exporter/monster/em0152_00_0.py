@@ -19,9 +19,25 @@ ENCHANT_ENUMS = {field: ENCHANT_TYPES for field in ENCHANT_FIELDS["ARM_BOTH"]}
 ENCHANT_TYPE_EVIDENCE = dict(
     type="app.btable.Em0152_00BTableCommand.cCheckEnchantType",
     method="onExecute1234165",
-    address="0x144d29b10",
-    end="0x144d29b70",
+    address="0x144d298d0",
+    end="0x144d29930",
 )
+
+
+FORMULA_HISTORY_TABLES = {
+    "app.Em0152_00_BTable_Life_Export": ("table_3483caa7_9f7d_4eb8_bf76_2e2e54495db8",)
+}
+
+
+def table_history_policy(row):
+    method = row["method"]
+    policy = {}
+    formula = FORMULA_HISTORY_TABLES.get(row["type"], ())
+    if any(
+        method.startswith(stem) and method[len(stem) :].isdigit() for stem in formula
+    ):
+        policy["formula"] = True
+    return policy or None
 
 
 def _enchant_type(argument):
@@ -55,8 +71,8 @@ FIELD_CHECKS = {
             dict(
                 type="app.btable.Em0152_00BTableCommand.cCheckEnchantAny",
                 method="onExecute1234151",
-                address="0x144745b20",
-                end="0x144745b80",
+                address="0x1447458e0",
+                end="0x144745940",
             )
         ],
         summary="EnchantTypeArmLeft 或 EnchantTypeArmRight 不为 NONE",
@@ -87,7 +103,7 @@ def build_model(
     *,
     requests_path=None,
     inventory_path=None,
-    context=None
+    context=None,
 ):
     """Extract this EM from its real slot/import closure and typed native calls."""
     from ..shared.models.native_recipe import build_monster

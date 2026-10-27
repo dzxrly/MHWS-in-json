@@ -11,13 +11,29 @@ FIELD_CHECKS = {
             dict(
                 type="app.btable.Em0163_00BTableCommand.cIsNestArea",
                 method="onExecute1234507",
-                address="0x144a200b0",
-                end="0x144a200f0",
+                address="0x144a1fe70",
+                end="0x144a1feb0",
             )
         ],
         summary="怪物位于区域 12",
     ),
 }
+
+
+FORMULA_HISTORY_TABLES = {
+    "app.Em0163_00_BTable_Life_Export": ("table_faea7f16_4a65_436d_a3d5_272c2f2a3b2e",)
+}
+
+
+def table_history_policy(row):
+    method = row["method"]
+    policy = {}
+    formula = FORMULA_HISTORY_TABLES.get(row["type"], ())
+    if any(
+        method.startswith(stem) and method[len(stem) :].isdigit() for stem in formula
+    ):
+        policy["formula"] = True
+    return policy or None
 
 
 def recover_condition(node, enemy_id, resources):

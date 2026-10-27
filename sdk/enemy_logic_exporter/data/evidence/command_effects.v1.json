@@ -1,0 +1,321 @@
+{
+  "schemaVersion": 1,
+  "commands": {
+    "ace.btable.cSetBoolValue": {
+      "type": "ace.btable.cSetBoolValue",
+      "method": "onExecute1028193",
+      "address": "0x14808fcd0",
+      "end": "0x14808fd2b",
+      "nativeBytes": "4883ec38488b05650a650c4831e048894424304d85c07430498b5018498b4118448b50104c8b58184c8d4424204589108b4014418940044d895808498b4120448a4810e828b98600488b4c24304831e1e8eba60903904883c438c3",
+      "returns": "System.Void",
+      "parameters": [
+        "ace.btable.cCommandWork",
+        "ace.btable.cSetBoolValueArg"
+      ]
+    },
+    "ace.btable.cSetFloatValue": {
+      "type": "ace.btable.cSetFloatValue",
+      "method": "onExecute1028205",
+      "address": "0x1486229b0",
+      "end": "0x148622a1b",
+      "nativeBytes": "4883ec48488b0585dd0b0c4831e048894424404d85c07440498b5018498b4118448b50104c8b58184c8d4424304589108b4014418940044d895808498b41204d8b5128448b4810c4c17a104210c5fa11442420e8188d2d00488b4c24404831e1e8fb79b002904883c448c3",
+      "returns": "System.Void",
+      "parameters": [
+        "ace.btable.cCommandWork",
+        "ace.btable.cSetFloatValueArg"
+      ]
+    },
+    "ace.btable.cSetTimerValue": {
+      "type": "ace.btable.cSetTimerValue",
+      "method": "onExecute1028216",
+      "address": "0x148c42ce0",
+      "end": "0x148c42dc4",
+      "nativeBytes": "4883ec48488b0555daa90b4831e048894424404d85c00f84b5000000498b41208b401083f802744083f801746e85c00f859c000000498b5018498b4118448b48104c8b50184c8d4424304589088b4014418940044d895008c74424200000000041b901000000eb64498b5018498b4118448b48104c8b50184c8d4424304589088b4014418940044d895008c74424200000000041b903000000eb31498b5018498b4118448b48104c8b50184c8d4424304589088b4014418940044d895008c74424200000000041b902000000e8ef8acbff488b4c24404831e1e852764e02904883c448c3",
+      "returns": "System.Void",
+      "parameters": [
+        "ace.btable.cCommandWork",
+        "ace.btable.cSetTimerValueArg"
+      ]
+    },
+    "app.btable.EmCommonCommand.cActionSwitch": {
+      "type": "app.btable.EmCommonCommand.cActionSwitch",
+      "method": "onExecute1236505",
+      "address": "0x1459e37e0",
+      "end": "0x1459e397e",
+      "nativeBytes": "5657534883ec50488b0552cfcf0e4831e04889442448bbffffffff4d85c00f84630100004c89c7498b00488b00483b052cc0d50e0f854d0100004889ce488b054cb326084889442440498b41108b40104883f8040f8704010000488d0d5bb22608486304814801c8ffe0488b4728488b4058488b80e0000000488b4020488b4034488d7c2438488907e9ec000000488b4728488b4068488b4040488b80f8010000488b8088000000eb1a488b4728488b4068488b4040488b80f8010000488b80b80000004889442440e990000000488b4728488b4860488b5068488b4958488b49504c8b81d8000000488b4a40488b91f0010000448b4a68488b4078488b4010488944242848894c2420488d4c24404889f2e8f9ac8502eb45488b4728488b4860488b5068488b4958488b49504c8b81d8000000488b4a40448b8958030000488b4078488b4010488944242848894c2420488d4c24404889f2e872ab8502488b4728488b4078488b5010488d7c24404889f14989f8e896ca24ff4889f14889fae81bd10dfe89c3488b4c24484831e1e89c6a740589d84883c4505b5f5ec3",
+      "returns": "System.Int32",
+      "parameters": [
+        "ace.btable.cCommandWork",
+        "app.btable.EmCommonCommand.cActionSwitchArg"
+      ]
+    },
+    "app.btable.EmCommonCommand.cRequestSelectedAction": {
+      "type": "app.btable.EmCommonCommand.cRequestSelectedAction",
+      "method": "onExecute1236494",
+      "address": "0x145395f70",
+      "end": "0x145396239",
+      "nativeBytes": "5657534883ec70488b05c2a7340f4831e048894424684d85c00f84940200004c89c6498b00488b00483b05a1983a0f0f857e0200004889cf488b4e28488b5168488b42404c8b802001000041807813000f855d0200004c8b05a38b8b084c894424584d8b4110458b40104983f8070f87d00100004c8d0d41628a084f6304814d01c841ffe0488b80f8010000488b80880000004889442458488d542450488902488b059938460f4c8d4424484989004889f9e839f9d40584c00f8485010000488b4628488b4068488b4040488b80f8010000488b80a8000000488d542440488902488b055838460f4c8d4424384989004889f9e81859d70584c00f8444010000488b4628488b4068488b4040488b80f8010000488b88a800000048894c2458488b0d1a38460f488988a8000000e912010000488b80f8010000488b80b8000000e9b70000004c8b80c80100004c8b4960488b4178488b401048894424284889542420488d4c24584889fae891b69304e9d0000000488b5160488b4978488b5258488b52504c8b82d8000000488b90f0010000448b4a68488b491048894c24284889442420488d4c24584889fae8cf84ea02e98e000000488b5160488b4978488b5258488b52504c8b82d8000000448b8858030000488b491048894c24284889442420488d4c24584889fae85183ea02eb53488b8058010000488b40144889442458eb41488b5160488b4978488b5258488b52504c8b82d8000000488b9090010000488b5218448b4a54488b491048894c24284889442420488d4c24584889fae8bc86ea02488b4628488b4078488b5010488d5c24584889f94989d8e820a289ff488b4628488b5058488b034c8d44246049890031db885c24204889f941b9ffffffffe8f9570c04488b4628488b4068488b4040488b800803000088582e488b4628488b4068488b4040488b8008030000885852488b4c24684831e1e8e041d905904883c4705b5f5ec3",
+      "returns": "System.Void",
+      "parameters": [
+        "ace.btable.cCommandWork",
+        "app.btable.EmCommonCommand.cRequestSelectedActionArg"
+      ]
+    }
+  },
+  "helpers": {
+    "float": {
+      "type": "ace.btable.cVariableStorage",
+      "method": "setValueFloat231671",
+      "address": "0x1488fb720",
+      "end": "0x1488fb894",
+      "nativeBytes": "4157415641554154565755534881ec88000000c5f82974247044894c242c4889d34889ce488b05f54fde0b4831e04889442468418b28450fb76804450fb760064d8b7808c5f857c0c5f829442430488b7a484c8d44245741c600004889fae87db9700248837b10000f84cd0000004c8d442440418928664589680466458960064d8978084889f14889dae8410500004885c00f84a30000004989c6837828020f8496000000c5fa10b424f00000004c8d4c245041c70100000000488b53384c8d442430418928664589680466458960064d8978084889f1e8f4dcd4fe8b44242c83f802741183f801741885c0754dc4c14a5d4634eb18c5fa10442450c5fa5cc6eb06c5ca58442450c4c17a5d4634488b5338c4c17a5f5e384c8d442458418928664589680466458960064d897808c6442420014889f1e8a5e5d4fe807c245700740b4889f14889fae873b87002488b4c24684831e1e896eb8202c5f8287424704881c4880000005b5d5f5e415c415d415e415fc3",
+      "returns": "System.Void",
+      "parameters": [
+        "System.Guid",
+        "ace.btable.cVariableStorage.VARIABLE_METHOD",
+        "System.Single"
+      ]
+    },
+    "bool": {
+      "type": "ace.btable.cVariableStorage",
+      "method": "setValueBool231670",
+      "address": "0x1488fb640",
+      "end": "0x1488fb71c",
+      "nativeBytes": "4157415641554154565755534883ec584489cb4989d64889ce488b05e050de0b4831e04889442450418b28450fb77804450fb760064d8b6808488b7a484c8d44243f41c600004889fae872ba700249837e100074564c8d442428418928664589780466458960064d8968084889f14c89f2e8da0400004885c0743083782802742a498b56304c8d442440418928664589780466458960064d896808c6442420014889f14189d9e895281efe807c243f00740b4889f14889fae8e3b97002488b4c24504831e1e806ed8202904883c4585b5d5f5e415c415d415e415fc3",
+      "returns": "System.Void",
+      "parameters": [
+        "System.Guid",
+        "System.Boolean"
+      ]
+    },
+    "timer": {
+      "type": "ace.btable.cVariableStorage",
+      "method": "setValueTimer231672",
+      "address": "0x1488fb8a0",
+      "end": "0x1488fba36",
+      "nativeBytes": "4157415641554154565755534883ec7844894c242c4989d64889ce488b057e4ede0b4831e04889442470418b28450fb76004450fb76806498b5808c5f857c0c5f829442430488b7a484c8d44245f41c600004889fae806b8700249837e10000f84000100004c8d44244041892866458960046645896806498958084889f14c89f2e82a0500004885c00f84d60000004989c7837828020f84c90000004c8d4c245049c70100000000498b56404c8d44243041892866458960046645896806498958084889f1e8962a5dfd84c07541488b153399e10b4889f14531c0e8509972024889442450498b56404c8d4424604189286645896004664589680649895808c6442420014889f14989c1e8b1b809ff837c242c03774f8b44242c488d0d43fb5b05486304814801c8ffe0c5fa108424e0000000488b442450c5fa114010eb26488b442450c4c17a104730c5fa114010eb10488b442450c6401400eb09488b442450c6401401807c245f00740b4889f14889fae8c9b67002488b4c24704831e1e8ece98202904883c4785b5d5f5e415c415d415e415fc3",
+      "returns": "System.Void",
+      "parameters": [
+        "System.Guid",
+        "ace.btable.cVariableStorage.TIMER_METHOD",
+        "System.Single"
+      ]
+    },
+    "pack_action_id": {
+      "address": "0x143ac0a80",
+      "end": "0x143ac0ad4",
+      "nativeBytes": "5657534883ec30833a00783b4889d7448b42044585c0782f4889cebb10000000895c242031d24531c9e89293fe03448b07895c24204889f189c241b910000000e87b93fe03eb05b8ffffffff4883c4305b5f5ec3",
+      "identity": "nonnegative_action_category_and_index_to_partial_bits"
+    },
+    "set_partial_bits": {
+      "address": "0x147aa9e40",
+      "end": "0x147aa9e9a",
+      "nativeBytes": "565755534883ec284489c64889c88b7c247089f941d3f84489cb89d54585c00f95c2c7442420040000004889c14589c84189f9e86801000089d9d3e6b8ffffffff89f9d3e0f7d089d9d3e0f7d021e809f04883c4285b5d5f5ec3",
+      "identity": "set_low_bits_into_masked_destination_range"
+    },
+    "bool_info": {
+      "address": "0x1488fbb90",
+      "end": "0x1488fbce3",
+      "nativeBytes": "4157415641554154565755534883ec684889d74889ce488b05934bde0b4831e04889442460418b28450fb77804450fb760064d8b68084c8d4c243c41c70100000000488b52184c8d442428418928664589780466458960064d896808e8af6b57fe84c0747b488b471048634c243c488b44c820488b78208b5f1885db7e624531f68b47184939c60f83a8000000488b47104a8b44f0208b4818488b5020894c24508b401c894424544889542458896c24406644897c24446644896424464c896c24484889f1488d5424504c8d442440e8ec6974f784c0752b49ffc64c39f375a131ff488b4c24604831e1e891e782024889f84883c4685b5d5f5e415c415d415e415fc344397718760b488b47104a8b7cf020ebce488b158541e10b31ff4889f14531c0e8189672024889f14889c2e8ad33b702ebad488b156441e10b4889f14531c0e8f99572024889f14889c2e88e33b702cc",
+      "identity": "variable_storage_resource_guid_lookup_bool_info"
+    },
+    "float_info": {
+      "address": "0x1488fbcf0",
+      "end": "0x1488fbe43",
+      "nativeBytes": "4157415641554154565755534883ec684889d74889ce488b05334ade0b4831e04889442460418b28450fb77804450fb760064d8b68084c8d4c243c41c70100000000488b52204c8d442428418928664589780466458960064d896808e84f6a57fe84c0747b488b471048634c243c488b44c820488b78288b5f1885db7e624531f68b47184939c60f83a8000000488b47104a8b44f0208b4818488b5020894c24508b401c894424544889542458896c24406644897c24446644896424464c896c24484889f1488d5424504c8d442440e88c6874f784c0752b49ffc64c39f375a131ff488b4c24604831e1e831e682024889f84883c4685b5d5f5e415c415d415e415fc344397718760b488b47104a8b7cf020ebce488b152540e10b31ff4889f14531c0e8b89472024889f14889c2e84d32b702ebad488b150440e10b4889f14531c0e8999472024889f14889c2e82e32b702cc",
+      "identity": "variable_storage_resource_guid_lookup_float_info"
+    },
+    "timer_info": {
+      "address": "0x1488fbe50",
+      "end": "0x1488fbfa3",
+      "nativeBytes": "4157415641554154565755534883ec684889d74889ce488b05d348de0b4831e04889442460418b28450fb77804450fb760064d8b68084c8d4c243c41c70100000000488b52284c8d442428418928664589780466458960064d896808e8ef6857fe84c0747b488b471048634c243c488b44c820488b78308b5f1885db7e624531f68b47184939c60f83a8000000488b47104a8b44f0208b4818488b5020894c24508b401c894424544889542458896c24406644897c24446644896424464c896c24484889f1488d5424504c8d442440e82c6774f784c0752b49ffc64c39f375a131ff488b4c24604831e1e8d1e482024889f84883c4685b5d5f5e415c415d415e415fc344397718760b488b47104a8b7cf020ebce488b15c53ee10b31ff4889f14531c0e8589372024889f14889c2e8ed30b702ebad488b15a43ee10b4889f14531c0e8399372024889f14889c2e8ce30b702cc",
+      "identity": "variable_storage_resource_guid_lookup_timer_info"
+    }
+  },
+  "layouts": {
+    "ace.btable.cCommandWork": {
+      "<VariableStorage>k__BackingField": {
+        "type": "ace.btable.cVariableStorage",
+        "offset": "0x18"
+      }
+    },
+    "ace.btable.cSetFloatValueArg": {
+      "_Method": {
+        "type": "ace.btable.cEditFieldEnum`1<ace.btable.cVariableStorage.VARIABLE_METHOD>",
+        "offset": "0x20"
+      },
+      "_TargetVariableIndex": {
+        "type": "ace.btable.cEditFieldDropBox`1<System.Guid>",
+        "offset": "0x18"
+      },
+      "_Value": {
+        "type": "ace.btable.cEditFieldFloat",
+        "offset": "0x28"
+      }
+    },
+    "ace.btable.cSetBoolValueArg": {
+      "_TargetVariableIndex": {
+        "type": "ace.btable.cEditFieldDropBox`1<System.Guid>",
+        "offset": "0x18"
+      },
+      "_Value": {
+        "type": "ace.btable.cEditFieldBool",
+        "offset": "0x20"
+      }
+    },
+    "ace.btable.cSetTimerValueArg": {
+      "_SetType": {
+        "type": "ace.btable.cEditFieldEnum`1<ace.btable.cSetTimerValueArg.SET_TYPE>",
+        "offset": "0x20"
+      },
+      "_TargetVariableIndex": {
+        "type": "ace.btable.cEditFieldDropBox`1<System.Guid>",
+        "offset": "0x18"
+      }
+    },
+    "ace.btable.cVariableStorage": {
+      "<OwnerAssetList>k__BackingField": {
+        "type": "ace.btable.user_data.BTableVariable[]",
+        "offset": "0x10"
+      },
+      "_BoolValueList": {
+        "type": "System.Collections.Generic.Dictionary`2<System.Guid,System.Boolean>",
+        "offset": "0x30"
+      },
+      "_FloatValueList": {
+        "type": "System.Collections.Generic.Dictionary`2<System.Guid,System.Single>",
+        "offset": "0x38"
+      },
+      "_LockObject": {
+        "type": "ace.cLockObject",
+        "offset": "0x48"
+      },
+      "_TimerValueList": {
+        "type": "System.Collections.Generic.Dictionary`2<System.Guid,ace.btable.cVariableStorage.cRuntimeTimer>",
+        "offset": "0x40"
+      }
+    },
+    "ace.btable.user_data.BTableVariable.FloatValueInfo": {
+      "_Life": {
+        "type": "ace.btable.user_data.BTableVariable.LIFE_SCOPE",
+        "offset": "0x28"
+      },
+      "_DefaultValue": {
+        "type": "System.Single",
+        "offset": "0x30"
+      },
+      "_MaxValue": {
+        "type": "System.Single",
+        "offset": "0x34"
+      },
+      "_MinValue": {
+        "type": "System.Single",
+        "offset": "0x38"
+      }
+    },
+    "ace.btable.user_data.BTableVariable.TimerValueInfo": {
+      "_Life": {
+        "type": "ace.btable.user_data.BTableVariable.LIFE_SCOPE",
+        "offset": "0x28"
+      },
+      "_DefaultValue": {
+        "type": "System.Single",
+        "offset": "0x30"
+      }
+    },
+    "ace.btable.user_data.BTableVariable.BoolValueInfo": {
+      "_Life": {
+        "type": "ace.btable.user_data.BTableVariable.LIFE_SCOPE",
+        "offset": "0x28"
+      },
+      "_DefaultValue": {
+        "type": "System.Boolean",
+        "offset": "0x30"
+      }
+    },
+    "ace.btable.cVariableStorage.cRuntimeTimer": {
+      "IsActive": {
+        "type": "System.Boolean",
+        "offset": "0x14"
+      },
+      "Value": {
+        "type": "System.Single",
+        "offset": "0x10"
+      }
+    },
+    "app.cEmModuleHit": {
+      "AttackHitActionID": {
+        "type": "ace.ACTION_ID",
+        "offset": "0xb8"
+      },
+      "DamageActionID": {
+        "type": "ace.ACTION_ID",
+        "offset": "0x88"
+      },
+      "RestartDamageActionID": {
+        "type": "ace.ACTION_ID",
+        "offset": "0xa8"
+      }
+    },
+    "app.cEmModuleBTable": {
+      "_IsBTableRequestActionMask": {
+        "type": "System.Boolean",
+        "offset": "0x13"
+      }
+    },
+    "app.cEmModuleLead.cChase": {
+      "_CurrentPhase": {
+        "type": "app.EnemyDef.LEAD_CHASE_PHASE",
+        "offset": "0x54"
+      }
+    },
+    "ace.ACTION_ID": {
+      "Invalid": {
+        "type": "ace.ACTION_ID",
+        "offset": "0x10"
+      },
+      "_Category": {
+        "type": "System.Int32",
+        "offset": "0x10"
+      },
+      "_Index": {
+        "type": "System.Int32",
+        "offset": "0x14"
+      }
+    }
+  },
+  "enums": {
+    "ace.btable.cVariableStorage.VARIABLE_METHOD": {
+      "ADD": 1,
+      "ASSIGN": 0,
+      "MINUS": 2
+    },
+    "ace.btable.user_data.BTableVariable.LIFE_SCOPE": {
+      "CONSTANT": 2,
+      "GLOBAL": 0,
+      "LOCAL": 1
+    },
+    "app.btable.EmCommonCommand.cRequestSelectedActionArg.ACTION_TYPE": {
+      "ATTACK_HIT": 1,
+      "DAMAGE": 0,
+      "DETOUR": 5,
+      "LEAD_CHASE": 7,
+      "OBSTACLE": 2,
+      "POP_INTERACT": 4,
+      "STATE_SIGN": 3
+    },
+    "app.btable.EmCommonCommand.cActionSwitchArg.ACTION_TYPE": {
+      "ATTACK_HIT": 2,
+      "CURRENT": 0,
+      "DAMAGE": 1,
+      "OBSTACLE": 3,
+      "STATE_SIGN": 4
+    },
+    "ace.btable.cSetTimerValueArg.SET_TYPE": {
+      "ACTIVATE": 0,
+      "DEACTIVATE": 1,
+      "ACTIVATE_NO_RESET": 2
+    }
+  },
+  "scope": "Reviewed variable mutations and dynamic action sources; action conversion and actor helpers retain explicit boundaries."
+}

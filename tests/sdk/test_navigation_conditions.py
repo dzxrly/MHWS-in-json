@@ -1,11 +1,15 @@
 """Native navigation branch boundaries, field identity and unknown fallback."""
 
 import unittest
+import struct
+from types import SimpleNamespace
+from unittest.mock import patch
 
 from sdk.enemy_logic_exporter.shared.logic.expressions import expression_unknown
 from sdk.enemy_logic_exporter.shared.logic.expressions import evaluate_expression
 from sdk.enemy_logic_exporter.shared.logic.navigation_conditions import (
     recover_navigation_condition,
+    verify_navigation_conditions,
 )
 from sdk.enemy_logic_exporter.shared.logic.predicates import RuleRegistry
 
@@ -153,6 +157,173 @@ class NavigationConditionTests(unittest.TestCase):
             self.evaluate(node, dict(context, is_active_unfair_routine=True))
         )
 
+    def unfair_context(self):
+        context = dict(
+            enemy_command_work_valid=True,
+            self_target_context_valid=True,
+            selected_target_key_type=0,
+            selected_target_key_unique_high_bit_clear=True,
+            selected_hunter_lookup_found=True,
+            selected_hunter_character_valid=True,
+            self_current_stage_no=0,
+            self_current_area_no=5,
+            self_basic_category=0,
+            selected_hunter_base_action_exists=False,
+            selected_hunter_base_action_is_hunter_action=False,
+            selected_hunter_ground_info_exists=True,
+            selected_hunter_transform_valid=True,
+            unfair_voxel_first_query_succeeded=True,
+            unfair_voxel_second_query_succeeded=False,
+            unfair_ground_transform_distance_squared=0.0,
+            unfair_point_combat_area_no=5,
+            selected_hunter_combat_area_bit_current=False,
+            selected_hunter_combat_area_bit_special=False,
+        )
+        context.update(
+            {
+                "self_permanent_flag:129": False,
+                "self_continue_flag:129": False,
+                "selected_hunter_action_attr:29": False,
+                "unfair_voxel_first_nav_attr:10": False,
+                "unfair_voxel_second_nav_attr:27": False,
+            }
+        )
+        return context
+
+    def test_unfair_tarzan_fast_path_keeps_player_class_and_stage_guards(self):
+        node = self.bind("cCheckUnfairRoutineActive")
+        context = self.unfair_context()
+        context.update(
+            selected_hunter_base_action_exists=True,
+            selected_hunter_base_action_is_hunter_action=True,
+        )
+        context["selected_hunter_action_attr:29"] = True
+        for key in list(context):
+            if key.startswith(("unfair_voxel_", "unfair_ground_", "unfair_point_")):
+                del context[key]
+        self.assertTrue(self.evaluate(node, context))
+        self.assertFalse(self.evaluate(node, dict(context, selected_target_key_type=1)))
+        self.assertFalse(self.evaluate(node, dict(context, self_current_stage_no=13)))
+        self.assertIsNone(
+            self.evaluate(
+                node, dict(context, selected_hunter_base_action_is_hunter_action=False)
+            )
+        )
+        other = self.unfair_context()
+        other.update(
+            {
+                "selected_hunter_action_attr:26": True,
+                "selected_hunter_continue_flag:294": True,
+            }
+        )
+        self.assertFalse(self.evaluate(node, other))
+
+    def test_unfair_voxel_failures_and_raw_bits_follow_distinct_branches(self):
+        node, context = self.bind("cCheckUnfairRoutineActive"), self.unfair_context()
+        self.assertFalse(self.evaluate(node, context))
+        self.assertTrue(
+            self.evaluate(node, dict(context, unfair_voxel_first_query_succeeded=False))
+        )
+        context["unfair_voxel_first_nav_attr:10"] = True
+        for category in (0, 1):
+            self.assertTrue(
+                self.evaluate(node, dict(context, self_basic_category=category))
+            )
+        self.assertFalse(self.evaluate(node, dict(context, self_basic_category=2)))
+        context["unfair_voxel_first_nav_attr:10"] = False
+        context["unfair_voxel_second_nav_attr:27"] = True
+        self.assertFalse(self.evaluate(node, context))
+        self.assertTrue(
+            self.evaluate(node, dict(context, unfair_voxel_second_query_succeeded=True))
+        )
+        del context["unfair_voxel_first_query_succeeded"]
+        self.assertIsNone(self.evaluate(node, context))
+
+    def test_unfair_st103_near_area_bounds_and_same_bit_identity(self):
+        node, context = self.bind("cCheckUnfairRoutineActive"), self.unfair_context()
+        context.update(
+            self_current_stage_no=2,
+            unfair_ground_transform_distance_squared=0.249999,
+            selected_hunter_combat_area_bit_special=True,
+        )
+        self.assertTrue(self.evaluate(node, context))
+        self.assertFalse(
+            self.evaluate(
+                node, dict(context, selected_hunter_combat_area_bit_current=True)
+            )
+        )
+        # For area17 the native instructions read the same bit twice.
+        self.assertFalse(self.evaluate(node, dict(context, self_current_area_no=17)))
+        self.assertTrue(
+            self.evaluate(
+                node,
+                dict(
+                    context,
+                    self_current_area_no=17,
+                    selected_hunter_combat_area_bit_special=False,
+                    selected_hunter_combat_area_bit_current=True,
+                ),
+            )
+        )
+        for area in (-1, 255, 256):
+            invalid = dict(context, self_current_area_no=area)
+            del invalid["selected_hunter_combat_area_bit_current"]
+            self.assertTrue(self.evaluate(node, invalid))
+        self.assertFalse(
+            self.evaluate(
+                node,
+                dict(
+                    context,
+                    self_current_area_no=254,
+                    selected_hunter_combat_area_bit_current=True,
+                ),
+            )
+        )
+
+    def test_unfair_st103_exact_distance_threshold_enters_point_query(self):
+        node, context = self.bind("cCheckUnfairRoutineActive"), self.unfair_context()
+        context.update(
+            self_current_stage_no=2, unfair_ground_transform_distance_squared=0.25
+        )
+        for current, queried, expected in (
+            (5, 17, True),
+            (17, 5, True),
+            (17, 17, False),
+            (5, 6, False),
+        ):
+            with self.subTest(current=current, queried=queried):
+                self.assertIs(
+                    self.evaluate(
+                        node,
+                        dict(
+                            context,
+                            self_current_area_no=current,
+                            unfair_point_combat_area_no=queried,
+                        ),
+                    ),
+                    expected,
+                )
+        context["self_current_stage_no"] = 3
+        context["unfair_point_combat_area_no"] = 17
+        self.assertFalse(self.evaluate(node, context))
+
+    def test_unfair_missing_transform_is_only_a_boundary_when_read(self):
+        node, context = self.bind("cCheckUnfairRoutineActive"), self.unfair_context()
+        context.update(
+            selected_hunter_ground_info_exists=False,
+            selected_hunter_transform_valid=False,
+            unfair_voxel_first_query_succeeded=False,
+        )
+        self.assertIsNone(self.evaluate(node, context))
+        context["selected_hunter_ground_info_exists"] = True
+        self.assertTrue(self.evaluate(node, context))
+        context.update(unfair_voxel_first_query_succeeded=True, self_current_stage_no=2)
+        self.assertIsNone(self.evaluate(node, context))
+        context["unfair_voxel_first_nav_attr:10"] = True
+        self.assertTrue(self.evaluate(node, context))
+        self.assertTrue(expression_unknown(node["expression"]))
+        self.assertFalse(any("result" in key for key in node["inputDefinitions"]))
+
     def test_occlusion_disabled_flags_and_missing_inputs(self):
         node = self.bind("cCheckOccludedToDest")
         self.assertFalse(self.evaluate(node, {"enemy_command_work_valid": False}))
@@ -277,6 +448,71 @@ class NavigationConditionTests(unittest.TestCase):
             {"key_category": 1},
         ]
         self.assertTrue(self.evaluate(node, context))
+
+
+class NavigationEvidenceTests(unittest.TestCase):
+    def fixture(self, *, value=255, moved=False, changed_bytes=False):
+        code = bytes.fromhex("8b0d1a000000c3")
+        document = dict(
+            evidence={
+                "unfair_active": [
+                    dict(
+                        type="fixture",
+                        method="check1",
+                        address="0x1000",
+                        end="0x1007",
+                        nativeBytes=code.hex(),
+                        signature=dict(params=[], returns="System.Boolean"),
+                    )
+                ]
+            },
+            unfairConstants={"limit": 255},
+            unfairFieldChecks=[],
+            unfairEnumChecks=[],
+            unfairRipChecks=[
+                dict(
+                    type="fixture",
+                    method="check",
+                    instructionOffset="0x0",
+                    kind="Int32",
+                    constant="limit",
+                )
+            ],
+        )
+
+        def read(address, size):
+            if address == 0x1020:
+                return struct.pack("<i", value)[:size]
+            raw = (b"\x90" + code[1:]) if changed_bytes else code
+            return (raw + b"\x90" * 16)[:size]
+
+        metadata = SimpleNamespace(
+            get=lambda owner: dict(
+                methods={
+                    "check1": dict(
+                        function="1001" if moved else "1000",
+                        params=[],
+                        returns=dict(type="System.Boolean"),
+                    )
+                }
+            )
+        )
+        return document, SimpleNamespace(read=read), metadata
+
+    def test_unfair_constants_are_read_from_matched_instruction_targets(self):
+        document, pe, metadata = self.fixture()
+        with patch(
+            "sdk.enemy_logic_exporter.shared.logic.navigation_conditions.receipt",
+            return_value=document,
+        ):
+            verify_navigation_conditions(pe, metadata)
+        for change in ({"value": 254}, {"moved": True}, {"changed_bytes": True}):
+            document, pe, metadata = self.fixture(**change)
+            with self.subTest(change=change), patch(
+                "sdk.enemy_logic_exporter.shared.logic.navigation_conditions.receipt",
+                return_value=document,
+            ), self.assertRaises(ValueError):
+                verify_navigation_conditions(pe, metadata)
 
 
 if __name__ == "__main__":

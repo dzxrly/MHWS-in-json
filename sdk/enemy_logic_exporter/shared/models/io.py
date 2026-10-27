@@ -8,6 +8,16 @@ MODEL_WARNING_BYTES = 10 * 1024 * 1024
 MODEL_LIMIT_BYTES = 25 * 1024 * 1024
 
 
+def encode_model(model):
+    """Keep full research semantics within the existing per-file size limit."""
+    content = json.dumps(model, ensure_ascii=False, indent=2) + "\n"
+    if len(content.encode("utf8")) > MODEL_LIMIT_BYTES:
+        content = json.dumps(model, ensure_ascii=False, separators=(",", ":")) + "\n"
+    if len(content.encode("utf8")) > MODEL_LIMIT_BYTES:
+        raise ValueError("完整模型超过 25 MiB，需在保留语义的前提下去重或分片")
+    return content
+
+
 def read_json(path):
     path = Path(path)
     size = path.stat().st_size

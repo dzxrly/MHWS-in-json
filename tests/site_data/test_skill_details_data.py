@@ -4,8 +4,9 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
-from config import BASE_DIR, NATIVES_DIR
+from config import BASE_DIR, NATIVES_DIR, SUPPORT_FILES
 from src.processed_data.skill_details.exporter import build_sheets, load_links
 from src.site_data.skill_details import (
     OUTPUT_NAME,
@@ -56,6 +57,67 @@ class SkillWebTests(unittest.TestCase):
         self.assertEqual(self.skills["HunterSkill_000"]["category"], "武器技能")
         self.assertEqual(
             self.skills["HunterSkill_000"]["levelColumns"], [1, 2, 3, 4, 5]
+        )
+
+    def test_empty_internal_skills_link_to_the_code_mapping(self):
+        skill = self.skills["HunterSkill_061"]
+        self.assertEqual(skill["name"], skill["id"])
+        self.assertEqual((skill["ja"], skill["explain"]), ("", ""))
+        self.assertEqual(
+            skill["mappedSkill"],
+            {"id": "HunterSkill_171", "name": self.skills["HunterSkill_171"]["name"]},
+        )
+        self.assertIn("HunterSkill_061", self.skills["HunterSkill_171"]["openSkills"])
+        self.assertNotIn("SkillCommon_", self.skills["HunterSkill_171"]["openSkills"])
+        self.assertNotIn("SkillCommon_", self.skills["HunterSkill_171"]["explain"])
+        for internal in self.skills.values():
+            self.assertFalse(internal["name"].startswith("SkillCommon_"))
+            if "mappedSkill" in internal:
+                self.assertIn(internal["mappedSkill"]["id"], self.skills)
+                self.assertEqual(internal["levels"], [])
+                self.assertEqual(internal["effects"], [])
+
+    def test_named_internal_skills_keep_their_own_content(self):
+        # A future named internal skill must not be hidden by the remap alone.
+        skill_id = "HunterSkill_061"
+        common = next(
+            r
+            for r in self.repository.table(SUPPORT_FILES["skill_common"])
+            if r["skillId"] == skill_id
+        )
+        overview = [dict(r) for r in self.sheets["技能"]]
+        for row in overview:
+            if row["技能ID"] == skill_id:
+                row["简体中文名称"] = "已命名的启用技能"
+                row["技能说明"] = "有实际说明"
+        original_text = self.text_source.text
+
+        def text(key, *args, **kwargs):
+            if key in {common["skillName"], common["skillExplain"]}:
+                return "有实际文本"
+            return original_text(key, *args, **kwargs)
+
+        with patch(
+            "src.site_data.skill_details.build_sheets", return_value={"技能": overview}
+        ), patch.object(self.text_source, "text", side_effect=text):
+            data = build_site_data(self.repository, self.text_source, load_links())
+        skill = next(s for s in data["skills"] if s["id"] == skill_id)
+        self.assertEqual(skill["name"], "已命名的启用技能")
+        self.assertNotIn("mappedSkill", skill)
+
+    def test_resource_open_skill_is_not_a_confirmed_code_mapping(self):
+        skill = self.skills["HunterSkill_093"]
+        self.assertEqual(skill["name"], "HunterSkill_093")
+        self.assertNotIn("mappedSkill", skill)
+        self.assertEqual(
+            skill["resourceOpenSkills"],
+            [
+                {
+                    "id": "HunterSkill_219",
+                    "name": self.skills["HunterSkill_219"]["name"],
+                    "level": 3,
+                }
+            ],
         )
 
     def test_rows_read_across_levels(self):

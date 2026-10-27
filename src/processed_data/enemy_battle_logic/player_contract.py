@@ -21,6 +21,8 @@ def validate_player_view(graph):
     if not set(scenario.get("persistent", ())) <= set(scenario.get("inputs", {})):
         raise ValueError("常驻情境前提必须是情境输入")
     nodes = view["nodes"]
+    if not set(view.get("persistentState", [])) <= set(view["inputs"]):
+        raise ValueError("常驻行为表内部状态缺少输入定义")
     if set(nodes) != set(originals):
         raise ValueError("玩家行动树遗漏或新增了无来源节点")
 
@@ -42,12 +44,29 @@ def validate_player_view(graph):
                 or "value" not in value
             ):
                 raise ValueError("玩家条件比较无效")
+        elif op == "table_history_interval":
+            if (
+                any(
+                    not isinstance(value.get(key), str) or not value[key]
+                    for key in ("drawKey", "maxKey", "minKey")
+                )
+                or type(value.get("modulus")) is not int
+                or not 0 < value["modulus"] <= 0xFFFFFFFF
+                or type(value.get("threshold")) is not int
+                or not 0 <= value["threshold"] < value["modulus"]
+            ):
+                raise ValueError("玩家历史区间公式无效")
         elif op != "unknown" or not value.get("reason"):
             raise ValueError("玩家条件包含未支持的操作")
 
     for key, node in nodes.items():
         source = originals[key]
         table = key.rsplit("/", 1)[0]
+        request_fields = ("requestSource", "convertedActionId", "continuationKind")
+        if any(field in source or field in node for field in request_fields):
+            for field in (*request_fields, "commandEffectsComplete"):
+                if node.get(field) != source.get(field):
+                    raise ValueError("玩家请求声明改变了 SDK 的部分恢复边界")
         if (
             node.get("sourceRef") != key
             or node.get("kind") != source["kind"]
@@ -96,6 +115,17 @@ def validate_player_view(graph):
             actual = [(c["id"], c["target"], c["weight"]) for c in node["candidates"]]
             if actual != expected:
                 raise ValueError("玩家候选槽或权重改变")
+        if node["kind"] == "mutation":
+            if node.get("updateGuard"):
+                expression(node["updateGuard"])
+            for field in (
+                "variableUpdate",
+                "stateUpdates",
+                "dynamicAction",
+                "targetUpdates",
+            ):
+                if node.get(field) != source.get(field):
+                    raise ValueError("玩家状态更新改变了 SDK 声明的作用")
     for entry in view["entries"]:
         if entry.get("id") not in nodes or entry.get("relation") not in (
             "local_verified",

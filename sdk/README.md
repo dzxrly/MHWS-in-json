@@ -8,8 +8,9 @@ The `sdk/` directory is an offline SDK that reads the game files. `python -m sdk
 |---|---|---|
 | `sdk.enemy_logic_exporter` | Extracts monster battle logic from the dumped game EXE, IL2CPP metadata, and resource exports, and writes the graph JSON used by the web pages | Dumped EXE, IL2CPP metadata, `MHWS-in-json` resources; some commands also need Ghidra |
 | `sdk.skill_effect_exporter` | Finds the native functions that use each skill, evaluates them per skill level, and writes the skill effect link JSON behind `SkillDetails.xlsx` | Dumped EXE, IL2CPP metadata, `MHWS-in-json` resources |
+| `sdk.action_map_exporter` | Builds exact weapon action-to-requestSet mappings for `WeaponActionValues.xlsx` | Dumped EXE, IL2CPP metadata, converted MOTBANK/MOTLIST/PFB/RCOL/USER JSON |
 
-Both features read the game EXE dumped from memory (for example `MonsterHunterWilds_dump.exe`), which you get anyway before REFramework writes `il2cpp_dump.json`; the shipped `MonsterHunterWilds.exe` is not used. You provide both files yourself; neither the repository nor a Release keeps a copy, and no path is guessed: pass `-e/--exe` and `-i/--il2cpp`, or set `MHWS_EXE` and `MHWS_IL2CPP`. The SDK records no game version or file hash. After a game update the commands simply fail where the code or data no longer match (a symbol cannot be located, native bytes differ), and the steps in [After a game update](#after-a-game-update) apply.
+All three features read the game EXE dumped from memory (for example `MonsterHunterWilds_dump.exe`), which you get anyway before REFramework writes `il2cpp_dump.json`; the shipped `MonsterHunterWilds.exe` is not used. You provide both files yourself; neither the repository nor a Release keeps a copy, and no path is guessed: pass `-e/--exe` and `-i/--il2cpp`, or set `MHWS_EXE` and `MHWS_IL2CPP`. The SDK records no game version or file hash. After a game update the commands simply fail where the code or data no longer match (a symbol cannot be located, native bytes differ), and the steps in [After a game update](#after-a-game-update) apply.
 
 The SDK is not needed to rebuild the pages or workbooks without changing the extracted results: the builders only read the JSON committed to the repository (see [Build the pages only](#build-the-pages-only)).
 
@@ -27,7 +28,7 @@ The SDK is not needed to rebuild the pages or workbooks without changing the ext
 ## Set up (Windows)
 
 1. Install Python 3.13 (with the `py` launcher) and Git, and clone the repository.
-2. From the repository root, run the setup script. It creates a virtual environment in `.tmp/sdk-venv`, installs the pinned dependencies (Capstone, PyGhidra, questionary, rich), and runs the environment check:
+2. From the repository root, run the setup script. It creates a virtual environment in `.tmp/sdk-venv`, installs the pinned dependencies (Capstone, iced-x86, ijson, mmh3, PyGhidra, questionary, rich), and runs the environment check:
 
    ```powershell
    powershell -ExecutionPolicy Bypass -File sdk/setup_env.ps1 -Exe <dumped EXE> -Il2cpp <il2cpp_dump.json>
@@ -53,11 +54,26 @@ In the examples below, `python` is the interpreter of that virtual environment, 
 
 ## Menu (TUI)
 
-`python -m sdk` opens a menu for the common tasks: the environment check, skill effect extraction (all skills or chosen ones), rebuilding `SkillDetails.xlsx`, monster extraction with the player view, the census, publishing and building the battle logic pages, and the SDK tests. Choose with the arrow keys and Enter (the menu text is in Chinese). Each action first prints the exact command line and then runs it, so the same step can go into a script. The menu starts from `MHWS_EXE` / `MHWS_IL2CPP`; when they are not set it first asks for the dumped EXE and the IL2CPP dump, and "设置 EXE 与 il2cpp 路径" changes them for the session. Publishing asks before it overwrites the committed models. Long steps (skill extraction, `extract-all`, `player-view`, `publish`) show a progress bar with the count done, elapsed and remaining time, in the menu and on the command line (`sdk/progress.py`). The setup script registers the repository root in the virtual environment (`mhws_sdk.pth`), so the menu can be started from any directory; on an environment created before this change, run the setup script again.
+`python -m sdk` opens a menu for the common tasks: the environment check, skill effect extraction (all skills or chosen ones), rebuilding `SkillDetails.xlsx`, weapon action mapping, monster extraction with the player view, the census, publishing and building the battle logic pages, and the SDK tests. Choose with the arrow keys and Enter (the menu text is in Chinese). Each action first prints the exact command line and then runs it, so the same step can go into a script. The menu starts from `MHWS_EXE` / `MHWS_IL2CPP`; when they are not set it first asks for the dumped EXE and the IL2CPP dump, and "设置 EXE 与 il2cpp 路径" changes them for the session. Publishing asks before it overwrites the committed models. Long steps (skill extraction, `extract-all`, `player-view`, `publish`) show a progress bar with the count done, elapsed and remaining time, in the menu and on the command line (`sdk/progress.py`). The setup script registers the repository root in the virtual environment (`mhws_sdk.pth`), so the menu can be started from any directory; on an environment created before this change, run the setup script again.
 
 ```powershell
 .tmp/sdk-venv/Scripts/python.exe -m sdk
 ```
+
+## Weapon action mapping SDK (`sdk.action_map_exporter`)
+
+> ActionMap is the static JSON that connects weapon action names to the exact collision requestSet identity: scope, RCOL path, requestSet ID, key hash and source ordinal. The workbook builder reads it without loading the SDK.
+
+```powershell
+python -B -m sdk.action_map_exporter extract
+python -B -m sdk.action_map_exporter extract -e <dumped EXE> -i <il2cpp_dump.json> -n MHWS-in-json/natives -o .tmp/action-map/ActionMap.json
+```
+
+The default output is `MHWS-in-json/ActionMap.json`. First export the converted resource JSON, then run this command with matching dumps. The SDK reads the converted JSON directly; it needs no PAK, release list, raw PFB/MOTBANK, REE-Lib or .NET runtime. It checks its required resources and their reference closure, so an unrelated PFB conversion failure does not prevent generation. Missing required files (including referenced child PFBs), ambiguous identities within the required closure and changed native rules fail explicitly, leaving the previous output intact. Duplicate versions of unrelated PFBs outside that closure do not block generation.
+
+Native rule checks and action method selection share one streaming read of the IL2CPP JSON during each build; the build retains a method index and only the type records needed by the rules.
+
+The v2 mapping contract retains confidence, conditions, unresolved entries and native evidence. Version-dependent collider rules are checked against method identities, normalized instructions, referenced tables and metadata before generation; a game update that changes them requires review. The schema lives in `sdk/action_map_exporter/data`, with producer tests in `tests/sdk/action_map`; `src` validates the JSON independently. After a game update, copy the new JSON exports, rebuild ActionMap, re-extract the skill and monster JSON, then build the workbooks and website. See the [maintenance rules](action_map_exporter/AGENTS.md).
 
 ## Monster battle logic SDK (`sdk.enemy_logic_exporter`)
 
@@ -97,9 +113,43 @@ python -B -m unittest discover -s tests/sdk -t .
 
 Compare `unknownConditions` from `census` and `total.uncertain` from `uncertainty` before and after every change. `player-view` only accepts full models from `.tmp`, not published ones.
 
+Compound conditions short-circuit in native order. The player view applies reviewed variable updates and resource limits before evaluating later conditions that read them. Ordinary state inputs still need confirmation after an action or an effect whose implementation is only partly recovered.
+
+> Previous random interval: the last selection range saved in a behaviour table's private parameters, used to redirect the next random value.
+
+Recovered intervals update along the selected path and survive an action. Only histories supported by evidence are expanded; other histories remain unknown. A constructor default is not the value on every table entry, and these selections must not be treated as independent draws.
+
+A history gate is omitted only when a separate native trace reaches a real return without reading or escaping private parameters. Its proof stays in the full research model as `historyGateElisions`; matching results for the enumerated histories alone do not justify removing the unknown fallback.
+
+For reviewed tables with several independent intervals, each interval is expanded where native code reads it; the model does not enumerate their combinations at table entry. A reviewed Boolean command that writes state applies that write on its actual return branch before continuing.
+
+The typed private-parameter lookup is proved separately from interval discovery, using the export's setup, allocation, constructor and dictionary insertion. Both the explicit-constructor and strictly checked inline-constructor forms supply object identity without assigning entry defaults. Reviewed full-domain interval formulas retain signed Int32 history, uint32 remainder arithmetic and strict open-interval comparisons. Multiple thresholds share one draw; independent pairs retain separate histories, including across actions. Native checks after history writes still run at their real continuation. Complete read coverage, no escaping Param pointer, fixed writes and agreement of all remapping paths are required; other reads remain boundaries. The viewer executes only the declared JSON operation.
+
+`cRequestActionDesireRecover` records its source request and conditional network request contract, while preserving the unknown converted action ID and cache/conversion side effects. Its three verified tail writes apply only after that boundary returns normally. A resource recovery-type label does not select a mode in this native implementation.
+
+Spatial conditions retain their query contracts. The player inputs describe the relevant ray hits, filtered voxel result or timer-derived remaining percentage; the offline viewer does not query the game's live map or advance its timer. Unknown hit classification names remain internal numeric values.
+
+Reviewed side-walk and obstacle-climb target commands preserve their native guards, ordered target writes and vector formulas. Missing references on an exceptional path remain explicit boundaries, separate from a normal false return. Target writes invalidate the selection snapshot; the viewer records the formulas without computing game positions or navigation results. Monster-specific angle conversions remain in their own recipes.
+
+The common throw-target implementation also serves the checked Doshaguma argument layout. It preserves the two separate Nullable position queries, first matching candidate in array order, the Character setter's no-write guards, and the unresolved detector/hold request after that setter. Doshaguma's wall-target command preserves its void return, exclusive-point request, fallback wall state and direction write before the final target setter; unresolved collection selection, manager effects and geometry remain explicit. These boundaries continue only after normal return. The two monster-specific grappling checks retain different conditions; Gypceros updates its capture flag on both normal Boolean returns, with no write when its outer guard fails.
+
+Unfair eligibility uses the verified player action attribute, two navigation queries, raw node-attribute bits and the ST103 area relationship. The TARZAN_ATTACH name and unnamed navigation bits are not translated into an assumed stealth action or terrain category. The normal chain is evaluable from its declared inputs; missing Transform references retain explicit exceptional boundaries.
+
+Large full research models use compact JSON to retain all logic. If the compact file still exceeds 25 MiB, extraction fails and requires deduplication or sharding.
+
+### Runtime diagnostics
+
+> JSONL stores one JSON event per line. These diagnostic files are separate from model JSON.
+
+After argument parsing, every monster SDK command writes a run log to `<work-dir>/logs/<command>-<UTC time>-<pid>-<run id>.jsonl` and prints its absolute path. The default work directory is `.tmp/enemy-logic-exporter`; `--work-dir` comes before the subcommand, and `MHWS_SDK_WORK_DIR` also configures it. Extraction records native/table context, declared and matched manual policies, requested and active capabilities, and unknown summaries; errors retain their traceback and original failure behavior. Existing unknowns can remain in successful exports. If a log cannot be created or written, the SDK prints a warning and preserves the command result; the log may be missing or incomplete.
+
+The reviewed `LOCAL_HISTORY_TABLES` / `FORMULA_HISTORY_TABLES` UUID policies remain in each monster module. The logs help an LLM trace update failures back through the current resource import closure, IL2CPP method identity and native instructions. See the [table UUID and update investigation guide](enemy_logic_exporter/AGENTS.md#table-uuid-人工策略运行日志与更新反查). Logs and research prototypes stay in `.tmp`, outside published model data.
+
 ### After a game update
 
 You need the new dumped EXE, its IL2CPP dump, re-exported resources, and Ghidra.
+
+The evidence migrator updates a standard method row and its existing `nativeBytes` or `bytes` only after a unique match of the complete normalized function, its length and callee identities. It preserves the old row length. `nativeBytesRefreshed` and `bytesRefreshed` separately count proposed refreshes of the two fields, including in report-only mode; `applied` indicates whether `--apply` was requested. Auxiliary instruction fragments, constant addresses, class slots and literal Python method ranges are listed in `unsupportedDependencies`; `coverage` reports the scope and counts. These dependencies are not automatically relocated. An empty `review` covers standard method rows only, and does not establish that every recipe proof migrated. Refresh the current profile's evidence digests after adding recipes while the matching old EXE is still available; new-build migration cannot recreate a missing old digest.
 
 ```powershell
 python -B -m sdk.enemy_logic_exporter check-env
@@ -115,6 +165,12 @@ python -B -m sdk.enemy_logic_exporter roster --write
 python -B -m sdk.enemy_logic_exporter new-monster --enemy <new monster ID>     # for each monster added to the roster
 ```
 
+When several evidence ranges name the same method, the profile retains each old range in `rowVariants`. Migration selects by the old address and row length; an unregistered range requires the matching old EXE and manual review. It does not infer old authorization from a new byte string.
+
+> Portable Executable (PE) is the Windows executable format. Here its headers locate sections, directories and function boundaries without executing the program.
+
+PE section names may change between dumps. Constant reads use the shared section identified by the thread-local storage, load-configuration and delay-import directories, with writable runtime data still excluded. For a leaf function without unwind information, digest scheme 3 uses a bounded control-flow walk; an unresolved indirect jump or incomplete decode retains the conservative bound. Explicit evidence ranges are never shortened. Upgrading the digest scheme requires recomputing the old proof from the old EXE, metadata and evidence originals.
+
 Then run [Re-extract after a code change](#re-extract-after-a-code-change). Every item listed for review by `migrate-evidence` and every `changed` symbol from `resolve-symbols` must be checked against the native code. The full review order is described in the [SDK maintenance notes](enemy_logic_exporter/AGENTS.md) (Chinese).
 
 ### Commands
@@ -128,7 +184,7 @@ Then run [Re-extract after a code change](#re-extract-after-a-code-change). Ever
 | `uncertainty` | Counts undecided conditions in the player battle tree | Full models with player view |
 | `publish` | Drops research fields, shares repeated values, writes `src/processed_data/enemy_battle_logic/models` | Full models with player view |
 | `resolve-symbols` | Regenerates the symbol address profile for the current EXE (`data/profile.json` by default) | EXE, dump |
-| `migrate-evidence` | Moves evidence rows whose code did not change; lists the rest for review | EXE, dump, new profile |
+| `migrate-evidence` | Moves unchanged standard method evidence, refreshes its bytes, and reports review items and unsupported dependencies | EXE, dump, new profile |
 | `scheduler-slots` | Recovers the behavior-table slots requested by AI states and interrupts | EXE, dump |
 | `roster` / `new-monster` | Updates the large-monster roster; creates an entry module for a new monster | Resources |
 | `analyze` | Full resource and native evidence analysis that builds the research caches | EXE, dump, resources, Ghidra |
@@ -144,6 +200,12 @@ Then run [Re-extract after a code change](#re-extract-after-a-code-change). Ever
 - **Output must be inside `.tmp`**: research output is restricted to the project's `.tmp` so that large evidence caches never reach Git.
 
 ## Skill effect SDK (`sdk.skill_effect_exporter`)
+
+A selected skill method whose entry jumps to unreadable code outside the dumped image makes extraction fail before writing. Obtain a complete dump; changing the image base or skipping the jump cannot establish the missing behavior.
+
+> Hooking intercepts game function calls by modifying the running process, including function entry instructions. A memory dump can contain those modified instructions.
+
+Before exporting the memory dump, disable autorun scripts and DLL plugins that register hooks, then restart the game so they have not been loaded in that process. Hiding the REFramework window or stopping a trace callback does not unregister existing hooks. Use the clean dump for all three SDK features; extraction needs no second EXE.
 
 The game has no table mapping skills to effect values: the four SkillData value slots are unnamed, and fields in parameter files such as `PlayerSkillParam` carry no skill ID; the two are only connected in native code. This tool scans the EXE for every function that calls a skill accessor with a skill ID. It then executes those functions instruction by instruction in a scenario where only that skill is equipped at one level, enumerating Boolean and enum arguments. For each result it records the return value, the runtime conditions, and whether the number came from a SkillData slot, a parameter file field, or an EXE constant. The result goes to `src/processed_data/skill_details/data/skill_links/` (`index.json` plus one shard per skill category); the PROCESSED_DATA build turns it into `SkillDetails.xlsx`.
 

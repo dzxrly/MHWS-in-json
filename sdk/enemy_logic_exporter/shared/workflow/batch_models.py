@@ -7,7 +7,7 @@ from ...monster import get_monster
 from ..models.audit import validate_release_graph
 from .extraction import extract_model
 from .freeze import native_evidence
-from ..models.io import MODEL_LIMIT_BYTES
+from ..models.io import encode_model
 from ..models.native_recipe import NativeRecipeContext
 from ..models.catalog import EXPECTED_ENEMY_IDS
 from ..models.validation import validate_graph
@@ -70,14 +70,15 @@ def extract_all_models(
                 context.native(row)
             graph["nativeVerification"] = "matched"
             validate_graph(graph)
+            from .runtime_log import record_graph
+
+            record_graph(graph)
             try:
                 validate_release_graph(graph)
                 eligible, reason = True, ""
             except ValueError as error:
                 eligible, reason = False, str(error)
-            content = json.dumps(graph, ensure_ascii=False, indent=2) + "\n"
-            if len(content.encode("utf8")) > MODEL_LIMIT_BYTES:
-                raise ValueError(enemy_id + " 超过模型上限，需要保留逻辑并分片")
+            content = encode_model(graph)
             path = output / (enemy_id.lower() + ".v1.json")
             temporary = path.with_suffix(".json.pending")
             temporary.write_text(content, encoding="utf8", newline="\n")

@@ -47,7 +47,7 @@ class Reviewed:
 PATTERN_LENGTHS = (24, 40, 64, 96, 128)
 # Version of the normalized-digest rules; digests of different schemes never
 # compare equal, so profiles from an older scheme must be regenerated.
-DIGEST_SCHEME = 2
+DIGEST_SCHEME = 3
 RIP_RELATIVE = re.compile(r"rip ([+-]) 0x[0-9a-f]+")
 
 
@@ -138,10 +138,14 @@ def native_digest(pe, start, end):
 
 
 def masked_pattern(pe, start, length):
-    """Opening bytes with branch targets and RIP-relative displacements masked."""
+    """A locator window, independent of the function's semantic proof range.
+
+    A short routine can need neighboring bytes to locate its entry uniquely.
+    Those bytes grant no additional semantic coverage to its function digest.
+    """
     from capstone import CS_OP_MEM
 
-    body, _ = instructions(pe, start)
+    body, _ = instructions(pe, start, start + length + 15)
     result = []
     for ins in body:
         raw = list(ins.bytes)
@@ -256,8 +260,14 @@ def resolve_symbols(specs, metadata, pe, previous, names=None):
                     f"辅助函数特征不唯一或失效：{name}（{len(candidates)}）"
                 )
             address = candidates[0]
+            pattern = _unique_pattern(pe, address, spec, resolved)
             record = _function_record(
-                pe, address, names, pattern=_unique_pattern(pe, address, spec, resolved)
+                pe,
+                address,
+                names,
+                pattern=pattern,
+                patternRole="locator_only",
+                patternLength=len(pattern) // 2,
             )
         else:
             if "value" not in before:

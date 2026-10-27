@@ -215,10 +215,12 @@ def extract(
     with PE(Path(exe)) as pe, Il2cppMetadata(Path(il2cpp)) as metadata:
         context = SkillContext(pe, metadata, Path(natives), skills, log, all_links)
         order = context.skills()
+        modules = {skill_id: entry(skill_id) for skill_id in order}
+        context.preflight_entries(modules)
         for skill_id in track(order, "求值各技能的链路"):
-            entry(skill_id).extract(context)
+            modules[skill_id].extract(context)
         for skill_id in track(order, "聚焦求值参数字段读取点"):
-            entry(skill_id).extract_parameters(context)
+            modules[skill_id].extract_parameters(context)
         document = context.document(started)
     missing, extra = apply_annotations(document)
     if missing and not skills:

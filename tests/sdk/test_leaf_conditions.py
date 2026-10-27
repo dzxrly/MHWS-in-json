@@ -1,6 +1,8 @@
 import unittest
+from sdk.enemy_logic_exporter.shared.config import CLASS_HIERARCHY_CHECK_LABELS
 from sdk.enemy_logic_exporter.shared.logic.commands import recover_leaf
 from sdk.enemy_logic_exporter.shared.logic.formula import Unsupported, evaluate
+
 
 class Metadata:
     def fields(self, name):
@@ -134,7 +136,7 @@ class LeafVariantTests(unittest.TestCase):
         code = (
             "bool f(void) { if (param_3 != 0 && ("
             + self.holder.strip()[:-1]
-            + ", puVar1 != 0) && (cVar2 = func_0x00014b0212b0(*(undefined8 *)*puVar1,"
+            + f", puVar1 != 0) && (cVar2 = {CLASS_HIERARCHY_CHECK_LABELS[1]}(*(undefined8 *)*puVar1,"
             "_DAT_1547182b0), cVar2 != '\\0')) { return *(int *)(puVar1 + 0x15) != 0; } return false; }"
         )
         rule = recover_leaf(
@@ -144,7 +146,7 @@ class LeafVariantTests(unittest.TestCase):
             (rule["contextField"], rule["operator"], rule["constant"]),
             ("_AbsorbCocoonState", "!=", 0),
         )
-        unchecked = code.replace("func_0x00014b0212b0", "FUN_1234")
+        unchecked = code.replace(CLASS_HIERARCHY_CHECK_LABELS[1], "FUN_1234")
         self.assertIsNone(
             recover_leaf(
                 self.row("Em0160_00", "cCheckAbsorbedCocoon"), unchecked, Metadata()

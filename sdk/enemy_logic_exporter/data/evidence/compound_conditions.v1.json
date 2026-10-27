@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "commands": {
+    "ace.btable.cCommandAnd": {
+      "operator": "all",
+      "argumentType": "ace.btable.ConditionCommandArg",
+      "methodIndex": 0
+    },
+    "ace.btable.cCommandOr": {
+      "operator": "any",
+      "argumentType": "ace.btable.ConditionCommandArg",
+      "methodIndex": 1
+    }
+  },
+  "methods": [
+    {
+      "type": "ace.btable.cCommandAnd",
+      "method": "onExecute1028275",
+      "address": "0x144b397e0",
+      "end": "0x144b398aa",
+      "bytes": "415741564154565755534883ec40488b054b6fba0f4831e048894424384d8b7110458b7e184585ff7e594c89c74889ce49ffcf4531e4488d5c242c418b46184939c47368498b46104a8b44e020488b48104c8b4018498b0048894c24204889d94889f24989f9ff5068408a6c24304080e501741a498d4424014d39e74989c475baeb0b408a2d92df10094080e501488b4c24384831e1e8950b5f0689e84883c4405b5d5f5e415c415e415fc3488b159d65bd0f4889f14531c0e832ba4e064889f14889c2e8c7579306cc"
+    },
+    {
+      "type": "ace.btable.cCommandOr",
+      "method": "onExecute1028277",
+      "address": "0x144e4acf0",
+      "end": "0x144e4adb4",
+      "bytes": "41574156415541545657534883ec404c89c74889ce488b05345a890f4831e048894424384d8b79104d63771831c04585f641bc00000000450f4fe6488d5c242c4989c54939c47439418b47184939c57355498b47104a8b44e820488b48104c8b4018498b0048894c24204889d94889f24989f9ff5068498d4501f64424300174bf4d39f50f9cc3488b4c24384831e1e88cf62d0689d84883c4405b5f5e415c415d415e415fc3488b1593508c0f4889f14531c0e828a51d064889f14889c2e8bd426206cc"
+    }
+  ],
+  "scope": "按本行为表OrderBank哈希绑定子命令，依次短路；当前空AND及OR均返回假"
+}

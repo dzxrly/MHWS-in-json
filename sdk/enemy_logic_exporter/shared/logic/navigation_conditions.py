@@ -6,6 +6,7 @@ not a substitute for running the whole condition helper.
 """
 
 import json
+import struct
 from pathlib import Path
 from copy import deepcopy
 from functools import lru_cache
@@ -26,6 +27,94 @@ def receipt():
             encoding="utf-8"
         )
     )
+
+
+def verify_navigation_conditions(pe, metadata):
+    """Verify the specialized Unfair chain and its referenced constant data.
+
+    RIP targets are decoded from the current method identity, rather than
+    carrying unmigratable addresses for Nullable templates, classes or statics.
+    """
+    from capstone import CS_OP_MEM
+    from ..native.symbols import instructions, method_stem
+
+    document = receipt()
+    rows = document["evidence"]["unfair_active"]
+    by_method = {}
+    for row in rows:
+        method = (metadata.get(row["type"]) or {}).get("methods", {}).get(row["method"])
+        if method is None or int(method.get("function", "0"), 16) != int(
+            row["address"], 16
+        ):
+            raise ValueError(
+                "Unfair资格链方法身份变化：" + row["type"] + "." + row["method"]
+            )
+        signature = row["signature"]
+        if [p.get("type") for p in method.get("params", [])] != signature[
+            "params"
+        ] or method.get("returns", {}).get("type") != signature["returns"]:
+            raise ValueError("Unfair资格链方法签名变化：" + row["method"])
+        start, end = int(row["address"], 16), int(row["end"], 16)
+        expected = bytes.fromhex(row["nativeBytes"])
+        if end - start != len(expected) or pe.read(start, len(expected)) != expected:
+            raise ValueError("Unfair资格链原生字节变化：" + row["method"])
+        by_method[row["type"], method_stem(row["method"])] = row
+    for check in document["unfairFieldChecks"]:
+        field = metadata.fields(check["type"]).get(check["field"], {})
+        if (
+            field.get("type") != check["fieldType"]
+            or field.get("offset_from_base") != check["offset"]
+        ):
+            raise ValueError(
+                "Unfair资格链字段布局变化：" + check["type"] + "." + check["field"]
+            )
+    for check in document["unfairEnumChecks"]:
+        field = (
+            (metadata.get(check["type"]) or {})
+            .get("fields", {})
+            .get(check["field"], {})
+        )
+        if field.get("default") != check["value"]:
+            raise ValueError(
+                "Unfair资格链枚举变化：" + check["type"] + "." + check["field"]
+            )
+    for check in document["unfairRipChecks"]:
+        row = by_method[check["type"], check["method"]]
+        pc = int(row["address"], 16) + int(check["instructionOffset"], 16)
+        decoded, _ = instructions(pe, pc, pc + 16)
+        if not decoded:
+            raise ValueError("Unfair常量读取指令缺失")
+        ins = decoded[0]
+        operand = ins.operands[check.get("operand", 1)]
+        if (
+            operand.type != CS_OP_MEM
+            or ins.reg_name(operand.mem.base) != "rip"
+            or operand.mem.index
+        ):
+            raise ValueError("Unfair常量不再来自已审核的RIP读取")
+        address = ins.address + ins.size + operand.mem.disp + check.get("readOffset", 0)
+        if check["kind"] == "class":
+            expected = int(
+                (metadata.get(check["classType"]) or {}).get("address", "0"), 16
+            )
+            actual = int.from_bytes(pe.read(address, 8), "little")
+        else:
+            format_code, size = {
+                "Int32": ("<i", 4),
+                "Single": ("<f", 4),
+                "Byte": ("<B", 1),
+            }[check["kind"]]
+            actual = struct.unpack(format_code, pe.read(address, size))[0]
+            expected = (
+                document["unfairConstants"][check["constant"]]
+                if "constant" in check
+                else check["value"]
+            )
+        if actual != expected:
+            raise ValueError(
+                "Unfair资格链引用常量或类型变化："
+                + check.get("constant", check["kind"])
+            )
 
 
 def bit(member, index):
@@ -159,6 +248,222 @@ def destination_relation(argument):
     )
 
 
+def unfair_qualification():
+    """Specialize checkTargetCharaUnfair to this command's actual arguments.
+
+    The position/float Nullable values are empty, both optional Boolean modes
+    are false, and the stage exclusion mode is true. Query inputs describe only
+    the named native query's normal return and its raw output fields.
+    """
+    constants = receipt()["unfairConstants"]
+    special = constants["specialCombatArea"]
+    area_limit = constants["combatAreaLimit"]
+    near_limit = constants["nearGroundDistanceSquared"]
+
+    def current_area(value, operator="eq"):
+        return compare(
+            "self_current_area_no", value, operator, source=FIELDS["area_no"]
+        )
+
+    source = "所选玩家 FieldAreaInfo._MergedAreaBit_EnemyCombatArea"
+    current_bit = combined(
+        "any",
+        combined(
+            "all",
+            current_area(special),
+            runtime(
+                "selected_hunter_combat_area_bit_special", source + f" 的 bit {special}"
+            ),
+        ),
+        combined(
+            "all",
+            current_area(special, "ne"),
+            runtime(
+                "selected_hunter_combat_area_bit_current",
+                source + " 的 bit (自身区域编号 & 63)",
+            ),
+        ),
+    )
+    near = compare(
+        "unfair_ground_transform_distance_squared",
+        near_limit,
+        "lt",
+        source="本次检测位置与所选玩家 Transform.Pos 的三维差平方和（按原生单精度顺序）",
+    )
+    near_area = combined(
+        "all",
+        invert(
+            combined(
+                "all",
+                current_area(0, "ge"),
+                current_area(area_limit, "lt"),
+                current_bit,
+            )
+        ),
+        combined(
+            "any",
+            current_area(special),
+            runtime(
+                "selected_hunter_combat_area_bit_special", source + f" 的 bit {special}"
+            ),
+        ),
+    )
+    queried_area = runtime(
+        "unfair_point_combat_area_no",
+        "EnemyManager.getAreaNoNearPoint(本次检测位置, ST103) 的 Int32 返回值",
+    )
+    far_area = combined(
+        "any",
+        combined(
+            "all",
+            current_area(special, "ne"),
+            compare(
+                "unfair_point_combat_area_no", special, source=queried_area["source"]
+            ),
+        ),
+        combined(
+            "all",
+            current_area(special),
+            compare(
+                "unfair_point_combat_area_no",
+                special,
+                "ne",
+                source=queried_area["source"],
+            ),
+        ),
+    )
+    first = runtime(
+        "unfair_voxel_first_query_succeeded",
+        "本次 getDataInfoForNav 的第一次查询返回值；位置取玩家 GroundInfo.Pos，缺失则取 Transform.Pos",
+    )
+    transform = runtime(
+        "selected_hunter_transform_valid", "所选玩家 GameObject.Transform 引用存在"
+    )
+    ground = runtime(
+        "selected_hunter_ground_info_exists", "CharacterBase.get_GroundInfo 返回非空"
+    )
+    error = dict(
+        kind="unknown",
+        reason="此路径需要读取所选玩家Transform.Pos；GameObject或Transform缺失时调用错误处理0x46并终止正常路径，不是普通false返回",
+    )
+    area = combined(
+        "any",
+        combined(
+            "all",
+            transform,
+            combined(
+                "any",
+                combined("all", near, near_area),
+                combined("all", invert(near), far_area),
+            ),
+        ),
+        combined("all", invert(transform), error),
+    )
+    terrain = combined(
+        "any",
+        invert(first),
+        combined(
+            "all",
+            first,
+            combined(
+                "any",
+                combined(
+                    "all",
+                    category(2, "ne"),
+                    runtime(
+                        "unfair_voxel_first_nav_attr:10",
+                        "第一次查询命中体素的 _NavNodeAttrArray[_IndexNavNodeAttr] bit10",
+                    ),
+                ),
+                combined(
+                    "all",
+                    runtime(
+                        "unfair_voxel_second_query_succeeded",
+                        "本次 getDataInfoForNav 第二次查询的返回值（同位置，参数10、5、1）",
+                    ),
+                    runtime(
+                        "unfair_voxel_second_nav_attr:27",
+                        "第二次查询命中体素的 _NavNodeAttrArray[_IndexNavNodeAttr] bit27",
+                    ),
+                ),
+                combined(
+                    "all",
+                    compare("self_current_stage_no", 2, source=FIELDS["stage_no"]),
+                    area,
+                ),
+            ),
+        ),
+    )
+    source_valid = combined("any", ground, transform)
+    return combined(
+        "any",
+        combined(
+            "all",
+            runtime(
+                "selected_hunter_base_action_exists",
+                "所选玩家 BaseActionController.CurrentAction 不为空",
+            ),
+            runtime(
+                "selected_hunter_base_action_is_hunter_action",
+                "当前动作通过 cHunterActionBase 类型检查",
+            ),
+            runtime(
+                "selected_hunter_action_attr:29",
+                "当前动作 _Attr 中 TARZAN_ATTACH（bit29），不是ContinueFlag294",
+            ),
+        ),
+        combined(
+            "all",
+            source_valid,
+            terrain,
+        ),
+        combined("all", invert(source_valid), error),
+    )
+
+
+def unfair_inputs():
+    definitions = {
+        "selected_target_key_unique_high_bit_clear": "所选玩家访问键的UniqueIndex高位为0",
+        "self_permanent_flag:129": "自身永久标志DISABLE_CHECK_UNFAIR已设置",
+        "self_continue_flag:129": "自身持续标志DISABLE_CHECK_UNFAIR已设置",
+        "selected_hunter_base_action_exists": "目标玩家存在当前基础动作",
+        "selected_hunter_base_action_is_hunter_action": "目标玩家基础动作属于 cHunterActionBase",
+        "selected_hunter_action_attr:29": "目标玩家当前基础动作具有 TARZAN_ATTACH 属性",
+        "selected_hunter_ground_info_exists": "目标玩家存在当前GroundInfo",
+        "selected_hunter_transform_valid": "目标玩家存在有效的GameObject.Transform",
+        "unfair_voxel_first_query_succeeded": "目标位置的第一次导航体素查询成功",
+        "unfair_voxel_first_nav_attr:10": "第一次命中体素的导航节点属性 bit10",
+        "unfair_voxel_second_query_succeeded": "目标位置的第二次导航体素查询成功",
+        "unfair_voxel_second_nav_attr:27": "第二次命中体素的导航节点属性 bit27",
+        "selected_hunter_combat_area_bit_current": "目标玩家的合并战斗区域位包含自身当前区域",
+        "selected_hunter_combat_area_bit_special": "目标玩家的合并战斗区域位包含特殊区域17",
+    }
+    result = {
+        key: dict(label=label, boolean=True) for key, label in definitions.items()
+    }
+    result["self_basic_category"] = dict(
+        label="自身怪物分类",
+        options=[
+            dict(label=name, value=value)
+            for name, value in (("BOSS", 0), ("ZAKO", 1), ("ANIMAL", 2))
+        ],
+    )
+    result["unfair_ground_transform_distance_squared"] = dict(
+        label="目标检测位置与玩家Transform位置的三维距离平方",
+        number=True,
+        min=0,
+        max=None,
+        unit="游戏坐标单位的平方",
+    )
+    result["unfair_point_combat_area_no"] = dict(
+        label="getAreaNoNearPoint 返回的战斗区域编号",
+        number=True,
+        min=-(1 << 31),
+        max=(1 << 31) - 1,
+    )
+    return result
+
+
 def unfair_guard():
     return combined(
         "all",
@@ -211,10 +516,7 @@ def unfair_guard():
                 ),
             )
         ),
-        dict(
-            kind="unknown",
-            reason="checkTargetCharaUnfair 后续玩家状态、体素查询、区域属性及阶段资格尚未完整核实；命令实际参数为false、Nullable<float>、false、true",
-        ),
+        unfair_qualification(),
     )
 
 
@@ -430,7 +732,9 @@ def recover_navigation_condition(node):
             summary="目标通过有效性与不公平行为资格检查",
             semanticStatus="reviewed_partial_native_semantics",
             semanticEvidence=deepcopy(receipt()["evidence"]["unfair_active"]),
-            detail="目标必须是有效玩家；禁用标志及特定Stage/Area会拒绝。完整资格仍有未知，真分支才写IsActiveUnfairRoutine=true。",
+            inputDefinitions=unfair_inputs(),
+            queryContract=deepcopy(receipt()["queryContracts"]["unfair_active"]),
+            detail="有效玩家及禁用标志、Stage/Area守卫通过后，按TARZAN_ATTACH动作属性、两次体素查询的实际返回和节点属性、ST103区域关系判断；真分支才写IsActiveUnfairRoutine=true。查询输入只表示具体查询的正常返回，缺失引用导致原生错误时不提供查询结果。",
         )
     if name == "cCheckOccludedToDest":
         selected = (

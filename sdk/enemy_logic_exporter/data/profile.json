@@ -1,293 +1,339 @@
 {
  "schemaVersion": 1,
- "digestScheme": 2,
+ "digestScheme": 3,
  "symbols": {
   "set_current_position": {
-   "address": "0x147739590",
-   "end": "0x147739692",
+   "address": "0x147739350",
+   "end": "0x147739452",
    "normalizedSha256": "2d17b95d474c6ae8c87d51f3248ec29b719b7cc272445c9f575a172ebf41a086",
    "type": "ace.btable.cOperatorWork",
    "method": "setCurrentPosition233780"
   },
   "position_stack_push": {
-   "address": "0x1450dc570",
-   "end": "0x1450dc641",
+   "address": "0x1450dc330",
+   "end": "0x1450dc401",
    "normalizedSha256": "084c78854c421bfc552b7ee38f78a42ae531dd2ece2bd742ff3a7e172326d513",
    "type": "System.Collections.Generic.Stack`1<ace.btable.BTableDef.POSITION>",
    "method": "Push233552"
   },
   "position_stack_try_pop": {
-   "address": "0x1450dc510",
-   "end": "0x1450dc570",
-   "normalizedSha256": "f0cdd938344a2d9ced0cdbe06f2bb5cc6e8a6aed745068795e85d0944792341c",
+   "address": "0x1450dc2d0",
+   "end": "0x1450dc32a",
+   "normalizedSha256": "e831ee3bd9d26780e63ae6a09a2be2a1fe2df8dd7b56a5400ce7bef14bad372f",
    "type": "System.Collections.Generic.Stack`1<ace.btable.BTableDef.POSITION>",
    "method": "TryPop233551"
   },
   "request_change_btable": {
-   "address": "0x1490c5680",
-   "end": "0x1490c56f0",
+   "address": "0x1490c5440",
+   "end": "0x1490c54b0",
    "normalizedSha256": "e2786601989c7904bb35eef2d6e60469ab12df601376622351fb79647f73fe71",
    "type": "app.cEmAIUpdateBTable",
    "method": "requestChangeBTable578130"
   },
   "request_jump_btable": {
-   "address": "0x1490c56f0",
-   "end": "0x1490c573b",
+   "address": "0x1490c54b0",
+   "end": "0x1490c54fb",
    "normalizedSha256": "b5a024a1cfee18607ca5d7e6b9293364c4568757a756a9a1d3e8d94d959dd481",
    "type": "app.cEmAIUpdateBTable",
    "method": "requestJumpBTable578131"
   },
   "request_change_btable_verify": {
-   "address": "0x1499f1110",
-   "end": "0x1499f11b0",
+   "address": "0x1499f0ed0",
+   "end": "0x1499f0f70",
    "normalizedSha256": "4b7f66e67bb84348ac305e63b3f527dadab7a6ce26c9225105fb0bd7a3db2a4e",
    "type": "app.cMasterEnemyControllerEntity",
    "method": "requestChangeBTableVerify592391"
   },
   "request_unique_btable": {
-   "address": "0x149cd0300",
-   "end": "0x149cd0412",
+   "address": "0x149cd00c0",
+   "end": "0x149cd01d2",
    "normalizedSha256": "6c104bb198215305e4de2fbeaa65f0c2263c3bb6534ea32ea57a1e1ea3033f6a",
    "type": "app.cEmAIInterruptUnique",
    "method": "requestUniqueBTable577693"
   },
   "enemy_def_cctor": {
-   "address": "0x14a2b52d0",
-   "end": "0x14a2b686f",
+   "address": "0x14a2b5090",
+   "end": "0x14a2b662f",
    "normalizedSha256": "af093d57e84b879203e34b46e8acdd81c5bbe807594dc4229f02f0d6432863d1",
    "type": "app.EnemyDef",
    "method": ".cctor758120"
   },
   "combat_on_enter": {
-   "address": "0x145cbc180",
-   "end": "0x145cbc61a",
+   "address": "0x145cbbf40",
+   "end": "0x145cbc3da",
    "normalizedSha256": "b654d7881a2e550ddc34d50eb750e3089e1828d691b09b3caa36c396b14e2ed2",
    "type": "app.cEmAIStateCombat",
    "method": "onEnter577109"
   },
   "random_type_execute": {
-   "address": "0x1445a25f0",
-   "end": "0x1445a2600",
-   "normalizedSha256": "217b404c71ed96af72f396c9718dfe669111cf9319a09b13e665f36e0d16bf6f",
+   "address": "0x1445a23b0",
+   "end": "0x1445a23b8",
+   "normalizedSha256": "fb5435ca66ed31a7f1b5c58cb897162e7044f16bc14d358e14fc416dbd53c5c0",
    "type": "ace.btable.cCommandRandamRandomType",
    "method": "onExecute1028270"
   },
   "action_param_branch": {
-   "address": "0x1451e3e30",
-   "end": "0x1451e3fd3",
-   "normalizedSha256": "11fbe8a292b65d3375871b3eb7fa2be432600278234148cd31e7f595497bf91b",
+   "address": "0x1451e3bf0",
+   "end": "0x1451e3d93",
+   "normalizedSha256": "01b262665bf3d5f3458a7b9cf46c2d887a91d6286e4ea39c51024e80f90151a3",
    "type": "ace.user_data.ActionParam",
    "method": "toBranchedParamIndex245936"
   },
   "action_param_apply": {
-   "address": "0x1451e3c90",
-   "end": "0x1451e3e2a",
-   "normalizedSha256": "4a7164203a8285a381896c17d00ba4118dbcf5e07efcd86217d28cd792e021ed",
+   "address": "0x1451e3a50",
+   "end": "0x1451e3bea",
+   "normalizedSha256": "3643bdfa96b8117af2c7c2d3a1dc07d9b1c509184d911f650def29b066ed504c",
    "type": "ace.user_data.ActionParam",
    "method": "applyParamCore245935"
   },
   "manager_setup_table": {
-   "address": "0x1454bcc60",
-   "end": "0x1454bd0d0",
+   "address": "0x1454bca20",
+   "end": "0x1454bce90",
    "normalizedSha256": "256531f43d95070a957b4da330a5a23e86eabc1426b2360328d73b1a1e5b87e9",
    "type": "ace.btable.cManager",
    "method": "setupTable330447"
   },
   "manager_clear": {
-   "address": "0x1454bd490",
-   "end": "0x1454bd75d",
-   "normalizedSha256": "bcc10448decb08d5726722d681dcb13d4b3f7a66b6d8e03c9eecebb59e8143b7",
+   "address": "0x1454bd250",
+   "end": "0x1454bd51d",
+   "normalizedSha256": "405683c43de98720e7002388c1e6bbde8811382c83803dd3e2697cfd195b72be",
    "type": "ace.btable.cManager",
    "method": "clear330451"
   },
+  "btable_create": {
+   "address": "0x144b38a30",
+   "end": "0x144b392ce",
+   "normalizedSha256": "822449b098da0fa98a90e2c2b5091247618fe7278fe2759fb653512b5f824483",
+   "type": "ace.btable.cExportBTableBase",
+   "method": "create233118"
+  },
+  "btable_param_try_insert": {
+   "address": "0x145a39f70",
+   "end": "0x145a3a3c5",
+   "normalizedSha256": "b6e69fd9b1a89328ab4b47fdba0095e328e362f03bad1096db8f0f4e1110312a",
+   "type": "System.Collections.Generic.Dictionary`2<System.Int32,ace.btable.cExportBTableBase.cExportBTableParam>",
+   "method": "TryInsert233725"
+  },
   "resume_jump_btable": {
-   "address": "0x1490c5770",
-   "end": "0x1490c5834",
+   "address": "0x1490c5530",
+   "end": "0x1490c55f4",
    "normalizedSha256": "76d5a5d02b951e67b62bedabfc13914e4b2cb536178e261acbeedde6dfc29e4e",
    "type": "app.cEmAIUpdateBTable",
    "method": "resumeJumpBTable578134"
   },
   "area_target_child": {
-   "address": "0x143acf150",
-   "end": "0x143acf259",
+   "address": "0x143acef10",
+   "end": "0x143acf019",
    "normalizedSha256": "b6172af166b0b48926017afc2c165ddb6dc708858f09f7dd28f0150458b23995",
    "type": "app.cEmModuleArea",
    "method": "setTargetAreaChidl_CurrentAreaChild276490"
   },
   "area_check_detached": {
-   "address": "0x1467148a0",
-   "end": "0x146714940",
+   "address": "0x146714660",
+   "end": "0x146714700",
    "normalizedSha256": "7229b2d1e86794f0492c6de2f3691e99af9432c58ce5ca49d84bd1dff5600e24",
    "type": "app.mcEnemyAreaMoveCoordinator",
    "method": "checkDetachedScheduleCategory648094"
   },
   "area_recalc_schedule": {
-   "address": "0x1467140e0",
-   "end": "0x1467141a0",
+   "address": "0x146713ea0",
+   "end": "0x146713f60",
    "normalizedSha256": "4823820ad35b3e45cc1266b803ec7cb10fce35adf4ae520e11dba13e26a54f77",
    "type": "app.mcEnemyAreaMoveCoordinator",
    "method": "recalcScheule648083"
   },
   "area_change_category": {
-   "address": "0x146713810",
-   "end": "0x1467138c5",
+   "address": "0x1467135d0",
+   "end": "0x146713685",
    "normalizedSha256": "b711a706fbf1c005905959a557bd5afb23ca0ddcb11ba04aaae4d6a83715581f",
    "type": "app.mcEnemyAreaMoveCoordinator",
    "method": "changeScheduleCategory648078"
   },
   "net_send_packet": {
-   "address": "0x14635f4e0",
-   "end": "0x14635f5ea",
+   "address": "0x14635f2a0",
+   "end": "0x14635f3aa",
    "normalizedSha256": "386f0665e52de84682e849905b63e2f523596dac42a345af887a88987ab1088b",
    "type": "app.EnemyUtil.Net",
    "method": "sendPacket869460"
   },
   "fetch_hate_target": {
-   "address": "0x147bf9d90",
-   "end": "0x147bf9f36",
+   "address": "0x147bf9b50",
+   "end": "0x147bf9cf6",
    "normalizedSha256": "178408a7c6a79c35141f8b68629d28b76d1dea7bc25b13e084adb59ae8a6f677",
    "type": "app.cEmModuleCombat",
    "method": "fetchHighestHateTarget_Random544929"
   },
   "detector_attribute_ctor": {
-   "address": "0x1493dda70",
-   "end": "0x1493ddc75",
+   "address": "0x1493dd830",
+   "end": "0x1493dda35",
    "normalizedSha256": "6c179030b5f789859edc343ffaeb068fca7a46d9071f7bf28becabf452c4f377",
    "type": "app.cEnemyNoticeCombatDetectorAttribute",
    "method": ".ctor592361"
   },
   "detector_register": {
-   "address": "0x148d0cae0",
-   "end": "0x148d0ce13",
-   "normalizedSha256": "2e73a479f235dab8f4145236f63030042ac611e80ecca88a23a9bb7f96674b04",
+   "address": "0x148d0c8a0",
+   "end": "0x148d0cbd3",
+   "normalizedSha256": "0eb7f73fa8ea1ab07d47ddfa5778e124b947a82810a3096bac8907cb166d79ff",
    "type": "app.cEmModuleDetector",
    "method": "register594906"
   },
   "refresh_smoke": {
-   "address": "0x147bf8ad0",
-   "end": "0x147bf8be4",
-   "normalizedSha256": "28889dd3542fcfc2b5479b6b4b1e0cc12f3e6b013b224a7dd121e8cc2123b647",
+   "address": "0x147bf8890",
+   "end": "0x147bf89a4",
+   "normalizedSha256": "cb9a55a5cf805e9eedd4a8165312037998a266801d42950866da7b75c8f92cde",
    "type": "app.cEmModuleCombat",
    "method": "refreshEveryTargetStateInSmoke544906"
   },
   "target_resume": {
-   "address": "0x1469cbe60",
-   "end": "0x1469cc0d4",
+   "address": "0x1469cbc20",
+   "end": "0x1469cbe94",
    "normalizedSha256": "ee41b196838edaf0f68ecf294768725dc11ae411cc9d638733716e1bb70cb87d",
    "type": "app.cEmModuleTarget",
    "method": "setTargetResume544371"
   },
   "target_position": {
-   "address": "0x1469cc720",
-   "end": "0x1469ccddc",
+   "address": "0x1469cc4e0",
+   "end": "0x1469ccb9c",
    "normalizedSha256": "38f4b81f4373eaeaa9403f756a43c62342df8dfbf6342d232b40930a25635589",
    "type": "app.cEmModuleTarget",
    "method": "getTargetPosition544378"
   },
   "nav_data_info": {
-   "address": "0x14563bf40",
-   "end": "0x14563c334",
-   "normalizedSha256": "54120361154c7819e55fac7f02a8c170d8b4aa0ffe0e8a9c6bef42a321c089d8",
+   "address": "0x14563bd00",
+   "end": "0x14563c0f4",
+   "normalizedSha256": "fc2eaf83004e66b21979b38a26067ea029fcaa4054474ea04efbe80f7130aa3a",
    "type": "app.VoxelDataManager",
    "method": "getDataInfoForNav338334"
   },
   "wall_info_near": {
-   "address": "0x145507880",
-   "end": "0x1455079cb",
+   "address": "0x145507640",
+   "end": "0x14550778b",
    "normalizedSha256": "102104c5ab15a606be7998d265ec9b53f6f367e6034c3566285cccf48d61922a",
    "type": "app.VoxelDataManager",
    "method": "getWallInfoNearVector338301"
   },
   "player_manage_info": {
-   "address": "0x1484a3c10",
-   "end": "0x1484a3c80",
+   "address": "0x1484a39d0",
+   "end": "0x1484a3a40",
    "normalizedSha256": "7bf235fab1df7f5656ba81215a68a890b914f91d3b3157606970339477126095",
    "type": "app.TargetAccessKeyUtil",
    "method": "getPlayerManageInfo1226796"
   },
   "make_target_key": {
-   "address": "0x14841eb30",
-   "end": "0x14841ef7a",
-   "normalizedSha256": "01bc589c5d65f62a4e4e1c746ae7318297f8dc8fb3a9b84e0e1d0121967de0a0",
+   "address": "0x14841e8f0",
+   "end": "0x14841ed3a",
+   "normalizedSha256": "a514711999c987505db87e5846894c5b29e6353db4d3a49e8a61c668390b988b",
    "type": "app.TargetAccessKeyUtil",
    "method": "makeTargetAccessKey1226827"
   },
   "unique_leveled_value_get_level": {
-   "address": "0x1486f12e0",
-   "end": "0x1486f138d",
-   "normalizedSha256": "d202fa5ce2893d0548f454c4d7917aaac43d2bf42ae07c0b8ce7c89b9b41228c",
+   "address": "0x1486f10a0",
+   "end": "0x1486f114d",
+   "normalizedSha256": "a9ded9c877f1a6dbb907ec21fba872aeb7673513edb1114a63121dbf36f81bc0",
    "type": "app.cEmModuleUniqueLeveledValue",
    "method": "getLevel720072"
   },
   "check_angle_execute": {
-   "address": "0x149d9b590",
-   "end": "0x149d9bc90",
-   "normalizedSha256": "f9840ef874720b6d08b6d0dda3fd67bef15dae73497182945b09f114fb795df1",
+   "address": "0x149d9b350",
+   "end": "0x149d9ba50",
+   "normalizedSha256": "6aea9f355bd81daafab0f535899c4ded6a56154422185e8f84f4bdc68db5af31",
    "type": "app.btable.EmCommonCommand.cCheckAngle",
    "method": "onExecute1236786"
   },
   "stack_cookie_check": {
-   "address": "0x14b1295f0",
-   "end": "0x14b12960e",
+   "address": "0x14b12a410",
+   "end": "0x14b12a42e",
    "normalizedSha256": "cd2e477f4f86d8ee3646d1da8aec05b0275aed84c6d88400aa9af237780b9702",
-   "pattern": "483b0d????????75??48c1c11066f7c1ffff75??c348c1c910"
+   "pattern": "483b0d????????75??48c1c11066f7c1ffff75??c348c1c910",
+   "patternRole": "locator_only",
+   "patternLength": 25
   },
   "position_array_resize": {
-   "address": "0x146f5f380",
-   "end": "0x146f5f58f",
-   "normalizedSha256": "953f10a4a733ce7e2a8c6fdd8933532d307b0d1989d0057820cbbe62d9ae8cfe",
-   "pattern": "4157415641554154565755534883ec284889cf4585c00f88????????"
+   "address": "0x146f5f140",
+   "end": "0x146f5f34f",
+   "normalizedSha256": "fa3ae5d2e5802392ef5790e47e23d3d0a89ea90a9e1ddd26937953bc3fed3d9a",
+   "pattern": "4157415641554154565755534883ec284889cf4585c00f88????????",
+   "patternRole": "locator_only",
+   "patternLength": 28
   },
   "pool_pair_construct": {
-   "address": "0x143928820",
-   "end": "0x143928850",
-   "normalizedSha256": "d526db49854ca673fb44d8f58a0053934964c44518953e391051041494781469",
-   "pattern": "44890244894a04c3cccccccccccccccc418378040074??c3"
+   "address": "0x1439285e0",
+   "end": "0x1439285e8",
+   "normalizedSha256": "e8ffd5b8b940d17392dec3bf3ee93019bf4a1673fa218c53d8fd1ab0c905e1be",
+   "pattern": "44890244894a04c3cccccccccccccccc418378040074??c3",
+   "patternRole": "locator_only",
+   "patternLength": 24
   },
   "pool_array_copy": {
-   "address": "0x143801f50",
-   "end": "0x143801f92",
+   "address": "0x143801d00",
+   "end": "0x143801d42",
    "normalizedSha256": "00753fb7dc046fb46816a81b500f31f5c3f0b1bbfc23ff35def935fc21b82f67",
-   "pattern": "56574883ec2848391174??4889d64889cf4885d274??4889f1"
+   "pattern": "56574883ec2848391174??4889d64889cf4885d274??4889f1",
+   "patternRole": "locator_only",
+   "patternLength": 25
   },
   "array_allocate": {
-   "address": "0x14b030670",
-   "end": "0x14b0309d5",
-   "normalizedSha256": "83de321afe757e140eff2af1b43f1bf2e755bde8ec4cd8a21745461503e8f525",
-   "pattern": "4157415641554154565755534883ec384c89c74989d64889cb488b05????????4831e04889442430"
+   "address": "0x14b031560",
+   "end": "0x14b0318c5",
+   "normalizedSha256": "4393651d9972d7d4da6a274c6323e091b9f783d0aae672d6ef258653f4433543",
+   "pattern": "4157415641554154565755534883ec384c89c74989d64889cb488b05????????4831e04889442430",
+   "patternRole": "locator_only",
+   "patternLength": 40
+  },
+  "managed_object_allocate": {
+   "address": "0x14b0252d0",
+   "end": "0x14b025561",
+   "normalizedSha256": "bf5066d1131adacd8356f102dcff027f1776fa215216a1a78076c583668e21ab",
+   "pattern": "415741565657534883ec304889d34889cf488b05????????",
+   "patternRole": "locator_only",
+   "patternLength": 24
   },
   "static_ref_acquire": {
-   "address": "0x14b007bd0",
-   "end": "0x14b0082ae",
-   "normalizedSha256": "f0c417069f4607cb0fab1e07175ffbd379268e108c4fd90c53902b9f680ce831",
-   "pattern": "4157415641554154565755534883ec284889ce8b410885c0"
+   "address": "0x14b008ab0",
+   "end": "0x14b00918e",
+   "normalizedSha256": "96b442e345b0c1068ecf5048385cb578f214221c7fe5b5f73d6283e612abca38",
+   "pattern": "4157415641554154565755534883ec284889ce8b410885c0",
+   "patternRole": "locator_only",
+   "patternLength": 24,
+   "manualReview": {
+    "scope": "normal-return AddRef/atomic replace/Release contract",
+    "retainedBoundary": "Helper/runtime initialization, refcount slow paths, exceptions, TLS state and protected VM are not simulated; output stays native_initialization_constants_only with keyMeaningReviewed=False and runtimeCandidateFilteringReviewed=False."
+   }
   },
   "static_ref_release": {
-   "address": "0x14b0099e0",
-   "end": "0x14b00a432",
-   "normalizedSha256": "2aaa84a48a8aebfbcb7b4e0bedd439ba4c0f82367a9809ab574b0b363dbc65a7",
-   "pattern": "4157415641554154565755534883ec48488b05????????4831e048894424408b410885c078??4889ce"
+   "address": "0x14b00a8c0",
+   "end": "0x14b00b312",
+   "normalizedSha256": "f6b92f95babeebca74cb7b60817dc19d67a662987385e9ed3e89ffe98e3f98a5",
+   "pattern": "4157415641554154565755534883ec48488b05????????4831e048894424408b410885c078??4889ce",
+   "patternRole": "locator_only",
+   "patternLength": 41
   },
   "area_schedule_helper": {
-   "address": "0x146368d60",
-   "end": "0x146368f30",
+   "address": "0x146368b20",
+   "end": "0x146368cf0",
    "normalizedSha256": "bc5b5d9a01a1e3287d899d33501f8848c67566ce504f904628b600dda8f7983a",
-   "pattern": "415741565657534883ec204c89c74889d64989ce4584c975??"
+   "pattern": "415741565657534883ec204c89c74889d64989ce4584c975??",
+   "patternRole": "locator_only",
+   "patternLength": 25
   },
   "class_hierarchy_check": {
-   "address": "0x14b0212b0",
-   "end": "0x14b0215a0",
-   "normalizedSha256": "d5dd81bef37a37edf20a6ebcb9c6690f6d837a9cf63843d40ebcdc0300332d20",
-   "pattern": "f642102075??488b41484c8b42484983f8ff410f94c14883f8ff"
+   "address": "0x14b0221a0",
+   "end": "0x14b02227a",
+   "normalizedSha256": "ecefdb7e19b7e1b37afdd8727acc9e63ee47e73b35bdfa5c06d1c6a9a7131975",
+   "pattern": "f642102075??488b41484c8b42484983f8ff410f94c14883f8ff",
+   "patternRole": "locator_only",
+   "patternLength": 26
   },
   "restore_helper": {
-   "address": "0x1454bd9c0",
-   "end": "0x1454bda28",
+   "address": "0x1454bd780",
+   "end": "0x1454bd7e8",
    "normalizedSha256": "50bc178bfcaa103c034accf72704c17e2460245fdacd5341822692ebfb1771fe",
-   "pattern": "00008b98b00000008ba8b400000048c744242800000000807a4900"
+   "pattern": "00008b98b00000008ba8b400000048c744242800000000807a4900",
+   "patternRole": "locator_only",
+   "patternLength": 27
   },
   "global_table_entry_zero": {
-   "value": "0x1547370b0",
+   "value": "0x1547580b0",
    "note": "表入口读取的静态字段；已核实路径中视为 0"
   },
   "runtime_data_start": {
@@ -295,14 +341,14 @@
    "note": "运行时初始化数据起点；PE 映像中没有其值"
   },
   "pool_array_type_slot": {
-   "value": "0x1547535a0",
+   "value": "0x1547745a0",
    "note": "ValueTuple<UInt32, Int32>[] 静态池数组的类型槽"
   },
   "unique_slot_table": {
    "value": {
-    "site": "0x14a2b56b2",
-    "bytes": "41b8030000004889f141b901000000c5f877e8a7afd7004889c748b8ffffffff2200000048894720c747282300000048393dd88a5d0a",
-    "globalAddress": "0x15488e1c0",
+    "site": "0x14a2b5472",
+    "bytes": "41b8030000004889f141b901000000c5f877e8d7c0d7004889c748b8ffffffff2200000048894720c747282300000048393d189d5f0a",
+    "globalAddress": "0x1548af1c0",
     "values": [
      -1,
      34,
@@ -312,1441 +358,2045 @@
    "note": "EnemyDef..cctor 写入专用中断槽映射的指令位置与字节"
   },
   "destination_override_global": {
-   "value": "0x1547cabf0",
+   "value": "0x1547ebbf0",
    "note": "命令复制的 Nullable<vec3> 覆盖位置全局"
   },
   "terrain_component_global": {
-   "value": "0x1547277c8",
+   "value": "0x1547487c8",
    "note": "HIGH 物理回退要求的有效组件全局"
   },
   "occlusion_length_constant": {
-   "value": "0x14dc43cd0",
+   "value": "0x14dc52790",
    "note": "遮挡射线长度平方阈值常量"
   },
   "special_gimmick_global": {
-   "value": "0x15480a9b0",
+   "value": "0x15482b9b0",
    "note": "遮挡检查的特殊 GIMMICK 索引全局"
   }
  },
  "evidenceDigests": {
+  "System.Collections.Generic.Dictionary`2<System.Int32,ace.btable.cExportBTableBase.cExportBTableParam>::FindValue233723": {
+   "address": "0x145dea090",
+   "functionLength": 528,
+   "rowLength": 528,
+   "normalizedSha256": "f78e500e71127bef6ac3235f24a1302139869c3b7768c5248b89328df3bc540e"
+  },
   "ace.btable.BTableUtil::checkCompare1028044": {
-   "address": "0x14bc11440",
+   "address": "0x14bc12410",
    "functionLength": 2048,
    "rowLength": 116,
    "normalizedSha256": "f5d838ac07e066ac525ef4777011781de3fb0d7abb8a3176e48694d1189ad29c"
   },
   "ace.btable.cCheckTimerValue::onExecute1028243": {
-   "address": "0x149ec0720",
+   "address": "0x149ec04e0",
    "functionLength": 102,
    "rowLength": 102,
    "normalizedSha256": "25b269263fd1781fd4c0a4e57dac3aa06cb253a567a3d602897f02655919882f"
   },
+  "ace.btable.cCommandAnd::onExecute1028275": {
+   "address": "0x144b397e0",
+   "functionLength": 202,
+   "rowLength": 202,
+   "normalizedSha256": "42270ac4b0339b2dc4243c5e19c367ea6267d657cd7c99c1247dc7ae8262f427"
+  },
+  "ace.btable.cCommandFunc`2<app.Em0154_00BTableCommand.cSideWalkOffsetArg,System.Boolean>::execute1144404": {
+   "address": "0x146a13ee0",
+   "functionLength": 120,
+   "rowLength": 120,
+   "normalizedSha256": "8a48c4d1fab653bcab9784daee17bda6aada70011a6bf47fd4751ca520465c51"
+  },
+  "ace.btable.cCommandFunc`2<app.btable.Em0070_00BTableCommand.cSideWalkOffsetArg,System.Boolean>::execute1233786": {
+   "address": "0x146402060",
+   "functionLength": 120,
+   "rowLength": 120,
+   "normalizedSha256": "ed6639ddcf821ef973d05607546ea23d50743d7dd41b300401c534da7943ac79"
+  },
   "ace.btable.cCommandFunc`2<app.btable.EmCommonCommand.cCheckDistanceArg,System.Boolean>::execute1236781": {
-   "address": "0x1496939d0",
+   "address": "0x149693790",
    "functionLength": 120,
    "rowLength": 120,
    "normalizedSha256": "2caacefcbfdaabd6af5e5b5dd527b9208321b1f41873968da1b03ab09ecc55cb"
   },
+  "ace.btable.cCommandOr::onExecute1028277": {
+   "address": "0x144e4acf0",
+   "functionLength": 196,
+   "rowLength": 196,
+   "normalizedSha256": "559804ccb3fde5157aa5ec621458677315d86ba344367218f80b1c3d40a77d7e"
+  },
   "ace.btable.cCompareBoolValue::onExecute1028224": {
-   "address": "0x1492ada80",
+   "address": "0x1492ad840",
    "functionLength": 108,
    "rowLength": 108,
    "normalizedSha256": "4fe677a312ae4c89ad3e5b10c2db98c0c88a1099f5acabbe945a229079b150d9"
   },
   "ace.btable.cCompareFloatValue::onExecute1028236": {
-   "address": "0x14988ac50",
+   "address": "0x14988aa10",
    "functionLength": 131,
    "rowLength": 131,
    "normalizedSha256": "fd60b1d662981bd00a1ba38b4dd67215210978c243a4da6aaca7d985bf8b683b"
   },
   "ace.btable.cManager::get_Valid330442": {
-   "address": "0x1454bcc30",
+   "address": "0x1454bc9f0",
    "functionLength": 48,
    "rowLength": 48,
    "normalizedSha256": "edd975525fd411d5e44ba448c49edba338724b489056b583420c845281a26558"
   },
   "ace.btable.cManager::updateTable330454": {
-   "address": "0x1454bd770",
+   "address": "0x1454bd530",
    "functionLength": 395,
    "rowLength": 395,
    "normalizedSha256": "76ac101b2d72c9f7583531268ebbcdcd5ab12dbd33f4e98016e3d9725a281a60"
   },
   "ace.btable.cOperatorRandom::onExecute1028369": {
-   "address": "0x144e4b000",
+   "address": "0x144e4adc0",
    "functionLength": 804,
    "rowLength": 804,
-   "normalizedSha256": "5307944d579696cf3a31417c5ffad93a605b134bb5af2c78178b29d3eb850295"
+   "normalizedSha256": "1fc9795af290022f317df500a7795b9621be1ac1137093698e5b1993806d4a61"
+  },
+  "ace.btable.cSetBoolValue::onExecute1028193": {
+   "address": "0x14808fcd0",
+   "functionLength": 91,
+   "rowLength": 91,
+   "normalizedSha256": "f0b7a0c284d939d22619297a12b1d0d86aebcec676a4040113e7f3c99572e1a2"
+  },
+  "ace.btable.cSetFloatValue::onExecute1028205": {
+   "address": "0x1486229b0",
+   "functionLength": 107,
+   "rowLength": 107,
+   "normalizedSha256": "72aaacfea76f614537a5647ec6a5954d1d9e979cc35e84703a0457ee692d3f8d"
   },
   "ace.btable.cSetTimerValue::onExecute1028216": {
-   "address": "0x148c42f20",
+   "address": "0x148c42ce0",
    "functionLength": 228,
    "rowLength": 228,
    "normalizedSha256": "090f83bd86e93e5c2cda3d9b68cc660ab8e63ca5ea851cfd9beae6cd39a12289"
   },
   "ace.btable.cVariableStorage::getValueTimer231669": {
-   "address": "0x1488fb7c0",
+   "address": "0x1488fb580",
    "functionLength": 185,
    "rowLength": 185,
    "normalizedSha256": "923453dfc83b03b22da3b78cafecb3a91941a03a7c5959c541cd38961d798f38"
   },
+  "ace.btable.cVariableStorage::setValueBool231670": {
+   "address": "0x1488fb640",
+   "functionLength": 220,
+   "rowLength": 220,
+   "normalizedSha256": "63ba3a56e8011fb665c64a5ef23be942bbeb43e2d907dea40a5cfb944f2073e0"
+  },
+  "ace.btable.cVariableStorage::setValueFloat231671": {
+   "address": "0x1488fb720",
+   "functionLength": 372,
+   "rowLength": 372,
+   "normalizedSha256": "d026a1c30b5d79deeb498c6e0d64952e6b474a7768c67e9cb4c3c03f4e6fa458"
+  },
   "ace.btable.cVariableStorage::setValueTimer231672": {
-   "address": "0x1488fbae0",
+   "address": "0x1488fb8a0",
    "functionLength": 406,
    "rowLength": 406,
    "normalizedSha256": "e47f69d6a21db14d99e359ee6378be40d44aef558afbfd5bde2bb05838ae213b"
   },
   "ace.btable.cVariableStorage::update231673": {
-   "address": "0x1488fbc80",
+   "address": "0x1488fba40",
    "functionLength": 333,
    "rowLength": 333,
    "normalizedSha256": "dbb8599174b042b54cf7241b1524ca7e478ae70fde5cafc36db42a6e1557bc4f"
   },
+  "ace.cActionController::changeActionRequest246649": {
+   "address": "0x14746ff30",
+   "functionLength": 155,
+   "rowLength": 155,
+   "normalizedSha256": "9171ef2b661fab2066a00a7df498426118489fa2193be69ead3ce3113d55ba8a"
+  },
+  "ace.cActionController::get_CurrentAction246641": {
+   "address": "0x14746fa70",
+   "functionLength": 85,
+   "rowLength": 85,
+   "normalizedSha256": "692da310734ccb79ada80d05ad019e8bb01d25681ee88fb4d4dbed1ba6b838ff"
+  },
+  "ace.cActionIDHolder::getActionCategory245590": {
+   "address": "0x147a84310",
+   "functionLength": 234,
+   "rowLength": 234,
+   "normalizedSha256": "c27fe7140278aa9a8275d19b1ef20de78a33ff98e6dde68d3a3a7f4212484fb2"
+  },
   "ace.user_data.ActionID.<>c::<onLoad>b__19_11026471": {
-   "address": "0x144e4a060",
+   "address": "0x144e49e20",
    "functionLength": 178,
    "rowLength": 178,
    "normalizedSha256": "6b6706471bcee8492a6bc66f2fb4df5d372b3a2b4fd2d2ca61f1312d7a86ae1d"
   },
   "ace.user_data.ActionID.cID::get_ActionGuid245340": {
-   "address": "0x1445a1500",
+   "address": "0x1445a12c0",
    "functionLength": 167,
    "rowLength": 167,
    "normalizedSha256": "4ca608bd92ef950f7c2079d4eae1e989062a7cf5548d1e8a5fc32dd59c1bee6c"
   },
   "ace.user_data.ActionParam.<>c::<updateOverrideActionDic>b__16_01026488": {
-   "address": "0x14487b2a0",
+   "address": "0x14487b060",
    "functionLength": 32,
    "rowLength": 32,
    "normalizedSha256": "09231a8701c562c7cad98cbcdfe287f5731009d84ba913e4a0f72d8262c99cdd"
   },
   "ace.user_data.ActionParam.<>c::<updateOverrideActionDic>b__16_11026489": {
-   "address": "0x146229590",
-   "functionLength": 48,
+   "address": "0x146229350",
+   "functionLength": 16,
    "rowLength": 16,
-   "normalizedSha256": "cb785c0f18318e30964fa4d41c16d7591e05928c324cdd14576a01a2616526c2"
+   "normalizedSha256": "b7556747e8cc51b76365584b0a3473599eea91067ba2e0bf44680af075a15837"
   },
   "ace.user_data.ActionParam::applyParamCore245935": {
-   "address": "0x1451e3c90",
+   "address": "0x1451e3a50",
    "functionLength": 410,
    "rowLength": 410,
-   "normalizedSha256": "4a7164203a8285a381896c17d00ba4118dbcf5e07efcd86217d28cd792e021ed"
+   "normalizedSha256": "3643bdfa96b8117af2c7c2d3a1dc07d9b1c509184d911f650def29b066ed504c"
   },
   "ace.user_data.ActionParam::getActualActionGuid245937": {
-   "address": "0x1451e3fe0",
+   "address": "0x1451e3da0",
    "functionLength": 270,
    "rowLength": 270,
    "normalizedSha256": "1f7b0284b3d96575bce18de464d7c7f3b7303049d9dde41b038ab59e2f503321"
   },
   "ace.user_data.ActionParam::toBranchedParamIndex245936": {
-   "address": "0x1451e3e30",
+   "address": "0x1451e3bf0",
    "functionLength": 419,
    "rowLength": 419,
-   "normalizedSha256": "11fbe8a292b65d3375871b3eb7fa2be432600278234148cd31e7f595497bf91b"
+   "normalizedSha256": "01b262665bf3d5f3458a7b9cf46c2d887a91d6286e4ea39c51024e80f90151a3"
   },
   "ace.user_data.ActionParam::updateOverrideActionDic245929": {
-   "address": "0x1451e38f0",
+   "address": "0x1451e36b0",
    "functionLength": 400,
    "rowLength": 400,
    "normalizedSha256": "dc9bf8773b673fa3469eaad2f3045b6e922161b69cc68127a0c9d541b1c6c4a0"
   },
   "ace.user_data.EnumMaker::getEnumValue41979": {
-   "address": "0x146bf8440",
+   "address": "0x146bf8200",
    "functionLength": 164,
    "rowLength": 164,
-   "normalizedSha256": "ec72bb6a3933bfa57f94ffecea41f9dd0d1cbac9b2f886a0a2d34cb151552c2c"
+   "normalizedSha256": "c70949d7ba4bde25b33d57f9483c8c65ffca925d628d5a655dbce0b2efa6ddbe"
   },
   "app.ActionGuideViewType::getTYPEFromFixed408397": {
-   "address": "0x14465caa0",
-   "functionLength": 240,
+   "address": "0x14465c860",
+   "functionLength": 32,
    "rowLength": 32,
-   "normalizedSha256": "0ecc9df68d23461e4183b1c5df606635b421294dfd53108e3272c5256722f0c4"
+   "normalizedSha256": "3056407cfbeeb0fe24a36b96d111bf94fe68d478917b5fb66d770baac642a79c"
+  },
+  "app.CharacterBase::get_BaseActionController728344": {
+   "address": "0x1448b3470",
+   "functionLength": 12,
+   "rowLength": 12,
+   "normalizedSha256": "11bf8cd90b3eaaaa671179bbf3cfadda2a47d00feb52cb4039ed392d24bf6630"
+  },
+  "app.CharacterBase::get_CharaContext728303": {
+   "address": "0x14492a1b0",
+   "functionLength": 48,
+   "rowLength": 20,
+   "normalizedSha256": "d309cae5830d9572354b303d0e7e46371d8645deda4782a8f32f81baf34e14a8"
+  },
+  "app.CharacterBase::get_CharacterContextHolder728301": {
+   "address": "0x14b76ebe0",
+   "functionLength": 8,
+   "rowLength": 8,
+   "normalizedSha256": "9e0a6b488524a36be48bb29bfd1e2102547aa53cb0ecfee0ee12d918b0a5591a"
+  },
+  "app.CharacterBase::get_GroundInfo728354": {
+   "address": "0x14b796840",
+   "functionLength": 8,
+   "rowLength": 8,
+   "normalizedSha256": "7519c40c44703d8a0e3f4d085580e5e63930756287d59fb6f7a22dc62badee11"
   },
   "app.Em0100_51_BTable_Combat_Export::table_00bbb1bc_9652_4218_b719_4f6d46d8d6491085496": {
-   "address": "0x144edbdf0",
+   "address": "0x144edbbb0",
    "functionLength": 3900,
    "rowLength": 3900,
-   "normalizedSha256": "45785fed2a65198f9d38ccec236066e84f3d6d0dc391fcfd181b55be14862c68"
+   "normalizedSha256": "0c5689d1b601aef8d10a1a68d4c1a30b049d07c6bfeedf6f19546c545ad16107"
   },
   "app.Em0100_51_BTable_Combat_Export::table_02abc1de_5516_4a2e_9e28_d695545ca51b1085492": {
-   "address": "0x144ed5b10",
+   "address": "0x144ed58d0",
    "functionLength": 6023,
    "rowLength": 6023,
-   "normalizedSha256": "a6e8d7777bd947b3e197741057ae5fd0c5aa529f2f74c1b82c2088b3158c5672"
+   "normalizedSha256": "3dd5a0fe7b37d54f67546089122e91490aa43a02c64a715419eb41a2a955ccce"
   },
   "app.Em0100_51_BTable_Combat_Export::table_05daad9f_e53b_4b81_af22_3401ebd43fb61085507": {
-   "address": "0x144ee75d0",
+   "address": "0x144ee7390",
    "functionLength": 3900,
    "rowLength": 3900,
-   "normalizedSha256": "06e0b0ecb84bdabc453997e8d2333f7d58eaf2f90d393e18b7338d3d4ec47a89"
+   "normalizedSha256": "26f07f5ea5c2752a8e13654a5ded29c27bc369af7d6334609cb10a79fc81bb42"
   },
   "app.Em0100_51_BTable_Combat_Export::table_086f53e5_6c92_4f67_b6d8_d1e57940c6611085467": {
-   "address": "0x144ebdb60",
+   "address": "0x144ebd920",
    "functionLength": 458,
    "rowLength": 458,
    "normalizedSha256": "95344d3bed46da442aeef278ec600a1cbbcea50c1cdcf3bb071117577b103615"
   },
   "app.Em0100_51_BTable_Combat_Export::table_1dd2d453_ccad_dcdf_5a7e_21ab2448540b1085485": {
-   "address": "0x144ecd8f0",
+   "address": "0x144ecd6b0",
    "functionLength": 1756,
    "rowLength": 1756,
    "normalizedSha256": "8641f309f32f73b5eb47ac07829e0553d4e8b4d13a1a5c4805c2b0ccd2a43206"
   },
   "app.Em0100_51_BTable_Combat_Export::table_287d0d84_5ef0_4cbe_b191_81f921a214e41085476": {
-   "address": "0x144ec1e50",
+   "address": "0x144ec1c10",
    "functionLength": 6682,
    "rowLength": 6682,
-   "normalizedSha256": "4ca14ee2e6c7436a4c997ddc975664cbfc9949655981d33c27610296c3790880"
+   "normalizedSha256": "abd483393ff4c56994dd038071ae314d63e7a6deb9d07c094b617945308c6dbf"
   },
   "app.Em0100_51_BTable_Combat_Export::table_2c2362ea_4a06_bdd8_5f14_fe55101b51631085503": {
-   "address": "0x144ee3e90",
+   "address": "0x144ee3c50",
    "functionLength": 1756,
    "rowLength": 1756,
    "normalizedSha256": "6680f478b80e21823ff9ca0735109fc0c9ad822e23cfc8d9d265dae666aab806"
   },
   "app.Em0100_51_BTable_Combat_Export::table_2d545025_881e_449f_b2dc_16b86c62c4bb1085494": {
-   "address": "0x144ed8c80",
+   "address": "0x144ed8a40",
    "functionLength": 6023,
    "rowLength": 6023,
-   "normalizedSha256": "645f45b5d51d995338d9d9051905aefc08778212dee9939c9a9376d2fba2e2ca"
+   "normalizedSha256": "97b00e84ef322f361b84b31bfcd307c4c7d1fcc4a74e5f1da8634ecdf44cff19"
   },
   "app.Em0100_51_BTable_Combat_Export::table_2e0b052a_f4fa_4a84_9214_1cf2048fe5e71085499": {
-   "address": "0x144ede760",
+   "address": "0x144ede520",
    "functionLength": 4941,
    "rowLength": 4941,
-   "normalizedSha256": "8ef9843de2eb9d260dc1f3e14b6f2328f5c9c0240d0655b54d561e222e3a408c"
+   "normalizedSha256": "549d2a1216e37c091adb42421a886ae27678fd1b57a9eae5bdfc10a8c7cf38e0"
   },
   "app.Em0100_51_BTable_Combat_Export::table_2eb18f84_1215_47d0_b504_2b4541ec565e1085468": {
-   "address": "0x144ebdd30",
+   "address": "0x144ebdaf0",
    "functionLength": 458,
    "rowLength": 458,
    "normalizedSha256": "03745b68e58292c17045d27032e897e711dd00bd1aabdc50a80210e280dd86e7"
   },
   "app.Em0100_51_BTable_Combat_Export::table_33a08ab7_e780_422a_a961_7bc0f880ad101085498": {
-   "address": "0x144edd410",
+   "address": "0x144edd1d0",
    "functionLength": 4941,
    "rowLength": 4941,
-   "normalizedSha256": "950815f168ad2e61233026c7c27214d50f7d2114ae1244cb53a9e85d06028e09"
+   "normalizedSha256": "8366cf75c64f508501d47c999dfa7f9a76b1f7ef907331085c5a707e494df2ab"
   },
   "app.Em0100_51_BTable_Combat_Export::table_3a8ec326_435f_4c30_acca_34ca7a243c441085465": {
-   "address": "0x144ebd7c0",
+   "address": "0x144ebd580",
    "functionLength": 457,
    "rowLength": 457,
    "normalizedSha256": "74381e9fcd995d92b1411937c2e24c2d3489a9e21d1d04ee4ffaa2cb44248416"
   },
   "app.Em0100_51_BTable_Combat_Export::table_46486228_a0ea_4ba8_be29_ab94888edaff1085488": {
-   "address": "0x144ed10b0",
+   "address": "0x144ed0e70",
    "functionLength": 6682,
    "rowLength": 6682,
-   "normalizedSha256": "ca79c2fcf8ce6396b15effa538ffc8be41e46c99578085f91054acae98d6a233"
+   "normalizedSha256": "4d09893358bcf2a9decac340c13a8d938dcc1e2f555442577825c4d48849c983"
   },
   "app.Em0100_51_BTable_Combat_Export::table_49fa0ccc_562a_4993_a3b9_c8122484f7f71085475": {
-   "address": "0x144ec0360",
+   "address": "0x144ec0120",
    "functionLength": 6888,
    "rowLength": 6888,
-   "normalizedSha256": "c923b270cfb19bd240ca1af625611faa211da06cd5a21515b616d05d9d7b8350"
+   "normalizedSha256": "8f66210623881ce7194941cff583448fa707de6ae22842993186300251cfe1f2"
   },
   "app.Em0100_51_BTable_Combat_Export::table_4d2d6535_c71f_4edb_9623_dad0aba517151085471": {
-   "address": "0x14392a350",
+   "address": "0x14392a110",
    "functionLength": 16,
    "rowLength": 16,
    "normalizedSha256": "39cb0132d1701ed7c31f27237e01b318b065f1bf460582ab4bb3ca0f22abef48"
   },
   "app.Em0100_51_BTable_Combat_Export::table_4e14eaad_5529_4c61_beb7_ba5fdc4beeaf1085480": {
-   "address": "0x144ec68b0",
+   "address": "0x144ec6670",
    "functionLength": 5538,
    "rowLength": 5538,
-   "normalizedSha256": "123fa4295456e1a79063d89100c9c5bec2549c58d699e79418429205ffbab86b"
+   "normalizedSha256": "da5365134c6807df7299ebbd1183687330c62d38a4ff8ff7eb5a1d9f9c596357"
   },
   "app.Em0100_51_BTable_Combat_Export::table_4f0bea71_d4e9_40d5_a00a_28e6711c0d6b1085508": {
-   "address": "0x144ee8510",
+   "address": "0x144ee82d0",
    "functionLength": 3900,
    "rowLength": 3900,
-   "normalizedSha256": "1a5a317855556ea700b0d73cfa6d551b551a559245f19c119fed6f34cd6b242d"
+   "normalizedSha256": "704008419cc84e7a4043a86b5a89db2a74d1b2975effcea4b6cfa9b881d9341d"
   },
   "app.Em0100_51_BTable_Combat_Export::table_53b936ab_e6a6_422e_aea1_54eb949a47f21085477": {
-   "address": "0x144ec3870",
+   "address": "0x144ec3630",
    "functionLength": 6682,
    "rowLength": 6682,
-   "normalizedSha256": "1322acfb3b5ada44aa7b356e8e129603869236b38b7d477b6e4b7da25a70e4ff"
+   "normalizedSha256": "a5673309f8a0b223f5c39553fa0a949f14a04770f86cb134ee6a0c74e6f3cd7b"
   },
   "app.Em0100_51_BTable_Combat_Export::table_5c6f6fb7_42cc_f989_206c_3c3c96e3cd0d1085491": {
-   "address": "0x144ed5430",
+   "address": "0x144ed51f0",
    "functionLength": 1756,
    "rowLength": 1756,
    "normalizedSha256": "77a1c4d97d3031c0a1fd1fa72a3ac96fb6fd289b08856c809738b76a023f2b29"
   },
   "app.Em0100_51_BTable_Combat_Export::table_62586acc_831a_40cf_9b98_1ce6d896484b1085461": {
-   "address": "0x144ebb630",
+   "address": "0x144ebb3f0",
    "functionLength": 5151,
    "rowLength": 5151,
    "normalizedSha256": "9cb433756d63d28f3edc03be73bf3a45e3bd129ff19f7829371dc3b2d857ab18"
   },
   "app.Em0100_51_BTable_Combat_Export::table_628c730d_f581_43b0_b3cf_65a9edca38a01085482": {
-   "address": "0x144ec9840",
+   "address": "0x144ec9600",
    "functionLength": 6023,
    "rowLength": 6023,
-   "normalizedSha256": "83a52a4976028fcc558992382e630c70909c1f7da79cbae3a3b02b73a282ce97"
+   "normalizedSha256": "e280a4573421f422332299791d533374d6dfbbb709c4a527bedf6e6c1b2e7f58"
   },
   "app.Em0100_51_BTable_Combat_Export::table_671a9e21_af29_4be2_acaa_6901d234a2781085506": {
-   "address": "0x144ee6450",
+   "address": "0x144ee6210",
    "functionLength": 4466,
    "rowLength": 4466,
-   "normalizedSha256": "ac5690fcfb23ba5020229260b73a3943cd84a825f0d872bfff23d197d40969c9"
+   "normalizedSha256": "6945fc4fee72d4a05afd22ac90749342908a9613df8c5d445482afa80ef14614"
   },
   "app.Em0100_51_BTable_Combat_Export::table_7a58795d_ca2d_48c9_a886_118acc2a3c9f1085481": {
-   "address": "0x144ec7e60",
+   "address": "0x144ec7c20",
    "functionLength": 6621,
    "rowLength": 6621,
-   "normalizedSha256": "2c833f3a1252750fb6862d994a6a9d0adbbd31827f8c80e61358c3595a830c79"
+   "normalizedSha256": "73e376682898ffec706c41f91e42c0f44221244e4a4eb231d83ae1dc3bf5a16f"
   },
   "app.Em0100_51_BTable_Combat_Export::table_7ae61adb_5811_4c97_abe7_b019444d94d91085484": {
-   "address": "0x144ecc9b0",
+   "address": "0x144ecc770",
    "functionLength": 3900,
    "rowLength": 3900,
-   "normalizedSha256": "45407565746cbac07bf64ad2448a4dd725beae6f751d583ecc2ebd6d7a774d7f"
+   "normalizedSha256": "92f936fb38f28d1330be59466ae0f1c4c2e83aec79440ef1065988c8632794f9"
   },
   "app.Em0100_51_BTable_Combat_Export::table_7b887a5c_eacc_42bc_a787_2fe66d2be4e11085470": {
-   "address": "0x144ebe160",
+   "address": "0x144ebdf20",
    "functionLength": 1660,
    "rowLength": 1660,
    "normalizedSha256": "1f667b55c9b2780ba42fc1614c2dbebbcfc92c297d1aa7775aea7f51fdcb2ce9"
   },
   "app.Em0100_51_BTable_Combat_Export::table_7d099553_e442_4b20_bd4b_a6f1b01e5d4c1085501": {
-   "address": "0x144ee14e0",
+   "address": "0x144ee12a0",
    "functionLength": 5724,
    "rowLength": 5724,
-   "normalizedSha256": "624f95188aa63ac6eb1b71f97e8248eb5a9b2b6e45d4cebf68af269eff876514"
+   "normalizedSha256": "4ebdb7a5ea1e77c95fdbbcbe092cee1c4c1c28edcba8434f54802d7440f42430"
   },
   "app.Em0100_51_BTable_Combat_Export::table_8339e879_2aad_46fe_bf37_14c4e9f45d641085464": {
-   "address": "0x144ebd5f0",
+   "address": "0x144ebd3b0",
    "functionLength": 463,
    "rowLength": 463,
    "normalizedSha256": "5b32a9065c75c017e186707b6b7e95cf216d8c8b043fec31567df9772935ad1d"
   },
   "app.Em0100_51_BTable_Combat_Export::table_845e61c3_06e7_45ec_8dfe_b449e62503391085486": {
-   "address": "0x144ecdfd0",
+   "address": "0x144ecdd90",
    "functionLength": 5604,
    "rowLength": 5604,
-   "normalizedSha256": "53c302d3b14d9717f55397c72b4f67ba1a4147dd974b1ae5cc6cfadcae562f14"
+   "normalizedSha256": "1068746703eeec0273bd2e85eed6c7104b18bb90a1f42d59b6c1096ad9454969"
   },
   "app.Em0100_51_BTable_Combat_Export::table_899ceb44_1da8_40ab_b3de_0811211a171c1085495": {
-   "address": "0x144eda410",
+   "address": "0x144eda1d0",
    "functionLength": 6621,
    "rowLength": 6621,
-   "normalizedSha256": "de36dac03ae945a7c00a77bda691dabe0b65bf6868b8a5db68ecd39d43932bcd"
+   "normalizedSha256": "a850def42bede4572a10e7358fa51ebf6ce5a05a4a692411c462425dc1939ca7"
   },
   "app.Em0100_51_BTable_Combat_Export::table_8ebf4fd3_24b2_48e5_9505_84afb3c2d1ec1085462": {
-   "address": "0x144ebca50",
+   "address": "0x144ebc810",
    "functionLength": 1474,
    "rowLength": 1474,
    "normalizedSha256": "cc28598342d62f1f4d9ab342e3b88a48063b1d2ee529a4b5967c1cd53451ac95"
   },
   "app.Em0100_51_BTable_Combat_Export::table_9187a516_ad5e_4509_9fc6_52bfab24b1711085483": {
-   "address": "0x144ecafd0",
+   "address": "0x144ecad90",
    "functionLength": 6621,
    "rowLength": 6621,
-   "normalizedSha256": "872e3a3953bccb76e64b05c52d2da5f9921eb94483c3a1ff492202081ee631e6"
+   "normalizedSha256": "2119cf86ffdde189babd2df9b12f5e948f15c1a9544f041a130d2bb1b294e466"
   },
   "app.Em0100_51_BTable_Combat_Export::table_96d6ba15_f15e_4e9c_b728_cc595d7ddc3b1085493": {
-   "address": "0x144ed72a0",
+   "address": "0x144ed7060",
    "functionLength": 6621,
    "rowLength": 6621,
-   "normalizedSha256": "fea3719baf33552410c427116edd3282dabb7b39723a79d1961a5be9765414be"
+   "normalizedSha256": "20e2850921ff2e702fd08e05699aff33b71794b64307512245a79c7802ae93ba"
   },
   "app.Em0100_51_BTable_Combat_Export::table_9a95642d_8e57_19f4_3718_4ef329edf3451085479": {
-   "address": "0x144ec61d0",
+   "address": "0x144ec5f90",
    "functionLength": 1756,
    "rowLength": 1756,
    "normalizedSha256": "8aa1f0859f2ce8ad0283981ace5f00c52e4509a97f0c65737547559e22f7ac2a"
   },
   "app.Em0100_51_BTable_Combat_Export::table_a30e6b92_4ac4_414b_b38b_acde5c4fac391085487": {
-   "address": "0x144ecf5c0",
+   "address": "0x144ecf380",
    "functionLength": 6888,
    "rowLength": 6888,
-   "normalizedSha256": "7673275fc10a75dc9f591b77ff29856b54db84187eb75a694deb43a52b4a47d3"
+   "normalizedSha256": "a4aae687558daee49831276f0d8a82c895258744b3424bed4cc7956d5a006c9d"
   },
   "app.Em0100_51_BTable_Combat_Export::table_a4127d05_4098_2a2e_11fc_7a7c5c2ed0d81085473": {
-   "address": "0x144ebe7e0",
+   "address": "0x144ebe5a0",
    "functionLength": 1753,
    "rowLength": 1753,
    "normalizedSha256": "d5107ccfc78975a1e3db1a4e3bb0389977dc4a702a0a5aafa3a3d786e70dfc2a"
   },
   "app.Em0100_51_BTable_Combat_Export::table_a80cd68c_f940_4ced_a475_ab59fdf3b5a71085500": {
-   "address": "0x144edfab0",
+   "address": "0x144edf870",
    "functionLength": 6692,
    "rowLength": 6692,
-   "normalizedSha256": "f5f2400bd4e475b2717a28099a19dfd0a0d1e0289c2900e585254756080b216d"
+   "normalizedSha256": "e70cd0bc5a69a38596117d70e399cd10b532e54f5fcece6c44881b300fde6431"
   },
   "app.Em0100_51_BTable_Combat_Export::table_a9c78cb5_a50a_4dd6_b421_91c26ea30ebb1085490": {
-   "address": "0x144ed44f0",
+   "address": "0x144ed42b0",
    "functionLength": 3900,
    "rowLength": 3900,
-   "normalizedSha256": "093dbf9fec0953e27a09dee6438d4a6f9b7c0cbcce537ecf6c52418ce0d61462"
+   "normalizedSha256": "e58b6e42eba90755f0a7a5ca679eb3c87b67b2c137e8a6751a6ee88cac73b6d3"
   },
   "app.Em0100_51_BTable_Combat_Export::table_c0ac5a5d_66d9_40aa_b22e_47f1ddc629921085466": {
-   "address": "0x144ebd990",
+   "address": "0x144ebd750",
    "functionLength": 458,
    "rowLength": 458,
    "normalizedSha256": "42f5550e51f7f7c95f147c9fc40637a77de02f85b8d498cbdfa360354977aa2c"
   },
   "app.Em0100_51_BTable_Combat_Export::table_cd3eb33f_1e14_4893_acc0_5ff37817473f1085489": {
-   "address": "0x144ed2ad0",
+   "address": "0x144ed2890",
    "functionLength": 6682,
    "rowLength": 6682,
-   "normalizedSha256": "86b7bac83a70c6f94aea5ad040d87c772de7f10e1bdff6dd3d3ab21bc76a974d"
+   "normalizedSha256": "f84f34cf4713e0f521d76be0bc5d7ca58a5df6510b06c0b84849d7509716ba3e"
   },
   "app.Em0100_51_BTable_Combat_Export::table_d3cb79f2_15a9_4d65_b980_d5717c8555c71085502": {
-   "address": "0x144ee2b40",
+   "address": "0x144ee2900",
    "functionLength": 4941,
    "rowLength": 4941,
-   "normalizedSha256": "43e8ec1356c39600b68fb7129519f45f578cbead8a6f39ecf43bb11909098e6e"
+   "normalizedSha256": "0d48c1db83c392a0793002d339a42cc66176295966e3799fde7320459e637f4a"
   },
   "app.Em0100_51_BTable_Combat_Export::table_d6f1f8f7_443b_4914_bafa_2ee5f00104941085472": {
-   "address": "0x14392a350",
+   "address": "0x14392a110",
    "functionLength": 16,
    "rowLength": 16,
    "normalizedSha256": "39cb0132d1701ed7c31f27237e01b318b065f1bf460582ab4bb3ca0f22abef48"
   },
   "app.Em0100_51_BTable_Combat_Export::table_e42a87d6_42bd_4370_aabb_bdbecedd8d8c1085504": {
-   "address": "0x144ee4570",
+   "address": "0x144ee4330",
    "functionLength": 3410,
    "rowLength": 3410,
-   "normalizedSha256": "f46f46c7e4b27eb79856d14308eeb49a6130e02e7a5631a2ce384698c2ee35fd"
+   "normalizedSha256": "5fcb5123a1420cf44eb5203ddaf0ad51e5d452171cf50b8bd6abd8e9dab72a2d"
   },
   "app.Em0100_51_BTable_Combat_Export::table_ecbd24f1_352e_9586_2a8f_25df125a490d1085497": {
-   "address": "0x144edcd30",
+   "address": "0x144edcaf0",
    "functionLength": 1756,
    "rowLength": 1756,
    "normalizedSha256": "ed17b945fac50b6af17a657d85e9fa790d5926e1f1a6d3c81d0504628621fde9"
   },
   "app.Em0100_51_BTable_Combat_Export::table_ee90943e_02ea_45df_9b30_a61c3beb8f411085505": {
-   "address": "0x144ee52d0",
+   "address": "0x144ee5090",
    "functionLength": 4466,
    "rowLength": 4466,
-   "normalizedSha256": "1f503e9e79e25992726c3f20f184ec6f84099a23a17f92d74e978ee1bd14c9d3"
+   "normalizedSha256": "11c73c8c60d300b371a9b7b41d805612fff5a63e4a2ce78b0310dc6ea23ae3a2"
   },
   "app.Em0100_51_BTable_Combat_Export::table_ef02aa94_4f52_4282_9353_e9a41e1944b41085463": {
-   "address": "0x144ebd020",
+   "address": "0x144ebcde0",
    "functionLength": 1483,
    "rowLength": 1483,
    "normalizedSha256": "5c764fff31848de06996d0fee1379155fd60b9535e1acb6ad49363cf2cded03d"
   },
   "app.Em0100_51_BTable_Combat_Export::table_f49c295b_1677_4e32_8717_8b3e356a20a31085478": {
-   "address": "0x144ec5290",
+   "address": "0x144ec5050",
    "functionLength": 3900,
    "rowLength": 3900,
-   "normalizedSha256": "24fe548afc47bc2e9ed0d2a639b75749dbbaed2f2abd32897f79b09462873cdf"
+   "normalizedSha256": "b84e2d5d00518111da05f293d4188adfecc1565622d1a7fc32d43a151a02a1aa"
   },
   "app.Em0100_51_BTable_Combat_Export::table_f72b6dd1_c809_46a0_9638_360a479756261085469": {
-   "address": "0x144ebdf00",
+   "address": "0x144ebdcc0",
    "functionLength": 606,
    "rowLength": 606,
    "normalizedSha256": "8bbe0f7b524eb02ffb364a728301e76619da9ff9bce60d3a6ed6a7ed911988ad"
   },
   "app.Em0100_51_BTable_Combat_Export::table_fafee0b3_6625_4abd_90f4_ce4fb8d1ab461085474": {
-   "address": "0x144ebeec0",
+   "address": "0x144ebec80",
    "functionLength": 5280,
    "rowLength": 5280,
-   "normalizedSha256": "782b276c7899b61dc7b1dbc3971b1e7ee80f1d0886f0724e36fa79f7a58524fe"
+   "normalizedSha256": "43425d1e0f0787f81db0c7195b0051e957b7dc9db7555e8784c0777b46d596db"
+  },
+  "app.Em0154_00BTableCommand.cSideWalkOffset::onExecute1144407": {
+   "address": "0x146d997d0",
+   "functionLength": 663,
+   "rowLength": 663,
+   "normalizedSha256": "bb4d65d72933dce581d41f61903afbe92c8d4537f05a2e704ebe832e67547e41"
+  },
+  "app.Em0156_00BTableCommand.cCheckTransRailgunChargeMax::onExecute1146024": {
+   "address": "0x1466c1ff0",
+   "functionLength": 101,
+   "rowLength": 101,
+   "normalizedSha256": "1c1a71555005d7efba48592b77a290f003b6bb5757603a36c1a840a765510bb7"
+  },
+  "app.Em0160_00BTableCommand.cCanAbsorbedAction::onExecute1149450": {
+   "address": "0x14606cd50",
+   "functionLength": 95,
+   "rowLength": 95,
+   "normalizedSha256": "4be0a18f3e670ed2988707af12cc3da10341c580316a6c18db9c43751fc156bb"
+  },
+  "app.Em0160_00BTableCommand.cCheckChangeMode::onExecute1149452": {
+   "address": "0x146355cc0",
+   "functionLength": 196,
+   "rowLength": 196,
+   "normalizedSha256": "18723e815cadeedf91781cd1903dfa048c4cc1efcabced03aa116ba30cd398ee"
   },
   "app.Em0160_00_BTable_Combat_Export::table_02a6eef2_0f4f_4c1d_bab5_d3fb04e998271090097": {
-   "address": "0x144f67d90",
+   "address": "0x144f67b50",
    "functionLength": 9949,
    "rowLength": 9949,
-   "normalizedSha256": "2bb76b29123cc00fd990e2bbb2c2695f4ffddc86d4a1d5bc98c5c4579e058ff1"
+   "normalizedSha256": "f442b0b109af36e4b0556ffacb1d791447460bd0923875132b17d632a48a74eb"
   },
   "app.Em0160_00_BTable_Combat_Export::table_06efaa2b_99ea_430c_8c15_9a311edc07ec1090049": {
-   "address": "0x144f15f60",
+   "address": "0x144f15d20",
    "functionLength": 12010,
    "rowLength": 12010,
-   "normalizedSha256": "f56e65448bc770ca9b5327bd8122d1910cc4bb600e8d8c606d534e384dba7b3c"
+   "normalizedSha256": "8df3d537d56a75d4cd39b00fa7b09537353c0e1da4c5b2c0b6ce15ce385659cf"
   },
   "app.Em0160_00_BTable_Combat_Export::table_08b2349f_2bf1_4ccf_9943_0bba5dc549ec1090061": {
-   "address": "0x144f2b770",
+   "address": "0x144f2b530",
    "functionLength": 5724,
    "rowLength": 5724,
-   "normalizedSha256": "9002457b09cb2d72cf4898fe919884b32973a0c599b6a6a99ba64cfba85a395c"
+   "normalizedSha256": "300bf9f7cb9625b112d08a244ebbc10a4a41996cda3b9c7fc010ba96ab963a13"
   },
   "app.Em0160_00_BTable_Combat_Export::table_0a60adb8_c942_4401_b92c_ca7502d8b59a1090064": {
-   "address": "0x144f302e0",
+   "address": "0x144f300a0",
    "functionLength": 6846,
    "rowLength": 6846,
-   "normalizedSha256": "fdabf47c6594b3aa613aa034289cb392621cb5fbbb072d9aac98af9718fcad2f"
+   "normalizedSha256": "c45d9c608e0ade646a35c76310f2bcad21420a139b5c106273b9fdb8a219756f"
   },
   "app.Em0160_00_BTable_Combat_Export::table_11b9814d_8438_433a_850b_b34d29fa6bd81090033": {
-   "address": "0x144f01cf0",
+   "address": "0x144f01ab0",
    "functionLength": 9894,
    "rowLength": 9894,
-   "normalizedSha256": "9d27c8af0e95e87d7b645c3c9b1088ba5cdc1ee2bcc7a0076e3534947b502326"
+   "normalizedSha256": "858c98cd064d0fc6b42ecc9270946783fad1dbf1e3ffa0b556a2b1d1d138d7cb"
   },
   "app.Em0160_00_BTable_Combat_Export::table_146f01ed_7598_425f_9d25_85ca064c7be91090069": {
-   "address": "0x144f367a0",
+   "address": "0x144f36560",
    "functionLength": 6846,
    "rowLength": 6846,
-   "normalizedSha256": "6d9bd433ada763a42726447844e41627095428873bda1b07b7fbd90d60e21ef9"
+   "normalizedSha256": "2d87bb3dd5cc2242ac6941e48cb56facce98bae408eb0f5f461683517fdbe742"
   },
   "app.Em0160_00_BTable_Combat_Export::table_1554c2ed_e8b5_4c5e_9242_82cd000758b31090058": {
-   "address": "0x144f285b0",
+   "address": "0x144f28370",
    "functionLength": 6846,
    "rowLength": 6846,
-   "normalizedSha256": "8e0285406f57252cb728ebed4bd5c63a0f40bff903a59a3ee9e6befd5298345e"
+   "normalizedSha256": "dd9055d0f11b63b798133dc5530a3d09f5496317dd4540c3da46e35697181853"
   },
   "app.Em0160_00_BTable_Combat_Export::table_18ec800e_cf81_4d1c_bc71_380c60d5b7921090085": {
-   "address": "0x144f500e0",
+   "address": "0x144f4fea0",
    "functionLength": 10994,
    "rowLength": 10994,
-   "normalizedSha256": "24635c181c3e4d3777f9173d7bb4e823e6da07fa836cc2ebc6844ea6f310b23e"
+   "normalizedSha256": "b961dc209e6fe4339ac99552dfcff74b23554ad5dbc374d4161e363404786018"
   },
   "app.Em0160_00_BTable_Combat_Export::table_19108ff0_c741_444d_93b7_1fe8fd943a231090019": {
-   "address": "0x144ef86b0",
+   "address": "0x144ef8470",
    "functionLength": 2483,
    "rowLength": 2483,
    "normalizedSha256": "b4c3252c7a6b0a617bd759f5148a4983a062f3033cc5119990f0b4718e4aa79a"
   },
   "app.Em0160_00_BTable_Combat_Export::table_1ab5c6b6_4392_48bb_9b26_5fcbacc167fa1090065": {
-   "address": "0x144f31da0",
+   "address": "0x144f31b60",
    "functionLength": 4120,
    "rowLength": 4120,
-   "normalizedSha256": "0b291081bc4305a17c1a550f6b461fe1051a5e35ad92ea1eea2bf728cd5c3d93"
+   "normalizedSha256": "4900f4bb014f111514cc7f56fc2c787457a5b7e2e8693aea6563d03c16af3e0e"
   },
   "app.Em0160_00_BTable_Combat_Export::table_1d5b435f_5c4e_4edd_8313_1830102b22f51090034": {
-   "address": "0x144f043a0",
+   "address": "0x144f04160",
    "functionLength": 8433,
    "rowLength": 8433,
-   "normalizedSha256": "6e279cdaf184c3d8c37d0c8c20fda43c8c3895d82d907eecec829ac91dc89092"
+   "normalizedSha256": "4ebc957e91c3949968489f261ba5c28013dc16bb5865bd1911fa2d570f809118"
   },
   "app.Em0160_00_BTable_Combat_Export::table_1e2aa3da_0306_44e1_b3fc_4309ee3cdaad1090106": {
-   "address": "0x144f7c3e0",
+   "address": "0x144f7c1a0",
    "functionLength": 9545,
    "rowLength": 9545,
-   "normalizedSha256": "ceecd29eabd41eda31abe47c30a629fc79588cea4a425af196daab7aa8b39423"
+   "normalizedSha256": "6ea23a392fd5e318d08168dc61435d06ef4afbe769eeaf4ae920aa1944242bb8"
   },
   "app.Em0160_00_BTable_Combat_Export::table_2626dca8_8c82_4678_895b_ca8ba6b5353d1090079": {
-   "address": "0x144f45db0",
+   "address": "0x144f45b70",
    "functionLength": 9437,
    "rowLength": 9437,
-   "normalizedSha256": "f306da02e1de9f92f90f59fb8855ec0cc13dac58d5fd97fda281ff78028c80d0"
+   "normalizedSha256": "3ac084934be7df4bc47b992fb9b95565ff73671ae94da0e80044260b6e27835b"
   },
   "app.Em0160_00_BTable_Combat_Export::table_27746b4b_8b69_4f46_8ea0_0a8368da141d1090063": {
-   "address": "0x144f2e870",
+   "address": "0x144f2e630",
    "functionLength": 6758,
    "rowLength": 6758,
-   "normalizedSha256": "01eca95114c45b54d1ac8d896d4fc1c213dea6839bde2df7e1d883892fc0ee7b"
+   "normalizedSha256": "6f59b1b52d0904f67f72e409e219ca4ae2847dc6ba61dbb407389b1adbdc3316"
   },
   "app.Em0160_00_BTable_Combat_Export::table_27bf6c01_e4b2_46ce_a23f_5b909f0537a51090094": {
-   "address": "0x144f64550",
+   "address": "0x144f64310",
    "functionLength": 8433,
    "rowLength": 8433,
-   "normalizedSha256": "7c42deffa65ba813461dca14252cee8ed33b748fa11d3db9f9aff400d99f32a1"
+   "normalizedSha256": "2f13bb3484a6d8b5e60acb01344585dcac6c7ff96a0a83ead4bb476dd8045c85"
   },
   "app.Em0160_00_BTable_Combat_Export::table_280213f3_be4f_986b_e4fc_72b2d06d5e9d1090048": {
-   "address": "0x144f15880",
+   "address": "0x144f15640",
    "functionLength": 1756,
    "rowLength": 1756,
    "normalizedSha256": "508203753430201653af3e6e7959e79f9c38d414d00b51120be2865c93aee134"
   },
   "app.Em0160_00_BTable_Combat_Export::table_2cb7fde8_8f4e_4330_ad2d_acda64618c111090082": {
-   "address": "0x144f4cd00",
+   "address": "0x144f4cac0",
    "functionLength": 8087,
    "rowLength": 8087,
-   "normalizedSha256": "3ea5f9b61a697774933712befb12025c7eda00bbcaf182475724eaa79547c457"
+   "normalizedSha256": "1e7efa1edc49ff33df009f4733ea1a59c829611feecf09378a1d5681c857e953"
   },
   "app.Em0160_00_BTable_Combat_Export::table_2d063ee7_2a7d_4c29_b49d_9b671760e8931090059": {
-   "address": "0x144f2a070",
+   "address": "0x144f29e30",
    "functionLength": 4120,
    "rowLength": 4120,
-   "normalizedSha256": "e26e671b1263862f7628de7da3d9212676b583c10e435da656a07d4c144c767f"
+   "normalizedSha256": "cbe9a4fa5387546b702d4fd35299c88fa618f066e9111d324d7b11d530b2414a"
   },
   "app.Em0160_00_BTable_Combat_Export::table_2e6cae45_188c_4822_b800_d1213705b8d21090074": {
-   "address": "0x144f3d3b0",
+   "address": "0x144f3d170",
    "functionLength": 11129,
    "rowLength": 11129,
-   "normalizedSha256": "e54acbf9352405ee92195ee2b2e50a6fbfeb11f886a57423b4b1ac83655125a6"
+   "normalizedSha256": "3d549eafd46cda223946be171fbd49544df4c82fcb96eab2b9cbfc3a2a11eb7d"
   },
   "app.Em0160_00_BTable_Combat_Export::table_31f2792e_6508_12ee_8dd1_0b7a128a850c1090084": {
-   "address": "0x144f4fa00",
+   "address": "0x144f4f7c0",
    "functionLength": 1756,
    "rowLength": 1756,
    "normalizedSha256": "e254e9fd417a6c6bae91cffe2f0fe9f2b709f4a564e55cf01b77d3e33a69e9e0"
   },
   "app.Em0160_00_BTable_Combat_Export::table_33b1807b_e4a8_4d30_b5f2_f23c1715a7431090067": {
-   "address": "0x144f334a0",
+   "address": "0x144f33260",
    "functionLength": 6057,
    "rowLength": 6057,
-   "normalizedSha256": "424ac0f9846f66a2654507f22dce4f9a9dd1398161a1b44704399c4f0f5153d5"
+   "normalizedSha256": "0bd0bc8bf55ad33f6aeda1d40da057c9808fa6002e5d70cbe5d6d59bf9ecd461"
   },
   "app.Em0160_00_BTable_Combat_Export::table_37b273db_211b_4e48_8195_71557e9e33521090086": {
-   "address": "0x144f52be0",
+   "address": "0x144f529a0",
    "functionLength": 12581,
    "rowLength": 12581,
-   "normalizedSha256": "f11910077564526436c6b1590293c9dc4597637c7b82b82f51bdef8f2ccf6695"
+   "normalizedSha256": "b5fcacf2d84f1f2647aa13235100102f9f5b02dfb0a1a825a795b55cda16a76e"
   },
   "app.Em0160_00_BTable_Combat_Export::table_37b2c5ef_58a7_4d26_a821_15f385c890ee1090045": {
-   "address": "0x144f14c80",
+   "address": "0x144f14a40",
    "functionLength": 1014,
    "rowLength": 1014,
    "normalizedSha256": "1583dcf74299412c376bd0ac177bd54a07fd8cf4be117a2d170b26ec73afa6a3"
   },
   "app.Em0160_00_BTable_Combat_Export::table_3c7e275c_c80e_4bdc_9a38_0115d89c0bbf1090062": {
-   "address": "0x144f2cdd0",
+   "address": "0x144f2cb90",
    "functionLength": 6806,
    "rowLength": 6806,
-   "normalizedSha256": "d5dde3be19fbd08ba90784f52bdbd186e1a2af520970a0d6f4f1c6205cfab9b1"
+   "normalizedSha256": "d7afd3d1048d20e6f8a89688054f9557acc89eab1336edc1a469571c86a5e21d"
   },
   "app.Em0160_00_BTable_Combat_Export::table_3cb79e77_4c96_47b7_803e_96684f9eb38e1090076": {
-   "address": "0x144f42760",
+   "address": "0x144f42520",
    "functionLength": 7938,
    "rowLength": 7938,
-   "normalizedSha256": "4203e7d7ff1757fe9a41fa50dc687422daa4c4613cbb154b4324690c5b6a4ff4"
+   "normalizedSha256": "0a6c1fad9653e45bccd07ad9038a72e01b542aae05656748684ffa441cc7f610"
   },
   "app.Em0160_00_BTable_Combat_Export::table_3e0dd925_37e0_4daa_9092_06874c426a4a1090093": {
-   "address": "0x144f61ea0",
+   "address": "0x144f61c60",
    "functionLength": 9894,
    "rowLength": 9894,
-   "normalizedSha256": "b486da1b6002c6cfe9ae29b27ba63f0853ab9c9854982ffb036eb9a4d34da9ff"
+   "normalizedSha256": "963cb69e2608e8e806599bc168f7c79b8afcefd53305c7c3cb3bbf20dbac2c07"
   },
   "app.Em0160_00_BTable_Combat_Export::table_401f851d_0944_b6a4_f25e_cab954380fd21090030": {
-   "address": "0x144efbe10",
+   "address": "0x144efbbd0",
    "functionLength": 1756,
    "rowLength": 1756,
    "normalizedSha256": "bb6e10c98a73a1f01c12b8569bbeee0162b6719cd82c9dd7d748ce2378cbc142"
   },
   "app.Em0160_00_BTable_Combat_Export::table_481bcf74_f3bc_4aae_bf20_a6c0d89454591090056": {
-   "address": "0x144f250a0",
+   "address": "0x144f24e60",
    "functionLength": 6806,
    "rowLength": 6806,
-   "normalizedSha256": "5e3fb6cf1233a6d589f96fee30cf5923ba0cfdb5b0b109ced1d82802068729dc"
+   "normalizedSha256": "32863628bf067f289bfdff1dd203a4919240d7bfb55ceeaff67f1b8cc1ecc3aa"
   },
   "app.Em0160_00_BTable_Combat_Export::table_4d2e34e1_6111_4bbf_b545_90335cf095691090039": {
-   "address": "0x144f0db60",
+   "address": "0x144f0d920",
    "functionLength": 11931,
    "rowLength": 11931,
-   "normalizedSha256": "be3fd00dd93f7c15c530c8bb6fca64e851a8e488007783d884ee151e8b92bfd5"
+   "normalizedSha256": "a68cb2d6a6923bdde35dbad3c7e22dd01c3b3f14fe370e909d99f1c3c0ca0ed9"
   },
   "app.Em0160_00_BTable_Combat_Export::table_53df7328_9599_4091_9217_006154ab2b431090057": {
-   "address": "0x144f26b40",
+   "address": "0x144f26900",
    "functionLength": 6758,
    "rowLength": 6758,
-   "normalizedSha256": "9ae99bc94a71b865773970c3073c4b6df2ec12be4443e11561e166d20643af7b"
+   "normalizedSha256": "6d787a86f7b1dfc7ea960b207c25b4c0286ba9eea4d4e7fa9dbb586b8e2522d1"
   },
   "app.Em0160_00_BTable_Combat_Export::table_549db4b3_1920_471b_ada5_76f193ced0aa1090081": {
-   "address": "0x144f4a9b0",
+   "address": "0x144f4a770",
    "functionLength": 9033,
    "rowLength": 9033,
-   "normalizedSha256": "376656e3ab977f737ffa7ce8d15f71969d7758782e59d755c9dbe97100c21d67"
+   "normalizedSha256": "ad5a0aef834a4ae55f4abfcabe826e01c76f9512461ca939ea46c90eec36794b"
   },
   "app.Em0160_00_BTable_Combat_Export::table_565d1977_2f45_e68f_dfab_4e7e18ea3e3f1090078": {
-   "address": "0x144f456d0",
+   "address": "0x144f45490",
    "functionLength": 1756,
    "rowLength": 1756,
    "normalizedSha256": "024fcbafeeb389ff96b32ab4c294a3fda3b3d23f91d70b9f9593c47b482282b3"
   },
   "app.Em0160_00_BTable_Combat_Export::table_56cebebb_4ce5_4514_8239_55c6e76e017d1090077": {
-   "address": "0x144f44670",
+   "address": "0x144f44430",
    "functionLength": 4189,
    "rowLength": 4189,
-   "normalizedSha256": "1f34cd820c595411d25189e993dcd253c385c06e14c28e07b4fcfcfec69987d2"
+   "normalizedSha256": "0b2721be9301ffbaba14ccf33a8793a1b6814329f95ae0e4349807375885c91d"
   },
   "app.Em0160_00_BTable_Combat_Export::table_59fa7ccf_cf48_4a3b_b190_1872247469731090050": {
-   "address": "0x144f18e50",
+   "address": "0x144f18c10",
    "functionLength": 14583,
    "rowLength": 14583,
-   "normalizedSha256": "62179d63f088c95f7fbb65f2a8579fd00f51499a886bab8d1fef53fc1cb10d69"
+   "normalizedSha256": "b4f1c3f824de55064b525520bdd41cf42ff63024db1e7c773335a838cd510e55"
   },
   "app.Em0160_00_BTable_Combat_Export::table_5a22a4c3_3c11_25f3_d1f8_192b3de274701090042": {
-   "address": "0x144f13da0",
+   "address": "0x144f13b60",
    "functionLength": 1756,
    "rowLength": 1756,
    "normalizedSha256": "4b1e0afccb5ee7fa8c2c9c3c6f964d984e077524fc6f7b793f051324e6e977b9"
   },
   "app.Em0160_00_BTable_Combat_Export::table_5fb60208_edc9_4cda_85fe_d11b983b71141090087": {
-   "address": "0x144f55d10",
+   "address": "0x144f55ad0",
    "functionLength": 11048,
    "rowLength": 11048,
-   "normalizedSha256": "97b72ae76422cbd448edabac9ad4eb3efcfe9b3ae86146f89b51ebaa98729a5a"
+   "normalizedSha256": "3ef22f9ef3d40c620932433499606872619476439822eea9a53dd0fab7aa04d6"
   },
   "app.Em0160_00_BTable_Combat_Export::table_66995e6f_7374_4b90_8921_28e6403592801090028": {
-   "address": "0x144efb170",
+   "address": "0x144efaf30",
    "functionLength": 3219,
    "rowLength": 3219,
    "normalizedSha256": "97587e2c8c175f1b8cc2602ef5d099d986b78226d5c4af3e204f721696ef2021"
   },
   "app.Em0160_00_BTable_Combat_Export::table_6b4753f3_7633_4ce9_991c_e561863479e31090031": {
-   "address": "0x144efc4f0",
+   "address": "0x144efc2b0",
    "functionLength": 10613,
    "rowLength": 10613,
-   "normalizedSha256": "55ef7ccbe261a3c033acd5b57dbc6b11046517ce4d4a14d6d1df9b072dee8ef8"
+   "normalizedSha256": "d9619b4efa542717e5050a743739584b1bdcfc91616e70fba4f17f38a44c5585"
   },
   "app.Em0160_00_BTable_Combat_Export::table_6c01d477_4620_40fd_bfdd_ddd9def1639a1090089": {
-   "address": "0x144f5ad90",
+   "address": "0x144f5ab50",
    "functionLength": 4649,
    "rowLength": 4649,
-   "normalizedSha256": "a24691bbfcb09d09f4732a14a59b7808db17dcd399156a71425022b3d9a6e04b"
+   "normalizedSha256": "6e3773317a9305e0ac676ce194fe2381c03049439b7685cf0b9a0cc04783f774"
   },
   "app.Em0160_00_BTable_Combat_Export::table_726cde14_fbb9_4547_9934_8734b5b5bf661090038": {
-   "address": "0x144f0a520",
+   "address": "0x144f0a2e0",
    "functionLength": 13881,
    "rowLength": 13881,
-   "normalizedSha256": "ba4d322c0f8594c9e12e048b99e2162f5d59e14bfd6c1abae85b43af50d9ef7c"
+   "normalizedSha256": "5f05ba1152351429492213488061256aac78f030e55bb059d6103cdba3ed8c2d"
   },
   "app.Em0160_00_BTable_Combat_Export::table_739f9eb7_5542_4d02_888d_d680ca68a00d1090073": {
-   "address": "0x144f3b180",
+   "address": "0x144f3af40",
    "functionLength": 8750,
    "rowLength": 8750,
-   "normalizedSha256": "9ea8549699015b36cf30b80e32463574fb34a7362e6f0613ba98bdaa690b94d1"
+   "normalizedSha256": "f8e0a14ae568c1139f798f2233726844aefb379eb784d3951655add4642e1832"
   },
   "app.Em0160_00_BTable_Combat_Export::table_73cf9f23_93a4_51d9_e067_6a6b43c613f31090036": {
-   "address": "0x144f07500",
+   "address": "0x144f072c0",
    "functionLength": 1756,
    "rowLength": 1756,
    "normalizedSha256": "0ac44a750ba53cd2a7acb579d7c9a771e0f5bf8bca1c51d59afc0f4a9f64ef5d"
   },
   "app.Em0160_00_BTable_Combat_Export::table_74bd6c86_e422_4bc3_959c_279d717752be1090044": {
-   "address": "0x144f14880",
+   "address": "0x144f14640",
    "functionLength": 1014,
    "rowLength": 1014,
    "normalizedSha256": "8b5a699bae0ff8eeeb20351ea0cc668acfeab0385f40d1bff74b2e5e5fed1c27"
   },
   "app.Em0160_00_BTable_Combat_Export::table_79b4b04d_4574_410d_9ab0_fe31d70435071090070": {
-   "address": "0x144f38260",
+   "address": "0x144f38020",
    "functionLength": 6103,
    "rowLength": 6103,
-   "normalizedSha256": "907736bfd26000096a69d1a70abbbf684d95e1be3a59418d24d4b7f37e17c7e5"
+   "normalizedSha256": "66ddd9a666c9017bcfc476c041918bd0259704773b357200dff6be4666e23da5"
   },
   "app.Em0160_00_BTable_Combat_Export::table_80413276_22bf_45fd_b6fc_54b4f18912401090083": {
-   "address": "0x144f4eca0",
+   "address": "0x144f4ea60",
    "functionLength": 3410,
    "rowLength": 3410,
-   "normalizedSha256": "d4fad8ed090d9109b02ed6ef61395de832cde8ec5e95d3a693f2d86c50364d61"
+   "normalizedSha256": "b25764e123242e25c26eef5fdf16943feb186337664da75897e1423e166eff26"
   },
   "app.Em0160_00_BTable_Combat_Export::table_80c96ccd_9eae_44b6_4870_ab45cf4010de1090090": {
-   "address": "0x144f5bfc0",
+   "address": "0x144f5bd80",
    "functionLength": 1756,
    "rowLength": 1756,
    "normalizedSha256": "a57f4f01d1dbb9650cd0197b50e54d4f8c2b43c899e00b4a8ff0ba5db875dc9f"
   },
   "app.Em0160_00_BTable_Combat_Export::table_8349a3b3_f3c6_4cf0_b90e_0766e3db90721090055": {
-   "address": "0x144f23a40",
+   "address": "0x144f23800",
    "functionLength": 5724,
    "rowLength": 5724,
-   "normalizedSha256": "d9afbdc3b44be95d1f5fcc9bdb25e0ea41a3b5ca6f7b0bc5731ef91339dae7cd"
+   "normalizedSha256": "e9ad64cddee8a82ab87ccb2821c50b39847b1546a61bdedad852a450f58a9a5e"
   },
   "app.Em0160_00_BTable_Combat_Export::table_880198e1_c432_45dd_8b66_6d8731b0c00c1090024": {
-   "address": "0x144efadd0",
+   "address": "0x144efab90",
    "functionLength": 458,
    "rowLength": 458,
    "normalizedSha256": "27a8c795ebfd877651eba6fc91702c93b6e5551ed2fb2d951f963a5cc0146a51"
   },
   "app.Em0160_00_BTable_Combat_Export::table_8855c51b_2cfb_4aeb_9890_4820c8f38f101090041": {
-   "address": "0x144f13040",
+   "address": "0x144f12e00",
    "functionLength": 3410,
    "rowLength": 3410,
-   "normalizedSha256": "7a5760de710c368e92d76083ec8a7103c78acf6b2dec3f2699c19e2e975af680"
+   "normalizedSha256": "ef44b15b3d30a375845a8eb2690522774737fddbd45cdd84aabd61dc65708a9b"
   },
   "app.Em0160_00_BTable_Combat_Export::table_890da8c8_f934_5819_7497_117d9d4d03381090066": {
-   "address": "0x144f32dc0",
+   "address": "0x144f32b80",
    "functionLength": 1756,
    "rowLength": 1756,
    "normalizedSha256": "e1ae1f6803ee716d5b35f1fc303cf16b40493a677633f2ee2e953dcb90cb103d"
   },
   "app.Em0160_00_BTable_Combat_Export::table_8a00509d_7908_4ae0_93b9_391901e6cf481090095": {
-   "address": "0x144f66650",
+   "address": "0x144f66410",
    "functionLength": 4189,
    "rowLength": 4189,
-   "normalizedSha256": "8c5629df1d68e32137c4aa01346804263833e8357fdbf46344089f8cfcf8b45a"
+   "normalizedSha256": "67c6255234b73e26bacd9c95577d60a3f3ccf8afea32b1c5a049ae858ec3a952"
   },
   "app.Em0160_00_BTable_Combat_Export::table_8b8f30bb_8bea_425b_a7a7_0f8e77486dc01090068": {
-   "address": "0x144f34c50",
+   "address": "0x144f34a10",
    "functionLength": 6985,
    "rowLength": 6985,
-   "normalizedSha256": "613fb36c4bcd9a0b3b5fc7148819fb27f313da9d15ff77dc47351f2406232ada"
+   "normalizedSha256": "460e6f978cd39d6ca0bd9597a4f68e0b0545886be5629ad66cbee4df49a5060c"
   },
   "app.Em0160_00_BTable_Combat_Export::table_91063bfc_1f18_4338_bb13_00c5468630c41090071": {
-   "address": "0x144f39a40",
+   "address": "0x144f39800",
    "functionLength": 4189,
    "rowLength": 4189,
-   "normalizedSha256": "aee4e606465f6f4239f891c0a0786b8ba20362c8248b55e6239229bd8717314b"
+   "normalizedSha256": "ac8c6adc3f75e02ec5d658e1bdecc165e89480ac1a31c60cb2fa9797dd8739b4"
   },
   "app.Em0160_00_BTable_Combat_Export::table_94437944_c4b3_4ae6_ba56_5bcf44dcb14a1090075": {
-   "address": "0x144f3ff30",
+   "address": "0x144f3fcf0",
    "functionLength": 10286,
    "rowLength": 10286,
-   "normalizedSha256": "2473f0cd7a34ce8cb49dfc63b9501911a2c0a6cdd67201ffd8ced0bfad790348"
+   "normalizedSha256": "3124dc0f10420ddc91844351e1e2ce7b575539fbb03b77f9f55acac348023414"
   },
   "app.Em0160_00_BTable_Combat_Export::table_94acf9d2_557a_42c1_b280_0b4b7b7c205b1090052": {
-   "address": "0x144f1f780",
+   "address": "0x144f1f540",
    "functionLength": 10669,
    "rowLength": 10669,
-   "normalizedSha256": "69a5a48ff90c8b7ef719c67f5d1bde06ca9ac015d15145f346847e877f4f2cdc"
+   "normalizedSha256": "d37e15715367dbae71580e7764f87c4b8a899aba5d9dc9840f00f14a2c111c51"
   },
   "app.Em0160_00_BTable_Combat_Export::table_964ab55f_a778_4f85_9068_25a5083ceb981090047": {
-   "address": "0x144f15480",
+   "address": "0x144f15240",
    "functionLength": 1014,
    "rowLength": 1014,
    "normalizedSha256": "06f54f6b6f8f2b0a30edf15f59b8301a7d0d097d480f4d8715f582dc94207a64"
   },
   "app.Em0160_00_BTable_Combat_Export::table_9704f753_0b6f_4d92_8395_c4be076ee8701090026": {
-   "address": "0x14392a350",
+   "address": "0x14392a110",
    "functionLength": 16,
    "rowLength": 16,
    "normalizedSha256": "39cb0132d1701ed7c31f27237e01b318b065f1bf460582ab4bb3ca0f22abef48"
   },
   "app.Em0160_00_BTable_Combat_Export::table_9aa0f434_1c9c_4bea_9aad_fd09fcc7fd4a1090032": {
-   "address": "0x144efee70",
+   "address": "0x144efec30",
    "functionLength": 11900,
    "rowLength": 11900,
-   "normalizedSha256": "1b8b1e94f8640a1dd77be0a6ffeaabe3ae315198234741dc21df73d8b81cb92b"
+   "normalizedSha256": "747b9589f66ec41763bec086ed8d81a990b9a56c989a086ba5b8bcbff766133b"
   },
   "app.Em0160_00_BTable_Combat_Export::table_9cf58147_32b8_4b9c_8d51_9b3a3b1f27211090023": {
-   "address": "0x144efac00",
+   "address": "0x144efa9c0",
    "functionLength": 458,
    "rowLength": 458,
    "normalizedSha256": "01df76b70e826a0e06226d8e0ce8e2b702ffd12c577be7d42e3042719a24814a"
   },
   "app.Em0160_00_BTable_Combat_Export::table_a22ccf1c_a6a1_40ac_a355_b5dd142bfd4c1090025": {
-   "address": "0x144efafa0",
+   "address": "0x144efad60",
    "functionLength": 458,
    "rowLength": 458,
    "normalizedSha256": "4d416b03f6557593b21374670b097587741546f630b109c133847371c4c019eb"
   },
   "app.Em0160_00_BTable_Combat_Export::table_a254718a_fa4d_49aa_8b63_4e7d9c0477701090103": {
-   "address": "0x144f73df0",
+   "address": "0x144f73bb0",
    "functionLength": 10480,
    "rowLength": 10480,
-   "normalizedSha256": "f64927552ba1094e4f6db0110be8177642f4a91eaf74dd6ba9c75bc4695cf432"
+   "normalizedSha256": "ba44cbf955118d0950a15699a6f2830c9ce90b9365e80a99abe4cf07b6c6b594"
   },
   "app.Em0160_00_BTable_Combat_Export::table_a45ae15e_c40b_f15e_20fb_d7e8d4cedd1a1090102": {
-   "address": "0x144f73710",
+   "address": "0x144f734d0",
    "functionLength": 1756,
    "rowLength": 1756,
    "normalizedSha256": "b24e110a169b63755d6dba32a20681e89365d045f2cf4bcfb80fd1c6f7a9b5a7"
   },
   "app.Em0160_00_BTable_Combat_Export::table_adc7c94b_6148_4340_b546_79148e2e6c341090021": {
-   "address": "0x144efa400",
+   "address": "0x144efa1c0",
    "functionLength": 832,
    "rowLength": 832,
    "normalizedSha256": "36b7f43df5dd09ccba4acb19763b0dd9fa88505e6334a35efae60577f052f101"
   },
   "app.Em0160_00_BTable_Combat_Export::table_afb00d01_9436_c3a6_bed1_87b05f39f6391090072": {
-   "address": "0x144f3aaa0",
+   "address": "0x144f3a860",
    "functionLength": 1756,
    "rowLength": 1756,
    "normalizedSha256": "a8bb09939055fe01d12571e92ba741d9850edd9ddfaebe18df478688e4f20042"
   },
   "app.Em0160_00_BTable_Combat_Export::table_b0c7a921_9ac2_4a99_8655_568b1211c5171090098": {
-   "address": "0x144f6a470",
+   "address": "0x144f6a230",
    "functionLength": 13414,
    "rowLength": 13414,
-   "normalizedSha256": "25f0019cbf9bc31a083f85dc1fa7f06739fc8cb9eb91d27c09c449011647a699"
+   "normalizedSha256": "106c72a716bb0399133120bcefb674dc8e8ae5582afa6d402d7bed758cf95cbe"
   },
   "app.Em0160_00_BTable_Combat_Export::table_b4883db2_d98b_4555_bb70_9c5c988515061090043": {
-   "address": "0x144f14480",
+   "address": "0x144f14240",
    "functionLength": 1014,
    "rowLength": 1014,
    "normalizedSha256": "61cf93e6353bf4656549be79e116efa1bc3933190d28d56d852022bf50275bae"
   },
   "app.Em0160_00_BTable_Combat_Export::table_bb1d8bdf_deb8_bbdb_5887_1ee5e74604c71090054": {
-   "address": "0x144f23360",
+   "address": "0x144f23120",
    "functionLength": 1756,
    "rowLength": 1756,
    "normalizedSha256": "eb02c44ee21781c11b71dd27e802e799aae2cc9290c0fce59376dc3584b4c791"
   },
   "app.Em0160_00_BTable_Combat_Export::table_bdbc7099_3664_4eaf_afef_1bd531f55f601090046": {
-   "address": "0x144f15080",
+   "address": "0x144f14e40",
    "functionLength": 1014,
    "rowLength": 1014,
    "normalizedSha256": "66e9e7440be7feda176ccf369765f40da8cd4e5b76698e110cd7efc72bab1d2d"
   },
   "app.Em0160_00_BTable_Combat_Export::table_c12edb99_c9ee_4841_ab12_019fe5e794741090020": {
-   "address": "0x144ef9070",
+   "address": "0x144ef8e30",
    "functionLength": 4994,
    "rowLength": 4994,
    "normalizedSha256": "f5934c5d6a0121178ddda353e3dd69ae2a344b04dbd953712176311affe5ba86"
   },
   "app.Em0160_00_BTable_Combat_Export::table_c60b6194_adbb_4a66_a7d0_0d00a9e2e8e11090105": {
-   "address": "0x144f797d0",
+   "address": "0x144f79590",
    "functionLength": 11278,
    "rowLength": 11278,
-   "normalizedSha256": "a4eb3dc4991cf12cbfbb93e8736dcef3777f8b0353eea866a36e4863ddff8aae"
+   "normalizedSha256": "0377b988795e5d71119c54e99f14760200c9ba90a820bceaa98250322149fc2c"
   },
   "app.Em0160_00_BTable_Combat_Export::table_c8129193_05e6_445d_b2ba_801bd564a2c21090040": {
-   "address": "0x144f10a00",
+   "address": "0x144f107c0",
    "functionLength": 9786,
    "rowLength": 9786,
-   "normalizedSha256": "47ff2580d52b71fb7aa4de40fa622d2b8b0e4767d78fd1480701ce6466e6eb5e"
+   "normalizedSha256": "b122b26b8772e2aee3ddb308fba7d75288532c5b185060351050ee35d5e2f01f"
   },
   "app.Em0160_00_BTable_Combat_Export::table_caec0ed3_51bb_4cc5_87ee_cc6ec7ef48811090092": {
-   "address": "0x144f5f020",
+   "address": "0x144f5ede0",
    "functionLength": 11900,
    "rowLength": 11900,
-   "normalizedSha256": "dbd01cee208f68554acbc1e9f3be0d2423f822d3d5ec981fa513d5dd2cb60d28"
+   "normalizedSha256": "ba340a4e2d3f6d1c8598ebb09e587d28c5754a99f4c64b0480e58fbfc1a256e4"
   },
   "app.Em0160_00_BTable_Combat_Export::table_cd7c9d81_251d_4f6c_816d_a6c9f2409fbd1090035": {
-   "address": "0x144f064a0",
+   "address": "0x144f06260",
    "functionLength": 4189,
    "rowLength": 4189,
-   "normalizedSha256": "7e411dd5cfc4e8d55b293f6364beb1e19c20eb81d11528c9f6d22233a308afa7"
+   "normalizedSha256": "573ef970231f466a39cd4eb77eecb85b6ac845e79dac3c064b1080d7a023e4e9"
   },
   "app.Em0160_00_BTable_Combat_Export::table_cdd04ac5_cc4a_4605_8c3d_e522945206081090053": {
-   "address": "0x144f22130",
+   "address": "0x144f21ef0",
    "functionLength": 4649,
    "rowLength": 4649,
-   "normalizedSha256": "e0f31127718f9069cedaa194fd185e133e334b58fb2962bef5f31cacd90690c8"
+   "normalizedSha256": "21072f5c5fe530f6cde47a64e59ccf46bb34d9241fc771734c2caa8c326457e2"
   },
   "app.Em0160_00_BTable_Combat_Export::table_ce18bfc1_8072_4dc3_9b8b_975eefca78a21090051": {
-   "address": "0x144f1c750",
+   "address": "0x144f1c510",
    "functionLength": 12335,
    "rowLength": 12335,
-   "normalizedSha256": "790a3fcb99a14ef292ae460e47503633595fddda88b1314a23b796380d9088bd"
+   "normalizedSha256": "539c0a33da089b0c516aba615aa850f482f6ad6d184f7abf6cd0f95eb93776ce"
   },
   "app.Em0160_00_BTable_Combat_Export::table_ce4668ff_9d41_95b0_043e_caa0ad4578b61090060": {
-   "address": "0x144f2b090",
+   "address": "0x144f2ae50",
    "functionLength": 1756,
    "rowLength": 1756,
    "normalizedSha256": "9014030566fd81f114a96663fd3c15fe157d63830529d1fc71ab57dd08dcaf81"
   },
   "app.Em0160_00_BTable_Combat_Export::table_d32a0a74_0ea3_48b9_b758_c1ee832318591090101": {
-   "address": "0x144f729b0",
+   "address": "0x144f72770",
    "functionLength": 3410,
    "rowLength": 3410,
-   "normalizedSha256": "578371557bddc1aa516d88df396d5bca2e5e97e5dfbf2d08a604b1e67831a938"
+   "normalizedSha256": "c8efa92b71ba5299b9bc4c486bfa729869dcadca0f5b42674736dc13d86e0bb4"
   },
   "app.Em0160_00_BTable_Combat_Export::table_dabc69ea_d061_42c5_9dac_718f7d55d6121090088": {
-   "address": "0x144f58840",
+   "address": "0x144f58600",
    "functionLength": 9545,
    "rowLength": 9545,
-   "normalizedSha256": "fd75dcdd0f24f84be9f5c8aa154e1bcf19fa4c40feb9a187ac3734d0e6eb869f"
+   "normalizedSha256": "56ab7788f7594265a8575f84c289d822f28ad47be45be2468f7f7cd50ad11cec"
   },
   "app.Em0160_00_BTable_Combat_Export::table_de2fec23_cfbf_4c76_af6e_e0c11d7abecf1090104": {
-   "address": "0x144f766e0",
+   "address": "0x144f764a0",
    "functionLength": 12527,
    "rowLength": 12527,
-   "normalizedSha256": "1e22a09d71b6a96df9743ccdda31ff2fedeeb7bc33bd2b09c023920484775604"
+   "normalizedSha256": "fd229a8631cd466146807ae537a58fc53c7c8cbd2f912f5d2da4f61c46f9e6b7"
   },
   "app.Em0160_00_BTable_Combat_Export::table_dfd0ce20_8a7b_492c_9407_aba983ac466c1090029": {
-   "address": "0x14392a350",
+   "address": "0x14392a110",
    "functionLength": 16,
    "rowLength": 16,
    "normalizedSha256": "39cb0132d1701ed7c31f27237e01b318b065f1bf460582ab4bb3ca0f22abef48"
   },
   "app.Em0160_00_BTable_Combat_Export::table_e0da2b6b_4239_4277_95bb_3c00f151273a1090100": {
-   "address": "0x144f70560",
+   "address": "0x144f70320",
    "functionLength": 9295,
    "rowLength": 9295,
-   "normalizedSha256": "64a475639e58cecee9499fe41c996beee4f92a5526f750e14ca04f14ee4dc516"
+   "normalizedSha256": "c9c24fc0565aa523228e97533b5a0bd8986a2754daa8764ee0a874ea98211e1d"
   },
   "app.Em0160_00_BTable_Combat_Export::table_e3ed74ef_1ad4_4c0b_85d2_82ca27417a1c1090091": {
-   "address": "0x144f5c6a0",
+   "address": "0x144f5c460",
    "functionLength": 10613,
    "rowLength": 10613,
-   "normalizedSha256": "fe8eddb505c85c0afadc6c815e255cdc2e53be6dcbd434680179f98fdaefb201"
+   "normalizedSha256": "c0a1eef88b1d4e171115d282ab459f7b187d29af82e42261c0aa0e458f1b3ae1"
   },
   "app.Em0160_00_BTable_Combat_Export::table_e424d7a8_06bb_4057_aad7_17c78120a17d1090099": {
-   "address": "0x144f6d8e0",
+   "address": "0x144f6d6a0",
    "functionLength": 11386,
    "rowLength": 11386,
-   "normalizedSha256": "37ff1d59727a0019dede6bd1168961c2bf6340b2b1ade7166a94f75cd591d824"
+   "normalizedSha256": "184a15a2ac5590495946b66a14ff46d5d6a3aea05b5709502d692b5af3ac19a1"
   },
   "app.Em0160_00_BTable_Combat_Export::table_e5983e98_55fc_4848_ac38_aabf42ac33c71090022": {
-   "address": "0x144efa740",
+   "address": "0x144efa500",
    "functionLength": 1204,
    "rowLength": 1204,
    "normalizedSha256": "42c0b2fb7442c0c0a45fca0452d37c302c0b67164fe7373688ba4aea3ba10cfb"
   },
   "app.Em0160_00_BTable_Combat_Export::table_e6673b8f_90ed_4deb_ab9e_7d2f875958031090107": {
-   "address": "0x144f7e930",
+   "address": "0x144f7e6f0",
    "functionLength": 4649,
    "rowLength": 4649,
-   "normalizedSha256": "17fb571166f214e6a5ea8e254bc4f76502be1b906d5c9af61cd15f1176481234"
+   "normalizedSha256": "721018b25d88e3e253de49f87c91645eb5dc586740ee05fea101406156ba8f45"
   },
   "app.Em0160_00_BTable_Combat_Export::table_e90b0293_fe45_1205_8b7b_658e126450c31090096": {
-   "address": "0x144f676b0",
+   "address": "0x144f67470",
    "functionLength": 1756,
    "rowLength": 1756,
    "normalizedSha256": "15d6b30410f5c174b9e2b3062db05a93981107556644eaf7cd7b6be6ddb69a75"
   },
   "app.Em0160_00_BTable_Combat_Export::table_ebdf39f8_d629_4dd4_b189_0f8e9bc498a41090018": {
-   "address": "0x144ef72d0",
+   "address": "0x144ef7090",
    "functionLength": 5078,
    "rowLength": 5078,
    "normalizedSha256": "561324715e92f47a1c12c5196108c6e188cf06de33f3624fecb25bb4bd949a49"
   },
   "app.Em0160_00_BTable_Combat_Export::table_ef14bc47_edbd_49a3_b492_8464b3d6ba061090080": {
-   "address": "0x144f48290",
+   "address": "0x144f48050",
    "functionLength": 10003,
    "rowLength": 10003,
-   "normalizedSha256": "a4adb47a01d5eae2271a066cf1bf03b860b0f53d00259f0c492a85e7ffa55298"
+   "normalizedSha256": "089bc44958711139fc984213b3a87f8becbca00611d25a82162bab8b82c0a141"
   },
   "app.Em0160_00_BTable_Combat_Export::table_f3c58de8_3ab8_45fe_ae51_bf3cfeb1126f1090037": {
-   "address": "0x144f07be0",
+   "address": "0x144f079a0",
    "functionLength": 10557,
    "rowLength": 10557,
-   "normalizedSha256": "172a454d2fa257688a61d1130201585ad600a5fb21854c7a029e18888abaf33c"
+   "normalizedSha256": "0da802aca142ffecaf1d1b6a45b75f3c2241a34f450c63275a5c91e69629ecc8"
   },
   "app.Em0160_00_BTable_Combat_Export::table_f5a4a745_d8a4_44c5_bc97_9411b541b9dc1090027": {
-   "address": "0x14392a350",
+   "address": "0x14392a110",
    "functionLength": 16,
    "rowLength": 16,
    "normalizedSha256": "39cb0132d1701ed7c31f27237e01b318b065f1bf460582ab4bb3ca0f22abef48"
   },
+  "app.EnemyCharacter::requestActionCore619019": {
+   "address": "0x14945b9f0",
+   "functionLength": 329,
+   "rowLength": 329,
+   "normalizedSha256": "780bccc647b15b4708989ecd14b3a5143e5647779b79fd3e588f1281b3c0ee46"
+  },
   "app.EnemyDef::getSTATE_SIGN_ACTION_TYPEFromFixed758018": {
-   "address": "0x14a2b2740",
+   "address": "0x14a2b2500",
    "functionLength": 2048,
    "rowLength": 2048,
-   "normalizedSha256": "32a44ac2184c330cb160121d30eea079ac2fc0363fb27121a8d88f9259f54bad"
+   "normalizedSha256": "39ba7637995ee29e8b5948f55e85b451325d8346a73bdf01e6abedafb9a98e55"
+  },
+  "app.EnemyParamHolder::get_Unique579575": {
+   "address": "0x145bdda90",
+   "functionLength": 48,
+   "rowLength": 48,
+   "normalizedSha256": "c5eb83531476df372608ae30605e83da0ef36d3b05d6efbd60234e67a7dd6a66"
   },
   "app.EnemyUtil::IsArenaQuest869239": {
-   "address": "0x145637bd0",
+   "address": "0x145637990",
    "functionLength": 112,
    "rowLength": 112,
    "normalizedSha256": "4494bb412c4fc310ac1cfe5444c8ae3684769c3414c75a2d26e5fd092c941d9e"
   },
   "app.EnemyUtil::checkRelation869213": {
-   "address": "0x1456355e0",
+   "address": "0x1456353a0",
    "functionLength": 1509,
    "rowLength": 1509,
-   "normalizedSha256": "cc7c427f5f233253de1deeb41ecf66d6878f13a7557855c7996b31406cf2525a"
+   "normalizedSha256": "3b7ae9d1d33f512b86286792f5036e88e28c179c047ca12d050bfe7387e5603b"
   },
   "app.EnemyUtil::checkTargetCharaUnfair869230": {
-   "address": "0x145636f10",
+   "address": "0x145636cd0",
    "functionLength": 2296,
    "rowLength": 2296,
-   "normalizedSha256": "daf7e3bfcc35dd4d076af6b42980c12ba10696c72d500bd3443745e478cd3b7d"
+   "normalizedSha256": "8e8c9e228142b7492a02b8b3ad8b1034d77c694fc4e85f2db245692ee3ddc3b7"
   },
   "app.EnvironmentManager::get_CurrentRank635618": {
-   "address": "0x1490da3c0",
+   "address": "0x1490da180",
    "functionLength": 179,
    "rowLength": 179,
    "normalizedSha256": "df033e7994eb2a19198709e7682f3d2d415ee6fb87813aeb944943ea0f3031f8"
   },
   "app.HunterBadConditions.cHunterBadConditions::get_Item494226": {
-   "address": "0x14b10c050",
+   "address": "0x14b10ce70",
    "functionLength": 2048,
    "rowLength": 192,
-   "normalizedSha256": "0673e9e0173afeb60c27a82364f258ec6ffc1c195b74109c26f00ffba33da348"
+   "normalizedSha256": "b80342da3061d8f99346bac9e863739341b170060c4f61ad82519a8739098fe3"
+  },
+  "app.MissionManager::getEnableMainMissionID639452": {
+   "address": "0x1499b1670",
+   "functionLength": 125,
+   "rowLength": 125,
+   "normalizedSha256": "f3c9c274f3d109b6e9b339e029d826304a55eed82f660911e6cf397d9e18a67a"
+  },
+  "app.QuestDef::getEM_REWARD_RANKFromFixed227905": {
+   "address": "0x1449215e0",
+   "functionLength": 198,
+   "rowLength": 198,
+   "normalizedSha256": "998a5bd82026a567a0c6cc52e0daec772ff81155f5bf9a511b0b4796f452852f"
   },
   "app.TargetAccessKeyUtil::getEnemyManageInfo1226798": {
-   "address": "0x1401c2e20",
+   "address": "0x1401c2f30",
    "functionLength": 244,
    "rowLength": 244,
    "normalizedSha256": "24062dad9e6368a8ad360ac4cf085536f42425bc77d3291b0b74260dc1896a9d"
   },
   "app.TargetAccessKeyUtil::getPlayerManageInfo1226796": {
-   "address": "0x1484a3c10",
+   "address": "0x1484a39d0",
    "functionLength": 112,
    "rowLength": 112,
    "normalizedSha256": "7bf235fab1df7f5656ba81215a68a890b914f91d3b3157606970339477126095"
   },
+  "app.TargetAccessKeyUtil::makeTargetAccessKey1226827": {
+   "address": "0x14841e8f0",
+   "functionLength": 1098,
+   "rowLength": 1098,
+   "normalizedSha256": "a514711999c987505db87e5846894c5b29e6353db4d3a49e8a61c668390b988b"
+  },
+  "app.VoxelDataManager::getDataInfoEm338340": {
+   "address": "0x145701e40",
+   "functionLength": 196,
+   "rowLength": 196,
+   "normalizedSha256": "578c5136dd560ab437b298bfd590e2cc21e9678aafa8b5516dd8e2957d8039d1"
+  },
+  "app.VoxelDataManager::getDataInfoForNav338334": {
+   "address": "0x14563bd00",
+   "functionLength": 1012,
+   "rowLength": 1012,
+   "normalizedSha256": "fc2eaf83004e66b21979b38a26067ea029fcaa4054474ea04efbe80f7130aa3a"
+  },
+  "app.VoxelDataManager::getWallInfoArrayActive338307": {
+   "address": "0x145700830",
+   "functionLength": 669,
+   "rowLength": 669,
+   "normalizedSha256": "d864051cf3f8d45dbfac64e1e08eafacc28f9435b3cadb4bea30bc615a5f96ad"
+  },
+  "app.btable.AppBTableUtil.cSelectActionArgBase::getActionID831462": {
+   "address": "0x1459df580",
+   "functionLength": 246,
+   "rowLength": 246,
+   "normalizedSha256": "b9e30d2f00b55b8bf70e7187cc506d3a83c06d8877df0d502f67013edab1ffdb"
+  },
+  "app.btable.AppBTableUtil.cSelectActionArgSetting::getActionID831400": {
+   "address": "0x145dbb9e0",
+   "functionLength": 80,
+   "rowLength": 80,
+   "normalizedSha256": "68935604ccf5c3e7cc88dc1b9bef4cb02efde1027a6649bb16430ee0d1447e72"
+  },
+  "app.btable.Em0009_00BTableCommand.cGrapplingCheck::grappleingResult1233660": {
+   "address": "0x147cb60a0",
+   "functionLength": 373,
+   "rowLength": 373,
+   "normalizedSha256": "442336bf5324af7b949503e9b4eefeb11e03dcbde4b572ecabe79ee816da332d"
+  },
+  "app.btable.Em0009_00BTableCommand.cGrapplingCheck::onExecute1233659": {
+   "address": "0x147cb6040",
+   "functionLength": 85,
+   "rowLength": 85,
+   "normalizedSha256": "cca20b3ead587ca937c05e230346728867abfb7ea983553a81e9e28169336694"
+  },
   "app.btable.Em0021_00BTableCommand.cCheckCatchMushroom::onExecute1233683": {
-   "address": "0x1494fe120",
+   "address": "0x1494fdee0",
    "functionLength": 80,
    "rowLength": 80,
    "normalizedSha256": "69ebea8185fac2594ac76fe1c481d1a6cbc81d9dafcc6dbdc9ad599bc211d0e8"
   },
   "app.btable.Em0021_00BTableCommand.cCheckMushroomType::onExecute1233671": {
-   "address": "0x148b2e740",
-   "functionLength": 176,
+   "address": "0x148b2e500",
+   "functionLength": 96,
    "rowLength": 96,
-   "normalizedSha256": "d0f3c0d7406d4cf15ae6c211e0bb711ab2ef3effe8cfaabe377e3c3e68a5c373"
+   "normalizedSha256": "8457112523519082d3844050b305ae8b605dbe2f21dfc7cc76f3292bedc76f65"
   },
   "app.btable.Em0022_00BTableCommand.cCheckBreakFangCount::onExecute1233719": {
-   "address": "0x1450a7910",
+   "address": "0x1450a76d0",
    "functionLength": 96,
    "rowLength": 96,
    "normalizedSha256": "e754d775b945e75547550dd8271e6b20f6e535f930d73476d55fd7fc5d141f62"
   },
+  "app.btable.Em0022_00BTableCommand.cCheckEm1023Count::onExecute1233706": {
+   "address": "0x1447456a0",
+   "functionLength": 158,
+   "rowLength": 158,
+   "normalizedSha256": "c43ac7242ebf10a83877aec7e0778f32183ff6078ea6fb8aee759ad4f82e8962"
+  },
+  "app.btable.Em0022_00BTableCommand.cCheckServantCount::onExecute1233708": {
+   "address": "0x144a1f170",
+   "functionLength": 294,
+   "rowLength": 294,
+   "normalizedSha256": "55ce6322c0351d530f0af52e58cd38d26ae4e64e2bbfc39529bf793e14d2e463"
+  },
   "app.btable.Em0046_00BTableCommand.cCheckElectricLevel::onExecute1233739": {
-   "address": "0x147612180",
+   "address": "0x147611f40",
    "functionLength": 96,
    "rowLength": 96,
    "normalizedSha256": "4f5b0a9b51962d1d9d249e4a29cd51918837459f2d0f0ff25b16e762447ba6db"
   },
+  "app.btable.Em0046_00BTableCommand.cCheckHunterInWater::onExecute1233759": {
+   "address": "0x14918ba70",
+   "functionLength": 75,
+   "rowLength": 75,
+   "normalizedSha256": "b553fb21416cc58a8fe64f029353ae706d509c01a83d71afd5d3d627f0664165"
+  },
+  "app.btable.Em0046_00BTableCommand.cCheckOnWater::castRayToGround1233729": {
+   "address": "0x146e4cf70",
+   "functionLength": 274,
+   "rowLength": 274,
+   "normalizedSha256": "76b4cc343e2463a9a7e0ab0a570e4d4e2fe130c503f4ee2dda039d994c6e4dad"
+  },
+  "app.btable.Em0046_00BTableCommand.cCheckOnWater::onExecute1233728": {
+   "address": "0x146e4cc50",
+   "functionLength": 800,
+   "rowLength": 800,
+   "normalizedSha256": "487d285716d078380b6780de7cba3b556fe2527c3195aa07252d0ae95df3ea4e"
+  },
+  "app.btable.Em0046_00BTableCommand.cCheckSwimCombatPhase::onExecute1233764": {
+   "address": "0x14976a9f0",
+   "functionLength": 80,
+   "rowLength": 80,
+   "normalizedSha256": "953c0c7c28e26001d74c6ba60e7166bf31a4dbe6ab27638a56d9533a931a7826"
+  },
+  "app.btable.Em0046_00BTableCommand.cCheckSwimHunterNum::onExecute1233775": {
+   "address": "0x14a38c510",
+   "functionLength": 85,
+   "rowLength": 85,
+   "normalizedSha256": "9e6f4d5e04ffd447023c7e29b0cc72f5f7eecfd6c70308badb29ee91a4bc81cd"
+  },
+  "app.btable.Em0046_00BTableCommand.cIsStroyQuest::onExecute1233779": {
+   "address": "0x143ec4120",
+   "functionLength": 53,
+   "rowLength": 53,
+   "normalizedSha256": "513bc1cf5de9e846caa711106e7c0c3455aa5596e36ecd42d154a9f016672f79"
+  },
+  "app.btable.Em0070_00BTableCommand.cGrapplingCheck::onExecute1233862": {
+   "address": "0x149ae0e20",
+   "functionLength": 479,
+   "rowLength": 479,
+   "normalizedSha256": "9402c6ad3db9b182937fa99f6b65810c02db6a95149251b1cbe9889db3ec4eac"
+  },
+  "app.btable.Em0070_00BTableCommand.cSideWalkOffset::onExecute1233789": {
+   "address": "0x146755ae0",
+   "functionLength": 712,
+   "rowLength": 712,
+   "normalizedSha256": "85457be31b3786cbaf0ca77a30c1702a7303a15da9becc24b7129bb827d9af50"
+  },
+  "app.btable.Em0071_00BTableCommand.cCheckStateChange::onExecute1233905": {
+   "address": "0x1484b0750",
+   "functionLength": 80,
+   "rowLength": 80,
+   "normalizedSha256": "a21346efb0a5a8695f5eaadfd15c19330c7d229fb8b5e4d649e7b1c3dbd9e565"
+  },
   "app.btable.Em0071_00BTableCommand.cCheckStateType::onExecute1233894": {
-   "address": "0x147f8a280",
+   "address": "0x147f8a040",
    "functionLength": 80,
    "rowLength": 80,
    "normalizedSha256": "8c80527b95701abdaaf922f6b5383617d777ac53b53ccd69763457d22f235b1e"
   },
+  "app.btable.Em0078_00BTableCommand.cCheckDestHill::onExecute1233926": {
+   "address": "0x143ec41e0",
+   "functionLength": 296,
+   "rowLength": 296,
+   "normalizedSha256": "bdcd582f10c8878931c3e07024f76f5754828e35df721af5b67c86bd2310ce12"
+  },
   "app.btable.Em0078_00BTableCommand.cCheckPhase::onExecute1233924": {
-   "address": "0x143ba5250",
-   "functionLength": 192,
+   "address": "0x143ba5010",
+   "functionLength": 102,
    "rowLength": 102,
-   "normalizedSha256": "7e13db90623c69e37ce765b1ead272ddb26f0433699669cbfb7e502dc74fdfd6"
+   "normalizedSha256": "b5ea1755d0b45f55cbf2e535f8546279259654877277e26e15f0e8260ab68526"
+  },
+  "app.btable.Em0150_00BTableCommand.cCheckModeChange::onExecute1234055": {
+   "address": "0x1487d51d0",
+   "functionLength": 234,
+   "rowLength": 234,
+   "normalizedSha256": "3736f2dae71e7346bae767175044b30db72e81d41a9987b3dc5729297e44f3a8"
+  },
+  "app.btable.Em0150_00BTableCommand.cSetDestGimmickWall::onExecute1234061": {
+   "address": "0x14918c220",
+   "functionLength": 1801,
+   "rowLength": 1801,
+   "normalizedSha256": "4b7b39c57cb5e9c7cb3ac00a0a053781617d2711eae6ecca7cf1a505cc167c41"
+  },
+  "app.btable.Em0150_00BTableCommand.cSetDestZakoThrow::onExecute1234079": {
+   "address": "0x147cb8c90",
+   "functionLength": 1325,
+   "rowLength": 1325,
+   "normalizedSha256": "f11fea4f4d9f4fd18150ecfcb33cbd170b19df2c9b6314b6069bc36dde8dabe9"
+  },
+  "app.btable.Em0159_00BTableCommand.cCheckEnterBlazingMode::onExecute1234329": {
+   "address": "0x144d29980",
+   "functionLength": 80,
+   "rowLength": 80,
+   "normalizedSha256": "dc341687a0ae28dc09c7be34df2a60f06e3ef716f36762b399503c51bed8f508"
+  },
+  "app.btable.Em0162_00BTableCommand.cCheckDestShutterGimmick::onExecute1234480": {
+   "address": "0x147612820",
+   "functionLength": 1119,
+   "rowLength": 1119,
+   "normalizedSha256": "33d1856c0eb71044979c74c59f16d7144e4179d7e5cbce1b852c8eb62b91b91f"
+  },
+  "app.btable.Em0162_00BTableCommand.cCheckDestWall::onExecute1234469": {
+   "address": "0x146755ff0",
+   "functionLength": 440,
+   "rowLength": 440,
+   "normalizedSha256": "fa136e59430b09f7efe6214090ec79b2d27ab6efb8f7e2a75f6346740aee95cd"
+  },
+  "app.btable.Em0164_50BTableCommand.cApplyRequestBattlePhase::onExecute1234527": {
+   "address": "0x1467561b0",
+   "functionLength": 48,
+   "rowLength": 48,
+   "normalizedSha256": "eddd61b4ede30169352e4dbfb1e8815ef501db8c9a175b7ec72898df7372b72f"
   },
   "app.btable.Em0166_00BTableCommand.cCheckBattlePhase::onExecute1234575": {
-   "address": "0x143ba54d0",
-   "functionLength": 288,
+   "address": "0x143ba5290",
+   "functionLength": 64,
    "rowLength": 64,
-   "normalizedSha256": "4cbeeb6126b714beb5b46e9af5cd460a39ae247641b11eb09fbcf2db4b1d948d"
+   "normalizedSha256": "b7ea9b607925e38dc5a24a82b48e4e7967505ac4ee61d3b5d2a92391aace3642"
   },
   "app.btable.EmCommonCommand.CheckStatus::execute1236619": {
-   "address": "0x146e4ee30",
+   "address": "0x146e4ebf0",
    "functionLength": 1439,
    "rowLength": 1439,
    "normalizedSha256": "41a835f74b95bef9a80b026405dfcb2ff489f02e84a30f39984dcc75d90caeaf"
   },
   "app.btable.EmCommonCommand.CheckStatus::executeForTarget1236620": {
-   "address": "0x146e4f3d0",
+   "address": "0x146e4f190",
    "functionLength": 95,
    "rowLength": 95,
    "normalizedSha256": "1cba4d17a6b50a2377fea7c11f8f15bcf357e5cd2a8a98caf16abd540329904b"
   },
   "app.btable.EmCommonCommand.CheckStatus::execute_AIState1236625": {
-   "address": "0x146e4fcd0",
+   "address": "0x146e4fa90",
    "functionLength": 681,
    "rowLength": 681,
    "normalizedSha256": "3a12424124761baa08aea5dce1834e8374b872b2fa227f45fb1b68e17f4589dd"
   },
   "app.btable.EmCommonCommand.CheckStatus::execute_BadCondition1236622": {
-   "address": "0x146e4f550",
+   "address": "0x146e4f310",
    "functionLength": 968,
    "rowLength": 968,
-   "normalizedSha256": "cbb39ae796d2ace5aac922dede7225fc9759ea71df74c54edc75f16d9025713d"
+   "normalizedSha256": "153da21e6aa76950f2171cff9a83f81ad8342c5922b5c4f417a5ed9096958842"
   },
   "app.btable.EmCommonCommand.CheckStatus::execute_GroundMaterial1236637": {
-   "address": "0x146e50860",
+   "address": "0x146e50620",
    "functionLength": 384,
    "rowLength": 384,
    "normalizedSha256": "f99ecc0a6957872529dcc1c1dc99e69465005b9f9f39cee45831a1507c5069bf"
   },
   "app.btable.EmCommonCommand.CheckStatus::execute_Health1236624": {
-   "address": "0x146e4fbf0",
+   "address": "0x146e4f9b0",
    "functionLength": 216,
    "rowLength": 216,
    "normalizedSha256": "ed75a37b91e7c52586fe7895c3e48a5782ed28c4b2335717627b95f66d206bb9"
   },
   "app.btable.EmCommonCommand.CheckStatus::execute_StandState1236621": {
-   "address": "0x146e4f430",
+   "address": "0x146e4f1f0",
    "functionLength": 280,
    "rowLength": 280,
    "normalizedSha256": "2ba8ab0c51f392d98e30abb26c7ba0f82e8dec69244c20f4f8ddf2a35582c5f0"
   },
   "app.btable.EmCommonCommand.CheckStatus::execute_Status1236623": {
-   "address": "0x146e4f920",
+   "address": "0x146e4f6e0",
    "functionLength": 715,
    "rowLength": 715,
-   "normalizedSha256": "bb01199dae25f0cda4192e23a6e248f7425cf3342bc579293425cd4c49779be1"
+   "normalizedSha256": "f7318a0463640ca3c75d6cfe7c9d99a930718a570a2af72271088d395326a5fc"
   },
   "app.btable.EmCommonCommand.CheckType::execute_Enemy1236701": {
-   "address": "0x148226a40",
+   "address": "0x148226800",
    "functionLength": 84,
    "rowLength": 84,
    "normalizedSha256": "0948f68e712c0f02b3493ccae3bed98f0b9162e19cf1afa3c3a29c922595ddac"
   },
+  "app.btable.EmCommonCommand.cActionSwitch::onExecute1236505": {
+   "address": "0x1459e37e0",
+   "functionLength": 414,
+   "rowLength": 414,
+   "normalizedSha256": "6372e55014134322157874a79205596a6ccab8291bfca0ff9188e6f894d3991d"
+  },
   "app.btable.EmCommonCommand.cCheckAngle::onExecute1236786": {
-   "address": "0x149d9b590",
+   "address": "0x149d9b350",
    "functionLength": 1792,
    "rowLength": 1792,
-   "normalizedSha256": "f9840ef874720b6d08b6d0dda3fd67bef15dae73497182945b09f114fb795df1"
+   "normalizedSha256": "6aea9f355bd81daafab0f535899c4ded6a56154422185e8f84f4bdc68db5af31"
   },
   "app.btable.EmCommonCommand.cCheckBreakParts::onExecute1237067": {
-   "address": "0x1459e3cb0",
+   "address": "0x1459e3a70",
    "functionLength": 224,
    "rowLength": 224,
    "normalizedSha256": "e653a1d2e7204606d6f2a0c07f9a258970309dd4c56571ed05fb88bea543dc7d"
   },
+  "app.btable.EmCommonCommand.cCheckDepletionReadyEnd::onExecute1237124": {
+   "address": "0x14976bd50",
+   "functionLength": 144,
+   "rowLength": 80,
+   "normalizedSha256": "693f9de486b528693c5a9015b79ce5035f4e7d7cf78fb63066e81c65a6a5d3a8"
+  },
   "app.btable.EmCommonCommand.cCheckDestinationRelation::onExecute1237100": {
-   "address": "0x147cb8e40",
+   "address": "0x147cb8c00",
    "functionLength": 133,
    "rowLength": 133,
    "normalizedSha256": "6d33351607e5cbe29fd82d1d093556278a3ce670b674811b703c8dc192c857b6"
   },
   "app.btable.EmCommonCommand.cCheckDistance::onExecute1236784": {
-   "address": "0x149ae2450",
+   "address": "0x149ae2210",
    "functionLength": 715,
    "rowLength": 715,
    "normalizedSha256": "fa3bc827474369dcce2c638835605fa7df7f2ee95bbfebf24ffff35507c44031"
   },
   "app.btable.EmCommonCommand.cCheckEatDistance::onExecute1236877": {
-   "address": "0x1484b23d0",
+   "address": "0x1484b2190",
    "functionLength": 492,
    "rowLength": 492,
    "normalizedSha256": "8d794a3b1684f5b6f6a8b5f3986613903399429b7ea70df573b0c765a6e5a686"
   },
   "app.btable.EmCommonCommand.cCheckGimmickReactionType::onExecute1237163": {
-   "address": "0x144d2bd20",
+   "address": "0x144d2bae0",
    "functionLength": 85,
    "rowLength": 85,
    "normalizedSha256": "84af12f2f936f218b442a07cb170b65f90996884d5c8ecbd226baffe40aad298"
   },
   "app.btable.EmCommonCommand.cCheckObstacleClimbHeight::onExecute1237118": {
-   "address": "0x148de89d0",
+   "address": "0x148de8790",
    "functionLength": 80,
    "rowLength": 80,
    "normalizedSha256": "e0f9405b179a691f5c0d1509483690de3613badedb8af59678f6a68aa0981326"
   },
   "app.btable.EmCommonCommand.cCheckOccludedToDest::onExecute1237038": {
-   "address": "0x144748d80",
+   "address": "0x144748b40",
    "functionLength": 248,
    "rowLength": 248,
    "normalizedSha256": "4872a0d895d50b32e66c17af5e5f5a6573a927c055267a8ea0deeaa955e854cb"
   },
   "app.btable.EmCommonCommand.cCheckRidingParts::onExecute1237007": {
-   "address": "0x14a099560",
+   "address": "0x14a099320",
    "functionLength": 228,
    "rowLength": 228,
    "normalizedSha256": "20cd48abad0e63ea19ba0892761fa1f32e59d6596025d35de8cf50ed3594a9b9"
   },
   "app.btable.EmCommonCommand.cCheckRise::onExecute1237192": {
-   "address": "0x146e50cb0",
+   "address": "0x146e50a70",
    "functionLength": 480,
    "rowLength": 480,
    "normalizedSha256": "c9e5fb0d19145e7136b10a7228e3669f1418ee2a6f17e3b571c3438a33d4c086"
   },
   "app.btable.EmCommonCommand.cCheckSelfStatus::onExecute1236644": {
-   "address": "0x147614fd0",
+   "address": "0x147614d90",
    "functionLength": 109,
    "rowLength": 109,
    "normalizedSha256": "073ddcc7a3bb6a1f3f100f02501ec3bc436ceecf497a1cf625510da944e25652"
   },
   "app.btable.EmCommonCommand.cCheckSelfType::onExecute1236726": {
-   "address": "0x1487d7950",
+   "address": "0x1487d7710",
    "functionLength": 369,
    "rowLength": 369,
    "normalizedSha256": "fde213ef1d40874504ad5f219289b2f6bf4e99265de5ee150d4e9ae67f347b9d"
   },
   "app.btable.EmCommonCommand.cCheckStateSignTyoe::onExecute1236761": {
-   "address": "0x149501ab0",
+   "address": "0x149501870",
    "functionLength": 136,
    "rowLength": 136,
    "normalizedSha256": "6b086b775ff80bb487ad69368cb11ed0e79d1e7b7fe411aa1e0753c10f407c45"
   },
   "app.btable.EmCommonCommand.cCheckTargetStatus::onExecute1236646": {
-   "address": "0x147915510",
+   "address": "0x1479152d0",
    "functionLength": 144,
    "rowLength": 144,
    "normalizedSha256": "548d0c886096edec1bbac5f468cfdd7b063ac8b75dbe16817dd958ff51c6de8c"
   },
   "app.btable.EmCommonCommand.cCheckTargetType::onExecute1236750": {
-   "address": "0x148de8760",
+   "address": "0x148de8520",
    "functionLength": 622,
    "rowLength": 622,
    "normalizedSha256": "fff144bac53a4d094003ee3f79ac03561ce12048abeb46d58762b421d7a3c702"
   },
   "app.btable.EmCommonCommand.cCheckTerrainToDestination::onExecute1237196": {
-   "address": "0x1476150f0",
+   "address": "0x147614eb0",
    "functionLength": 625,
    "rowLength": 625,
    "normalizedSha256": "6fa4d3f3730b975f57058e8245c1936de116e38606329c7c235d1056e1244213"
   },
   "app.btable.EmCommonCommand.cCheckUnfairRoutineActive::onExecute1237081": {
-   "address": "0x146758520",
+   "address": "0x1467582e0",
    "functionLength": 344,
    "rowLength": 344,
    "normalizedSha256": "51ef779bb518271f762e507ca98aa330d3580a20e26263e81a4aaa80edc3d2eb"
   },
   "app.btable.EmCommonCommand.cRequestAction::onExecute1236481": {
-   "address": "0x144a20de0",
+   "address": "0x144a20ba0",
    "functionLength": 291,
    "rowLength": 291,
    "normalizedSha256": "d87219f3c8334d706d246b90d0b3f8ebcdfaa29b9628121c7414cb85094f583b"
   },
+  "app.btable.EmCommonCommand.cRequestActionDesireRecover::onExecute1236520": {
+   "address": "0x146758120",
+   "functionLength": 295,
+   "rowLength": 295,
+   "normalizedSha256": "950d233224a62364fee7d57613fd9eecf71a5431a7635a2a3d96c1fa9da1d77d"
+  },
   "app.btable.EmCommonCommand.cRequestActionSync::onExecute1236483": {
-   "address": "0x144d2b630",
+   "address": "0x144d2b3f0",
    "functionLength": 221,
    "rowLength": 221,
    "normalizedSha256": "bdcf1f11117f10dff9cb139e381d3f30ac4db61bcc4bc8e9bc37a07c97995eb0"
   },
+  "app.btable.EmCommonCommand.cRequestSelectedAction::onExecute1236494": {
+   "address": "0x145395f70",
+   "functionLength": 713,
+   "rowLength": 713,
+   "normalizedSha256": "0d964b4b2b388638f93bba526f39c08bf75154811aff633056999203be238d49"
+  },
   "app.btable.EmCommonCommand.cSelectBreakPartsArg::getBreakPartsIndex1237062": {
-   "address": "0x1467587c0",
+   "address": "0x146758580",
    "functionLength": 177,
    "rowLength": 177,
    "normalizedSha256": "1556ab3332b5dddbffe5961faf976eee4ece73018d1f6d3cd7988c552e0ac8c2"
   },
+  "app.btable.EmCommonCommand.cSetDestZakoThrow::onExecute1237204": {
+   "address": "0x147cb8c90",
+   "functionLength": 1325,
+   "rowLength": 1325,
+   "normalizedSha256": "f11fea4f4d9f4fd18150ecfcb33cbd170b19df2c9b6314b6069bc36dde8dabe9"
+  },
+  "app.btable.EmCommonCommand.cSetObstacleClimbDestForRise::onExecute1237120": {
+   "address": "0x14918e100",
+   "functionLength": 583,
+   "rowLength": 583,
+   "normalizedSha256": "4ff0aedaa1ea2a1090c6d63b0314240081b812023ec8943055db4f3ec314abce"
+  },
+  "app.cEm0046_00Extend::checkSwimCombatPhase578384": {
+   "address": "0x1440b02b0",
+   "functionLength": 176,
+   "rowLength": 176,
+   "normalizedSha256": "1c29ed020d5588265f2496645e418fcfb07818ed06e9009123dcaa5bf5723b83"
+  },
+  "app.cEm0046_00Extend::getHunterNumInWater578377": {
+   "address": "0x1440afeb0",
+   "functionLength": 525,
+   "rowLength": 525,
+   "normalizedSha256": "df49b7a5bd75a29fd726ceba04c06816cc98c9aff18fc91b225f27da33218cb5"
+  },
+  "app.cEm0071_00Extend::onExtensionSetup542576": {
+   "address": "0x147bb34f0",
+   "functionLength": 267,
+   "rowLength": 267,
+   "normalizedSha256": "7b6805315bf58880e942a206a9a8027905f88d1b51e8b2d0e5ede46a6c10143b"
+  },
+  "app.cEm0078_00Extend::checkOnHill350982": {
+   "address": "0x14464c1e0",
+   "functionLength": 955,
+   "rowLength": 955,
+   "normalizedSha256": "4c5aa60732899317e9cd6f64dddedb1ab2af80af77bb41e7f5dc0d299818154a"
+  },
+  "app.cEm0150_00Extend::onExtensionSetup596665": {
+   "address": "0x146d36030",
+   "functionLength": 243,
+   "rowLength": 243,
+   "normalizedSha256": "872f7613cf40cd173da97e489c0d2c3a6fb46ece2d1e7b04e9b68cc709dffc79"
+  },
+  "app.cEm0159_00Extend::checkEnterBlazingMode598479": {
+   "address": "0x145fd8ed0",
+   "functionLength": 64,
+   "rowLength": 64,
+   "normalizedSha256": "52f507b63f258de3fc6904b7a7132b726f4dfec049d8417ce19ef995d1a4cdc4"
+  },
+  "app.cEm0159_00Extend::onExtensionSetup598399": {
+   "address": "0x145fd4dc0",
+   "functionLength": 243,
+   "rowLength": 243,
+   "normalizedSha256": "a0ba895e0d15bcd5d8b2a8d6f698442f22273a2fa5864ebf0ff93624c65ea854"
+  },
+  "app.cEm0160Extend::onExtensionSetup546352": {
+   "address": "0x1475634a0",
+   "functionLength": 248,
+   "rowLength": 248,
+   "normalizedSha256": "b8bc7ca3321e759ac0f36a795aecf88eaec39a64ca2d5afdf2657c5d3764cd06"
+  },
+  "app.cEm0164_50Extend::applyRequestBattlePhase554072": {
+   "address": "0x1490a9680",
+   "functionLength": 380,
+   "rowLength": 380,
+   "normalizedSha256": "0386f7d5fba76d0708ac8d2e217ca79b0d25f288c8752f8a1ea45d154c898fae"
+  },
   "app.cEmAIStateCombat::changeState577113": {
-   "address": "0x145cbd230",
+   "address": "0x145cbcff0",
    "functionLength": 342,
    "rowLength": 342,
    "normalizedSha256": "56879537682e297cdba45446c6f3d4798cb36038c09bf6cb81ac31fc33eaaa7c"
   },
   "app.cEmAIStateCombat::onBTableChange577107": {
-   "address": "0x145cbc060",
+   "address": "0x145cbbe20",
    "functionLength": 48,
    "rowLength": 48,
    "normalizedSha256": "6e7c89949652df24c1f4c29fb473141c048b2d91dab740539e13a60fda003107"
   },
   "app.cEmAIStateCombat::onBTableEnd577108": {
-   "address": "0x145cbc090",
+   "address": "0x145cbbe50",
    "functionLength": 193,
    "rowLength": 193,
    "normalizedSha256": "d99ccacfc73a1b3df71e309ecb03c97f8f2ad2f9d90f092b85ae3acc3d424218"
   },
   "app.cEmAIStateCombat::onEnter577109": {
-   "address": "0x145cbc180",
+   "address": "0x145cbbf40",
    "functionLength": 1178,
    "rowLength": 1178,
    "normalizedSha256": "b654d7881a2e550ddc34d50eb750e3089e1828d691b09b3caa36c396b14e2ed2"
   },
   "app.cEmAIStateCombat::onRestart577106": {
-   "address": "0x145cbbf40",
+   "address": "0x145cbbd00",
    "functionLength": 288,
    "rowLength": 288,
    "normalizedSha256": "a382604e186a318536b9eb7f706b0887e96e268c2b85e20c8ae43af8cf22b7bd"
   },
   "app.cEmAIStateCombat::onReturnInterrupt577105": {
-   "address": "0x145cbc160",
+   "address": "0x145cbbf20",
    "functionLength": 32,
    "rowLength": 32,
    "normalizedSha256": "463a705a89fbdcda120c944172addb098e14161dbeef25783de9e46e59876362"
   },
   "app.cEmAIStateManager::isHigherInterruptAcceptChangeState578225": {
-   "address": "0x147bf55b0",
+   "address": "0x147bf5370",
    "functionLength": 186,
    "rowLength": 186,
-   "normalizedSha256": "6fe0712857154750bd802dc17580f604703f513453f265bf224a15ddc8ede504"
+   "normalizedSha256": "ce23b44255763012b746ec2cf04784f55f58938ecbb82330b69f5fe2c3fc7bf2"
   },
   "app.cEmAIUpdateBTable::checkUpdateExecute578139": {
-   "address": "0x1490c5590",
+   "address": "0x1490c5350",
    "functionLength": 66,
    "rowLength": 66,
    "normalizedSha256": "770f00331fe3ac49ee7551c2d852ada079a1980b666bb3d1360250a3d7602091"
   },
   "app.cEmAIUpdateBTable::requestChangeBTable578130": {
-   "address": "0x1490c5680",
+   "address": "0x1490c5440",
    "functionLength": 112,
    "rowLength": 112,
    "normalizedSha256": "e2786601989c7904bb35eef2d6e60469ab12df601376622351fb79647f73fe71"
   },
   "app.cEmAIUpdateBTable::requestJumpBTable578131": {
-   "address": "0x1490c56f0",
+   "address": "0x1490c54b0",
    "functionLength": 75,
    "rowLength": 75,
    "normalizedSha256": "b5a024a1cfee18607ca5d7e6b9293364c4568757a756a9a1d3e8d94d959dd481"
   },
   "app.cEmAIUpdateBTable::requestJumpBTableResume578132": {
-   "address": "0x14c924bc0",
-   "functionLength": 2048,
+   "address": "0x14c925b90",
+   "functionLength": 144,
    "rowLength": 144,
-   "normalizedSha256": "72b8ddcb9d3775ac92828cb6402764ae7ce378a075e5110fa443630133592cde"
+   "normalizedSha256": "ddaa565035c4b81d244c5725cd4110eabe06fc5757695f20dbeb6d0b77998f45"
   },
   "app.cEmAIUpdateBTable::resumeJumpBTable578134": {
-   "address": "0x1490c5770",
+   "address": "0x1490c5530",
    "functionLength": 196,
    "rowLength": 196,
    "normalizedSha256": "76d5a5d02b951e67b62bedabfc13914e4b2cb536178e261acbeedde6dfc29e4e"
   },
   "app.cEmAIUpdateBTable::update578140": {
-   "address": "0x140028220",
+   "address": "0x1400282a0",
    "functionLength": 164,
    "rowLength": 164,
    "normalizedSha256": "09ecab979bfabb0550b38c3e5e8112877fe93769e97736a3e5c9a60965ca0749"
   },
   "app.cEmAIUpdateBTable::updateBTable578143": {
-   "address": "0x1490c58c0",
+   "address": "0x1490c5680",
    "functionLength": 1160,
    "rowLength": 1160,
-   "normalizedSha256": "0550714f3992aac06a50b3309507b2c7db5a3d52456eed8d0776f168b1756740"
+   "normalizedSha256": "956a3f4eec4632ea077c42c0993662813abc01d15c063136d3d5d5285f8dffe7"
+  },
+  "app.cEmGridPartition::getArrayLimitedRadius774249": {
+   "address": "0x147862460",
+   "functionLength": 2675,
+   "rowLength": 2675,
+   "normalizedSha256": "6619336450e48e304c7461a4adc31404f95193a397994c170be2b7f855920d0a"
   },
   "app.cEmModuleConditions::isActive279723": {
-   "address": "0x144918bd0",
+   "address": "0x144918990",
    "functionLength": 320,
    "rowLength": 320,
    "normalizedSha256": "e7fc444cca49144a11ad43e4092d4f71ba3c186b33c89daddb9684320b8f7add"
   },
+  "app.cEmModuleDetector::register594906": {
+   "address": "0x148d0c8a0",
+   "functionLength": 819,
+   "rowLength": 819,
+   "normalizedSha256": "0eb7f73fa8ea1ab07d47ddfa5778e124b947a82810a3096bac8907cb166d79ff"
+  },
+  "app.cEmModuleHold::requestHoldSendedMediate594978": {
+   "address": "0x144ff2650",
+   "functionLength": 204,
+   "rowLength": 204,
+   "normalizedSha256": "8c3edbba9a7a173a1c86d72730e17f94d127d72241cf4c8f365fa5da57df0bc9"
+  },
   "app.cEmModuleRide::convertRidePartsIndex719770": {
-   "address": "0x1452e0370",
+   "address": "0x1452e0130",
    "functionLength": 48,
    "rowLength": 48,
    "normalizedSha256": "03ebe9ad5fefe495c1b16927657b349e88e12e14ad6f2dfe2a6094b2f009f3ab"
   },
   "app.cEmModuleTarget::checkOccluded544377": {
-   "address": "0x1469cc4b0",
+   "address": "0x1469cc270",
    "functionLength": 610,
    "rowLength": 610,
-   "normalizedSha256": "4ad2a73a58d1fb5609406676d4480e6e5d8292fa9c3b12b022932bf921355eab"
+   "normalizedSha256": "292180287e2a8e6b905c3dad3053a4075eba2d236595a2642c1db6c47396ed1c"
   },
   "app.cEmModuleTarget::getTarget544350": {
-   "address": "0x1469caef0",
-   "functionLength": 560,
+   "address": "0x1469cacb0",
+   "functionLength": 48,
    "rowLength": 48,
-   "normalizedSha256": "47b6695ff6d13e78bdefa2dd24c8318e88f089f9bd9211dc7becbe101d93ef7c"
+   "normalizedSha256": "d03603d82f45a2ca3e3bbe97d3f47088d73ee9390d009c820438fd9cf574631c",
+   "rowVariants": [
+    {
+     "address": "0x1469cacb0",
+     "functionLength": 48,
+     "rowLength": 48,
+     "normalizedSha256": "d03603d82f45a2ca3e3bbe97d3f47088d73ee9390d009c820438fd9cf574631c"
+    },
+    {
+     "address": "0x1469cacb0",
+     "functionLength": 560,
+     "rowLength": 560,
+     "normalizedSha256": "47b6695ff6d13e78bdefa2dd24c8318e88f089f9bd9211dc7becbe101d93ef7c"
+    }
+   ]
+  },
+  "app.cEmModuleTarget::getTargetPosition544378": {
+   "address": "0x1469cc4e0",
+   "functionLength": 1724,
+   "rowLength": 1724,
+   "normalizedSha256": "38f4b81f4373eaeaa9403f756a43c62342df8dfbf6342d232b40930a25635589"
+  },
+  "app.cEmModuleTarget::setTarget544361": {
+   "address": "0x1469caee0",
+   "functionLength": 193,
+   "rowLength": 193,
+   "normalizedSha256": "aa5536938da8ed39e907a90b7dc32d7a44853059f8fd9255688d82a1abdc3ed2"
+  },
+  "app.cEmModuleTarget::setTarget544366": {
+   "address": "0x1469cb3a0",
+   "functionLength": 512,
+   "rowLength": 512,
+   "normalizedSha256": "a7bc524e58c40aa38382679fffcf9f3013f95db95a0293644d9ac70b9eee65c5"
   },
   "app.cEmReactableGmInterface::get_ReactionType719888": {
-   "address": "0x14b7626e0",
+   "address": "0x14b7636b0",
    "functionLength": 416,
    "rowLength": 416,
    "normalizedSha256": "31c56952e9a9bd2904ed60e9b474883f877c0adb94bcd7ccf2b70df5c977f410"
   },
+  "app.cEnemyActivateValueBase::isReadyEnd266925": {
+   "address": "0x14b471d00",
+   "functionLength": 3,
+   "rowLength": 3,
+   "normalizedSha256": "494a1b55d45ce6308a9028b13b0f328ecb8ae07001a22721dc85675c689f295b"
+  },
   "app.cEnemyBTableCommandWork::get_TargetPosition577920": {
-   "address": "0x1440c6680",
+   "address": "0x1440c6440",
    "functionLength": 187,
    "rowLength": 187,
    "normalizedSha256": "d83db760698c012a47423221968bd3ca385defac86796ba97e4bf236c87cd6b4"
   },
+  "app.cEnemyBTableCommandWork::setTargetPosition577942": {
+   "address": "0x1440c6870",
+   "functionLength": 250,
+   "rowLength": 250,
+   "normalizedSha256": "292464e7c646e57af0b5db0ca13f092b7a2a18f5603a700ffd8e2e70afb0069e"
+  },
   "app.cEnemyBTableManager::get_IsTableRoot578098": {
-   "address": "0x14466de50",
+   "address": "0x14466dc10",
    "functionLength": 64,
    "rowLength": 64,
    "normalizedSha256": "2dd8e168d76d29c31724f1c4bf9de24eefc538fb743be00d7906a94b7ee05649"
   },
+  "app.cEnemyBadConditionFieldPitfall::setOriginalDamageSec278412": {
+   "address": "0x14466d420",
+   "functionLength": 598,
+   "rowLength": 598,
+   "normalizedSha256": "88d5af0199178d5a3eb7cb59f564aae59c325b7fc574e02bcc1a43556018f03e"
+  },
+  "app.cEnemyContext::get_DifficultyRate721295": {
+   "address": "0x145cc7830",
+   "functionLength": 452,
+   "rowLength": 452,
+   "normalizedSha256": "6f7299f42dc22956d0b818106b2be609686dcec69e2235f123e5029b7ee82342"
+  },
   "app.cEnemyContext::get_IsAngry721269": {
-   "address": "0x145cbd510",
+   "address": "0x145cbd2d0",
    "functionLength": 107,
    "rowLength": 107,
    "normalizedSha256": "337398983dafb6188c8db3e369055ee6cb7d6a2ee7355260bd137709340815fa"
   },
   "app.cEnemyContext::get_IsDepletion721271": {
-   "address": "0x14b10ad50",
-   "functionLength": 2048,
+   "address": "0x14b10bb70",
+   "functionLength": 33,
    "rowLength": 30,
-   "normalizedSha256": "96feb518e6af40fdaf8e4d5cf61bb239463c7b4cddf0b378ef5b0111af9cde11"
+   "normalizedSha256": "296b006a04a7934349b38a5d76c73abbdd54410faf8afe5fe9fc48b29f852ee6"
   },
   "app.cEnemyContext::get_IsTired721270": {
-   "address": "0x145cc7880",
+   "address": "0x145cc7640",
    "functionLength": 107,
    "rowLength": 107,
    "normalizedSha256": "b102caacb58d7009fe03c99cdd010ff3fe1d57844a2d3f22d9c7812c6287f514"
   },
+  "app.cEnemyExclusivePointManager::useBegin541164": {
+   "address": "0x1499b90a0",
+   "functionLength": 183,
+   "rowLength": 183,
+   "normalizedSha256": "544d6d27aedc4a350f4550ee27647805e4fc6f3b09b6a0f267b8b1c88e16953d"
+  },
+  "app.cEnemyExtendBase::checkFieldPitfall595190": {
+   "address": "0x144c31960",
+   "functionLength": 720,
+   "rowLength": 720,
+   "normalizedSha256": "f30dfee10223f85ace224bdd97779f2aa18e993736faffe7cbef1ab9e28499fd"
+  },
+  "app.cEnemyExtendBase::convertAction595056": {
+   "address": "0x144c303f0",
+   "functionLength": 1396,
+   "rowLength": 1396,
+   "normalizedSha256": "d594ef5c50197484073783757d6b7ae8e1874d705544e839e2264aa8a7ddc36e"
+  },
+  "app.cEnemyNoticeHoldDetectorAttribute::.ctor594886": {
+   "address": "0x149fd7370",
+   "functionLength": 213,
+   "rowLength": 213,
+   "normalizedSha256": "a93c2e24f7ed6c3e9770337b42a094875c44667917607684679f440d70e98e42"
+  },
+  "app.cEnumerableParam`2<app.EnemyDef.MODEL_SIZE,app.user_data.EmParamCommon.cSizeSetting>::getParam268556": {
+   "address": "0x1473d8aa0",
+   "functionLength": 453,
+   "rowLength": 453,
+   "normalizedSha256": "ef94841246e791867874059bced936f3d4aa371a6c6372072dd649e323a2d133"
+  },
+  "app.cHealthManager::get_HealthNormalized41695": {
+   "address": "0x146341560",
+   "functionLength": 143,
+   "rowLength": 143,
+   "normalizedSha256": "b9c78facc16bf88553e7ffe09db5971284af156f3e227b60bf8db090f767377f"
+  },
   "app.cMasterEnemyControllerEntity::isWaitUntilActionEndBTable592376": {
-   "address": "0x1499efc20",
+   "address": "0x1499ef9e0",
    "functionLength": 384,
    "rowLength": 384,
    "normalizedSha256": "e8d376b93633d45987bc7dfca0dec626e20d8971a27b7cded3bc174940d58b8f"
   },
   "app.cMasterEnemyControllerEntity::requestChangeBTable592390": {
-   "address": "0x1499b1850",
+   "address": "0x1499b1610",
    "functionLength": 94,
    "rowLength": 94,
    "normalizedSha256": "e251a6fc405bcc8555b657d3ca6905eaf532c6c79440162d09eb054d142873e5"
   },
   "app.cMasterEnemyControllerEntity::requestChangeBTableVerify592391": {
-   "address": "0x1499f1110",
+   "address": "0x1499f0ed0",
    "functionLength": 160,
    "rowLength": 160,
    "normalizedSha256": "4b7f66e67bb84348ac305e63b3f527dadab7a6ce26c9225105fb0bd7a3db2a4e"
   },
+  "app.cPlayerContextHolder::get_Chara322009": {
+   "address": "0x14b109560",
+   "functionLength": 5,
+   "rowLength": 5,
+   "normalizedSha256": "7113b7dd89f8f331391721c087cdfc8430322fa4c41c0f5b4f52fda58fa2c5b2"
+  },
+  "app.user_data.AppVoxelData.VOXEL_DATA::get_IsEm0078Hill251719": {
+   "address": "0x14cb46b00",
+   "functionLength": 9,
+   "rowLength": 9,
+   "normalizedSha256": "bf1bbcbfdff2648fea66afec748603611fcd9fdac7b94315c9ad39b9e5d90b31"
+  },
   "app.user_data.EmParamParts::getPartsBreakIndex579862": {
-   "address": "0x1464237e0",
+   "address": "0x1464235a0",
    "functionLength": 121,
    "rowLength": 121,
    "normalizedSha256": "1edc242a7d4bae4209b4646af0bee0d3934bf59c6ea892d6a71b10fe2262398c"
   },
   "app.user_data.EmParamParts::getPartsIndex579857": {
-   "address": "0x146423570",
+   "address": "0x146423330",
    "functionLength": 118,
    "rowLength": 118,
    "normalizedSha256": "ba11a487b302c13e8f212be1d38ff8e454814fbdbc231e4d4f60348f6487c432"
   },
   "native.helper::attribute_bit_test": {
-   "address": "0x14b10c220",
-   "functionLength": 2048,
+   "address": "0x14b10d040",
+   "functionLength": 42,
    "rowLength": 42,
-   "normalizedSha256": "2c988b3c74e8874e7dc116c63127e6b371d7da7ed69ca7aa6458fd93c98aa4f0",
+   "normalizedSha256": "df901621a5c80e583f7ff9026ed3bd696a8e7b81ec7d2e826c7a072422da5e62",
    "pattern": "4489c1b8010000004183f81f7f??d3e023420485c00f95c0"
   },
   "native.helper::vec3_subtract": {
-   "address": "0x14b10aa00",
-   "functionLength": 176,
+   "address": "0x14b10b820",
+   "functionLength": 46,
    "rowLength": 46,
-   "normalizedSha256": "8e3bc20c40da80546e81e33580f297c55b521a90d5e2bbe86dc0325b5710fc45",
+   "normalizedSha256": "65c78dcfbeada0aed697528dc7b6f2fd4f1b3c1584a8d37d160ffe330c444973",
    "pattern": "c4c17a104008c4c17a5c41084889c8c4c17b1008c4c17b1011"
   },
   "native.helper::wall_attribute_copy": {
-   "address": "0x1459dad30",
-   "functionLength": 32,
+   "address": "0x1459daaf0",
+   "functionLength": 27,
    "rowLength": 27,
-   "normalizedSha256": "5f713a5b3780bc63265405962c5f34a2b0b212624b47dc9fd8b9a1a6c9ab34b6",
+   "normalizedSha256": "30ee2842bd76089a4a05b3bbd9459f51e0489b00b442367978e496427dbdb786",
    "pattern": "4889c88b0d????????418b500c4d8b40044c890089500889480c"
+  },
+  "via.MathEx::diffRad1028507": {
+   "address": "0x145b3f530",
+   "functionLength": 198,
+   "rowLength": 198,
+   "normalizedSha256": "6972fd34cd68f164c9f5082a93d24dbe881a2dd50965e9bef6d79f5cbca6c5c1"
+  },
+  "via.MathEx::rotationAxis1028658": {
+   "address": "0x145b4a910",
+   "functionLength": 517,
+   "rowLength": 517,
+   "normalizedSha256": "7dae520286feb1fef162dfdc1223e11807e4e20d7125da24021809bf96ae650b"
+  },
+  "via.physics.CastRayQuery::enableAllHits22366": {
+   "address": "0x14c9a18c0",
+   "functionLength": 8,
+   "rowLength": 8,
+   "normalizedSha256": "7c7dc81d2961d68e45dfa4951e0ffadbd70bb08ac273efc7f838e0ebf3687d5c"
+  },
+  "via.physics.CastRayQuery::enableNearSort22370": {
+   "address": "0x14c9a1900",
+   "functionLength": 8,
+   "rowLength": 8,
+   "normalizedSha256": "d0dee6d314d36cb4c040e050fb6bc18402e1dd76427fa82358cfdcb9be04c9b9"
+  },
+  "via.physics.FilterInfo::get_Layer17014": {
+   "address": "0x14b7302a0",
+   "functionLength": 4,
+   "rowLength": 4,
+   "normalizedSha256": "69a02450e1b18654c3c1d1bd71e4219b96cecd59ae42c5dd1285db1e883f2732"
+  },
+  "via.physics.FilterInfo::get_MaskBits17022": {
+   "address": "0x14b7311a0",
+   "functionLength": 4,
+   "rowLength": 4,
+   "normalizedSha256": "0c5aee8c2a2d855531eacd6d3b458c941642d758d43347d9b2bb6408377b4fcd"
+  },
+  "via.vec3::op_Addition1752": {
+   "address": "0x14b10b7f0",
+   "functionLength": 48,
+   "rowLength": 48,
+   "normalizedSha256": "dcfaef7ca43a290c1fea79320eed2cac01388d10ac7a6e69ad650df34b39ce10",
+   "rowVariants": [
+    {
+     "address": "0x14b10b7f0",
+     "functionLength": 48,
+     "rowLength": 48,
+     "normalizedSha256": "dcfaef7ca43a290c1fea79320eed2cac01388d10ac7a6e69ad650df34b39ce10"
+    },
+    {
+     "address": "0x14b10b7f0",
+     "functionLength": 224,
+     "rowLength": 224,
+     "normalizedSha256": "cbeaaff1521c943edf36a82ae40ad0043a48311138102705ae75ab4a162be755"
+    }
+   ]
+  },
+  "via.vec3::op_Multiply1756": {
+   "address": "0x14b10b880",
+   "functionLength": 80,
+   "rowLength": 80,
+   "normalizedSha256": "2353cf56a0c806aab59bfbb4e69c76c67456e98abef73339ab7cd74ede4ae6a6"
+  },
+  "via.vec3::op_Subtraction1754": {
+   "address": "0x14b10b820",
+   "functionLength": 176,
+   "rowLength": 176,
+   "normalizedSha256": "8e3bc20c40da80546e81e33580f297c55b521a90d5e2bbe86dc0325b5710fc45"
+  },
+  "app.cFindGimmick::getGimmickUniqueIndex432727": {
+   "address": "0x149ceefe0",
+   "rowLength": 354,
+   "functionLength": 354,
+   "normalizedSha256": "3d745567651206dcce6a0cc338b95d64dbcd812724a31821d3d9a08aa1a568df"
+  },
+  "app.EnemyManager::getAreaNoNearPoint611329": {
+   "address": "0x149f11800",
+   "rowLength": 764,
+   "functionLength": 764,
+   "normalizedSha256": "30cdd0c38907387eda33596219cc6517490297417631b1f9c87226f79dead646"
+  },
+  "app.cFindGimmick::getGimmicktListID432726": {
+   "address": "0x149ceee90",
+   "rowLength": 326,
+   "functionLength": 326,
+   "normalizedSha256": "b08953d6c48031658ddd394d1b80e94604b46beb37f6188a994b83a253eca268"
   }
  }
 }

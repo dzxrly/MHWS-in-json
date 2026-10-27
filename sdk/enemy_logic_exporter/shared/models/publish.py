@@ -29,6 +29,7 @@ def strip_research_fields(model):
     for key in RESEARCH_ONLY_MODEL_FIELDS:
         result.pop(key, None)
     for table in result["tables"]:
+        table.pop("historyGateElisions", None)
         for node in table["nodes"]:
             for key in RESEARCH_ONLY_NODE_FIELDS:
                 node.pop(key, None)

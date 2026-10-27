@@ -16,6 +16,19 @@ GROUP = "与玩家战斗"
 
 def evaluate(expression, scenario, inputs):
     op = expression.get("op")
+    if op == "table_history_interval":
+        from ..logic.table_history_formula import evaluate_interval
+
+        if all(expression[key] in scenario for key in ("drawKey", "maxKey", "minKey")):
+            return evaluate_interval(expression, scenario)
+        return (
+            INPUT
+            if all(
+                expression[key] in scenario or expression[key] in inputs
+                for key in ("maxKey", "minKey")
+            )
+            else None
+        )
     if op == "compare":
         key = expression["key"]
         if key in scenario:

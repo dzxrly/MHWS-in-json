@@ -5,7 +5,6 @@ import json
 from pathlib import Path
 from typing import Any
 
-
 ACTION_MAP_FORMAT = "mhws_static_action_request_set_map_v2"
 ACTION_MAP_SCOPES = {
     **{f"Wp{index:02d}": None for index in range(14)},
@@ -87,7 +86,7 @@ def load_action_map(path: Path) -> ActionMapDocument:
     if not path.is_file():
         raise FileNotFoundError(
             f"Static ActionMap was not found: {path}. "
-            "Generate it locally with motlist-to-json and copy it into MHWS-in-json."
+            "Generate it with python -m sdk.action_map_exporter extract using matching dumps and resource JSON."
         )
     with path.open("r", encoding="utf-8") as file:
         data = json.load(file)

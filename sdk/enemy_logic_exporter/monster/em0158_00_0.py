@@ -32,44 +32,63 @@ FIRE_EVIDENCE = (
     dict(
         type=FIRE_COMMAND,
         method="onExecute1234233",
-        address="0x1441955e0",
-        end="0x144195640",
+        address="0x1441953a0",
+        end="0x144195400",
     ),
     dict(
         type=EXTEND,
         method="checkFireAnyTentacle546125",
-        address="0x144915160",
-        end="0x1449151b5",
+        address="0x144914f20",
+        end="0x144914f75",
     ),
 )
 STATE_EVIDENCE = {
     "cCheckWrapNone": dict(
-        method="onExecute1234245", address="0x144a1ff40", end="0x144a1ffa0"
+        method="onExecute1234245", address="0x144a1fd00", end="0x144a1fd60"
     ),
     "cCheckOilTime": dict(
-        method="onExecute1234249", address="0x1450a7d80", end="0x1450a7e20"
+        method="onExecute1234249", address="0x1450a7b40", end="0x1450a7be0"
     ),
     "cCheckBodyOilTime": dict(
-        method="onExecute1234251", address="0x145393660", end="0x1453936b0"
+        method="onExecute1234251", address="0x145393420", end="0x145393470"
     ),
     "cCheckFireTime": dict(
-        method="onExecute1234235", address="0x144462ab0", end="0x144462b00"
+        method="onExecute1234235", address="0x144462870", end="0x1444628c0"
     ),
 }
 LOST_EVIDENCE = (
     dict(
         type=LOST_COMMAND,
         method="onExecute1234264",
-        address="0x145dbc420",
-        end="0x145dbc4a2",
+        address="0x145dbc1e0",
+        end="0x145dbc262",
     ),
     dict(
         type=EXTEND,
         method="checkLostTentacleCount546134",
-        address="0x1449152d0",
-        end="0x144915328",
+        address="0x144915090",
+        end="0x1449150e8",
     ),
 )
+
+
+FORMULA_HISTORY_TABLES = {
+    "app.Em0158_00_BTable_CommonAttack_Export": (
+        "table_f92021e8_402a_4208_a23f_fc6c5f6d9697",
+    ),
+    "app.Em0158_00_BTable_Life_Export": ("table_e1b28c33_56ec_4bab_a0ac_db6816cdf2a2",),
+}
+
+
+def table_history_policy(row):
+    method = row["method"]
+    policy = {}
+    formula = FORMULA_HISTORY_TABLES.get(row["type"], ())
+    if any(
+        method.startswith(stem) and method[len(stem) :].isdigit() for stem in formula
+    ):
+        policy["formula"] = True
+    return policy or None
 
 
 def recover_condition(node, enemy_id, resources):
@@ -180,7 +199,7 @@ def build_model(
     *,
     requests_path=None,
     inventory_path=None,
-    context=None
+    context=None,
 ):
     """Extract this EM from its real slot/import closure and typed native calls."""
     from ..shared.models.native_recipe import build_monster

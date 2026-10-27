@@ -1,26 +1,75 @@
 """Check actual x64 returns and navigation-result branches without game files."""
 
 import hashlib
+import struct
 import unittest
 from unittest.mock import patch
 
 
 class BTableMachineTests(unittest.TestCase):
+    def test_parameterless_phase_effect_does_not_create_a_null_argument_slot(self):
+        from types import SimpleNamespace
+        from sdk.enemy_logic_exporter.shared.logic.machine import Machine
+        from sdk.enemy_logic_exporter.shared.config import NO_ARGUMENT_TYPES
+
+        native = bytes.fromhex("e8fb000000b801000000c3")
+        row = dict(
+            type="fixture",
+            method="phase",
+            address="0x1000",
+            end=hex(0x1000 + len(native)),
+            nativeSha256=hashlib.sha256(native).hexdigest(),
+        )
+        factory = dict(
+            _OrderType="fixture.phase", _ArgumentType=next(iter(NO_ARGUMENT_TYPES))
+        )
+        machine = Machine(
+            row, native, SimpleNamespace(read=lambda *_: b""), {}, [factory], {}, {}
+        )
+        machine.reviewed_effects = True
+        machine.command_writes["fixture.phase"] = [
+            dict(value=dict(kind="self_extend_field"))
+        ]
+        bound = dict(
+            commandType="fixture.phase",
+            commandIndex=0,
+            argumentIndex=None,
+            argumentType="",
+            predicate={},
+        )
+        with patch.object(machine, "bind", return_value=bound):
+            entry = machine.walk(0x1000, machine.initial(0))
+        self.assertEqual(machine.nodes[entry]["kind"], "mutation")
+        self.assertEqual(machine.nodes[entry]["effect"], "apply_native_field_writes")
+        self.assertNotIn("argumentIndex", machine.nodes[entry])
+
     def entry_push(self, *, conflicting_position=False):
         from types import SimpleNamespace
         from sdk.enemy_logic_exporter.shared.logic.machine import Machine
         from sdk.enemy_logic_exporter.shared.native.bindings import pointer
+        from sdk.enemy_logic_exporter.shared.config import FN_POSITION_ARRAY_RESIZE
 
         # Actual reviewed EM0160 capacity branch, fixed POSITION writes and call.
-        native = bytes.fromhex(
+        base = 0x144EF8562
+        native = bytearray.fromhex(
             "488b9e800000008b4318488b53108b4a1c39c873204863c8488d0c49"
             "44896c8a2049b8000000000d0000004c89448a24ff431ceb724c8d5310"
             "ffc0448d040941b9c7ffff7f4539c8450f42c885c941b804000000"
             "450f45c14139c0440f4ec08b430848bafcffffffffffff7f4883c204"
-            "4c09d285c0490f48d24889f9e89d6d0602488b431048634b18488d0c49"
-            "44896c882048ba000000000d0000004889548824ff431c8b4318ffc0894318"
-            "c686c5000000014889f94c89fa4d89f04989f1e81a210000"
+            "4c09d285c0490f48d24889f9"
         )
+        native.extend(
+            b"\xe8"
+            + struct.pack("<i", FN_POSITION_ARRAY_RESIZE - (base + len(native) + 5))
+        )
+        native.extend(
+            bytes.fromhex(
+                "488b431048634b18488d0c49"
+                "44896c882048ba000000000d0000004889548824ff431c8b4318ffc0894318"
+                "c686c5000000014889f94c89fa4d89f04989f1e81a210000"
+            )
+        )
+        native = bytes(native)
         if conflicting_position:
             native = native.replace(
                 bytes.fromhex("48ba000000000d000000"),
@@ -29,8 +78,8 @@ class BTableMachineTests(unittest.TestCase):
         row = dict(
             type="fixture",
             method="entry",
-            address="0x144ef8562",
-            end=hex(0x144EF8562 + len(native)),
+            address=hex(base),
+            end=hex(base + len(native)),
             nativeSha256=hashlib.sha256(native).hexdigest(),
         )
         helper = b"verified resize fixture"
@@ -56,8 +105,8 @@ class BTableMachineTests(unittest.TestCase):
             methods=[row],
             scope="fixture",
             resizeHelper=dict(
-                address="0x146f5f380",
-                end="0x146f5f58f",
+                address=hex(FN_POSITION_ARRAY_RESIZE),
+                end=hex(FN_POSITION_ARRAY_RESIZE + len(helper)),
                 nativeSha256=hashlib.sha256(helper).hexdigest(),
             ),
         )

@@ -204,9 +204,7 @@ class CommonConditionTests(unittest.TestCase):
         )
 
     def test_unreviewed_cases_and_changed_profile_are_rejected(self):
-        self.assertIsNone(
-            self.bind("cCheckSelfType", {"_EditCategory": "[7] REWARD_RANK"})
-        )
+        self.assertIsNone(self.bind("cCheckSelfType", {"_EditCategory": "[0] NONE"}))
         self.assertIsNone(
             self.bind(
                 "cCheckTargetStatus",

@@ -1,9 +1,8 @@
 """Extract one monster through its module and verify its native evidence."""
 
-import json
 from .extraction import extract_model
 from ..native.pe import verify_rows
-from ..models.io import MODEL_LIMIT_BYTES
+from ..models.io import encode_model
 
 
 def native_evidence(value):
@@ -56,7 +55,7 @@ def freeze_native_model(
     graph = extract_model(enemy_id, natives, rules_path=rules_path, model=model)
     verify_rows(exe, native_evidence(graph))
     graph["nativeVerification"] = "matched"
-    content = json.dumps(graph, ensure_ascii=False, indent=2) + "\n"
-    if len(content.encode("utf8")) > MODEL_LIMIT_BYTES:
-        raise ValueError("提取的图超过 25 MiB，需在保留语义的前提下去重或分片")
-    return content
+    from .runtime_log import record_graph
+
+    record_graph(graph)
+    return encode_model(graph)

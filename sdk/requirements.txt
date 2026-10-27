@@ -1,4 +1,4 @@
-# SDK dependencies, also installed by CI before the tests: Capstone for both
+# SDK dependencies, also installed by CI before the tests: Capstone for native
 # tools, PyGhidra for the offline decompile command, questionary and the
 # prompt_toolkit it was tested with (questionary 2.1.0 fails on prompt_toolkit
 # 3.0.53) for the menu, rich for the progress bars of long commands.
@@ -7,3 +7,8 @@ capstone==5.0.6
 questionary==2.1.1
 prompt_toolkit==3.0.53
 rich==14.1.0
+# Static action/request-set mapping; these do not load REE-Lib or .NET.
+iced-x86==1.21.0
+ijson==3.5.1
+mmh3==5.3.0
+jsonschema==4.26.0

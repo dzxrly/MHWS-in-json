@@ -108,10 +108,40 @@ class NativeSelectorTests(unittest.TestCase):
         self.assertEqual([argument["index"] for argument in arguments], [304, 305])
         self.assertEqual(evidence["indexRegister"], "r13")
 
+    def test_observed_global_names_preserve_strict_weight_and_modulo_checks(self):
+        from sdk.enemy_logic_exporter.shared.logic.selectors import (
+            _selection_form,
+            SelectorBoundary,
+        )
+
+        address = 0x15488DA28
+        for prefix in ("lRam0000000", "_DAT_"):
+            with self.subTest(prefix=prefix):
+                pool = f"{prefix}{address:x}"
+                block = (
+                    f"{pool} + 0x1c; {pool} + 0x24; {pool} + 0x20; "
+                    "ticket = (draw & 0xffffffff) % (ulonglong)total; "
+                    "if ((int)ticket < *(int *)(cell + 4)) {}; "
+                    "ticket = (int)ticket - *(int *)(cell + 4);"
+                )
+                _selection_form(block, address, block)
+                for changed in (
+                    block.replace("0xffffffff", "0xffff"),
+                    block.replace("ticket <", "ticket <="),
+                    block.replace(f"{pool} + 0x24", f"{pool} + 0x28"),
+                ):
+                    with self.assertRaises(SelectorBoundary):
+                        _selection_form(changed, address, changed)
+
 
 class SelectorCandidateContractTests(unittest.TestCase):
     def recover_shared_target(
-        self, keys=(11, 22), candidate_pcs=(5, 7), *, reviewed_child=True
+        self,
+        keys=(11, 22),
+        candidate_pcs=(5, 7),
+        *,
+        reviewed_child=True,
+        pool_prefix="lRam0000000",
     ):
         from sdk.enemy_logic_exporter.shared.logic.selectors import recover_selectors
 
@@ -141,7 +171,7 @@ class SelectorCandidateContractTests(unittest.TestCase):
             "entry": boundary,
             "nodes": list(machine.nodes.values()),
         }
-        code = "lRam000000015488da28 + 0x24"
+        code = pool_prefix + "15488da28 + 0x24"
         pool = {
             "entries": [
                 {"nativeKey": keys[0], "weight": 35},
@@ -237,6 +267,21 @@ class SelectorCandidateContractTests(unittest.TestCase):
         )
         self.assertEqual([c["id"] for c in candidates], ["slot:0", "slot:1"])
         self.assertEqual(sum(n["kind"] == "call" for n in result["nodes"]), 1)
+
+    def test_dat_pool_name_is_bound_and_unreviewed_child_still_stops_recovery(self):
+        result, accepted, boundaries, _ = self.recover_shared_target(
+            pool_prefix="_DAT_"
+        )
+        self.assertEqual(boundaries, [])
+        self.assertEqual(len(accepted), 1)
+        node = next(n for n in result["nodes"] if n["kind"] == "weighted_random")
+        self.assertEqual(node["staticArray"], "0x15488da28")
+        result, accepted, boundaries, _ = self.recover_shared_target(
+            pool_prefix="_DAT_", reviewed_child=False
+        )
+        self.assertEqual(accepted, [])
+        self.assertEqual(len(boundaries), 1)
+        self.assertIn("候选没有唯一子表调用", boundaries[0]["reason"])
 
 
 if __name__ == "__main__":

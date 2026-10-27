@@ -5,6 +5,7 @@ remain explicit, and inputs describe one selection snapshot, not a game loop.
 """
 
 from collections import Counter
+from copy import deepcopy
 import hashlib
 import json
 from pathlib import Path
@@ -375,6 +376,14 @@ class PlayerCompiler:
     def __init__(self, graph):
         self.graph = graph
         self.inputs = {}
+        self.input_definitions = {}
+        self.history_tables = {
+            table["tableGuid"]
+            for table in graph["tables"]
+            if any(
+                node.get("effect") == "write_table_history" for node in table["nodes"]
+            )
+        }
         self.thresholds = {}
         self.timers = graph.get("variableCatalog", {})
         self.extend_enums = {
@@ -392,6 +401,8 @@ class PlayerCompiler:
         # Enum names declared by monster-module condition recipes.
         for table in graph["tables"]:
             for node in table["nodes"]:
+                for key, definition in node.get("inputDefinitions", {}).items():
+                    self.input_definitions[key] = dict(definition)
                 for key, names in (node.get("inputEnums") or {}).items():
                     self.extend_enums.setdefault(key, {}).update(names)
         self.rules = {r["commandType"]: r for r in graph["rules"]["rules"]}
@@ -766,6 +777,17 @@ class PlayerCompiler:
 
     def expression(self, expression):
         kind = expression["kind"]
+        if kind == "table_history_interval":
+            for role in ("maxKey", "minKey"):
+                key = expression[role]
+                self.inputs.setdefault(key, dict(self.input_definitions[key]))
+            return dict(
+                op=kind,
+                **{
+                    key: expression[key]
+                    for key in ("drawKey", "maxKey", "minKey", "modulus", "threshold")
+                },
+            )
         if kind == "predicate":
             return self.predicate(expression["predicate"])
         if kind == "constant":
@@ -797,6 +819,18 @@ class PlayerCompiler:
                 "self_current_area_no": ("self_current_area_no", "怪物所在区域编号"),
             }
             key = operand.get("key")
+            if operand.get("kind") == "runtime" and key in self.input_definitions:
+                definition = dict(self.input_definitions[key])
+                if definition.pop("boolean", False):
+                    definition["options"] = [
+                        dict(label="是", value=True),
+                        dict(label="否", value=False),
+                    ]
+                self.inputs.setdefault(key, definition)
+                if right.get("kind") == "constant":
+                    return comparison(
+                        key, expression.get("operator", "eq"), right["value"]
+                    )
             if operand.get("kind") == "runtime" and key in SCENARIO_GUARDS:
                 return comparison(key, "eq", True)
             if operand.get("kind") == "runtime" and key in SCENARIO_FACTS:
@@ -1010,11 +1044,15 @@ class PlayerCompiler:
             if "expression" in node
             else self.predicate(node["predicate"])
         )
-        text = self.describe(result)
+        # Object/type guards can all be hidden from the ordinary condition text.
+        # Keep the reviewed summary so their semantic source stays identifiable.
+        text = self.describe(result) or node.get("summary", "")
         return result, text
 
     def describe(self, expression):
         op = expression["op"]
+        if op == "table_history_interval":
+            return f"按前次随机区间重定向后的余数 ≤ {expression['threshold']}"
         if op == "compare":
             key, value = expression["key"], expression["value"]
             if key == "ordinary_combat_snapshot":
@@ -1125,6 +1163,15 @@ class PlayerCompiler:
 
     def presentation(self, condition):
         """Labels describe both outcomes; ordinary-selection guards stay explicit."""
+        if condition["op"] == "table_history_interval":
+            return dict(
+                category="random",
+                title="依据前次记录处理本次随机值",
+                trueLabel=f"重定向后的随机余数 ≤ {condition['threshold']}",
+                falseLabel=f"重定向后的随机余数 > {condition['threshold']}",
+                snapshotGuard=False,
+                compact=False,
+            )
         parts = (
             condition.get("items", [condition])
             if condition["op"] == "all"
@@ -1136,6 +1183,15 @@ class PlayerCompiler:
         random_keys = [k for k in keys if str(k).startswith("random_uint32_mod_")]
         if random_keys and len(comparisons) == 1 and comparisons[0]["operator"] == "le":
             test = comparisons[0]
+            if self.table is not None and self.table[0] in self.history_tables:
+                return dict(
+                    category="random",
+                    title="依据本次随机值继续",
+                    trueLabel=f"原始随机余数 ≤ {test['value']}",
+                    falseLabel=f"原始随机余数 > {test['value']}",
+                    snapshotGuard=False,
+                    compact=False,
+                )
             modulus = int(test["key"].split(":", 1)[0].rsplit("_", 1)[-1])
             hit = min(max(int(test["value"]) + 1, 0), modulus)
             return dict(
@@ -1265,10 +1321,68 @@ class PlayerCompiler:
                 "request_actor_helper_skipped_then_yield": "等待动作调度",
             }
             result.update(title=titles.get(effect, "更新战斗状态"), effect=effect)
+            if node.get("summary") and effect in {
+                "set_float_value",
+                "set_bool_value",
+                "set_timer_state",
+                "request_dynamic_action",
+                "read_action_dispatch",
+                "apply_native_field_writes",
+                "apply_boolean_command_effects",
+                "update_target_positions",
+                "request_exclusive_point",
+                "write_native_direction",
+                "request_desire_recovery",
+                "apply_desire_recovery_tail_writes",
+                "write_table_history",
+                "skip_dynamic_action_request",
+            }:
+                result["title"] = node["summary"]
+            if node.get("variableUpdate"):
+                result["variableUpdate"] = dict(node["variableUpdate"])
+                if node.get("commandGuard"):
+                    result["updateGuard"] = self.expression(node["commandGuard"])
+            if node.get("stateUpdates"):
+                result["stateUpdates"] = dict(node["stateUpdates"])
+            if node.get("targetUpdates"):
+                result["targetUpdates"] = deepcopy(node["targetUpdates"])
+            for field in (
+                "requestSource",
+                "convertedActionId",
+                "commandEffectsComplete",
+            ):
+                if field in node:
+                    result[field] = deepcopy(node[field])
+            if node.get("dynamicAction"):
+                result["dynamicAction"] = True
+                result["note"] = node["implementationBoundary"]
+            elif node.get("implementationBoundary"):
+                result["note"] = node["implementationBoundary"]
+            if effect == "apply_native_field_writes":
+                result["fieldUpdates"] = [
+                    dict(
+                        key="extend:"
+                        + write["destination"]["contextType"]
+                        + "."
+                        + write["destination"]["field"],
+                        sourceKey="extend:"
+                        + write["value"]["contextType"]
+                        + "."
+                        + write["value"]["field"],
+                    )
+                    for write in node["partialImplementationEffects"]
+                    if write["value"]["kind"] == "self_extend_field"
+                ]
             result["invalidateSnapshot"] = effect not in (
                 "set_destination",
                 "set_timer_state",
                 "set_float_value",
+                "set_bool_value",
+                "read_action_dispatch",
+                "write_table_history",
+                "apply_boolean_command_effects",
+                "apply_desire_recovery_tail_writes",
+                "skip_dynamic_action_request",
             )
             if (
                 effect == "write_context_field"
@@ -1288,6 +1402,23 @@ class PlayerCompiler:
                 note="接入关系、判断或副作用需要继续核查。",
                 invalidateSnapshot=True,
             )
+            if node.get("boundaryKind") == "partial_request_effects":
+                result.update(
+                    title="恢复动作请求的部分副作用待核实", note=node["reason"]
+                )
+                result["continuationKind"] = node["continuationKind"]
+                for field in (
+                    "requestSource",
+                    "convertedActionId",
+                    "commandEffectsComplete",
+                ):
+                    result[field] = deepcopy(node[field])
+            if node.get("boundaryKind") == "native_call_effects":
+                result.update(
+                    note=node["reason"],
+                    boundaryKind="native_call_effects",
+                    continuationKind=node["continuationKind"],
+                )
             if "resume" in node and node.get("parameterBindingBoundary"):
                 result.update(
                     title="动作身份待核查",
@@ -1466,6 +1597,11 @@ def build_player_view(graph):
             persistent=sorted({"self_enemy_id", *SCENARIO_GUARDS, *SCENARIO_FACTS}),
         ),
         inputs=compiler.inputs,
+        persistentState=sorted(
+            key
+            for key in compiler.inputs
+            if key.startswith(("table_param:", "table_history:"))
+        ),
         entries=entries,
         nodes=nodes,
         coverage=dict(

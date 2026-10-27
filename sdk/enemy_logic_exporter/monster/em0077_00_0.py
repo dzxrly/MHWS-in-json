@@ -3,6 +3,43 @@
 ENEMY_ID = "EM0077_00_0"
 NATIVE_OWNER = "Em0077_00"
 
+# Reviewed native methods; local histories are split only at their actual reads.
+LOCAL_HISTORY_TABLES = {
+    "app.Em0077_00_BTable_CommonAttack_Export": (
+        "table_0efbf28f_52d5_4f4e_bf80_d3e4e7091cff",
+        "table_527b5fb2_98e8_4384_b594_8f94c59d6a19",
+        "table_73d6aa18_e552_40a4_8b42_a881209aa2e9",
+        "table_dbe09b32_ecc6_43d2_8de0_81ea1bdb33b7",
+    ),
+}
+
+
+FORMULA_HISTORY_TABLES = {
+    "app.Em0077_00_BTable_CommonAttack_Export": (
+        "table_0efbf28f_52d5_4f4e_bf80_d3e4e7091cff",
+        "table_527b5fb2_98e8_4384_b594_8f94c59d6a19",
+        "table_73d6aa18_e552_40a4_8b42_a881209aa2e9",
+        "table_b7df0ca7_0b24_4936_9aa7_101afe38ad89",
+        "table_d2824318_e0a9_4fb3_bfb1_45efb884eefb",
+        "table_dbe09b32_ecc6_43d2_8de0_81ea1bdb33b7",
+    ),
+    "app.Em0077_00_BTable_Life_Export": ("table_c7517fda_e6c7_42b0_91d7_895bc1b80466",),
+}
+
+
+def table_history_policy(row):
+    method = row["method"]
+    policy = {}
+    local = LOCAL_HISTORY_TABLES.get(row["type"], ())
+    if any(method.startswith(stem) and method[len(stem) :].isdigit() for stem in local):
+        policy["local"] = True
+    formula = FORMULA_HISTORY_TABLES.get(row["type"], ())
+    if any(
+        method.startswith(stem) and method[len(stem) :].isdigit() for stem in formula
+    ):
+        policy["formula"] = True
+    return policy or None
+
 
 def extract(context):
     """Select this monster's declared tables, imports and native method contexts."""

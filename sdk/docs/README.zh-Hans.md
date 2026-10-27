@@ -8,8 +8,9 @@
 |---|---|---|
 | `sdk.enemy_logic_exporter` | 从 dump 出的游戏 EXE、IL2CPP 元数据和资源导出中提取怪物行动逻辑，生成网页使用的行动图 JSON | dump 出的 EXE、IL2CPP 元数据、`MHWS-in-json` 资源；部分命令还需要 Ghidra |
 | `sdk.skill_effect_exporter` | 找出原生代码中使用每个技能的函数，按技能等级求值，生成技能效果链路 JSON（`SkillDetails.xlsx` 的数据来源） | dump 出的 EXE、IL2CPP 元数据、`MHWS-in-json` 资源 |
+| `sdk.action_map_exporter` | 生成 `WeaponActionValues.xlsx` 使用的武器动作与精确碰撞 requestSet 映射 | dump 出的 EXE、IL2CPP 元数据、转换后的 MOTBANK/MOTLIST/PFB/RCOL/USER JSON |
 
-两项功能读取的都是从内存 dump 出的游戏 EXE（例如 `MonsterHunterWilds_dump.exe`），生成 REFramework 的 `il2cpp_dump.json` 之前本来就会得到它；不使用原版 `MonsterHunterWilds.exe`。这两个文件都由使用者提供，仓库和 Release 都不保存副本，SDK 也不猜测路径：用 `-e/--exe`、`-i/--il2cpp` 指定，或设环境变量 `MHWS_EXE`、`MHWS_IL2CPP`。SDK 不记录游戏版本或文件摘要；游戏更新后，代码或数据对不上的地方会直接报错（符号无法定位、原生字节不一致等），按“[游戏更新后](#游戏更新后)”处理。
+三项功能读取的都是从内存 dump 出的游戏 EXE（例如 `MonsterHunterWilds_dump.exe`），生成 REFramework 的 `il2cpp_dump.json` 之前本来就会得到它；不使用原版 `MonsterHunterWilds.exe`。这两个文件都由使用者提供，仓库和 Release 都不保存副本，SDK 也不猜测路径：用 `-e/--exe`、`-i/--il2cpp` 指定，或设环境变量 `MHWS_EXE`、`MHWS_IL2CPP`。SDK 不记录游戏版本或文件摘要；游戏更新后，代码或数据对不上的地方会直接报错（符号无法定位、原生字节不一致等），按“[游戏更新后](#游戏更新后)”处理。
 
 只想重新生成网页或表格、不改动提取结果时，不需要 SDK：构建器只读取仓库中已提交的 JSON（见“[只构建网页](#只构建网页)”）。
 
@@ -27,7 +28,7 @@
 ## 搭建环境（Windows）
 
 1. 安装 Python 3.13（勾选 `py` 启动器）与 Git，克隆仓库。
-2. 在项目根目录运行安装脚本。它在 `.tmp/sdk-venv` 建虚拟环境，安装固定版本的依赖（Capstone、PyGhidra、questionary、rich），最后运行环境检查：
+2. 在项目根目录运行安装脚本。它在 `.tmp/sdk-venv` 建虚拟环境，安装固定版本的依赖（Capstone、iced-x86、ijson、mmh3、PyGhidra、questionary、rich），最后运行环境检查：
 
    ```powershell
    powershell -ExecutionPolicy Bypass -File sdk/setup_env.ps1 -Exe <dump 出的 EXE> -Il2cpp <il2cpp_dump.json>
@@ -53,11 +54,26 @@
 
 ## 菜单界面（TUI）
 
-`python -m sdk` 打开常用任务的菜单：环境检查、技能效果提取（全部或指定技能）、重建 `SkillDetails.xlsx`、怪物提取与玩家视图、未知条件统计、发布与构建行动逻辑网页，以及 SDK 测试。用方向键和回车选择。每个操作先打印要执行的完整命令行再执行，同样的步骤可以直接写进脚本。菜单启动时读取 `MHWS_EXE`、`MHWS_IL2CPP`；未设置时先询问 dump 出的 EXE 与 IL2CPP dump 的路径，“设置 EXE 与 il2cpp 路径”可在本次会话中修改。发布前会先确认，避免误覆盖已提交的模型。耗时的步骤（技能提取、`extract-all`、`player-view`、`publish`）会显示进度条，给出已完成数量、用时与预计剩余时间，菜单和命令行中都会显示（`sdk/progress.py`）。安装脚本会把项目根目录登记到虚拟环境中（`mhws_sdk.pth`），因此菜单可以在任意目录启动；此前建好的环境需要重新运行一次安装脚本。
+`python -m sdk` 打开常用任务的菜单：环境检查、技能效果提取（全部或指定技能）、重建 `SkillDetails.xlsx`、武器动作映射、怪物提取与玩家视图、未知条件统计、发布与构建行动逻辑网页，以及 SDK 测试。用方向键和回车选择。每个操作先打印要执行的完整命令行再执行，同样的步骤可以直接写进脚本。菜单启动时读取 `MHWS_EXE`、`MHWS_IL2CPP`；未设置时先询问 dump 出的 EXE 与 IL2CPP dump 的路径，“设置 EXE 与 il2cpp 路径”可在本次会话中修改。发布前会先确认，避免误覆盖已提交的模型。耗时的步骤（技能提取、`extract-all`、`player-view`、`publish`）会显示进度条，给出已完成数量、用时与预计剩余时间，菜单和命令行中都会显示（`sdk/progress.py`）。安装脚本会把项目根目录登记到虚拟环境中（`mhws_sdk.pth`），因此菜单可以在任意目录启动；此前建好的环境需要重新运行一次安装脚本。
 
 ```powershell
 .tmp/sdk-venv/Scripts/python.exe -m sdk
 ```
+
+## 武器动作映射 SDK（`sdk.action_map_exporter`）
+
+> ActionMap 是把武器动作名称连接到精确碰撞 requestSet 身份的静态 JSON；身份包含 scope、RCOL 路径、requestSet ID、key hash 和源序号。表格构建器只读取这份 JSON。
+
+```powershell
+python -B -m sdk.action_map_exporter extract
+python -B -m sdk.action_map_exporter extract -e <dump 出的 EXE> -i <il2cpp_dump.json> -n MHWS-in-json/natives -o .tmp/action-map/ActionMap.json
+```
+
+默认写入 `MHWS-in-json/ActionMap.json`。先准备转换后的资源 JSON，再用匹配的 dump 运行本命令。SDK 直接读取转换后的 JSON，不再需要 PAK、Release list、原始 PFB/MOTBANK、REE-Lib 或 .NET。它检查自身必需的资源及引用闭包，无关 PFB 转换失败不会阻断生成；必需文件（包括引用的子 PFB）缺失、闭包内身份有歧义或原生规则发生变化时明确失败，保留原输出。闭包之外的无关 PFB 存在重复版本时，不阻断生成。
+
+每次生成只流式读取一次 IL2CPP JSON，原生规则校验和动作方法选择共用这份索引；只保留方法索引和规则所需的类型记录。
+
+v2 映射契约保留证据等级、条件、未解析项及原生证据。生成前按方法身份、规范化指令、引用表和元数据核对依赖版本的碰撞规则，游戏更新后规则变化需要复核。Schema 位于 `sdk/action_map_exporter/data`，生成端测试位于 `tests/sdk/action_map`；`src` 独立校验 JSON。游戏更新时依次复制新版 JSON、重建 ActionMap、重新提取技能与怪物 JSON，再构建表格和网站。维护规则见 [AGENTS.md](../action_map_exporter/AGENTS.md)。
 
 ## 怪物行动逻辑 SDK（`sdk.enemy_logic_exporter`）
 
@@ -97,9 +113,43 @@ python -B -m unittest discover -s tests/sdk -t .
 
 每次改动前后都比较 `census` 的 `unknownConditions` 和 `uncertainty` 的 `total.uncertain`。`player-view` 只接受 `.tmp` 中的完整模型，不接受已发布的精简模型。
 
+组合条件按原生顺序短路。玩家视图会应用已核实的变量更新和资源上下限，并重新判断依赖这些变量的后续条件；动作或未完整核实的副作用之后，普通状态输入仍需重新确认。
+
+> 前次随机区间：行为表私有参数中保存的上一次选择范围，用于下一次随机值的重定向。
+
+已恢复的前次随机区间会随路径更新，并在动作后保留。模型只展开有证据的历史情况，其他历史继续显示未知；构造初值不代表每次进入表时的值。此类选择不能按每次独立抽样解释。
+
+只有独立的原生追踪证明该恢复位置直接到达真实返回，且不读取或泄漏私有参数时，才省去历史分派。证明保留在完整研究模型的 `historyGateElisions` 中；仅凭已枚举历史得到相同结果，不能删除未知兜底。
+
+对于已核实的多组独立区间，在原生代码实际读取各组的位置分别展开，不在表入口枚举全部组合。已核实的布尔命令若带有状态写入，会在实际发生写入的返回分支上先更新状态，再继续判断。
+
+私有参数的类型化查找与随机区间发现分别核实：前者依据本导出类型的 setup、分配、构造及字典插入链，同时支持经过严格核对的显式构造器和构造器内联形式，只提供对象身份，不设置入表默认值。已审核的全域区间公式保留 Int32 有符号历史、uint32 取余和严格开区间比较。多阈值共用同一次抽样；独立区间分别保存历史，跨动作也不互相覆盖。历史写入后的原生检查仍从真实位置执行。只有全部读取被覆盖、Param 指针未逃逸、写入为已证明常量且各重映射路径后继一致时才接入；其余读取继续保留边界。页面只执行 JSON 声明的运算。
+
+`cRequestActionDesireRecover` 记录原始请求来源与受网络归属限制的请求约定，同时保留最终动作 ID、缓存和转换副作用未知的边界。三项已核实尾部写入只在该边界正常返回后应用。资源中的恢复类型标签不决定当前原生实现的模式。
+
+空间条件保留具体查询方式。玩家输入描述相关射线命中、筛选后的体素结果，或计时器派生的剩余百分比；离线页面不查询游戏实时地图，也不推进游戏计时器。尚未查明名称的命中分类保留内部数值。
+
+已核实的侧向目标和障碍攀爬目标命令保留原生前提、目标写入顺序与向量公式。引用缺失引发的异常路径单独保留边界，与普通返回假区分。目标写入后，当前选招快照失效；页面记录公式，不计算游戏坐标或导航结果。各怪物不同的角度换算保留在各自配方中。
+
+共通投掷目标实现也用于已核对的辟兽参数布局，保留两次独立 Nullable 位置查询、按数组顺序选择首个合格对象、Character setter 的不写入前提，以及其后仍未完整恢复的检测器与持有请求。辟兽墙面目标命令保留 void 返回、独占点申请、备用墙面状态，以及早于最终目标 setter 的方向写入；未闭合的候选集合、管理器副作用和几何计算仍明确保留。这些边界仅在正常返回后继续。两种专用抓取检查保留不同条件；毒怪鸟在命令主体正常返回的真假两侧更新捕获标志，外层 guard 失败时不写。
+
+Unfair 资格使用已核实的玩家动作属性、两次导航查询、原始节点属性位和 ST103 区域关系。TARZAN_ATTACH 名称和未命名导航位不被翻译为假定的偷袭动作或地形类别。正常资格链可由声明的输入求值；缺失 Transform 引用仍保留明确的异常边界。
+
+较大的完整研究模型会紧凑写出以保留全部逻辑；紧凑后仍超过 25 MiB 时会报错，要求去重或分片。
+
+### 运行诊断日志
+
+> JSONL 每行保存一个 JSON 事件，诊断日志与模型 JSON 分开。
+
+怪物 SDK 的每次命令在参数解析成功后，将本次日志写入 `<work-dir>/logs/<命令>-<UTC时间>-<进程号>-<运行标识>.jsonl`，终端打印绝对路径。默认工作目录为 `.tmp/enemy-logic-exporter`；`--work-dir` 放在子命令前，也可用 `MHWS_SDK_WORK_DIR` 设置。提取日志记录当前表／原生方法、人工策略的声明与匹配状态、请求和实际启用能力及未知汇总；异常保留 traceback 和原有失败含义。已有未知可继续存在于成功导出的模型中。日志无法创建或写入时仅打印警告，不改变原命令的执行结果；此时日志可能缺失或不完整。
+
+各怪物模块保留已审核的 `LOCAL_HISTORY_TABLES` / `FORMULA_HISTORY_TABLES` UUID 策略。更新遇到问题时，将本次日志及当前输入路径交给 LLM，沿资源导入闭包、元数据方法身份与原生指令反查，步骤见 [table UUID 与更新反查指南](../enemy_logic_exporter/AGENTS.md#table-uuid-人工策略运行日志与更新反查)。日志与研究原型留在 `.tmp`，不进入正式模型数据。
+
 ### 游戏更新后
 
 需要新的 dump 出的 EXE、对应的 IL2CPP dump、重新导出的资源，以及 Ghidra。
+
+证据迁移器只有在完整函数的规范化代码、长度及被调方身份唯一匹配后，才更新标准方法行及其已有的 `nativeBytes`、`bytes`，并保留原证据行长度。`nativeBytesRefreshed`、`bytesRefreshed` 分别统计两字段的拟刷新数量，报告模式也计数；`applied` 表示是否指定了 `--apply`。辅助指令片段、常量地址、类型槽和 Python 字面方法范围列在 `unsupportedDependencies` 中，`coverage` 给出覆盖范围与数量；这些依赖不会被自动重定位。`review` 为空只涉及标准方法行，不代表全部配方证明已迁移。新增配方后，应趁对应旧 EXE 仍可读取时刷新当前 profile 的证据摘要；新版本迁移无法补造缺失的旧摘要。
 
 ```powershell
 python -B -m sdk.enemy_logic_exporter check-env
@@ -115,6 +165,12 @@ python -B -m sdk.enemy_logic_exporter roster --write
 python -B -m sdk.enemy_logic_exporter new-monster --enemy <新怪物ID>          # 名单新增的每只怪物
 ```
 
+同一方法具有多种证据范围时，profile 在 `rowVariants` 中分别保存各个旧范围。迁移按旧地址和行长度选择；未登记的范围需要对应旧 EXE 和人工复核，不依据新字节串补造旧授权。
+
+> PE（Portable Executable，可移植可执行文件）是 Windows EXE 格式；这里仅通过其文件头定位节、数据目录和函数边界。
+
+PE 文件的节名可以随 dump 改变。常量读取按线程局部存储、加载配置和延迟导入目录共同所属的段定位，其他可写运行时数据仍保持未知。没有展开信息的短函数用有界控制流恢复结束位置；遇到未闭合的间接跳转或解码失败时保留保守范围。摘要方案 3 始终保留显式证据范围；升级方案必须用旧 EXE、旧元数据和旧证据原件重新计算旧证明。
+
 之后按“修改代码后重新提取”跑一遍。`migrate-evidence` 列出的待复核项和 `resolve-symbols` 报告的 `changed` 项必须逐条核对原生代码。详细的核对顺序见 [SDK 维护说明](../enemy_logic_exporter/AGENTS.md)。
 
 ### 命令一览
@@ -128,7 +184,7 @@ python -B -m sdk.enemy_logic_exporter new-monster --enemy <新怪物ID>         
 | `uncertainty` | 统计玩家战斗树中无法判定的条件 | 带玩家视图的完整模型 |
 | `publish` | 删除研究字段、共享重复值，写入 `src/processed_data/enemy_battle_logic/models` | 带玩家视图的完整模型 |
 | `resolve-symbols` | 按当前 EXE 重新生成符号地址 profile（默认写入 `data/profile.json`） | EXE、dump |
-| `migrate-evidence` | 迁移代码未变的证据行，其余列入人工复核 | EXE、dump、新 profile |
+| `migrate-evidence` | 迁移代码未变的标准方法证据并刷新字节，报告待复核项及未覆盖依赖 | EXE、dump、新 profile |
 | `scheduler-slots` | 恢复 AI 状态与中断请求的行为表槽 | EXE、dump |
 | `roster` / `new-monster` | 更新大型怪物名单；为新怪物生成入口模块 | 资源 |
 | `analyze` | 全量资源与原生证据分析，生成研究缓存 | EXE、dump、资源、Ghidra |
@@ -144,6 +200,12 @@ python -B -m sdk.enemy_logic_exporter new-monster --enemy <新怪物ID>         
 - **只能输出到 `.tmp`**：研究输出必须位于项目 `.tmp` 内，这是为了不把大型证据缓存提交到 Git。
 
 ## 技能效果 SDK（`sdk.skill_effect_exporter`）
+
+本次选定技能函数的入口若跳到 dump 映像外的不可读代码，提取会在写出前失败。需要取得完整 dump；不能通过改映像基址或跳过入口来确定缺失行为。
+
+> Hook（函数拦截）通过修改运行中的游戏进程来接管函数调用，其中包括改写函数入口指令。内存 dump 可能包含这些改写后的指令。
+
+导出内存 dump 前，停用会注册 Hook 的 autorun 脚本和 DLL 插件，再重启游戏，确保这些组件未在本次进程中加载。收起 REFramework 界面或停止采集回调不会撤销已有 Hook。三个 SDK 功能统一使用这份纯净 dump，提取时不需要第二份 EXE。
 
 游戏没有“技能 → 效果数值”的数据表：SkillData 的四个数值槽没有名称，`PlayerSkillParam` 等参数文件里的字段也不带技能 ID，二者只在原生代码中连接。这个工具先扫描 EXE，找出以技能 ID 调用技能读取方法的全部函数；再在“只装备该技能、取某一等级”的情境下，按真实指令执行这些函数（布尔与枚举参数逐一枚举），记录返回值、运行时条件以及数值来自哪个 SkillData 槽位、参数文件字段或 EXE 常量。结果写入 `src/processed_data/skill_details/data/skill_links/`（`index.json` 加按技能类别拆分的分片），构建 PROCESSED_DATA 时据此生成 `SkillDetails.xlsx`。
 

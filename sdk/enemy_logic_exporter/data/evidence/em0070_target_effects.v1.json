@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "scope": "Monster-specific SideWalk guard, argument, execution wrapper and angle operations",
+  "methods": [
+    {
+      "type": "app.btable.Em0070_00BTableCommand.cSideWalkOffset",
+      "method": "onExecute1233789",
+      "address": "0x146755ae0",
+      "end": "0x146755da8",
+      "returns": "System.Boolean",
+      "parameters": [
+        "ace.btable.cCommandWork",
+        "app.btable.Em0070_00BTableCommand.cSideWalkOffsetArg"
+      ],
+      "nativeBytes": "41565657534881ec38010000c578298c2420010000c57829842410010000c5f829bc2400010000c5f829b424f0000000488b0529acf80d4831e048898424e80000004d85c074124c89c7498b00488b00483b05099dfe0d744531f6488b8c24e80000004831e1e8c5489d0489f0c5f828b424f0000000c5f828bc2400010000c57828842410010000c578288c24200100004881c4380100005b5f5e415ec3488b4728488b4078488b40104885c074aa488b00488b00483b054c35fe0d759b4c89cb4889ce488d8c24c00000004889f24989f8e8890897fd488b4728488b4058488b40104885c00f84cb010000488b48184885c90f84be0100004c8db424c0000000c4c17b1036c4c17a107e084c89f2e8ec2b8b04c4c17a104608c4c17b100ec4c17b110ec4c17a1146084c8d8c24b0000000c4c1781331c4c17a1179084c8db424900000004c8d8424c00000004c89f14889f2e8e85b9b04c4c17b10064c8d8424a0000000c4c17b1100c4c17a104608c4c17a114008488b4310c5fa104010c5fa5905118d2907c57a10050d8d2907c53a59c8c4c1781336c4c17a117e08488d5c24704c8d8c24900000004889d94889f2e85a5b9b04c5fb10034c8d842480000000c4c17b1100c5fa104308c4c17a114008c5fb1005963b0a0ec5fb1103c5fa1005923b0a0ec5fa114308488d442460c5f81330c5fa117808c4c13259c04889442428c5fa11442420488d5c24504c8d4c24704889d94889f2e8124c3fffc5fa104308c5fb100bc5fb110bc5fa114308488b05c1620b0e488d8c24e000000048890148894c243031db885c2428c7442420000000004c8d4424504889f14889fa41b912000000e8250b97fd4c8d442440c4c1781330c4c17a117808488b0576620b0e488d8c24d800000048890148894c2430885c2428c7442420010000004889f14889fa41b912000000e8e10a97fd40b601e9a4fdffff4889f1ba460000004531c0e849a2d104cc"
+    },
+    {
+      "type": "ace.btable.cCommandFunc`2<app.btable.Em0070_00BTableCommand.cSideWalkOffsetArg,System.Boolean>",
+      "method": "execute1233786",
+      "address": "0x146402060",
+      "end": "0x1464020d8",
+      "returns": "ace.btable.COMMAND_RESULT",
+      "parameters": [
+        "ace.btable.cCommandWork",
+        "ace.btable.cCommandArgument"
+      ],
+      "nativeBytes": "564883ec304c89c84889ce4c8b4c2460488b0dc9e62d0e4831e148894c24284889d14c89c24989c0e8533a3500488d4c24278801480fbaf13f31c08039000f95c00fb70d5557840766894e058a0d4d578407884e0789060f954604c7460801000000488b4c24284831e1e84183d2044889f04883c4305ec3"
+    }
+  ],
+  "nativeProofs": [],
+  "constants": [
+    {
+      "address": "0x14d9ee97c",
+      "end": "0x14d9ee980",
+      "nativeBytes": "db0f4940",
+      "value": 3.1415927410125732
+    },
+    {
+      "address": "0x14d9ee978",
+      "end": "0x14d9ee97c",
+      "nativeBytes": "610bb63b",
+      "value": 0.0055555556900799274
+    }
+  ],
+  "fieldChecks": [
+    {
+      "type": "app.btable.Em0070_00BTableCommand.cSideWalkOffsetArg",
+      "field": "_EditSideWalkAngle",
+      "fieldType": "ace.btable.cEditFieldFloat",
+      "offset": "0x10"
+    },
+    {
+      "type": "ace.btable.cEditFieldFloat",
+      "field": "_Value",
+      "fieldType": "System.Single",
+      "offset": "0x10"
+    },
+    {
+      "type": "app.cEnemyExtendHolder",
+      "field": "<Base>k__BackingField",
+      "fieldType": "app.cEnemyExtendBase",
+      "offset": "0x10"
+    }
+  ],
+  "enumChecks": [],
+  "classSymbols": [
+    {
+      "type": "app.cEm0070_00Extend",
+      "slot": "0x1547390e8"
+    }
+  ]
+}

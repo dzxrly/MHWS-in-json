@@ -125,6 +125,12 @@ watch(
           <p class="kicker mono">{{ current.category }} · {{ current.id }}</p>
           <h2>{{ current.name }}<span v-if="current.ja" class="ja">{{ current.ja }}</span></h2>
           <p v-if="current.explain" class="explain">{{ current.explain }}</p>
+          <p v-if="current.mappedSkill" class="aside-note">
+            对应技能：<RouterLink class="mapped-skill" :to="`/skill_details/${current.mappedSkill.id}`">{{ current.mappedSkill.name }}（{{ current.mappedSkill.id }}）</RouterLink>。等级与效果见对应技能。
+          </p>
+          <p v-for="reference in current.resourceOpenSkills || []" :key="`${reference.id}-${reference.level}`" class="aside-note">
+            资源中的打开技能指向：{{ reference.name }}（{{ reference.id }}）Lv.{{ reference.level }} 指向此编号；当前代码未确认此编号的对应技能。
+          </p>
           <p v-if="current.openSkills" class="aside-note">打开技能：{{ current.openSkills }}</p>
           <p v-for="note in current.notes" :key="note" class="aside-note">{{ note }}</p>
           <ul v-if="current.levels.some((l) => l.explain)" class="levels">
@@ -136,7 +142,8 @@ watch(
         <div v-if="current.effects.length" class="effects">
           <SkillEffect v-for="effect in current.effects" :key="effect.key" :effect="effect" :levels="current.levelColumns" />
         </div>
-        <p v-else class="no-values">未提取到数值：这个技能只有发动条件，或没有从游戏参数读取到效果数值。</p>
+        <p v-else-if="current.mappedSkill" class="no-values">此编号的等级与效果见上方对应技能。</p>
+        <p v-else class="no-values">未提取到数值：当前离线结果未提供该技能的效果数值。</p>
         <details class="reading surface">
           <summary><Icon name="info" />阅读说明</summary>
           <ul>
@@ -267,6 +274,11 @@ watch(
   margin-top: 6px;
   color: var(--on-surface-variant);
   font-size: 13px;
+}
+.mapped-skill {
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 .levels {
   margin: 16px 0 0;

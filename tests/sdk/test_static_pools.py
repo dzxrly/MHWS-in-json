@@ -1,5 +1,13 @@
 import struct
 import unittest
+from sdk.enemy_logic_exporter.shared.config import (
+    FN_ARRAY_ALLOCATE,
+    FN_POOL_ARRAY_COPY,
+    FN_POOL_PAIR_CONSTRUCT,
+    FN_STATIC_REF_ACQUIRE,
+    FN_STATIC_REF_RELEASE,
+    POOL_ARRAY_TYPE_SLOT,
+)
 from sdk.enemy_logic_exporter.shared.logic.static_pools import native_initializer_pools
 
 
@@ -14,11 +22,11 @@ class StaticPoolTests(unittest.TestCase):
         code.extend(bytes.fromhex("41 b8 07 00 00 00 41 b9 19 00 00 00"))
         if clobber:
             call(base + 0x900)
-        call(0x143928820)
+        call(FN_POOL_PAIR_CONSTRUCT)
         if branch:
             code.extend(b"\x75\x00")
         code.extend(b"\x48\xb9" + struct.pack("<Q", 0x1547EC3D0))
-        call(0x143801F50)
+        call(FN_POOL_ARRAY_COPY)
         code.append(0xC3)
         return base, bytes(code)
 
@@ -75,9 +83,12 @@ class StaticPoolTests(unittest.TestCase):
         def call(target):
             code.extend(b"\xe8" + struct.pack("<i", target - (base + len(code) + 5)))
 
-        rip(bytes.fromhex("48 8b 15"), 0x1547535A8 if wrong_type else 0x1547535A0)
+        rip(
+            bytes.fromhex("48 8b 15"),
+            POOL_ARRAY_TYPE_SLOT + 8 if wrong_type else POOL_ARRAY_TYPE_SLOT,
+        )
         code.extend(bytes.fromhex("41 b8 02 00 00 00 41 b9 01 00 00 00"))
-        call(0x14B030670)
+        call(FN_ARRAY_ALLOCATE)
         if vector:
             rip(bytes.fromhex("c5 f8 28 05"), base + 0x1000)
             if vector_clobber:
@@ -102,7 +113,7 @@ class StaticPoolTests(unittest.TestCase):
             fast_jump = len(code)
             code.extend(b"\x74\x00")
             code.extend(bytes.fromhex("48 89 c7 48 89 c1"))
-            call(0x14B007BD0)
+            call(FN_STATIC_REF_ACQUIRE)
             loop = len(code)
             rip(bytes.fromhex("48 8b 0d"), 0x1547DBF38)
             code.extend(bytes.fromhex("48 89 c8"))
@@ -114,10 +125,11 @@ class StaticPoolTests(unittest.TestCase):
             if tail_release:
                 code.extend(bytes.fromhex("48 83 c4 28 5b"))
                 code.extend(
-                    b"\xe9" + struct.pack("<i", 0x14B0099E0 - (base + len(code) + 5))
+                    b"\xe9"
+                    + struct.pack("<i", FN_STATIC_REF_RELEASE - (base + len(code) + 5))
                 )
             else:
-                call(0x14B0099E0)
+                call(FN_STATIC_REF_RELEASE)
             code[fast_jump + 1] = len(code) - fast_jump - 2
             code[null_jump + 1] = len(code) - null_jump - 2
         else:

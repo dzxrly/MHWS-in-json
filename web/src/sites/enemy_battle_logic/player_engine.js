@@ -30,6 +30,14 @@ export function compare(value, operator, expected) {
 }
 export function evaluate(expression, inputs) {
   if (!expression) return null;
+  if (expression.op === "table_history_interval") {
+    const values = [expression.drawKey, expression.maxKey, expression.minKey].map(key => inputs[key]);
+    if (!values.every(value => Number.isInteger(value) && value >= -2147483648 && value <= 4294967295)) return null;
+    const [draw, maximum, minimum] = [values[0] >>> 0, values[1] | 0, values[2] | 0];
+    const remainder = draw % expression.modulus;
+    const effective = minimum < remainder && remainder < maximum ? (maximum >>> 0) % expression.modulus : remainder;
+    return effective <= expression.threshold;
+  }
   if (expression.op === "compare") return compare(inputs[expression.key], expression.operator, expression.value);
   if (expression.op === "not") { const value = evaluate(expression.item, inputs); return value === null ? null : !value; }
   if (expression.op === "all" || expression.op === "any") {
@@ -75,8 +83,50 @@ function restrict(expression, truth, inputs, fields) {
 }
 // Standing scenario assumptions survive an action; snapshot inputs do not.
 function standing(view, inputs) {
-  const keys = view.scenario?.persistent || [];
+  const keys = [...(view.scenario?.persistent || []), ...(view.persistentState || [])];
   return Object.fromEntries(keys.filter(key => key in inputs).map(key => [key, inputs[key]]));
+}
+export function applyUpdates(node, supplied) {
+  const inputs = { ...supplied };
+  const update = node.variableUpdate;
+  if (update) {
+    const key = `${update.kind === "float" ? "float" : update.kind === "bool" ? "variable" : "timer"}:${update.variable}`;
+    const guard = node.updateGuard ? evaluate(node.updateGuard, supplied) : true;
+    if (guard === false) { /* Native null-work guard leaves the value untouched. */ }
+    else if (guard === null || update.definitionStatus !== "bound") delete inputs[key];
+    else if (!update.readOnly) {
+      if (update.kind === "bool") inputs[key] = update.value;
+      else if (update.kind === "timer") {
+        if (update.operation === "activate" || update.operation === "assign") {
+          const value = update.operation === "activate" ? update.default : update.value;
+          inputs[key] = value <= 0;
+        }
+      } else {
+        const value = inputs[key];
+        const calculate = old => Math.max(update.min, Math.min(update.max,
+          update.operation === "assign" ? Math.fround(update.value) : Math.fround(Math.fround(old) + (update.operation === "add" ? 1 : -1) * Math.fround(update.value))));
+        if (update.operation === "assign") inputs[key] = calculate(0);
+        else if (typeof value === "number" && Number.isFinite(value)) inputs[key] = calculate(value);
+        else if (value && typeof value === "object" && Number.isFinite(value.min) && (value.max === null || Number.isFinite(value.max))) {
+          inputs[key] = { min: calculate(value.min), max: calculate(value.max === null ? Infinity : value.max), minClosed: true, maxClosed: true };
+        } else delete inputs[key];
+      }
+    }
+  }
+  for (const [key, value] of Object.entries(node.stateUpdates || {})) {
+    if (value === null) delete inputs[key]; else inputs[key] = value;
+  }
+  for (const update of node.fieldUpdates || []) {
+    if (update.sourceKey in inputs) inputs[update.key] = inputs[update.sourceKey];
+    else delete inputs[update.key];
+  }
+  return inputs;
+}
+function usesChangedInput(expression, changed) {
+  if (changed.has(expression.key) || changed.has(expression.otherKey)) return true;
+  if (expression.op === "table_history_interval" && [expression.drawKey, expression.maxKey, expression.minKey].some(key => changed.has(key))) return true;
+  if (expression.item && usesChangedInput(expression.item, changed)) return true;
+  return (expression.items || []).some(item => usesChangedInput(item, changed));
 }
 export function step(view, supplied) {
   let state = { ...supplied, stack: supplied.stack.slice(), seen: supplied.seen.slice(), assumptions: { ...supplied.assumptions } };
@@ -99,10 +149,15 @@ export function step(view, supplied) {
       state = next(position.key, { stack });
       continue;
     }
-    if (node.kind === "mutation" && node.next && !node.dispatch) {
+    if (node.kind === "mutation" && node.next && !node.dispatch && !node.dynamicAction) {
       via.push({ sourceRef: node.sourceRef, kind: "mutation", title: node.title, invalidateSnapshot: node.invalidateSnapshot });
-      const stable = Object.fromEntries(Object.entries(state.assumptions).filter(([token]) => JSON.parse(token)[1] === null));
-      state = next(node.next, node.invalidateSnapshot ? { inputs: standing(view, state.inputs), assumptions: {}, afterAction: true } : { assumptions: stable });
+      const inputs = applyUpdates(node, state.inputs);
+      const changed = new Set([...Object.keys(inputs), ...Object.keys(state.inputs)].filter(key => JSON.stringify(inputs[key]) !== JSON.stringify(state.inputs[key])));
+      const stable = Object.fromEntries(Object.entries(state.assumptions).filter(([token]) => {
+        const [expression, scope] = JSON.parse(token);
+        return scope === null && !usesChangedInput(expression, changed);
+      }));
+      state = next(node.next, node.invalidateSnapshot ? { inputs: standing(view, inputs), assumptions: {}, afterAction: true } : { inputs, assumptions: stable });
       continue;
     }
     if (node.kind === "condition" && node.presentation?.compact) {
@@ -141,7 +196,7 @@ export function step(view, supplied) {
       record.children.push({ label: "动作结束后继续", role: "resume", state: next(node.resume, { inputs: standing(view, state.inputs), assumptions: {}, afterAction: true }) });
     } else if (node.kind === "mutation" || node.kind === "unknown") {
       const extras = node.invalidateSnapshot ? { inputs: standing(view, state.inputs), assumptions: {}, afterAction: true } : {};
-      if (node.next) record.children.push({ label: node.invalidateSnapshot ? "随后（状态可能已变）" : "随后", state: next(node.next, extras) });
+      if (node.next) record.children.push({ label: node.continuationKind === "normal_return" ? "正常返回后继续" : node.invalidateSnapshot ? "随后（状态可能已变）" : "随后", state: next(node.next, extras) });
       if (node.resume) record.children.push({ label: "动作未识别，结束后继续", role: "resume", state: next(node.resume, { inputs: standing(view, state.inputs), assumptions: {}, afterAction: true }) });
       if (node.dispatch) record.children.push({ label: "之后可能切换到", state: next(node.dispatch, { inputs: standing(view, state.inputs), assumptions: {}, afterAction: true, stack: [] }) });
     }
