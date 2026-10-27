@@ -149,6 +149,9 @@ class NativeRecipeContext:
             from ..logic.command_effects import verify_command_effects
 
             verify_command_effects(self.pe, self.metadata)
+            from ..logic.target_command_effects import verify_target_command_effects
+
+            verify_target_command_effects(self.pe, self.metadata)
             from ..logic.field_checks import verify_recovered_conditions
 
             verify_recovered_conditions(self.pe, self.metadata)

@@ -5,6 +5,7 @@ remain explicit, and inputs describe one selection snapshot, not a game loop.
 """
 
 from collections import Counter
+from copy import deepcopy
 import hashlib
 import json
 from pathlib import Path
@@ -1032,7 +1033,9 @@ class PlayerCompiler:
             if "expression" in node
             else self.predicate(node["predicate"])
         )
-        text = self.describe(result)
+        # Object/type guards can all be hidden from the ordinary condition text.
+        # Keep the reviewed summary so their semantic source stays identifiable.
+        text = self.describe(result) or node.get("summary", "")
         return result, text
 
     def describe(self, expression):
@@ -1304,6 +1307,7 @@ class PlayerCompiler:
                 "read_action_dispatch",
                 "apply_native_field_writes",
                 "apply_boolean_command_effects",
+                "update_target_positions",
                 "write_table_history",
                 "skip_dynamic_action_request",
             }:
@@ -1314,6 +1318,8 @@ class PlayerCompiler:
                     result["updateGuard"] = self.expression(node["commandGuard"])
             if node.get("stateUpdates"):
                 result["stateUpdates"] = dict(node["stateUpdates"])
+            if node.get("targetUpdates"):
+                result["targetUpdates"] = deepcopy(node["targetUpdates"])
             if node.get("dynamicAction"):
                 result["dynamicAction"] = True
                 result["note"] = node["implementationBoundary"]

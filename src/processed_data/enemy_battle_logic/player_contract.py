@@ -101,7 +101,12 @@ def validate_player_view(graph):
         if node["kind"] == "mutation":
             if node.get("updateGuard"):
                 expression(node["updateGuard"])
-            for field in ("variableUpdate", "stateUpdates", "dynamicAction"):
+            for field in (
+                "variableUpdate",
+                "stateUpdates",
+                "dynamicAction",
+                "targetUpdates",
+            ):
                 if node.get(field) != source.get(field):
                     raise ValueError("玩家状态更新改变了 SDK 声明的作用")
     for entry in view["entries"]:

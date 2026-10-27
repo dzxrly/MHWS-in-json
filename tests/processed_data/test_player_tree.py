@@ -14,6 +14,61 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class PlayerTreeTests(unittest.TestCase):
+    def test_hidden_target_type_guards_keep_the_reviewed_summary(self):
+        compiler = PlayerCompiler(dict(tables=[], rules=dict(rules=[])))
+        result = compiler.node(
+            "table",
+            dict(
+                id="guard",
+                kind="condition",
+                summary="检查目标更新的对象与类型",
+                expression=dict(
+                    kind="all",
+                    items=[
+                        dict(
+                            kind="runtime",
+                            key="enemy_command_work_valid",
+                            source="work",
+                        ),
+                        dict(kind="runtime", key="self_extend_valid", source="Extend"),
+                    ],
+                ),
+                true="write",
+                false="return",
+            ),
+        )
+        self.assertEqual(result["title"], "检查目标更新的对象与类型")
+        self.assertTrue(result["presentation"]["compact"])
+        self.assertEqual(result["true"], "table/write")
+        self.assertEqual(result["false"], "table/return")
+
+    def test_target_writes_invalidate_snapshot_and_preserve_native_description(self):
+        compiler = PlayerCompiler(dict(tables=[], rules=dict(rules=[])))
+        updates = [
+            dict(
+                order=0,
+                category=18,
+                position=dict(kind="native_vector_formula", formula="T+(P-T)"),
+            )
+        ]
+        result = compiler.node(
+            "table",
+            dict(
+                id="write",
+                kind="mutation",
+                effect="update_target_positions",
+                summary="更新侧向目标并保存原目标位置",
+                targetUpdates=updates,
+                next="continue",
+            ),
+        )
+        self.assertTrue(result["invalidateSnapshot"])
+        self.assertEqual(result["targetUpdates"], updates)
+        self.assertEqual(result["title"], "更新侧向目标并保存原目标位置")
+        self.assertEqual(result["next"], "table/continue")
+        result["targetUpdates"][0]["category"] = 10
+        self.assertEqual(updates[0]["category"], 18)
+
     def test_boolean_command_effect_preserves_snapshot_and_declares_its_write(self):
         compiler = PlayerCompiler(dict(tables=[], rules=dict(rules=[])))
         result = compiler.node(

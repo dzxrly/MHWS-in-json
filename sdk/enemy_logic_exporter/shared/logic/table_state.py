@@ -54,6 +54,176 @@ def _native_evidence(pe, owner, method, address, body):
     )
 
 
+def prove_history_free_pc(machine, pc):
+    """Prove one entry reaches ret without touching or escaping private Param.
+
+    This uses the existing typed-object/valid-work entry preconditions, including
+    the export's already-created dictionary item. It supplies no field values.
+    Only the exact typed lookup and stack-cookie check may be crossed; a command,
+    an uncertain branch, or an unsupported instruction keeps the history gate.
+    """
+    from .machine import Boundary, Machine
+    from ..config import (
+        FN_STACK_COOKIE_CHECK,
+        OPERATOR_EXPORT_END,
+        OPERATOR_EXPORT_JUMP,
+    )
+
+    history = machine.table_history
+    if history is None or type(pc) is not int:
+        return None
+
+    def private_reference(value):
+        return (
+            isinstance(value, tuple)
+            and len(value) == 3
+            and value[0] == "pointer"
+            and value[1]
+            in (
+                history.owner,
+                ("table_history_value_slot", history.export_type),
+                ("table_history_dictionary", history.export_type),
+            )
+        )
+
+    class Probe(Machine):
+        def load(self, address, size, state):
+            if address is None or (
+                isinstance(address, tuple) and address[:2] == ("pointer", history.owner)
+            ):
+                raise Boundary("private or unresolved memory read")
+            return Machine.load(self, address, size, state)
+
+        def write(self, ins, operand, value, state):
+            if operand.type == CS_OP_MEM:
+                address = self.address(ins, operand, state)
+                if not (
+                    isinstance(address, tuple)
+                    and address[0] == "pointer"
+                    and (
+                        address[1] == "stack"
+                        or address[1] == "operator"
+                        and address[2] in (OPERATOR_EXPORT_END, OPERATOR_EXPORT_JUMP)
+                        and operand.size == 1
+                        and not private_reference(value)
+                    )
+                ):
+                    raise Boundary("private, escaping, or unreviewed memory write")
+            return Machine.write(self, ins, operand, value, state)
+
+    probe = object.__new__(Probe)
+    probe.__dict__ = dict(machine.__dict__)
+    state = deepcopy(machine.initial(pc))
+    # Reject an entry override that already assumes private field contents.
+    if any(owner == history.owner for owner, _, _ in state["mem"]):
+        return None
+    address = int(machine.row["address"], 16)
+    path, lookups, seen = [], [], set()
+    scalar = {
+        "nop",
+        "endbr64",
+        "lea",
+        "push",
+        "pop",
+        "mov",
+        "movabs",
+        "movsx",
+        "movsxd",
+        "movzx",
+        "add",
+        "sub",
+        "xor",
+        "and",
+        "or",
+        "cmp",
+        "test",
+        "shr",
+        "shl",
+        "sar",
+        "imul",
+        "inc",
+        "dec",
+        "neg",
+    }
+    try:
+        for _ in range(512):
+            stack = state["regs"].get("rsp")
+            if (
+                address in seen
+                or address not in probe.ins
+                or not isinstance(stack, tuple)
+                or stack[:2] != ("pointer", "stack")
+            ):
+                return None
+            seen.add(address)
+            ins = probe.ins[address]
+            path.append(dict(address=hex(address), nativeBytes=ins.bytes.hex()))
+            if ins.mnemonic == "ret":
+                value = state["regs"].get("rax")
+                ended = probe.load(pointer("operator", OPERATOR_EXPORT_END), 1, state)
+                if (
+                    ins.operands
+                    or state["regs"].get("rsp") != pointer("stack")
+                    or not isinstance(value, int)
+                    or ended not in (0, 1)
+                ):
+                    return None
+                return dict(
+                    kind="native_pc_history_independence",
+                    programCounter=pc,
+                    nativeMethod={
+                        k: machine.row[k] for k in ("type", "method", "address", "end")
+                    },
+                    returnAddress=hex(address),
+                    returnValue=bool(value & 0xFF),
+                    tableEnded=bool(ended),
+                    nativePath=path,
+                    lookupSites=lookups,
+                    preconditions=[
+                        "existing_typed_object_and_valid_work_entry_model",
+                        "export_runtime_id_dictionary_item_already_created",
+                        "original_stack_cookie_check_preserved",
+                    ],
+                )
+            if ins.mnemonic == "call":
+                event = probe.event(ins, state)
+                handled, value = history.call(event, state)
+                if handled:
+                    lookups.append(event["site"])
+                elif not (
+                    event.get("direct")
+                    and event["target"] == FN_STACK_COOKIE_CHECK
+                    and not private_reference(event["arguments"][0])
+                ):
+                    return None
+                state = probe.complete_call(state, event, None)
+                if handled:
+                    state["regs"]["rax"] = value
+                address += ins.size
+                continue
+            if ins.mnemonic == "btr":
+                op = ins.operands
+                if not (
+                    len(op) == 2
+                    and op[0].type == CS_OP_REG
+                    and op[1].type == CS_OP_IMM
+                    and op[1].imm == 63
+                    and (
+                        isinstance(value := probe.read(ins, op[0], state), int)
+                        or isinstance(value, tuple)
+                        and value[:2] == ("pointer", "stack")
+                        or history.tagged_reference(value)
+                    )
+                ):
+                    return None
+            elif ins.mnemonic not in scalar and not ins.mnemonic.startswith("j"):
+                return None
+            address = probe.step(ins, state)
+    except (Boundary, KeyError, TypeError, ValueError):
+        return None
+    return None
+
+
 class TableHistory:
     """One export object's dictionary identity and one native history pair."""
 

@@ -92,6 +92,7 @@ class Machine:
         self.integer_inputs = {}
         self.table_history = None
         self.boolean_commands = {}
+        self.history_gate_elisions = {}
 
     def event_key(self, event, state, bound=None):
         """Return the semantic node key of one call context, or None.
@@ -418,6 +419,10 @@ class Machine:
         )
 
     def bind(self, event):
+        # These calls already have their own position/stack handling in walk.
+        # Unused ABI arguments may still alias a command or argument object.
+        if event["target"] in MACHINE_TRANSPARENT_CALLS:
+            return None
         try:
             bound = command_binding(event, self.body, self.factories, self.registry)
         except ValueError as error:
@@ -799,6 +804,20 @@ class Machine:
             if m in {"add", "sub"} and isinstance(b, int):
                 value = add(a, b if m == "add" else -b)
             elif (
+                m == "add"
+                and len(op) == 2
+                and op[0].size == op[1].size == 8
+                and isinstance(a, int)
+                and isinstance(b, tuple)
+                and len(b) == 3
+                and b[0] == "pointer"
+                and isinstance(b[2], int)
+            ):
+                offset = a & 0xFFFFFFFFFFFFFFFF
+                if offset & 0x8000000000000000:
+                    offset -= 1 << 64
+                value = add(b, offset)
+            elif (
                 m in {"adc", "sbb"}
                 and isinstance(a, int)
                 and isinstance(b, int)
@@ -975,6 +994,55 @@ class Machine:
             ),
         )
         return keys[0]
+
+    def target_command_nodes(self, key, binding, detail, event, following, state):
+        """Keep guard failure, successful writes and native exceptions distinct."""
+        condition = dict(
+            kind="condition",
+            inputDefinitions=copy.deepcopy(detail["inputDefinitions"]),
+            semanticEvidence=copy.deepcopy(detail["semanticEvidence"]),
+            **binding,
+        )
+        self.nodes[key] = dict(
+            condition,
+            id=key,
+            expression=copy.deepcopy(detail["returnExpression"]),
+            summary="检查目标更新的对象与类型",
+        )
+        update = key + "-target-update"
+        self.nodes[key]["true"] = update
+        if detail.get("normalPrecondition"):
+            valid = key + "-target-references"
+            failure = key + "-target-exception"
+            self.nodes[key]["true"] = valid
+            self.nodes[valid] = dict(
+                condition,
+                id=valid,
+                expression=copy.deepcopy(detail["normalPrecondition"]),
+                summary="检查目标更新所需引用",
+                true=update,
+                false=failure,
+            )
+            self.nodes[failure] = dict(
+                id=failure,
+                kind="unknown",
+                reason=detail["exceptionBoundary"],
+                boundaryKind="native_exception",
+                semanticEvidence=copy.deepcopy(detail["semanticEvidence"]),
+            )
+        self.nodes[update] = dict(
+            copy.deepcopy(detail["targetMutation"]),
+            id=update,
+            kind="mutation",
+            **binding,
+        )
+        self.nodes[key]["false"] = self.walk(
+            following, self.complete_call(state, event, 0)
+        )
+        self.nodes[update]["next"] = self.walk(
+            following, self.complete_call(state, event, 1)
+        )
+        return key
 
     def walk(self, address, s):
         seen = set()
@@ -1277,6 +1345,15 @@ class Machine:
                         )
 
                         proof = self.command_evidence.get(bound["commandType"])
+                        from .monster_rules import target_command_effect
+
+                        target = target_command_effect(bound, proof)
+                        if target is not None:
+                            if self.command_return(bound) != BOOLEAN_TYPE:
+                                raise ValueError("目标更新命令的返回类型变化")
+                            return self.target_command_nodes(
+                                key, binding, target, e, address + ins.size, s
+                            )
                         boolean = self.boolean_commands.get(bound["commandType"])
                         if boolean is not None:
                             if self.command_return(bound) != BOOLEAN_TYPE:
@@ -1937,6 +2014,8 @@ class Machine:
         return None
 
     def build(self):
+        from .table_state import prove_history_free_pc
+
         self.state(0)
         while self.pending:
             key, address, state = self.pending.pop(0)
@@ -1946,6 +2025,11 @@ class Machine:
                 else []
             )
             if not cases:
+                self.states[key] = self.walk(address, state)
+                continue
+            proof = prove_history_free_pc(self, int(key.removeprefix("pc-")))
+            if proof is not None:
+                self.history_gate_elisions.setdefault(proof["programCounter"], proof)
                 self.states[key] = self.walk(address, state)
                 continue
             fallback = "history-" + key + "-unknown"
@@ -2000,8 +2084,14 @@ class Machine:
             for role in ("true", "false", "next", "resume"):
                 if role in n:
                     n[role] = resolve(n[role])
-        return dict(
+        result = dict(
             entry=resolve("pc-0"),
             nodes=list(self.nodes.values()),
             requiredTables=sorted(self.required_tables),
         )
+        if self.history_gate_elisions:
+            result["historyGateElisions"] = [
+                self.history_gate_elisions[pc]
+                for pc in sorted(self.history_gate_elisions)
+            ]
+        return result

@@ -1,0 +1,337 @@
+{
+  "schemaVersion": 1,
+  "scope": "Current native target-command calls and fields; no live target-module or physics execution",
+  "methods": [
+    {
+      "type": "app.btable.EmCommonCommand.cSetObstacleClimbDestForRise",
+      "method": "onExecute1237120",
+      "address": "0x14918e340",
+      "end": "0x14918e587",
+      "returns": "System.Boolean",
+      "parameters": [
+        "ace.btable.cCommandWork"
+      ],
+      "nativeBytes": "415741565657534881ece0000000488b05eb13530b4831e048898424d80000004d85c074124c89c7498b00488b00483b05cb04590b742331f6488b8c24d80000004831e1e867b2f90189f04881c4e00000005b5f5e415e415fc34889ce488b4f28488b41584885c074cd488378100074c6488b4968488b4940488b89f00100008379680375b1488b5128488b4940c5fa104118c5fa104910c5fa105114c5fa105a28c5fb1062208b4808480560010000480fbaf03f488b4018c5ea585078488d9c2490000000c5fa110bc5fa115304c5fa1143084c8db42480000000c4c17b1126c4c17a115e08488b4728488b40588b48084805f0030000480fbaf03f488b4070488b4058488b4850488b4058488b89d0000000448b81e0000000488b90880000004889f1e876a824fec5fa1058184c8dbc24b00000004c89f94889f24d89f0e8dbc5f701c4c17b10074c8d442470c4c17b1100c4c17a104708c4c17a1140084c8db424b0000000c5fa101d80f085044c89f14889f2e8a5c5f701c4c17b10064c8d4c2460c4c17b1101c4c17a104608c4c17a1141084c8db424b00000004c89f14889f24989d8e814c5f701c4c17a104608c4c17b100e488b4728488b4068488b4040488b90000100004c8d442450c4c17b1108c4c17a114008c5f82805cec6630bc4c1782906c5fa1005d9c6630bc5fb100dc9c6630bc4c17b114e10c4c17a114618488b058eca650b488d8c24a800000048890148894c24384c89742420c644244001c744243000000000c6442428004889f141b90a000000e861d083fd40b601e9f2fdffff"
+    },
+    {
+      "type": "app.cEmModuleTarget",
+      "method": "setTarget544366",
+      "address": "0x1469cb5e0",
+      "end": "0x1469cb7e0",
+      "returns": "System.Void",
+      "parameters": [
+        "via.vec3",
+        "app.EnemyDef.TARGET_POINT_CATEGORY",
+        "System.Nullable`1<via.vec3>",
+        "System.Boolean",
+        "app.cEmModuleTarget.TARGET_ORDER",
+        "System.Nullable`1<System.UInt32>",
+        "System.Boolean"
+      ],
+      "nativeBytes": "4157415641545657534883ec584889d74889ce48639c24c00000008a8424d00000008a8c24b8000000488b9424c80000004c8b9424b00000004c8b1d2041cf0d4931e34c895c2450c4c17a1040084d63c9c4c17b1008c4c1782812c5f829542430c4c17a1052184c8b22488b57384c8b74da20498b56384c8b059af5df0d4c894424474c8b0587f5df0d4c894424404d89cf49c1e705c4c17b105a1042c6443a20014c8b4424404c8b5424474e89543a284e89443a21c4a17b114c3a30c4a17a11443a38498b5640c5f828442430c4a17829443a20c4a17b115c3a30c4a17a11543a3841c746780200000045894e5841c686800000000041884e7c6641c7467d00004188467f4584e4746f49c1ec206641c7467d010141c6868000000001488b15c30cd50d4889f14531c0e8d08c6504c74014ffffffff44896010498b4e30488d54242848890248b8f8ffffffffffff7f4821d0488b108b5210895110488b004885c07415488b10488b12483b15760cd50d75068b4014894114488b57604889f1e84a69e4fc488b4760498b4e38c4a17a10443938c4a17b104c3930c4a17828543920c5f8295010c5fb114820c5fa114028488b4760418b4e5889484083fb017506488b4728eb07488b8780000000488b50104885d2740c4c8b47604889f1e8ec41e1fd488b4c24504831e1e81fde7504904883c4585b5f5e415c415e415fc3"
+    },
+    {
+      "type": "app.cEnemyBTableCommandWork",
+      "method": "get_TargetPosition577920",
+      "address": "0x1440c6680",
+      "end": "0x1440c673b",
+      "returns": "via.vec3",
+      "parameters": [],
+      "nativeBytes": "41565657534883ec584c89c34889d74889ce488b05a7905f104831e04889442450498b4028488b4068488b40404c8b8000010000c6442420014c8d7424304c89f14531c9e85760900241803e00740ec5fb10442440c5fa104c2448eb23488b4320488b48184885c97440488d7c24304889fae80912f406c5fb1007c5fa104f08c5f81306c5fa114e08c7460c00000000488b4c24504831e1e8d32e06074889f04883c4585b5f5e415ec34889f9ba460000004531c0e8968a3a07cc"
+    },
+    {
+      "type": "app.cEnemyBTableCommandWork",
+      "method": "setTargetPosition577942",
+      "address": "0x1440c6ab0",
+      "end": "0x1440c6baa",
+      "returns": "System.Void",
+      "parameters": [
+        "via.vec3",
+        "app.EnemyDef.TARGET_POINT_CATEGORY",
+        "app.cEmModuleTarget.TARGET_ORDER",
+        "System.Boolean",
+        "System.Nullable`1<System.UInt32>"
+      ],
+      "nativeBytes": "56574881ec9800000048638424d0000000448a9424d80000004c8b9c24e0000000488b35688c5f104831e64889b42490000000c4c17a1040084d8b1b488b7228488b7668488b7640488bb600010000488b7e38488b7cc720c4c17b10084531c04489475c488b766044894644488b5228488b5268488b5240488b92000100004c8d442450c4c17b1108c4c17a114008c5f82805a9407010488d742470c5f82906c5fa1005b0407010c5fb100da0407010c5fb114e10c5fa114618488d7c24684c891f48897c24388944243044885424284889742420c644244000e8514a9002488b8c24900000004831e1e8512a0607904881c4980000005f5ec3"
+    },
+    {
+      "type": "via.MathEx",
+      "method": "rotationAxis1028658",
+      "address": "0x145b4ab50",
+      "end": "0x145b4ad55",
+      "returns": "via.vec3",
+      "parameters": [
+        "via.vec3",
+        "via.vec3",
+        "System.Single",
+        "via.vec3"
+      ],
+      "nativeBytes": "564881ecd0000000c57829bc24c0000000c57829b424b0000000c57829ac24a0000000c57829a42490000000c578299c2480000000c57829542470c578294c2460c57829442450c5f8297c2440c5f8297424304889cec5fa10842400010000488b842408010000c4c17a104808c4c17a1010c4c17a105804c4417a106108c4417a1019c4417a107104c5fa106008c5fa1028c5fa107004c5ea5cfdc5625cc6c5725cccc4410a59c0c5a259ffc5ba58ffc4413259c4c5ba58ffc52259c7c50a59cfc59a59ffc5ba58edc5fa116c242cc53258cec55a58d7c56a5cedc441625cf9c441725cc2c5fa59354316ea07c5f828c6ff151174ad08c5f828f8c5f828c6ff154b73ad08c59a59cfc58a59d7c5a259dfc59259e2c58259ebc5d25ce4c5ba59ebc59259f1c5ca5cedc58259f1c5ba59fac5c25cf6c5da58e4c5d258edc5ca58f6c5fa59fcc57a59ddc5fa59c6c5ba58ffc4410258c3c59258c0c54a59dac56259e5c4411a5cdbc5a258ffc5da59dbc5f259f6c5ca5cdbc5ba58dbc5d259c9c5ea59d4c5ea5cc9c5fa58c1c5fa5844242cc5b258cbc5aa58d7c5fa1106c5fa114e04c5fa115608c7460c000000004889f0c5f828742430c5f8287c2440c57828442450c578284c2460c57828542470c578289c2480000000c57828a42490000000c57828ac24a0000000c57828b424b0000000c57828bc24c00000004881c4d00000005ec3"
+    },
+    {
+      "type": "via.vec3",
+      "method": "op_Addition1752",
+      "address": "0x14b10a9d0",
+      "end": "0x14b10aab0",
+      "returns": "via.vec3",
+      "parameters": [
+        "via.vec3",
+        "via.vec3"
+      ],
+      "nativeBytes": "c4c17a104008c4c17a5841084889c8c4c17b1008c4c17b1011c5f058cac5f81309c5fa114108c7410c00000000c3ccccc4c17a104008c4c17a5c41084889c8c4c17b1008c4c17b1011c5f05ccac5f81309c5fa114108c7410c00000000c3ccccc4c17a104008c4c17a5941084889c8c4c17b1008c4c17b1011c5f059cac5f81309c5fa114108c7410c00000000c3ccccc4c1625940084889c8c4c17b1008c5fa12d3c5f059cac5f81309c5fa114108c7410c00000000c3ccccccccccccccccccc4c17a104008c4c17b1008c5fb110ac5fa114208c3cccccccccccccccccccccc"
+    },
+    {
+      "type": "via.vec3",
+      "method": "op_Subtraction1754",
+      "address": "0x14b10aa00",
+      "end": "0x14b10aab0",
+      "returns": "via.vec3",
+      "parameters": [
+        "via.vec3",
+        "via.vec3"
+      ],
+      "nativeBytes": "c4c17a104008c4c17a5c41084889c8c4c17b1008c4c17b1011c5f05ccac5f81309c5fa114108c7410c00000000c3ccccc4c17a104008c4c17a5941084889c8c4c17b1008c4c17b1011c5f059cac5f81309c5fa114108c7410c00000000c3ccccc4c1625940084889c8c4c17b1008c5fa12d3c5f059cac5f81309c5fa114108c7410c00000000c3ccccccccccccccccccc4c17a104008c4c17b1008c5fb110ac5fa114208c3cccccccccccccccccccccc"
+    },
+    {
+      "type": "via.vec3",
+      "method": "op_Multiply1756",
+      "address": "0x14b10aa60",
+      "end": "0x14b10aab0",
+      "returns": "via.vec3",
+      "parameters": [
+        "via.vec3",
+        "System.Single"
+      ],
+      "nativeBytes": "c4c1625940084889c8c4c17b1008c5fa12d3c5f059cac5f81309c5fa114108c7410c00000000c3ccccccccccccccccccc4c17a104008c4c17b1008c5fb110ac5fa114208c3cccccccccccccccccccccc"
+    },
+    {
+      "type": "app.cEnumerableParam`2<app.EnemyDef.MODEL_SIZE,app.user_data.EmParamCommon.cSizeSetting>",
+      "method": "getParam268556",
+      "address": "0x1473d8ce0",
+      "end": "0x1473d8ea5",
+      "returns": "app.user_data.EmParamCommon.cSizeSetting",
+      "parameters": [
+        "System.Int32"
+      ],
+      "nativeBytes": "4157415641545657534883ec384489c64889d34889cf488b05436a2e0d4831e0488944243048837a1800743f488b53184c8d4c24284889f94189f0e8900ba1fe84c07407488b742428eb0231f6488b4c24304831e1e8b608d5034889f04883c4385b5f5e415c415e415fc34c8b73104c8b3d3ac23d0d4d85ff756c4c8b3d26c23d0db902000000e89493c2f84c8b0d258f3c0d488b1586723a0dc6442420014889f94d89f8e84619cd034989c7e84e93c2f84c393df7c13d0d742c4d85ff74084c89f9e828eec203488b0de1c13d0d4889c8f04c0fb13dd5c13d0d75eb4885c97405e8190cc3034c8b25cac13d0d4d85e4756c4c8b25aec13d0db902000000e81c93c2f84c8b0db58e3c0d488b1516723a0dc6442420014889f94d89e0e8ce18cd034989c4e8d692c2f84c392587c13d0d742c4d85e474084c89e1e8b0edc203488b0d71c13d0d4889c8f04c0fb12565c13d0d75eb4885c97405e8a10bc30348c7442420000000004889f94c89f24d89f84d89e1e8d72e22014989c68b430885c078394c3973180f849ffeffff4d85f674084c89f1e856edc203488b4b184889c8f04c0fb1731875f14885c90f847afeffffe8490bc303e970feffff4c897318e967feffff"
+    }
+  ],
+  "nativeProofs": [
+    {
+      "address": "0x14b007900",
+      "end": "0x14b007a7d",
+      "nativeBytes": "41565657534883ec684889d64889cf488b052a7e6b094831e04889442460488b59604885db741e89d883e0017517803d538e8809007442c5f82887b0000000c5f82906eb1ac5fa104738c5fb104f30c5fb110ec5fa114608c7460c00000000488b4c24604831e1e8841c12004889f04883c4685b5f5e415ec380bff800000000751c4889f8488b40604885c074a989c183e10175a280b8f80000000074e7448bb7f00000004585f67948488d5424204889d9e8f9e10100c4e279184730c4e279184f34c5f859442420c5f0594c2430c4e279185738c5f858c1c5e8594c2440c5f858c1c5f858442450c5f82906e96dffffff8b0580187a098b0d8ab8950965488b142558000000488b0cca3b811c0000007f30488b83c8000000488d48684885c0488d0548187a09480f45c1488b004a8b4cf020488d542420e8626301f5e974ffffff488d0d2e187a09e859001200833d22187a09ff75bb48c7050d187a0900000000488d0db6b4ccf8e841041200488d0d02187a09e841081200eb96",
+      "role": "Native Transform position access called by both SideWalk implementations"
+    }
+  ],
+  "constants": [
+    {
+      "address": "0x14d9ed530",
+      "end": "0x14d9ed534",
+      "nativeBytes": "00000040",
+      "value": 2.0
+    },
+    {
+      "address": "0x1547d8850",
+      "end": "0x1547d885c",
+      "nativeBytes": "000000000000803f00000000",
+      "value": [
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "address": "0x14d9ec280",
+      "end": "0x14d9ec284",
+      "nativeBytes": "0000003f",
+      "value": 0.5
+    }
+  ],
+  "fieldChecks": [
+    {
+      "type": "app.cEnemyBTableCommandWork",
+      "field": "<Accessor>k__BackingField",
+      "fieldType": "app.EnemyAccessor",
+      "offset": "0x28"
+    },
+    {
+      "type": "app.cEnemyBTableCommandWork",
+      "field": "<ThisObject>k__BackingField",
+      "fieldType": "via.GameObject",
+      "offset": "0x20"
+    },
+    {
+      "type": "app.EnemyAccessor",
+      "field": "<Character>k__BackingField",
+      "fieldType": "app.EnemyCharacter",
+      "offset": "0x58"
+    },
+    {
+      "type": "app.EnemyAccessor",
+      "field": "<ContextHolder>k__BackingField",
+      "fieldType": "app.cEnemyContextHolder",
+      "offset": "0x68"
+    },
+    {
+      "type": "app.EnemyAccessor",
+      "field": "<Extend>k__BackingField",
+      "fieldType": "app.cEnemyExtendHolder",
+      "offset": "0x78"
+    },
+    {
+      "type": "app.cEnemyContextHolder",
+      "field": "_Em",
+      "fieldType": "app.cEnemyContext",
+      "offset": "0x40"
+    },
+    {
+      "type": "app.cEnemyContext",
+      "field": "Target",
+      "fieldType": "app.cEmModuleTarget",
+      "offset": "0x100"
+    },
+    {
+      "type": "app.cEnemyContext",
+      "field": "Obstacle",
+      "fieldType": "app.cEmModuleObstacle",
+      "offset": "0x1f0"
+    },
+    {
+      "type": "app.cEmModuleObstacle",
+      "field": "CurrentNode",
+      "fieldType": "app.cEmModuleObstacle.cNode",
+      "offset": "0x40"
+    },
+    {
+      "type": "app.cEmModuleObstacle",
+      "field": "WallNode",
+      "fieldType": "app.cEmModuleObstacle.cNode",
+      "offset": "0x28"
+    },
+    {
+      "type": "app.cEmModuleObstacle",
+      "field": "ObstacleType",
+      "fieldType": "app.EnemyDef.OBSTACLE_TYPE",
+      "offset": "0x68"
+    },
+    {
+      "type": "app.cEmModuleObstacle.cNode",
+      "field": "Position",
+      "fieldType": "via.vec3",
+      "offset": "0x10"
+    },
+    {
+      "type": "app.cEmModuleObstacle.cNode",
+      "field": "Normal",
+      "fieldType": "via.vec3",
+      "offset": "0x20"
+    },
+    {
+      "type": "app.user_data.EmParamCommon.cSizeSetting",
+      "field": "CharaCtrlRadius",
+      "fieldType": "System.Single",
+      "offset": "0x18"
+    },
+    {
+      "type": "app.cEmModuleTarget",
+      "field": "_Targets",
+      "fieldType": "app.cEmModuleTarget.cTarget[]",
+      "offset": "0x38"
+    },
+    {
+      "type": "app.cEmModuleTarget",
+      "field": "_ChangeTargetArg",
+      "fieldType": "app.cEmModuleTarget.cChangeTargetArg",
+      "offset": "0x60"
+    },
+    {
+      "type": "app.cEmModuleTarget.cTarget",
+      "field": "CurrentTargetPosSubCategory",
+      "fieldType": "app.EnemyDef.TARGET_POINT_SUB_CATEGORY",
+      "offset": "0x5c"
+    },
+    {
+      "type": "app.cEmModuleTarget.cChangeTargetArg",
+      "field": "PointSubCategory",
+      "fieldType": "app.EnemyDef.TARGET_POINT_SUB_CATEGORY",
+      "offset": "0x44"
+    }
+  ],
+  "enumChecks": [
+    {
+      "type": "app.EnemyDef.OBSTACLE_TYPE",
+      "values": {
+        "ENEMY_DETOUR": 11,
+        "GIMMICK_DETOUR": 8,
+        "MAX": 13,
+        "NONE": 4294967295,
+        "PANIC_FALL": 9,
+        "STAGE_UNIQUE": 12,
+        "STEP_DOWN_L": 6,
+        "STEP_DOWN_M": 5,
+        "STEP_DOWN_S": 4,
+        "STEP_DOWN_WALL": 7,
+        "STEP_UP_L": 2,
+        "STEP_UP_M": 1,
+        "STEP_UP_S": 0,
+        "STEP_UP_WALL": 3,
+        "VILLAGE_DETOUR": 10
+      }
+    },
+    {
+      "type": "app.EnemyDef.TARGET_POINT_CATEGORY",
+      "values": {
+        "AREA_CENTER": 4,
+        "AREA_MOVE": 5,
+        "CADAVERPOINT": 19,
+        "DESIRE_TARGET": 3,
+        "DETOUR": 2,
+        "ENTRANCE": 14,
+        "ESCAPE": 1,
+        "FIND": 15,
+        "FLASH": 25,
+        "FSM_TARGET": 7,
+        "GROUP_CENTER": 8,
+        "LEAD_CHASE": 21,
+        "MAX": 26,
+        "MOVE_WALL": 20,
+        "NONE": 0,
+        "NPC_JACK": 11,
+        "OBSTACLE": 10,
+        "OFFSET": 9,
+        "PANIC_FALL": 17,
+        "PREDATOR_RETURN_HOME": 22,
+        "STORY_MOVE_DEST": 16,
+        "STROLL": 13,
+        "TARGET_END_DEST": 6,
+        "TARGET_ROUTE_END": 24,
+        "TRAIL": 23,
+        "UNIQUE": 18,
+        "WALL_BUMP": 12
+      }
+    },
+    {
+      "type": "app.cEmModuleTarget.TARGET_ORDER",
+      "values": {
+        "FIRST": 0,
+        "MAX": 2,
+        "SECOND": 1
+      }
+    }
+  ],
+  "classSymbols": [
+    {
+      "type": "app.cEnemyBTableCommandWork",
+      "slot": "0x15471e840"
+    }
+  ],
+  "heightSource": {
+    "relativeTo": "Accessor.Character",
+    "addressOffset": "0x160",
+    "clearReferenceTagBit": 63,
+    "dereferenceOffset": "0x18",
+    "readFloatOffset": "0x78",
+    "fieldNameVerified": false
+  }
+}
