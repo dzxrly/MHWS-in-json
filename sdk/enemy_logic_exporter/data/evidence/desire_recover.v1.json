@@ -1,0 +1,495 @@
+{
+  "schemaVersion": 1,
+  "scope": "Partial native request declaration; caller continuation is independent of request success. Cache, converted ACTION_ID and FieldPitfall effects remain unresolved.",
+  "methods": [
+    {
+      "type": "app.btable.EmCommonCommand.cRequestActionDesireRecover",
+      "method": "onExecute",
+      "methodBaseName": "onExecute",
+      "address": "0x146758360",
+      "end": "0x146758487",
+      "returns": "System.Void",
+      "parameters": [
+        "ace.btable.cCommandWork",
+        "app.btable.EmCommonCommand.cSelectActionDesireRecoverArg"
+      ],
+      "parameterModifiers": [
+        null,
+        null
+      ],
+      "implFlags": "HasThis",
+      "nativeBytes": "5657534883ec40488b05d273f60d4831e048894424384d85c00f84f20000004c89c6498b00488b00483b05b164fc0d0f85dc000000488b4628488b4068488b4040488b8020010000807813000f85bf0000004889cf488d5c24284889d94889fa4d89c8e8f87328ff488b4628488b4078488b50104889f94989d8e851824dfe488b4628488b5058488b0b4c8b82d80300004d8b40404d8b80f00000004d85c07410458b48244183f9ff7406453b4820751f4c8d442430498908c6442420004889f941b9ffffffffe80438d002488b4628488b4068488b4040488b800803000031c988482e488b4628488b4068488b4040488b80a0010000c6401101488b4628488b4068488b4040488b8008030000884852488b4c24384831e1e872119d04904883c4405b5f5ec3"
+    },
+    {
+      "type": "app.btable.AppBTableUtil.cSelectActionArgBase",
+      "method": "getActionID",
+      "methodBaseName": "getActionID",
+      "address": "0x1459df7c0",
+      "end": "0x1459df8b6",
+      "returns": "ace.ACTION_ID",
+      "parameters": [],
+      "parameterModifiers": [],
+      "implFlags": "HasThis",
+      "nativeBytes": "41574156565755534883ec484c89c74889d34889ce488b0564ffcd0e4831e04889442440498b5010498b4018448b40104889d9e828c43d004885c00f848b000000807f3000757f4989c6488b47208b48104c8b4818498b5610488b52384c8d4424284189088b4014418940044d8948084c8d7c243c4889d94d89f9e8a031490189c5458b3f4889d94c89f2e8004d0a0249c1e7204084ed48b900000000ffffffff490f45cf89c04809c8c64730010fb70d2c8c270866894f318a0d248c2708884f33488947344883c734eb07488d3d6db6df0e488b07488906488b4c24404831e1e84a9d74054889f04883c4485b5d5f5e415e415fc3"
+    },
+    {
+      "type": "app.btable.AppBTableUtil.cSelectActionArgSetting",
+      "method": "getActionID",
+      "methodBaseName": "getActionID",
+      "address": "0x145dbbc20",
+      "end": "0x145dbbc70",
+      "returns": "ace.cActionIDHolder",
+      "parameters": [
+        "System.Int32"
+      ],
+      "parameterModifiers": [
+        null
+      ],
+      "implFlags": "HasThis",
+      "nativeBytes": "564883ec204889ce488b42108b481885c974174439c1761a488b40104963c8488b44c820488b4010eb0231c04883c4205ec3488b15d731930e4889f14531c0e87c8726054889f14889c2e8e1256b05cc"
+    },
+    {
+      "type": "ace.cActionIDHolder",
+      "method": "getActionCategory",
+      "methodBaseName": "getActionCategory",
+      "address": "0x147a84550",
+      "end": "0x147a8463a",
+      "returns": "System.Int32",
+      "parameters": [],
+      "parameterModifiers": [],
+      "implFlags": "HasThis",
+      "nativeBytes": "4157415641554154565755534883ec48488b05d9b1c30c4831e04889442440488b4210beffffffff4885c00f84990000004889d74889cb488b48104885c9741380793900750de8e5de58f884c0747b488b4710488b40284c8b6010458b6c241c31ed4585ed440f4eed4c8d7424304c8d7c24204939ed744d498b74ec208b4718488b4f208b56184c8b4620894424308b471c8944243448894c2438895424208b461c894424244c894424284889d94c89f24d89f8e8c7df5bf848ffc584c074b38b7628eb05beffffffff488b4c24404831e1e8c94f6a0389f04883c4485b5d5f5e415c415d415e415fc3"
+    },
+    {
+      "type": "app.cEnemyExtendBase",
+      "method": "convertAction",
+      "methodBaseName": "convertAction",
+      "address": "0x144c30630",
+      "end": "0x144c30ba4",
+      "returns": "System.Void",
+      "parameters": [
+        "ace.ACTION_ID"
+      ],
+      "parameterModifiers": [
+        "ByRef"
+      ],
+      "implFlags": "HasThis",
+      "nativeBytes": "4157415641554154565755534883ec784c89c64889d34889cf488b05f0f0a80f4831e0488944247049bc0000008000000080488b02ff9090010000488b034c8d7424604c89f14889fa4989d8ff90800000004d85260f85fc000000488b034c8d7424604c89f14889fa4989d8ff90880000004d85260f85dc000000488b4310488b4068488b4840488b81f8010000817814a20000000f85bc000000488b91800100008b88080100003b8ad00000000f85a30000008b800c0100003b82d40000000f85910000004881c2d00000004889f94531c0e8182759fb4885c0747a488b40304885c07471488b4040488b8808030000807927007460488b80080100008378481b7553488b4310488b4068488b40404989f7490fbaf73f83b884030000017519488b034c8d7424604c89f14889fa4989d8ff9088000000eb17488b034c8d7424604c89f14889fa4989d8ff9080000000498b06498907488b034c8d7424604c89f14889fa4989d8ff90900000004d85260f85fc000000488b034c8d7424604c89f14889fa4989d8ff90980000004d85260f85dc000000488b4310488b4068488b4840488b81f8010000817814a20000000f85bc000000488b91800100008b88080100003b8ad00000000f85a30000008b800c0100003b82d40000000f85910000004881c2d00000004889f94531c0e8fc2559fb4885c0747a488b40304885c07471488b4040488b8808030000807927007460488b80080100008378481f7553488b4310488b4068488b40404989f7490fbaf73f83b884030000017519488b034c8d7424604c89f14889fa4989d8ff9098000000eb17488b034c8d7424604c89f14889fa4989d8ff9090000000498b06498907488b4310488b4068488b4040488b8008030000807825000f84bb020000488b05e97fba0f4c8d442458498900480fbaf63f4889f94889f2e881a24d0684c00f8494020000488b4310488b50584889f94989f0e8464f6c044989c64885c00f84c4000000498b56784889f941b810000000e8281043fb84c0744c4889f94c89f2e84980b3024885c0743c4c8d7c24604c89f94889fa4989c0e861f416024d8b3f488d5424504c893a488b055f7fba0f4c8d4424484989004889f9e8ffa14d0684c074034c893e498b56784889f941b812000000e8c60f43fb84c0744c4889f94c89f2e86781b3024885c0743c4c8d7c24604c89f94889fa4989c0e86f7797024d8b3f488d5424404c893a488b05fd7eba0f4c8d4424384989004889f9e89da14d0684c074034c893e488b4310488b4068488b4040488b80f00000004885c074138b48243b48200f95c283f9ff0f95c020d0eb0231c04d85f60f847b01000084c00f8573010000498b56784889f941b817000000e8260f43fb84c00f8559010000488b4310488b4068488b4040488b80380100004c8b78784889f94c89fae8fc79a3ff84c00f842f010000498b56784889f941b828000000e8e20e43fb84c00f8515010000498b56784889f941b804000000e8c80e43fb84c00f849a000000488b4b10488b4168488b404031ed4531ed488b4960488b4958488b49504c8b81d800000048895c242848894424204c8d7424604c89f14889fa41b9aa000000e88cdb60034d8b364d85e60f85ab0000008b05ca7902094c8d4424604189004d89700441c600014889f94889dae8af10000084c00f84820000004889f94c89fa4989f0e859cba3ff4c89364188af040100004588af05010000eb61498b56784889f941b80d000000e8140e43fb84c0754b488b4b10488b4168488b4040488b90f80100008b521483c2bf83fa1f772d83fa0f7718418b97f8000000413b97ec0000007c1840b501e923ffffff418b9700010000413b97fc0000007d1f488b4c24704831e1e8688a4f06904883c4785b5d5f5e415c415d415e415fc341b50131ede9edfeffff"
+    },
+    {
+      "type": "app.EnemyCharacter",
+      "method": "requestActionCore",
+      "methodBaseName": "requestActionCore",
+      "address": "0x14945bc30",
+      "end": "0x14945bd79",
+      "returns": "System.Void",
+      "parameters": [
+        "ace.ACTION_ID",
+        "System.Int32",
+        "System.Boolean"
+      ],
+      "parameterModifiers": [
+        null,
+        null,
+        null
+      ],
+      "implFlags": "HasThis",
+      "nativeBytes": "56574883ec484889d64889cf488b05fd3a260b4831e04889442440498b00488b8ad8030000488b4940488b8910010000488981c4000000488b8ad8030000488b4940488b8910010000448989cc000000488b8ad8030000488b4940488b91f00000004885d27410448b42244183f8ff7406443b42207516488b9108030000807a4b00488b89100100000f954113488d542438488902488b0534f2370b4c8d4424304989004889f9e8948dc80184c00f8580000000488b86e0000000488b5020488b86d8030000488b4040488b8010010000488b80c40000004c8d44242880bc24800000000074104989004889f94531c9e83b4501feeb3d4989004889f9e83e4401fe84c0752e488b86d8030000488b4840488b9108030000807a25007516488b4038488b8910010000488b89c400000048894820488b4c24404831e1e87fd8cc01904883c4485f5ec3"
+    },
+    {
+      "type": "ace.cActionController",
+      "method": "changeActionRequest",
+      "methodBaseName": "changeActionRequest",
+      "address": "0x147470170",
+      "end": "0x14747020b",
+      "returns": "System.Boolean",
+      "parameters": [
+        "ace.ACTION_ID"
+      ],
+      "parameterModifiers": [
+        null
+      ],
+      "implFlags": "HasThis",
+      "nativeBytes": "56574883ec284889cf498b004889c148c1e9204189c84109c0784b4c8b4220458b481831f64585c9745f4139c17e5a76394d8b40104c63c84f8b44c8204d85c074244139481c7e1e49837cc820007416c6424d01837a34007838837a380078324889423ceb3031f6eb1f488b154fec270d31f64889f94531c0e8f241bb034889f94889c2e857e0ff0389f04883c4285f5ec34889423440b601ebee"
+    },
+    {
+      "type": "app.cEnemyExtendBase",
+      "method": "checkFieldPitfall",
+      "methodBaseName": "checkFieldPitfall",
+      "address": "0x144c31ba0",
+      "end": "0x144c31e70",
+      "returns": "System.Boolean",
+      "parameters": [
+        "System.Nullable`1<ace.ACTION_ID>"
+      ],
+      "parameterModifiers": [
+        null
+      ],
+      "implFlags": "HasThis",
+      "nativeBytes": "4156565755534881ecf0000000c57829ac24e0000000c57829a424d0000000c578299c24c0000000c578299424b0000000c578298c24a0000000c57829842490000000c5f829bc2480000000c5f8297424704889d74889ce488b0541dba80f4831e04889442468418a284d8b7004488b4210488b4068488b4040488b8038010000488b5078e81668a3ff84c00f84c9010000488b4710488b4058488b40104885c00f8418020000488b48184885c90f840b020000488d5c24504889dae89f5c3d06c5fb1033c5fa107b084084ed0f8466010000488b4710488b50584c8d4424484d89304889f1e8b53b6c044885c00f84450100004889c3488b00488b08488b15843bae0fe807f63e0684c00f8428010000488b03488d4c24504889f24989d8ff90e8000000488b4710488b4058488b40104885c00f8485010000488b48184885c90f8478010000488d7c2450c57a1007c57b104f044889fae8f35a3d06c5fa1007c4e279180d3aa5db08c5f857d1c4c17a16d9c5e259e0c5fb106f04c4627918570cc57a16ddc4412259d8c5a25ce4c5d057c9c4433921c11cc53859ddc4637921e51cc4411859c9c441305ccbc5da58e4c4413058c9c4412a59d9c4417a16e1c4631921ec10c4412859d5c5a258dbc4413858c2c51a59d1c5fa59c4c5aa58c0c5e258c0c4c15814d9c5f0c6c9f5c5f014cac5e059c9c5b059d5c5e858c9c5b858c9c5f81337c5fa117f084c8d4c2430c4c1781309c4c17a114108488d7c24204c8d4424504889f94889f2e8008c4d06c5fb1037c5fa107f08488d542420c5f81332c5fa117a08c5fa1015f1b0db084889f1e8b98da00089c6eb0231f6488b4c24684831e1e8e6774f0689f0c5f828742470c5f828bc2480000000c57828842490000000c578288c24a0000000c578289424b0000000c578289c24c0000000c57828a424d0000000c57828ac24e00000004881c4f00000005b5d5f5e415ec34889f1ba460000004531c0e861d38306cc"
+    },
+    {
+      "type": "app.cEnemyBadConditionFieldPitfall",
+      "method": "setOriginalDamageSec",
+      "methodBaseName": "setOriginalDamageSec",
+      "address": "0x14466d660",
+      "end": "0x14466d8b6",
+      "returns": "System.Void",
+      "parameters": [
+        "ace.ACTION_ID"
+      ],
+      "parameterModifiers": [
+        null
+      ],
+      "implFlags": "HasThis",
+      "nativeBytes": "41574156565755534883ec68c5f8297424504889d74889ce488b05c12005104831e048894424484d8b300fb62d57db7c09c5fa103553db7c094881c2f000000041b001e87857b5fb4885c07420488b40304885c07417488b4840488b890803000031db80792700480f45d8eb0231db488b4340488b80f00000004885c074118b482483f9ff74093b48200f85a6010000488b57704c8d4424384d89304889f1e83c81c8044885c00f84f10000004989c6488b00488b08488b1503810a10e88e3b9b0684c00f84d0000000498b06488b40e04889f14c89f241b805000000ff1084c0741a4c8b4b404c8d7c24404c89f94889f241b805000000e98e000000498b06488b40e04889f14c89f241b807000000ff1084c074174c8b4b404c8d7c24404c89f94889f241b807000000eb5e498b06488b40e04889f14c89f241b80f000000ff1084c074174c8b4b404c8d7c24404c89f94889f241b80f000000eb2e498b06488b40e04889f14c89f241b812000000ff1084c074244c8b4b404c8d7c24404c89f94889f241b812000000e8e06b6b05410fb62fc4c17a10770485ed743785ed74257546488b155d1708104889f14531c0e8ca6b9b064889f14889c2e82f0ae006c5c857f6eb23488b87e0000000c5fa10702ceb154889f14c89f2e860d10f034885c074b9c5fa107050c5ca58879400000031c089442430c5fa1144242889442420c5fa101dd6e93709c5e857d24889f14889fae8d7e7ffff488b4340488b9038010000448b8fb40000004889f14989d8e8ead32c00488b4c24484831e1e84dbdab06c5f8287424504883c4685b5d5f5e415e415fc3"
+    }
+  ],
+  "fieldChecks": [
+    {
+      "type": "app.cEnemyBTableCommandWork",
+      "field": "<Accessor>k__BackingField",
+      "fieldType": "app.EnemyAccessor",
+      "offset": "0x28"
+    },
+    {
+      "type": "app.EnemyAccessor",
+      "field": "<Character>k__BackingField",
+      "fieldType": "app.EnemyCharacter",
+      "offset": "0x58"
+    },
+    {
+      "type": "app.EnemyAccessor",
+      "field": "<ContextHolder>k__BackingField",
+      "fieldType": "app.cEnemyContextHolder",
+      "offset": "0x68"
+    },
+    {
+      "type": "app.EnemyAccessor",
+      "field": "<Extend>k__BackingField",
+      "fieldType": "app.cEnemyExtendHolder",
+      "offset": "0x78"
+    },
+    {
+      "type": "app.cEnemyContextHolder",
+      "field": "_Em",
+      "fieldType": "app.cEnemyContext",
+      "offset": "0x40"
+    },
+    {
+      "type": "app.cEnemyContextHolder",
+      "field": "_Chara",
+      "fieldType": "app.cCharacterContext",
+      "offset": "0x38"
+    },
+    {
+      "type": "app.cEnemyContext",
+      "field": "BTable",
+      "fieldType": "app.cEmModuleBTable",
+      "offset": "0x120"
+    },
+    {
+      "type": "app.cEnemyContext",
+      "field": "NetInfo",
+      "fieldType": "app.cEnemyNetMemberInfo",
+      "offset": "0xf0"
+    },
+    {
+      "type": "app.cEnemyContext",
+      "field": "_FlagArray",
+      "fieldType": "System.Boolean[]",
+      "offset": "0x308"
+    },
+    {
+      "type": "app.cEnemyContext",
+      "field": "Life",
+      "fieldType": "app.cEmModuleLife",
+      "offset": "0x1a0"
+    },
+    {
+      "type": "app.cEnemyContext",
+      "field": "ActionArgument",
+      "fieldType": "app.cEmModuleActionArgument",
+      "offset": "0x110"
+    },
+    {
+      "type": "app.cEnemyContext",
+      "field": "Conditions",
+      "fieldType": "app.cEmModuleConditions",
+      "offset": "0x138"
+    },
+    {
+      "type": "app.cEmModuleLife",
+      "field": "_IsRequestClearLifeActInfo",
+      "fieldType": "System.Boolean",
+      "offset": "0x11"
+    },
+    {
+      "type": "app.cEmModuleActionArgument",
+      "field": "ID",
+      "fieldType": "ace.ACTION_ID",
+      "offset": "0xc4"
+    },
+    {
+      "type": "app.cEmModuleActionArgument",
+      "field": "BranchedParamIndex",
+      "fieldType": "System.Int32",
+      "offset": "0xcc"
+    },
+    {
+      "type": "app.cEmModuleActionArgument",
+      "field": "IsRequestActionInAction",
+      "fieldType": "System.Boolean",
+      "offset": "0x13"
+    },
+    {
+      "type": "app.cCharacterContext",
+      "field": "<InitActionID>k__BackingField",
+      "fieldType": "ace.ACTION_ID",
+      "offset": "0x20"
+    },
+    {
+      "type": "ace.cActionController",
+      "field": "_ActionList",
+      "fieldType": "System.Collections.Generic.List`1<ace.cActionBase[]>",
+      "offset": "0x20"
+    },
+    {
+      "type": "ace.cActionController",
+      "field": "_ChangeActionRequest",
+      "fieldType": "System.Boolean",
+      "offset": "0x4d"
+    },
+    {
+      "type": "ace.cActionController",
+      "field": "_CurrentActionID",
+      "fieldType": "ace.ACTION_ID",
+      "offset": "0x34"
+    },
+    {
+      "type": "ace.cActionController",
+      "field": "_NextActionID",
+      "fieldType": "ace.ACTION_ID",
+      "offset": "0x3c"
+    },
+    {
+      "type": "app.btable.AppBTableUtil.cSelectActionArgBase",
+      "field": "<ArgumentSetting>k__BackingField",
+      "fieldType": "app.btable.AppBTableUtil.cSelectActionArgSetting",
+      "offset": "0x10"
+    },
+    {
+      "type": "app.btable.AppBTableUtil.cSelectActionArgBase",
+      "field": "_EditAssetIndex",
+      "fieldType": "ace.btable.cEditFieldDropBox`1<System.Int32>",
+      "offset": "0x18"
+    },
+    {
+      "type": "app.btable.AppBTableUtil.cSelectActionArgBase",
+      "field": "_EditActionGuid",
+      "fieldType": "ace.btable.cEditFieldDropBox`1<System.Guid>",
+      "offset": "0x20"
+    },
+    {
+      "type": "app.btable.AppBTableUtil.cSelectActionArgBase",
+      "field": "_ActionID",
+      "fieldType": "System.Nullable`1<ace.ACTION_ID>",
+      "offset": "0x30"
+    },
+    {
+      "type": "app.btable.AppBTableUtil.cSelectActionArgBase",
+      "field": "_BranchedParamIndex",
+      "fieldType": "System.Nullable`1<System.Int32>",
+      "offset": "0x3c"
+    },
+    {
+      "type": "app.btable.EmCommonCommand.cSelectActionDesireRecoverArg",
+      "field": "_EditType",
+      "fieldType": "ace.btable.cEditFieldEnum`1<app.EnemyDef.DESIRE_ID>",
+      "offset": "0x48"
+    },
+    {
+      "type": "app.cEmModuleConditions",
+      "field": "<FieldPitfall>k__BackingField",
+      "fieldType": "app.cEnemyBadConditionFieldPitfall",
+      "offset": "0x78"
+    },
+    {
+      "type": "app.cEnemyBadConditionFieldPitfall",
+      "field": "<IsActivatedByScar>k__BackingField",
+      "fieldType": "System.Boolean",
+      "offset": "0x104"
+    },
+    {
+      "type": "app.cEnemyBadConditionFieldPitfall",
+      "field": "<IsActivatedByLengendaryScar>k__BackingField",
+      "fieldType": "System.Boolean",
+      "offset": "0x105"
+    },
+    {
+      "type": "app.cEnemyNetMemberInfo",
+      "field": "_SelfMemberIndex",
+      "fieldType": "System.Int32",
+      "offset": "0x20"
+    },
+    {
+      "type": "app.cEnemyNetMemberInfo",
+      "field": "_HostMemberIndex",
+      "fieldType": "System.Int32",
+      "offset": "0x24"
+    },
+    {
+      "type": "app.cEmModuleBTable",
+      "field": "_IsBTableRequestActionMask",
+      "fieldType": "System.Boolean",
+      "offset": "0x13"
+    },
+    {
+      "type": "app.cEnemyExtendHolder",
+      "field": "<Base>k__BackingField",
+      "fieldType": "app.cEnemyExtendBase",
+      "offset": "0x10"
+    }
+  ],
+  "enumChecks": [
+    {
+      "type": "app.EnemyDef.FLAG_BIT",
+      "field": "WAITING_REQUEST_ACTION_RANDOM_OPERATOR",
+      "value": 14
+    },
+    {
+      "type": "app.EnemyDef.FLAG_BIT",
+      "field": "NO_REQUEST_ACTION",
+      "value": 50
+    },
+    {
+      "type": "app.EnemyDef.FLAG_BIT",
+      "field": "DONE_CHARA_START_END",
+      "value": 5
+    },
+    {
+      "type": "app.EnemyDef.FLAG_BIT",
+      "field": "ACTION_CTRL_UPDATING",
+      "value": 43
+    }
+  ],
+  "classChecks": [
+    {
+      "type": "app.btable.EmCommonCommand.cRequestActionDesireRecover",
+      "methodBaseName": "onExecute",
+      "instructionOffset": 40,
+      "operandIndex": 1,
+      "expectedType": "app.cEnemyBTableCommandWork"
+    }
+  ],
+  "tailWrites": [
+    {
+      "key": "context:_FlagArray[WAITING_REQUEST_ACTION_RANDOM_OPERATOR]",
+      "field": "cEnemyContext._FlagArray[WAITING_REQUEST_ACTION_RANDOM_OPERATOR=14]",
+      "value": false,
+      "offset": "0x308 -> array element 0x20+14",
+      "scope": "command work Accessor.ContextHolder._Em"
+    },
+    {
+      "key": "context:Life._IsRequestClearLifeActInfo",
+      "field": "cEnemyContext.Life._IsRequestClearLifeActInfo",
+      "value": true,
+      "offset": "0x1a0 -> 0x11",
+      "scope": "command work Accessor.ContextHolder._Em"
+    },
+    {
+      "key": "context:_FlagArray[NO_REQUEST_ACTION]",
+      "field": "cEnemyContext._FlagArray[NO_REQUEST_ACTION=50]",
+      "value": false,
+      "offset": "0x308 -> array element 0x20+50",
+      "scope": "command work Accessor.ContextHolder._Em"
+    }
+  ],
+  "actorRequestContract": {
+    "callee": {
+      "type": "app.EnemyCharacter",
+      "methodBaseName": "requestActionCore"
+    },
+    "arguments": {
+      "actionId": "converted ACTION_ID (unknown)",
+      "branchedParamIndex": -1,
+      "immediate": false
+    },
+    "guardScope": "actorRequestGuard controls this call only; tail writes still occur when skipped",
+    "knownWrites": [
+      {
+        "field": "actor.Context._Em.ActionArgument.ID",
+        "source": "converted ACTION_ID"
+      },
+      {
+        "field": "actor.Context._Em.ActionArgument.BranchedParamIndex",
+        "value": -1
+      },
+      {
+        "field": "actor.Context._Em.ActionArgument.IsRequestActionInAction",
+        "source": "FLAG_BIT.ACTION_CTRL_UPDATING=43",
+        "when": "actor network ownership allows"
+      }
+    ],
+    "queue": {
+      "callee": {
+        "type": "ace.cActionController",
+        "methodBaseName": "changeActionRequest"
+      },
+      "validation": "Category and Index nonnegative, category/index in _ActionList, selected action slot non-null",
+      "successWrites": [
+        "_ChangeActionRequest=true",
+        "valid _CurrentActionID -> _NextActionID=converted ID; otherwise _CurrentActionID=converted ID"
+      ],
+      "failureFallback": "if DONE_CHARA_START_END=5 is false, CharacterContext.InitActionID=converted ID"
+    },
+    "actionStartedOrCompleted": false
+  },
+  "argumentCacheBoundary": {
+    "status": "unresolved",
+    "callee": {
+      "type": "app.btable.AppBTableUtil.cSelectActionArgBase",
+      "methodBaseName": "getActionID"
+    },
+    "sources": [
+      "ArgumentSetting.getActionID(_EditAssetIndex)",
+      "selected ActionID holder GUID-to-index dictionary",
+      "holder.getActionCategory()"
+    ],
+    "cacheField": "_ActionID: Nullable<ace.ACTION_ID>",
+    "knownCacheWrites": "holder found and cache absent -> store resolved category/index and mark cache present",
+    "missingAsset": "returns a static default ACTION_ID; not evaluated as a numeric ID in this recipe",
+    "sourceGuidIsFinalActionId": false,
+    "resourceFieldsNotReadByThisPath": [
+      "_EditType",
+      "_EditBranchedParamGuid"
+    ]
+  },
+  "conversionBoundary": {
+    "status": "unresolved",
+    "callee": {
+      "type": "app.cEnemyExtendBase",
+      "methodBaseName": "convertAction"
+    },
+    "output": "in/out ACTION_ID may be replaced",
+    "virtualDispatch": "runtime Extend onConvertAction and special down-action getters remain part of the unresolved conversion",
+    "fieldPitfall": {
+      "conditionHelper": {
+        "type": "app.cEnemyExtendBase",
+        "methodBaseName": "checkFieldPitfall"
+      },
+      "stateHelper": {
+        "type": "app.cEnemyBadConditionFieldPitfall",
+        "methodBaseName": "setOriginalDamageSec"
+      },
+      "possibleWrites": [
+        "original damage ACTION_ID saved",
+        "converted ACTION_ID replaced",
+        "IsActivatedByScar=false",
+        "IsActivatedByLengendaryScar=false"
+      ],
+      "scarCountersAndThresholdsAffectConversion": true
+    },
+    "modeFromEditType": false
+  }
+}

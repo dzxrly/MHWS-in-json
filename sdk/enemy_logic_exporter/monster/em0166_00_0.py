@@ -3,6 +3,39 @@
 ENEMY_ID = "EM0166_00_0"
 NATIVE_OWNER = "Em0166_00"
 
+# Reviewed native methods; local histories are split only at their actual reads.
+LOCAL_HISTORY_TABLES = {
+    "app.Em0166_00_BTable_CommonAttack_Export": (
+        "table_0ea66412_45ac_4178_8fef_dca678cb0b52",
+        "table_17f810af_7101_4119_9459_e461c30f2f67",
+        "table_1fcc1adc_e0c8_4b7f_943d_1d870584c7a7",
+        "table_41a88b44_06dc_47f5_9a8d_59f15c449f3d",
+        "table_9943808e_5585_484e_8f7e_38d22d3d2621",
+        "table_a57bc732_5194_4089_aa13_1c283709ce1c",
+        "table_affe9ea4_6a7e_43a5_b60d_936beb713051",
+    ),
+}
+FORMULA_HISTORY_TABLES = ("table_6c3f890a_61d9_4011_af6c_ccd702bdf181",)
+
+
+def table_history_policy(row):
+    method = row["method"]
+    stems = LOCAL_HISTORY_TABLES.get(row["type"], ())
+    local = any(
+        method.startswith(stem) and method[len(stem) :].isdigit() for stem in stems
+    )
+    formula = row["type"] == "app.Em0166_00_BTable_CommonAttack_Export" and any(
+        method.startswith(stem) and method[len(stem) :].isdigit()
+        for stem in FORMULA_HISTORY_TABLES
+    )
+    policy = {}
+    if local:
+        policy["local"] = True
+    if formula:
+        policy["formula"] = True
+    return policy or None
+
+
 # Version-specific native identities used by this recipe (game 1.42.0.2).
 PHASE_APPLY_COMMAND = "app.btable.Em0166_00BTableCommand.cApplyRequestBattlePhase"
 EXTEND_TYPE = "app.cEm0166_00Extend"

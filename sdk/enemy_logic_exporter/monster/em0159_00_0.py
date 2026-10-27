@@ -3,6 +3,23 @@
 ENEMY_ID = "EM0159_00_0"
 NATIVE_OWNER = "Em0159_00"
 
+# Reviewed native methods; local histories are split only at their actual reads.
+LOCAL_HISTORY_TABLES = {
+    "app.Em0159_00_BTable_AttackStay_Export": (
+        "table_37c7f1a3_064d_4ebe_85ba_56eccb1cb976",
+    ),
+}
+
+
+def table_history_policy(row):
+    method = row["method"]
+    stems = LOCAL_HISTORY_TABLES.get(row["type"], ())
+    local = any(
+        method.startswith(stem) and method[len(stem) :].isdigit() for stem in stems
+    )
+    return dict(local=True) if local else None
+
+
 BLAZING_COMMAND = "app.btable.Em0159_00BTableCommand.cCheckEnterBlazingMode"
 UNIQUE_SPEC = dict(
     package="STM/GameDesign/Enemy/CommonData/StageResident/Data/{enemy}_StageResident.user.3.json",

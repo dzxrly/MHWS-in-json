@@ -3,6 +3,23 @@
 ENEMY_ID = "EM0162_00_0"
 NATIVE_OWNER = "Em0162_00"
 
+# Reviewed native methods; local histories are split only at their actual reads.
+LOCAL_HISTORY_TABLES = {
+    "app.Em0162_00_BTable_AttackStay_Export": (
+        "table_11a0fc60_9576_419b_af13_e523ee7ba55c",
+    ),
+}
+
+
+def table_history_policy(row):
+    method = row["method"]
+    stems = LOCAL_HISTORY_TABLES.get(row["type"], ())
+    local = any(
+        method.startswith(stem) and method[len(stem) :].isdigit() for stem in stems
+    )
+    return dict(local=True) if local else None
+
+
 # cCheckTargetFromLegJoint (game 1.42.0.2). onExecute picks the leg joint by
 # _WhitchLeg (Extend joint holder +0x38/+0x20/+0x28/+0x30 for LF/RF/LB/RB) and
 # the target position; checkTargetPos projects joint -> target onto XZ and

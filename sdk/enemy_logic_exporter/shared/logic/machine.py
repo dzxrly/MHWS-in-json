@@ -995,6 +995,53 @@ class Machine:
         )
         return keys[0]
 
+    def desire_command_nodes(self, key, binding, detail, event, following, state):
+        """Only a normal return past the unresolved request reaches tail writes."""
+        request, boundary, tail = (
+            key + suffix
+            for suffix in ("-partial-request", "-conversion-boundary", "-tail-writes")
+        )
+        self.nodes[key] = dict(
+            id=key,
+            kind="condition",
+            summary="恢复动作请求未被屏蔽",
+            expression=copy.deepcopy(detail["requestGuard"]),
+            semanticEvidence=copy.deepcopy(detail["semanticEvidence"]),
+            true=request,
+            **binding,
+        )
+        partial = copy.deepcopy(detail)
+        updates = partial.pop("stateUpdates")
+        partial.pop("requestGuard")
+        partial.pop("returnType")
+        self.nodes[request] = dict(partial, id=request, next=boundary, **binding)
+        self.nodes[boundary] = dict(
+            id=boundary,
+            kind="unknown",
+            reason=detail["implementationBoundary"],
+            boundaryKind="partial_request_effects",
+            next=tail,
+            continuationKind="normal_return",
+            requestSource=copy.deepcopy(detail["requestSource"]),
+            convertedActionId=copy.deepcopy(detail["convertedActionId"]),
+            commandEffectsComplete=False,
+            nativeSite=event["site"],
+        )
+        self.nodes[tail] = dict(
+            id=tail,
+            kind="mutation",
+            effect="apply_desire_recovery_tail_writes",
+            summary="正常返回后清除请求标志并登记生活动作信息清理",
+            stateUpdates=updates,
+            writeFacts=copy.deepcopy(detail["writeFacts"]),
+            semanticEvidence=copy.deepcopy(detail["semanticEvidence"]),
+            nativeSite=event["site"],
+        )
+        continuation = self.walk(following, self.complete_call(state, event, None))
+        self.nodes[key]["false"] = continuation
+        self.nodes[tail]["next"] = continuation
+        return key
+
     def target_command_nodes(self, key, binding, detail, event, following, state):
         """Keep guard failure, successful writes and native exceptions distinct."""
         condition = dict(
@@ -1182,6 +1229,59 @@ class Machine:
                             )
                             return key
                 if e["target"] == ("random_generator",):
+                    from .table_history_formula import recover_history_formula
+
+                    formula = recover_history_formula(self, ins, e, s)
+                    if formula is not None:
+                        key = self.event_key(e, s, ("full_domain_private_interval",))
+                        if key is None:
+                            return self.add_unknown(
+                                address, "全域历史公式的调用上下文尚不能证明等价"
+                            )
+                        if key in self.nodes:
+                            return key
+                        self.nodes[key] = dict(
+                            id=key,
+                            kind="condition",
+                            expression=formula["expression"],
+                            inputDefinitions=formula["inputDefinitions"],
+                            nativeHistoryFormula=dict(
+                                formula["nativeProof"],
+                                continuations=[
+                                    dict(
+                                        truth=b["truth"],
+                                        nativeCall=hex(b["address"]),
+                                        nativePath=b["nativePath"],
+                                        writes=b["writes"],
+                                    )
+                                    for b in formula["buckets"]
+                                ],
+                            ),
+                            summary="依据前次记录重定向本次随机余数",
+                            nativeSite=e["site"],
+                        )
+                        for bucket in formula["buckets"]:
+                            role = "true" if bucket["truth"] else "false"
+                            previous = self.nodes[key]
+                            edge = role
+                            for index, write in enumerate(bucket["writes"]):
+                                update = (
+                                    key + "-" + role + "-history-write-" + str(index)
+                                )
+                                previous[edge] = update
+                                self.nodes[update] = dict(
+                                    id=update,
+                                    kind="mutation",
+                                    effect="write_table_history",
+                                    summary="保存本次随机选择记录",
+                                    stateUpdates=copy.deepcopy(write["stateUpdates"]),
+                                    nativeSite=write["site"],
+                                )
+                                previous, edge = self.nodes[update], "next"
+                            previous[edge] = self.walk(
+                                bucket["address"], bucket["state"]
+                            )
+                        return key
                     pair = None
                     history_read = self.random_history_pair(ins, e, s)
                     if history_read is not None:
@@ -1345,6 +1445,15 @@ class Machine:
                         )
 
                         proof = self.command_evidence.get(bound["commandType"])
+                        from .desire_recover import desire_recover_effect
+
+                        desire = desire_recover_effect(bound, proof)
+                        if desire is not None:
+                            if self.command_return(bound) != VOID_TYPE:
+                                raise ValueError("恢复请求命令的 void 返回类型变化")
+                            return self.desire_command_nodes(
+                                key, binding, desire, e, address + ins.size, s
+                            )
                         from .monster_rules import target_command_effect
 
                         target = target_command_effect(bound, proof)

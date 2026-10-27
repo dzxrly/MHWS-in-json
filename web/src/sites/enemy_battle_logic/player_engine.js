@@ -30,6 +30,14 @@ export function compare(value, operator, expected) {
 }
 export function evaluate(expression, inputs) {
   if (!expression) return null;
+  if (expression.op === "table_history_interval") {
+    const values = [expression.drawKey, expression.maxKey, expression.minKey].map(key => inputs[key]);
+    if (!values.every(value => Number.isInteger(value) && value >= -2147483648 && value <= 4294967295)) return null;
+    const [draw, maximum, minimum] = [values[0] >>> 0, values[1] | 0, values[2] | 0];
+    const remainder = draw % expression.modulus;
+    const effective = minimum < remainder && remainder < maximum ? (maximum >>> 0) % expression.modulus : remainder;
+    return effective <= expression.threshold;
+  }
   if (expression.op === "compare") return compare(inputs[expression.key], expression.operator, expression.value);
   if (expression.op === "not") { const value = evaluate(expression.item, inputs); return value === null ? null : !value; }
   if (expression.op === "all" || expression.op === "any") {
@@ -116,6 +124,7 @@ export function applyUpdates(node, supplied) {
 }
 function usesChangedInput(expression, changed) {
   if (changed.has(expression.key) || changed.has(expression.otherKey)) return true;
+  if (expression.op === "table_history_interval" && [expression.drawKey, expression.maxKey, expression.minKey].some(key => changed.has(key))) return true;
   if (expression.item && usesChangedInput(expression.item, changed)) return true;
   return (expression.items || []).some(item => usesChangedInput(item, changed));
 }
@@ -187,7 +196,7 @@ export function step(view, supplied) {
       record.children.push({ label: "动作结束后继续", role: "resume", state: next(node.resume, { inputs: standing(view, state.inputs), assumptions: {}, afterAction: true }) });
     } else if (node.kind === "mutation" || node.kind === "unknown") {
       const extras = node.invalidateSnapshot ? { inputs: standing(view, state.inputs), assumptions: {}, afterAction: true } : {};
-      if (node.next) record.children.push({ label: node.invalidateSnapshot ? "随后（状态可能已变）" : "随后", state: next(node.next, extras) });
+      if (node.next) record.children.push({ label: node.continuationKind === "normal_return" ? "正常返回后继续" : node.invalidateSnapshot ? "随后（状态可能已变）" : "随后", state: next(node.next, extras) });
       if (node.resume) record.children.push({ label: "动作未识别，结束后继续", role: "resume", state: next(node.resume, { inputs: standing(view, state.inputs), assumptions: {}, afterAction: true }) });
       if (node.dispatch) record.children.push({ label: "之后可能切换到", state: next(node.dispatch, { inputs: standing(view, state.inputs), assumptions: {}, afterAction: true, stack: [] }) });
     }

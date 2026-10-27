@@ -2,6 +2,25 @@
 
 ENEMY_ID = "EM0070_00_0"
 NATIVE_OWNER = "Em0070_00"
+
+# Reviewed native methods; local histories are split only at their actual reads.
+LOCAL_HISTORY_TABLES = {
+    "app.Em0070_00_BTable_CommonAttack_Export": (
+        "table_569db6c2_e9b4_4448_9c04_0589038f8cd8",
+        "table_7088ed9e_ac74_4185_b14d_a14ad97f92ca",
+    ),
+}
+
+
+def table_history_policy(row):
+    method = row["method"]
+    stems = LOCAL_HISTORY_TABLES.get(row["type"], ())
+    local = any(
+        method.startswith(stem) and method[len(stem) :].isdigit() for stem in stems
+    )
+    return dict(local=True) if local else None
+
+
 SIDE_WALK_COMMAND = "app.btable.Em0070_00BTableCommand.cSideWalkOffset"
 SIDE_WALK_ARGUMENT = SIDE_WALK_COMMAND + "Arg"
 SIDE_WALK_EXTEND = "app.cEm0070_00Extend"

@@ -14,6 +14,125 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class PlayerTreeTests(unittest.TestCase):
+    def test_partial_request_boundary_uses_normal_return_and_delays_tail_writes(self):
+        compiler = PlayerCompiler(dict(tables=[], rules=dict(rules=[])))
+        boundary = compiler.node(
+            "t",
+            dict(
+                id="boundary",
+                kind="unknown",
+                boundaryKind="partial_request_effects",
+                continuationKind="normal_return",
+                reason="转换尚未闭合；正常返回后继续",
+                next="tail",
+                requestSource=dict(actionGuid="source"),
+                convertedActionId=dict(status="unknown"),
+                commandEffectsComplete=False,
+            ),
+        )
+        self.assertEqual(boundary["continuationKind"], "normal_return")
+        self.assertNotIn("resume", boundary)
+        script = r"""
+const assert=require('node:assert/strict'); const {pathToFileURL}=require('node:url');
+import(pathToFileURL(process.argv[1]).href).then(({initial,step})=>{
+const flag='context:_FlagArray[NO_REQUEST_ACTION]';
+const view={scenario:{inputs:{}},nodes:{
+ boundary:{kind:'unknown',sourceRef:'boundary',next:'tail',continuationKind:'normal_return',invalidateSnapshot:true},
+ tail:{kind:'mutation',sourceRef:'tail',stateUpdates:{[flag]:false},next:'check',invalidateSnapshot:false},
+ check:{kind:'condition',sourceRef:'check',condition:{op:'compare',key:flag,operator:'eq',value:false},true:'end',false:'end'},
+ end:{kind:'return',sourceRef:'end'}
+}};
+const boundary=step(view,initial(view,{id:'boundary'},{[flag]:true,distance:5}));
+assert.equal(boundary.kind,'unknown');assert.equal(boundary.children[0].label,'正常返回后继续');
+const returned=step(view,boundary.children[0].state);
+assert.equal(returned.sourceRef,'check');assert.equal(returned.truth,true);
+assert.equal(returned.children[0].state.inputs[flag],false);
+assert.equal(returned.children[0].state.inputs.distance,undefined);
+}).catch(e=>{console.error(e);process.exit(1)});
+"""
+        result = subprocess.run(
+            [
+                shutil.which("node"),
+                "-e",
+                script,
+                str(ROOT / "web/src/sites/enemy_battle_logic/player_engine.js"),
+            ],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_full_domain_history_formula_projection_and_native_integer_edges(self):
+        high, low, draw = (
+            "table_history:fixture:max",
+            "table_history:fixture:min",
+            "random_uint32_mod_100:site",
+        )
+        compiler = PlayerCompiler(dict(tables=[], rules=dict(rules=[])))
+        compiler.input_definitions = {
+            key: dict(label=key, number=True, min=-2147483648, max=2147483647)
+            for key in (high, low)
+        }
+        raw = dict(
+            kind="table_history_interval",
+            drawKey=draw,
+            maxKey=high,
+            minKey=low,
+            modulus=100,
+            threshold=50,
+        )
+        projected = compiler.expression(raw)
+        self.assertEqual(
+            projected,
+            {
+                "op": "table_history_interval",
+                **{k: v for k, v in raw.items() if k != "kind"},
+            },
+        )
+        self.assertEqual(set(compiler.inputs), {high, low})
+        script = r"""
+const assert = require('node:assert/strict');
+const {pathToFileURL} = require('node:url');
+import(pathToFileURL(process.argv[1]).href).then(({evaluate,initial,step})=>{
+const high='table_history:fixture:max',low='table_history:fixture:min',draw='random_uint32_mod_100:site';
+const expression={op:'table_history_interval',drawKey:draw,maxKey:high,minKey:low,modulus:100,threshold:50};
+for(let r=0;r<100;r++) {
+ assert.equal(evaluate(expression,{[draw]:r,[high]:-1,[low]:-1}),r<=50);
+ assert.equal(evaluate(expression,{[draw]:r,[high]:51,[low]:0}),r===0);
+ assert.equal(evaluate(expression,{[draw]:r,[high]:101,[low]:50}),true);
+}
+assert.equal(evaluate(expression,{[draw]:4294967295,[high]:-2147483648,[low]:2147483647}),false);
+assert.equal(evaluate(expression,{[draw]:40,[high]:35,[low]:-200}),true); // candidate-external history
+assert.equal(evaluate(expression,{[draw]:40,[high]:35}),null);
+assert.equal(evaluate(expression,{[draw]:40,[high]:true,[low]:0}),null);
+const view={scenario:{inputs:{}},persistentState:[high,low],nodes:{
+ first:{kind:'condition',sourceRef:'first',condition:expression,true:'write',false:'end'},
+ write:{kind:'mutation',sourceRef:'write',stateUpdates:{[high]:51,[low]:0},invalidateSnapshot:false,next:'second'},
+ second:{kind:'condition',sourceRef:'second',condition:expression,true:'end',false:'end'},
+ end:{kind:'return',sourceRef:'end'}
+}};
+const before=step(view,initial(view,{id:'first'},{[draw]:1,[high]:-1,[low]:-1}));
+assert.equal(before.truth,true);
+const after=step(view,before.children[0].state);
+assert.equal(after.sourceRef,'second');assert.equal(after.truth,false);assert.equal(after.children.length,1);
+}).catch(e=>{console.error(e);process.exit(1)});
+"""
+        result = subprocess.run(
+            [
+                shutil.which("node"),
+                "-e",
+                script,
+                str(ROOT / "web/src/sites/enemy_battle_logic/player_engine.js"),
+            ],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+
     def test_hidden_target_type_guards_keep_the_reviewed_summary(self):
         compiler = PlayerCompiler(dict(tables=[], rules=dict(rules=[])))
         result = compiler.node(

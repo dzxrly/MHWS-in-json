@@ -107,6 +107,10 @@ A history gate is omitted only when a separate native trace reaches a real retur
 
 For reviewed tables with several independent intervals, each interval is expanded where native code reads it; the model does not enumerate their combinations at table entry. A reviewed Boolean command that writes state applies that write on its actual return branch before continuing.
 
+The typed private-parameter lookup is proved separately from interval discovery, using the export's setup, allocation, constructor and dictionary insertion. It supplies no field defaults. Explicitly reviewed full-domain interval formulas retain signed Int32 history, uint32 remainder arithmetic and strict open-interval comparisons; the viewer evaluates only the declared JSON operation. Private reads outside a proved formula still stop at their own boundary.
+
+`cRequestActionDesireRecover` records its source request and conditional network request contract, while preserving the unknown converted action ID and cache/conversion side effects. Its three verified tail writes apply only after that boundary returns normally. A resource recovery-type label does not select a mode in this native implementation.
+
 Spatial conditions retain their query contracts. The player inputs describe the relevant ray hits, filtered voxel result or timer-derived remaining percentage; the offline viewer does not query the game's live map or advance its timer. Unknown hit classification names remain internal numeric values.
 
 Reviewed side-walk and obstacle-climb target commands preserve their native guards, ordered target writes and vector formulas. Missing references on an exceptional path remain explicit boundaries, separate from a normal false return. Target writes invalidate the selection snapshot; the viewer records the formulas without computing game positions or navigation results. Monster-specific angle conversions remain in their own recipes.
@@ -116,6 +120,8 @@ Large full research models use compact JSON to retain all logic. If the compact 
 ### After a game update
 
 You need the new dumped EXE, its IL2CPP dump, re-exported resources, and Ghidra.
+
+Symbol relocation does not cover every recipe dependency. The current evidence migrator updates standard method identities and ranges, but does not refresh embedded `nativeBytes` or relocate auxiliary instruction fragments, constant addresses and class slots that lack a standard method identity. Some recipes also retain full numeric method names. A report with no review items therefore does not establish that all recipe proofs migrated: recheck these dependencies before extraction. Refresh the current profile's evidence digests after adding recipes while the matching old EXE is still available; new-build migration cannot recreate a missing old digest.
 
 ```powershell
 python -B -m sdk.enemy_logic_exporter check-env

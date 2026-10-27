@@ -12,17 +12,35 @@ UNIQUE_SPEC = dict(
 ABSORBED_ACTION_COMMAND = "app.Em0160_00BTableCommand.cCanAbsorbedAction"
 ABSORBED_STATE_KEY = "extend:app.cEm0160Extend._AbsorbCocoonState"
 LOCAL_HISTORY_TABLE = "table_b703035f_fa40_4c4c_a4eb_629aa0247b36"
+LOCAL_HISTORY_TABLES = (
+    LOCAL_HISTORY_TABLE,
+    "table_0d7f8b3f_9c2b_457a_83f6_40eddaa80312",
+)
+FORMULA_HISTORY_TABLES = (
+    "table_5a438c68_cd51_4292_ac34_b1406d7fa238",
+    "table_70850a29_17cd_4bc1_b942_ac6177bb861c",
+)
 LOCAL_HISTORY_EXPORT = "app.Em0160_00_BTable_CommonAttack_Export"
 
 
 def table_history_policy(row):
-    if (
-        row["type"] == LOCAL_HISTORY_EXPORT
-        and row["method"].startswith(LOCAL_HISTORY_TABLE)
-        and row["method"][len(LOCAL_HISTORY_TABLE) :].isdigit()
-    ):
-        return dict(local=True)
-    return None
+    if row["type"] != LOCAL_HISTORY_EXPORT:
+        return None
+    method = row["method"]
+    local = any(
+        method.startswith(stem) and method[len(stem) :].isdigit()
+        for stem in LOCAL_HISTORY_TABLES
+    )
+    formula = any(
+        method.startswith(stem) and method[len(stem) :].isdigit()
+        for stem in FORMULA_HISTORY_TABLES
+    )
+    policy = {}
+    if local:
+        policy["local"] = True
+    if formula:
+        policy["formula"] = True
+    return policy or None
 
 
 def _absorbed_action_proof():

@@ -235,10 +235,14 @@ class TableHistory:
         self.lookup = lookup
         self.fields = fields
         self.read_offsets = set()
+        self.read_sites = {}
         self.candidates = {}
         self.evidence = []
+        self.identity_evidence = []
         self.complete_discovery = False
         self.local_pairs = []
+        self.formula_enabled = False
+        self.formula_specs = {}
 
     def key(self, offset):
         return "table_history:" + self.export_type + ":" + self.fields[offset]
@@ -302,7 +306,7 @@ class TableHistory:
 
     def history_cases(self):
         """Explicit predicates; an unmatched or absent history remains unknown."""
-        if self.local_pairs:
+        if self.local_pairs or self.formula_enabled:
             return []
         result = []
         for values, sites in sorted(self.candidates.items()):
@@ -351,7 +355,7 @@ class TableHistory:
             self.key(offset): dict(
                 label="前次随机区间" + ("上界" if "Max_" in name else "下界"),
                 number=True,
-                min=-1,
+                min=-0x80000000 if self.formula_enabled else -1,
                 max=0x7FFFFFFF,
                 hint=f"{self.export_type}.{name}；仅在此处读取该历史，其他记录不设默认值",
             )
@@ -407,6 +411,17 @@ def _discover(machine, history, *, reviewed_calls=False):
     from .machine import Machine, Boundary
 
     class Probe(Machine):
+        def read(self, ins, operand, state):
+            if operand.type == CS_OP_MEM:
+                fields = history.private_field(
+                    self.address(ins, operand, state), operand.size
+                )
+                if fields:
+                    history.read_sites.setdefault(ins.address, set()).update(
+                        off for off, _ in fields
+                    )
+            return Machine.read(self, ins, operand, state)
+
         def step(self, ins, state):
             if (
                 ins.mnemonic == "btr"
@@ -711,6 +726,139 @@ def _constructor_case(machine, history, *, allow_avx_fill=False):
         )
 
 
+def _param_setup_identity(machine, dictionary_offset, runtime_offset, lookup):
+    """Prove the export's exact setup creates this Param under its RuntimeID.
+
+    The compiler's checked-present path must skip creation, while the absent
+    path allocates the metadata class, calls its constructor, and inserts the
+    same object/key. This supplies object identity only, never field values.
+    All call targets and field offsets are resolved from current identities.
+    """
+    from ..config import symbol
+
+    metadata, pe = machine.metadata, machine.pe
+    owner = machine.row["type"]
+    setup = _method(metadata, owner, "setupOperatorWork")
+    constructor = _method(metadata, owner + ".Param", ".ctor")
+    insert = _method(metadata, DICT_TYPE, "TryInsert")
+    param = metadata.get(owner + ".Param") or {}
+    behavior = (metadata.get("System.Collections.Generic.InsertionBehavior") or {}).get(
+        "fields", {}
+    )
+    if not setup or not constructor or not insert or not param.get("address"):
+        return None
+    setup_name, setup_info = setup
+    constructor_name, constructor_info = constructor
+    insert_name, insert_info = insert
+    if (
+        [p.get("type") for p in setup_info.get("params", [])] != [OPERATOR_TYPE]
+        or setup_info.get("returns", {}).get("type") != "System.Void"
+        or constructor_info.get("params", [])
+        or constructor_info.get("returns", {}).get("type") != "System.Void"
+        or [p.get("type") for p in insert_info.get("params", [])]
+        != ["System.Int32", PARAM_TYPE, "System.Collections.Generic.InsertionBehavior"]
+        or insert_info.get("returns", {}).get("type") != "System.Boolean"
+        or behavior.get("ThrowOnExisting", {}).get("default") != 2
+    ):
+        return None
+    start = int(setup_info["function"], 16)
+    constructor_address = int(constructor_info["function"], 16)
+    insert_address = int(insert_info["function"], 16)
+    if insert_address != symbol("btable_param_try_insert"):
+        return None
+    allocate = symbol("managed_object_allocate")
+    end = pe.end(start)
+    if not 0 < end - start <= 512:
+        return None
+    body = pe.read(start, end - start)
+    native = list(_decoder().disasm(body, start))
+    if len(native) != 36 or sum(ins.size for ins in native) != len(body):
+        return None
+    expected = [
+        ("push", "r14"),
+        ("push", "rsi"),
+        ("push", "rdi"),
+        ("push", "rbx"),
+        ("sub", "rsp,0x28"),
+        ("mov", "rbx,r8"),
+        ("mov", "rdi,rdx"),
+        ("mov", "rsi,rcx"),
+        ("mov", f"rdx,qwordptr[r8+{dictionary_offset:#x}]"),
+        ("mov", f"r8d,dwordptr[rdi+{runtime_offset:#x}]"),
+        ("call", hex(lookup)),
+        ("test", "rax,rax"),
+        ("jne", hex(native[29].address)),
+        ("mov", f"rbx,qwordptr[rbx+{dictionary_offset:#x}]"),
+        ("mov", f"edi,dwordptr[rdi+{runtime_offset:#x}]"),
+        None,
+        ("mov", "rcx,rsi"),
+        ("xor", "r8d,r8d"),
+        ("call", hex(allocate)),
+        ("mov", "r14,rax"),
+        ("mov", "rcx,rsi"),
+        ("mov", "rdx,rax"),
+        ("call", hex(constructor_address)),
+        ("mov", "byteptr[rsp+0x20],2"),
+        ("mov", "rcx,rsi"),
+        ("mov", "rdx,rbx"),
+        ("mov", "r8d,edi"),
+        ("mov", "r9,r14"),
+        ("call", hex(insert_address)),
+        ("nop", ""),
+        ("add", "rsp,0x28"),
+        ("pop", "rbx"),
+        ("pop", "rdi"),
+        ("pop", "rsi"),
+        ("pop", "r14"),
+        ("ret", ""),
+    ]
+    if any(
+        value is not None and (ins.mnemonic, ins.op_str.replace(" ", "")) != value
+        for ins, value in zip(native, expected)
+    ):
+        return None
+    load = native[15]
+    op = load.operands
+    if not (
+        load.mnemonic == "mov"
+        and len(op) == 2
+        and op[0].type == CS_OP_REG
+        and load.reg_name(op[0].reg) == "rdx"
+        and op[1].type == CS_OP_MEM
+        and op[1].size == 8
+        and load.reg_name(op[1].mem.base) == "rip"
+        and not op[1].mem.index
+    ):
+        return None
+    slot = load.address + load.size + op[1].mem.disp
+    if int.from_bytes(pe.read(slot, 8), "little") != int(param["address"], 16):
+        return None
+    return dict(
+        _native_evidence(pe, owner, setup_name, start, body),
+        kind="typed_param_dictionary_setup",
+        paramType=owner + ".Param",
+        dictionaryField=dict(
+            type=OPERATOR_TYPE, field="ExportTableParam", offset=hex(dictionary_offset)
+        ),
+        keyField=dict(
+            type=EXPORT_TYPE,
+            field="<RuntimeID>k__BackingField",
+            offset=hex(runtime_offset),
+        ),
+        classSymbol=dict(type=owner + ".Param", slot=hex(slot)),
+        allocationSymbol="managed_object_allocate",
+        constructor=dict(type=owner + ".Param", method=constructor_name),
+        insertion=dict(
+            type=DICT_TYPE,
+            method=insert_name,
+            symbol="btable_param_try_insert",
+            behavior="ThrowOnExisting",
+        ),
+        existingItem="preserved",
+        fieldValues="not_assumed",
+    )
+
+
 def recover_table_history(machine, *, local=False):
     """Recover an interval, or explicitly enabled pairs at their actual reads."""
     metadata = machine.metadata
@@ -756,15 +904,47 @@ def recover_table_history(machine, *, local=False):
     expected = bytes.fromhex(proof["nativeBytes"])
     if machine.pe.read(lookup, len(expected)) != expected:
         raise ValueError("行为表私有参数的字典查找原生字节变化")
+    source_evidence = dict(
+        type=owner,
+        method=machine.row.get("method"),
+        address=machine.row["address"],
+        end=machine.row.get("end"),
+    )
+    identity = _param_setup_identity(
+        machine,
+        int(operator["offset_from_base"], 16),
+        int(runtime["offset_from_base"], 16),
+        lookup,
+    )
+
+    def identity_only():
+        if identity is None:
+            return None
+        result = TableHistory(
+            owner,
+            int(operator["offset_from_base"], 16),
+            int(runtime["offset_from_base"], 16),
+            lookup,
+            {},
+        )
+        result.identity_evidence = [identity]
+        result.evidence = [source_evidence, proof, identity]
+        return result
+
     fields = {}
     for field, description in param.get("fields", {}).items():
+        if "default" in description:
+            continue
         if (
             re.fullmatch(r"BefoRandom(?:Max|Min)_\d+", field)
             and description.get("type") == "System.Int32"
         ):
             fields[int(description["offset_from_base"], 16)] = field
+        else:
+            # A new private layout needs its own field lifetime/escape review.
+            identity = None
     if not fields:
-        return None
+        return identity_only()
     history = TableHistory(
         owner,
         int(operator["offset_from_base"], 16),
@@ -772,21 +952,16 @@ def recover_table_history(machine, *, local=False):
         lookup,
         fields,
     )
+    history.identity_evidence = [identity] if identity is not None else []
     # First discover accesses with all metadata fields, then keep only one pair.
     _discover(machine, history, reviewed_calls=local)
     used = {off: fields[off] for off in history.read_offsets}
     suffixes = {name.rsplit("_", 1)[1] for name in used.values()}
-    source_evidence = dict(
-        type=owner,
-        method=machine.row.get("method"),
-        address=machine.row["address"],
-        end=machine.row.get("end"),
-    )
     if local and len(suffixes) > 1:
         if not history.complete_discovery:
-            return None
+            return identity_only()
         history.fields = used
-        history.evidence = [source_evidence, proof]
+        history.evidence = [source_evidence, proof, *history.identity_evidence]
         for suffix in sorted(suffixes):
             pair_fields = {
                 off: name
@@ -798,7 +973,7 @@ def recover_table_history(machine, *, local=False):
                 or not any("Max_" in n for n in pair_fields.values())
                 or not any("Min_" in n for n in pair_fields.values())
             ):
-                return None
+                return identity_only()
             pair = TableHistory(
                 owner,
                 history.dictionary_offset,
@@ -812,8 +987,9 @@ def recover_table_history(machine, *, local=False):
                 or not pair.candidates
                 or set(pair_fields) != pair.read_offsets
             ):
-                return None
-            pair.evidence = [source_evidence, proof]
+                return identity_only()
+            pair.identity_evidence = list(history.identity_evidence)
+            pair.evidence = [source_evidence, proof, *pair.identity_evidence]
             _constructor_case(machine, pair, allow_avx_fill=True)
             history.local_pairs.append(pair)
         return history
@@ -823,13 +999,14 @@ def recover_table_history(machine, *, local=False):
         or not any("Max_" in n for n in used.values())
         or not any("Min_" in n for n in used.values())
     ):
-        return None
+        return identity_only()
     history.fields = used
     history.candidates = {}
-    _discover(machine, history)
+    _discover(machine, history, reviewed_calls=local)
     if not history.complete_discovery or not history.candidates:
-        return None
+        return identity_only()
     history.evidence.append(source_evidence)
     history.evidence.append(proof)
+    history.evidence.extend(history.identity_evidence)
     _constructor_case(machine, history)
     return history

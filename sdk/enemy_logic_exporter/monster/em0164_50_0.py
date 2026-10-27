@@ -3,6 +3,23 @@
 ENEMY_ID = "EM0164_50_0"
 NATIVE_OWNER = "Em0164_50"
 
+# Reviewed native methods; local histories are split only at their actual reads.
+LOCAL_HISTORY_TABLES = {
+    "app.Em0164_50_BTable_CommonAttack_Export": (
+        "table_1b08d3be_6146_4db4_8577_562cdd3002dd",
+    ),
+}
+
+
+def table_history_policy(row):
+    method = row["method"]
+    stems = LOCAL_HISTORY_TABLES.get(row["type"], ())
+    local = any(
+        method.startswith(stem) and method[len(stem) :].isdigit() for stem in stems
+    )
+    return dict(local=True) if local else None
+
+
 # Parameterless Em0164_50 commands (game 1.42.0.2); onExecute reads the Extend
 # at work+0x28 -> +0x78 -> +0x10 after an exact cEm0164_50Extend type check and
 # inlines one Extend method:

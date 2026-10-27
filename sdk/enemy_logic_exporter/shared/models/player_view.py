@@ -777,6 +777,17 @@ class PlayerCompiler:
 
     def expression(self, expression):
         kind = expression["kind"]
+        if kind == "table_history_interval":
+            for role in ("maxKey", "minKey"):
+                key = expression[role]
+                self.inputs.setdefault(key, dict(self.input_definitions[key]))
+            return dict(
+                op=kind,
+                **{
+                    key: expression[key]
+                    for key in ("drawKey", "maxKey", "minKey", "modulus", "threshold")
+                },
+            )
         if kind == "predicate":
             return self.predicate(expression["predicate"])
         if kind == "constant":
@@ -1040,6 +1051,8 @@ class PlayerCompiler:
 
     def describe(self, expression):
         op = expression["op"]
+        if op == "table_history_interval":
+            return f"按前次随机区间重定向后的余数 ≤ {expression['threshold']}"
         if op == "compare":
             key, value = expression["key"], expression["value"]
             if key == "ordinary_combat_snapshot":
@@ -1150,6 +1163,15 @@ class PlayerCompiler:
 
     def presentation(self, condition):
         """Labels describe both outcomes; ordinary-selection guards stay explicit."""
+        if condition["op"] == "table_history_interval":
+            return dict(
+                category="random",
+                title="依据前次记录处理本次随机值",
+                trueLabel=f"重定向后的随机余数 ≤ {condition['threshold']}",
+                falseLabel=f"重定向后的随机余数 > {condition['threshold']}",
+                snapshotGuard=False,
+                compact=False,
+            )
         parts = (
             condition.get("items", [condition])
             if condition["op"] == "all"
@@ -1308,6 +1330,8 @@ class PlayerCompiler:
                 "apply_native_field_writes",
                 "apply_boolean_command_effects",
                 "update_target_positions",
+                "request_desire_recovery",
+                "apply_desire_recovery_tail_writes",
                 "write_table_history",
                 "skip_dynamic_action_request",
             }:
@@ -1320,6 +1344,13 @@ class PlayerCompiler:
                 result["stateUpdates"] = dict(node["stateUpdates"])
             if node.get("targetUpdates"):
                 result["targetUpdates"] = deepcopy(node["targetUpdates"])
+            for field in (
+                "requestSource",
+                "convertedActionId",
+                "commandEffectsComplete",
+            ):
+                if field in node:
+                    result[field] = deepcopy(node[field])
             if node.get("dynamicAction"):
                 result["dynamicAction"] = True
                 result["note"] = node["implementationBoundary"]
@@ -1348,6 +1379,7 @@ class PlayerCompiler:
                 "read_action_dispatch",
                 "write_table_history",
                 "apply_boolean_command_effects",
+                "apply_desire_recovery_tail_writes",
                 "skip_dynamic_action_request",
             )
             if (
@@ -1368,6 +1400,17 @@ class PlayerCompiler:
                 note="接入关系、判断或副作用需要继续核查。",
                 invalidateSnapshot=True,
             )
+            if node.get("boundaryKind") == "partial_request_effects":
+                result.update(
+                    title="恢复动作请求的部分副作用待核实", note=node["reason"]
+                )
+                result["continuationKind"] = node["continuationKind"]
+                for field in (
+                    "requestSource",
+                    "convertedActionId",
+                    "commandEffectsComplete",
+                ):
+                    result[field] = deepcopy(node[field])
             if "resume" in node and node.get("parameterBindingBoundary"):
                 result.update(
                     title="动作身份待核查",

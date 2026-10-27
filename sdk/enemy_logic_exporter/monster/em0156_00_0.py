@@ -3,6 +3,23 @@
 ENEMY_ID = "EM0156_00_0"
 NATIVE_OWNER = "Em0156_00"
 
+# Reviewed native methods; local histories are split only at their actual reads.
+LOCAL_HISTORY_TABLES = {
+    "app.Em0156_00_BTable_CommonAttack_Export": (
+        "table_40810e3e_afaf_4ba2_a92a_c687e305f20f",
+    ),
+}
+
+
+def table_history_policy(row):
+    method = row["method"]
+    stems = LOCAL_HISTORY_TABLES.get(row["type"], ())
+    local = any(
+        method.startswith(stem) and method[len(stem) :].isdigit() for stem in stems
+    )
+    return dict(local=True) if local else None
+
+
 MAX_RAILGUN_COMMAND = "app.Em0156_00BTableCommand.cCheckTransRailgunChargeMax"
 
 
