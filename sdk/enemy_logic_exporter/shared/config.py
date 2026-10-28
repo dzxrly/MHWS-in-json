@@ -579,6 +579,115 @@ RANDOM_OPERATOR_TYPE = "ace.btable.cOperatorRandom"
 SET_TIMER_TYPE = "ace.btable.cSetTimerValue"
 
 
+# ------------------------------------- reviewed command and history identities
+
+SET_FLOAT_TYPE = "ace.btable.cSetFloatValue"
+SET_BOOL_TYPE = "ace.btable.cSetBoolValue"
+REQUEST_SELECTED_ACTION_TYPE = "app.btable.EmCommonCommand.cRequestSelectedAction"
+ACTION_SWITCH_TYPE = "app.btable.EmCommonCommand.cActionSwitch"
+COMMAND_EFFECT_FIELDS = {
+    "life": "_Life",
+    "minimum": "_MinValue",
+    "maximum": "_MaxValue",
+    "default": "_DefaultValue",
+    "variable": "_TargetVariableIndex",
+    "method": "_Method",
+    "value": "_Value",
+    "timer_mode": "_SetType",
+    "action_source": "_EditArg",
+}
+VARIABLE_FLOAT_OPERATIONS = {0: "assign", 1: "add", 2: "subtract"}
+VARIABLE_TIMER_OPERATIONS = {
+    0: "assign",
+    1: "activate",
+    2: "deactivate",
+    3: "activate_no_reset",
+}
+SELECTED_ACTION_SOURCES = {
+    0: ("damage", "此前选定的受击动作", "Hit.DamageActionID"),
+    1: ("attack_hit", "此前选定的攻击命中反应", "Hit.AttackHitActionID"),
+    2: ("obstacle", "按当前障碍类型选择的动作", "Obstacle.ObstacleType"),
+    3: ("state_sign", "按当前状态提示类型选择的动作", "StateSignActionType"),
+    4: ("pop_interact", "此前选定的互动动作", "Collect.ActionID"),
+    5: ("detour", "按当前绕路状态选择的动作", "Detour"),
+    7: ("lead_chase", "按当前追逐阶段选择的动作", "Lead.Chase._CurrentPhase"),
+}
+ACTION_SWITCH_SOURCES = {
+    0: ("current", "当前动作的分派编号", "ActionController.CurrentAction.ID"),
+    1: ("damage", "选定受击动作的分派编号", "Hit.DamageActionID"),
+    2: ("attack_hit", "攻击命中反应的分派编号", "Hit.AttackHitActionID"),
+    3: ("obstacle", "障碍动作的分派编号", "Obstacle.ObstacleType"),
+    4: ("state_sign", "状态提示动作的分派编号", "StateSignActionType"),
+}
+
+INT32_TYPE = "System.Int32"
+EXPORT_BTABLE_TYPE = "ace.btable.cExportBTableBase"
+EXPORT_BTABLE_PARAM_TYPE = EXPORT_BTABLE_TYPE + ".cExportBTableParam"
+EXPORT_BTABLE_PARAM_DICTIONARY_TYPE = (
+    "System.Collections.Generic.Dictionary`2<System.Int32,"
+    + EXPORT_BTABLE_PARAM_TYPE
+    + ">"
+)
+TABLE_PARAM_TYPE_SUFFIX = ".Param"
+TABLE_PARAM_METHODS = {
+    "setup": "setupOperatorWork",
+    "constructor": ".ctor",
+    "insert": "TryInsert",
+    "lookup": "FindValue",
+}
+TABLE_PARAM_FIELDS = {
+    "dictionary": "ExportTableParam",
+    "runtime_id": "<RuntimeID>k__BackingField",
+    "history_pattern": r"BefoRandom(?:Max|Min)_\d+",
+}
+DICTIONARY_INSERTION_BEHAVIOR_TYPE = "System.Collections.Generic.InsertionBehavior"
+DICTIONARY_INSERTION_BEHAVIOR_NAME = "ThrowOnExisting"
+DICTIONARY_INSERTION_BEHAVIOR_VALUE = 2
+
+DESIRE_RECOVER_COMMAND = "app.btable.EmCommonCommand.cRequestActionDesireRecover"
+DESIRE_RECOVER_ARGUMENT = "app.btable.EmCommonCommand.cSelectActionDesireRecoverArg"
+DESIRE_RECOVER_FIELDS = {
+    "asset": "_EditAssetIndex",
+    "action": "_EditActionGuid",
+    "variant": "_EditBranchedParamGuid",
+}
+DESIRE_RECOVER_STATE_UPDATES = {
+    "context:_FlagArray[WAITING_REQUEST_ACTION_RANDOM_OPERATOR]": False,
+    "context:Life._IsRequestClearLifeActInfo": True,
+    "context:_FlagArray[NO_REQUEST_ACTION]": False,
+}
+
+OBSTACLE_CLIMB_COMMAND = "app.btable.EmCommonCommand.cSetObstacleClimbDestForRise"
+OBSTACLE_TYPE_ENUM = "app.EnemyDef.OBSTACLE_TYPE"
+OBSTACLE_TYPE_RUNTIME_KEY = "context:Obstacle.ObstacleType"
+OBSTACLE_STEP_UP_WALL = 3
+TARGET_OBSTACLE_CATEGORY = 10
+TARGET_UNIQUE_CATEGORY = 18
+TARGET_FIRST_ORDER = 0
+TARGET_SECOND_ORDER = 1
+TARGET_COMMAND_EXECUTE_METHOD = "onExecute"
+TARGET_POSITION_GETTER = ("app.cEnemyBTableCommandWork", "get_TargetPosition577920")
+TARGET_POSITION_SETTER = ("app.cEnemyBTableCommandWork", "setTargetPosition577942")
+TARGET_MODULE_SETTER = ("app.cEmModuleTarget", "setTarget544366")
+SIDE_WALK_SUPPORTING_METHODS = frozenset(
+    {
+        TARGET_POSITION_GETTER,
+        TARGET_POSITION_SETTER,
+        TARGET_MODULE_SETTER,
+        ("via.MathEx", "rotationAxis1028658"),
+        ("via.vec3", "op_Addition1752"),
+        ("via.vec3", "op_Subtraction1754"),
+    }
+)
+TARGET_POSITION_GETTER_SOURCE = ".".join(TARGET_POSITION_GETTER).removeprefix("app.")
+TARGET_POSITION_SETTER_CALLEE = ".".join(TARGET_POSITION_SETTER)
+TARGET_MODULE_SETTER_CALLEE = ".".join(TARGET_MODULE_SETTER)
+SIDE_WALK_ANGLE_FIELD = "_EditSideWalkAngle"
+OBSTACLE_HEIGHT_COMPONENT_OFFSET = "0x160"
+OBSTACLE_HEIGHT_POINTER_OFFSET = "0x18"
+OBSTACLE_HEIGHT_FLOAT_OFFSET = "0x78"
+
+
 # --------------------------------------------------- manifest type selection
 
 MANIFEST_SCHEDULER_TYPES = (
@@ -847,16 +956,14 @@ SYMBOL_SPECS = {
     "action_param_apply": Method("ace.user_data.ActionParam", "applyParamCore"),
     "manager_setup_table": Method("ace.btable.cManager", "setupTable"),
     "manager_clear": Method("ace.btable.cManager", "clear"),
-    "btable_create": Method(
-        "ace.btable.cExportBTableBase", "create", ("ace.btable.user_data.BTable",)
-    ),
+    "btable_create": Method(EXPORT_BTABLE_TYPE, "create", (BTABLE_RESOURCE_TYPE,)),
     "btable_param_try_insert": Method(
-        "System.Collections.Generic.Dictionary`2<System.Int32,ace.btable.cExportBTableBase.cExportBTableParam>",
-        "TryInsert",
+        EXPORT_BTABLE_PARAM_DICTIONARY_TYPE,
+        TABLE_PARAM_METHODS["insert"],
         (
-            "System.Int32",
-            "ace.btable.cExportBTableBase.cExportBTableParam",
-            "System.Collections.Generic.InsertionBehavior",
+            INT32_TYPE,
+            EXPORT_BTABLE_PARAM_TYPE,
+            DICTIONARY_INSERTION_BEHAVIOR_TYPE,
         ),
     ),
     "resume_jump_btable": Method("app.cEmAIUpdateBTable", "resumeJumpBTable"),

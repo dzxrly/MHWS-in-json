@@ -10,11 +10,31 @@ import json
 import math
 import struct
 
-from ..config import EVIDENCE_DIR
+from ..config import (
+    BOOLEAN_TYPE,
+    EVIDENCE_DIR,
+    NO_ARGUMENT_TYPES,
+    OBSTACLE_CLIMB_COMMAND as OBSTACLE_COMMAND,
+    OBSTACLE_HEIGHT_COMPONENT_OFFSET,
+    OBSTACLE_HEIGHT_FLOAT_OFFSET,
+    OBSTACLE_HEIGHT_POINTER_OFFSET,
+    OBSTACLE_STEP_UP_WALL as STEP_UP_WALL,
+    OBSTACLE_TYPE_ENUM,
+    OBSTACLE_TYPE_RUNTIME_KEY as OBSTACLE_TYPE_KEY,
+    SIDE_WALK_ANGLE_FIELD,
+    SIDE_WALK_SUPPORTING_METHODS,
+    TARGET_COMMAND_EXECUTE_METHOD,
+    TARGET_FIRST_ORDER as FIRST_ORDER,
+    TARGET_MODULE_SETTER_CALLEE,
+    TARGET_OBSTACLE_CATEGORY as OBSTACLE_CATEGORY,
+    TARGET_POSITION_GETTER_SOURCE,
+    TARGET_POSITION_SETTER_CALLEE,
+    TARGET_SECOND_ORDER as SECOND_ORDER,
+    TARGET_UNIQUE_CATEGORY as UNIQUE_CATEGORY,
+)
 from .expressions import combined, compare, runtime
 from .values import number, scalar
 
-OBSTACLE_COMMAND = "app.btable.EmCommonCommand.cSetObstacleClimbDestForRise"
 OBSTACLE_RECEIPT = "target_command_effects.v1.json"
 CHARACTER_KEY = "target_command_character_exists"
 GAME_OBJECT_KEY = "target_command_game_object_exists"
@@ -23,22 +43,6 @@ CURRENT_NODE_KEY = "target_command_current_obstacle_node_exists"
 WALL_NODE_KEY = "target_command_wall_obstacle_node_exists"
 SIZE_SETTING_KEY = "target_command_size_setting_exists"
 HEIGHT_COMPONENT_KEY = "target_command_height_component_chain_valid"
-OBSTACLE_TYPE_KEY = "context:Obstacle.ObstacleType"
-STEP_UP_WALL = 3
-OBSTACLE_CATEGORY = 10
-UNIQUE_CATEGORY = 18
-FIRST_ORDER = 0
-SECOND_ORDER = 1
-SIDE_WALK_SUPPORTING_METHODS = frozenset(
-    {
-        ("app.cEnemyBTableCommandWork", "get_TargetPosition577920"),
-        ("app.cEnemyBTableCommandWork", "setTargetPosition577942"),
-        ("app.cEmModuleTarget", "setTarget544366"),
-        ("via.MathEx", "rotationAxis1028658"),
-        ("via.vec3", "op_Addition1752"),
-        ("via.vec3", "op_Subtraction1754"),
-    }
-)
 
 
 @lru_cache(maxsize=None)
@@ -133,7 +137,8 @@ def _match(command, evidence, receipt_name):
     row = next(
         row
         for row in target_receipt(receipt_name)["methods"]
-        if row["type"] == command and row["method"].startswith("onExecute")
+        if row["type"] == command
+        and row["method"].startswith(TARGET_COMMAND_EXECUTE_METHOD)
     )
     if not evidence or any(
         evidence.get(key) != row[key] for key in ("type", "method", "address", "end")
@@ -198,16 +203,13 @@ def reviewed_target_command_effect(bound, evidence):
     if bound.get("commandType") != OBSTACLE_COMMAND:
         return None
     _match(OBSTACLE_COMMAND, evidence, OBSTACLE_RECEIPT)
-    if bound.get("argumentType") not in (
-        "",
-        "ace.btable.cCommandArgumentNone",
-    ) or bound.get("argument"):
+    if bound.get("argumentType") not in NO_ARGUMENT_TYPES or bound.get("argument"):
         raise ValueError("障碍攀爬目标命令不接受资源参数")
     proof = target_receipt(OBSTACLE_RECEIPT)
     enums = next(
         row["values"]
         for row in proof["enumChecks"]
-        if row["type"] == "app.EnemyDef.OBSTACLE_TYPE"
+        if row["type"] == OBSTACLE_TYPE_ENUM
     )
     inputs = _reference_inputs()
     inputs.pop(TRANSFORM_KEY)
@@ -287,11 +289,11 @@ def reviewed_target_command_effect(bound, evidence):
                 relativeTo="Accessor.Character",
                 path=[
                     dict(
-                        addressOffset="0x160",
+                        addressOffset=OBSTACLE_HEIGHT_COMPONENT_OFFSET,
                         clearReferenceTagBit=63,
-                        dereferenceOffset="0x18",
+                        dereferenceOffset=OBSTACLE_HEIGHT_POINTER_OFFSET,
                     ),
-                    dict(readFloatOffset="0x78"),
+                    dict(readFloatOffset=OBSTACLE_HEIGHT_FLOAT_OFFSET),
                 ],
                 fieldNameVerified=False,
             ),
@@ -309,7 +311,7 @@ def reviewed_target_command_effect(bound, evidence):
                 direction=None,
                 booleanOptions=[False, True],
                 nullableUInt32=None,
-                callee="app.cEmModuleTarget.setTarget544366",
+                callee=TARGET_MODULE_SETTER_CALLEE,
             )
         ],
         _evidence(OBSTACLE_RECEIPT),
@@ -317,7 +319,7 @@ def reviewed_target_command_effect(bound, evidence):
         exception,
     )
     return dict(
-        returnType="System.Boolean",
+        returnType=BOOLEAN_TYPE,
         returnExpression=guard,
         normalPrecondition=precondition,
         inputDefinitions=inputs,
@@ -345,7 +347,7 @@ def side_walk_target_effect(
     _match(command, evidence, receipt_name)
     if bound.get("argumentType") != argument_type:
         raise ValueError("侧向目标更新的资源参数类型不匹配")
-    angle = number(scalar(bound["argument"]["_EditSideWalkAngle"]))
+    angle = number(scalar(bound["argument"][SIDE_WALK_ANGLE_FIELD]))
 
     def f32(value):
         try:
@@ -383,11 +385,11 @@ def side_walk_target_effect(
         kind="native_vector_formula",
         formula="rotationAxis(f32(T + f32(P - T)), (0,1,0), angleRadians, T)",
         sources=dict(
-            T="cEnemyBTableCommandWork.get_TargetPosition577920",
+            T=TARGET_POSITION_GETTER_SOURCE,
             P="Accessor.Character.GameObject.Transform.Position",
         ),
         angle=dict(
-            sourceField="_EditSideWalkAngle",
+            sourceField=SIDE_WALK_ANGLE_FIELD,
             resourceValue=angle,
             operations=[
                 dict(operation="multiply_float32", value=value)
@@ -412,7 +414,7 @@ def side_walk_target_effect(
             categoryName="UNIQUE",
             position=dict(
                 kind="native_vector_source",
-                source="cEnemyBTableCommandWork.get_TargetPosition577920",
+                source=TARGET_POSITION_GETTER_SOURCE,
                 capturedBeforeFirstWrite=True,
             ),
         ),
@@ -421,7 +423,7 @@ def side_walk_target_effect(
         update.update(
             booleanOptions=[False],
             nullableUInt32=None,
-            callee="app.cEnemyBTableCommandWork.setTargetPosition577942",
+            callee=TARGET_POSITION_SETTER_CALLEE,
             targetSubCategory=0,
         )
     mutation = _mutation(
@@ -431,7 +433,7 @@ def side_walk_target_effect(
         exception,
     )
     return dict(
-        returnType="System.Boolean",
+        returnType=BOOLEAN_TYPE,
         returnExpression=guard,
         normalPrecondition=precondition,
         inputDefinitions=inputs,

@@ -10,37 +10,29 @@ import json
 import math
 import struct
 
-from ..config import EVIDENCE_DIR, REQUEST_EFFECTS
+from ..config import (
+    ACTION_SWITCH_SOURCES as SWITCH_SOURCES,
+    ACTION_SWITCH_TYPE as SWITCH_COMMAND,
+    COMMAND_EFFECT_FIELDS as FIELDS,
+    EVIDENCE_DIR,
+    INT32_TYPE,
+    REQUEST_EFFECTS,
+    REQUEST_SELECTED_ACTION_TYPE as SELECTED_COMMAND,
+    SELECTED_ACTION_SOURCES as SELECTED_SOURCES,
+    SET_BOOL_TYPE as BOOL_COMMAND,
+    SET_FLOAT_TYPE as FLOAT_COMMAND,
+    SET_TIMER_TYPE as TIMER_COMMAND,
+    VARIABLE_FLOAT_OPERATIONS as FLOAT_OPERATIONS,
+    VARIABLE_TIMER_OPERATIONS as TIMER_OPERATIONS,
+    VOID_TYPE,
+)
 from .expressions import combined, runtime
 from .values import MissingState, enum_number, number, scalar
 
-FLOAT_COMMAND = "ace.btable.cSetFloatValue"
-BOOL_COMMAND = "ace.btable.cSetBoolValue"
-TIMER_COMMAND = "ace.btable.cSetTimerValue"
-SELECTED_COMMAND = "app.btable.EmCommonCommand.cRequestSelectedAction"
-SWITCH_COMMAND = "app.btable.EmCommonCommand.cActionSwitch"
 VARIABLE_COMMANDS = {
     FLOAT_COMMAND: "float",
     BOOL_COMMAND: "bool",
     TIMER_COMMAND: "timer",
-}
-FLOAT_OPERATIONS = {0: "assign", 1: "add", 2: "subtract"}
-TIMER_OPERATIONS = {0: "assign", 1: "activate", 2: "deactivate", 3: "activate_no_reset"}
-SELECTED_SOURCES = {
-    0: ("damage", "此前选定的受击动作", "Hit.DamageActionID"),
-    1: ("attack_hit", "此前选定的攻击命中反应", "Hit.AttackHitActionID"),
-    2: ("obstacle", "按当前障碍类型选择的动作", "Obstacle.ObstacleType"),
-    3: ("state_sign", "按当前状态提示类型选择的动作", "StateSignActionType"),
-    4: ("pop_interact", "此前选定的互动动作", "Collect.ActionID"),
-    5: ("detour", "按当前绕路状态选择的动作", "Detour"),
-    7: ("lead_chase", "按当前追逐阶段选择的动作", "Lead.Chase._CurrentPhase"),
-}
-SWITCH_SOURCES = {
-    0: ("current", "当前动作的分派编号", "ActionController.CurrentAction.ID"),
-    1: ("damage", "选定受击动作的分派编号", "Hit.DamageActionID"),
-    2: ("attack_hit", "攻击命中反应的分派编号", "Hit.AttackHitActionID"),
-    3: ("obstacle", "障碍动作的分派编号", "Obstacle.ObstacleType"),
-    4: ("state_sign", "状态提示动作的分派编号", "StateSignActionType"),
 }
 
 
@@ -102,7 +94,7 @@ def _matching(command, evidence, metadata=None, pe=None):
 
 
 def _life(definition):
-    value = definition.get("life", definition.get("_Life"))
+    value = definition.get("life", definition.get(FIELDS["life"]))
     if value in ("CONSTANT", "GLOBAL", "LOCAL"):
         return value
     return {0: "GLOBAL", 1: "LOCAL", 2: "CONSTANT"}.get(enum_number(value))
@@ -180,12 +172,12 @@ def storage_effect(
         raise ValueError("变量更新与资源定义类型不匹配")
     update.update(definitionStatus="bound", readOnly=_life(definition) == "CONSTANT")
     if kind == "float":
-        minimum = definition.get("min", definition.get("_MinValue"))
-        maximum = definition.get("max", definition.get("_MaxValue"))
+        minimum = definition.get("min", definition.get(FIELDS["minimum"]))
+        maximum = definition.get("max", definition.get(FIELDS["maximum"]))
         update.update(min=number(minimum), max=number(maximum))
     if kind == "timer" and op == "activate":
         update["default"] = number(
-            definition.get("default", definition.get("_DefaultValue"))
+            definition.get("default", definition.get(FIELDS["default"]))
         )
     return result
 
@@ -202,21 +194,21 @@ def reviewed_command_effect(
     if bound.get("argumentType") != expected_arg:
         raise ValueError("变量命令参数类型不匹配：" + str(bound.get("argumentType")))
     argument = bound["argument"]
-    variable = scalar(argument["_TargetVariableIndex"])
+    variable = scalar(argument[FIELDS["variable"]])
     if not isinstance(variable, str):
         raise MissingState("变量更新缺少 GUID")
     operation = None
     value = None
     if kind == "float":
-        operation = enum_number(argument["_Method"])
-        value = scalar(argument["_Value"])
+        operation = enum_number(argument[FIELDS["method"]])
+        value = scalar(argument[FIELDS["value"]])
     elif kind == "timer":
-        resource_mode = enum_number(argument["_SetType"])
+        resource_mode = enum_number(argument[FIELDS["timer_mode"]])
         if resource_mode not in (0, 1, 2):
             raise MissingState("计时器资源更新方式未核实")
         operation = resource_mode + 1
     else:
-        value = scalar(argument["_Value"])
+        value = scalar(argument[FIELDS["value"]])
     result = storage_effect(
         int(receipt()["helpers"][kind]["address"], 16),
         variable,
@@ -227,7 +219,7 @@ def reviewed_command_effect(
     result["supportingEvidence"] = [result["semanticEvidence"]]
     result["semanticEvidence"] = evidence
     result["commandGuard"] = runtime("enemy_command_work_valid", "命令工作存在")
-    result["returnType"] = "System.Void"
+    result["returnType"] = VOID_TYPE
     result["continuationStatus"] = "native_caller_continuation"
     return result
 
@@ -280,7 +272,7 @@ def dynamic_request_details(bound, command_evidence, *, metadata=None, pe=None):
     evidence = _matching(SELECTED_COMMAND, command_evidence, metadata, pe)
     if bound.get("argumentType") != SELECTED_COMMAND + "Arg":
         raise ValueError("动态动作请求参数类型不匹配")
-    category = enum_number(bound["argument"]["_EditArg"])
+    category = enum_number(bound["argument"][FIELDS["action_source"]])
     if category not in SELECTED_SOURCES:
         raise MissingState("动态动作来源尚未核实")
     source, label, field = SELECTED_SOURCES[category]
@@ -303,7 +295,7 @@ def dynamic_request_details(bound, command_evidence, *, metadata=None, pe=None):
             for field, offset in REQUEST_EFFECTS
         ],
         semanticEvidence=evidence,
-        returnType="System.Void",
+        returnType=VOID_TYPE,
         continuationStatus="native_caller_continuation",
         actionConversion="选定 ACTION_ID 经过自身 Extend.convertAction 后交给 requestActionCore",
         selectionEffects=(
@@ -321,7 +313,7 @@ def action_switch_details(bound, command_evidence, *, metadata=None, pe=None):
     evidence = _matching(SWITCH_COMMAND, command_evidence, metadata, pe)
     if bound.get("argumentType") != SWITCH_COMMAND + "Arg":
         raise ValueError("动作分派参数类型不匹配")
-    category = enum_number(bound["argument"]["_EditArg"])
+    category = enum_number(bound["argument"][FIELDS["action_source"]])
     if category not in SWITCH_SOURCES:
         raise MissingState("动作分派来源尚未核实")
     source, label, field = SWITCH_SOURCES[category]
@@ -329,7 +321,7 @@ def action_switch_details(bound, command_evidence, *, metadata=None, pe=None):
         runtimeKey="action_dispatch:" + source,
         inputLabel=label,
         actionSource=dict(kind=source, field=field),
-        returnType="System.Int32",
+        returnType=INT32_TYPE,
         valueRepresentation="uint32",
         invalidValue=0xFFFFFFFF,
         packing="Category、Index 均非负且可表示为16位时，Category<<16 | Index；任一负数返回0xffffffff，溢出诊断路径仍未核实",

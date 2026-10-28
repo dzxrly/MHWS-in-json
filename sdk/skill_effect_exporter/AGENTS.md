@@ -10,7 +10,7 @@ SDK 与 `src` 之间只通过这份 JSON 交接：`src` 不导入本目录的代
 - 导出 dump 前停用会注册 Hook 的 autorun Lua 或 DLL 并重启游戏；收起界面、停止回调或切换脚本的 active 标志不会卸载已经注册的 Hook。提取统一读取这一份纯净 dump，不用另一份 EXE 补齐入口。
 - 提取前检查本次所选计划函数及所选模块 `DECLARED_METHODS` 的入口；第一条为直接 JMP 且目标不在 dump 映像内或不可读取时，报输入缺失并在求值、写出前停止，保留原有正式结果。不跳过入口，不静默使用其他来源的字节补齐；正常的未知路径、间接调用和本次未选函数保持原有边界。
 - 调试脚本、试运行输出放在项目根目录 `.tmp`（默认 `.tmp/skill-effects`）。按技能筛选（`-s`）的结果不能写入正式位置，CLI 会拒绝。
-- 原生布局常量（对象头、数组与 `List`1` 偏移、调用约定、栈对齐、扫描用的字节模式）只放在 `config.py` 的“native layout constants”一节；类型名、方法名和字段名也集中在 `config.py`。其他模块不写字面偏移。
+- 原生布局常量（对象头、数组与 ``List`1`` 偏移、调用约定、栈对齐、扫描用的字节模式）只放在 `config.py` 的“native layout constants”一节；类型名、方法名和字段名也集中在 `config.py`。其他模块不写字面偏移。
 - 函数地址、全局变量地址、字段偏移都不写进代码：每次运行按类型名、去后缀方法名和字段名从当前 il2cpp dump 重新定位（`scan.py`、`heap.Layouts`）。
 - 共通代码只放在 `shared/`，不写任何技能编号或只属于一个技能的常量；只属于一个技能的提取处理、常量、人工说明和数值含义写在它的 `skills/hunterskill_<编号>.py`，对所有技能都成立的说明写在 `notes.py`（简体中文），每条说明注明核对的游戏版本：版本号统一取自 `config.GAME_VERSION`（字符串中用 f-string 引用，注释中写 `config.GAME_VERSION`），代码与说明中不写字面版本号；没有证据的内容不写或标明未核实。
 - 同步更新用户文档：命令或参数变化时，同一次改动中更新 `sdk/README.md`、`sdk/docs/README.zh-Hans.md`、`sdk/docs/README.zh-Hant.md`（三份内容一致），必要时更新三份 README 的“项目工具”简介，并更新本文件。

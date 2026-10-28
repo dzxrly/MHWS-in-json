@@ -9,19 +9,20 @@ from functools import lru_cache
 import json
 import uuid
 
-from ..config import CONDITION_FIELDS as FIELDS, EVIDENCE_DIR
+from ..config import (
+    CONDITION_FIELDS as FIELDS,
+    DESIRE_RECOVER_ARGUMENT as ARGUMENT,
+    DESIRE_RECOVER_COMMAND as COMMAND,
+    DESIRE_RECOVER_FIELDS,
+    DESIRE_RECOVER_STATE_UPDATES as STATE_UPDATES,
+    EVIDENCE_DIR,
+    VOID_TYPE,
+)
 from ..native.symbols import method_stem
 from .expressions import combined, compare, runtime
 from .values import MissingState, scalar
 
-COMMAND = "app.btable.EmCommonCommand.cRequestActionDesireRecover"
-ARGUMENT = "app.btable.EmCommonCommand.cSelectActionDesireRecoverArg"
 EVIDENCE_FILE = "desire_recover.v1.json"
-STATE_UPDATES = {
-    "context:_FlagArray[WAITING_REQUEST_ACTION_RANDOM_OPERATOR]": False,
-    "context:Life._IsRequestClearLifeActInfo": True,
-    "context:_FlagArray[NO_REQUEST_ACTION]": False,
-}
 
 
 @lru_cache(maxsize=1)
@@ -157,14 +158,14 @@ def desire_recover_effect(bound, evidence, *, metadata=None, pe=None):
     if bound.get("argumentType") != ARGUMENT:
         raise ValueError("部分恢复请求的参数类型不匹配")
     argument = bound.get("argument") or {}
-    asset = scalar(argument.get("_EditAssetIndex"))
+    asset = scalar(argument.get(DESIRE_RECOVER_FIELDS["asset"]))
     if type(asset) is not int:
         raise MissingState("部分恢复请求缺少整数资产索引")
     source = dict(
         kind="resource_action_selection",
         assetIndex=asset,
-        actionGuid=_guid(argument, "_EditActionGuid"),
-        parameterVariantGuid=_guid(argument, "_EditBranchedParamGuid"),
+        actionGuid=_guid(argument, DESIRE_RECOVER_FIELDS["action"]),
+        parameterVariantGuid=_guid(argument, DESIRE_RECOVER_FIELDS["variant"]),
         argumentType=ARGUMENT,
         finalActionIdentityKnown=False,
         branchedParamGuidReadByCommand=False,
@@ -241,7 +242,7 @@ def desire_recover_effect(bound, evidence, *, metadata=None, pe=None):
         commandEffectsComplete=False,
         implementationBoundary=boundary,
         invalidateSnapshot=True,
-        returnType="System.Void",
+        returnType=VOID_TYPE,
         continuationStatus="native_caller_continuation",
         continuationAfterBoundary="only after normal return; no Boolean success and no action-completion guarantee",
     )

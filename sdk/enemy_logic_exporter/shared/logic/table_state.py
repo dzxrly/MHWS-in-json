@@ -14,12 +14,23 @@ import struct
 from capstone import Cs, CS_ARCH_X86, CS_MODE_64, CS_OP_IMM, CS_OP_MEM, CS_OP_REG
 
 from ..native.bindings import pointer, register
-from ..config import EVIDENCE_DIR
+from ..config import (
+    BOOLEAN_TYPE,
+    DICTIONARY_INSERTION_BEHAVIOR_NAME,
+    DICTIONARY_INSERTION_BEHAVIOR_TYPE,
+    DICTIONARY_INSERTION_BEHAVIOR_VALUE,
+    EVIDENCE_DIR,
+    EXPORT_BTABLE_PARAM_DICTIONARY_TYPE as DICT_TYPE,
+    EXPORT_BTABLE_PARAM_TYPE as PARAM_TYPE,
+    EXPORT_BTABLE_TYPE as EXPORT_TYPE,
+    INT32_TYPE,
+    OPERATOR_WORK_TYPE as OPERATOR_TYPE,
+    TABLE_PARAM_FIELDS,
+    TABLE_PARAM_METHODS,
+    TABLE_PARAM_TYPE_SUFFIX,
+    VOID_TYPE,
+)
 
-OPERATOR_TYPE = "ace.btable.cOperatorWork"
-EXPORT_TYPE = "ace.btable.cExportBTableBase"
-PARAM_TYPE = EXPORT_TYPE + ".cExportBTableParam"
-DICT_TYPE = "System.Collections.Generic.Dictionary`2<System.Int32," + PARAM_TYPE + ">"
 MAX_DISCOVERY_STEPS = 12000
 RUNTIME_FIXTURE_ID = 0xABCDEF
 
@@ -633,7 +644,11 @@ def _import_name(pe, address):
 
 
 def _constructor_case(machine, history, *, allow_avx_fill=False):
-    found = _method(machine.metadata, history.export_type + ".Param", ".ctor")
+    found = _method(
+        machine.metadata,
+        history.export_type + TABLE_PARAM_TYPE_SUFFIX,
+        TABLE_PARAM_METHODS["constructor"],
+    )
     if found is None:
         return
     method, info = found
@@ -756,11 +771,13 @@ def _param_setup_identity(machine, dictionary_offset, runtime_offset, lookup):
 
     metadata, pe = machine.metadata, machine.pe
     owner = machine.row["type"]
-    setup = _method(metadata, owner, "setupOperatorWork")
-    constructor = _method(metadata, owner + ".Param", ".ctor")
-    insert = _method(metadata, DICT_TYPE, "TryInsert")
-    param = metadata.get(owner + ".Param") or {}
-    behavior = (metadata.get("System.Collections.Generic.InsertionBehavior") or {}).get(
+    setup = _method(metadata, owner, TABLE_PARAM_METHODS["setup"])
+    constructor = _method(
+        metadata, owner + TABLE_PARAM_TYPE_SUFFIX, TABLE_PARAM_METHODS["constructor"]
+    )
+    insert = _method(metadata, DICT_TYPE, TABLE_PARAM_METHODS["insert"])
+    param = metadata.get(owner + TABLE_PARAM_TYPE_SUFFIX) or {}
+    behavior = (metadata.get(DICTIONARY_INSERTION_BEHAVIOR_TYPE) or {}).get(
         "fields", {}
     )
     if not setup or not constructor or not insert or not param.get("address"):
@@ -770,13 +787,14 @@ def _param_setup_identity(machine, dictionary_offset, runtime_offset, lookup):
     insert_name, insert_info = insert
     if (
         [p.get("type") for p in setup_info.get("params", [])] != [OPERATOR_TYPE]
-        or setup_info.get("returns", {}).get("type") != "System.Void"
+        or setup_info.get("returns", {}).get("type") != VOID_TYPE
         or constructor_info.get("params", [])
-        or constructor_info.get("returns", {}).get("type") != "System.Void"
+        or constructor_info.get("returns", {}).get("type") != VOID_TYPE
         or [p.get("type") for p in insert_info.get("params", [])]
-        != ["System.Int32", PARAM_TYPE, "System.Collections.Generic.InsertionBehavior"]
-        or insert_info.get("returns", {}).get("type") != "System.Boolean"
-        or behavior.get("ThrowOnExisting", {}).get("default") != 2
+        != [INT32_TYPE, PARAM_TYPE, DICTIONARY_INSERTION_BEHAVIOR_TYPE]
+        or insert_info.get("returns", {}).get("type") != BOOLEAN_TYPE
+        or behavior.get(DICTIONARY_INSERTION_BEHAVIOR_NAME, {}).get("default")
+        != DICTIONARY_INSERTION_BEHAVIOR_VALUE
     ):
         return None
     start = int(setup_info["function"], 16)
@@ -927,23 +945,25 @@ def _param_setup_identity(machine, dictionary_offset, runtime_offset, lookup):
     proof = dict(
         _native_evidence(pe, owner, setup_name, start, body),
         kind="typed_param_dictionary_setup",
-        paramType=owner + ".Param",
+        paramType=owner + TABLE_PARAM_TYPE_SUFFIX,
         dictionaryField=dict(
-            type=OPERATOR_TYPE, field="ExportTableParam", offset=hex(dictionary_offset)
+            type=OPERATOR_TYPE,
+            field=TABLE_PARAM_FIELDS["dictionary"],
+            offset=hex(dictionary_offset),
         ),
         keyField=dict(
             type=EXPORT_TYPE,
-            field="<RuntimeID>k__BackingField",
+            field=TABLE_PARAM_FIELDS["runtime_id"],
             offset=hex(runtime_offset),
         ),
-        classSymbol=dict(type=owner + ".Param", slot=hex(slot)),
+        classSymbol=dict(type=owner + TABLE_PARAM_TYPE_SUFFIX, slot=hex(slot)),
         allocationSymbol="managed_object_allocate",
-        constructor=dict(type=owner + ".Param", method=constructor_name),
+        constructor=dict(type=owner + TABLE_PARAM_TYPE_SUFFIX, method=constructor_name),
         insertion=dict(
             type=DICT_TYPE,
             method=insert_name,
             symbol="btable_param_try_insert",
-            behavior="ThrowOnExisting",
+            behavior=DICTIONARY_INSERTION_BEHAVIOR_NAME,
         ),
         existingItem="preserved",
         fieldValues="not_assumed",
@@ -960,21 +980,21 @@ def recover_table_history(machine, *, local=False):
     if metadata is None or machine.pe is None:
         return None
     owner = machine.row["type"]
-    param = metadata.get(owner + ".Param")
+    param = metadata.get(owner + TABLE_PARAM_TYPE_SUFFIX)
     if not param or param.get("parent") != PARAM_TYPE:
         return None
-    operator = metadata.fields(OPERATOR_TYPE).get("ExportTableParam", {})
-    runtime = metadata.fields(EXPORT_TYPE).get("<RuntimeID>k__BackingField", {})
-    method = _method(metadata, DICT_TYPE, "FindValue")
+    operator = metadata.fields(OPERATOR_TYPE).get(TABLE_PARAM_FIELDS["dictionary"], {})
+    runtime = metadata.fields(EXPORT_TYPE).get(TABLE_PARAM_FIELDS["runtime_id"], {})
+    method = _method(metadata, DICT_TYPE, TABLE_PARAM_METHODS["lookup"])
     if (
         operator.get("type") != DICT_TYPE
-        or runtime.get("type") != "System.Int32"
+        or runtime.get("type") != INT32_TYPE
         or method is None
     ):
         return None
     name, info = method
     if (
-        [p.get("type") for p in info.get("params", [])] != ["System.Int32"]
+        [p.get("type") for p in info.get("params", [])] != [INT32_TYPE]
         or info.get("returns", {}).get("type") != PARAM_TYPE
         or info.get("returns", {}).get("modifier") != "ByRef"
     ):
@@ -1031,8 +1051,8 @@ def recover_table_history(machine, *, local=False):
         if "default" in description:
             continue
         if (
-            re.fullmatch(r"BefoRandom(?:Max|Min)_\d+", field)
-            and description.get("type") == "System.Int32"
+            re.fullmatch(TABLE_PARAM_FIELDS["history_pattern"], field)
+            and description.get("type") == INT32_TYPE
         ):
             fields[int(description["offset_from_base"], 16)] = field
         else:
