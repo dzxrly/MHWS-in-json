@@ -19,69 +19,60 @@
   initial-value: rgba(221, 227, 235, 0.58);
 }
 
-/* The slowly drifting colour wash of the home site, fixed behind every page. */
+/* The home site's drifting colour wash, fixed behind every page. The washes
+   sit on two oversized layers that drift by transform only, so the
+   compositor moves them without repainting the viewport every frame. */
 .site-background {
   position: fixed;
   inset: 0;
   z-index: -1;
+  overflow: hidden;
   pointer-events: none;
-  background:
-    linear-gradient(145deg, var(--bg-wash-1), transparent 34%),
-    linear-gradient(25deg, var(--bg-wash-2), transparent 42%),
-    linear-gradient(315deg, var(--bg-wash-3), transparent 46%),
-    var(--background);
-  background-size:
-    220% 220%,
-    240% 240%,
-    260% 260%,
-    100% 100%;
-  background-position:
-    0% 0%,
-    100% 0%,
-    50% 100%,
-    0% 0%;
-  background-repeat: no-repeat;
-  animation: home-bg-wave 28s ease-in-out infinite;
+  background: var(--background);
   transition:
     --background 700ms var(--motion),
     --bg-wash-1 700ms var(--motion),
     --bg-wash-2 700ms var(--motion),
     --bg-wash-3 700ms var(--motion);
 }
-@keyframes home-bg-wave {
-  0% {
-    background-position:
-      0% 0%,
-      100% 0%,
-      50% 100%,
-      0% 0%;
-  }
-  25% {
-    background-position:
-      55% 45%,
-      60% 35%,
-      25% 65%,
-      0% 0%;
+.site-background::before,
+.site-background::after {
+  content: "";
+  position: absolute;
+  inset: -15%;
+  background-repeat: no-repeat;
+  backface-visibility: hidden;
+  animation: wash-drift-a 28s ease-in-out infinite alternate;
+}
+.site-background::before {
+  background-image:
+    linear-gradient(145deg, var(--bg-wash-1), transparent 74%),
+    linear-gradient(315deg, var(--bg-wash-3), transparent 64%);
+}
+.site-background::after {
+  background-image: linear-gradient(25deg, var(--bg-wash-2), transparent 64%);
+  animation-name: wash-drift-b;
+  animation-duration: 34s;
+}
+@keyframes wash-drift-a {
+  from {
+    transform: translate3d(-7%, -6%, 0) scale(1.06);
   }
   50% {
-    background-position:
-      100% 100%,
-      0% 100%,
-      100% 0%,
-      0% 0%;
+    transform: translate3d(6%, 5%, 0) scale(1.12);
   }
-  75% {
-    background-position:
-      35% 70%,
-      45% 55%,
-      70% 30%,
-      0% 0%;
+  to {
+    transform: translate3d(2%, -7%, 0) scale(1);
   }
-  100% {
-    background-position:
-      0% 0%,
-      100% 0%,
-      50% 100%,
-      0% 0%;
+}
+@keyframes wash-drift-b {
+  from {
+    transform: translate3d(7%, -4%, 0) scale(1.1);
+  }
+  50% {
+    transform: translate3d(-6%, 6%, 0) scale(1);
+  }
+  to {
+    transform: translate3d(-3%, -6%, 0) scale(1.08);
   }
 }

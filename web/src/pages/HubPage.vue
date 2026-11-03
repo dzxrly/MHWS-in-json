@@ -73,12 +73,15 @@ const RELEASES = "https://github.com/dzxrly/MHWS-in-json/releases/latest";
   background: var(--primary-container);
   color: var(--on-primary-container);
   transition:
-    border-radius 0.25s var(--motion),
-    transform 0.25s var(--motion-bounce);
+    border-radius var(--dur-spring) var(--spring),
+    transform var(--dur-spring) var(--spring);
 }
-.site-card:hover .site-icon {
-  border-radius: 50%;
-  transform: scale(1.04);
+/* The icon's container morphs from a rounded square into a circle. */
+@media (hover: hover) {
+  .site-card:hover .site-icon {
+    border-radius: 50%;
+    transform: scale(1.06) rotate(-8deg);
+  }
 }
 .site-text {
   flex: 1;
@@ -94,6 +97,9 @@ const RELEASES = "https://github.com/dzxrly/MHWS-in-json/releases/latest";
   color: var(--on-surface-variant);
   font-size: 13.5px;
   line-height: 1.6;
+}
+.site-card h2 {
+  transition: color var(--dur-effects) var(--effects);
 }
 .site-card:hover h2 {
   color: var(--primary);

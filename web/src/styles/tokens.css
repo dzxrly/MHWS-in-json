@@ -39,8 +39,31 @@
   --radius: 28px;
   --radius-large: 36px;
   --radius-small: 16px;
+  /* Material 3 Expressive shape scale. */
+  --shape-s: 8px;
+  --shape-m: 12px;
+  --shape-l: 16px;
+  --shape-l-plus: 20px;
+  --shape-xl: 28px;
+  --shape-full: 999px;
+  /* Material 3 Expressive motion. Spatial curves (position, size, shape)
+     overshoot like a spring; effect curves (colour, opacity) never do. */
+  --spring-fast: cubic-bezier(0.42, 1.67, 0.21, 0.9);
+  --spring: cubic-bezier(0.38, 1.21, 0.22, 1);
+  --effects-fast: cubic-bezier(0.31, 0.94, 0.34, 1);
+  --effects: cubic-bezier(0.34, 0.8, 0.34, 1);
+  --emphasized-decelerate: cubic-bezier(0.05, 0.7, 0.1, 1);
+  --dur-spring-fast: 350ms;
+  --dur-spring: 500ms;
+  --dur-effects-fast: 150ms;
+  --dur-effects: 200ms;
+  --dur-press: 120ms;
+  /* State layer opacities: hover, keyboard focus, press. */
+  --state-hover: 0.08;
+  --state-focus: 0.1;
+  --state-press: 0.12;
   --motion: cubic-bezier(0.2, 0, 0, 1);
-  --motion-bounce: cubic-bezier(0.2, 0, 0, 1.2);
+  --motion-bounce: var(--spring-fast);
   --font:
     "Noto Sans", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui,
     sans-serif;

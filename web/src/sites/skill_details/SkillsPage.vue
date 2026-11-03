@@ -216,16 +216,20 @@ watch(
   gap: 8px;
   min-height: 44px;
   padding: 8px 16px;
-  border-radius: 999px;
-  transition: background 0.18s var(--motion);
+  border-radius: var(--shape-m);
+  transition:
+    background-color var(--dur-effects) var(--effects),
+    border-radius var(--dur-spring) var(--spring);
 }
 .skill-list a:hover {
   background: var(--surface-high);
 }
+/* The current skill's indicator morphs into a pill. */
 .skill-list a[aria-current="page"] {
   background: var(--secondary-container);
   color: var(--on-secondary-container);
   font-weight: 600;
+  border-radius: 22px;
 }
 .skill-list .n {
   color: var(--on-surface-variant);

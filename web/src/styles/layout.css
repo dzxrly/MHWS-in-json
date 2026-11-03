@@ -109,16 +109,97 @@ pre,
 .skip-link:focus {
   transform: translateY(0);
 }
+::selection {
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+}
+
+/* State layer: Material 3 hover, focus and press feedback as a currentColor
+   wash between the container and its content. Only its opacity changes. */
+.icon-button,
+.chip,
+.filled-button,
+.tonal-button,
+.text-button,
+.outlined-button,
+.segmented button {
+  position: relative;
+  isolation: isolate;
+}
+.icon-button::before,
+.chip::before,
+.filled-button::before,
+.tonal-button::before,
+.text-button::before,
+.outlined-button::before,
+.segmented button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-effects-fast) var(--effects-fast);
+}
+@media (hover: hover) {
+  .icon-button:not(:disabled):hover::before,
+  .chip:hover::before,
+  .filled-button:not(:disabled):hover::before,
+  .tonal-button:not(:disabled):hover::before,
+  .text-button:not(:disabled):hover::before,
+  .outlined-button:not(:disabled):hover::before,
+  .segmented button:hover::before {
+    opacity: var(--state-hover);
+  }
+}
+.icon-button:focus-visible::before,
+.chip:focus-visible::before,
+.filled-button:focus-visible::before,
+.tonal-button:focus-visible::before,
+.text-button:focus-visible::before,
+.outlined-button:focus-visible::before,
+.segmented button:focus-visible::before {
+  opacity: var(--state-focus);
+}
+.icon-button:not(:disabled):active::before,
+.chip:active::before,
+.filled-button:not(:disabled):active::before,
+.tonal-button:not(:disabled):active::before,
+.text-button:not(:disabled):active::before,
+.outlined-button:not(:disabled):active::before,
+.segmented button:active::before {
+  opacity: var(--state-press);
+}
 
 /* ---------------------------------------------------------------- header */
+/* Material 3 top app bar: flat over the wash at the top of the page, then a
+   solid surface container once content scrolls beneath it. A blur behind a
+   sticky bar repaints on every scroll frame, so the bar stays opaque. */
 .site-header {
   position: sticky;
   top: 0;
   z-index: 30;
-  background: color-mix(in srgb, var(--background) 90%, transparent);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid
-    color-mix(in srgb, var(--outline-variant) 40%, transparent);
+  background: var(--background);
+  border-bottom: 1px solid var(--outline-variant);
+}
+@supports (animation-timeline: scroll()) {
+  .site-header {
+    animation: app-bar-elevate linear both;
+    animation-timeline: scroll(root block);
+    animation-range: 0 72px;
+  }
+}
+@keyframes app-bar-elevate {
+  from {
+    background-color: transparent;
+    border-bottom-color: transparent;
+  }
+  to {
+    background-color: var(--surface);
+    border-bottom-color: var(--outline-variant);
+  }
 }
 .header-inner {
   max-width: 1248px;
@@ -160,8 +241,8 @@ pre,
   opacity: 0;
   transform: translateY(14px);
   transition:
-    opacity 0.28s var(--motion),
-    transform 0.36s var(--motion-bounce);
+    opacity var(--dur-effects) var(--effects),
+    transform var(--dur-spring) var(--spring);
   pointer-events: none;
 }
 .site-header.condensed .header-title {
@@ -175,7 +256,7 @@ pre,
   min-width: 0;
 }
 .header-tools > * {
-  animation: header-tools-in 0.36s var(--motion) both;
+  animation: header-tools-in var(--dur-spring) var(--spring) both;
 }
 @keyframes header-tools-in {
   from {
@@ -206,16 +287,14 @@ pre,
   border: none;
   flex-shrink: 0;
   transition:
-    transform 0.18s var(--motion-bounce),
-    background 0.18s var(--motion),
-    border-radius 0.18s var(--motion);
+    background-color var(--dur-effects) var(--effects),
+    border-radius var(--dur-spring) var(--spring),
+    transform var(--dur-spring-fast) var(--spring-fast);
 }
-.icon-button:not(:disabled):hover {
-  transform: scale(1.06);
-}
+/* Expressive icon buttons morph from a circle to a rounded square on press. */
 .icon-button:not(:disabled):active {
-  transform: scale(0.94);
-  border-radius: 16px;
+  transform: scale(0.95);
+  border-radius: var(--shape-l);
 }
 .icon-button.small {
   width: 40px;
@@ -225,12 +304,12 @@ pre,
   width: 20px;
   height: 20px;
 }
+.icon-button.small:not(:disabled):active {
+  border-radius: var(--shape-m);
+}
 .icon-button.standard {
   background: transparent;
   color: var(--on-surface-variant);
-}
-.icon-button.standard:not(:disabled):hover {
-  background: color-mix(in srgb, var(--on-surface) 8%, transparent);
 }
 
 /* ---------------------------------------------------------------- page */
@@ -285,11 +364,12 @@ pre,
 }
 
 /* ---------------------------------------------------------------- controls */
+/* Material 3 chips have small corners; a selected chip morphs into a pill. */
 .chip {
   min-height: 40px;
   padding: 8px 16px;
   border: none;
-  border-radius: 999px;
+  border-radius: var(--shape-m);
   background: var(--secondary-container);
   color: var(--on-secondary-container);
   display: inline-flex;
@@ -299,26 +379,29 @@ pre,
   font-size: 14px;
   line-height: 1.5;
   transition:
-    background 0.18s var(--motion),
-    color 0.18s var(--motion),
-    transform 0.18s var(--motion-bounce);
-}
-.chip:hover {
-  background: var(--primary-container);
-  color: var(--on-primary-container);
+    background-color var(--dur-effects) var(--effects),
+    color var(--dur-effects) var(--effects),
+    border-radius var(--dur-spring) var(--spring),
+    transform var(--dur-spring-fast) var(--spring-fast);
 }
 .chip:active {
-  transform: scale(0.97);
+  transform: scale(0.96);
 }
 .chip.small {
   min-height: 32px;
   padding: 4px 14px;
   font-size: 13px;
+  border-radius: var(--shape-s);
 }
 .chip.selected,
 .chip[aria-pressed="true"] {
   background: var(--primary);
   color: var(--on-primary);
+  border-radius: 20px;
+}
+.chip.small.selected,
+.chip.small[aria-pressed="true"] {
+  border-radius: 16px;
 }
 .chip .count {
   opacity: 0.75;
@@ -334,16 +417,17 @@ pre,
   justify-content: center;
   gap: 8px;
   min-height: 40px;
-  padding: 8px 20px;
-  border-radius: 999px;
+  padding: 8px 24px;
+  border-radius: 20px;
   border: none;
   font-size: 14px;
   font-weight: 600;
   white-space: nowrap;
   transition:
-    background 0.18s var(--motion),
-    transform 0.18s var(--motion-bounce),
-    border-radius 0.18s var(--motion);
+    background-color var(--dur-effects) var(--effects),
+    color var(--dur-effects) var(--effects),
+    transform var(--dur-spring-fast) var(--spring-fast),
+    border-radius var(--dur-spring) var(--spring);
 }
 .filled-button .icon,
 .tonal-button .icon,
@@ -351,6 +435,14 @@ pre,
 .outlined-button .icon {
   width: 18px;
   height: 18px;
+}
+/* Material 3 button metrics: 24px sides, 16px on the side of a leading icon.
+   :where() keeps this as weak as the base rule, so the toolbar's compact
+   padding on narrow screens still wins. */
+.filled-button:where(:has(> .icon:first-child)),
+.tonal-button:where(:has(> .icon:first-child)),
+.outlined-button:where(:has(> .icon:first-child)) {
+  padding-left: 16px;
 }
 .filled-button {
   color: var(--on-primary);
@@ -360,36 +452,31 @@ pre,
   color: var(--on-secondary-container);
   background: var(--secondary-container);
 }
-.tonal-button:not(:disabled):hover {
-  background: color-mix(in srgb, var(--on-secondary-container) 8%, var(--secondary-container));
-}
+/* A toggled-on button turns from a pill into a rounded square. */
 .tonal-button[aria-pressed="true"] {
   color: var(--on-primary-container);
   background: var(--primary-container);
+  border-radius: var(--shape-m);
 }
 .outlined-button {
   color: var(--on-surface-variant);
   background: transparent;
   border: 1px solid var(--outline-variant);
 }
-.outlined-button:not(:disabled):hover {
-  background: color-mix(in srgb, var(--on-surface) 6%, transparent);
-}
 .text-button {
   color: var(--primary);
   background: transparent;
   padding: 8px 14px;
-}
-.text-button:not(:disabled):hover {
-  background: color-mix(in srgb, var(--primary) 10%, transparent);
 }
 .filled-button:not(:disabled):active,
 .tonal-button:not(:disabled):active,
 .outlined-button:not(:disabled):active,
 .text-button:not(:disabled):active {
   transform: scale(0.97);
-  border-radius: 12px;
+  border-radius: var(--shape-m);
 }
+/* Material 3 Expressive connected button group: inner corners are small,
+   and the pressed button's inner corners round out as it is pushed. */
 .button-group {
   display: inline-flex;
   gap: 2px;
@@ -398,10 +485,29 @@ pre,
   border-radius: 6px;
 }
 .button-group > button:first-child {
-  border-radius: 999px 6px 6px 999px;
+  border-radius: 20px 6px 6px 20px;
 }
 .button-group > button:last-child {
-  border-radius: 6px 999px 999px 6px;
+  border-radius: 6px 20px 20px 6px;
+}
+.button-group > button:not(:disabled):active {
+  border-radius: 20px;
+  transform: none;
+}
+/* Press feedback: the shape squeezes in quickly without overshoot and, on
+   release, springs back through the slower transitions above. Pills use
+   half their height rather than 999px: a 999px radius only visibly changes
+   in the last percent of a transition, so it snapped instead of morphing. */
+.icon-button:not(:disabled):active,
+.chip:active,
+.filled-button:not(:disabled):active,
+.tonal-button:not(:disabled):active,
+.text-button:not(:disabled):active,
+.outlined-button:not(:disabled):active,
+.segmented button:active,
+.card-link:active {
+  transition-duration: var(--dur-press);
+  transition-timing-function: var(--effects-fast);
 }
 .search-field {
   position: relative;
@@ -427,7 +533,7 @@ pre,
   background: var(--surface-high);
   color: var(--on-surface);
   font-size: 15px;
-  transition: background 0.18s var(--motion);
+  transition: background-color var(--dur-effects) var(--effects);
 }
 .search-field input::placeholder {
   color: var(--on-surface-variant);
@@ -461,6 +567,16 @@ pre,
   color: var(--on-surface);
   font-size: 14px;
   max-width: 100%;
+  cursor: pointer;
+  transition: border-color var(--dur-effects) var(--effects);
+}
+.select-field:hover {
+  border-color: var(--outline);
+}
+.select-field:focus-visible {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: inset 0 0 0 1px var(--primary);
 }
 .switch {
   display: inline-flex;
@@ -496,12 +612,19 @@ pre,
   border-radius: 50%;
   background: var(--outline);
   transition:
-    transform 0.22s var(--motion-bounce),
-    width 0.22s var(--motion),
-    height 0.22s var(--motion),
-    top 0.22s var(--motion),
-    left 0.22s var(--motion),
-    background 0.2s var(--motion);
+    transform var(--dur-spring-fast) var(--spring-fast),
+    width var(--dur-spring-fast) var(--spring-fast),
+    height var(--dur-spring-fast) var(--spring-fast),
+    top var(--dur-spring-fast) var(--spring-fast),
+    left var(--dur-spring-fast) var(--spring-fast),
+    background-color var(--dur-effects) var(--effects);
+}
+/* Material 3 switch: the handle grows to 28px while pressed. */
+.switch input:active::after {
+  top: 0;
+  left: 0;
+  width: 28px;
+  height: 28px;
 }
 .switch input:checked {
   background: var(--primary);
@@ -515,18 +638,40 @@ pre,
   background: var(--on-primary);
   transform: translateX(20px);
 }
+.switch input:checked:active::after {
+  top: 0;
+  left: 0;
+  width: 28px;
+}
 
 /* ---------------------------------------------------------------- cards */
 .card-link {
   position: relative;
+  isolation: isolate;
   display: flex;
   flex-direction: column;
   transition:
-    background 0.2s var(--motion),
-    box-shadow 0.2s var(--motion),
-    transform 0.2s var(--motion-bounce),
-    border-radius 0.2s var(--motion),
-    border-color 0.2s var(--motion);
+    background-color var(--dur-effects) var(--effects),
+    border-color var(--dur-effects) var(--effects),
+    transform var(--dur-spring) var(--spring),
+    border-radius var(--dur-spring) var(--spring);
+}
+/* The raised shadow lives on its own layer and only fades, instead of
+   repainting a transitioning box-shadow. */
+.card-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  box-shadow: var(--shadow-hover);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-effects) var(--effects);
+}
+.card-link:active {
+  transform: scale(0.985);
+  border-radius: var(--shape-l);
 }
 .card-link:focus-visible {
   outline-offset: 4px;
@@ -541,7 +686,9 @@ pre,
   color: var(--primary);
   border-radius: 50%;
   flex-shrink: 0;
-  transition: transform 0.2s var(--motion-bounce);
+  transition:
+    transform var(--dur-spring) var(--spring),
+    border-radius var(--dur-spring) var(--spring);
 }
 .card-arrow .icon {
   width: 20px;
@@ -551,12 +698,16 @@ pre,
   .card-link:hover {
     background: var(--surface-hover);
     border-color: color-mix(in srgb, var(--primary) 22%, transparent);
-    box-shadow: var(--shadow-hover);
     transform: translateY(-2px);
     border-radius: var(--radius-large);
   }
+  .card-link:hover::after {
+    opacity: 1;
+  }
+  /* The arrow's circle morphs into a rounded square as it turns. */
   .card-link:hover .card-arrow {
     transform: rotate(-25deg);
+    border-radius: var(--shape-m);
   }
 }
 
@@ -599,28 +750,46 @@ details > summary {
   font-weight: 700;
   color: var(--on-surface);
 }
+/* Material 3 Expressive loading indicator: a contained shape that keeps
+   morphing while it turns. Only a 38px element repaints. */
 .progress {
-  width: min(240px, 60vw);
-  height: 4px;
-  border-radius: 999px;
-  overflow: hidden;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
   background: var(--primary-container);
 }
 .progress::after {
   content: "";
-  display: block;
-  width: 40%;
-  height: 100%;
-  border-radius: inherit;
+  width: 30px;
+  height: 30px;
   background: var(--primary);
-  animation: progress-slide 1.2s var(--motion) infinite;
+  animation:
+    loading-morph 2.4s var(--spring) infinite,
+    loading-turn 4.8s linear infinite;
 }
-@keyframes progress-slide {
-  from {
-    transform: translateX(-100%);
+@keyframes loading-morph {
+  0%,
+  100% {
+    border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
   }
+  20% {
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  }
+  40% {
+    border-radius: 20% 20% 20% 20% / 20% 20% 20% 20%;
+  }
+  60% {
+    border-radius: 50% 50% 20% 80% / 25% 80% 20% 75%;
+  }
+  80% {
+    border-radius: 70% 30% 50% 50% / 30% 50% 50% 70%;
+  }
+}
+@keyframes loading-turn {
   to {
-    transform: translateX(250%);
+    transform: rotate(1turn);
   }
 }
 .empty-state {
@@ -697,6 +866,30 @@ details > summary {
   .notes-panel {
     padding: 20px;
     border-radius: 24px;
+  }
+}
+/* Theme switch: the new theme spreads as a circle from the toggle button.
+   Browsers without view transitions fall back to the colour transitions. */
+:root.theme-reveal,
+:root.theme-reveal *,
+:root.theme-reveal *::before,
+:root.theme-reveal *::after {
+  transition: none !important;
+}
+:root.theme-reveal::view-transition-old(root),
+:root.theme-reveal::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+:root.theme-reveal::view-transition-new(root) {
+  animation: theme-reveal 650ms var(--emphasized-decelerate) both;
+}
+@keyframes theme-reveal {
+  from {
+    clip-path: circle(0 at var(--reveal-x) var(--reveal-y));
+  }
+  to {
+    clip-path: circle(var(--reveal-r) at var(--reveal-x) var(--reveal-y));
   }
 }
 @media (prefers-reduced-motion: reduce) {
