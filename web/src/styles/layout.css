@@ -381,11 +381,7 @@ pre,
   transition:
     background-color var(--dur-effects) var(--effects),
     color var(--dur-effects) var(--effects),
-    border-radius var(--dur-spring) var(--spring),
-    transform var(--dur-spring-fast) var(--spring-fast);
-}
-.chip:active {
-  transform: scale(0.96);
+    border-radius var(--dur-spring) var(--spring);
 }
 .chip.small {
   min-height: 32px;
@@ -402,6 +398,18 @@ pre,
 .chip.small.selected,
 .chip.small[aria-pressed="true"] {
   border-radius: 16px;
+}
+/* Pressing squares the chip up instead of scaling it, which would blur its
+   label while the scale animates. */
+.chip:active,
+.chip.selected:active,
+.chip[aria-pressed="true"]:active {
+  border-radius: var(--shape-s);
+}
+.chip.small:active,
+.chip.small.selected:active,
+.chip.small[aria-pressed="true"]:active {
+  border-radius: 6px;
 }
 .chip .count {
   opacity: 0.75;
@@ -426,7 +434,6 @@ pre,
   transition:
     background-color var(--dur-effects) var(--effects),
     color var(--dur-effects) var(--effects),
-    transform var(--dur-spring-fast) var(--spring-fast),
     border-radius var(--dur-spring) var(--spring);
 }
 .filled-button .icon,
@@ -472,7 +479,6 @@ pre,
 .tonal-button:not(:disabled):active,
 .outlined-button:not(:disabled):active,
 .text-button:not(:disabled):active {
-  transform: scale(0.97);
   border-radius: var(--shape-m);
 }
 /* Material 3 Expressive connected button group: inner corners are small,
@@ -492,7 +498,6 @@ pre,
 }
 .button-group > button:not(:disabled):active {
   border-radius: 20px;
-  transform: none;
 }
 /* Press feedback: the shape squeezes in quickly without overshoot and, on
    release, springs back through the slower transitions above. Pills use
@@ -653,11 +658,13 @@ pre,
   transition:
     background-color var(--dur-effects) var(--effects),
     border-color var(--dur-effects) var(--effects),
-    transform var(--dur-spring) var(--spring),
     border-radius var(--dur-spring) var(--spring);
 }
 /* The raised shadow lives on its own layer and only fades, instead of
-   repainting a transitioning box-shadow. */
+   repainting a transitioning box-shadow. Hover raises the card by elevation
+   and shape alone, as Material 3 specifies: moving or scaling it with a
+   transform turned its text into a resampled bitmap, blurry until the
+   animation ended. */
 .card-link::after {
   content: "";
   position: absolute;
@@ -670,7 +677,6 @@ pre,
   transition: opacity var(--dur-effects) var(--effects);
 }
 .card-link:active {
-  transform: scale(0.985);
   border-radius: var(--shape-l);
 }
 .card-link:focus-visible {
@@ -698,7 +704,6 @@ pre,
   .card-link:hover {
     background: var(--surface-hover);
     border-color: color-mix(in srgb, var(--primary) 22%, transparent);
-    transform: translateY(-2px);
     border-radius: var(--radius-large);
   }
   .card-link:hover::after {

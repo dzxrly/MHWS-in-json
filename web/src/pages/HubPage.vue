@@ -80,7 +80,7 @@ const RELEASES = "https://github.com/dzxrly/MHWS-in-json/releases/latest";
 @media (hover: hover) {
   .site-card:hover .site-icon {
     border-radius: 50%;
-    transform: scale(1.06) rotate(-8deg);
+    transform: rotate(-8deg);
   }
 }
 .site-text {
