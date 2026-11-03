@@ -10,16 +10,12 @@ const plain = computed(() => {
   const rows = props.effect.rows;
   return rows.length === 1 && !rows[0].applies && !rows[0].situation;
 });
-// Bold a value where it differs from the previous level of the same row.
 const rows = computed(() =>
   props.effect.rows.map((row) => {
-    let previous = null;
     const cells = props.levels.map((level) => {
       const value = row.values[level];
       if (!value) return { level, text: "—", kind: "missing" };
-      const kind = value.unsure ? "unsure" : previous === null ? "first" : value.text !== previous ? "changed" : "";
-      previous = value.text;
-      return { level, text: value.text, kind, unsure: value.unsure };
+      return { level, text: value.text, kind: value.unsure ? "unsure" : "", unsure: value.unsure };
     });
     return { ...row, cells };
   }),
@@ -196,23 +192,13 @@ function highlight(level) {
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
   min-width: 64px;
-  color: var(--on-surface-variant);
-}
-.values td.v.changed {
-  color: var(--value);
-  font-weight: 700;
-}
-.values td.v.first {
   color: var(--on-surface);
-  font-weight: 600;
 }
 .values td.v.missing {
   color: var(--outline-variant);
 }
 .values td.v.unsure {
-  color: var(--unsure);
   background: var(--unsure-soft);
-  font-weight: 600;
 }
 .values .hl {
   background: var(--highlight);
