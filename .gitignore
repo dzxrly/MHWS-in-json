@@ -175,10 +175,12 @@ tests/MHWS_SKILL_MECHANICS_REPORT.md
 tests/fixtures/
 tests/results/
 
-# Large generated MHWS JSON data that exceeds GitHub file-size limits.
-MHWS-in-json/natives/STM/GameDesign/Stage/**/VoxelData/
-MHWS-in-json/natives/STM/GameDesign/Stage/**/*VoxelData*.json
-MHWS-in-json/natives/STM/GameDesign/Enemy/**/Data/*Constraint*.json
+# Generated MHWS JSON files larger than GitHub's 100 MiB limit.
+/MHWS-in-json/natives/STM/GameDesign/Stage/st101/VoxelData/st101_AppVoxelData.user.3.json
+/MHWS-in-json/natives/STM/GameDesign/Stage/st102/VoxelData/st102_AppVoxelData.user.3.json
+/MHWS-in-json/natives/STM/GameDesign/Stage/st103/VoxelData/st103_AppVoxelData.user.3.json
+/MHWS-in-json/natives/STM/GameDesign/Stage/st603/VoxelData/st603_AppVoxelData.user.3.json
+/MHWS-in-json/natives/STM/GameDesign/Enemy/Em0100/51/Data/Em0100_51_Param_Constraint.user.3.json
 
 .understand-anything
 
