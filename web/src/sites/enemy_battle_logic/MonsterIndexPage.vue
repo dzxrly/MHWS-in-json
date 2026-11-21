@@ -69,13 +69,6 @@ const shown = computed(() => {
         </li>
       </ul>
       <p v-if="!shown.length" class="empty-state">没有匹配的怪物。</p>
-      <section class="notes-panel surface">
-        <h2 class="panel-title">阅读前须知</h2>
-        <ul>
-          <li>距离是游戏内部单位，还没有换算成米；权重只在同一次抽选内比较，不是整场战斗的出招概率。</li>
-          <li>请求动作不等于一定出招。还没确认的逻辑标为“待核查”，保留在图中。</li>
-        </ul>
-      </section>
     </template>
   </div>
 </template>

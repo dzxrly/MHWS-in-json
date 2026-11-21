@@ -144,16 +144,6 @@ watch(
         </div>
         <p v-else-if="current.mappedSkill" class="no-values">此编号的等级与效果见上方对应技能。</p>
         <p v-else class="no-values">未提取到数值：当前离线结果未提供该技能的效果数值。</p>
-        <details class="reading surface">
-          <summary><Icon name="info" />阅读说明</summary>
-          <ul>
-            <li v-for="note in data.notes" :key="note">{{ note }}</li>
-          </ul>
-          <h3>数据说明</h3>
-          <ul>
-            <li v-for="note in data.generalNotes" :key="note">{{ note }}</li>
-          </ul>
-        </details>
       </div>
     </div>
   </div>
@@ -315,31 +305,6 @@ watch(
   border: 1px dashed var(--outline-variant);
   border-radius: 24px;
   color: var(--on-surface-variant);
-}
-.reading {
-  padding: 18px 24px;
-  font-size: 13.5px;
-}
-.reading summary {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 600;
-}
-.reading summary .icon {
-  width: 18px;
-  height: 18px;
-  color: var(--primary);
-}
-.reading ul {
-  margin: 10px 0 0;
-  padding-left: 20px;
-  color: var(--on-surface-variant);
-  line-height: 1.8;
-}
-.reading h3 {
-  margin-top: 14px;
-  font-size: 14px;
 }
 @media (max-width: 899px) {
   .skills-layout {
