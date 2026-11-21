@@ -12,6 +12,11 @@ MEANINGS = {
         "计算": "设为该值；按回避动作取不同数据",
         "条件": "回避时",
         "单位": "时间（游戏内部单位）",
+        "依据": (
+            "cHunterSkill.getDodgeNoHitTime。双刀 cJustDodgeBase.doEnter 在 _IsFromBuff 分支检查 "
+            "isWearActiveMantle(A_SKILL_004)，衣装生效时由 cDodge.doEnter 传入类型 5。"
+            "狩猎笛 cSpParrySoundAttack.doEnter 向无敌时间入口传入类型 9"
+        ),
     }
 }
 

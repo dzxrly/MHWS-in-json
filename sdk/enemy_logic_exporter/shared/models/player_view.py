@@ -21,6 +21,7 @@ from sdk.progress import track
 from ..config import (
     BAD_CONDITION_LABELS,
     BITS_SEPARATOR,
+    CURRENT_RANK_LABELS,
     ENEMY_TARGET_STATUS,
     EXISTS_SUFFIX,
     REFERENCE_PREFIXES,
@@ -813,7 +814,6 @@ class PlayerCompiler:
             keys = {
                 "selected_target_key_type": ("selected_target_key_type", None),
                 "selected_hunter_stun_active": ("hunter_stunned", "玩家眩晕"),
-                "environment_current_rank": ("quest_rank", "任务等级"),
                 "self_basic_legendary_id": ("legendary_id", "怪物历战分类"),
                 "self_current_stage_no": ("self_current_stage_no", "怪物所在地图编号"),
                 "self_current_area_no": ("self_current_area_no", "怪物所在区域编号"),
@@ -958,6 +958,21 @@ class PlayerCompiler:
                 if option not in self.inputs[key]["options"]:
                     self.inputs[key]["options"].append(option)
                 return comparison(key, expression.get("operator", "eq"), right["value"])
+            if key == "environment_current_rank" and right.get("kind") == "constant":
+                self.inputs.setdefault(
+                    "quest_rank",
+                    dict(
+                        label="下位／上位",
+                        hint="按当前任务或探索环境判定。活动任务为 1～3 星时是下位，4 星起是上位。",
+                        options=[
+                            dict(label=CURRENT_RANK_LABELS[value], value=value)
+                            for value in (1, 2)
+                        ],
+                    ),
+                )
+                return comparison(
+                    "quest_rank", expression.get("operator", "eq"), right["value"]
+                )
             if (
                 operand.get("kind") == "runtime"
                 and key in keys
@@ -1057,6 +1072,17 @@ class PlayerCompiler:
             key, value = expression["key"], expression["value"]
             if key == "ordinary_combat_snapshot":
                 return "仍是本次普通战斗选招"
+            if key == "quest_rank":
+                operator = expression["operator"]
+                if operator in ("eq", "ne") and value in (1, 2):
+                    # The native getter always resolves to one of these ranks.
+                    if operator == "ne":
+                        value = 2 if value == 1 else 1
+                    return CURRENT_RANK_LABELS[value]
+                return (
+                    f"下位／上位 {RELATION_SYMBOLS[operator]} "
+                    f"{CURRENT_RANK_LABELS.get(value, value)}"
+                )
             if key == "selected_target_key_type":
                 name = TARGET_KEY_CATEGORIES.get(value, str(value))
                 verb = "是" if expression["operator"] == "eq" else "不是"

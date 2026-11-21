@@ -35,7 +35,7 @@ from ...config import (
 # How an evaluated path used a data item (see path_sources).
 USE_KINDS = ("value", "write", "compare")
 from ..native.emulator import PathEnd
-from ..runtime.evaluate import Evaluator, argument_domains
+from ..runtime.evaluate import Evaluator
 from ..runtime.scenario import Scenario, SkillWorld
 from ..native.values import Unk, V
 from ..native.scan import NativeIndex, method_stem
@@ -298,7 +298,7 @@ def usage_label(use, via):
     return f"技能〈{via} {helper}〉"
 
 
-def evaluate_usage(evaluator, world, scenario, function, info, via, uses):
+def evaluate_usage(evaluator, scenario, function, info, via, uses, combos):
     """How the function uses the skill's values: each skill read (helper call
     or accessor call) stays an unknown named by usage_label, so conditions,
     results and writes show what it is compared with, combined with and
@@ -307,7 +307,6 @@ def evaluate_usage(evaluator, world, scenario, function, info, via, uses):
     usage = {int(use["site"], 16): usage_label(use, via) for use in uses}
     labels = sorted(set(usage.values()))
     groups, domains = {}, {}
-    combos = argument_domains(world.layouts, info.get("params", []))
     for combo in combos[:MAX_USAGE_COMBINATIONS]:
         args = {}
         for i, (param, (label, _)) in enumerate(zip(info.get("params", []), combo)):
@@ -451,10 +450,10 @@ def evaluate_link(
     info,
     stats,
     sites,
+    combos,
     focus_first=False,
 ):
     groups = {}
-    combos = argument_domains(world.layouts, info.get("params", []))
     domains = {}
     for combo in combos:
         for i, (param, (label, _)) in enumerate(zip(info.get("params", []), combo)):

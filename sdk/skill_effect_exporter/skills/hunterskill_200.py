@@ -18,7 +18,12 @@ MEANINGS = {
         "计算": "回避性能等级加上 _BubbleDance_AddSkillLv 后，按回避动作取对应等级的无敌时间",
         "条件": "Lv4，泡沫状态中（游戏说明：强化泡沫状态下的回避能力）",
         "单位": "时间（游戏内部单位）",
-        "依据": "cHunterSkill.getDodgeNoHitTime（读取 PlayerSkillParam._BubbleDance_AddSkillLv）",
+        "依据": (
+            "cHunterSkill.getDodgeNoHitTime（读取 PlayerSkillParam._BubbleDance_AddSkillLv）。"
+            "双刀 cJustDodgeBase.doEnter 在 _IsFromBuff 分支检查 isWearActiveMantle(A_SKILL_004)，"
+            "衣装生效时由 cDodge.doEnter 传入类型 5。"
+            "狩猎笛 cSpParrySoundAttack.doEnter 向无敌时间入口传入类型 9"
+        ),
     },
 }
 

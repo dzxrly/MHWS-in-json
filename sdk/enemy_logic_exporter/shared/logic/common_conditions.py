@@ -10,6 +10,7 @@ from copy import deepcopy
 from functools import lru_cache
 from ..config import (
     BAD_CONDITION_LABELS,
+    CURRENT_RANK_LABELS,
     ENEMY_TARGET_STATUS,
     ENEMY_TARGET_STATUS_FALSE,
     EVIDENCE_DIR,
@@ -163,14 +164,14 @@ def recover_condition(node, enemy_id, resources):
         evidence = "self_type"
         if category == 2:
             value = scalar(typed(argument["QuestRank"])[1]["_EditArg"])
-            if type(value) is not int or not 0 <= value < 3:
+            if type(value) is not int or value not in CURRENT_RANK_LABELS:
                 return None
             expression = compare(
                 "environment_current_rank",
                 value,
                 source="EnvironmentManager.get_CurrentRank 的实际返回值；资源等级经 getTYPEFromFixed 校验",
             )
-            summary = f"当前任务等级为 {value}"
+            summary = f"当前为{CURRENT_RANK_LABELS[value]}"
         elif category == 5:
             # Basic.RoleID (+0x4c) == the resource RoleID.
             raw = typed(argument["RoleID"])[1]["_EditArg"]

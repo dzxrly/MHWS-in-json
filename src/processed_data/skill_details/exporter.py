@@ -26,7 +26,14 @@ from src.shared.excel.writer import write_workbook
 from src.shared.source.repository import SourceRepository
 from src.shared.text.catalog import TextSource
 
-from .labels import DIMENSION_NAMES, ENUMS, WEAPON_CODES, effect_name, enum_label
+from .labels import (
+    DIMENSION_NAMES,
+    EFFECT_DIMENSION_NAMES,
+    ENUMS,
+    WEAPON_CODES,
+    effect_name,
+    enum_label,
+)
 
 OUTPUT_NAME = "SkillDetails.xlsx"
 LINKS_DIR = Path(__file__).resolve().parent / "data" / "skill_links"
@@ -77,7 +84,7 @@ READING_NOTES = [
     "同一等级在不同情形下（如连续命中次数、搬运时是否在爬墙）取不同数值时分行列出，情形写在“条件”列开头；只在其他效果（饭技、狩猎笛旋律、武器自身状态）生效时才出现的数值不列出；随机判定的效果写作发动概率（如 80%）",
     "仍写作“a / b”的数值，是代码中找不到区分条件的几种取值",
     "时间、距离等数值保留游戏内部单位，未换算",
-    "没有把握翻译的动作、射击类型保留游戏内部名称（如 QUICK_SHOT、EX_FIELD），效果名称中的英文同理",
+    "动作、射击类型或效果名称中尚未核实的术语保留游戏内部名称",
     "只列出从游戏参数读取到的数值；只有发动条件、没有数值的技能在“技能”表中标为“未提取到”",
     "“代码名称”是游戏中读取该数值的函数名，便于核对",
     "“作用于”“计算”“条件”“单位”来自数值含义表（SDK 中每个技能的模块 sdk/skill_effect_exporter/skills/<技能ID>.py），是对照代码中数值的用途写出的；标注“游戏说明”的内容取自技能说明，标注“推测”“未核实”的内容尚无代码证据，空白表示该效果还没有整理",
@@ -396,18 +403,25 @@ def effect_points(
 ) -> tuple[list[str], dict, dict]:
     """(dimensions, domains, {(point, situation): {level: values}}) of one link.
 
-    A point holds one label per dimension (None when it does not apply). Boolean
-    arguments are not dimensions because the dump does not name them; the weapon
-    a data path belongs to (``_Wp11Data`` and so on) stands in for them when the
-    function has no weapon dimension of its own. Where one level and point has
-    several values, value_situations tells them apart; situations maps code
-    texts to readable situation names (the meaning's "情形")."""
+    A point holds one label per dimension (None when it does not apply).
+    Boolean arguments and arguments with named cases describe situations.
+    The weapon a data path belongs to (``_Wp11Data`` and so on) stands in for
+    the weapon dimension when the function has none. Where one level and point
+    has several values, value_situations tells them apart; situations maps
+    code texts to readable situation names (the meaning's "情形")."""
     results = link["results"]
-    keys, booleans, domains = {}, [], {}
+    situations = situations or {}
+    keys, situation_args, domains = {}, [], {}
     for key, labels in results["argDomains"].items():
         raw = key.split(":", 1)[-1]
-        if raw == "Boolean":
-            booleans.append(key)
+        if raw == "Boolean" or (
+            ":" in key
+            and labels
+            and all(
+                f"参数{key.split(':')[0]}={label}" in situations for label in labels
+            )
+        ):
+            situation_args.append(key)
             continue
         name = DIMENSION_NAMES.get(raw, raw)
         keys[key] = name
@@ -416,7 +430,7 @@ def effect_points(
     inferred = "武器" not in dims
     if inferred:
         dims.append("武器")
-    entries: dict[tuple, list[tuple]] = {}  # (point, level) -> [(booleans, path)]
+    entries: dict[tuple, list[tuple]] = {}  # (point, level) -> [(case args, path)]
     skills = {link["skill"], link["via"]}
     for group in results["groups"]:
         paths = own_values(group["paths"], skills)
@@ -435,13 +449,15 @@ def effect_points(
                 labels[name] = labels[name] or case["args"].get(key)
             if inferred and len(weapons) == 1:
                 labels["武器"] = next(iter(weapons))
-            flags = tuple((key, case["args"].get(key)) for key in booleans)
+            flags = tuple((key, case["args"].get(key)) for key in situation_args)
             entries.setdefault((tuple(labels.values()), case["level"]), []).extend(
                 (flags, p) for p in paths
             )
     points: dict[tuple, dict[int, set]] = {}
     for (point, level), items in entries.items():
-        for situation, values in value_situations(items, situations or {}).items():
+        for situation, values in value_situations(
+            items=items, names=situations
+        ).items():
             levels = points.setdefault((point, situation), {})
             levels.setdefault(level, set()).update(values)
     return dims, domains, points
@@ -451,7 +467,7 @@ def value_situations(items: list[tuple], names: dict[str, str]) -> dict:
     """{situation or None: values} of the paths of one level and point.
 
     A random check ("80 > random") becomes its chance, "80%". Otherwise values
-    differing by an unnamed boolean argument are split by it; then each value
+    differing by a situation argument are split by it; then each value
     is named by the data field only its paths read (the weapon's table or a
     special action's table), else by the conditions only its paths share (a
     hit count). A value nothing tells apart stays unnamed (shown "a / b")."""
@@ -547,34 +563,45 @@ def readable(condition: str) -> str:
     return condition if len(condition) <= 80 else condition[:80] + "…"
 
 
-def applies_texts(dims: list[str], domains: dict, block: list[set]) -> list[str]:
+def applies_texts(
+    dims: list[str], domains: dict, block: list[set], *, effect_key: str = ""
+) -> list[str]:
     """Texts such as "【重弩、轻弩】散弹": weapons in brackets, then ammo kinds or
     actions. Actions named after one weapon (``WP03_MIKIRI``) go under that
     weapon; a block mixing them with general actions becomes one text per
     weapon so that every text has at most one bracket."""
     weapons, parts, by_weapon = "", [], {}
-    for name, labels in zip(dims, block):
+    dimension_names = EFFECT_DIMENSION_NAMES.get(effect_key, {})
+    for dimension, labels in zip(dims, block):
         labels = labels - {None} - DIMENSION_EXCLUDED
-        domain = domains.get(name, set())
+        domain = domains.get(dimension, set())
         if not labels or (len(domain) > 1 and labels >= domain):
             continue
+        name = dimension_names.get(dimension, dimension)
         order = list(ENUMS.get(name, {}))
         labels = sorted(
             labels, key=lambda v: (order.index(v) if v in order else len(order), v)
         )
         if name == "武器":
-            weapons = "、".join(enum_label(name, label) for label in labels)
+            weapons = "、".join(
+                enum_label(dimension=name, value=label) for label in labels
+            )
             continue
         plain = []
         for label in labels:
+            text = enum_label(dimension=name, value=label, effect_key=effect_key)
             prefix = re.match(r"WP(\d\d)_(.+)", label)
             weapon = prefix and WEAPON_CODES.get(f"Wp{prefix.group(1)}")
             if weapon:
-                text = ENUMS.get(name, {}).get(label, prefix.group(2))
-                by_weapon.setdefault(weapon, []).append(text)
+                by_weapon.setdefault(weapon, []).append(
+                    prefix.group(2) if text == label else text
+                )
             else:
-                plain.append(enum_label(name, label))
-        if plain:
+                plain.append(text)
+        if plain and name == "受击属性":
+            attributes = "或".join(filter(None, ("、".join(plain[:-1]), plain[-1])))
+            parts.append(f"受到{attributes}属性攻击时")
+        elif plain:
             parts.append("、".join(plain))
     texts = []
     if parts or not by_weapon:
@@ -658,14 +685,19 @@ def build_sheets(
             by_level: dict[tuple, list[tuple]] = {}
             for (point, situation), levels in points.items():
                 for level, values in levels.items():
-                    key = (level, frozenset(values), situation)
-                    by_level.setdefault(key, []).append(point)
+                    group_key = (level, frozenset(values), situation)
+                    by_level.setdefault(group_key, []).append(point)
             for (level, values, situation), members in by_level.items():
                 condition = "；".join(
                     x for x in (situation, meaning.get("条件", "")) if x
                 )
                 for block in cartesian_blocks(members):
-                    for applies in applies_texts(dims, domains, block):
+                    for applies in applies_texts(
+                        dims=dims,
+                        domains=domains,
+                        block=block,
+                        effect_key=key,
+                    ):
                         rows.append(
                             {
                                 "技能ID": skill_id,
@@ -754,6 +786,7 @@ def format_workbook(workbook) -> None:
     names and filters."""
     palette = StylePalette(workbook, "skill_details")
     align = Alignment(horizontal="left", vertical="center")
+    wrapped = Alignment(horizontal="left", vertical="center", wrap_text=True)
     bold = copy(palette.default_font)
     bold.b = True
     header_font = copy(bold)
@@ -777,13 +810,15 @@ def format_workbook(workbook) -> None:
                 band = 1 - band if last is not None else 0
                 last = row[key].value
             for cell in row:
-                value = titles[cell.column - 1] == VALUE_COLUMN
+                title = titles[cell.column - 1]
+                value = title == VALUE_COLUMN
+                wrap = title in ("适用", "条件")
                 fill = (VALUE_FILLS if value else BAND_FILLS)[band]
                 cell.style = palette.get(
-                    (fill, value),
+                    key=(fill, value, wrap),
                     font=bold if value else palette.default_font,
-                    fill=solid(fill),
-                    alignment=align,
+                    fill=solid(color=fill),
+                    alignment=wrapped if wrap else align,
                 )
 
 

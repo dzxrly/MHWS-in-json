@@ -14,14 +14,19 @@ MEANINGS = {
     },
     "getSkillStabbingAddDamage": {
         "效果": "追加无属性伤害",
-        "作用于": "累积伤害后追加的无属性伤害",
-        "计算": "设为该值（大于 0 时发动）",
-        "条件": "以攻击累积伤害后（游戏说明）",
+        "作用于": "怪物体力",
+        "计算": "每次触发追加表中点数的无属性伤害",
+        "条件": "攻击积蓄达到阈值时",
         "单位": "点",
-        "依据": "cEnemyBadConditionSkillStabbing.onActivate",
+        "依据": (
+            "cHunterSkill.getSkillStabbingAddDamage 按 EnvironmentManager.CurrentRank 取值。"
+            "下位（STORY）读 SkillData 槽 1，上位（EX）读 _StabbingData。"
+            "未传入已初始化的怪物上下文时也读槽 1。"
+            "cEnemyBadConditionSkillStabbing.onActivate 将该值直接传给 EnemyCharacter.requestDamage"
+        ),
         "情形": {
-            "_StabbingData": "环境等级 CurrentRank 不为 1 时（读取 _StabbingData；等级含义未核实）",
-            "SkillData 槽1": "环境等级 CurrentRank 为 1 时（读取 SkillData 槽 1；等级含义未核实）",
+            "_StabbingData": "上位",
+            "SkillData 槽1": "下位",
         },
     },
 }

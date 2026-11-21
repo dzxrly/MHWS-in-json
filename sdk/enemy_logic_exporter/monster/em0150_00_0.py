@@ -335,7 +335,8 @@ def recover_condition(node, enemy_id, resources):
     rank = "environment_current_rank"
     history = "self_basic_legendary_id"
     mode = "extend:app.cEm0150_00Extend.Mode"
-    # For non-legendary enemies RANK==1 selects Lower, all other ranks Upper.
+    # For non-legendary enemies, the native comparison selects Lower for
+    # CurrentRank == STORY (1) and Upper otherwise.
     branches = []
     for guards, threshold in (
         ((compare(history, 0, "ne", source="Basic.LegendaryID"),), legendary),
@@ -378,7 +379,10 @@ def recover_condition(node, enemy_id, resources):
             ),
         ),
         condition_evidence("doshaguma_mode"),
-        summary=f"非 SUPER_BURST；普通生命低于 {lower:g}%（下位）或 {upper:g}%（其他任务等级），历战低于 {legendary:g}%",
+        summary=(
+            "当前模式非 SUPER_BURST，且生命值低于切换阈值"
+            f"（普通下位 {lower:g}%，普通上位 {upper:g}%，历战 {legendary:g}%）"
+        ),
         extend="app.cEm0150_00Extend",
         inputs={
             health: dict(label="生命值百分比", number=True, min=0, max=100, unit="%"),

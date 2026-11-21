@@ -21,13 +21,16 @@ from ..native.values import Ptr, V, unk
 FLOAT_TYPES = ("System.Single", "System.Double")
 
 
-def argument_domains(layouts, params):
-    """Small domains for Boolean and enum parameters; others stay unknown."""
+def argument_domains(layouts, params, argument_values=None):
+    """Small domains for Boolean, enum and module-specified arguments."""
+    argument_values = argument_values or {}
     domains = []
     for index, param in enumerate(params):
         ptype = param.get("type")
         if param.get("modifier") == "ByRef":
             domains.append(None)  # passed as a pointer
+        elif index in argument_values:
+            domains.append(argument_values[index])
         elif ptype == "System.Boolean":
             domains.append([("false", 0), ("true", 1)])
         elif layouts.is_enum(ptype):

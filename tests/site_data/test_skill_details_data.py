@@ -132,6 +132,26 @@ class SkillWebTests(unittest.TestCase):
         self.assertEqual([below[lv]["text"] for lv in range(1, 6)], ["5"] * 5)
         self.assertEqual(effect["meaning"]["单位"], "点")
 
+    def test_wound_recovery_has_every_break_count_for_both_set_bonuses(self):
+        effect = next(
+            effect
+            for effect in self.skills["HunterSkill_184"]["effects"]
+            if effect["name"] == "体力回复量"
+        )
+        self.assertEqual(
+            first=[
+                (row["situation"], row["values"][2]["text"], row["values"][4]["text"])
+                for row in effect["rows"]
+            ],
+            second=[
+                ("本次破坏 1 处伤口", "25", "50"),
+                ("本次破坏 2 处伤口", "40", "65"),
+                ("本次破坏 3 处伤口", "55", "80"),
+                ("本次破坏 4 处伤口", "70", "95"),
+                ("本次破坏 5 处及以上伤口", "85", "110"),
+            ],
+        )
+
     def test_export_writes_the_page_data(self):
         scratch = BASE_DIR / ".tmp" / "test-runs"
         scratch.mkdir(parents=True, exist_ok=True)

@@ -69,12 +69,19 @@ class SkillDetailsTests(unittest.TestCase):
             in (self.links["functions"][l["function"]]["method"] or "")
         )
         self.assertEqual(link["via"], "HunterSkill_154")
-        # The two values come from different data, chosen by an unnamed flag.
+        # The caller selects the base damage for the current environment rank.
         self.assertEqual(
-            self.value("HunterSkill_178", "追加伤害", 4, situation="读取 SkillData"), 50
-        )
-        self.assertEqual(
-            self.value("HunterSkill_178", "追加伤害", 4, situation="读取 _Violent"), 85
+            first=[
+                self.value(
+                    skill="HunterSkill_178",
+                    effect="追加伤害基础值",
+                    level=level,
+                    situation=rank,
+                )
+                for rank in ("下位", "上位")
+                for level in (2, 4)
+            ],
+            second=[23, 50, 45, 85],
         )
 
     def test_weapon_comes_first_in_brackets(self):
@@ -94,7 +101,18 @@ class SkillDetailsTests(unittest.TestCase):
             self.value("HunterSkill_075", "回避无敌时间", 1, "【单手剑】后跳"), 0.7
         )
         applies = {r["适用"] for r in self.sheets["技能效果"]}
-        self.assertFalse([a for a in applies if "【" in a[1:] or "WP" in a])
+        self.assertFalse(
+            [a for a in applies - {"泡沫状态【小】"} if "【" in a[1:] or "WP" in a]
+        )
+        self.assertEqual(
+            self.value(
+                skill="HunterSkill_200",
+                effect="泡沫状态【小】持续时间",
+                level=2,
+                applies="泡沫状态【小】",
+            ),
+            30,
+        )
 
     def test_meal_and_baseline_values_are_left_out(self):
         # getDodgeNoHitTime also returns the time without the skill and with a

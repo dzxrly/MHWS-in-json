@@ -7,13 +7,17 @@ MEANINGS = {
     "calcContinuousAttackAddAttack": {
         "效果": "基础攻击力加算",
         "作用于": "基础攻击力",
-        "计算": "加算，按武器取不同数据，并入攻击力加算汇总",
+        "计算": "按当前武器或联动攻击取值，加到基础攻击力上",
         "条件": "攻击连续命中时",
         "单位": "点",
-        "依据": "cHunterSkill.calcContinuousAttackAddAttack",
+        "依据": (
+            "cHunterSkill.calcContinuousAttackAddAttack 检查当前联动动作状态。"
+            "收起武器后，还会沿用上一次计入连击的联动攻击标记。"
+            "游戏教程列有豪鬼专用动作、绘灵魔法和暗黑骑士的暗黑剑。"
+        ),
         "情形": {
-            "_ContinuousAttackExEmote00Data": "使用特殊动作 ExEmote00 的数据时（标志 IsUseExEmoteData 等，推测为特殊动作中）",
-            "_ContinuousAttackWp": "使用武器自身的数据时",
+            "_ContinuousAttackExEmote00Data": "按联动攻击计算（豪鬼专用动作、绘灵魔法、暗黑骑士专用攻击）",
+            "_ContinuousAttackWp": "按当前武器计算",
             "_HitCount < 5": "连续命中不足 5 次",
             "_HitCount >= 5": "连续命中 5 次及以上",
         },
@@ -28,8 +32,7 @@ MEANINGS = {
         "情形": {
             "_HitCount < 5": "连续命中不足 5 次",
             "_HitCount >= 5": "连续命中 5 次及以上",
-            "_ContinuousAttackExEmote00Data": "使用特殊动作 ExEmote00 的数据时",
-            "_ContinuousAttackWp": "使用武器自身的数据时",
+            "_ContinuousAttackWp": "按当前武器计算",
         },
     },
 }

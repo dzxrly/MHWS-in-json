@@ -37,6 +37,16 @@ DIMENSION_NAMES = {
     "DODGE_TYPE": "回避动作",
     "KIREAJI_TYPE": "斩味",
 }
+# Some enum names in the dump are only meaningful for a particular effect.
+EFFECT_DIMENSION_NAMES = {
+    "forceActivate→cEx00._DurationTime：_BubbleDance_MaxActiveTime": {
+        "武器": "泡沫状态"
+    },
+    "damageAttrApply→_RyukiInfo._Timer：_RyukilData": {"ATTR": "受击属性"},
+    "beginMeatGrillMaster→_MeatGrillMasterInfo._Timer：_MeatGrillMasterData": {
+        "RESULT": "烤肉结果"
+    },
+}
 # Keyed by the dimension names above.
 ENUMS = {
     "武器": WEAPONS,
@@ -63,15 +73,27 @@ ENUMS = {
         "CAPTURE": "捕获用麻醉弹",
         "SET_BOMB": "设置炸弹",
     },
-    "射击": {"NORMAL": "通常射击"},
+    "射击": {
+        "NORMAL": "通常射击",
+        "DASH_CLIMB": "攀登射击",
+        "GOSHA_JUMP": "刚射/飞燕射击（箭矢）",
+        "GOSHA_RAPID": "刚连射",
+        "QUICK_SHOT": "迅雷闪击",
+        "SPECIAL": "龙之箭（不含龙之箭·刹那）",
+        "TWIN": "龙之千矢",
+    },
     "回避动作": {
         "NORMAL": "翻滚",
         "STEP": "垫步",
+        "EX_FIELD": "水下回避",
         "WP01_BACK_STEP": "后跳",
         "WP02_JUST_DODGE": "精准回避",
-        "WP02_KIJIN_DODGE": "鬼人化回避",
-        "WP03_MIKIRI": "见切",
+        "WP02_KIJIN_DODGE": "鬼人回避",
+        "WP02_BUFF_JUST_DODGE_ASKILL004": "精准回避（强化分支，回避衣装生效时）",
+        "WP03_MIKIRI": "看破斩",
+        "WP03_MIKIRI_RED": "看破斩·旋",
         "WP04_CHARGE_DODGE": "蓄力中回避",
+        "WP05_SP_PARRY_SOUND_ATTACK": "抵消之曲",
         "WP10_AIR_DODGE": "空中回避",
         "WP10_JUMP_BACK": "后跳",
         "WP11_CHARGE_STEP": "蓄力垫步",
@@ -86,6 +108,28 @@ ENUMS = {
         "BLUE": "青",
         "WHITE": "白",
         "PURPLE": "紫",
+    },
+    "泡沫状态": {"SMALL": "泡沫状态【小】"},
+    "受击属性": {
+        "DRAGON": "龙",
+        "ELEC": "雷",
+        "FIRE": "火",
+        "ICE": "冰",
+        "WATER": "水",
+    },
+    "烤肉结果": {
+        "BURNED": "烤焦的肉",
+        "RARE": "半生肉",
+        "WELL_DONE": "烤熟的肉",
+    },
+}
+EFFECT_ENUMS = {
+    "getDodgeNoHitTime": {("回避动作", "EX_FIELD"): "水下回避（含快速上浮、下潜）"},
+    "getDodgeDistRate": {
+        (
+            "回避动作",
+            "WP05_SP_PARRY_SOUND_ATTACK",
+        ): "抵消之曲（动作实际移动是否使用此倍率待核实）",
     },
 }
 WORDS = {
@@ -290,5 +334,8 @@ def effect_name(method: str) -> str:
     return label
 
 
-def enum_label(dimension: str, value: str) -> str:
+def enum_label(dimension: str, value: str, effect_key: str = "") -> str:
+    override = EFFECT_ENUMS.get(effect_key, {}).get((dimension, value))
+    if override is not None:
+        return override
     return ENUMS.get(dimension, {}).get(value, value)

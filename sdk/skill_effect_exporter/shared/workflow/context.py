@@ -26,7 +26,7 @@ from ...config import (
     SKILL_PARAM_TYPES,
 )
 from ..native.scan import NativeIndex, method_stem
-from ..runtime.evaluate import Evaluator
+from ..runtime.evaluate import Evaluator, argument_domains
 from ..runtime.scenario import Scenario, SkillWorld
 from .extract import (
     coverage,
@@ -287,7 +287,16 @@ class SkillContext:
                 f"{skill_id} 的 SKIPPED_FUNCTIONS 中 {type_name}.{method} 没有对应的链路，可以删除"
             )
 
-    def add_link(self, address, via, uses, sites, focus_first=False, skipped=None):
+    def add_link(
+        self,
+        address,
+        via,
+        uses,
+        sites,
+        focus_first=False,
+        skipped=None,
+        argument_values=None,
+    ):
         key, info, evaluable = self.describe(address)
         equipped = self.equipped(via)
         link = dict(skill=equipped, via=via, function=key, uses=uses)
@@ -297,21 +306,30 @@ class SkillContext:
             link["skipped"] = skipped
             self.stats["module_skipped"] += 1
         elif evaluable and levels:
+            function = self.functions[key]
+            combos = argument_domains(
+                layouts=self.world.layouts,
+                params=info.get("params", []),
+                argument_values=(argument_values or {}).get(
+                    (function["type"], method_stem(name=function["method"]))
+                ),
+            )
             link["results"] = evaluate_link(
-                self.evaluator,
-                self.world,
-                self.scenarios,
-                equipped,
-                levels,
-                self.functions[key],
-                info,
-                self.stats,
-                sites,
-                focus_first,
+                evaluator=self.evaluator,
+                world=self.world,
+                scenarios=self.scenarios,
+                skill=equipped,
+                levels=levels,
+                function=function,
+                info=info,
+                stats=self.stats,
+                sites=sites,
+                combos=combos,
+                focus_first=focus_first,
             )
             # Usage tracing replaces the skill reads at the uses' call sites;
             # param and module links name read sites, not skill calls.
-            if traced(self.functions[key]) and uses[0]["kind"] not in (
+            if traced(function) and uses[0]["kind"] not in (
                 "param",
                 "module",
             ):
@@ -321,28 +339,38 @@ class SkillContext:
                         self.world, equipped, levels[-1]
                     )
                 link["usage"] = evaluate_usage(
-                    self.evaluator,
-                    self.world,
-                    scenario,
-                    self.functions[key],
-                    info,
-                    via,
-                    uses,
+                    evaluator=self.evaluator,
+                    scenario=scenario,
+                    function=function,
+                    info=info,
+                    via=via,
+                    uses=uses,
+                    combos=combos,
                 )
                 self.stats["usage_runs"] += 1
         self.links.append(link)
         return link
 
-    def extract_skill(self, skill_id, skipped=None):
+    def extract_skill(self, skill_id, skipped=None, argument_values=None):
         """The links of the functions using the skill and of the callers of its
         accessors. skipped: [(type, method, reason)] from the skill's module,
-        functions recorded as links but not evaluated."""
+        functions recorded as links but not evaluated. argument_values maps
+        (type, method) to argument indices and their (label, value) pairs."""
         skipped = {(t, m): reason for t, m, reason in skipped or ()}
         unused = set(skipped)
         links = []
         for layer, address, via, uses, sites in self.plan.get(skill_id, ()):
             reason = self.skip_reason(address, skipped, unused)
-            links.append(self.add_link(address, via, uses, sites, skipped=reason))
+            links.append(
+                self.add_link(
+                    address=address,
+                    via=via,
+                    uses=uses,
+                    sites=sites,
+                    skipped=reason,
+                    argument_values=argument_values,
+                )
+            )
             if layer == "accessor":
                 self.stats["accessor_callers"] += 1
         self.unused_skips[skill_id] = unused

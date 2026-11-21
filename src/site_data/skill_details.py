@@ -74,7 +74,12 @@ def effect_tables(links: dict) -> dict[str, list[dict]]:
             rows: dict[tuple, dict] = {}
             for (situation, series), members in by_series.items():
                 for block in cartesian_blocks(members):
-                    for applies in applies_texts(dims, domains, block):
+                    for applies in applies_texts(
+                        dims=dims,
+                        domains=domains,
+                        block=block,
+                        effect_key=key,
+                    ):
                         if (applies, situation) in rows:
                             raise ValueError(
                                 f"{skill_id} {key} 的“{applies}”“{situation}”有多组数值"

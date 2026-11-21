@@ -890,6 +890,9 @@ STATE_SIGN_LABELS = dict(
     ENTRY_END="登场结束",
     EXIT_BEGIN="开始退场",
 )
+# app.QuestDef.RANK returned by EnvironmentManager.get_CurrentRank.
+# The getter falls back to STORY if both saved ranks are INVALID.
+CURRENT_RANK_LABELS = {0: "无效位阶（INVALID）", 1: "下位", 2: "上位"}
 
 
 # ------------------------------------------------------ published web models
