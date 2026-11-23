@@ -54,7 +54,7 @@
 
 ## 菜单界面（TUI）
 
-`python -m sdk` 打开常用任务的菜单：环境检查、技能效果提取（全部或指定技能）、重建 `SkillDetails.xlsx`、武器动作映射、怪物提取与玩家视图、未知条件统计、发布与构建行动逻辑网页，以及 SDK 测试。用方向键和回车选择。每个操作先打印要执行的完整命令行再执行，同样的步骤可以直接写进脚本。菜单启动时读取 `MHWS_EXE`、`MHWS_IL2CPP`；未设置时先询问 dump 出的 EXE 与 IL2CPP dump 的路径，“设置 EXE 与 il2cpp 路径”可在本次会话中修改。发布前会先确认，避免误覆盖已提交的模型。耗时的步骤（技能提取、`extract-all`、`player-view`、`publish`）会显示进度条，给出已完成数量、用时与预计剩余时间，菜单和命令行中都会显示（`sdk/progress.py`）。安装脚本会把项目根目录登记到虚拟环境中（`mhws_sdk.pth`），因此菜单可以在任意目录启动；此前建好的环境需要重新运行一次安装脚本。
+`python -m sdk` 打开 SDK 菜单，用方向键和回车选择操作。菜单显示并运行提取、环境检查、发布 JSON 模型和武器动作映射所用的 SDK 命令。需要重建 `SkillDetails.xlsx`、生成网站 JSON 或运行仓库集成测试时，选择相应菜单项查看命令，再从项目根目录单独执行。菜单启动时读取 `MHWS_EXE`、`MHWS_IL2CPP`；未设置时先询问 dump 出的 EXE 与 IL2CPP dump 的路径，“设置 EXE 与 il2cpp 路径”可在本次会话中修改。发布前会先确认，避免误覆盖已提交的模型。耗时的步骤（技能提取、`extract-all`、`player-view`、`publish`）会显示进度条，给出已完成数量、用时与预计剩余时间，菜单和命令行中都会显示（`sdk/progress.py`）。安装脚本会把项目根目录登记到虚拟环境中（`mhws_sdk.pth`），因此菜单可以在任意目录启动；此前建好的环境需要重新运行一次安装脚本。
 
 ```powershell
 .tmp/sdk-venv/Scripts/python.exe -m sdk

@@ -1,9 +1,8 @@
 """Menu front end for the SDK commands: python -m sdk
 
-Every action runs the matching command line (python -m sdk.<tool> ...) in a
-child process with this interpreter, so the menu adds no behaviour of its own;
-the command it runs is printed first and can be copied into scripts. The
-PROCESSED_DATA builders are started the same way: the SDK does not import src.
+SDK actions run their python -m sdk.<tool> command in a child process.
+For downstream builds and repository integration tests, the menu prints the
+standalone command to run from the repository root.
 """
 
 import os
@@ -19,9 +18,9 @@ from sdk.enemy_logic_exporter.shared.workflow.environment import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-ENEMY = "sdk.enemy_logic_exporter"
-SKILL = "sdk.skill_effect_exporter"
-ACTION_MAP = "sdk.action_map_exporter"
+ENEMY = "enemy_logic_exporter"
+SKILL = "skill_effect_exporter"
+ACTION_MAP = "action_map_exporter"
 TRY_DIR = ".tmp/skill-effects"
 ENEMY_DIR = ".tmp/enemy-logic-exporter/tui"
 
@@ -45,12 +44,17 @@ class Session:
         return args
 
 
-def run(module, *args):
-    command = [sys.executable, "-B", "-m", module, *map(str, args)]
+def run(tool, *args):
+    command = [sys.executable, "-B", "-m", f"sdk.{tool}", *map(str, args)]
     print("\n>", " ".join(command[1:]), flush=True)
     code = subprocess.call(command, cwd=ROOT, env=dict(os.environ, PYTHONUTF8="1"))
     print(f"\n退出码 {code}" if code else "\n完成")
     questionary.press_any_key_to_continue("按任意键返回菜单").ask()
+
+
+def show_command(command):
+    print(f"在项目根目录单独运行以下命令。\n\n{command}\n")
+    questionary.press_any_key_to_continue(message="按任意键返回菜单").ask()
 
 
 def ask_text(message, default=""):
@@ -69,7 +73,7 @@ def skill_menu(session):
             "全量提取（写入 src/processed_data/skill_details/data，约 30 分钟）",
             "调试指定技能（输出到 .tmp）",
             "更新数值含义与说明（技能模块 → index.json，不重新求值）",
-            "重建 SkillDetails.xlsx",
+            "查看重建 SkillDetails.xlsx 的命令",
             "返回",
         ],
     )
@@ -87,7 +91,7 @@ def skill_menu(session):
     elif action.startswith("更新"):
         run(SKILL, "annotate")
     else:
-        run("src.processed_data.skill_details")
+        show_command(command="python -B -m src.processed_data.skill_details")
 
 
 def enemy_menu(session):
@@ -98,7 +102,7 @@ def enemy_menu(session):
             "提取全部怪物并生成玩家视图",
             "统计未知条件（census / uncertainty）",
             "发布到网页模型目录（publish）",
-            "生成网站数据（使用已发布的网页模型）",
+            "查看用已发布模型生成网站数据的命令",
             "返回",
         ],
     )
@@ -129,7 +133,7 @@ def enemy_menu(session):
         ).ask():
             run(ENEMY, "publish", "-m", view)
     else:
-        run("src.site_data")
+        show_command(command="python -B -m src.site_data")
 
 
 def action_map_menu(session):
@@ -177,7 +181,7 @@ def main():
                 "武器动作映射",
                 "怪物行动逻辑",
                 "设置 EXE 与 il2cpp 路径",
-                "运行 SDK 测试",
+                "查看 SDK 集成测试命令",
                 "退出",
             ],
         )
@@ -194,7 +198,7 @@ def main():
         elif action.startswith("设置"):
             settings_menu(session)
         else:
-            run("unittest", "discover", "-s", "tests/sdk", "-t", ".")
+            show_command(command="python -B -m unittest discover -s tests/sdk -t .")
 
 
 if __name__ == "__main__":

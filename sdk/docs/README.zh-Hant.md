@@ -54,7 +54,7 @@
 
 ## 選單介面（TUI）
 
-`python -m sdk` 開啟常用工作的選單：環境檢查、技能效果提取（全部或指定技能）、重建 `SkillDetails.xlsx`、武器動作對映、魔物提取與玩家視圖、未知條件統計、發布與建置行動邏輯網頁，以及 SDK 測試。用方向鍵和 Enter 選擇（選單文字為簡體中文）。每個操作先印出要執行的完整命令列再執行，同樣的步驟可以直接寫進腳本。選單啟動時讀取 `MHWS_EXE`、`MHWS_IL2CPP`；未設定時先詢問 dump 出的 EXE 與 IL2CPP dump 的路徑，「设置 EXE 与 il2cpp 路径」可在本次工作階段中修改。發布前會先確認，避免誤覆蓋已提交的模型。耗時的步驟（技能提取、`extract-all`、`player-view`、`publish`）會顯示進度條，給出已完成數量、用時與預計剩餘時間，選單和命令列中都會顯示（`sdk/progress.py`）。安裝腳本會把專案根目錄登記到虛擬環境中（`mhws_sdk.pth`），因此選單可以在任意目錄啟動；此前建立的環境需要重新執行一次安裝腳本。
+`python -m sdk` 開啟 SDK 選單，用方向鍵和 Enter 選擇操作。選單會顯示並執行提取、環境檢查、發布 JSON 模型與武器動作對映所用的 SDK 命令。需要重建 `SkillDetails.xlsx`、產生網站 JSON 或執行倉庫整合測試時，選擇相應選單項目查看命令，再從專案根目錄單獨執行。選單啟動時讀取 `MHWS_EXE`、`MHWS_IL2CPP`；未設定時先詢問 dump 出的 EXE 與 IL2CPP dump 的路徑，「设置 EXE 与 il2cpp 路径」可在本次工作階段中修改。發布前會先確認，避免誤覆蓋已提交的模型。耗時的步驟（技能提取、`extract-all`、`player-view`、`publish`）會顯示進度條，給出已完成數量、用時與預計剩餘時間，選單和命令列中都會顯示（`sdk/progress.py`）。安裝腳本會把專案根目錄登記到虛擬環境中（`mhws_sdk.pth`），因此選單可以在任意目錄啟動；此前建立的環境需要重新執行一次安裝腳本。
 
 ```powershell
 .tmp/sdk-venv/Scripts/python.exe -m sdk
