@@ -1,10 +1,10 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory, type RouteRecordRaw } from "vue-router";
 import HubPage from "./pages/HubPage.vue";
-import { sites } from "./sites.js";
+import { sites } from "./sites";
 
 export const SITE_TITLE = "MHWS 数据站";
 
-const routes = [
+const routes: RouteRecordRaw[] = [
   { path: "/", component: HubPage },
   { path: "/index.html", redirect: "/" },
   ...sites.flatMap((site) =>
@@ -28,7 +28,10 @@ export const router = createRouter({
     saved || (to.path === from.path ? false : { top: 0 }),
 });
 
-router.afterEach((to) => {
+router.afterEach((to, from, failure) => {
+  if (failure) return;
+  const depth = (path: string) => path.split("/").filter(Boolean).length;
+  to.meta.backwards = depth(to.path) < depth(from.path);
   const title = to.meta.title || to.meta.site?.title;
   document.title = title ? `${title} · ${SITE_TITLE}` : SITE_TITLE;
 });

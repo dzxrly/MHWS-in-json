@@ -71,9 +71,10 @@ assert.equal(returned.children[0].state.inputs.distance,undefined);
         result = subprocess.run(
             [
                 shutil.which("node"),
+                "--experimental-strip-types",
                 "-e",
                 script,
-                str(ROOT / "web/src/sites/enemy_battle_logic/player_engine.js"),
+                str(ROOT / "web/src/sites/enemy_battle_logic/player_engine.ts"),
             ],
             cwd=ROOT,
             capture_output=True,
@@ -167,9 +168,10 @@ assert.equal(again.children[0].state.inputs[bMax],101);
         result = subprocess.run(
             [
                 shutil.which("node"),
+                "--experimental-strip-types",
                 "-e",
                 script,
-                str(ROOT / "web/src/sites/enemy_battle_logic/player_engine.js"),
+                str(ROOT / "web/src/sites/enemy_battle_logic/player_engine.ts"),
             ],
             cwd=ROOT,
             capture_output=True,
@@ -303,9 +305,10 @@ assert.equal(step(view,initial(view,{id:'dynamic'},{})).title,'请求选定的�
         result = subprocess.run(
             [
                 shutil.which("node"),
+                "--experimental-strip-types",
                 "-e",
                 script,
-                str(ROOT / "web/src/sites/enemy_battle_logic/player_engine.js"),
+                str(ROOT / "web/src/sites/enemy_battle_logic/player_engine.ts"),
             ],
             cwd=ROOT,
             capture_output=True,
@@ -576,9 +579,10 @@ console.log('player engine boundaries and continuations passed');
         result = subprocess.run(
             [
                 shutil.which("node"),
+                "--experimental-strip-types",
                 "-e",
                 script,
-                str(ROOT / "web/src/sites/enemy_battle_logic/player_engine.js"),
+                str(ROOT / "web/src/sites/enemy_battle_logic/player_engine.ts"),
             ],
             cwd=ROOT,
             capture_output=True,

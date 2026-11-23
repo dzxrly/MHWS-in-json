@@ -90,8 +90,8 @@ pre,
   flex-shrink: 0;
 }
 .surface {
-  background: var(--surface);
-  border: 1px solid color-mix(in srgb, var(--outline-variant) 48%, transparent);
+  background: var(--surface-low);
+  border: 1px solid var(--card-outline);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
 }
@@ -281,24 +281,23 @@ pre,
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  color: var(--primary);
-  background: var(--primary-container);
+  border-radius: 24px;
+  color: var(--on-primary-container);
+  background: color-mix(in srgb, var(--primary-container) 72%, transparent);
   border: none;
   flex-shrink: 0;
   transition:
     background-color var(--dur-effects) var(--effects),
-    border-radius var(--dur-spring) var(--spring),
-    transform var(--dur-spring-fast) var(--spring-fast);
+    border-radius var(--dur-spring) var(--spring);
 }
 /* Expressive icon buttons morph from a circle to a rounded square on press. */
 .icon-button:not(:disabled):active {
-  transform: scale(0.95);
   border-radius: var(--shape-l);
 }
 .icon-button.small {
   width: 40px;
   height: 40px;
+  border-radius: 20px;
 }
 .icon-button.small .icon {
   width: 20px;
@@ -323,6 +322,31 @@ pre,
 .page {
   max-width: 1184px;
   margin: auto;
+}
+/* Same shared X axis as the dock. Both pages occupy one grid cell; the
+   outgoing page completes its fade before the incoming page becomes visible. */
+.route-stage {
+  display: grid;
+  --route-enter-x: 30px;
+  --route-leave-x: -30px;
+}
+.route-stage.backwards { --route-enter-x: -30px; --route-leave-x: 30px; }
+.route-panel {
+  grid-area: 1 / 1;
+  align-self: start;
+  min-width: 0;
+}
+.route-enter-active { animation: route-in 300ms var(--emphasized-decelerate) both; }
+.route-leave-active {
+  pointer-events: none;
+  animation: route-out 105ms var(--emphasized-accelerate) both;
+}
+@keyframes route-in {
+  0%, 35% { opacity: 0; transform: translate3d(var(--route-enter-x), 0, 0); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes route-out {
+  to { opacity: 0; transform: translate3d(var(--route-leave-x), 0, 0); }
 }
 .page.narrow {
   max-width: 880px;
@@ -364,6 +388,31 @@ pre,
 }
 
 /* ---------------------------------------------------------------- controls */
+.site-select { position: relative; }
+.control-ripple {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  contain: strict;
+  pointer-events: none;
+  border-radius: inherit;
+}
+.control-ripple::after {
+  content: "";
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+  width: var(--diameter);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: currentColor;
+  animation: control-ripple 475ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+@keyframes control-ripple {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.15); }
+  45% { opacity: 0.18; transform: translate(-50%, -50%) scale(1); }
+  to { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+}
 /* Material 3 chips have small corners; a selected chip morphs into a pill. */
 .chip {
   min-height: 40px;
@@ -560,28 +609,45 @@ pre,
   width: 18px;
   height: 18px;
 }
-.select-field {
-  height: 40px;
-  padding: 0 36px 0 16px;
-  border: 1px solid var(--outline-variant);
-  border-radius: 12px;
-  background: var(--surface-lowest)
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23707780' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")
-    no-repeat right 12px center / 16px;
-  appearance: none;
-  color: var(--on-surface);
+.nav-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 16px;
+  min-height: 44px;
+  border: 0;
+  border-radius: var(--shape-m);
+  background: transparent;
+  color: var(--on-surface-variant);
   font-size: 14px;
-  max-width: 100%;
-  cursor: pointer;
-  transition: border-color var(--dur-effects) var(--effects);
+  font-weight: 500;
+  text-align: start;
+  transition: background-color var(--dur-effects) var(--effects), border-radius var(--dur-spring) var(--spring);
 }
-.select-field:hover {
-  border-color: var(--outline);
+.nav-option:hover, .nav-option:focus-visible { background: var(--surface-hover); }
+.nav-option:is([aria-pressed="true"], [aria-current="page"], [aria-current="true"]) {
+  border-radius: 22px;
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+  font-weight: 700;
 }
-.select-field:focus-visible {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: inset 0 0 0 1px var(--primary);
+.nav-option:active {
+  border-radius: var(--shape-m);
+  transition-duration: var(--dur-press);
+}
+.data-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
+.data-table :where(th, td) { border-bottom: 1px solid var(--divider); }
+.data-table thead th {
+  background: var(--surface-high);
+  color: var(--on-surface-variant);
+  font-weight: 600;
 }
 .switch {
   display: inline-flex;
@@ -652,6 +718,7 @@ pre,
 /* ---------------------------------------------------------------- cards */
 .card-link {
   position: relative;
+  contain: layout;
   isolation: isolate;
   display: flex;
   flex-direction: column;
@@ -676,12 +743,22 @@ pre,
   pointer-events: none;
   transition: opacity var(--dur-effects) var(--effects);
 }
-.card-link:active {
-  border-radius: var(--shape-l);
-}
 .card-link:focus-visible {
   outline-offset: 4px;
+  background: var(--surface-hover);
+  border-color: color-mix(in srgb, var(--primary) 22%, transparent);
+  border-radius: var(--radius-large);
 }
+.card-link:focus-visible::after { opacity: 1; }
+.card-title {
+  color: var(--on-surface);
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+  transition: color var(--dur-effects) var(--effects);
+}
+.card-link:focus-visible .card-title { color: var(--primary); }
 .card-arrow {
   width: 36px;
   height: 36px;
@@ -701,6 +778,7 @@ pre,
   height: 20px;
 }
 @media (hover: hover) and (pointer: fine) {
+  .card-link:hover .card-title { color: var(--primary); }
   .card-link:hover {
     background: var(--surface-hover);
     border-color: color-mix(in srgb, var(--primary) 22%, transparent);
@@ -714,6 +792,11 @@ pre,
     transform: rotate(-25deg);
     border-radius: var(--shape-m);
   }
+}
+.card-link:active {
+  border-radius: var(--shape-l);
+  transition-duration: var(--dur-press);
+  transition-timing-function: var(--effects-fast);
 }
 
 details > summary {
@@ -799,6 +882,11 @@ details > summary {
 .site-footer a {
   color: var(--primary);
 }
+.footer-links {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+}
 .site-footer a:hover {
   text-decoration: underline;
 }
@@ -864,7 +952,7 @@ details > summary {
   mix-blend-mode: normal;
 }
 :root.theme-reveal::view-transition-new(root) {
-  animation: theme-reveal 650ms var(--emphasized-decelerate) both;
+  animation: theme-reveal 900ms var(--emphasized-decelerate) both;
 }
 @keyframes theme-reveal {
   from {

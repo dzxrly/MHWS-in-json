@@ -1,12 +1,16 @@
 """Prove that runtime packages interact through JSON, including isolated imports."""
 
 import ast
+from contextlib import redirect_stdout
+from io import StringIO
+import os
 from pathlib import Path
 import re
 import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from sdk.enemy_logic_exporter.monster import get_monster, iter_monsters
 from sdk.enemy_logic_exporter.shared.workflow.extraction import ExtractionContext
@@ -28,7 +32,7 @@ class PackageBoundaryTests(unittest.TestCase):
 
     def test_no_import_can_cross_the_sdk_src_boundary(self):
         for folder, forbidden in (
-            (ROOT / "sdk/enemy_logic_exporter", "src"),
+            (ROOT / "sdk", "src"),
             (ROOT / "src", "sdk"),
         ):
             for path in folder.rglob("*.py"):
@@ -47,24 +51,82 @@ class PackageBoundaryTests(unittest.TestCase):
                         str(path),
                     )
 
+    def test_downstream_menu_choices_show_commands_without_running_them(self):
+        from sdk import tui
+
+        selections = iter(
+            ("技能效果", "查看重建", "怪物行动逻辑", "查看用已发布", "查看 SDK", "退出")
+        )
+
+        def select(message, choices):
+            prefix = next(selections)
+            return next(choice for choice in choices if choice.startswith(prefix))
+
+        output = StringIO()
+        with (
+            patch.object(
+                target=tui,
+                attribute="Session",
+            ),
+            patch.object(
+                target=tui,
+                attribute="choose",
+                side_effect=select,
+            ),
+            patch.object(
+                target=tui.questionary,
+                attribute="press_any_key_to_continue",
+            ),
+            patch.object(
+                target=tui.subprocess,
+                attribute="call",
+            ) as launch,
+            redirect_stdout(new_target=output),
+        ):
+            tui.main()
+        launch.assert_not_called()
+        for command in (
+            "python -B -m src.processed_data.skill_details",
+            "python -B -m src.site_data",
+            "python -B -m unittest discover -s tests/sdk -t .",
+        ):
+            self.assertIn(
+                member=command,
+                container=output.getvalue(),
+            )
+
     def test_web_is_a_separate_app_that_reads_only_json(self):
         web = ROOT / "web"
-        sources = [
-            path
-            for path in web.rglob("*")
-            if path.is_file()
-            and "node_modules" not in path.parts
-            and "dist" not in path.relative_to(web).parts[:1]
-        ]
-        self.assertFalse([p for p in sources if p.suffix == ".py"])
-        imports = re.compile(r"""(?:from|import\(?)\s*["']([^"']+)["']""")
-        for path in sources:
-            if path.suffix not in (".js", ".vue"):
-                continue
-            for target in imports.findall(path.read_text(encoding="utf-8")):
-                if target.startswith("."):
-                    resolved = (path.parent / target).resolve()
-                    self.assertTrue(resolved.is_relative_to(web), f"{path}: {target}")
+        imports = re.compile(
+            r"""\b(?:from\s*|import\s*\(?\s*|require\s*\(\s*)["']([^"']+)["']"""
+        )
+        for directory, folders, files in os.walk(top=web):
+            folders[:] = [
+                name for name in folders if name not in {"node_modules", "dist", ".git"}
+            ]
+            for name in files:
+                path = Path(directory) / name
+                self.assertNotIn(
+                    member=path.suffix,
+                    container={".js", ".mjs", ".cjs", ".jsx", ".py"},
+                    msg=str(path),
+                )
+                if path.suffix not in {".ts", ".mts", ".cts", ".tsx", ".vue"}:
+                    continue
+                source = path.read_text(encoding="utf-8")
+                if path.suffix == ".vue":
+                    for tag in re.findall(pattern=r"<script\b[^>]*>", string=source):
+                        self.assertRegex(
+                            text=tag,
+                            expected_regex=r"""\blang\s*=\s*["']ts["']""",
+                            msg=str(path),
+                        )
+                for target in imports.findall(source):
+                    if target.startswith("."):
+                        resolved = (path.parent / target).resolve()
+                        self.assertTrue(
+                            expr=resolved.is_relative_to(web), msg=f"{path}: {target}"
+                        )
         for folder in ("src", "sdk", "tests"):
             for path in (ROOT / folder).rglob("*.py"):
                 for node in ast.walk(ast.parse(path.read_text(encoding="utf8"))):

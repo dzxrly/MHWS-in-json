@@ -3,21 +3,13 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="description" content="从怪物猎人：荒野游戏数据整理的怪物行动逻辑与技能效果数值。" />
+    <meta name="description" content="查询怪物猎人：荒野的任务、怪物行动逻辑、技能效果和武器动作值。" />
     <meta name="theme-color" content="#006a8e" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>MHWS 数据站</title>
-    <script>
-      // Apply the stored or system theme before the first paint.
-      try {
-        const stored = localStorage.getItem("mhws-theme");
-        const dark = stored ? stored === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
-        document.documentElement.classList.toggle("dark", dark);
-      } catch {}
-    </script>
+    <script type="module" blocking="render" src="/src/main.ts"></script>
   </head>
   <body>
     <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
   </body>
 </html>

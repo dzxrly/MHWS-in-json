@@ -1,7 +1,8 @@
-<script setup>
+<script setup lang="ts">
 import Icon from "../components/Icon.vue";
-import { siteInfo } from "../composables/data.js";
-import { sites } from "../sites.js";
+import SiteCard from "../components/SiteCard.vue";
+import { siteInfo } from "../composables/data";
+import { sites } from "../sites";
 
 const RELEASES = "https://github.com/dzxrly/MHWS-in-json/releases/latest";
 </script>
@@ -11,24 +12,24 @@ const RELEASES = "https://github.com/dzxrly/MHWS-in-json/releases/latest";
     <h1 class="hero">怪物猎人：荒野 数据站</h1>
     <ul class="site-grid">
       <li v-for="site in sites" :key="site.id">
-        <RouterLink class="site-card surface card-link" :to="site.path">
+        <SiteCard class="site-card" :to="site.path">
           <span class="site-icon"><Icon :name="site.icon" /></span>
           <span class="site-text">
-            <h2>{{ site.title }}</h2>
+            <h2 class="card-title">{{ site.title }}</h2>
             <p>{{ site.description }}</p>
           </span>
           <span class="card-arrow" aria-hidden="true"><Icon name="arrow" /></span>
-        </RouterLink>
+        </SiteCard>
       </li>
       <li>
-        <a class="site-card surface card-link" :href="RELEASES" target="_blank" rel="noopener noreferrer">
+        <SiteCard class="site-card" :href="RELEASES" target="_blank" rel="noopener noreferrer">
           <span class="site-icon"><Icon name="archive" /></span>
           <span class="site-text">
-            <h2>完整数据下载</h2>
+            <h2 class="card-title">完整数据下载</h2>
             <p>各语言数据库表格、整理数据与源 JSON。</p>
           </span>
           <span class="card-arrow" aria-hidden="true"><Icon name="external" /></span>
-        </a>
+        </SiteCard>
       </li>
     </ul>
     <p v-if="siteInfo?.preview" class="preview-note">这是研究预览：怪物行动逻辑只包含部分怪物，不是正式发布的数据。</p>
@@ -60,7 +61,6 @@ const RELEASES = "https://github.com/dzxrly/MHWS-in-json/releases/latest";
   align-items: center;
   gap: 16px;
   padding: 18px 20px;
-  border-radius: 24px;
 }
 .site-icon {
   width: 48px;
@@ -69,7 +69,7 @@ const RELEASES = "https://github.com/dzxrly/MHWS-in-json/releases/latest";
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 16px;
+  border-radius: var(--shape-l);
   background: var(--primary-container);
   color: var(--on-primary-container);
   transition:
@@ -87,22 +87,11 @@ const RELEASES = "https://github.com/dzxrly/MHWS-in-json/releases/latest";
   flex: 1;
   min-width: 0;
 }
-.site-card h2 {
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 1.45;
-}
 .site-card p {
   margin-top: 2px;
   color: var(--on-surface-variant);
-  font-size: 13.5px;
-  line-height: 1.6;
-}
-.site-card h2 {
-  transition: color var(--dur-effects) var(--effects);
-}
-.site-card:hover h2 {
-  color: var(--primary);
+  font-size: 0.875rem;
+  line-height: 1.75;
 }
 .preview-note {
   margin-top: 24px;

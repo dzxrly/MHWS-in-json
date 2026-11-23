@@ -1,60 +1,77 @@
-<script setup>
+<script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, reactive, ref, shallowRef, watch } from "vue";
 import Icon from "../../components/Icon.vue";
 import LoadState from "../../components/LoadState.vue";
-import { loadJson } from "../../composables/data.js";
-import { SITE_TITLE } from "../../router.js";
-import { createDecisionTree } from "./decision_tree.js";
-import { createTechnicalGraph } from "./technical_graph.js";
+import SiteSelect from "../../components/SiteSelect.vue";
+import { loadJson } from "../../composables/data";
+import { formatDecimalText } from "../../composables/numbers";
+import { SITE_TITLE } from "../../router";
+import { createDecisionTree } from "./decision_tree";
+import { createTechnicalGraph, type FlowDirection } from "./technical_graph";
+import type { BattleGraph, BattleTable, BattleTree, FlowDiagram, FlowInspection } from "./types";
 import "./graph.css";
 
-const props = defineProps({ enemyId: { type: String, required: true } });
+const props = defineProps<{ enemyId: string }>();
+type Mode = "tree" | "flow";
 
 // tree.json and tables.json load with the page; flow.json only with the flow chart.
-const graph = shallowRef(null);
-const diagram = shallowRef(null);
-const error = ref(null);
-const mode = ref("tree");
-let tree = null;
-let flow = null;
+const graph = shallowRef<BattleGraph | null>(null);
+const diagram = shallowRef<FlowDiagram | null>(null);
+const error = ref<Error | null>(null);
+const mode = ref<Mode>("tree");
+let tree: ReturnType<typeof createDecisionTree> | null = null;
+let flow: ReturnType<typeof createTechnicalGraph> | null = null;
 
 // Decision tree view.
-const treeViewport = ref();
-const treeCanvas = ref();
-const treeScene = ref();
-const selection = ref();
+const treeViewport = ref<HTMLElement>();
+const treeCanvas = ref<SVGSVGElement>();
+const treeScene = ref<SVGGElement>();
+const selection = ref<HTMLElement>();
 const treeStatus = ref("");
 const selected = ref(false);
 const detailsOpen = ref(true);
 const query = ref("");
-const choices = reactive({});
-const openHints = reactive(new Set());
+const choices = reactive<Record<string, string>>({});
+const openHints = reactive(new Set<string>());
 
 // Flow chart view.
-const flowViewport = ref();
-const flowSvg = ref();
-const flowScene = ref();
-const minimap = ref();
-const flowStatus = ref("正在排列子表…");
+const flowViewport = ref<HTMLElement>();
+const flowSvg = ref<SVGSVGElement>();
+const flowScene = ref<SVGGElement>();
+const minimap = ref<SVGSVGElement>();
+const flowStatus = ref<string | null>("正在排列子表…");
 const flowZoom = ref(100);
-const flowInfo = ref(null);
+const flowInfo = ref<FlowInspection | null>(null);
 const table = ref("");
 const entry = ref("");
-const direction = ref("DOWN");
+const direction = ref<FlowDirection>("DOWN");
+const directions = [
+  { label: "从上到下", value: "DOWN" }, { label: "从左到右", value: "RIGHT" },
+] as const;
 
 const hasTree = computed(() => !!graph.value?.playerView);
 const fields = computed(() =>
-  Object.entries(graph.value?.playerView?.inputs ?? {})
-    .filter(([, field]) => field.options?.length)
-    .map(([key, field]) => ({ key, ...field, extra: field.group === "timer" || field.group === "variable" })),
+  Object.entries(graph.value?.playerView?.inputs ?? {}).flatMap(([key, field]) => {
+    if (!field.options?.length) return [];
+    return [{
+      key, label: field.label || key, hint: field.hint && formatDecimalText(field.hint),
+      extra: field.group === "timer" || field.group === "variable",
+      options: [
+        { label: "任意", value: "" },
+        ...field.options.map((option, index) => ({ label: formatDecimalText(option.label ?? String(option.value)), value: String(index) })),
+      ],
+    }];
+  }),
 );
 const mainFields = computed(() => fields.value.filter((field) => !field.extra));
 const extraFields = computed(() => fields.value.filter((field) => field.extra));
-const tables = computed(() => diagram.value?.layout.children ?? []);
+const tables = computed(() => diagram.value?.layout.children.map(group => ({ label: group.title, value: group.id })) ?? []);
 const entryPoints = computed(() => {
   const value = diagram.value;
   if (!value) return [];
-  return value.entryPoints.length ? value.entryPoints : [{ target: value.entry, name: "模型当前入口" }];
+  return value.entryPoints.length
+    ? value.entryPoints.map(point => ({ label: point.name || point.kind || point.target, value: point.target }))
+    : [{ value: value.entry, label: "模型当前入口" }];
 });
 const scope = computed(() => {
   const coverage = graph.value?.coverage;
@@ -82,8 +99,8 @@ watch(
     for (const key of Object.keys(choices)) delete choices[key];
     try {
       const [tree, tables] = await Promise.all([
-        loadJson(`enemy_battle_logic/${enemyId}/tree.json`),
-        loadJson(`enemy_battle_logic/${enemyId}/tables.json`),
+        loadJson<BattleTree>(`enemy_battle_logic/${enemyId}/tree.json`),
+        loadJson<BattleTable[]>(`enemy_battle_logic/${enemyId}/tables.json`),
       ]);
       if (enemyId !== props.enemyId) return;
       graph.value = { ...tree, tables };
@@ -93,7 +110,7 @@ watch(
       if (mode.value === "tree") startTree();
       else await startFlow();
     } catch (failure) {
-      error.value = failure;
+      error.value = failure instanceof Error ? failure : new Error(String(failure));
     }
   },
   { immediate: true },
@@ -101,12 +118,15 @@ watch(
 onBeforeUnmount(teardown);
 
 function startTree() {
+  const { value: data } = graph;
+  const viewport = treeViewport.value, canvas = treeCanvas.value, scene = treeScene.value, details = selection.value;
+  if (!data?.playerView || !viewport || !canvas || !scene || !details) return;
   tree = createDecisionTree({
-    graph: graph.value,
-    viewport: treeViewport.value,
-    canvas: treeCanvas.value,
-    scene: treeScene.value,
-    selection: selection.value,
+    graph: { ...data, playerView: data.playerView },
+    viewport,
+    canvas,
+    scene,
+    selection: details,
     onStatus: (text) => (treeStatus.value = text),
     onSelect: () => {
       selected.value = true;
@@ -118,17 +138,19 @@ async function startFlow() {
   const enemyId = props.enemyId;
   if (!diagram.value) {
     flowStatus.value = "正在加载流程图数据…";
-    const loaded = await loadJson(`enemy_battle_logic/${enemyId}/flow.json`);
+    const loaded = await loadJson<FlowDiagram>(`enemy_battle_logic/${enemyId}/flow.json`);
     if (enemyId !== props.enemyId || flow) return;
     diagram.value = loaded;
   }
+  const data = graph.value, viewport = flowViewport.value, svg = flowSvg.value, scene = flowScene.value, mini = minimap.value;
+  if (!data || !viewport || !svg || !scene || !mini) return;
   flow = createTechnicalGraph({
-    graph: graph.value,
+    graph: data,
     diagram: diagram.value,
-    viewport: flowViewport.value,
-    svg: flowSvg.value,
-    scene: flowScene.value,
-    mini: minimap.value,
+    viewport,
+    svg,
+    scene,
+    mini,
     onStatus: (text) => (flowStatus.value = text),
     onZoom: (percent) => (flowZoom.value = percent),
     onInspect: (info) => {
@@ -136,18 +158,20 @@ async function startFlow() {
       table.value = info.tableGuid;
     },
   });
-  entry.value = entryPoints.value[0]?.target ?? "";
+  entry.value = entryPoints.value[0]?.value ?? "";
 }
-async function showMode(next) {
+async function showMode(next: Mode) {
   mode.value = next;
   await nextTick();
-  if (next === "flow" && !flow) startFlow().catch((failure) => (flowStatus.value = failure.message));
+  if (next === "flow" && !flow) startFlow().catch((failure: unknown) => {
+    flowStatus.value = failure instanceof Error ? failure.message : String(failure);
+  });
 }
-function choose(field, value) {
-  choices[field.key] = value;
-  tree.setInput(field.key, value === "" ? null : Number(value));
+function choose(key: string, value: string) {
+  choices[key] = value;
+  tree?.setInput(key, value === "" ? null : Number(value));
 }
-function toggleHint(key) {
+function toggleHint(key: string) {
   if (openHints.has(key)) openHints.delete(key);
   else openHints.add(key);
 }
@@ -162,11 +186,11 @@ function toggleHint(key) {
         <h1>{{ graph.enemyName || enemyId }}</h1>
         <span class="mono">{{ enemyId }}</span>
       </div>
-      <div v-if="hasTree" class="segmented" role="tablist" aria-label="视图">
-        <button type="button" role="tab" :aria-selected="mode === 'tree'" @click="showMode('tree')">
+      <div v-if="hasTree" class="button-group view-switch" role="group" aria-label="视图">
+        <button class="tonal-button" type="button" :aria-pressed="mode === 'tree'" @click="showMode('tree')">
           <Icon name="tree" />决策树
         </button>
-        <button type="button" role="tab" :aria-selected="mode === 'flow'" @click="showMode('flow')">
+        <button class="tonal-button" type="button" :aria-pressed="mode === 'flow'" @click="showMode('flow')">
           <Icon name="flow" />原始流程图
         </button>
       </div>
@@ -174,7 +198,7 @@ function toggleHint(key) {
 
     <section v-if="hasTree" v-show="mode === 'tree'" class="workspace-card surface">
       <div class="bar">
-        <form class="bar-group search" role="search" @submit.prevent="tree.search(query)">
+        <form class="bar-group search" role="search" @submit.prevent="tree?.search(query)">
           <label class="search-field small">
             <Icon name="search" />
             <input v-model="query" type="search" placeholder="搜索动作或条件" aria-label="搜索动作或条件" />
@@ -182,18 +206,18 @@ function toggleHint(key) {
           <button class="tonal-button" type="submit">查找</button>
         </form>
         <div class="button-group">
-          <button class="tonal-button" type="button" title="展开一层" @click="tree.expandLevel()"><Icon name="unfold" /><span class="label">展开一层</span></button>
-          <button class="tonal-button" type="button" title="全部收起" @click="tree.collapseAll()"><Icon name="fold" /><span class="label">全部收起</span></button>
+          <button class="tonal-button" type="button" title="展开一层" @click="tree?.expandLevel()"><Icon name="unfold" /><span class="label">展开一层</span></button>
+          <button class="tonal-button" type="button" title="全部收起" @click="tree?.collapseAll()"><Icon name="fold" /><span class="label">全部收起</span></button>
         </div>
         <div class="bar-group">
-          <button class="icon-button small standard" type="button" title="适应窗口" aria-label="适应窗口" @click="tree.fit()"><Icon name="fit" /></button>
-          <button class="icon-button small standard" type="button" title="缩小" aria-label="缩小" @click="tree.zoom(1 / 1.2)"><Icon name="minus" /></button>
-          <button class="icon-button small standard" type="button" title="放大" aria-label="放大" @click="tree.zoom(1.2)"><Icon name="plus" /></button>
+          <button class="icon-button small standard" type="button" title="适应窗口" aria-label="适应窗口" @click="tree?.fit()"><Icon name="fit" /></button>
+          <button class="icon-button small standard" type="button" title="缩小" aria-label="缩小" @click="tree?.zoom(1 / 1.2)"><Icon name="minus" /></button>
+          <button class="icon-button small standard" type="button" title="放大" aria-label="放大" @click="tree?.zoom(1.2)"><Icon name="plus" /></button>
         </div>
         <output class="bar-status" role="status">{{ treeStatus }}</output>
         <div class="bar-group end">
           <button class="tonal-button" type="button" title="详情" :aria-pressed="detailsOpen" @click="detailsOpen = !detailsOpen"><Icon name="panel" /><span class="label">详情</span></button>
-          <button class="outlined-button" type="button" title="导出 SVG" @click="tree.exportSvg()"><Icon name="download" /><span class="label">导出 SVG</span></button>
+          <button class="outlined-button" type="button" title="导出 SVG" @click="tree?.exportSvg()"><Icon name="download" /><span class="label">导出 SVG</span></button>
         </div>
       </div>
       <details v-if="fields.length" class="scenario">
@@ -201,10 +225,10 @@ function toggleHint(key) {
         <div class="inputs">
           <div v-for="field in mainFields" :key="field.key" class="input-field">
             <div class="input-head">
-              <label :for="`input-${field.key}`">{{ field.label || field.key }}</label>
+              <label :for="`input-${field.key}`">{{ field.label }}</label>
               <button
                 v-if="field.hint"
-                class="input-help"
+                class="input-help icon-button standard"
                 type="button"
                 aria-label="说明"
                 :title="field.hint"
@@ -212,10 +236,8 @@ function toggleHint(key) {
                 @click="toggleHint(field.key)"
               >?</button>
             </div>
-            <select :id="`input-${field.key}`" class="select-field" :value="choices[field.key] ?? ''" @change="choose(field, $event.target.value)">
-              <option value="">任意</option>
-              <option v-for="(option, index) in field.options" :key="index" :value="String(index)">{{ option.label ?? String(option.value) }}</option>
-            </select>
+            <SiteSelect :id="`input-${field.key}`" :label="field.label" :options="field.options"
+              :model-value="choices[field.key] ?? ''" @update:model-value="choose(field.key, $event)" />
             <p v-if="field.hint && openHints.has(field.key)" class="input-hint">{{ field.hint }}</p>
           </div>
         </div>
@@ -224,10 +246,10 @@ function toggleHint(key) {
           <div class="inputs">
             <div v-for="field in extraFields" :key="field.key" class="input-field">
               <div class="input-head">
-                <label :for="`input-${field.key}`">{{ field.label || field.key }}</label>
+                <label :for="`input-${field.key}`">{{ field.label }}</label>
                 <button
                   v-if="field.hint"
-                  class="input-help"
+                  class="input-help icon-button standard"
                   type="button"
                   aria-label="说明"
                   :title="field.hint"
@@ -235,10 +257,8 @@ function toggleHint(key) {
                   @click="toggleHint(field.key)"
                 >?</button>
               </div>
-              <select :id="`input-${field.key}`" class="select-field" :value="choices[field.key] ?? ''" @change="choose(field, $event.target.value)">
-                <option value="">任意</option>
-                <option v-for="(option, index) in field.options" :key="index" :value="String(index)">{{ option.label ?? String(option.value) }}</option>
-              </select>
+              <SiteSelect :id="`input-${field.key}`" :label="field.label" :options="field.options"
+                :model-value="choices[field.key] ?? ''" @update:model-value="choose(field.key, $event)" />
               <p v-if="field.hint && openHints.has(field.key)" class="input-hint">{{ field.hint }}</p>
             </div>
           </div>
@@ -283,22 +303,21 @@ function toggleHint(key) {
           <button class="icon-button small standard" type="button" title="放大" aria-label="放大" @click="flow?.zoom(1.3)"><Icon name="plus" /></button>
           <output class="bar-status">{{ flowZoom }}%</output>
         </div>
-        <label class="bar-field">入口
-          <select v-model="entry" class="select-field" @change="flow?.focus(entry)">
-            <option v-for="point in entryPoints" :key="point.target" :value="point.target">{{ point.name || point.kind }}</option>
-          </select>
-        </label>
-        <label class="bar-field">子表
-          <select v-model="table" class="select-field" @change="flow?.showTable(table)">
-            <option v-for="group in tables" :key="group.id" :value="group.id">{{ group.title }}</option>
-          </select>
-        </label>
-        <label class="bar-field">方向
-          <select v-model="direction" class="select-field" @change="flow?.setDirection(direction)">
-            <option value="DOWN">从上到下</option>
-            <option value="RIGHT">从左到右</option>
-          </select>
-        </label>
+        <div class="bar-field">
+          <label for="flow-entry">入口</label>
+          <SiteSelect id="flow-entry" v-model="entry" class="flow-select" label="入口" :options="entryPoints"
+            @update:model-value="flow?.focus($event)" />
+        </div>
+        <div class="bar-field">
+          <label for="flow-table">子表</label>
+          <SiteSelect id="flow-table" v-model="table" class="flow-select" label="子表" :options="tables"
+            @update:model-value="flow?.showTable($event)" />
+        </div>
+        <div class="bar-field">
+          <label for="flow-direction">方向</label>
+          <SiteSelect id="flow-direction" v-model="direction" class="flow-select" label="方向" :options="directions"
+            @update:model-value="flow?.setDirection($event)" />
+        </div>
         <div class="bar-group end">
           <button class="outlined-button" type="button" title="导出 SVG" @click="flow?.download()"><Icon name="download" /><span class="label">导出 SVG</span></button>
         </div>
@@ -325,7 +344,7 @@ function toggleHint(key) {
             <small class="kicker">{{ flowInfo?.kicker ?? "节点详情" }}</small>
             <h3>{{ flowInfo?.title ?? "选择一个节点" }}</h3>
             <p class="note">{{ flowInfo?.summary ?? "这里按游戏行为表的原始结构画出全部子表，适合对照数据核查。" }}</p>
-            <button v-if="flowInfo?.call" class="tonal-button" type="button" @click="flow.followCall(flowInfo.call.target)">
+            <button v-if="flowInfo?.call" class="tonal-button" type="button" @click="flow?.followCall(flowInfo.call.target)">
               {{ flowInfo.call.label }}
             </button>
             <details v-if="flowInfo">
@@ -350,7 +369,7 @@ function toggleHint(key) {
         <summary>动作名称对照表</summary>
         <p>{{ graph.actionNameCatalog.boundary }}</p>
         <div class="table-scroll">
-          <table>
+          <table class="data-table">
             <thead>
               <tr><th>Shell UID</th><th>原名</th><th>原注释</th></tr>
             </thead>

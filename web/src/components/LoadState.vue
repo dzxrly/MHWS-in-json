@@ -1,5 +1,5 @@
-<script setup>
-defineProps({ error: { type: [Error, null], default: null }, label: { type: String, default: "正在加载数据…" } });
+<script setup lang="ts">
+withDefaults(defineProps<{ error?: Error | null; label?: string }>(), { label: "正在加载数据…" });
 </script>
 
 <template>

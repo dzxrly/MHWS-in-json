@@ -1,9 +1,11 @@
-<script setup>
+<script setup lang="ts">
 import { computed, ref } from "vue";
+import { formatDecimalText } from "../../composables/numbers";
+import type { Effect } from "./types";
 
-const props = defineProps({ effect: { type: Object, required: true }, levels: { type: Array, required: true } });
+const props = defineProps<{ effect: Effect; levels: number[] }>();
 const MEANING_FIELDS = ["作用于", "计算", "条件"];
-const highlighted = ref(null);
+const highlighted = ref<number | null>(null);
 
 const meaning = computed(() => MEANING_FIELDS.filter((field) => props.effect.meaning[field]));
 const plain = computed(() => {
@@ -15,7 +17,7 @@ const rows = computed(() =>
     const cells = props.levels.map((level) => {
       const value = row.values[level];
       if (!value) return { level, text: "—", kind: "missing" };
-      return { level, text: value.text, kind: value.unsure ? "unsure" : "", unsure: value.unsure };
+      return { level, text: formatDecimalText(value.text), kind: value.unsure ? "unsure" : "", unsure: value.unsure };
     });
     return { ...row, cells };
   }),
@@ -27,7 +29,7 @@ const basis = computed(() =>
     ["条目键", props.effect.key],
   ].filter(([, value]) => value),
 );
-function highlight(level) {
+function highlight(level: number) {
   highlighted.value = highlighted.value === level ? null : level;
 }
 </script>
@@ -36,17 +38,17 @@ function highlight(level) {
   <section class="effect surface">
     <div class="effect-head">
       <h3>{{ effect.name }}</h3>
-      <span v-if="effect.meaning['单位']" class="badge unit">{{ effect.meaning["单位"] }}</span>
+      <span v-if="effect.meaning['单位']" class="badge unit">{{ formatDecimalText(effect.meaning["单位"]) }}</span>
       <span v-if="effect.written" class="badge" title="技能发动等处理写入运行时字段的数值">写入值</span>
     </div>
     <dl v-if="meaning.length" class="meaning">
       <template v-for="field in meaning" :key="field">
         <dt>{{ field }}</dt>
-        <dd>{{ effect.meaning[field] }}</dd>
+        <dd>{{ formatDecimalText(effect.meaning[field]) }}</dd>
       </template>
     </dl>
     <div class="table-wrap">
-      <table class="values">
+      <table class="values data-table">
         <thead>
           <tr>
             <th class="case" scope="col">{{ plain ? "适用" : "适用 / 情形" }}</th>
@@ -55,10 +57,9 @@ function highlight(level) {
               :key="level"
               scope="col"
               :class="{ hl: highlighted === level }"
-              title="点击高亮此等级"
-              @click="highlight(level)"
             >
-              Lv.{{ level }}
+              <button type="button" class="level-button text-button" title="点击高亮此等级"
+                :aria-pressed="highlighted === level" @click="highlight(level)">Lv.{{ level }}</button>
             </th>
           </tr>
         </thead>
@@ -66,7 +67,7 @@ function highlight(level) {
           <tr v-for="row in rows" :key="row.applies + '\u0000' + row.situation">
             <td class="case">
               <span class="applies">{{ row.applies || (row.situation ? "" : "全部") }}</span>
-              <span v-if="row.situation" class="situation">{{ row.situation }}</span>
+              <span v-if="row.situation" class="situation">{{ formatDecimalText(row.situation) }}</span>
             </td>
             <td
               v-for="cell in row.cells"
@@ -96,7 +97,6 @@ function highlight(level) {
 <style scoped>
 .effect {
   padding: 20px 24px 16px;
-  border-radius: 24px;
   min-width: 0;
 }
 .effect-head {
@@ -113,9 +113,9 @@ function highlight(level) {
 .badge {
   display: inline-flex;
   align-items: center;
-  padding: 0 12px;
-  min-height: 26px;
-  border-radius: 999px;
+  padding: 4px 10px;
+  border-radius: var(--shape-s);
+  line-height: 1.4;
   font-size: 12px;
   background: var(--secondary-container);
   color: var(--on-secondary-container);
@@ -143,37 +143,33 @@ function highlight(level) {
 .table-wrap {
   margin-top: 14px;
   overflow-x: auto;
-  border-radius: 16px;
+  border-radius: var(--shape-l);
   background: var(--surface-lowest);
-  border: 1px solid color-mix(in srgb, var(--outline-variant) 60%, transparent);
+  border: 1px solid var(--divider);
 }
 .values {
-  border-collapse: collapse;
   font-size: 14px;
-  min-width: 100%;
 }
 .values th,
 .values td {
   padding: 8px 14px;
-  border-bottom: 1px solid color-mix(in srgb, var(--outline-variant) 50%, transparent);
   text-align: left;
 }
 .values thead th {
-  color: var(--on-surface-variant);
-  font-weight: 600;
-  font-size: 12px;
   white-space: nowrap;
-  background: color-mix(in srgb, var(--surface-high) 60%, transparent);
-  cursor: pointer;
-  user-select: none;
   text-align: right;
 }
 .values thead th.case {
-  cursor: default;
   text-align: left;
 }
-.values thead th:not(.case):hover {
-  color: var(--primary);
+.values thead th:has(.level-button) {
+  padding: 2px 6px;
+}
+.level-button {
+  min-height: 36px;
+  padding: 4px 8px;
+  color: inherit;
+  font: inherit;
 }
 .values td.case {
   min-width: 120px;
@@ -200,8 +196,9 @@ function highlight(level) {
 .values td.v.unsure {
   background: var(--unsure-soft);
 }
-.values .hl {
-  background: var(--highlight);
+.values th.hl, .values td.hl {
+  background: var(--primary-container);
+  color: var(--on-primary-container);
 }
 .values tbody tr:last-child td {
   border-bottom: none;
@@ -229,7 +226,6 @@ function highlight(level) {
 @media (max-width: 479px) {
   .effect {
     padding: 16px 16px 12px;
-    border-radius: 20px;
   }
 }
 </style>

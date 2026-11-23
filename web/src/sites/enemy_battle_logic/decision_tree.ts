@@ -1,22 +1,70 @@
 /* One interactive decision tree per monster: groups, BTable slots, branches. */
-import * as engine from "./player_engine.js";
+import * as engine from "./player_engine";
+import { formatDecimalText } from "../../composables/numbers";
+import type { BattleGraph, BattleTable, Inputs, PlayerEntry, PlayerState, PlayerStep, PlayerView } from "./types";
 
 const ns = "http://www.w3.org/2000/svg";
 // Node widths follow their text per column; MIN_W/MAX_W bound a column.
 const MIN_W = 168, MAX_W = 320, PAD = 14, GAP_X = 190, GAP_Y = 12, LABEL_W = 150, MAX_LINES = 5;
 const INITIAL_BUDGET = 600, INITIAL_DEPTH = 10;
-const badges = { condition: "条件", weighted_random: "抽选", action: "动作", mutation: "状态变化", unknown: "待核查", return: "返回", loop: "循环", ref: "别处已展开" };
+const badges: Partial<Record<TreeKind, string>> = { condition: "条件", weighted_random: "抽选", action: "动作", mutation: "状态变化", unknown: "待核查", return: "返回", loop: "循环", ref: "别处已展开" };
+const checkBadges: Record<string, string> = { distance: "距离", angle: "角度", state: "状态", phase: "状态" };
 const HANGING = /^[，。、；：！？）】》」』”’,.;:!?)\]]$/;
 
-function html(tag, text, className) {
+type TreeKind = PlayerStep["kind"] | "root" | "group" | "entry" | "ref";
+type WrappedLines = string[] & { clipped?: boolean };
+interface EntryGroup {
+  name: string;
+  entries: PlayerEntry[];
+}
+interface TreeNodeOptions {
+  parent?: TreeNode;
+  record?: PlayerStep;
+  group?: EntryGroup;
+  entry?: PlayerEntry;
+  subtitle?: string;
+  label?: string;
+  role?: string;
+  refKey?: string;
+  uncertain?: boolean;
+}
+interface TreeNode extends TreeNodeOptions {
+  uid: string;
+  kind: TreeKind;
+  title: string;
+  children: TreeNode[] | null;
+  expanded: boolean;
+  compact: boolean;
+  titleFont: { font: string; line: number };
+  badge: string;
+  natural: number;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  depth: number;
+  lines: WrappedLines;
+  subLines: WrappedLines;
+}
+interface DecisionTreeOptions {
+  graph: BattleGraph & { playerView: PlayerView };
+  viewport: HTMLElement;
+  canvas: SVGSVGElement;
+  scene: SVGGElement;
+  selection: HTMLElement;
+  onStatus: (text: string) => void;
+  onSelect: () => void;
+}
+
+function html<Tag extends keyof HTMLElementTagNameMap>(tag: Tag, text?: string, className?: string) {
   const e = document.createElement(tag);
   if (text !== undefined) e.textContent = text;
   if (className) e.className = className;
   return e;
 }
-function svg(tag, attrs, text) {
+function svg<Tag extends keyof SVGElementTagNameMap>(tag: Tag, attrs?: Record<string, string | number>, text?: string) {
   const e = document.createElementNS(ns, tag);
-  for (const [key, value] of Object.entries(attrs || {})) e.setAttribute(key, value);
+  for (const [key, value] of Object.entries(attrs || {})) e.setAttribute(key, String(value));
   if (text !== undefined) e.textContent = text;
   return e;
 }
@@ -26,9 +74,9 @@ function svg(tag, attrs, text) {
  * its `scene` group) and the selected node's details into `selection`.
  * `onStatus(text)` and `onSelect()` report back to the page.
  */
-export function createDecisionTree({ graph, viewport, canvas, scene, selection, onStatus, onSelect }) {
+export function createDecisionTree({ graph, viewport, canvas, scene, selection, onStatus, onSelect }: DecisionTreeOptions) {
   const view = graph.playerView;
-  const sources = new Map();
+  const sources = new Map<string, { table: BattleTable; node: BattleTable["nodes"][number] }>();
   for (const table of graph.tables) for (const node of table.nodes) sources.set(`${table.tableGuid}/${node.id}`, { table, node });
 
   const fontFamily = getComputedStyle(viewport).getPropertyValue("--font").trim() || "sans-serif";
@@ -42,25 +90,28 @@ export function createDecisionTree({ graph, viewport, canvas, scene, selection, 
   };
 
   // Text is measured with the page font, so wrapping holds for any installed font.
-  const context = document.createElement("canvas").getContext("2d"), widths = new Map();
-  function measure(text, font) {
+  const drawingContext = document.createElement("canvas").getContext("2d");
+  if (!drawingContext) throw new Error("无法测量决策树字体");
+  const context = drawingContext;
+  const widths = new Map<string, number>();
+  function measure(text: string, font: string) {
     const key = font + "\u0000" + text;
     let width = widths.get(key);
     if (width === undefined) { context.font = font; width = context.measureText(text).width; widths.set(key, width); }
     return width;
   }
-  function natural(text, font) {
+  function natural(text: string | undefined, font: string) {
     return text ? Math.max(...String(text).split("\n").map(part => measure(part, font))) : 0;
   }
   // Prefer a camel-case hump or underscore when an identifier must be cut.
-  function cut(word, font, max) {
+  function cut(word: string, font: string, max: number) {
     let end = 1;
     while (end < word.length && measure(word.slice(0, end + 1), font) <= max) end++;
     for (let i = end; i > end * .4; i--) if (/[a-z0-9][A-Z]|_[^_]/.test(word.slice(i - 1, i + 1))) return i;
     return end;
   }
-  function wrap(text, font, max, limit = Infinity) {
-    const lines = [];
+  function wrap(text: string, font: string, max: number, limit = Infinity): WrappedLines {
+    const lines: WrappedLines = [];
     for (const part of String(text).split("\n")) {
       let line = "";
       // Latin runs stay whole; CJK characters may break anywhere, and an
@@ -89,19 +140,28 @@ export function createDecisionTree({ graph, viewport, canvas, scene, selection, 
   }
 
   // ------------------------------------------------------------ tree model
-  let uid = 0, inputs = {}, root, shown = new Map(), selected = null;
-  const records = new Map();
-  function stateKey(state) { return JSON.stringify([state.key, state.stack, state.afterAction, state.inputs, Object.entries(state.assumptions).sort()]); }
-  function record(state) {
+  let uid = 0, root: TreeNode, shown = new Map<string, TreeNode>(), selected: TreeNode | null = null;
+  const inputs: Inputs = {};
+  const records = new Map<string, PlayerStep>();
+  function stateKey(state: PlayerState) { return JSON.stringify([state.key, state.stack, state.afterAction, state.inputs, Object.entries(state.assumptions).sort()]); }
+  function record(state: PlayerState) {
     const key = stateKey(state);
-    if (!records.has(key)) records.set(key, engine.step(view, { ...state, seen: [] }));
-    return { key, record: records.get(key) };
+    let step = records.get(key);
+    if (!step) {
+      step = engine.step(view, { ...state, seen: [] });
+      records.set(key, step);
+    }
+    return { key, record: step };
   }
-  function make(kind, title, extra = {}) {
-    const node = { uid: "n" + uid++, kind, title, children: null, expanded: false, ...extra };
-    node.compact = !!node.record?.presentation?.compact;
-    if (node.compact) node.title = node.record?.checks || "内部检查";
-    node.titleFont = fonts[kind === "root" ? "root" : kind === "group" ? "group" : "title"];
+  function make(kind: TreeKind, title: string, extra: TreeNodeOptions = {}): TreeNode {
+    const rec = extra.record;
+    const compact = !!rec?.presentation?.compact;
+    const node: TreeNode = {
+      ...extra, uid: "n" + uid++, kind, title: formatDecimalText(title), children: null, expanded: false, compact,
+      titleFont: fonts[kind === "root" ? "root" : kind === "group" ? "group" : "title"],
+      badge: "", natural: 0, x: 0, y: 0, w: 0, h: 0, depth: 0, lines: [], subLines: [],
+    };
+    if (compact) node.title = formatDecimalText((rec?.kind === "condition" && rec.checks) || "内部检查");
     node.badge = badgeText(node);
     const text = node.compact
       ? natural(node.badge, fonts.badge.font)
@@ -109,7 +169,7 @@ export function createDecisionTree({ graph, viewport, canvas, scene, selection, 
     node.natural = Math.min(MAX_W, Math.max(MIN_W, Math.ceil(text) + PAD * 2 + 4));
     return node;
   }
-  function badgeText(node) {
+  function badgeText(node: TreeNode) {
     if (node.compact) {
       // Only unsettled checks reach the tree; name what they read.
       const subject = node.title.length > 22 ? node.title.slice(0, 21) + "…" : node.title;
@@ -117,15 +177,15 @@ export function createDecisionTree({ graph, viewport, canvas, scene, selection, 
     }
     if (node.kind === "root") return "";
     if (node.kind === "group") return "分组";
-    if (node.kind === "entry") return node.entry.relation === "unknown" ? "局部分支" : "行为表";
+    if (node.kind === "entry") return node.entry?.relation === "unknown" ? "局部分支" : "行为表";
     if (node.kind === "condition") {
       const category = node.record?.presentation?.category;
-      return { distance: "距离", angle: "角度", state: "状态", phase: "状态" }[category] || badges.condition;
+      return (category && checkBadges[category]) || "条件";
     }
     return badges[node.kind] || "流程";
   }
   // Wrap at the column width chosen by place(); height follows the line count.
-  function measureNode(node, width) {
+  function measureNode(node: TreeNode, width: number) {
     node.w = width;
     const inner = width - PAD * 2 - 4;
     node.lines = node.compact ? [] : wrap(node.title, node.titleFont.font, inner, MAX_LINES);
@@ -134,51 +194,51 @@ export function createDecisionTree({ graph, viewport, canvas, scene, selection, 
       : 10 + (node.badge ? fonts.badge.line + 2 : 2) + node.lines.length * node.titleFont.line
         + (node.subLines.length ? 3 + node.subLines.length * fonts.sub.line : 0) + 10;
   }
-  function recordNode(state, label, parent, extra = {}) {
+  function recordNode(state: PlayerState, label: string, parent: TreeNode, extra: TreeNodeOptions = {}) {
     const { key, record: rec } = record(state);
     const kind = rec.kind;
     if (shown.has(key)) {
-      return make("ref", rec.presentation?.title || rec.title, { label, parent, refKey: key, record: rec, state, ...extra });
+      return make("ref", rec.presentation?.title || rec.title, { label, parent, refKey: key, record: rec, ...extra });
     }
     // Actions without a reviewed explanation are titled by their ActionID class.
     const subtitle = kind !== "action" ? undefined : rec.nameStatus === "unresolved" ? "暂无中文名" : rec.technicalName;
-    const node = make(kind, rec.presentation?.title || rec.title, { label, parent, record: rec, state, stateKey: key, subtitle, ...extra });
+    const node = make(kind, rec.presentation?.title || rec.title, { label, parent, record: rec, subtitle, ...extra });
     shown.set(key, node);
     return node;
   }
   // Internal checks stay as small nodes: folding them would multiply edges
   // for every unresolved check, while a node per check keeps growth linear.
-  function project(rec, parent) {
+  function project(rec: PlayerStep, parent: TreeNode) {
     return rec.children.map(child => {
       const { record: target } = record(child.state);
-      let label = child.label;
+      let label = formatDecimalText(child.label);
       if (target.via?.some(n => n.kind === "mutation")) label += "\n（状态更新后）";
       return recordNode(child.state, label, parent, { role: child.role || (child.slot ? "random" : "next") });
     });
   }
-  function requestedBy(entry) {
+  function requestedBy(entry: PlayerEntry) {
     const names = entry.requestedBy || [];
     if (!names.length) return entry.relation === "unknown" ? "接入位置待核查" : "";
     return "由 " + names.slice(0, 2).join("、") + (names.length > 2 ? ` 等 ${names.length} 个状态` : "") + "切入";
   }
-  function children(node) {
+  function children(node: TreeNode): TreeNode[] {
     if (node.children) return node.children;
     if (node.kind === "root") node.children = groups.map(g => make("group", g.name, { parent: node, group: g, subtitle: g.entries.length + " 张行为表" }));
     // The badge and subtitle already say "local branch, entry unverified".
-    else if (node.kind === "group") node.children = node.group.entries.map(entry => make("entry", entry.relation === "unknown" ? entry.label.replace(/^局部分支：/, "").replace(/（接入待核查）$/, "") : entry.label, { parent: node, entry, subtitle: requestedBy(entry) }));
-    else if (node.kind === "entry") node.children = [recordNode(engine.initial(view, node.entry, inputs), "开始", node)];
+    else if (node.kind === "group" && node.group) node.children = node.group.entries.map(entry => make("entry", entry.relation === "unknown" ? entry.label.replace(/^局部分支：/, "").replace(/（接入待核查）$/, "") : entry.label, { parent: node, entry, subtitle: requestedBy(entry) }));
+    else if (node.kind === "entry" && node.entry) node.children = [recordNode(engine.initial(view, node.entry, inputs), "开始", node)];
     else if (node.record && node.kind !== "ref") node.children = project(node.record, node);
     else node.children = [];
     return node.children;
   }
-  function expandable(node) {
+  function expandable(node: TreeNode) {
     if (node.kind === "ref") return false;
     if (node.children) return node.children.length > 0;
     if (["root", "group", "entry"].includes(node.kind)) return true;
     return !!node.record?.children.length;
   }
 
-  const groupOrder = [];
+  const groupOrder: EntryGroup[] = [];
   for (const entry of view.entries) {
     const name = entry.group || (entry.relation === "unknown" ? "接入位置待核查的局部分支" : "其他行为表");
     let group = groupOrder.find(g => g.name === name);
@@ -186,7 +246,7 @@ export function createDecisionTree({ graph, viewport, canvas, scene, selection, 
     group.entries.push(entry);
   }
   const groups = groupOrder.sort((a, b) => rank(a) - rank(b));
-  function rank(group) {
+  function rank(group: EntryGroup) {
     if (group.name === "与玩家战斗") return 0;
     if (group.name === "与其他怪物") return 1;
     if (group.name === "接入位置待核查的局部分支") return 3;
@@ -199,14 +259,16 @@ export function createDecisionTree({ graph, viewport, canvas, scene, selection, 
     root.expanded = true;
     let budget = INITIAL_BUDGET;
     for (const group of children(root)) {
-      if (group.group.name !== "与玩家战斗") continue;
+      if (group.group?.name !== "与玩家战斗") continue;
       group.expanded = true;
       for (const entry of children(group)) {
-        if (entry.entry.slot !== "COMBAT") continue;
+        if (entry.entry?.slot !== "COMBAT") continue;
         // Open the ordinary-combat selection breadth-first until actions.
         const queue = [{ node: entry, depth: 0 }];
         while (queue.length && budget > 0) {
-          const { node, depth } = queue.shift();
+          const next = queue.shift();
+          if (!next) break;
+          const { node, depth } = next;
           if (!expandable(node) || depth >= INITIAL_DEPTH) continue;
           node.expanded = true;
           for (const child of children(node)) {
@@ -219,12 +281,12 @@ export function createDecisionTree({ graph, viewport, canvas, scene, selection, 
   }
 
   // ------------------------------------------------------------ layout
-  let layout = [], extent = { w: 0, h: 0 };
+  let layout: TreeNode[] = [], extent = { w: 0, h: 0 };
   function place() {
     layout = [];
     // Every visible node in a column shares the widest natural width there.
-    const columns = [];
-    (function collect(node, depth) {
+    const columns: number[] = [];
+    (function collect(node: TreeNode, depth: number) {
       node.depth = depth;
       columns[depth] = Math.max(columns[depth] || 0, node.natural);
       if (node.expanded) for (const child of children(node)) collect(child, depth + 1);
@@ -232,8 +294,8 @@ export function createDecisionTree({ graph, viewport, canvas, scene, selection, 
     const lefts = [0];
     for (let i = 1; i < columns.length; i++) lefts[i] = lefts[i - 1] + columns[i - 1] + GAP_X;
     let cursor = 0;
-    const bottoms = [];
-    function visit(node, depth) {
+    const bottoms: number[] = [];
+    function visit(node: TreeNode, depth: number) {
       measureNode(node, columns[depth]);
       node.x = lefts[depth];
       const kids = node.expanded ? children(node) : [];
@@ -254,7 +316,7 @@ export function createDecisionTree({ graph, viewport, canvas, scene, selection, 
       bottoms[depth] = node.y + node.h + GAP_Y;
       layout.push(node);
     }
-    function shift(node, delta) {
+    function shift(node: TreeNode, delta: number) {
       node.y += delta;
       if (node.expanded) for (const child of children(node)) shift(child, delta);
       bottoms[node.depth] = Math.max(bottoms[node.depth] ?? -Infinity, node.y + node.h + GAP_Y);
@@ -291,7 +353,7 @@ export function createDecisionTree({ graph, viewport, canvas, scene, selection, 
     viewport.dataset.ready = "true"; viewport.dataset.nodes = String(layout.length);
     apply();
   }
-  function drawNode(node) {
+  function drawNode(node: TreeNode) {
     const kind = node.compact ? "compact" : node.kind;
     const g = svg("g", { class: `pt-node k-${kind}` + (node === selected ? " selected" : "") + (matches.includes(node) && matches[matchIndex] === node ? " match" : ""), transform: `translate(${node.x} ${node.y})`, tabindex: "0", role: "button", "aria-label": node.title, "data-uid": node.uid, "data-kind": node.kind });
     g.append(svg("rect", { class: "box", width: node.w, height: node.h, rx: 12 }));
@@ -324,7 +386,7 @@ export function createDecisionTree({ graph, viewport, canvas, scene, selection, 
     g.addEventListener("keydown", event => { if (event.key === "Enter") select(node); if (event.key === " ") { event.preventDefault(); toggle(node); } });
     return g;
   }
-  function toggle(node) {
+  function toggle(node: TreeNode) {
     if (!expandable(node)) return;
     const before = { x: node.x, y: node.y };
     node.expanded = !node.expanded;
@@ -334,26 +396,27 @@ export function createDecisionTree({ graph, viewport, canvas, scene, selection, 
   }
 
   // ------------------------------------------------------------ details
-  function path(node) {
-    const items = [];
-    for (let n = node; n; n = n.parent) items.unshift(n);
+  function path(node: TreeNode) {
+    const items: TreeNode[] = [];
+    for (let n: TreeNode | undefined = node; n; n = n.parent) items.unshift(n);
     return items;
   }
-  function select(node) {
+  function select(node: TreeNode) {
     selected = node;
-    scene.querySelectorAll(".pt-node").forEach(e => e.classList.toggle("selected", e.dataset.uid === node.uid));
+    scene.querySelectorAll<SVGGElement>(".pt-node").forEach(e => e.classList.toggle("selected", e.dataset.uid === node.uid));
     selection.className = "selection k-" + (node.compact ? "compact" : node.kind);
     selection.replaceChildren();
     if (node.badge) selection.append(html("div", node.badge, "kind"));
     selection.append(html("h3", node.title));
     if (node.subtitle) selection.append(html("p", node.subtitle, "sub"));
     const rec = node.record;
-    const note = text => selection.append(html("p", text, "note"));
-    if (node.kind === "entry" && node.entry.note) note(node.entry.note);
-    if (node.kind === "ref") {
+    const note = (text: string) => selection.append(html("p", text, "note"));
+    if (node.kind === "entry" && node.entry?.note) note(node.entry.note);
+    if (node.kind === "ref" && node.refKey !== undefined) {
+      const refKey = node.refKey;
       const button = html("button", "跳到首次展开处", "tonal-button");
       button.type = "button";
-      button.onclick = () => { const target = shown.get(node.refKey); if (target) { reveal(target); focus(target); select(target); } };
+      button.onclick = () => { const target = shown.get(refKey); if (target) { reveal(target); focus(target); select(target); } };
       note("同一判断已在树的其他位置展开，这里不再重复。");
       selection.append(button);
     }
@@ -364,7 +427,7 @@ export function createDecisionTree({ graph, viewport, canvas, scene, selection, 
       if (checks.length) {
         const passed = html("details"), list = html("ul");
         passed.append(html("summary", `途经的内部检查（${checks.length} 个，按当前设定已确定）`), list);
-        for (const check of checks) list.append(html("li", `${check.title}：${check.truth ? "成立" : "不成立"}`));
+        for (const check of checks) list.append(html("li", `${formatDecimalText(check.title)}：${check.truth ? "成立" : "不成立"}`));
         selection.append(passed);
       }
       if (rec.afterAction) note("这里位于动作或状态变化之后，条件会重新判断。");
@@ -389,18 +452,18 @@ export function createDecisionTree({ graph, viewport, canvas, scene, selection, 
     }
     onSelect();
   }
-  function reveal(node) {
+  function reveal(node: TreeNode) {
     for (let n = node.parent; n; n = n.parent) n.expanded = true;
     draw();
   }
-  function focus(node, scale = Math.max(transform.scale, 1)) {
+  function focus(node: TreeNode, scale = Math.max(transform.scale, 1)) {
     transform = { scale, x: viewport.clientWidth * (viewport.clientWidth < 600 ? .06 : .35) - node.x * scale, y: viewport.clientHeight * .45 - (node.y + node.h / 2) * scale };
     apply();
   }
 
   // ------------------------------------------------------------ search
-  let matches = [], matchIndex = -1, lastQuery = "";
-  function search(text) {
+  let matches: TreeNode[] = [], matchIndex = -1, lastQuery = "";
+  function search(text: string) {
     const query = text.trim();
     if (!query) return;
     if (query !== lastQuery) {
@@ -408,7 +471,9 @@ export function createDecisionTree({ graph, viewport, canvas, scene, selection, 
       // Breadth-first over the lazily built tree, opening branches as needed.
       const queue = [root]; let visited = 0;
       while (queue.length && visited < 6000) {
-        const node = queue.shift(); visited++;
+        const node = queue.shift();
+        if (!node) break;
+        visited++;
         if (node !== root && [node.title, node.label, node.subtitle].some(value => (value || "").toLowerCase().includes(query.toLowerCase()))) matches.push(node);
         if (expandable(node) && node.kind !== "ref") for (const child of children(node)) queue.push(child);
       }
@@ -425,14 +490,15 @@ export function createDecisionTree({ graph, viewport, canvas, scene, selection, 
     const scale = Math.min((viewport.clientWidth - 40) / extent.w, (viewport.clientHeight - 40) / extent.h, .9);
     transform = { x: 20, y: 20, scale: Math.max(scale, .05) }; apply();
   }
-  function zoom(factor, x = viewport.clientWidth / 2, y = viewport.clientHeight / 2) {
+  function zoom(factor: number, x = viewport.clientWidth / 2, y = viewport.clientHeight / 2) {
     const scale = Math.max(.03, Math.min(2.5, transform.scale * factor));
     transform.x = x - (x - transform.x) * scale / transform.scale; transform.y = y - (y - transform.y) * scale / transform.scale; transform.scale = scale; apply();
   }
   // Scenario inputs: `index` picks one of the field's options, null is "any".
-  function setInput(key, index) {
-    if (index === null) delete inputs[key];
-    else inputs[key] = view.inputs[key].options[index].value;
+  function setInput(key: string, index: number | null) {
+    const option = index === null ? undefined : view.inputs?.[key]?.options?.[index];
+    if (option) inputs[key] = option.value;
+    else delete inputs[key];
     matches = []; lastQuery = "";
     build(); draw(); fit();
   }
@@ -443,10 +509,10 @@ export function createDecisionTree({ graph, viewport, canvas, scene, selection, 
   }
   function collapseAll() { for (const node of layout) if (node !== root) node.expanded = false; draw(); fit(); }
   function exportSvg() {
-    const clone = canvas.cloneNode(true), group = clone.querySelector("g");
-    group.setAttribute("transform", "translate(20 60)");
+    const clone = canvas.cloneNode(true) as SVGSVGElement;
+    clone.querySelector("g")?.setAttribute("transform", "translate(20 60)");
     clone.setAttribute("viewBox", `0 0 ${extent.w + 60} ${extent.h + 100}`);
-    clone.setAttribute("width", extent.w + 60); clone.setAttribute("height", extent.h + 100);
+    clone.setAttribute("width", String(extent.w + 60)); clone.setAttribute("height", String(extent.h + 100));
     clone.prepend(svg("text", { x: 20, y: 30, "font-size": "18", fill: "currentColor", "font-family": fontFamily }, (graph.enemyName || graph.enemyId) + " · 行动决策树（当前展开部分）"));
     // Carry the colour tokens (resolved for the current theme) and the tree
     // rules into the standalone file.
@@ -459,9 +525,9 @@ export function createDecisionTree({ graph, viewport, canvas, scene, selection, 
     const link = html("a"); link.href = url; link.download = graph.enemyId + ".tree.svg"; link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
-  let drag = null;
+  let drag: { x: number; y: number; tx: number; ty: number } | null = null;
   viewport.addEventListener("pointerdown", event => {
-    if (event.target.closest(".pt-node")) return;
+    if (event.target instanceof Element && event.target.closest(".pt-node")) return;
     drag = { x: event.clientX, y: event.clientY, tx: transform.x, ty: transform.y };
     viewport.setPointerCapture(event.pointerId); viewport.classList.add("dragging");
   });
@@ -474,7 +540,7 @@ export function createDecisionTree({ graph, viewport, canvas, scene, selection, 
   }, { passive: false });
 
   build(); draw();
-  const combat = layout.find(n => n.kind === "entry" && n.entry.slot === "COMBAT");
+  const combat = layout.find(n => n.kind === "entry" && n.entry?.slot === "COMBAT");
   if (combat) { focus(combat, 1); select(combat); } else fit();
 
   return { search, expandLevel, collapseAll, fit, zoom, setInput, exportSvg };

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useRoute } from "vue-router";
 
 // A Cloudflare-style error page, as on eggtargaryen.com.

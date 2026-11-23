@@ -22,20 +22,24 @@
   --error-container: #ffdad6;
   --on-error-container: #410002;
   --background: #f8faff;
-  --surface-lowest: #ffffff;
-  --surface: #f0f4fa;
+  --surface-lowest: var(--background);
+  --surface-low: #f0f4fa;
+  --surface: var(--surface-low);
   --surface-hover: #e8edf5;
   --surface-high: #dee6ef;
   --on-surface: #171c21;
   --on-surface-variant: #414850;
   --outline: #707780;
-  --outline-variant: #c4cdd6;
-  --scrim: rgb(18 29 38 / 32%);
+  --outline-variant: #dde3eb;
+  --divider: color-mix(in srgb, var(--outline) 20%, transparent);
+  --card-outline: rgb(119 118 128 / 14%);
+  --scrim: rgb(18 29 38 / 44%);
   --bg-wash-1: rgba(198, 231, 255, 0.78);
   --bg-wash-2: rgba(244, 222, 201, 0.38);
   --bg-wash-3: rgba(221, 227, 235, 0.58);
-  --shadow: 0 2px 6px rgb(18 29 38 / 4%);
-  --shadow-hover: 0 12px 30px rgb(18 29 38 / 9%);
+  --shadow: 0 1px 2px rgb(39 38 48 / 6%);
+  --shadow-hover: 0 8px 24px rgb(39 38 48 / 10%), 0 2px 6px rgb(39 38 48 / 6%);
+  --shadow-menu: 0 12px 28px rgb(39 38 48 / 16%);
   --radius: 28px;
   --radius-large: 36px;
   --radius-small: 16px;
@@ -53,6 +57,7 @@
   --effects-fast: cubic-bezier(0.31, 0.94, 0.34, 1);
   --effects: cubic-bezier(0.34, 0.8, 0.34, 1);
   --emphasized-decelerate: cubic-bezier(0.05, 0.7, 0.1, 1);
+  --emphasized-accelerate: cubic-bezier(0.3, 0, 0.8, 0.15);
   --dur-spring-fast: 350ms;
   --dur-spring: 500ms;
   --dur-effects-fast: 150ms;
@@ -65,7 +70,7 @@
   --motion: cubic-bezier(0.2, 0, 0, 1);
   --motion-bounce: var(--spring-fast);
   --font:
-    "Noto Sans", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui,
+    "Noto Sans", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Roboto", system-ui,
     sans-serif;
   --mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
   --header-height: 88px;
@@ -105,20 +110,22 @@
   --error-container: #93000a;
   --on-error-container: #ffdad6;
   --background: #0c141a;
-  --surface-lowest: #0f191f;
-  --surface: #141f27;
+  --surface-lowest: #111b22;
+  --surface-low: #141f27;
   --surface-hover: #1c2a34;
   --surface-high: #273741;
   --on-surface: #dee6ec;
   --on-surface-variant: #bac7d1;
   --outline: #8b9ba7;
   --outline-variant: #3d505e;
+  --card-outline: rgb(139 155 167 / 18%);
   --scrim: rgb(0 0 0 / 55%);
   --bg-wash-1: rgba(0, 77, 103, 0.78);
   --bg-wash-2: rgba(92, 68, 49, 0.38);
   --bg-wash-3: rgba(61, 80, 94, 0.58);
   --shadow: 0 2px 6px rgb(0 0 0 / 12%);
   --shadow-hover: 0 12px 30px rgb(0 0 0 / 22%);
+  --shadow-menu: 0 12px 28px rgb(0 0 0 / 36%);
 
   --canvas: #111b22;
   --node: #1a262f;

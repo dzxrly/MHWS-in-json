@@ -1,7 +1,7 @@
-<script setup>
+<script setup lang="ts">
 // Outlined 24 px icons drawn with one stroke, as on eggtargaryen.com's blog.
 defineProps({ name: { type: String, required: true } });
-const paths = {
+const paths: Record<string, string> = {
   sun: "M12 3v2m0 14v2M3 12h2m14 0h2M5.6 5.6 7 7m10 10 1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z",
   moon: "M20.5 14A8.5 8.5 0 0 1 10 3.5 8.5 8.5 0 1 0 20.5 14Z",
   menu: "M4 6h16M4 12h16M4 18h16",
@@ -12,6 +12,7 @@ const paths = {
   search: "m20 20-4.2-4.2M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z",
   tree: "M4 4h6v4H4zM14 10h6v4h-6zM14 17h6v4h-6zM7 8v11h7M7 12h7",
   skill: "M12 3l1.9 5.6L19.5 10.5l-5.6 1.9L12 18l-1.9-5.6L4.5 10.5l5.6-1.9ZM19 16v4m-2-2h4",
+  sword: "m5 19 4-4m-3-3 6 6m-4-4L18 4l3-1-1 4-10 10M3 20l1 1 2-1-2-2z",
   github:
     "M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4M9 18c-4.51 2-5-2-7-2",
   plus: "M12 5v14M5 12h14",

@@ -1,3 +1,5 @@
+import type { SiteDefinition } from "../../site_types";
+
 const ENEMY_ID = "EM\\d{4}_\\d{2}_\\d+";
 
 export default {
@@ -12,7 +14,7 @@ export default {
     { path: "index.html", redirect: "/enemy_battle_logic/" },
     {
       path: `:file(${ENEMY_ID}\\.html)`,
-      redirect: (to) => `/enemy_battle_logic/${to.params.file.replace(/\.html$/, "")}`,
+      redirect: (to) => `/enemy_battle_logic/${String(to.params.file).replace(/\.html$/, "")}`,
     },
     {
       path: `:enemyId(${ENEMY_ID})`,
@@ -21,4 +23,4 @@ export default {
       meta: { workspace: true },
     },
   ],
-};
+} satisfies SiteDefinition;

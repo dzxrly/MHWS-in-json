@@ -1,5 +1,7 @@
 /* Evaluate only SDK-declared JSON operations. Missing input stays unknown. */
-export function compare(value, operator, expected) {
+import type { Comparison, Condition, InputField, Inputs, InputValue, NodeUpdates, PlayerEntry, PlayerState, PlayerStep, PlayerView, PlayerVisit, Scalar } from "./types";
+
+export function compare(value: InputValue | null | undefined, operator: Comparison, expected: Scalar): boolean | null {
   if (value === undefined || value === null) return null;
   if (typeof value !== "object") {
     if (typeof value !== typeof expected || (typeof value === "number" && !Number.isFinite(value))) return null;
@@ -28,11 +30,15 @@ export function compare(value, operator, expected) {
     default: return null;
   }
 }
-export function evaluate(expression, inputs) {
+function isHistoryInteger(value: InputValue | null | undefined): value is number {
+  return typeof value === "number" && Number.isInteger(value) && value >= -2147483648 && value <= 4294967295;
+}
+
+export function evaluate(expression: Condition | undefined, inputs: Inputs): boolean | null {
   if (!expression) return null;
   if (expression.op === "table_history_interval") {
     const values = [expression.drawKey, expression.maxKey, expression.minKey].map(key => inputs[key]);
-    if (!values.every(value => Number.isInteger(value) && value >= -2147483648 && value <= 4294967295)) return null;
+    if (!values.every(isHistoryInteger)) return null;
     const [draw, maximum, minimum] = [values[0] >>> 0, values[1] | 0, values[2] | 0];
     const remainder = draw % expression.modulus;
     const effective = minimum < remainder && remainder < maximum ? (maximum >>> 0) % expression.modulus : remainder;
@@ -47,10 +53,10 @@ export function evaluate(expression, inputs) {
   }
   return null;
 }
-export function initial(view, entry, values) {
+export function initial(view: PlayerView, entry: Pick<PlayerEntry, "id">, values: Inputs): PlayerState {
   return { key: entry.id, stack: [], inputs: { ...view.scenario.inputs, ...values }, seen: [], afterAction: false, assumptions: {} };
 }
-function restrict(expression, truth, inputs, fields) {
+function restrict(expression: Condition, truth: boolean, inputs: Inputs, fields: Record<string, InputField>): Inputs {
   const result = { ...inputs };
   if (expression.op === "not") return restrict(expression.item, !truth, inputs, fields);
   if (expression.op === "all" || expression.op === "any") {
@@ -63,11 +69,14 @@ function restrict(expression, truth, inputs, fields) {
   }
   if (expression.op !== "compare") return result;
   const { key, value } = expression;
-  const opposites = { lt: "ge", le: "gt", gt: "le", ge: "lt", eq: "ne", ne: "eq" };
+  const opposites: Record<Comparison, Comparison> = { lt: "ge", le: "gt", gt: "le", ge: "lt", eq: "ne", ne: "eq" };
   const operator = truth ? expression.operator : opposites[expression.operator];
   if (operator === "eq") { result[key] = value; return result; }
   if (typeof value === "boolean" && operator === "ne") { result[key] = !value; return result; }
-  const field = fields[key], bounds = field?.numericRange || (field?.number ? field : null);
+  const field = fields[key];
+  const bounds = field?.numericRange ?? (field?.number && field.min !== undefined && field.max !== undefined
+    ? { min: field.min, max: field.max }
+    : null);
   const current = result[key] ?? (bounds ? { min: bounds.min, max: bounds.max, minClosed: true, maxClosed: true } : null);
   if (typeof value !== "number" || !current || typeof current !== "object") return result;
   const domain = { ...current };
@@ -82,11 +91,11 @@ function restrict(expression, truth, inputs, fields) {
   result[key] = domain; return result;
 }
 // Standing scenario assumptions survive an action; snapshot inputs do not.
-function standing(view, inputs) {
+function standing(view: PlayerView, inputs: Inputs): Inputs {
   const keys = [...(view.scenario?.persistent || []), ...(view.persistentState || [])];
   return Object.fromEntries(keys.filter(key => key in inputs).map(key => [key, inputs[key]]));
 }
-export function applyUpdates(node, supplied) {
+export function applyUpdates(node: NodeUpdates, supplied: Inputs): Inputs {
   const inputs = { ...supplied };
   const update = node.variableUpdate;
   if (update) {
@@ -99,11 +108,11 @@ export function applyUpdates(node, supplied) {
       else if (update.kind === "timer") {
         if (update.operation === "activate" || update.operation === "assign") {
           const value = update.operation === "activate" ? update.default : update.value;
-          inputs[key] = value <= 0;
+          inputs[key] = value !== undefined && value <= 0;
         }
       } else {
         const value = inputs[key];
-        const calculate = old => Math.max(update.min, Math.min(update.max,
+        const calculate = (old: number) => Math.max(update.min, Math.min(update.max,
           update.operation === "assign" ? Math.fround(update.value) : Math.fround(Math.fround(old) + (update.operation === "add" ? 1 : -1) * Math.fround(update.value))));
         if (update.operation === "assign") inputs[key] = calculate(0);
         else if (typeof value === "number" && Number.isFinite(value)) inputs[key] = calculate(value);
@@ -122,16 +131,24 @@ export function applyUpdates(node, supplied) {
   }
   return inputs;
 }
-function usesChangedInput(expression, changed) {
-  if (changed.has(expression.key) || changed.has(expression.otherKey)) return true;
-  if (expression.op === "table_history_interval" && [expression.drawKey, expression.maxKey, expression.minKey].some(key => changed.has(key))) return true;
-  if (expression.item && usesChangedInput(expression.item, changed)) return true;
-  return (expression.items || []).some(item => usesChangedInput(item, changed));
+function usesChangedInput(expression: Condition, changed: Set<string>): boolean {
+  if (expression.op === "compare") return changed.has(expression.key) || (expression.otherKey !== undefined && changed.has(expression.otherKey));
+  if (expression.op === "table_history_interval") return [expression.drawKey, expression.maxKey, expression.minKey].some(key => changed.has(key));
+  if (expression.op === "not") return usesChangedInput(expression.item, changed);
+  return (expression.op === "all" || expression.op === "any") && expression.items.some(item => usesChangedInput(item, changed));
 }
-export function step(view, supplied) {
+function hasUnknown(expression: Condition): boolean {
+  if (expression.op === "unknown") return true;
+  if (expression.op === "not") return hasUnknown(expression.item);
+  return (expression.op === "all" || expression.op === "any") && expression.items.some(hasUnknown);
+}
+
+type Assumption = [Condition, [string, PlayerState["stack"]] | null];
+
+export function step(view: PlayerView, supplied: PlayerState): PlayerStep {
   let state = { ...supplied, stack: supplied.stack.slice(), seen: supplied.seen.slice(), assumptions: { ...supplied.assumptions } };
-  const via = [];
-  const next = (key, extras = {}) => ({ ...state, key, ...extras });
+  const via: PlayerVisit[] = [];
+  const next = (key: string, extras: Partial<PlayerState> = {}): PlayerState => ({ ...state, key, ...extras });
   for (let count = 0; count < 128; count++) {
     const node = view.nodes[state.key];
     if (!node) return { title: "后续连接尚未恢复", kind: "unknown", children: [], sourceRef: state.key };
@@ -145,7 +162,7 @@ export function step(view, supplied) {
     }
     if (node.kind === "return" && state.stack.length) {
       via.push({ sourceRef: node.sourceRef, kind: "return" });
-      const stack = state.stack.slice(), position = stack.pop();
+      const position = state.stack[state.stack.length - 1], stack = state.stack.slice(0, -1);
       state = next(position.key, { stack });
       continue;
     }
@@ -154,7 +171,7 @@ export function step(view, supplied) {
       const inputs = applyUpdates(node, state.inputs);
       const changed = new Set([...Object.keys(inputs), ...Object.keys(state.inputs)].filter(key => JSON.stringify(inputs[key]) !== JSON.stringify(state.inputs[key])));
       const stable = Object.fromEntries(Object.entries(state.assumptions).filter(([token]) => {
-        const [expression, scope] = JSON.parse(token);
+        const [expression, scope] = JSON.parse(token) as Assumption;
         return scope === null && !usesChangedInput(expression, changed);
       }));
       state = next(node.next, node.invalidateSnapshot ? { inputs: standing(view, inputs), assumptions: {}, afterAction: true } : { inputs, assumptions: stable });
@@ -169,21 +186,22 @@ export function step(view, supplied) {
         continue;
       }
     }
-    const record = { ...node, key: state.key, afterAction: state.afterAction, via, children: [] };
+    const record: PlayerStep = { ...node, key: state.key, afterAction: state.afterAction, via, children: [] };
     if (node.kind === "condition") {
       const truth = evaluate(node.condition, state.inputs);
       record.truth = truth;
       // Repeated tests of the same expression in one snapshot must agree.
-      const hasUnknown = expression => expression.op === "unknown" || (expression.items || []).some(hasUnknown) || (expression.item && hasUnknown(expression.item));
-      const token = JSON.stringify([node.condition, hasUnknown(node.condition) ? [node.sourceRef, state.stack] : null]);
-      for (const [branch, value] of [["true", true], ["false", false]]) {
+      const assumption: Assumption = [node.condition, hasUnknown(node.condition) ? [node.sourceRef, state.stack] : null];
+      const token = JSON.stringify(assumption);
+      for (const [branch, value] of [["true", true], ["false", false]] as const) {
         if (truth !== null && truth !== value) continue;
         if (state.assumptions[token] !== undefined && state.assumptions[token] !== value) continue;
-        let label = node.presentation ? node.presentation[value ? "trueLabel" : "falseLabel"] : value ? "满足" : "不满足";
+        let label = node.presentation?.[value ? "trueLabel" : "falseLabel"] ?? (value ? "满足" : "不满足");
         if (!value && state.afterAction && node.presentation?.snapshotGuard) label += "，或状态已变";
         const inputs = restrict(node.condition, value, state.inputs, view.inputs || {});
         if (Object.entries(state.assumptions).some(([previous, expected]) => {
-          const actual = evaluate(JSON.parse(previous)[0], inputs);
+          const [condition] = JSON.parse(previous) as Assumption;
+          const actual = evaluate(condition, inputs);
           return actual !== null && actual !== expected;
         })) continue;
         record.children.push({ label, role: branch, state: next(node[branch], { inputs, assumptions: { ...state.assumptions, [token]: value } }) });

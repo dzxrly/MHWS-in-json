@@ -1,4 +1,4 @@
-import { nextTick, onBeforeUnmount, onMounted, reactive, watch } from "vue";
+import { nextTick, onBeforeUnmount, onMounted, reactive, watch, type Ref } from "vue";
 
 // The page title shown in the header once the page's own heading has
 // scrolled under it; `tools` pages also move their search into the header.
@@ -8,9 +8,11 @@ export const pageHeader = reactive({ title: "", condensed: false, tools: false }
  * Condense the header while `heading` (a template ref) is out of view.
  * `focusTarget` (optional ref) keeps the moved search field focused.
  */
-export function usePageHeader(title, heading, { tools = false, focusTarget } = {}) {
-  let observer = null;
-  function observe(element) {
+type ElementRef = Readonly<Ref<HTMLElement | null | undefined>>;
+
+export function usePageHeader(title: string, heading: ElementRef, { tools = false, focusTarget }: { tools?: boolean; focusTarget?: ElementRef } = {}) {
+  let observer: IntersectionObserver | null = null;
+  function observe(element: HTMLElement | null | undefined) {
     observer?.disconnect();
     if (!element) return;
     const height = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--header-height")) || 88;
@@ -31,7 +33,7 @@ export function usePageHeader(title, heading, { tools = false, focusTarget } = {
       () => pageHeader.condensed,
       async () => {
         const input = focusTarget.value;
-        if (input !== document.activeElement) return;
+        if (!input || input !== document.activeElement) return;
         await nextTick();
         input.focus();
       },

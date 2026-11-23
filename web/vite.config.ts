@@ -1,7 +1,7 @@
 import { execSync } from "node:child_process";
 import { cpSync, createReadStream, existsSync, statSync } from "node:fs";
 import { join, resolve, sep } from "node:path";
-import { defineConfig } from "vite";
+import { defineConfig, type Plugin } from "vite";
 import vue from "@vitejs/plugin-vue";
 
 // The site reads only the committed JSON in src/site_data/data (or another
@@ -9,8 +9,8 @@ import vue from "@vitejs/plugin-vue";
 // It never imports src or sdk and runs no Python.
 const DATA_DIR = resolve(process.env.MHWS_SITE_DATA || resolve(import.meta.dirname, "../src/site_data/data"));
 
-function siteData() {
-  let outDir;
+function siteData(): Plugin {
+  let outDir: string;
   function requireData() {
     if (!existsSync(join(DATA_DIR, "site.json")))
       throw new Error(`缺少网站数据 ${DATA_DIR}：用 MHWS_SITE_DATA 指定数据目录`);
@@ -24,14 +24,17 @@ function siteData() {
     configureServer(server) {
       requireData();
       server.middlewares.use("/data", (request, response, next) => {
-        const path = resolve(DATA_DIR, "." + decodeURIComponent(request.url.split("?")[0]));
-        if (!path.startsWith(DATA_DIR + sep) || !existsSync(path) || !statSync(path).isFile()) return next();
+        const path = resolve(DATA_DIR, "." + decodeURIComponent((request.url ?? "/").split("?")[0]));
+        if (!path.startsWith(DATA_DIR + sep) || !path.endsWith(".json") || !existsSync(path) || !statSync(path).isFile()) return next();
         response.setHeader("Content-Type", "application/json; charset=utf-8");
         createReadStream(path).pipe(response);
       });
     },
     closeBundle() {
-      cpSync(DATA_DIR, join(outDir, "data"), { recursive: true });
+      cpSync(DATA_DIR, join(outDir, "data"), {
+        recursive: true,
+        filter: (source) => source.endsWith(".json") || statSync(source).isDirectory(),
+      });
     },
   };
 }

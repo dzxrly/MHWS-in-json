@@ -1,56 +1,59 @@
-<script setup>
+<script setup lang="ts">
 import { computed, nextTick, ref, shallowRef, watch } from "vue";
 import Icon from "../../components/Icon.vue";
 import LoadState from "../../components/LoadState.vue";
-import { loadJson } from "../../composables/data.js";
-import { usePageHeader } from "../../composables/page_header.js";
-import { SITE_TITLE } from "../../router.js";
+import { loadJson } from "../../composables/data";
+import { formatDecimalText } from "../../composables/numbers";
+import { usePageHeader } from "../../composables/page_header";
+import { SITE_TITLE } from "../../router";
 import SkillEffect from "./SkillEffect.vue";
+import type { Skill } from "./types";
 
 const props = defineProps({ skillId: { type: String, default: "" } });
 
-const data = shallowRef(null);
-const error = ref(null);
+const data = shallowRef<{ categories: string[]; skills: (Skill & { search: string })[] } | null>(null);
+const error = ref<Error | null>(null);
 const query = ref("");
 const category = ref("");
 const showEmpty = ref(false);
-const list = ref();
-const detail = ref();
-const heading = ref();
+const list = ref<HTMLElement | null>(null);
+const detail = ref<HTMLElement | null>(null);
+const heading = ref<HTMLElement | null>(null);
 usePageHeader("技能效果数值", heading);
 
-loadJson("skill_details/skills.json").then((loaded) => {
+loadJson<{ categories: string[]; skills: Skill[] }>("skill_details/skills.json").then((loaded) => {
   // Everything a search can match: names, descriptions, effects, weapons and situations.
-  for (const skill of loaded.skills) {
-    skill.search = [
+  const skills = loaded.skills.map((skill) => ({
+    ...skill, search: [
       skill.name, skill.ja, skill.id, skill.explain, skill.category,
       ...skill.levels.map((l) => l.explain),
       ...skill.effects.flatMap((e) => [e.name, e.code, ...Object.values(e.meaning), ...e.rows.flatMap((r) => [r.applies, r.situation])]),
-    ].join("\n").toLocaleLowerCase();
-  }
-  data.value = loaded;
-  if (!current.value.effects.length) showEmpty.value = true;
+    ].join("\n").toLocaleLowerCase(),
+  }));
+  data.value = { categories: loaded.categories, skills };
+  if (!current.value?.effects.length) showEmpty.value = true;
 }, (failure) => (error.value = failure));
 
 const byId = computed(() => new Map((data.value?.skills ?? []).map((s) => [s.id, s])));
 const current = computed(() => {
-  const skills = data.value.skills;
+  const skills = data.value?.skills ?? [];
   return byId.value.get(props.skillId) || skills.find((s) => s.effects.length) || skills[0];
 });
-const withEffects = computed(() => data.value.skills.filter((s) => s.effects.length).length);
+const withEffects = computed(() => data.value?.skills.filter((s) => s.effects.length).length ?? 0);
 const groups = computed(() => {
   const text = query.value.trim().toLocaleLowerCase();
-  return data.value.categories
+  const { categories, skills } = data.value ?? { categories: [], skills: [] };
+  return categories
     .map((name) => ({
       name,
-      skills: data.value.skills.filter(
+      skills: skills.filter(
         (s) => s.category === name && (showEmpty.value || s.effects.length) && (!category.value || s.category === category.value) && (!text || s.search.includes(text)),
       ),
     }))
     .filter((group) => group.skills.length);
 });
 const shown = computed(() => groups.value.reduce((n, group) => n + group.skills.length, 0));
-const total = computed(() => data.value.skills.filter((s) => showEmpty.value || s.effects.length).length);
+const total = computed(() => data.value?.skills.filter((s) => showEmpty.value || s.effects.length).length ?? 0);
 
 watch(
   () => data.value && current.value,
@@ -60,13 +63,16 @@ watch(
     await nextTick();
     // Keep the chosen skill in view in the list; on narrow screens the list
     // sits above the detail, so move to the detail instead.
-    const link = list.value?.querySelector('[aria-current="page"]');
-    if (link) {
-      const box = list.value;
+    const box = list.value;
+    const link = box?.querySelector<HTMLElement>('[aria-current="page"]');
+    if (box && link) {
       if (link.offsetTop < box.scrollTop + 30 || link.offsetTop + link.offsetHeight > box.scrollTop + box.clientHeight)
         box.scrollTop = link.offsetTop - box.clientHeight / 2;
     }
-    if (previous && matchMedia("(max-width: 899px)").matches) detail.value?.scrollIntoView({ behavior: "smooth" });
+    if (previous && matchMedia("(max-width: 899px)").matches) {
+      const behavior = matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth";
+      detail.value?.scrollIntoView({ behavior });
+    }
   },
   { immediate: true },
 );
@@ -110,6 +116,7 @@ watch(
               v-for="skill in group.skills"
               :key="skill.id"
               :to="`/skill_details/${skill.id}`"
+              class="nav-option"
               :class="{ empty: !skill.effects.length }"
               :aria-current="skill === current ? 'page' : undefined"
             >
@@ -120,11 +127,11 @@ watch(
           <p v-if="!shown" class="empty-state">没有匹配的技能。</p>
         </nav>
       </aside>
-      <div ref="detail" class="skill-detail">
+      <div v-if="current" ref="detail" class="skill-detail">
         <header class="skill-head surface">
           <p class="kicker mono">{{ current.category }} · {{ current.id }}</p>
           <h2>{{ current.name }}<span v-if="current.ja" class="ja">{{ current.ja }}</span></h2>
-          <p v-if="current.explain" class="explain">{{ current.explain }}</p>
+          <p v-if="current.explain" class="explain">{{ formatDecimalText(current.explain) }}</p>
           <p v-if="current.mappedSkill" class="aside-note">
             对应技能：<RouterLink class="mapped-skill" :to="`/skill_details/${current.mappedSkill.id}`">{{ current.mappedSkill.name }}（{{ current.mappedSkill.id }}）</RouterLink>。等级与效果见对应技能。
           </p>
@@ -135,7 +142,7 @@ watch(
           <p v-for="note in current.notes" :key="note" class="aside-note">{{ note }}</p>
           <ul v-if="current.levels.some((l) => l.explain)" class="levels">
             <li v-for="level in current.levels" :key="level.level">
-              <b>Lv.{{ level.level }}</b><span>{{ level.explain }}</span>
+              <b>Lv.{{ level.level }}</b><span>{{ formatDecimalText(level.explain) }}</span>
             </li>
           </ul>
         </header>
@@ -172,7 +179,7 @@ watch(
   flex-direction: column;
   gap: 12px;
   padding: 18px 18px 14px;
-  border-bottom: 1px solid color-mix(in srgb, var(--outline-variant) 60%, transparent);
+  border-bottom: 1px solid var(--divider);
 }
 .chips {
   display: flex;
@@ -200,26 +207,7 @@ watch(
   letter-spacing: 1px;
 }
 .skill-list a {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   gap: 8px;
-  min-height: 44px;
-  padding: 8px 16px;
-  border-radius: var(--shape-m);
-  transition:
-    background-color var(--dur-effects) var(--effects),
-    border-radius var(--dur-spring) var(--spring);
-}
-.skill-list a:hover {
-  background: var(--surface-high);
-}
-/* The current skill's indicator morphs into a pill. */
-.skill-list a[aria-current="page"] {
-  background: var(--secondary-container);
-  color: var(--on-secondary-container);
-  font-weight: 600;
-  border-radius: 22px;
 }
 .skill-list .n {
   color: var(--on-surface-variant);
@@ -228,7 +216,7 @@ watch(
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
 }
-.skill-list a.empty .name {
+.skill-list a.empty:not([aria-current="page"]) .name {
   color: var(--on-surface-variant);
 }
 .skill-detail {
@@ -280,8 +268,8 @@ watch(
   list-style: none;
   display: grid;
   gap: 6px;
-  border-radius: 20px;
-  background: color-mix(in srgb, var(--surface-high) 55%, transparent);
+  border-radius: var(--shape-l-plus);
+  background: var(--surface-high);
 }
 .levels li {
   display: grid;
@@ -303,7 +291,7 @@ watch(
 .no-values {
   padding: 18px 22px;
   border: 1px dashed var(--outline-variant);
-  border-radius: 24px;
+  border-radius: var(--radius);
   color: var(--on-surface-variant);
 }
 @media (max-width: 899px) {

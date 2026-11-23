@@ -1,3 +1,5 @@
+import type { SiteDefinition } from "../../site_types";
+
 export default {
   id: "skill_details",
   path: "/skill_details/",
@@ -12,4 +14,4 @@ export default {
       redirect: (to) => ({ path: `/skill_details/${to.hash.slice(1)}`, hash: "" }),
     },
   ],
-};
+} satisfies SiteDefinition;

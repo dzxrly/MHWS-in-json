@@ -28,43 +28,6 @@
   color: var(--on-surface-variant);
   font-size: 13px;
 }
-.segmented {
-  display: inline-flex;
-  padding: 4px;
-  gap: 4px;
-  border-radius: 999px;
-  background: var(--surface);
-  border: 1px solid color-mix(in srgb, var(--outline-variant) 48%, transparent);
-}
-.segmented button {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 40px;
-  padding: 0 18px;
-  border: none;
-  border-radius: 20px;
-  background: transparent;
-  color: var(--on-surface-variant);
-  font-size: 14px;
-  font-weight: 600;
-  transition:
-    background-color var(--dur-effects) var(--effects),
-    color var(--dur-effects) var(--effects),
-    border-radius var(--dur-spring) var(--spring);
-}
-.segmented button .icon {
-  width: 18px;
-  height: 18px;
-}
-.segmented button:active {
-  border-radius: var(--shape-m);
-}
-.segmented button[aria-selected="true"] {
-  background: var(--primary-container);
-  color: var(--on-primary-container);
-}
-
 .workspace-card {
   display: flex;
   flex-direction: column;
@@ -78,7 +41,7 @@
   align-items: center;
   gap: 10px 14px;
   padding: 12px 16px;
-  border-bottom: 1px solid color-mix(in srgb, var(--outline-variant) 60%, transparent);
+  border-bottom: 1px solid var(--divider);
 }
 .bar-group {
   display: flex;
@@ -107,14 +70,15 @@
   font-size: 13px;
   color: var(--on-surface-variant);
 }
-.bar-field .select-field {
+.flow-select {
   max-width: 220px;
+  min-width: 0;
 }
 
 .scenario {
   flex: none;
   padding: 10px 16px;
-  border-bottom: 1px solid color-mix(in srgb, var(--outline-variant) 60%, transparent);
+  border-bottom: 1px solid var(--divider);
   background: color-mix(in srgb, var(--surface-high) 40%, transparent);
   font-size: 13px;
 }
@@ -158,12 +122,9 @@
   font-size: 12px;
   color: var(--on-surface-variant);
 }
-.input-field .select-field {
-  min-width: 150px;
-}
 .input-head {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 6px;
 }
 /* Field labels quote long state paths without spaces. */
@@ -173,20 +134,15 @@
 }
 .input-help {
   flex: none;
-  width: 18px;
-  height: 18px;
+  width: 28px;
+  height: 28px;
   padding: 0;
-  border: 1px solid var(--outline-variant);
-  border-radius: 50%;
-  background: var(--surface-lowest);
-  color: var(--on-surface-variant);
-  font: 600 11px/1 var(--font);
+  font: 600 13px/1 var(--font);
   cursor: help;
 }
-.input-help:hover,
 .input-help[aria-expanded="true"] {
-  border-color: var(--primary);
-  color: var(--primary);
+  color: var(--on-primary-container);
+  background: var(--primary-container);
 }
 .input-hint {
   font-size: 12px;
@@ -242,8 +198,8 @@
   /* Opaque rather than blurred: a backdrop blur over the graph would
      repaint on every pan and zoom frame. */
   background: color-mix(in srgb, var(--surface) 94%, transparent);
-  border: 1px solid color-mix(in srgb, var(--outline-variant) 60%, transparent);
-  border-radius: 999px;
+  border: 1px solid var(--divider);
+  border-radius: var(--shape-full);
 }
 .legend span::before {
   content: "";
@@ -266,7 +222,7 @@
   top: 14px;
   left: 14px;
   padding: 8px 16px;
-  border-radius: 999px;
+  border-radius: var(--shape-full);
   background: var(--secondary-container);
   color: var(--on-secondary-container);
   font-size: 13px;
@@ -278,14 +234,14 @@
   right: 12px;
   bottom: 12px;
   background: var(--surface);
-  border: 1px solid color-mix(in srgb, var(--outline-variant) 60%, transparent);
-  border-radius: 16px;
+  border: 1px solid var(--divider);
+  border-radius: var(--shape-l);
   cursor: pointer;
 }
 
 /* ---------------------------------------------------------------- side panel */
 .side {
-  border-left: 1px solid color-mix(in srgb, var(--outline-variant) 60%, transparent);
+  border-left: 1px solid var(--divider);
   overflow: auto;
   padding: 18px 20px;
   font-size: 13px;
@@ -311,7 +267,7 @@
 .selection .kind {
   display: inline-block;
   padding: 2px 10px;
-  border-radius: 999px;
+  border-radius: var(--shape-full);
   font-size: 12px;
   font-weight: 600;
   color: var(--kc, var(--on-surface-variant));
@@ -326,7 +282,7 @@
 .selection details,
 .side > details {
   margin-top: 14px;
-  border-top: 1px solid color-mix(in srgb, var(--outline-variant) 60%, transparent);
+  border-top: 1px solid var(--divider);
   padding-top: 10px;
 }
 .selection ol,
@@ -350,7 +306,7 @@
   font-size: 11px;
   line-height: 1.6;
   background: var(--surface-high);
-  border-radius: 12px;
+  border-radius: var(--shape-m);
   padding: 12px;
   max-height: 360px;
   overflow: auto;
@@ -380,18 +336,16 @@
 .about details p {
   margin: 8px 0;
 }
-.table-scroll {
+.about .table-scroll {
   max-height: 360px;
   overflow: auto;
 }
 .about table {
-  border-collapse: collapse;
   font-size: 12px;
 }
 .about th,
 .about td {
-  border-bottom: 1px solid color-mix(in srgb, var(--outline-variant) 60%, transparent);
-  padding: 4px 14px 4px 0;
+  padding: 6px 12px;
   text-align: left;
   vertical-align: top;
 }
@@ -707,7 +661,7 @@
   }
   .side {
     border-left: 0;
-    border-top: 1px solid color-mix(in srgb, var(--outline-variant) 60%, transparent);
+    border-top: 1px solid var(--divider);
   }
   .bar-group.end {
     margin-left: 0;
@@ -727,10 +681,10 @@
   .monster-bar {
     gap: 10px;
   }
-  .segmented {
+  .monster .view-switch {
     width: 100%;
   }
-  .segmented button {
+  .monster .view-switch button {
     flex: 1;
     justify-content: center;
   }
@@ -756,7 +710,7 @@
   .bar-field {
     flex: 1 1 100%;
   }
-  .bar-field .select-field {
+  .flow-select {
     flex: 1;
     max-width: none;
   }

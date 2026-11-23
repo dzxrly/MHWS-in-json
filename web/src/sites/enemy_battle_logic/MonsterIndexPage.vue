@@ -1,19 +1,21 @@
-<script setup>
+<script setup lang="ts">
 import { computed, ref } from "vue";
 import Icon from "../../components/Icon.vue";
 import LoadState from "../../components/LoadState.vue";
-import { loadJson } from "../../composables/data.js";
-import { pageHeader, usePageHeader } from "../../composables/page_header.js";
+import SiteCard from "../../components/SiteCard.vue";
+import { loadJson } from "../../composables/data";
+import { pageHeader, usePageHeader } from "../../composables/page_header";
+import type { MonsterIndex } from "./types";
 
-const index = ref(null);
-const error = ref(null);
+const index = ref<MonsterIndex | null>(null);
+const error = ref<Error | null>(null);
 const query = ref("");
-const toolbar = ref();
-const searchInput = ref();
+const toolbar = ref<HTMLElement>();
+const searchInput = ref<HTMLInputElement>();
 usePageHeader("怪物行动逻辑", toolbar, { tools: true, focusTarget: searchInput });
-loadJson("enemy_battle_logic/index.json").then(
+loadJson<MonsterIndex>("enemy_battle_logic/index.json").then(
   (data) => (index.value = data),
-  (failure) => (error.value = failure),
+  (failure: unknown) => (error.value = failure instanceof Error ? failure : new Error(String(failure))),
 );
 
 const shown = computed(() => {
@@ -57,15 +59,15 @@ const shown = computed(() => {
       <p v-if="!index.releaseReady" class="preview-note">研究预览：只包含部分怪物，不是正式发布的数据。</p>
       <ul class="monster-grid">
         <li v-for="monster in shown" :key="monster.enemyId">
-          <RouterLink class="monster-card surface card-link" :to="`/enemy_battle_logic/${monster.enemyId}`">
+          <SiteCard class="monster-card" :to="`/enemy_battle_logic/${monster.enemyId}`">
             <span class="monster-id mono">{{ monster.enemyId }}</span>
-            <span class="monster-name">{{ monster.enemyName }}</span>
+            <span class="card-title">{{ monster.enemyName }}</span>
             <span class="monster-stats">
               <span v-if="monster.behaviorTables"><b>{{ monster.behaviorTables }}</b> 张行为表</span>
               <span v-if="monster.actions"><b>{{ monster.actions }}</b> 个动作</span>
               <span class="card-arrow" aria-hidden="true"><Icon name="arrow" /></span>
             </span>
-          </RouterLink>
+          </SiteCard>
         </li>
       </ul>
       <p v-if="!shown.length" class="empty-state">没有匹配的怪物。</p>
@@ -91,7 +93,7 @@ const shown = computed(() => {
 .preview-note {
   margin-bottom: 20px;
   padding: 12px 20px;
-  border-radius: 20px;
+  border-radius: var(--shape-l-plus);
   background: var(--error-container);
   color: var(--on-error-container);
 }
@@ -101,25 +103,16 @@ const shown = computed(() => {
   padding: 0;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 14px;
+  gap: 16px;
 }
 .monster-card {
   height: 100%;
   padding: 20px 20px 16px 22px;
-  border-radius: 24px;
   gap: 2px;
 }
 .monster-id {
   font-size: 12px;
   color: var(--on-surface-variant);
-}
-.monster-name {
-  font-size: 19px;
-  font-weight: 650;
-  line-height: 1.45;
-}
-.monster-card:hover .monster-name {
-  color: var(--primary);
 }
 .monster-stats {
   margin-top: auto;
@@ -137,8 +130,6 @@ const shown = computed(() => {
 }
 .monster-stats .card-arrow {
   margin-left: auto;
-  width: 32px;
-  height: 32px;
 }
 @media (max-width: 559px) {
   .monster-grid {
@@ -147,10 +138,6 @@ const shown = computed(() => {
   }
   .monster-card {
     padding: 14px 14px 12px;
-    border-radius: 20px;
-  }
-  .monster-name {
-    font-size: 16px;
   }
   .monster-stats {
     flex-direction: column;

@@ -1,7 +1,7 @@
-<script setup>
+<script setup lang="ts">
 import Icon from "./Icon.vue";
-import { isDark, toggleTheme } from "../composables/theme.js";
-import { pageHeader } from "../composables/page_header.js";
+import { isDark, toggleTheme } from "../composables/theme";
+import { pageHeader } from "../composables/page_header";
 
 // The information sites are reached from the home page, not from the header.
 defineProps({ wide: Boolean });

@@ -1,7 +1,6 @@
 import { ref } from "vue";
 
 const KEY = "mhws-theme";
-const media = matchMedia("(prefers-color-scheme: dark)");
 
 function stored() {
   try {
@@ -11,17 +10,15 @@ function stored() {
   }
 }
 
-// index.html applies the class before the first paint; this keeps it in sync.
-export const isDark = ref(document.documentElement.classList.contains("dark"));
+// A first visit opens with the main site's blue scheme. Remember an explicit
+// theme choice for return visits.
+export const isDark = ref(stored() === "dark");
+document.documentElement.classList.toggle("dark", isDark.value);
 
-function apply(dark) {
+function apply(dark: boolean) {
   isDark.value = dark;
   document.documentElement.classList.toggle("dark", dark);
 }
-
-media.addEventListener("change", (event) => {
-  if (!stored()) apply(event.matches);
-});
 
 function switchTheme() {
   apply(!isDark.value);
@@ -34,9 +31,9 @@ function switchTheme() {
 
 // Spread the new theme as a circle from the toggle button. Browsers
 // without view transitions switch through the colour transitions.
-export function toggleTheme(event) {
+export function toggleTheme(event: MouseEvent) {
   const root = document.documentElement;
-  if (!document.startViewTransition || matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  if (!(event.currentTarget instanceof Element) || !document.startViewTransition || matchMedia("(prefers-reduced-motion: reduce)").matches) {
     switchTheme();
     return;
   }
