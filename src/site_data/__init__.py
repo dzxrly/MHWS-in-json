@@ -10,6 +10,7 @@ committed folder src/site_data/data:
   enemy_battle_logic/<enemyId>/flow.json     technical flow chart
   skill_details/skills.json                  skill effect values and meanings
   missions/quests.json                       categorized quests and target parameters
+  weapon_actions/actions.json                weapon actions in workbook order
 
 Regenerate it offline with ``python -m src.site_data`` when the source data
 changes. The release's PROCESSED_DATA bundles the battle logic and skill
@@ -33,6 +34,7 @@ from .enemy_battle_logic import (
 )
 from .skill_details import OUTPUT_NAME as SKILLS_NAME, export_skill_data
 from .missions import OUTPUT_NAME as MISSIONS_NAME, export_mission_data
+from .weapon_actions import OUTPUT_NAME as ACTIONS_NAME, export_weapon_actions
 
 DEFAULT_DIR = Path(__file__).with_name("data")
 RELEASE_NAMES = ("enemy_battle_logic.json", "skill_details.json")
@@ -45,6 +47,7 @@ def output_names():
         SITE_NAME,
         SKILLS_NAME,
         MISSIONS_NAME,
+        ACTIONS_NAME,
         INDEX_NAME,
         *(name for enemy_id in EXPECTED_ENEMY_IDS for name in page_names(enemy_id)),
     )
@@ -68,6 +71,11 @@ def export_site_data(
     output_dir.mkdir(parents=True, exist_ok=True)
     export_skill_data(output_dir, repository, text_source)
     export_mission_data(
+        output_dir=output_dir,
+        repository=repository,
+        text_source=text_source,
+    )
+    export_weapon_actions(
         output_dir=output_dir,
         repository=repository,
         text_source=text_source,
