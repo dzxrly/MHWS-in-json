@@ -10,6 +10,7 @@ interface Hit {
   request: number;
   condition: string | null;
   attack: number;
+  fixedElement: { name: string; value: number } | null;
   fixed: number;
   stun: number | null;
   breakRate: number | null;
@@ -42,10 +43,15 @@ const groups = computed(() => {
 });
 const count = computed(() => groups.value.reduce((sum, group) => sum + group.rows.length, 0));
 const columns = [
-  ["attack", "动作值"], ["fixed", "固定伤害值"], ["stun", "眩晕值"],
+  ["attack", "动作值"], ["fixedElement", "固定属性值"], ["fixed", "固定伤害值"], ["stun", "眩晕值"],
   ["breakRate", "部位破坏倍率"], ["elementRate", "属性倍率"], ["statusRate", "异常倍率"],
 ] as const;
-function format(column: typeof columns[number][0], value: number | null) {
+function format(column: typeof columns[number][0], row: Hit) {
+  if (column === "fixedElement") {
+    const element = row.fixedElement;
+    return element ? `${element.name} ${formatNumber(element.value)}` : "—";
+  }
+  const value = row[column];
   if (value == null) return "—";
   const text = formatNumber(value);
   return column.endsWith("Rate") ? `×${text}` : text;
@@ -75,7 +81,7 @@ function format(column: typeof columns[number][0], value: number | null) {
             <tr v-for="(row, i) in group.rows" :key="i">
               <th v-if="i === 0" scope="rowgroup" :rowspan="group.rows.length" class="action-name" :title="group.internal || undefined">{{ group.name }}</th>
               <td class="record-id">{{ row.request }}</td>
-              <td v-for="[key] in columns" :key="key" :class="{ power: key === 'attack' }">{{ format(key, row[key]) }}</td>
+              <td v-for="[key] in columns" :key="key" :class="{ power: key === 'attack' }">{{ format(key, row) }}</td>
               <td class="condition">{{ row.condition || "—" }}</td>
             </tr>
           </tbody>
@@ -94,7 +100,7 @@ function format(column: typeof columns[number][0], value: number | null) {
 .table-title h2 { font-size: 21px; }
 .table-bar .search-field { max-width: 240px; }
 .table-scroll { overflow: auto; max-height: 70vh; scrollbar-gutter: stable; }
-table { min-width: 58rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
+table { min-width: 64rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
 th, td { padding: 9px 12px; text-align: right; }
 thead th { position: sticky; top: 0; z-index: 2; }
 thead th:first-child, .action-name { text-align: left; padding-left: 24px; }

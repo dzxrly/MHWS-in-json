@@ -6,8 +6,9 @@ from pathlib import Path
 
 from config import ACTION_MAP_ENV_VAR, ZH_HANS_LANGUAGE_ID
 from src.database.action_values.build import SHEET_NAMES, build_action_value_workbook
-from src.processed_data.skill_details.labels import WEAPON_CODES, WEAPONS
+from src.processed_data.skill_details.labels import ENUMS, WEAPON_CODES, WEAPONS
 from src.shared.action_values.catalog import load_action_value_catalog
+from src.shared.source.user3 import normalize
 
 OUTPUT_NAME = "weapon_actions/actions.json"
 COLLISION_ROLES = {
@@ -117,6 +118,13 @@ def _describe_workbook_conditions(cell):
         cell = cell[end + 2 :]
 
 
+def _fixed_element(row):
+    symbol = normalize(value=row["_AttackAttrFixed._Value"])
+    if symbol == "NONE":
+        return None
+    return {"name": ENUMS["受击属性"][symbol], "value": row["_AttrValue"]}
+
+
 def export_weapon_actions(*, output_dir, repository, text_source):
     action_map = (
         os.environ.get(ACTION_MAP_ENV_VAR) or repository.root.parent / "ActionMap.json"
@@ -150,6 +158,7 @@ def export_weapon_actions(*, output_dir, repository, text_source):
                                 cell=row["MappingCondition"]
                             ),
                             "attack": row["_Attack"],
+                            "fixedElement": _fixed_element(row=row),
                             "fixed": row["_FixAttack"],
                             "stun": row.get("_StunDamage"),
                             "breakRate": row.get("_PartsBreakRate"),
