@@ -26,6 +26,8 @@ Converts the bundled MHWS JSON data into Excel workbooks and release archives. T
 - Monster battle logic: each monster's attack decision tree, filterable by distance, angle and state. Covers 34 monsters, with a page for each variant.
 - Skill effect values: the effect values and activation conditions of every skill at each level.
 
+The local site also includes quest cards grouped by the in-game categories and a weapon action value table. Each quest has a shareable detail page with target HP distributions, combat multipliers by state and party size, and rewards.
+
 ## Run
 
 ```powershell
@@ -52,11 +54,11 @@ sdk/                         # Offline SDK that reads the game files
   skill_effect_exporter/     # Skill effect values
   action_map_exporter/       # ActionMap v2
     shared/  skills/         #   native emulation and workflow, one module per skill
-web/                         # Website (Vite + Vue); src/sites/ holds one folder per site
+web/                         # Vue + TypeScript website built with Vite
 tests/
 ```
 
-After the monster models or skill effects change, regenerate the website data with `python -m src.site_data` and commit it; the tests fail while it is out of date. Building the website needs only Node.js 22 or later: `npm --prefix web ci`, then `npm --prefix web run build`.
+After a data change, regenerate the static JSON with `python -m src.site_data`. The test suite compares these files to a fresh export. The web app reads the JSON from `src/site_data/data/`. Run `npm --prefix web ci` followed by `npm --prefix web run build` to type-check and build it independently with Node.js 22.12 or later.
 
 ## Release archives
 
@@ -88,13 +90,13 @@ skill_details.json
 skill_pool.json
 ```
 
-`enemy_battle_logic.json` and `skill_details.json` hold the full data behind the [website](#website).
+`enemy_battle_logic.json` and `skill_details.json` hold the full data behind the monster battle logic and skill pages.
 
 `MHWS-in-json_<version>.zip` contains the source JSON, packaged separately from the workbooks.
 
 ## Project tools
 
-The `sdk/` directory is an offline SDK that reads the game files; `python -m sdk` opens its menu. Its features:
+The offline `sdk/` tools read the game files and publish static JSON. `python -m sdk` opens the extraction menu and shows the separate commands for building the website data and skill workbook. Its features:
 
 - Monster battle logic (`sdk.enemy_logic_exporter`) extracts monster battle logic into the graph JSON behind the battle pages. The 34 models in `src/processed_data/enemy_battle_logic/models` keep unresolved branches marked.
 - Skill effects (`sdk.skill_effect_exporter`) finds the native functions that use each skill, evaluates them per level, and writes the skill effect link JSON behind `SkillDetails.xlsx`.

@@ -26,6 +26,8 @@
 - 怪物行动逻辑：每只怪物的出招决策树，可按距离、角度和状态筛选。共 34 只怪物，变种各有独立页面。
 - 技能效果数值：每个技能在各等级下的效果数值与生效条件。
 
+本地版还提供按游戏内分类浏览的任务卡片，以及按武器查询的动作值表。每个任务有独立网址，可以查看各目标的血量分布、不同状态与人数下的战斗倍率，以及任务报酬。
+
 ## 运行
 
 ```powershell
@@ -52,11 +54,11 @@ sdk/                         # 读取游戏文件的离线 SDK
   skill_effect_exporter/     # 技能效果数值
   action_map_exporter/       # ActionMap v2
     shared/  skills/         #   原生代码模拟与流程、每个技能一个模块
-web/                         # 网站（Vite + Vue）；src/sites/ 中每个信息站一个目录
+web/                         # Vue + TypeScript 网站，使用 Vite 构建
 tests/
 ```
 
-怪物模型或技能效果变化后，运行 `python -m src.site_data` 重新生成网站数据并提交；数据过期时测试会失败。构建网站只需要 Node.js 22 或更新版本：先 `npm --prefix web ci`，再 `npm --prefix web run build`。
+源数据变化后，运行 `python -m src.site_data` 重新生成静态 JSON。测试会逐个比对生成结果。网站读取 `src/site_data/data/` 下的 JSON，使用 Node.js 22.12 或更新版本即可独立构建。先运行 `npm --prefix web ci`，再运行 `npm --prefix web run build`，构建时会检查 TypeScript 类型。
 
 ## 发布压缩包
 
@@ -88,13 +90,13 @@ skill_details.json
 skill_pool.json
 ```
 
-`enemy_battle_logic.json` 和 `skill_details.json` 是[网站](#网站)背后的完整数据。
+`enemy_battle_logic.json` 和 `skill_details.json` 分别包含怪物行动逻辑和技能页面使用的完整数据。
 
 `MHWS-in-json_<版本>.zip` 包含源 JSON，与工作簿分开打包。
 
 ## 项目工具
 
-仓库的 `sdk/` 目录是读取游戏文件的离线 SDK，`python -m sdk` 打开它的菜单。它包含以下功能：
+`sdk/` 下的离线工具读取游戏文件并输出静态 JSON。`python -m sdk` 打开提取菜单，也可以查看单独生成网站数据和技能工作簿的命令。它包含以下功能：
 
 - 怪物行动逻辑（`sdk.enemy_logic_exporter`）：从游戏文件中提取怪物行动逻辑，生成行动图网页使用的 JSON。`src/processed_data/enemy_battle_logic/models` 中的 34 份模型保留未知分支的标记。
 - 技能效果（`sdk.skill_effect_exporter`）：找出原生代码中使用每个技能的函数并按等级求值，生成 `SkillDetails.xlsx` 使用的技能效果链路 JSON。

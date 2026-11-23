@@ -26,6 +26,8 @@
 - 魔物行動邏輯：每隻魔物的出招決策樹，可按距離、角度和狀態篩選。共 34 隻魔物，變種各有獨立頁面。
 - 技能效果數值：每個技能在各等級下的效果數值與生效條件。
 
+本機版還提供依遊戲內分類瀏覽的任務卡片，以及依武器查詢的動作值表。每個任務有獨立網址，可以查看各目標的體力分布、不同狀態與人數下的戰鬥倍率，以及任務報酬。
+
 ## 執行
 
 ```powershell
@@ -52,11 +54,11 @@ sdk/                         # 讀取遊戲檔案的離線 SDK
   skill_effect_exporter/     # 技能效果數值
   action_map_exporter/       # ActionMap v2
     shared/  skills/         #   原生程式碼模擬與流程、每個技能一個模組
-web/                         # 網站（Vite + Vue）；src/sites/ 中每個資訊站一個目錄
+web/                         # Vue + TypeScript 網站，使用 Vite 建置
 tests/
 ```
 
-魔物模型或技能效果變化後，執行 `python -m src.site_data` 重新產生網站資料並提交；資料過期時測試會失敗。建置網站只需要 Node.js 22 或更新版本：先 `npm --prefix web ci`，再 `npm --prefix web run build`。
+來源資料變更後，執行 `python -m src.site_data` 重新產生靜態 JSON。測試會逐一比對產生的結果。網站讀取 `src/site_data/data/` 下的 JSON，使用 Node.js 22.12 或更新版本即可獨立建置。先執行 `npm --prefix web ci`，再執行 `npm --prefix web run build`，建置時會檢查 TypeScript 型別。
 
 ## 發布壓縮檔
 
@@ -88,13 +90,13 @@ skill_details.json
 skill_pool.json
 ```
 
-`enemy_battle_logic.json` 和 `skill_details.json` 是[網站](#網站)背後的完整資料。
+`enemy_battle_logic.json` 和 `skill_details.json` 分別包含魔物行動邏輯和技能頁面使用的完整資料。
 
 `MHWS-in-json_<版本>.zip` 包含來源 JSON，與活頁簿分開打包。
 
 ## 專案工具
 
-倉庫的 `sdk/` 目錄是讀取遊戲檔案的離線 SDK，`python -m sdk` 開啟它的選單。它包含以下功能：
+`sdk/` 下的離線工具讀取遊戲檔案並輸出靜態 JSON。`python -m sdk` 開啟提取選單，也可以查看單獨產生網站資料和技能活頁簿的命令。它包含以下功能：
 
 - 魔物行動邏輯（`sdk.enemy_logic_exporter`）：從遊戲檔案中提取魔物行動邏輯，產生行動圖網頁使用的 JSON。`src/processed_data/enemy_battle_logic/models` 中的 34 份模型保留未知分支的標記。
 - 技能效果（`sdk.skill_effect_exporter`）：找出原生程式碼中使用每個技能的函式並按等級求值，產生 `SkillDetails.xlsx` 使用的技能效果鏈路 JSON。
