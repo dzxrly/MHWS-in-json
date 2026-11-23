@@ -9,11 +9,11 @@ committed folder src/site_data/data:
   enemy_battle_logic/<enemyId>/tables.json   behaviour table nodes (raw data)
   enemy_battle_logic/<enemyId>/flow.json     technical flow chart
   skill_details/skills.json                  skill effect values and meanings
+  missions/quests.json                       categorized quests and target parameters
 
-Regenerate it offline with ``python -m src.site_data`` after the models or the
-skill links change, and commit it; a test fails while it is out of date. The
-release's PROCESSED_DATA carries the same data as two complete single files,
-enemy_battle_logic.json and skill_details.json (export_release_files).
+Regenerate it offline with ``python -m src.site_data`` when the source data
+changes. The release's PROCESSED_DATA bundles the battle logic and skill
+details separately in enemy_battle_logic.json and skill_details.json.
 """
 
 import json
@@ -32,6 +32,7 @@ from .enemy_battle_logic import (
     page_names,
 )
 from .skill_details import OUTPUT_NAME as SKILLS_NAME, export_skill_data
+from .missions import OUTPUT_NAME as MISSIONS_NAME, export_mission_data
 
 DEFAULT_DIR = Path(__file__).with_name("data")
 RELEASE_NAMES = ("enemy_battle_logic.json", "skill_details.json")
@@ -43,6 +44,7 @@ def output_names():
     return (
         SITE_NAME,
         SKILLS_NAME,
+        MISSIONS_NAME,
         INDEX_NAME,
         *(name for enemy_id in EXPECTED_ENEMY_IDS for name in page_names(enemy_id)),
     )
@@ -65,6 +67,11 @@ def export_site_data(
         shutil.rmtree(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
     export_skill_data(output_dir, repository, text_source)
+    export_mission_data(
+        output_dir=output_dir,
+        repository=repository,
+        text_source=text_source,
+    )
     export_battle_data(
         output_dir,
         models_dir=models_dir,

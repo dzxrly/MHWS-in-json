@@ -1,0 +1,139 @@
+.page-heading.mission-list-heading { margin-inline: 0; flex-direction: row; align-items: baseline; }
+.mission-layout {
+  display: grid;
+  grid-template-columns: 188px minmax(0, 1fr);
+  align-items: start;
+  gap: 24px;
+}
+.mission-nav {
+  position: sticky;
+  top: calc(var(--header-height) + 12px);
+  padding: 16px 10px 12px;
+}
+.mission-nav h2 {
+  margin: 2px 12px 10px;
+  color: var(--on-surface-variant);
+  font-size: 14px;
+}
+.mission-nav nav { display: grid; gap: 4px; }
+.mission-nav .nav-option { justify-content: space-between; gap: 8px; }
+.mission-nav .count { font-size: 12px; font-variant-numeric: tabular-nums; }
+.mission-board { min-width: 0; }
+.mission-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.mission-toolbar .search-field { flex: 1 1 190px; }
+.mission-filters { display: flex; gap: 8px; margin-inline-start: auto; }
+.mission-section-heading { display: flex; align-items: center; gap: 10px; margin: 20px 4px 12px; min-height: 40px; }
+.mission-section-heading h2, .detail-content > h2 { font-size: clamp(20px, 2vw, 24px); line-height: 1.4; }
+.mission-section-heading output { color: var(--on-surface-variant); font-size: 13px; }
+.filter-reset { margin-left: auto; }
+.mission-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 15.5rem), 1fr));
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.card-link.mission-card {
+  container-type: inline-size;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: minmax(52px, auto) 1fr;
+  align-items: center;
+  gap: 12px 4px;
+  min-height: 128px;
+  height: 100%;
+  padding: 16px;
+}
+.card-icons { display: flex; flex-wrap: wrap; align-items: center; container-type: inline-size; --monster-size: 52px; }
+.card-icons.multiple { --monster-size: var(--multi-size, 36px); }
+.card-icons:has(> :nth-child(4)) { --monster-size: min(var(--multi-size, 36px), 25cqi); }
+.card-icons:has(> :nth-child(5)) { --monster-size: clamp(22px, 20cqi, 30px); }
+.mission-card .card-title {
+  grid-column: 1 / -1;
+  align-self: end;
+  /* An ideograph takes one em. Use the available card width at any zoom. */
+  font-size: min(1.125rem, calc((100cqi - 1px) / var(--title-characters)));
+  white-space: nowrap;
+}
+.mission-stars {
+  align-self: start;
+  color: var(--tertiary);
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.mission-empty { padding: 32px 16px; text-align: center; }
+.mission-empty p { margin-bottom: 12px; }
+
+.mission-detail-page { max-width: 980px; }
+.mission-back { margin-bottom: 12px; }
+.page-heading.mission-heading { display: block; }
+.mission-title-row { display: flex; align-items: center; gap: 12px; margin-top: 4px; }
+.mission-title-row h1 { margin: 0; }
+.mission-kind { color: var(--on-surface-variant); font-size: 13px; }
+.mission-title-row .mission-stars { align-self: center; flex: none; font-size: 20px; line-height: 1; }
+.mission-details { padding: 0 clamp(16px, 3vw, 32px); }
+.mission-details dl, .mission-details dd, .mission-details h4 { margin: 0; }
+.mission-details dt, .detail-note, .target-title p {
+  color: var(--on-surface-variant);
+  font-size: 13px;
+}
+.mission-details dd { margin-top: 4px; font-size: 15px; }
+.quest-facts { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; padding: 24px 0; }
+.detail-content { padding: 24px 0; border-top: 1px solid var(--divider); }
+.detail-content > h2 { margin-bottom: 16px; }
+.detail-targets { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.detail-targets .chip { --monster-size: 32px; padding: 6px 14px; text-align: left; line-height: 1.35; }
+.detail-targets small, .detail-targets b { display: block; }
+.detail-targets small { font-size: 11px; }
+.detail-targets b { font-size: 13px; }
+.target-title { --monster-size: 44px; display: flex; align-items: center; gap: 12px; }
+.target-title h3, .reward-group h3 { font-size: 17px; }
+.detail-subsection { margin-top: 20px; }
+.detail-subsection h4, .reward-group h3 { margin-bottom: 8px; }
+.hp-grades { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 0; list-style: none; }
+.hp-grades li {
+  min-width: 76px;
+  padding: 8px 12px;
+  border-radius: var(--shape-m);
+  background: var(--surface-hover);
+}
+.hp-grades b { display: block; font: 14px/1.5 var(--mono); }
+.hp-grades span { color: var(--on-surface-variant); font-size: 12px; }
+.mission-table-scroll { max-width: 100%; overflow-x: auto; border-radius: var(--shape-m); }
+.mission-table { font-size: 14px; }
+.mission-table th, .mission-table td { padding: 8px 12px; }
+.mission-table th { text-align: left; }
+.mission-table td { font-family: var(--mono); }
+.mission-table :is(th, td):nth-child(n + 2) { text-align: right; }
+.rank-rewards :is(th, td):last-child { text-align: left; }
+.rank-rewards td:last-child { min-width: 120px; font-family: inherit; }
+.reward-group + .reward-group, .reward-slots { margin-top: 20px; }
+.reward-slots summary { width: fit-content; font-size: 14px; font-weight: 600; }
+.reward-slots[open] summary { margin-bottom: 8px; }
+.mission-details .quest-points { display: flex; flex-wrap: wrap; gap: 24px; margin-bottom: 16px; }
+.quest-points dd { font-family: var(--mono); }
+.quest-description dl { display: grid; gap: 12px; }
+.quest-description dd { white-space: pre-line; }
+
+@media (max-width: 1000px) {
+  .mission-layout { grid-template-columns: 160px minmax(0, 1fr); gap: 16px; }
+  .quest-facts { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 800px) {
+  .mission-layout { display: block; }
+  .mission-nav { position: static; margin-bottom: 16px; padding: 12px; }
+  .mission-nav h2 { margin: 0 6px 8px; }
+  .mission-nav nav { display: flex; flex-wrap: wrap; }
+}
+@media (max-width: 620px) {
+  .mission-toolbar { display: grid; }
+  .mission-filters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0; }
+  .mission-section-heading { margin: 12px 4px 8px; }
+  .mission-cards { grid-template-columns: repeat(auto-fill, minmax(min(100%, 13.5rem), 1fr)); gap: 10px; }
+  .card-link.mission-card { min-height: 100px; grid-template-rows: minmax(40px, auto) 1fr; padding: 12px 16px; gap: 6px; }
+  .card-icons { --monster-size: 42px; --multi-size: 30px; }
+  .detail-content, .quest-facts { padding: 18px 0; }
+  .mission-table th, .mission-table td { padding-inline: 8px; }
+}
