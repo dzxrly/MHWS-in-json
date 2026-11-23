@@ -323,31 +323,6 @@ pre,
   max-width: 1184px;
   margin: auto;
 }
-/* Same shared X axis as the dock. Both pages occupy one grid cell; the
-   outgoing page completes its fade before the incoming page becomes visible. */
-.route-stage {
-  display: grid;
-  --route-enter-x: 30px;
-  --route-leave-x: -30px;
-}
-.route-stage.backwards { --route-enter-x: -30px; --route-leave-x: 30px; }
-.route-panel {
-  grid-area: 1 / 1;
-  align-self: start;
-  min-width: 0;
-}
-.route-enter-active { animation: route-in 300ms var(--emphasized-decelerate) both; }
-.route-leave-active {
-  pointer-events: none;
-  animation: route-out 105ms var(--emphasized-accelerate) both;
-}
-@keyframes route-in {
-  0%, 35% { opacity: 0; transform: translate3d(var(--route-enter-x), 0, 0); }
-  to { opacity: 1; transform: none; }
-}
-@keyframes route-out {
-  to { opacity: 0; transform: translate3d(var(--route-leave-x), 0, 0); }
-}
 .page.narrow {
   max-width: 880px;
 }

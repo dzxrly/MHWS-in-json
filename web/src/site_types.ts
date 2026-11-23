@@ -14,6 +14,5 @@ declare module "vue-router" {
     site?: SiteDefinition;
     title?: string;
     workspace?: boolean;
-    backwards?: boolean;
   }
 }

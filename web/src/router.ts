@@ -28,10 +28,8 @@ export const router = createRouter({
     saved || (to.path === from.path ? false : { top: 0 }),
 });
 
-router.afterEach((to, from, failure) => {
+router.afterEach((to, _from, failure) => {
   if (failure) return;
-  const depth = (path: string) => path.split("/").filter(Boolean).length;
-  to.meta.backwards = depth(to.path) < depth(from.path);
   const title = to.meta.title || to.meta.site?.title;
   document.title = title ? `${title} · ${SITE_TITLE}` : SITE_TITLE;
 });
