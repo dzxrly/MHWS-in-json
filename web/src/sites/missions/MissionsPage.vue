@@ -63,7 +63,7 @@ const filtered = computed(() => {
     (!text || [quest.name, quest.category, quest.type, quest.id, quest.stage, ...quest.targets.map(targetName)]
       .some((part) => part?.toLocaleLowerCase().includes(text))),
   );
-  return category.value ? matches : matches.sort((a, b) => b.stars - a.stars);
+  return matches.sort((a, b) => b.stars - a.stars);
 });
 
 </script>

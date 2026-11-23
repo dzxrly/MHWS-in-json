@@ -26,7 +26,7 @@ Converts the bundled MHWS JSON data into Excel workbooks and release archives. T
 - Monster battle logic: each monster's attack decision tree, filterable by distance, angle and state. Covers 34 monsters, with a page for each variant.
 - Skill effect values: the effect values and activation conditions of every skill at each level.
 
-The local site also includes quest cards grouped by the in-game categories and a weapon action value table. Each quest has a shareable detail page with target HP distributions, combat multipliers by state and party size, and rewards.
+Quest cards are sorted from highest to lowest star level, both in the full list and within each in-game category. Each quest has a shareable detail page with target HP distributions, combat multipliers by state and party size, and rewards. Weapon action values can be browsed by weapon.
 
 ## Run
 
