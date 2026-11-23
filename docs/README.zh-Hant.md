@@ -35,7 +35,7 @@ python -m pip install -r requirements.txt
 python main.py
 ```
 
-在 [config.py](../config.py) 中設定路徑、語言和版本。程式不接收命令列參數，結果寫入 `output/`；匯出失敗時保留上一次輸出。測試命令為 `python -B -m tests`。
+在根目錄的 [config.py](../config.py) 中設定路徑和語言。`GAME_VERSION` 表示技能說明所依據的已核對遊戲版本，`VERSION` 控制發行壓縮檔的命名。程式不接收命令列參數，結果寫入 `output/`。匯出失敗時保留上一次輸出。測試命令為 `python -B -m tests`。
 
 ## 程式碼結構
 
@@ -108,4 +108,4 @@ SDK 需要使用者提供從記憶體 dump 出的遊戲 EXE（如 `MonsterHunter
 
 - `SkillDetails.xlsx`：每列是一個技能在某一等級的一個效果，列出數值、作用對象、計算方式、生效條件和單位。數值按「只裝備該技能」求得；隨情形變化的數值按情形分列列出。
 - `MissionData.xlsx`：每個任務完成條件佔一列。`SoloHealth` 列出可能的初始單人最大血量，計入任務難度、隨機血量檔位和 Legendary 倍率。
-- `WeaponActionValues.xlsx` 需要 `MHWS-in-json/ActionMap.json`，可使用同版本輸入執行 `python -m sdk.action_map_exporter extract` 重新產生，或透過 `MHWS_ACTION_MAP_PATH` 指定其他檔案。未對映到的動作 `MappingName` 留空。
+- `WeaponActionValues.xlsx` 需要 `MHWS-in-json/ActionMap.json`，可使用同版本輸入執行 `python -m sdk.action_map_exporter extract` 重新產生，或透過 `MHWS_ACTION_MAP_PATH` 指定其他檔案。`MappingNameSource` 表示顯示名稱取自何處，`MappingConfidence` 表示動作與命中判定之間的對映有何種程度的依據。未對映到的動作 `MappingName` 留空。

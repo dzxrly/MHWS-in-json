@@ -10,7 +10,7 @@
 | `sdk.skill_effect_exporter` | 找出原生程式碼中使用每個技能的函式，按技能等級求值，產生技能效果鏈路 JSON（`SkillDetails.xlsx` 的資料來源） | dump 出的 EXE、IL2CPP 中繼資料、`MHWS-in-json` 資源 |
 | `sdk.action_map_exporter` | 產生 `WeaponActionValues.xlsx` 使用的武器動作與精確碰撞 requestSet 對映 | dump 出的 EXE、IL2CPP 中繼資料、轉換後的 MOTBANK/MOTLIST/PFB/RCOL/USER JSON |
 
-三項功能讀取的都是從記憶體 dump 出的遊戲 EXE（例如 `MonsterHunterWilds_dump.exe`），產生 REFramework 的 `il2cpp_dump.json` 之前本來就會得到它；不使用原版 `MonsterHunterWilds.exe`。這兩個檔案都由使用者提供，倉庫和 Release 都不保存副本，SDK 也不猜測路徑：用 `-e/--exe`、`-i/--il2cpp` 指定，或設環境變數 `MHWS_EXE`、`MHWS_IL2CPP`。SDK 不記錄遊戲版本或檔案摘要；遊戲更新後，程式碼或資料對不上的地方會直接報錯（符號無法定位、原生位元組不一致等），按「[遊戲更新後](#遊戲更新後)」處理。
+三項功能讀取的都是從記憶體 dump 出的遊戲 EXE（例如 `MonsterHunterWilds_dump.exe`），產生 REFramework 的 `il2cpp_dump.json` 之前本來就會得到它；不使用原版 `MonsterHunterWilds.exe`。這兩個檔案都由使用者提供，倉庫和 Release 都不保存副本，SDK 也不猜測路徑：用 `-e/--exe`、`-i/--il2cpp` 指定，或設環境變數 `MHWS_EXE`、`MHWS_IL2CPP`。SDK 依原生規則核對輸入檔案，讀取時無須額外提供版本號或檔案摘要。遊戲更新後，程式碼或資料對不上的地方會直接報錯（符號無法定位、原生位元組不一致等），按「[遊戲更新後](#遊戲更新後)」處理。
 
 只想重新產生網頁或表格、不改動提取結果時，不需要 SDK：建置器只讀取倉庫中已提交的 JSON（見「[只建置網頁](#只建置網頁)」）。
 
@@ -231,6 +231,6 @@ python -m src.processed_data.skill_details                                      
 - 分叉條件比較了來自遊戲資料的值時（如心眼的肉質閾值 `_Shingan_MeatThreshold`），路徑在 `compared` 中列出它。
 - `index.json` 中有 `coverage`：按技能參數檔案（`PlayerSkillParam`、`PlayerMealSkillParam` 等 `PlayerGlobalParam` 中型別名稱以 `SkillParam` 結尾的欄位）列出每個欄位的讀取函式，以及哪些技能的路徑傳回了它（`value`）、把它寫入執行時狀態（`write`）或在條件中比較了它（`compare`）；按技能列出非零的 SkillData 槽位和以這三種方式用到的槽位。三種用法都沒有的，就是表格可能仍然漏掉的效果。
 - 技能效果表也會列出處理函式寫入執行時狀態的數值（如技能發動時寫入的持續時間，效果名以「写入」開頭並保留欄位名），以及只在取值函式之外讀到的數值。兩者都只在該資料項還沒有列出、且沒有其他技能的鏈路用到它時才列出，避免彙總多個技能的函式把其他技能的資料算進來。
-- 輸出不記錄遊戲版本或摘要；遊戲或 `MHWS-in-json` 更新後要重新執行 `extract`。
+- 技能說明中的遊戲版本取自[儲存庫根目錄的 config.py](../../config.py) 的 `GAME_VERSION`。遊戲更新後，用新版 dump 核對說明、專用方法和略過項目的依據，再更新此值。遊戲或解包資源變更後重新執行 `extract`。
 - 彙總多個技能的函式（如攻擊力合計）依賴其他技能的計時器等執行期狀態，鏈路 JSON 中可能記為 `too_many_paths`；同一技能的精確數值通常由 `getSkill*` 讀取函式給出。
 - 與敵人邏輯 SDK 相同，共通程式碼在 `sdk/skill_effect_exporter/shared/`，每個技能在 `skills/` 有獨立模組：它的提取步驟（`extract`，以及所有技能的鏈路求完後執行的 `extract_parameters`；多數只是呼叫共通步驟的薄入口，只屬於這個技能的特殊處理寫在這裡，如掃描無法對應到技能的函式及核對依據 `DECLARED_METHODS`，以及得不到本技能可顯示數值、只記錄鏈路不求值的函式 `SKIPPED_FUNCTIONS`）、顯示效果的數值含義和說明。對所有技能成立的說明寫在 `notes.py`，版本相關的佈局常數集中在 `config.py`，二者都在 `sdk/skill_effect_exporter/` 根部。遊戲更新後的檢查步驟見 [技能效果 SDK 維護說明](../skill_effect_exporter/AGENTS.md)（簡體中文）。

@@ -22,6 +22,9 @@ OUTPUT_DIR = BASE_DIR / "output"
 
 LANGUAGE_IDS = None
 ZH_HANS_LANGUAGE_ID = 13
+# Game build used for reviewed skill notes. Update after checking the new dump.
+GAME_VERSION = "1.42.0.3"
+# Optional release archive version, independent of the game build.
 VERSION = None
 VERSION_ENV_VAR = "RELEASE_VERSION"
 ZIP_PREFIX = "DATABASE"

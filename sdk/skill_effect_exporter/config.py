@@ -6,14 +6,11 @@ dump; nothing here is a build-specific address.
 
 from pathlib import Path
 
+from config import GAME_VERSION as GAME_VERSION
+
 ROOT = Path(__file__).resolve().parents[2]
 # Layout version of the link directory (index.json + shards).
 SCHEMA_VERSION = 1
-# Game version the reviewed statements were checked against: notes, the
-# evidence of declared and skipped functions in the skill modules. After a
-# game update, re-check them (AGENTS.md) and then change it here; it is not
-# compared with the game files.
-GAME_VERSION = "1.42.0.3"
 DEFAULT_NATIVES = ROOT / "MHWS-in-json/natives"
 DEFAULT_OUTPUT = ROOT / "src/processed_data/skill_details/data/skill_links"
 TMP_DIR = ROOT / ".tmp"

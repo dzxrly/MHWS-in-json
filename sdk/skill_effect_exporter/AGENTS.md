@@ -12,7 +12,7 @@ SDK 与 `src` 之间只通过这份 JSON 交接：`src` 不导入本目录的代
 - 调试脚本、试运行输出放在项目根目录 `.tmp`（默认 `.tmp/skill-effects`）。按技能筛选（`-s`）的结果不能写入正式位置，CLI 会拒绝。
 - 原生布局常量（对象头、数组与 ``List`1`` 偏移、调用约定、栈对齐、扫描用的字节模式）只放在 `config.py` 的“native layout constants”一节；类型名、方法名和字段名也集中在 `config.py`。其他模块不写字面偏移。
 - 函数地址、全局变量地址、字段偏移都不写进代码：每次运行按类型名、去后缀方法名和字段名从当前 il2cpp dump 重新定位（`scan.py`、`heap.Layouts`）。
-- 共通代码只放在 `shared/`，不写任何技能编号或只属于一个技能的常量；只属于一个技能的提取处理、常量、人工说明和数值含义写在它的 `skills/hunterskill_<编号>.py`，对所有技能都成立的说明写在 `notes.py`（简体中文），每条说明注明核对的游戏版本：版本号统一取自 `config.GAME_VERSION`（字符串中用 f-string 引用，注释中写 `config.GAME_VERSION`），代码与说明中不写字面版本号；没有证据的内容不写或标明未核实。
+- 共通代码只放在 `shared/`。单个技能的提取处理、常量、人工说明和数值含义写在它的 `skills/hunterskill_<编号>.py`，所有技能共用的说明写在 `notes.py`（简体中文）。说明引用已核对的游戏版本，版本号只在[仓库根 config.py](../../config.py) 定义。本目录的 `config.GAME_VERSION` 直接引用根配置，说明用 f-string 取值。缺乏证据的内容留空或标明未核实。
 - 同步更新用户文档：命令或参数变化时，同一次改动中更新 `sdk/README.md`、`sdk/docs/README.zh-Hans.md`、`sdk/docs/README.zh-Hant.md`（三份内容一致），必要时更新三份 README 的“项目工具”简介，并更新本文件。
 
 ## 构建思路（先读这一节）
@@ -127,7 +127,7 @@ python -B -m sdk.skill_effect_exporter new-skill -s HunterSkill_250  # 为新增
 3. 核对 `config.py` 的布局常量：用一个已知函数（如 `getSkillBallisticBeginWideRate_Gun`）确认数组长度在 `ARRAY_LENGTH_OFFSET`、元素从 `ARRAY_DATA_OFFSET` 开始；``List`1`` 的 `_items/_size/_version` 偏移与 il2cpp 字段记录一致；`via.rds.Mandrake` 的 `v/m` 字段与 `EquipSkillInfo._SkillLv` 仍按 `v / m` 解码（见 `getSkillLevelCore`）。
 4. 与上一版输出比较 `stats`（各状态的路径数）和关键技能的数值（攻击 `getSkillAttackRate/Add`、弹道强化 `getSkillBallistic*`、恨击 `getSkillViolentAddDamage`）。新出现的 `unsupported` 先看详情：缺指令就在 `native/emulator.py` 补完整语义，缺数据形式就在 `runtime/heap.py` 补对象模型。
 5. 用 `extract --all-links -o .tmp/...` 再运行一次，核对技能模块 `SKIPPED_FUNCTIONS` 中的函数仍然没有本技能可显示的数值（与正常运行的表格行一致），否则删去对应跳过项。复核 `DECLARED_METHODS` 的依据（状态对象的 `_Skill`、调用关系）是否仍成立。
-6. 复核 `notes.py` 与各技能模块 `NOTES` 中每条说明对应的代码是否仍成立，全部复核后再把 `config.GAME_VERSION` 改为新版本（说明、声明与跳过依据中的版本号都引用它）；`remapDifferences` 有变化时同步更新说明。用 `python -m src.processed_data.skill_details --meanings-report <文件.md>` 核对各技能模块的 `MEANINGS`：新出现的效果补写含义，“已不再显示的条目”从模块中删除，然后运行 `annotate`。
+6. 用新版 dump 复核 `notes.py`、各技能模块的 `NOTES`、专用方法声明和跳过项依据，再更新仓库根 `config.py` 中的 `GAME_VERSION`。若 `remapDifferences` 有变化，同步更新说明。用 `python -m src.processed_data.skill_details --meanings-report <文件.md>` 核对各模块的 `MEANINGS`，补充新出现的效果、移除已不再显示的条目，然后运行 `annotate`。
 7. 构建 `SkillDetails.xlsx` 检查表格；核对数值时直接查看链路 JSON 中的条件与来源。`src` 只核对索引与分片的格式是否一致，不保存游戏版本或解包文件摘要；游戏或 `MHWS-in-json` 更新后必须重新运行 `extract`。
 
 ## 扩展规则

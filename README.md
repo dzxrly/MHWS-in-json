@@ -35,7 +35,7 @@ python -m pip install -r requirements.txt
 python main.py
 ```
 
-Set paths, languages, and version in [config.py](config.py). The script takes no command-line arguments and writes to `output/`. A failed export keeps the previous output. Run tests with `python -B -m tests`.
+Set paths and languages in the root [config.py](config.py). `GAME_VERSION` identifies the reviewed game build used in skill notes. `VERSION` controls release archive names. The script takes no command-line arguments and writes to `output/`. A failed export keeps the previous output. Run tests with `python -B -m tests`.
 
 ## Code layout
 
@@ -108,4 +108,4 @@ The SDK needs the game EXE dumped from memory (e.g. `MonsterHunterWilds_dump.exe
 
 - `SkillDetails.xlsx`: each row is one effect of a skill at one level, with its value, what it applies to, how it is calculated, when it applies, and its unit. Values assume only that skill is equipped; a value that depends on the situation gets one row per situation.
 - `MissionData.xlsx`: one row per quest clear condition. `SoloHealth` lists the possible initial solo maximum HP values, counting quest difficulty, random health grades, and Legendary modifiers.
-- `WeaponActionValues.xlsx` needs `MHWS-in-json/ActionMap.json`; rebuild it with `python -m sdk.action_map_exporter extract` from the same game version, or point `MHWS_ACTION_MAP_PATH` at another file. Actions without a match keep a blank `MappingName`.
+- `WeaponActionValues.xlsx` needs `MHWS-in-json/ActionMap.json`; rebuild it with `python -m sdk.action_map_exporter extract` from the same game version, or point `MHWS_ACTION_MAP_PATH` at another file. `MappingNameSource` identifies the source of the displayed name. `MappingConfidence` describes the evidence linking the action to its hit record. Actions without a match keep a blank `MappingName`.
