@@ -25,7 +25,7 @@
 | 导出顺序、校验、打包和落盘 | `src/pipeline/exporter.py` 编排数据库、加工数据和压缩包生成，`validation.py` 校验产物集合并写出清单，`package.py` 管理归档，`publish.py` 在校验通过后替换本地 `output/`。根 `main.py` 是这条流程的命令入口。[导出流程](src/pipeline/exporter.py) |
 | 网页专用数据和入口 | `src/site_data/` 下的 Python 模块生成前端实际读取的 JSON，正式输出放在 `src/site_data/data/<模块>/` 并随代码提交。新模块需在 `src/site_data/__init__.py` 接入导出调用和文件清单。任务与武器分别读取 `missions/quests.json` 与 `weapon_actions/actions.json`。[网站数据清单](src/site_data/__init__.py) |
 | 页面、样式和视觉资源 | 单个栏目放在 `web/src/sites/<模块>/`，包含 `.vue` 页面、该栏目的 TypeScript 数据类型、交互和样式。在模块 `index.ts` 定义标题和路由，在 `web/src/sites.ts` 注册。首页卡片和路由表都读取这份注册表。全站页面放 `pages/`，共用组件放 `components/`，主题与布局放 `styles/`，共用数据加载和交互逻辑放 `composables/`（均在 `web/src/`）。随模块导入的字体等资源放 `web/src/assets/`，按固定 URL 提供的图标和雪碧图放 `web/public/`。[栏目注册表](web/src/sites.ts) |
-| 测试、用户文档和自动发布 | 测试按职责放在 `tests/database/`、`tests/processed_data/`、`tests/site_data/`、`tests/sdk/`、`tests/shared/`、`tests/pipeline/` 或 `tests/release/`。多个测试使用的小型输入放 `tests/fixtures/`。用户用法放根 `README.md` 和 `docs/` 下的简繁中文说明，SDK 的命令用法放 `sdk/README.md` 和 `sdk/docs/`。发布工作流在 `.github/workflows/`，发布说明脚本在 `.github/scripts/`。 |
+| 测试、用户文档和发布 | 测试按职责放在 `tests/database/`、`tests/processed_data/`、`tests/site_data/`、`tests/sdk/`、`tests/shared/`、`tests/pipeline/` 或 `tests/release/`。多个测试使用的小型输入放 `tests/fixtures/`。用户用法放根 `README.md` 和 `docs/` 下的简繁中文说明，SDK 的命令用法放 `sdk/README.md` 和 `sdk/docs/`。发布工作流在 `.github/workflows/`，发布说明脚本在 `.github/scripts/`。 |
 
 正式输出写入 `output/<语言代码>/` 和 `output/processed_data/`，压缩包和 `manifest.json` 位于 `output/` 顶层，前端构建结果在 `web/dist/`。修正产物时修改生成端，再重新生成。
 
@@ -126,6 +126,8 @@
 
 ## 用户文档与 Git 协作
 
+- 数据库 Release 和网站共用 `Publish database and website` 工作流。仅在默认分支手动运行 `workflow_dispatch`。同一次运行完成回归测试、数据库导出和前端构建，上传 `web/dist/` 到现有 Cloudflare Pages 项目 `mhws-in-json` 后，再发布同一提交的数据库压缩包。推送、标签和 PR 不触发构建。
+- 切换到手动发布时，在仓库 Actions 配置中添加 `CLOUDFLARE_API_TOKEN`（Secret，所属账户的 Cloudflare Pages 编辑权限）和 `CLOUDFLARE_ACCOUNT_ID`（Variable）。同时在 Pages 项目的 **Build → Branch control** 关闭生产分支自动部署，并把预览分支设为 **None**。GitHub 工作流和 Pages 的 Git 集成各自控制触发方式。[Cloudflare 分支控制说明](https://developers.cloudflare.com/pages/configuration/branch-build-controls/)
 - 根 `README.md` 默认英文，简体中文、繁体中文译本分别放在 `docs/README.zh-Hans.md` 和 `docs/README.zh-Hant.md`。SDK 对应的三份文档在 `sdk/README.md` 和 `sdk/docs/`。每组三语互链。改动影响用户的功能、配置、命令或产物时，同批更新受影响的三语文档。
 - 根 README 面向下载数据或运行导出的用户，目录树与当前代码对应，简洁说明网站、数据用途和运行方式，保留既有 PyREUser3 品牌区块。工作簿文档应解释 `MappingNameSource` 表示名称从哪里获得，`MappingConfidence` 表示映射依据的确定程度。Cloudflare 部署教程不放进根 README。公开文档和 PR 说明避免披露私有上游项目的名称和地址。
 - 提交按功能分批，使用符合 gitmoji 规范的 emoji 和详细中文提交说明，写清改了什么、涉及哪个产物及原因。Codex 参与时，在正文后空一行并保留一次 `Co-authored-by: Codex <noreply@openai.com>`。PR 说明使用详细中文，写明动机、主要变化及相关验证，Codex 参与时末尾按全局约定署名。

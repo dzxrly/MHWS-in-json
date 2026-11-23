@@ -62,6 +62,8 @@ After a data change, regenerate the static JSON with `python -m src.site_data`. 
 
 ## Release archives
 
+Maintainers publish both the database archives and the website from the same commit. To publish, open **Actions → Publish database and website → Run workflow** and select `main`.
+
 `DATABASE_<language>_<version>.zip` contains the database workbooks for one language:
 
 ```text

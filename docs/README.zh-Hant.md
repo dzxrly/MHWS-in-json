@@ -62,6 +62,8 @@ tests/
 
 ## 發布壓縮檔
 
+資料庫壓縮檔和網站從同一筆提交發布。維護者在 **Actions → Publish database and website → Run workflow** 中選擇 `main`，手動執行一次即可。
+
 `DATABASE_<語言>_<版本>.zip` 每種語言一份，包含該語言的資料庫活頁簿：
 
 ```text

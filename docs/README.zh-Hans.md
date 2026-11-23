@@ -62,6 +62,8 @@ tests/
 
 ## 发布压缩包
 
+数据库压缩包和网站从同一提交发布。维护者在 **Actions → Publish database and website → Run workflow** 中选择 `main`，手动运行一次即可。
+
 `DATABASE_<语言>_<版本>.zip` 每种语言一份，包含该语言的数据库工作簿：
 
 ```text
