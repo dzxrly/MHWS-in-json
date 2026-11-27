@@ -3,9 +3,9 @@ import { onBeforeUnmount, onMounted } from "vue";
 // A single listener also covers the menus teleported to document.body.
 export function useControlRipple() {
   const controls = ".card-link, .nav-option, .chip, .icon-button, .filled-button, .tonal-button, .text-button, .outlined-button, .site-select";
-  const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+  let reduced: MediaQueryList | null = null;
   function ripple(event: MouseEvent) {
-    if (reduced.matches || !(event.target instanceof Element)) return;
+    if (reduced?.matches || !(event.target instanceof Element)) return;
     const control = event.target.closest<HTMLElement>(controls);
     if (!control || control.matches(":disabled")) return;
     const box = control.getBoundingClientRect();
@@ -21,6 +21,9 @@ export function useControlRipple() {
     layer.addEventListener("animationend", () => layer.remove(), { once: true });
     control.append(layer);
   }
-  onMounted(() => document.addEventListener("click", ripple, true));
+  onMounted(() => {
+    reduced = matchMedia("(prefers-reduced-motion: reduce)");
+    document.addEventListener("click", ripple, true);
+  });
   onBeforeUnmount(() => document.removeEventListener("click", ripple, true));
 }

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import Icon from "../../components/Icon.vue";
-import type { MissionTarget } from "./catalog";
+import type { MissionListTarget } from "./catalog";
 
-const props = defineProps<{ target: MissionTarget }>();
-const texture = `url(${import.meta.env.BASE_URL}quest-icons.png)`;
+const props = defineProps<{ target: MissionListTarget }>();
+const texture = `url(${import.meta.env.BASE_URL}quest-icons.webp)`;
 const cell = computed(() => props.target.icon ?? (props.target.id ? 160 : null));
 </script>
 

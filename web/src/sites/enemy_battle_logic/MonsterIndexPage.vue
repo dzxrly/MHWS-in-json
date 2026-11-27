@@ -1,22 +1,42 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, onMounted, onServerPrefetch, ref } from "vue";
 import Icon from "../../components/Icon.vue";
 import LoadState from "../../components/LoadState.vue";
 import SiteCard from "../../components/SiteCard.vue";
-import { loadJson } from "../../composables/data";
+import { getCachedJson, getPreloadedSlice, loadJson, setPreloadedSlice, useSsrDataContext } from "../../composables/data";
 import { pageHeader, usePageHeader } from "../../composables/page_header";
+import { useSeoMeta } from "../../composables/seo";
 import type { MonsterIndex } from "./types";
 
-const index = ref<MonsterIndex | null>(null);
+const ssr = useSsrDataContext();
+const index = ref<MonsterIndex | null>(
+  getPreloadedSlice<MonsterIndex>("enemy_battle_logic/index.json", ssr) ??
+    getCachedJson<MonsterIndex>("enemy_battle_logic/index.json") ??
+    null,
+);
 const error = ref<Error | null>(null);
 const query = ref("");
 const toolbar = ref<HTMLElement>();
 const searchInput = ref<HTMLInputElement>();
 usePageHeader("怪物行动逻辑", toolbar, { tools: true, focusTarget: searchInput });
-loadJson<MonsterIndex>("enemy_battle_logic/index.json").then(
-  (data) => (index.value = data),
-  (failure: unknown) => (error.value = failure instanceof Error ? failure : new Error(String(failure))),
-);
+useSeoMeta(() => index.value ? {
+  description: `查询怪物猎人：荒野 ${index.value.monsters.length} 只大型怪物的战斗行动逻辑与出招决策树，支持按距离、角度与状态筛选。`,
+} : {});
+
+onServerPrefetch(async () => {
+  const data = await loadJson<MonsterIndex>("enemy_battle_logic/index.json", ssr);
+  setPreloadedSlice("enemy_battle_logic/index.json", data, ssr);
+  index.value = data;
+});
+
+onMounted(() => {
+  if (!index.value) {
+    loadJson<MonsterIndex>("enemy_battle_logic/index.json").then(
+      (data) => (index.value = data),
+      (failure: unknown) => (error.value = failure instanceof Error ? failure : new Error(String(failure))),
+    );
+  }
+});
 
 const shown = computed(() => {
   const text = query.value.trim().toLocaleLowerCase();
@@ -59,7 +79,7 @@ const shown = computed(() => {
       <p v-if="!index.releaseReady" class="preview-note">研究预览：只包含部分怪物，不是正式发布的数据。</p>
       <ul class="monster-grid">
         <li v-for="monster in shown" :key="monster.enemyId">
-          <SiteCard class="monster-card" :to="`/enemy_battle_logic/${monster.enemyId}`">
+          <SiteCard class="monster-card" :to="{ name: 'monster', params: { enemyId: monster.enemyId } }">
             <span class="monster-id mono">{{ monster.enemyId }}</span>
             <span class="card-title">{{ monster.enemyName }}</span>
             <span class="monster-stats">

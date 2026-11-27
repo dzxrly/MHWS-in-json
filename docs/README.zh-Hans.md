@@ -60,6 +60,8 @@ tests/
 
 源数据变化后，运行 `python -m src.site_data` 重新生成静态 JSON。测试会逐个比对生成结果。网站读取 `src/site_data/data/` 下的 JSON，使用 Node.js 22.12 或更新版本即可独立构建。先运行 `npm --prefix web ci`，再运行 `npm --prefix web run build`，构建时会检查 TypeScript 类型。
 
+构建将预渲染页面、`sitemap.xml` 和 `robots.txt` 写入 `web/dist/`。换域名时，在构建前将 `SITE_ORIGIN` 设为新站点的源地址，例如 `https://example.com`。预览部署可设置 `MHWS_SITE_PREVIEW=1` 生成限制抓取的规则。研究预览数据会自动启用这些规则。
+
 ## 发布压缩包
 
 数据库压缩包和网站从同一提交发布。维护者在 **Actions → Publish database and website → Run workflow** 中选择 `main`，手动运行一次即可。

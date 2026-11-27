@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, reactive, ref, shallowRef, watch } from "vue";
+import { computed, nextTick, onBeforeUnmount, onMounted, onServerPrefetch, reactive, ref, shallowRef, watch } from "vue";
 import Icon from "../../components/Icon.vue";
 import LoadState from "../../components/LoadState.vue";
 import SiteSelect from "../../components/SiteSelect.vue";
-import { loadJson } from "../../composables/data";
+import { getCachedJson, getPreloadedSlice, loadJson, setPreloadedSlice, useSsrDataContext } from "../../composables/data";
 import { formatDecimalText } from "../../composables/numbers";
-import { SITE_TITLE } from "../../router";
+import { useSeoMeta } from "../../composables/seo";
+import { SITE_TITLE } from "../../seo/config";
 import { createDecisionTree } from "./decision_tree";
 import { createTechnicalGraph, type FlowDirection } from "./technical_graph";
-import type { BattleGraph, BattleTable, BattleTree, FlowDiagram, FlowInspection } from "./types";
+import type { BattleGraph, BattleTable, BattleTree, FlowDiagram, FlowInspection, MonsterIndex } from "./types";
 import "./graph.css";
 
 const props = defineProps<{ enemyId: string }>();
@@ -83,38 +84,109 @@ const scope = computed(() => {
   );
 });
 
+const ssr = useSsrDataContext();
+const monsterIndex = shallowRef<MonsterIndex | null>(
+  getPreloadedSlice<MonsterIndex>("enemy_battle_logic/index.json", ssr) ??
+    getCachedJson<MonsterIndex>("enemy_battle_logic/index.json") ??
+    null,
+);
+const summary = computed(() => monsterIndex.value?.monsters.find((m) => m.enemyId === props.enemyId) ?? null);
+const staticActionNames = shallowRef<string[]>(
+  getPreloadedSlice<string[]>(`monster:actions:${props.enemyId}`, ssr) ?? [],
+);
+const displayName = computed(() => graph.value?.enemyName || summary.value?.enemyName || props.enemyId);
+
+function extractActionNames(tree: BattleTree): string[] {
+  const names = new Set<string>();
+  for (const node of Object.values(tree.playerView?.nodes ?? {})) {
+    if (node.kind === "action" && node.title) {
+      names.add(node.title);
+    }
+  }
+  return [...names];
+}
+
+onServerPrefetch(async () => {
+  const indexData = await loadJson<MonsterIndex>("enemy_battle_logic/index.json", ssr);
+  setPreloadedSlice("enemy_battle_logic/index.json", indexData, ssr);
+  monsterIndex.value = indexData;
+  if (!indexData.monsters.some((m) => m.enemyId === props.enemyId)) return;
+  const tree = await loadJson<BattleTree>(`enemy_battle_logic/${props.enemyId}/tree.json`, ssr);
+  const names = extractActionNames(tree);
+  staticActionNames.value = names;
+  setPreloadedSlice(`monster:actions:${props.enemyId}`, names, ssr);
+});
+
+useSeoMeta(() => {
+  const name = graph.value?.enemyName || summary.value?.enemyName;
+  if (name) {
+    const tablesCount = summary.value?.behaviorTables ?? graph.value?.coverage?.localTables ?? 0;
+    const actionsCount = summary.value?.actions ?? graph.value?.actionNameCatalog?.shellCatalog?.length ?? 0;
+    return {
+      title: `${name}（${props.enemyId}）行动逻辑与出招决策树 · ${SITE_TITLE}`,
+      description: `怪物猎人：荒野 ${name}（${props.enemyId}）战斗行动逻辑：包含 ${tablesCount} 张行为表与 ${actionsCount} 个动作，支持按距离、角度和状态筛选出招分支。`,
+      ogType: "article",
+      breadcrumbName: name,
+    };
+  }
+  if (error.value || (monsterIndex.value && !summary.value)) {
+    return {
+      title: `未找到怪物行动逻辑 · ${SITE_TITLE}`,
+      description: `未找到编号为 ${props.enemyId} 的怪物行动逻辑。`,
+      indexable: false,
+    };
+  }
+  return {};
+});
+
 function teardown() {
   flow?.destroy();
   tree = flow = null;
 }
 
-watch(
-  () => props.enemyId,
-  async (enemyId) => {
-    teardown();
-    graph.value = diagram.value = null;
-    error.value = null;
-    selected.value = false;
-    flowInfo.value = null;
-    for (const key of Object.keys(choices)) delete choices[key];
-    try {
-      const [tree, tables] = await Promise.all([
-        loadJson<BattleTree>(`enemy_battle_logic/${enemyId}/tree.json`),
-        loadJson<BattleTable[]>(`enemy_battle_logic/${enemyId}/tables.json`),
-      ]);
-      if (enemyId !== props.enemyId) return;
-      graph.value = { ...tree, tables };
-      document.title = `${tree.enemyName || enemyId} · 行动逻辑 · ${SITE_TITLE}`;
-      mode.value = tree.playerView ? "tree" : "flow";
-      await nextTick();
-      if (mode.value === "tree") startTree();
-      else await startFlow();
-    } catch (failure) {
-      error.value = failure instanceof Error ? failure : new Error(String(failure));
+async function loadMonsterGraph(enemyId: string) {
+  teardown();
+  graph.value = diagram.value = null;
+  error.value = null;
+  selected.value = false;
+  flowInfo.value = null;
+  for (const key of Object.keys(choices)) delete choices[key];
+  const preloaded = getPreloadedSlice<string[]>(`monster:actions:${enemyId}`);
+  if (preloaded) staticActionNames.value = preloaded;
+  else staticActionNames.value = [];
+  if (!monsterIndex.value) {
+    loadJson<MonsterIndex>("enemy_battle_logic/index.json").then(
+      (data) => {
+        monsterIndex.value = data;
+      },
+      () => {},
+    );
+  }
+  try {
+    const [tree, tables] = await Promise.all([
+      loadJson<BattleTree>(`enemy_battle_logic/${enemyId}/tree.json`),
+      loadJson<BattleTable[]>(`enemy_battle_logic/${enemyId}/tables.json`),
+    ]);
+    if (enemyId !== props.enemyId) return;
+    graph.value = { ...tree, tables };
+    if (!staticActionNames.value.length) {
+      staticActionNames.value = extractActionNames(tree);
     }
-  },
-  { immediate: true },
-);
+    mode.value = tree.playerView ? "tree" : "flow";
+    await nextTick();
+    if (mode.value === "tree") startTree();
+    else await startFlow();
+  } catch (failure) {
+    error.value = failure instanceof Error ? failure : new Error(String(failure));
+  }
+}
+
+onMounted(() => {
+  void loadMonsterGraph(props.enemyId);
+  watch(() => props.enemyId, (enemyId) => {
+    void loadMonsterGraph(enemyId);
+  });
+});
 onBeforeUnmount(teardown);
 
 function startTree() {
@@ -178,15 +250,15 @@ function toggleHint(key: string) {
 </script>
 
 <template>
-  <LoadState v-if="!graph" :error="error" label="正在加载怪物数据，较大的怪物约 10 MB…" />
+  <LoadState v-if="!summary && !graph" :error="error" label="正在加载怪物数据，较大的怪物约 10 MB…" />
   <div v-else class="monster">
     <div class="monster-bar">
       <RouterLink class="icon-button small" to="/enemy_battle_logic/" aria-label="返回全部怪物"><Icon name="back" /></RouterLink>
       <div class="monster-title">
-        <h1>{{ graph.enemyName || enemyId }}</h1>
+        <h1>{{ displayName }}</h1>
         <span class="mono">{{ enemyId }}</span>
       </div>
-      <div v-if="hasTree" class="button-group view-switch" role="group" aria-label="视图">
+      <div v-if="graph && hasTree" class="button-group view-switch" role="group" aria-label="视图">
         <button class="tonal-button" type="button" :aria-pressed="mode === 'tree'" @click="showMode('tree')">
           <Icon name="tree" />决策树
         </button>
@@ -196,7 +268,9 @@ function toggleHint(key: string) {
       </div>
     </div>
 
-    <section v-if="hasTree" v-show="mode === 'tree'" class="workspace-card surface">
+    <LoadState v-if="!graph" :error="error" label="正在加载怪物交互决策树，较大的怪物约 10 MB…" />
+
+    <section v-if="graph && hasTree" v-show="mode === 'tree'" class="workspace-card surface">
       <div class="bar">
         <form class="bar-group search" role="search" @submit.prevent="tree?.search(query)">
           <label class="search-field small">
@@ -292,7 +366,7 @@ function toggleHint(key: string) {
       </div>
     </section>
 
-    <section v-show="mode === 'flow'" class="workspace-card surface">
+    <section v-if="graph" v-show="mode === 'flow'" class="workspace-card surface">
       <div class="bar">
         <div class="bar-group">
           <button class="tonal-button" type="button" title="适应窗口" @click="flow?.fit()"><Icon name="fit" /><span class="label">适应窗口</span></button>
@@ -365,7 +439,13 @@ function toggleHint(key: string) {
     </section>
 
     <section class="about surface">
-      <details v-if="graph.actionNameCatalog">
+      <p v-if="summary">
+        {{ displayName }}（{{ enemyId }}）共恢复 {{ summary.behaviorTables }} 张行为表、{{ summary.actions }} 个动作，支持按玩家距离、角度与怪物状态交互式筛选出招决策树。
+      </p>
+      <p v-if="staticActionNames.length">
+        主要动作：{{ staticActionNames.join("、") }}
+      </p>
+      <details v-if="graph?.actionNameCatalog">
         <summary>动作名称对照表</summary>
         <p>{{ graph.actionNameCatalog.boundary }}</p>
         <div class="table-scroll">

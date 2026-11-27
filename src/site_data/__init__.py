@@ -9,7 +9,8 @@ committed folder src/site_data/data:
   enemy_battle_logic/<enemyId>/tables.json   behaviour table nodes (raw data)
   enemy_battle_logic/<enemyId>/flow.json     technical flow chart
   skill_details/skills.json                  skill effect values and meanings
-  missions/quests.json                       categorized quests and target parameters
+  missions/index.json                        categorized quest summaries
+  missions/quests/<questId>.json             full parameters of one quest
   weapon_actions/actions.json                weapon actions in workbook order
 
 Regenerate it offline with ``python -m src.site_data`` when the source data
@@ -33,7 +34,11 @@ from .enemy_battle_logic import (
     page_names,
 )
 from .skill_details import OUTPUT_NAME as SKILLS_NAME, export_skill_data
-from .missions import OUTPUT_NAME as MISSIONS_NAME, export_mission_data
+from .missions import (
+    INDEX_NAME as MISSIONS_INDEX_NAME,
+    export_mission_data,
+    quest_file_name,
+)
 from .weapon_actions import OUTPUT_NAME as ACTIONS_NAME, export_weapon_actions
 
 DEFAULT_DIR = Path(__file__).with_name("data")
@@ -41,12 +46,16 @@ RELEASE_NAMES = ("enemy_battle_logic.json", "skill_details.json")
 SITE_NAME = "site.json"
 
 
-def output_names():
+def output_names(data_dir=DEFAULT_DIR):
     """Release file set, for the full 34-monster data."""
+    mission_index = json.loads(
+        s=(Path(data_dir) / MISSIONS_INDEX_NAME).read_text(encoding="utf-8"),
+    )
     return (
         SITE_NAME,
         SKILLS_NAME,
-        MISSIONS_NAME,
+        MISSIONS_INDEX_NAME,
+        *(quest_file_name(quest_id=quest["id"]) for quest in mission_index["quests"]),
         ACTIONS_NAME,
         INDEX_NAME,
         *(name for enemy_id in EXPECTED_ENEMY_IDS for name in page_names(enemy_id)),

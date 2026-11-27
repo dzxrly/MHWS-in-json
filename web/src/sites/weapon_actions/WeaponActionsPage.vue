@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import { computed, ref, shallowRef } from "vue";
+import { computed, onMounted, onServerPrefetch, ref, shallowRef } from "vue";
+import { useRouter } from "vue-router";
 import Icon from "../../components/Icon.vue";
 import LoadState from "../../components/LoadState.vue";
-import { loadJson } from "../../composables/data";
+import { getCachedJson, getPreloadedSlice, loadJson, setPreloadedSlice, useSsrDataContext } from "../../composables/data";
 import { formatNumber } from "../../composables/numbers";
 import { usePageHeader } from "../../composables/page_header";
+import { useSeoMeta } from "../../composables/seo";
+import { SITE_TITLE } from "../../seo/config";
 
 interface Hit {
   request: number;
@@ -22,31 +25,116 @@ interface WeaponSheet {
   name: string;
   groups: { name: string; internal: string | null; rows: Hit[] }[];
 }
+interface WeaponTab {
+  id: string;
+  name: string;
+}
+interface WeaponPreload {
+  tabs: WeaponTab[];
+  sheet: WeaponSheet | null;
+}
 
-const sheets = shallowRef<WeaponSheet[]>([]);
+const props = withDefaults(defineProps<{ weaponId?: string }>(), { weaponId: "" });
+const router = useRouter();
+const ssr = useSsrDataContext();
+const preloadKey = computed(() => `weapons:page:${props.weaponId}`);
+
+const fullSheets = shallowRef<WeaponSheet[] | null>(
+  getCachedJson<WeaponSheet[]>("weapon_actions/actions.json") ?? null,
+);
+const preloaded = shallowRef<WeaponPreload | null>(
+  fullSheets.value ? null : getPreloadedSlice<WeaponPreload>(preloadKey.value, ssr) ?? null,
+);
 const error = shallowRef<Error | null>(null);
-const selected = ref("Wp00");
 const query = ref("");
 const heading = ref<HTMLElement | null>(null);
-usePageHeader("武器动作值", heading);
-loadJson<WeaponSheet[]>("weapon_actions/actions.json").then(
-  (data) => { sheets.value = data; },
-  (failure: unknown) => { error.value = failure instanceof Error ? failure : new Error(String(failure)); },
-);
 
-const sheet = computed(() => sheets.value.find(item => item.id === selected.value));
+const tabs = computed<WeaponTab[]>(() =>
+  fullSheets.value
+    ? fullSheets.value.map((s) => ({ id: s.id, name: s.name }))
+    : preloaded.value?.tabs ?? [],
+);
+const targetId = computed(() => props.weaponId || tabs.value[0]?.id);
+const sheet = computed<WeaponSheet | null>(() => {
+  if (fullSheets.value) {
+    return fullSheets.value.find((item) => item.id === targetId.value) ?? null;
+  }
+  return preloaded.value?.sheet ?? null;
+});
+const ready = computed(() => Boolean(fullSheets.value || preloaded.value));
+const pageHeading = computed(() => (sheet.value ? `${sheet.value.name}动作值` : "武器动作值"));
+usePageHeader(pageHeading, heading);
+
+onServerPrefetch(async () => {
+  const all = await loadJson<WeaponSheet[]>("weapon_actions/actions.json", ssr);
+  const id = props.weaponId || all[0]?.id;
+  const payload: WeaponPreload = {
+    tabs: all.map((s) => ({ id: s.id, name: s.name })),
+    sheet: all.find((s) => s.id === id) ?? null,
+  };
+  setPreloadedSlice(preloadKey.value, payload, ssr);
+  preloaded.value = payload;
+});
+
+onMounted(() => {
+  if (!fullSheets.value) {
+    loadJson<WeaponSheet[]>("weapon_actions/actions.json").then(
+      (data) => {
+        fullSheets.value = data;
+      },
+      (failure: unknown) => {
+        if (!preloaded.value) {
+          error.value = failure instanceof Error ? failure : new Error(String(failure));
+        }
+      },
+    );
+  }
+});
+
+useSeoMeta(() => {
+  if (!props.weaponId) {
+    return {
+      description: "按武器种类查询怪物猎人：荒野招式的动作值、眩晕值、属性倍率、异常倍率与部位破坏倍率。",
+      ...sheet.value && {
+        canonicalPath: router.resolve({ name: "weapon_actions", params: { weaponId: sheet.value.id } }).path,
+      },
+      indexable: false,
+    };
+  }
+  if (!ready.value) return {};
+  if (!sheet.value) {
+    return {
+      title: `未找到武器动作值 · ${SITE_TITLE}`,
+      description: `未找到编号为 ${props.weaponId} 的武器动作值数据。`,
+      indexable: false,
+    };
+  }
+  const hitCount = sheet.value.groups.reduce((sum, group) => sum + group.rows.length, 0);
+  return {
+    title: `${sheet.value.name}动作值与倍率表 · ${SITE_TITLE}`,
+    description: `怪物猎人：荒野「${sheet.value.name}」共 ${sheet.value.groups.length} 组招式、${hitCount} 条命中判定记录，含动作值、固定伤害、眩晕值、部位破坏、属性与异常倍率。`,
+    ogType: "article",
+    breadcrumbName: sheet.value.name,
+  };
+});
+
 const groups = computed(() => {
   const text = query.value.trim().toLowerCase();
-  return (sheet.value?.groups ?? []).filter(group =>
-    !text || group.name.toLowerCase().includes(text) || group.internal?.toLowerCase().includes(text)
+  return (sheet.value?.groups ?? []).filter((group) =>
+    !text || group.name.toLowerCase().includes(text) || group.internal?.toLowerCase().includes(text),
   );
 });
 const count = computed(() => groups.value.reduce((sum, group) => sum + group.rows.length, 0));
 const columns = [
-  ["attack", "动作值"], ["fixedElement", "固定属性值"], ["fixed", "固定伤害值"], ["stun", "眩晕值"],
-  ["breakRate", "部位破坏倍率"], ["elementRate", "属性倍率"], ["statusRate", "异常倍率"],
+  ["attack", "动作值"],
+  ["fixedElement", "固定属性值"],
+  ["fixed", "固定伤害值"],
+  ["stun", "眩晕值"],
+  ["breakRate", "部位破坏倍率"],
+  ["elementRate", "属性倍率"],
+  ["statusRate", "异常倍率"],
 ] as const;
-function format(column: typeof columns[number][0], row: Hit) {
+function format(column: (typeof columns)[number][0], row: Hit) {
   if (column === "fixedElement") {
     const element = row.fixedElement;
     return element ? `${element.name} ${formatNumber(element.value)}` : "—";
@@ -60,14 +148,29 @@ function format(column: typeof columns[number][0], row: Hit) {
 
 <template>
   <div class="page weapons-page">
-    <div ref="heading" class="page-heading"><h1>武器动作值</h1></div>
-    <LoadState v-if="!sheet" :error="error" />
-    <section v-else class="surface weapon-sheet">
-      <div class="weapons" role="group" aria-label="武器种类">
-        <button v-for="item in sheets" :key="item.id" type="button" class="chip" :aria-pressed="item.id === selected" @click="selected = item.id">
-          {{ item.name }}
-        </button>
+    <div ref="heading" class="page-heading">
+      <div>
+        <p class="eyebrow">武器动作值</p>
+        <h1>{{ pageHeading }}</h1>
       </div>
+    </div>
+    <LoadState v-if="!ready" :error="error" />
+    <section v-else-if="!sheet" class="surface no-weapon">
+      <p>没有编号为 {{ props.weaponId }} 的武器数据。</p>
+      <RouterLink class="tonal-button" :to="{ name: 'weapon_actions', params: { weaponId: '' } }">返回武器动作值</RouterLink>
+    </section>
+    <section v-else class="surface weapon-sheet">
+      <nav class="weapons" aria-label="武器种类">
+        <RouterLink
+          v-for="item in tabs"
+          :key="item.id"
+          :to="{ name: 'weapon_actions', params: { weaponId: item.id } }"
+          class="chip"
+          :aria-current="item.id === sheet.id ? 'page' : undefined"
+        >
+          {{ item.name }}
+        </RouterLink>
+      </nav>
       <header class="table-bar">
         <div class="table-title"><h2>{{ sheet.name }}</h2><output class="count-label">{{ count }} 条命中记录</output></div>
         <label class="search-field small">
@@ -94,6 +197,7 @@ function format(column: typeof columns[number][0], row: Hit) {
 
 <style scoped>
 .weapon-sheet { overflow: hidden; }
+.no-weapon { padding: 32px 24px; display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
 .weapons { display: flex; flex-wrap: wrap; gap: 8px; padding: 20px 24px; border-bottom: 1px solid var(--divider); }
 .table-bar, .table-title { display: flex; align-items: center; gap: 14px; }
 .table-bar { justify-content: space-between; padding: 16px 24px; }

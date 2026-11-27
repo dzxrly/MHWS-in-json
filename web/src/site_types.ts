@@ -1,4 +1,4 @@
-import type { RouteRecordRaw } from "vue-router";
+import type { RouteParamsRaw, RouteRecordRaw } from "vue-router";
 
 export interface SiteDefinition {
   id: string;
@@ -14,5 +14,8 @@ declare module "vue-router" {
     site?: SiteDefinition;
     title?: string;
     workspace?: boolean;
+    indexable?: boolean;
+    staticParams?: (readJson: <T>(path: string) => T) => RouteParamsRaw[];
+    legacyHtml?: boolean;
   }
 }

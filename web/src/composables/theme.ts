@@ -3,6 +3,7 @@ import { ref } from "vue";
 const KEY = "mhws-theme";
 
 function stored() {
+  if (typeof window === "undefined") return null;
   try {
     return localStorage.getItem(KEY);
   } catch {
@@ -13,15 +14,20 @@ function stored() {
 // A first visit opens with the main site's blue scheme. Remember an explicit
 // theme choice for return visits.
 export const isDark = ref(stored() === "dark");
-document.documentElement.classList.toggle("dark", isDark.value);
+if (typeof document !== "undefined") {
+  document.documentElement.classList.toggle("dark", isDark.value);
+}
 
 function apply(dark: boolean) {
   isDark.value = dark;
-  document.documentElement.classList.toggle("dark", dark);
+  if (typeof document !== "undefined") {
+    document.documentElement.classList.toggle("dark", dark);
+  }
 }
 
 function switchTheme() {
   apply(!isDark.value);
+  if (typeof window === "undefined") return;
   try {
     localStorage.setItem(KEY, isDark.value ? "dark" : "light");
   } catch {
@@ -32,6 +38,7 @@ function switchTheme() {
 // Spread the new theme as a circle from the toggle button. Browsers
 // without view transitions switch through the colour transitions.
 export function toggleTheme(event: MouseEvent) {
+  if (typeof document === "undefined") return;
   const root = document.documentElement;
   if (!(event.currentTarget instanceof Element) || !document.startViewTransition || matchMedia("(prefers-reduced-motion: reduce)").matches) {
     switchTheme();

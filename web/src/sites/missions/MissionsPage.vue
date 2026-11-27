@@ -1,21 +1,52 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, onMounted, onServerPrefetch, ref, shallowRef } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import Icon from "../../components/Icon.vue";
 import LoadState from "../../components/LoadState.vue";
 import SiteCard from "../../components/SiteCard.vue";
 import SiteSelect from "../../components/SiteSelect.vue";
+import { getCachedJson, getPreloadedSlice, setPreloadedSlice, useSsrDataContext } from "../../composables/data";
 import { usePageHeader } from "../../composables/page_header";
+import { useSeoMeta } from "../../composables/seo";
 import MonsterIcon from "./MonsterIcon.vue";
-import { catalog, catalogError } from "./catalog";
+import { loadMissionIndex, type MissionListCatalog } from "./catalog";
 import { targetName } from "./format";
 import "./missions.css";
 
 const route = useRoute();
 const router = useRouter();
+const ssr = useSsrDataContext();
+const catalog = shallowRef<MissionListCatalog | null>(
+  getPreloadedSlice<MissionListCatalog>("missions/index.json", ssr) ??
+    getCachedJson<MissionListCatalog>("missions/index.json") ??
+    null,
+);
+const catalogError = shallowRef<Error | null>(null);
 const heading = ref<HTMLElement | null>(null);
 const filters = ref<HTMLElement | null>(null);
 usePageHeader("任务信息", heading);
+useSeoMeta(() => catalog.value ? {
+  description: `按游戏分类查询怪物猎人：荒野全部 ${catalog.value.quests.length} 项任务，查看目标血量、动作速度、多人修正与报酬概率。`,
+} : {});
+
+onServerPrefetch(async () => {
+  const data = await loadMissionIndex(ssr);
+  setPreloadedSlice("missions/index.json", data, ssr);
+  catalog.value = data;
+});
+
+onMounted(() => {
+  if (!catalog.value) {
+    loadMissionIndex().then(
+      (data) => {
+        catalog.value = data;
+      },
+      (failure: unknown) => {
+        catalogError.value = failure instanceof Error ? failure : new Error(String(failure));
+      },
+    );
+  }
+});
 
 function filterParam(key: "category" | "q" | "stars" | "state") {
   return computed<string>({

@@ -1,65 +1,219 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, shallowRef, watch } from "vue";
+import { computed, nextTick, onMounted, onServerPrefetch, ref, shallowRef, watch } from "vue";
+import { useRouter } from "vue-router";
 import Icon from "../../components/Icon.vue";
 import LoadState from "../../components/LoadState.vue";
-import { loadJson } from "../../composables/data";
+import { getCachedJson, getPreloadedSlice, loadJson, setPreloadedSlice, useSsrDataContext } from "../../composables/data";
 import { formatDecimalText } from "../../composables/numbers";
 import { usePageHeader } from "../../composables/page_header";
-import { SITE_TITLE } from "../../router";
+import { useSeoMeta } from "../../composables/seo";
+import { SITE_TITLE } from "../../seo/config";
 import SkillEffect from "./SkillEffect.vue";
 import type { Skill } from "./types";
 
-const props = defineProps({ skillId: { type: String, default: "" } });
+interface SkillListItem {
+  id: string;
+  name: string;
+  ja: string;
+  category: string;
+  effectCount: number;
+  search: string;
+}
 
-const data = shallowRef<{ categories: string[]; skills: (Skill & { search: string })[] } | null>(null);
+interface SkillsState {
+  categories: string[];
+  items: SkillListItem[];
+  fullById: Map<string, Skill> | null;
+  preloadCurrent: Skill | null;
+}
+
+interface SkillsPreload {
+  categories: string[];
+  items: Omit<SkillListItem, "search">[];
+  current: Skill | null;
+}
+
+const props = defineProps({ skillId: { type: String, default: "" } });
+const router = useRouter();
+const ssr = useSsrDataContext();
+
+function toFullState(loaded: { categories: string[]; skills: Skill[] }): SkillsState {
+  const items: SkillListItem[] = loaded.skills.map((skill) => ({
+    id: skill.id,
+    name: skill.name,
+    ja: skill.ja,
+    category: skill.category,
+    effectCount: skill.effects.length,
+    search: [
+      skill.name,
+      skill.ja,
+      skill.id,
+      skill.explain,
+      skill.category,
+      ...skill.levels.map((l) => l.explain),
+      ...skill.effects.flatMap((e) => [
+        e.name,
+        e.code,
+        ...Object.values(e.meaning),
+        ...e.rows.flatMap((r) => [r.applies, r.situation]),
+      ]),
+    ]
+      .join("\n")
+      .toLocaleLowerCase(),
+  }));
+  return {
+    categories: loaded.categories,
+    items,
+    fullById: new Map(loaded.skills.map((s) => [s.id, s])),
+    preloadCurrent: null,
+  };
+}
+
+function toPreload(loaded: { categories: string[]; skills: Skill[] }, skillId: string): SkillsPreload {
+  const found = skillId
+    ? loaded.skills.find((s) => s.id === skillId) ?? null
+    : loaded.skills.find((s) => s.effects.length) ?? loaded.skills[0] ?? null;
+  return {
+    categories: loaded.categories,
+    items: loaded.skills.map((s) => ({
+      id: s.id,
+      name: s.name,
+      ja: s.ja,
+      category: s.category,
+      effectCount: s.effects.length,
+    })),
+    current: found,
+  };
+}
+
+function fromPreload(preload: SkillsPreload): SkillsState {
+  return {
+    categories: preload.categories,
+    items: preload.items.map((item) => ({
+      ...item,
+      search: `${item.name}\n${item.ja}\n${item.id}\n${item.category}`.toLocaleLowerCase(),
+    })),
+    fullById: null,
+    preloadCurrent: preload.current,
+  };
+}
+
+const preloadKey = computed(() => `skills:page:${props.skillId}`);
+function initialSkillsState(): SkillsState | null {
+  const full = getCachedJson<{ categories: string[]; skills: Skill[] }>("skill_details/skills.json");
+  if (full) return toFullState(full);
+  const preloaded = getPreloadedSlice<SkillsPreload>(preloadKey.value, ssr);
+  if (preloaded) return fromPreload(preloaded);
+  return null;
+}
+
+const data = shallowRef<SkillsState | null>(initialSkillsState());
 const error = ref<Error | null>(null);
 const query = ref("");
 const category = ref("");
-const showEmpty = ref(false);
+const initialTarget = data.value
+  ? data.value.fullById
+    ? (props.skillId ? data.value.fullById.get(props.skillId) : [...data.value.fullById.values()].find((s) => s.effects.length) ?? [...data.value.fullById.values()][0])
+    : data.value.preloadCurrent
+  : null;
+const showEmpty = ref(Boolean(initialTarget && !initialTarget.effects.length));
 const list = ref<HTMLElement | null>(null);
 const detail = ref<HTMLElement | null>(null);
 const heading = ref<HTMLElement | null>(null);
 usePageHeader("技能效果数值", heading);
 
-loadJson<{ categories: string[]; skills: Skill[] }>("skill_details/skills.json").then((loaded) => {
-  // Everything a search can match: names, descriptions, effects, weapons and situations.
-  const skills = loaded.skills.map((skill) => ({
-    ...skill, search: [
-      skill.name, skill.ja, skill.id, skill.explain, skill.category,
-      ...skill.levels.map((l) => l.explain),
-      ...skill.effects.flatMap((e) => [e.name, e.code, ...Object.values(e.meaning), ...e.rows.flatMap((r) => [r.applies, r.situation])]),
-    ].join("\n").toLocaleLowerCase(),
-  }));
-  data.value = { categories: loaded.categories, skills };
-  if (!current.value?.effects.length) showEmpty.value = true;
-}, (failure) => (error.value = failure));
-
-const byId = computed(() => new Map((data.value?.skills ?? []).map((s) => [s.id, s])));
-const current = computed(() => {
-  const skills = data.value?.skills ?? [];
-  return byId.value.get(props.skillId) || skills.find((s) => s.effects.length) || skills[0];
+onServerPrefetch(async () => {
+  const loaded = await loadJson<{ categories: string[]; skills: Skill[] }>("skill_details/skills.json", ssr);
+  const preload = toPreload(loaded, props.skillId);
+  setPreloadedSlice(preloadKey.value, preload, ssr);
+  data.value = fromPreload(preload);
+  if (preload.current && !preload.current.effects.length) {
+    showEmpty.value = true;
+  }
 });
-const withEffects = computed(() => data.value?.skills.filter((s) => s.effects.length).length ?? 0);
+
+onMounted(() => {
+  if (!getCachedJson("skill_details/skills.json")) {
+    loadJson<{ categories: string[]; skills: Skill[] }>("skill_details/skills.json").then(
+      (loaded) => {
+        data.value = toFullState(loaded);
+        if (current.value && !current.value.effects.length) showEmpty.value = true;
+      },
+      (failure) => {
+        if (!data.value) error.value = failure;
+      },
+    );
+  }
+});
+
+const current = computed<Skill | null>(() => {
+  if (!data.value) return null;
+  if (data.value.fullById) {
+    if (props.skillId) return data.value.fullById.get(props.skillId) ?? null;
+    for (const skill of data.value.fullById.values()) {
+      if (skill.effects.length) return skill;
+    }
+    return data.value.fullById.values().next().value ?? null;
+  }
+  return data.value.preloadCurrent;
+});
+const missingSkill = computed(() => Boolean(data.value && props.skillId && !current.value));
+const withEffects = computed(() => data.value?.items.filter((s) => s.effectCount > 0).length ?? 0);
+
+useSeoMeta(() => {
+  const skill = current.value;
+  if (!props.skillId) {
+    return {
+      ...data.value && {
+        description: `查询怪物猎人：荒野 ${data.value.items.length} 个技能的等级效果、触发条件与适用武器（已提取 ${withEffects.value} 个技能的详细数值）。`,
+      },
+      ...skill && { canonicalPath: router.resolve({ name: "skill_details", params: { skillId: skill.id } }).path },
+      indexable: false,
+    };
+  }
+  if (!data.value) return {};
+  if (!skill) {
+    return {
+      title: `未找到技能 · 技能效果数值 · ${SITE_TITLE}`,
+      description: `技能列表中没有编号为 ${props.skillId} 的技能。`,
+      indexable: false,
+    };
+  }
+  const hasEffects = skill.effects.length > 0;
+  const maxLevel = skill.levelColumns.length ? Math.max(...skill.levelColumns) : skill.levels.length;
+  const effectNames = skill.effects.map((e) => e.name).slice(0, 4).join("、");
+  const titleName = skill.ja ? `${skill.name}（${skill.ja}）` : skill.name;
+  const description = hasEffects
+    ? `怪物猎人：荒野技能「${skill.name}」（${skill.category}，最高 Lv.${maxLevel}）：${skill.explain} 包含效果：${effectNames}。`
+    : `怪物猎人：荒野技能「${skill.name}」（${skill.category}）：${skill.explain || "暂未提取到独立效果数值"}。`;
+  return {
+    title: `${titleName}技能效果数值 · ${SITE_TITLE}`,
+    description,
+    indexable: hasEffects,
+    ogType: "article",
+    breadcrumbName: skill.name,
+  };
+});
+
 const groups = computed(() => {
   const text = query.value.trim().toLocaleLowerCase();
-  const { categories, skills } = data.value ?? { categories: [], skills: [] };
+  const { categories, items } = data.value ?? { categories: [], items: [] };
   return categories
     .map((name) => ({
       name,
-      skills: skills.filter(
-        (s) => s.category === name && (showEmpty.value || s.effects.length) && (!category.value || s.category === category.value) && (!text || s.search.includes(text)),
+      skills: items.filter(
+        (s) => s.category === name && (showEmpty.value || s.effectCount > 0) && (!category.value || s.category === category.value) && (!text || s.search.includes(text)),
       ),
     }))
     .filter((group) => group.skills.length);
 });
 const shown = computed(() => groups.value.reduce((n, group) => n + group.skills.length, 0));
-const total = computed(() => data.value?.skills.filter((s) => showEmpty.value || s.effects.length).length ?? 0);
+const total = computed(() => data.value?.items.filter((s) => showEmpty.value || s.effectCount > 0).length ?? 0);
 
 watch(
   () => data.value && current.value,
   async (skill, previous) => {
-    if (!skill) return;
-    document.title = `${skill.name} · 技能效果数值 · ${SITE_TITLE}`;
+    if (!skill || typeof window === "undefined") return;
     await nextTick();
     // Keep the chosen skill in view in the list; on narrow screens the list
     // sits above the detail, so move to the detail instead.
@@ -82,9 +236,9 @@ watch(
   <div class="page skills-page">
     <div ref="heading" class="page-heading">
       <div>
-        <h1>技能效果数值</h1>
+        <p class="page-title">技能效果数值</p>
       </div>
-      <span v-if="data" class="count-label">{{ data.skills.length }} 个技能 · {{ withEffects }} 个有数值</span>
+      <span v-if="data" class="count-label">{{ data.items.length }} 个技能 · {{ withEffects }} 个有数值</span>
     </div>
     <LoadState v-if="!data" :error="error" />
     <div v-else class="skills-layout">
@@ -115,13 +269,13 @@ watch(
             <RouterLink
               v-for="skill in group.skills"
               :key="skill.id"
-              :to="`/skill_details/${skill.id}`"
+              :to="{ name: 'skill_details', params: { skillId: skill.id } }"
               class="nav-option"
-              :class="{ empty: !skill.effects.length }"
-              :aria-current="skill === current ? 'page' : undefined"
+              :class="{ empty: !skill.effectCount }"
+              :aria-current="skill.id === current?.id ? 'page' : undefined"
             >
               <span class="name">{{ skill.name }}</span>
-              <span class="n">{{ skill.effects.length ? `${skill.effects.length} 项` : "无数值" }}</span>
+              <span class="n">{{ skill.effectCount ? `${skill.effectCount} 项` : "无数值" }}</span>
             </RouterLink>
           </section>
           <p v-if="!shown" class="empty-state">没有匹配的技能。</p>
@@ -130,10 +284,10 @@ watch(
       <div v-if="current" ref="detail" class="skill-detail">
         <header class="skill-head surface">
           <p class="kicker mono">{{ current.category }} · {{ current.id }}</p>
-          <h2>{{ current.name }}<span v-if="current.ja" class="ja">{{ current.ja }}</span></h2>
+          <h1>{{ current.name }}<span v-if="current.ja" class="ja">{{ current.ja }}</span></h1>
           <p v-if="current.explain" class="explain">{{ formatDecimalText(current.explain) }}</p>
           <p v-if="current.mappedSkill" class="aside-note">
-            对应技能：<RouterLink class="mapped-skill" :to="`/skill_details/${current.mappedSkill.id}`">{{ current.mappedSkill.name }}（{{ current.mappedSkill.id }}）</RouterLink>。等级与效果见对应技能。
+            对应技能：<RouterLink class="mapped-skill" :to="{ name: 'skill_details', params: { skillId: current.mappedSkill.id } }">{{ current.mappedSkill.name }}（{{ current.mappedSkill.id }}）</RouterLink>。等级与效果见对应技能。
           </p>
           <p v-for="reference in current.resourceOpenSkills || []" :key="`${reference.id}-${reference.level}`" class="aside-note">
             资源中的打开技能指向：{{ reference.name }}（{{ reference.id }}）Lv.{{ reference.level }} 指向此编号；当前代码未确认此编号的对应技能。
@@ -151,6 +305,12 @@ watch(
         </div>
         <p v-else-if="current.mappedSkill" class="no-values">此编号的等级与效果见上方对应技能。</p>
         <p v-else class="no-values">未提取到数值：当前离线结果未提供该技能的效果数值。</p>
+      </div>
+      <div v-else-if="missingSkill" class="skill-detail">
+        <div class="surface skill-head">
+          <h1>未找到技能</h1>
+          <p class="explain">技能目录中没有编号为 {{ props.skillId }} 的技能。</p>
+        </div>
       </div>
     </div>
   </div>
@@ -233,6 +393,7 @@ watch(
   color: var(--on-surface-variant);
   font-size: 12px;
 }
+.skill-head h1,
 .skill-head h2 {
   margin-top: 4px;
   font-size: 30px;
@@ -308,6 +469,7 @@ watch(
   .skill-head {
     padding: 22px;
   }
+  .skill-head h1,
   .skill-head h2 {
     font-size: 24px;
   }

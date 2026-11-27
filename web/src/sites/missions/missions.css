@@ -90,6 +90,18 @@
 .detail-targets b { font-size: 13px; }
 .target-title { --monster-size: 44px; display: flex; align-items: center; gap: 12px; }
 .target-title h3, .reward-group h3 { font-size: 17px; }
+.target-overview {
+  margin: 0 0 16px;
+  padding: 10px 14px;
+  list-style: none;
+  display: grid;
+  gap: 4px;
+  border-radius: var(--shape-m);
+  background: var(--surface-high);
+  font-size: 13px;
+  color: var(--on-surface-variant);
+}
+.target-overview strong { color: var(--on-surface); }
 .detail-subsection { margin-top: 20px; }
 .detail-subsection h4, .reward-group h3 { margin-bottom: 8px; }
 .hp-grades { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 0; list-style: none; }

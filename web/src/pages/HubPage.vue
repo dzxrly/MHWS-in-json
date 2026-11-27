@@ -1,15 +1,33 @@
 <script setup lang="ts">
+import { onServerPrefetch } from "vue";
 import Icon from "../components/Icon.vue";
 import SiteCard from "../components/SiteCard.vue";
-import { siteInfo } from "../composables/data";
+import { loadSiteInfo, siteInfo, useSsrDataContext } from "../composables/data";
+import { useSeoMeta } from "../composables/seo";
+import { SITE_DESCRIPTION, SITE_ORIGIN, SITE_TITLE } from "../seo/config";
 import { sites } from "../sites";
 
 const RELEASES = "https://github.com/dzxrly/MHWS-in-json/releases/latest";
+const ssr = useSsrDataContext();
+onServerPrefetch(() => loadSiteInfo(ssr));
+
+useSeoMeta({
+  jsonLd: [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: SITE_TITLE,
+      url: `${SITE_ORIGIN}/`,
+      description: SITE_DESCRIPTION,
+      inLanguage: "zh-CN",
+    },
+  ],
+});
 </script>
 
 <template>
   <div class="page hub">
-    <h1 class="hero">怪物猎人：荒野 数据站</h1>
+    <h1 class="hero">{{ SITE_TITLE }}</h1>
     <ul class="site-grid">
       <li v-for="site in sites" :key="site.id">
         <SiteCard class="site-card" :to="site.path">

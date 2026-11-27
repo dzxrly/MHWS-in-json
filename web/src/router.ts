@@ -1,8 +1,7 @@
-import { createRouter, createWebHistory, type RouteRecordRaw } from "vue-router";
+import { createMemoryHistory, createRouter, createWebHistory, type RouteRecordRaw, type RouterHistory } from "vue-router";
+import { applySeoMeta, routeSeoMeta } from "./composables/seo";
 import HubPage from "./pages/HubPage.vue";
 import { sites } from "./sites";
-
-export const SITE_TITLE = "MHWS 数据站";
 
 const routes: RouteRecordRaw[] = [
   { path: "/", component: HubPage },
@@ -17,19 +16,25 @@ const routes: RouteRecordRaw[] = [
   {
     path: "/:pathMatch(.*)*",
     component: () => import("./pages/NotFoundPage.vue"),
-    meta: { title: "页面不存在" },
+    meta: { title: "页面不存在", indexable: false },
   },
 ];
 
-export const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes,
-  scrollBehavior: (to, from, saved) =>
-    saved || (to.path === from.path ? false : { top: 0 }),
-});
+export function createAppRouter(history?: RouterHistory) {
+  const instance = createRouter({
+    history: history ?? (typeof window !== "undefined" ? createWebHistory(import.meta.env.BASE_URL) : createMemoryHistory()),
+    routes,
+    scrollBehavior: (to, from, saved) =>
+      saved || (to.path === from.path ? false : { top: 0 }),
+  });
 
-router.afterEach((to, _from, failure) => {
-  if (failure) return;
-  const title = to.meta.title || to.meta.site?.title;
-  document.title = title ? `${title} · ${SITE_TITLE}` : SITE_TITLE;
-});
+  instance.afterEach((to, from, failure) => {
+    if (failure || typeof document === "undefined" || to.path === from.path) return;
+    if (!from.matched.length && document.querySelector('#app[data-ssr="1"]')) return;
+    applySeoMeta(routeSeoMeta(instance, to));
+  });
+
+  return instance;
+}
+
+export const router = createAppRouter();

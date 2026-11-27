@@ -8,6 +8,20 @@ import { number, targetName } from "./format";
 const props = defineProps<{ quest: Mission }>();
 const targetIndex = ref(0);
 const target = computed(() => props.quest.targets[targetIndex.value]);
+const targetSummaries = computed(() =>
+  props.quest.targets.map((item) => {
+    const solo = item.combat?.parties.find((p) => p.players === 1)?.health.map((h) => h.hp) ?? [];
+    const hpText = solo.length
+      ? Math.min(...solo) === Math.max(...solo)
+        ? `单人血量 ${number(Math.min(...solo))}`
+        : `单人血量 ${number(Math.min(...solo))}–${number(Math.max(...solo))}`
+      : "";
+    return {
+      label: targetName(item),
+      detail: [item.objective, hpText].filter(Boolean).join(" · "),
+    };
+  }),
+);
 const rewardGroups = computed(() => {
   const groups = new Map<string, MissionReward[]>();
   for (const reward of props.quest.rewards) {
@@ -38,6 +52,12 @@ const rewardGroups = computed(() => {
           <span><small>目标 {{ index + 1 }}</small><b>{{ targetName(item) }}</b></span>
         </button>
       </div>
+      <ul v-if="quest.targets.length > 1" class="target-overview" aria-label="全部目标概览">
+        <li v-for="(item, index) in targetSummaries" :key="index">
+          <strong>{{ item.label }}</strong>
+          <span v-if="item.detail">（{{ item.detail }}）</span>
+        </li>
+      </ul>
       <template v-if="target">
         <div class="target-title">
           <MonsterIcon v-if="quest.targets.length === 1" :target="target" />

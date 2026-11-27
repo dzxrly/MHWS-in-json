@@ -21,7 +21,8 @@ from .mission_catalog import QUEST_CATEGORIES, load_monster_icons, quest_categor
 from .mission_rates import load_combat_profile, load_speed_bounds, target_combat
 from .mission_speed_variation import load_motion_sizes, motion_phases, target_sizes
 
-OUTPUT_NAME = "missions/quests.json"
+INDEX_NAME = "missions/index.json"
+QUESTS_DIR = "missions/quests"
 REWARDS_DIR = "STM/GameDesign/Mission/_UserData/_Reward"
 ITEM_TABLE = "STM/GameDesign/Common/Item/itemData.user.3.json"
 STAGE_TEXT = {
@@ -330,11 +331,69 @@ def build_site_data(repository: SourceRepository, text_source: TextSource) -> di
     }
 
 
+def quest_file_name(quest_id: str) -> str:
+    return f"{QUESTS_DIR}/{quest_id}.json"
+
+
+def _solo_hp(target: dict) -> list[int]:
+    combat = target.get("combat")
+    if not combat:
+        return []
+    solo = next(
+        (party for party in combat["parties"] if party["players"] == 1),
+        None,
+    )
+    if solo is None:
+        return []
+    return sorted({entry["hp"] for entry in solo["health"]})
+
+
+def build_mission_index(data: dict) -> dict:
+    return {
+        "categories": data["categories"],
+        "quests": [
+            {
+                "id": quest["id"],
+                "name": quest["name"],
+                "category": quest["category"],
+                "type": quest["type"],
+                "rank": quest["rank"],
+                "stars": quest["stars"],
+                "hr": quest["hr"],
+                "stage": quest["stage"],
+                "targets": [
+                    {
+                        "id": target["id"],
+                        "name": target["name"],
+                        "icon": target["icon"],
+                        "state": target["state"],
+                        "count": target["count"],
+                        **(
+                            {"soloHp": solo_hp}
+                            if (solo_hp := _solo_hp(target=target))
+                            else {}
+                        ),
+                    }
+                    for target in quest["targets"]
+                ],
+            }
+            for quest in data["quests"]
+        ],
+    }
+
+
 def export_mission_data(
-    output_dir: Path, repository: SourceRepository, text_source: TextSource
+    output_dir: Path,
+    repository: SourceRepository,
+    text_source: TextSource,
 ) -> Path:
-    path = output_dir / OUTPUT_NAME
-    path.parent.mkdir(
+    index_path = output_dir / INDEX_NAME
+    quests_dir = output_dir / QUESTS_DIR
+    index_path.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+    quests_dir.mkdir(
         parents=True,
         exist_ok=True,
     )
@@ -342,12 +401,23 @@ def export_mission_data(
         repository=repository,
         text_source=text_source,
     )
-    path.write_text(
+    index_data = build_mission_index(data=data)
+    index_path.write_text(
         data=json.dumps(
-            obj=data,
+            obj=index_data,
             ensure_ascii=False,
             separators=(",", ":"),
         ),
         encoding="utf-8",
     )
-    return path
+    for quest in data["quests"]:
+        quest_path = output_dir / quest_file_name(quest_id=quest["id"])
+        quest_path.write_text(
+            data=json.dumps(
+                obj=quest,
+                ensure_ascii=False,
+                separators=(",", ":"),
+            ),
+            encoding="utf-8",
+        )
+    return index_path

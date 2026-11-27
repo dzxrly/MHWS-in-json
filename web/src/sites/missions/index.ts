@@ -1,4 +1,5 @@
 import type { SiteDefinition } from "../../site_types";
+import type { MissionListCatalog } from "./catalog";
 
 export default {
   id: "missions",
@@ -23,6 +24,11 @@ export default {
       name: "mission",
       component: () => import("./MissionPage.vue"),
       props: true,
+      meta: {
+        staticParams: (readJson) => readJson<MissionListCatalog>("missions/index.json").quests.map(
+          ({ id }) => ({ questId: id }),
+        ),
+      },
     },
   ],
 } satisfies SiteDefinition;

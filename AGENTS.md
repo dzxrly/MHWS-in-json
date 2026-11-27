@@ -23,8 +23,8 @@
 | 加工后的工作簿或 JSON | `src/processed_data/` 按用途分包，例如护石池在 `amulet_pools/`，弩枪在 `bowguns/`，技能效果在 `skill_details/`。新的发布文件从所属模块的导出函数接入 `src/processed_data/exporter.py`，并加入 `OUTPUT_NAMES`。[加工数据入口](src/processed_data/exporter.py) |
 | 多个 Python 导出器用到的逻辑 | `src/shared/source/` 读取并规范化游戏表，`src/shared/text/` 解析文本引用并按语言取值，`src/shared/excel/` 放通用单元格和工作簿写出。只服务任务的难度表关联留在 `src/database/missions/difficulty.py`，同属 `src/` 的网页数据导出器可以复用。 |
 | 导出顺序、校验、打包和落盘 | `src/pipeline/exporter.py` 编排数据库、加工数据和压缩包生成，`validation.py` 校验产物集合并写出清单，`package.py` 管理归档，`publish.py` 在校验通过后替换本地 `output/`。根 `main.py` 是这条流程的命令入口。[导出流程](src/pipeline/exporter.py) |
-| 网页专用数据和入口 | `src/site_data/` 下的 Python 模块生成前端实际读取的 JSON，正式输出放在 `src/site_data/data/<模块>/` 并随代码提交。新模块需在 `src/site_data/__init__.py` 接入导出调用和文件清单。任务与武器分别读取 `missions/quests.json` 与 `weapon_actions/actions.json`。[网站数据清单](src/site_data/__init__.py) |
-| 页面、样式和视觉资源 | 单个栏目放在 `web/src/sites/<模块>/`，包含 `.vue` 页面、该栏目的 TypeScript 数据类型、交互和样式。在模块 `index.ts` 定义标题和路由，在 `web/src/sites.ts` 注册。首页卡片和路由表都读取这份注册表。全站页面放 `pages/`，共用组件放 `components/`，主题与布局放 `styles/`，共用数据加载和交互逻辑放 `composables/`（均在 `web/src/`）。随模块导入的字体等资源放 `web/src/assets/`，按固定 URL 提供的图标和雪碧图放 `web/public/`。[栏目注册表](web/src/sites.ts) |
+| 网页专用数据和入口 | `src/site_data/` 下的 Python 模块生成前端实际读取的 JSON，正式输出放在 `src/site_data/data/<模块>/` 并随代码提交。新模块需在 `src/site_data/__init__.py` 接入导出调用和文件清单。任务读取 `missions/index.json` 与 `missions/quests/<questId>.json`，武器读取 `weapon_actions/actions.json`。[网站数据清单](src/site_data/__init__.py) |
+| 页面、样式和视觉资源 | 单个栏目放在 `web/src/sites/<模块>/`，包含 `.vue` 页面、该栏目的 TypeScript 数据类型、交互和样式。在模块 `index.ts` 定义标题和路由，在 `web/src/sites.ts` 注册。首页卡片、路由表和静态页面构建都读取这份注册表。需要逐条生成详情页时，由该命名路由的 `staticParams` 从静态 JSON 提取参数，页面根据实际数据给出元数据，站点地图读取静态渲染的结果。全站页面放 `pages/`，共用组件放 `components/`，主题与布局放 `styles/`，共用数据加载和交互逻辑放 `composables/`（均在 `web/src/`）。随模块导入的字体等资源放 `web/src/assets/`，按固定 URL 提供的图标和雪碧图放 `web/public/`。[栏目注册表](web/src/sites.ts) |
 | 测试、用户文档和发布 | 测试按职责放在 `tests/database/`、`tests/processed_data/`、`tests/site_data/`、`tests/sdk/`、`tests/shared/`、`tests/pipeline/` 或 `tests/release/`。多个测试使用的小型输入放 `tests/fixtures/`。用户用法放根 `README.md` 和 `docs/` 下的简繁中文说明，SDK 的命令用法放 `sdk/README.md` 和 `sdk/docs/`。发布工作流在 `.github/workflows/`，发布说明脚本在 `.github/scripts/`。 |
 
 正式输出写入 `output/<语言代码>/` 和 `output/processed_data/`，压缩包和 `manifest.json` 位于 `output/` 顶层，前端构建结果在 `web/dist/`。修正产物时修改生成端，再重新生成。
@@ -58,7 +58,7 @@
 | `MISSION_HEALTH_KING_WHEN_NONE_IDS`、`MISSION_HEALTH_NO_AUTO_HARD_IDS` | 记录由游戏原生分支确认、任务资源表本身缺少的形态和难度例外。更新这些常量时同时核对对应分支、枚举身份以及使用它们的任务输出。 |
 
 - **SDK 配置**跟随提取器维护。怪物共用的原生布局和符号定位声明在 `sdk/enemy_logic_exporter/shared/config.py`。技能的类型、字段和布局在 `sdk/skill_effect_exporter/config.py`，其中的 `GAME_VERSION` 引用根配置。武器映射的原生规则和输出格式在 `sdk/action_map_exporter/data/`。根 `requirements.txt` 是导出依赖，`sdk/requirements.txt` 和 `sdk/setup_env.ps1` 用于 SDK 工具环境。[SDK 安装与参数](sdk/docs/README.zh-Hans.md)
-- **前端配置**由 `web/` 自己管理。`package.json` 定义依赖和开发、类型检查、构建、预览命令，`package-lock.json` 锁定解析结果，`tsconfig.json` 定义 TypeScript 检查范围。`vite.config.ts` 服务或复制网站 JSON，并注入页脚使用的构建日期与提交号。`MHWS_SITE_DATA` 可指定另一个含 `site.json` 的数据目录。使用绝对路径即可与启动命令的工作目录无关。
+- **前端配置**由 `web/` 自己管理。`package.json` 定义依赖和开发、类型检查、构建、预览命令，`package-lock.json` 锁定解析结果，`tsconfig.json` 定义 TypeScript 检查范围。`vite.config.ts` 服务或复制网站 JSON，并注入页脚使用的构建日期与提交号，以及规范链接和分享元数据共用的网站地址。构建前可设置 `SITE_ORIGIN` 指定网站的源地址。`MHWS_SITE_DATA` 可指定另一个含 `site.json` 的数据目录，使用绝对路径即可与启动命令的工作目录无关。研究预览数据及设置了 `MHWS_SITE_PREVIEW=1` 的构建会生成预览抓取规则。
 
 ## SDK 的输入与使用入口
 
@@ -101,6 +101,8 @@
 - 任务以游戏内分类为入口，“全部任务”和各分类的筛选结果都按星级从高到低排列，同星级保留数据中的先后顺序。任务卡片保留名称、星级、目标图标和历战形态边色，详情有独立 URL，目标数据、报酬与任务说明在同页阅读。多目标任务按各自的布局取值。血量与报酬档位只展示数值和概率，省去进度条。倍率明细应与当前人数、怪物状态、攻击档位、招式和阶段一致。
 - 全站小数在最终展示时四舍五入保留三位，例如 `1.38996` 显示为 `1.390`。整数照常显示。计算、筛选、档位合并和范围比较使用原始精度。
 - 武器动作值沿用工作簿的武器分组、动作顺序和判定行。一个动作可对应多个命中判定，同一判定也可被多个动作引用。保留这些关系，用中文说明适用条件，数值和长文本分列展示。玩家页面与技术原始数据面向不同读者。
+- 全站统一名称为 `怪物猎人：荒野数据站`（取自 `web/src/seo/config.ts` 的 `SITE_TITLE`，不加空格），域名统一通过构建期 `SITE_ORIGIN` 注入，默认分享图 `web/public/og-image.png` 不写死域名。各子站保持独立：内容区不跨模块互相依赖数据或硬链，跨栏导航统一由首页与页脚提供。
+- 网站采用构建期预渲染（`web/src/entry-server.ts` + `web/scripts/prerender.mjs`），同步产出 `sitemap.xml`、`robots.txt`、`_redirects`、`_headers` 与根目录 `404.html`。新增含详情页的子站时，在各自 `index.ts` 的命名路由 `meta.staticParams` 声明参数枚举，页面通过 `useSeoMeta` 按实际字段输出标题、描述与 `indexable` 标记；组件保持 SSR 安全、不泄漏模块级状态，并使用 `onServerPrefetch` 与轻量数据切片避免把大体积 JSON 内联到 HTML。
 
 ## 游戏更新后的核对方法
 
@@ -122,7 +124,7 @@
 
 只为具体且重要的回归引入必要的测试。已有测试能覆盖风险时直接复用，可以合并重复场景、简化准备过程或删除已失去用途的断言，同时保留对实际行为的检查。正式回归纳入持续集成（CI），一次性调查使用 `.tmp/`。CI 缺少必要测试依赖时，在工作流中安装兼容版本并实际执行测试。自动审查报告的问题先核对触发条件和影响，再决定是否修改。
 
-例如，增加“任务部位耐久”的展示时，从任务布局跟到难度表，先检查 `src/database/missions/` 已经提供了哪些字段，再在 `src/site_data/mission_rates.py` 组装当前目标的倍率并生成 `missions/quests.json`。页面的数据类型、倍率明细和渲染都在 `web/src/sites/missions/`。如果只调整概率卡片的样式或小数显示，改前端并预览即可。如果改了倍率公式，同时用已知任务核对原始乘数、未舍入总值和最终显示。
+例如，增加“任务部位耐久”的展示时，从任务布局跟到难度表，先检查 `src/database/missions/` 已经提供了哪些字段，再在 `src/site_data/mission_rates.py` 组装当前目标的倍率并重新生成 `missions/quests/<questId>.json`。页面的数据类型、倍率明细和渲染都在 `web/src/sites/missions/`。如果只调整概率卡片的样式或小数显示，改前端并预览即可。如果改了倍率公式，同时用已知任务核对原始乘数、未舍入总值和最终显示。
 
 ## 用户文档与 Git 协作
 

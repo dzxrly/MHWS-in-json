@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { sites } from "../sites";
+
 // Date and commit of this build, set by Vite.
 const build = __BUILD__;
 const repository = "https://github.com/dzxrly/MHWS-in-json";
@@ -6,6 +8,13 @@ const repository = "https://github.com/dzxrly/MHWS-in-json";
 
 <template>
   <footer class="site-footer">
+    <nav class="footer-nav" aria-label="信息站导航">
+      <RouterLink to="/">首页</RouterLink>
+      <template v-for="site in sites" :key="site.id">
+        <span aria-hidden="true">·</span>
+        <RouterLink :to="site.path">{{ site.title }}</RouterLink>
+      </template>
+    </nav>
     <span class="footer-links">
       <a :href="`${repository}/blob/main/LICENSE`">LICENSE</a>
       <span aria-hidden="true">·</span>

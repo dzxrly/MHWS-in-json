@@ -60,6 +60,8 @@ tests/
 
 來源資料變更後，執行 `python -m src.site_data` 重新產生靜態 JSON。測試會逐一比對產生的結果。網站讀取 `src/site_data/data/` 下的 JSON，使用 Node.js 22.12 或更新版本即可獨立建置。先執行 `npm --prefix web ci`，再執行 `npm --prefix web run build`，建置時會檢查 TypeScript 型別。
 
+建置會將預先產生的 HTML 頁面、`sitemap.xml` 和 `robots.txt` 寫入 `web/dist/`。變更網域時，在建置前將 `SITE_ORIGIN` 設為新網站的來源位址，例如 `https://example.com`。預覽部署可設定 `MHWS_SITE_PREVIEW=1`，產生限制檢索的規則。研究預覽資料會自動啟用這些規則。
+
 ## 發布壓縮檔
 
 資料庫壓縮檔和網站從同一筆提交發布。維護者在 **Actions → Publish database and website → Run workflow** 中選擇 `main`，手動執行一次即可。

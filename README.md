@@ -60,6 +60,8 @@ tests/
 
 After a data change, regenerate the static JSON with `python -m src.site_data`. The test suite compares these files to a fresh export. The web app reads the JSON from `src/site_data/data/`. Run `npm --prefix web ci` followed by `npm --prefix web run build` to type-check and build it independently with Node.js 22.12 or later.
 
+The build writes prerendered pages, `sitemap.xml` and `robots.txt` to `web/dist/`. For a different hosting domain, set `SITE_ORIGIN` to its origin, such as `https://example.com`, before building. Set `MHWS_SITE_PREVIEW=1` to generate crawler restrictions for a preview deployment. Research preview exports enable those restrictions automatically.
+
 ## Release archives
 
 Maintainers publish both the database archives and the website from the same commit. To publish, open **Actions → Publish database and website → Run workflow** and select `main`.

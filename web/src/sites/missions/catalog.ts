@@ -1,5 +1,4 @@
-import { shallowRef } from "vue";
-import { loadJson } from "../../composables/data";
+import { loadJson, type SsrDataContext } from "../../composables/data";
 
 interface StateRates {
   speed: number;
@@ -113,15 +112,40 @@ export interface Mission {
   rewardSlots: { count: number; probability: number }[];
   rankRewards: RankReward[];
 }
-interface MissionCatalog {
-  categories: string[];
-  quests: Mission[];
+export interface MissionListTarget {
+  id: string | null;
+  name: string;
+  icon: number | null;
+  state: "NONE" | "NORMAL" | "KING";
+  count: number;
+  soloHp?: number[];
 }
 
-export const catalog = shallowRef<MissionCatalog | null>(null);
-export const catalogError = shallowRef<Error | null>(null);
+export interface MissionListItem {
+  id: string;
+  name: string;
+  category: string;
+  type: string;
+  rank: "上位" | "下位";
+  stars: number;
+  hr: number;
+  stage: string;
+  targets: MissionListTarget[];
+}
 
-loadJson<MissionCatalog>("missions/quests.json").then(
-  (data) => { catalog.value = data; },
-  (error: unknown) => { catalogError.value = error instanceof Error ? error : new Error(String(error)); },
-);
+export interface MissionListCatalog {
+  categories: string[];
+  quests: MissionListItem[];
+}
+
+export function loadMissionIndex(context?: SsrDataContext | null): Promise<MissionListCatalog> {
+  return loadJson<MissionListCatalog>("missions/index.json", context);
+}
+
+export function missionFilePath(questId: string): string {
+  return `missions/quests/${questId}.json`;
+}
+
+export function loadMission(questId: string, context?: SsrDataContext | null): Promise<Mission> {
+  return loadJson<Mission>(missionFilePath(questId), context);
+}

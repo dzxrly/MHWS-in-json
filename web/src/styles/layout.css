@@ -340,7 +340,8 @@ pre,
   line-height: 1.5;
   font-weight: 700;
 }
-.page-heading h1 {
+.page-heading h1,
+.page-heading .page-title {
   font-size: 32px;
   font-weight: 750;
   letter-spacing: -1px;
@@ -414,25 +415,29 @@ pre,
   border-radius: var(--shape-s);
 }
 .chip.selected,
-.chip[aria-pressed="true"] {
+.chip[aria-pressed="true"],
+.chip[aria-current="page"] {
   background: var(--primary);
   color: var(--on-primary);
   border-radius: 20px;
 }
 .chip.small.selected,
-.chip.small[aria-pressed="true"] {
+.chip.small[aria-pressed="true"],
+.chip.small[aria-current="page"] {
   border-radius: 16px;
 }
 /* Pressing squares the chip up instead of scaling it, which would blur its
    label while the scale animates. */
 .chip:active,
 .chip.selected:active,
-.chip[aria-pressed="true"]:active {
+.chip[aria-pressed="true"]:active,
+.chip[aria-current="page"]:active {
   border-radius: var(--shape-s);
 }
 .chip.small:active,
 .chip.small.selected:active,
-.chip.small[aria-pressed="true"]:active {
+.chip.small[aria-pressed="true"]:active,
+.chip.small[aria-current="page"]:active {
   border-radius: 6px;
 }
 .chip .count {
@@ -857,10 +862,16 @@ details > summary {
 .site-footer a {
   color: var(--primary);
 }
+.footer-nav,
 .footer-links {
   display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
   align-items: baseline;
-  gap: 10px;
+  gap: 6px 10px;
+}
+.footer-nav {
+  margin-bottom: 4px;
 }
 .site-footer a:hover {
   text-decoration: underline;
@@ -889,7 +900,8 @@ details > summary {
   #main-content.workspace {
     padding: 12px;
   }
-  .page-heading h1 {
+  .page-heading h1,
+  .page-heading .page-title {
     font-size: 28px;
   }
 }
@@ -898,8 +910,13 @@ details > summary {
     padding: 10px 16px;
     gap: 8px;
   }
+  .site-brand {
+    min-width: 0;
+  }
   .brand-name {
-    font-size: 16px;
+    font-size: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .header-actions {
     gap: 4px;

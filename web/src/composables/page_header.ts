@@ -1,4 +1,4 @@
-import { nextTick, onBeforeUnmount, onMounted, reactive, watch, type Ref } from "vue";
+import { nextTick, onBeforeUnmount, onMounted, reactive, toValue, watch, type MaybeRefOrGetter, type Ref } from "vue";
 
 // The page title shown in the header once the page's own heading has
 // scrolled under it; `tools` pages also move their search into the header.
@@ -10,11 +10,11 @@ export const pageHeader = reactive({ title: "", condensed: false, tools: false }
  */
 type ElementRef = Readonly<Ref<HTMLElement | null | undefined>>;
 
-export function usePageHeader(title: string, heading: ElementRef, { tools = false, focusTarget }: { tools?: boolean; focusTarget?: ElementRef } = {}) {
+export function usePageHeader(title: MaybeRefOrGetter<string>, heading: ElementRef, { tools = false, focusTarget }: { tools?: boolean; focusTarget?: ElementRef } = {}) {
   let observer: IntersectionObserver | null = null;
   function observe(element: HTMLElement | null | undefined) {
     observer?.disconnect();
-    if (!element) return;
+    if (!element || typeof IntersectionObserver === "undefined") return;
     const height = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--header-height")) || 88;
     observer = new IntersectionObserver(([entry]) => {
       pageHeader.condensed = !entry.isIntersecting && entry.boundingClientRect.top < height;
@@ -22,11 +22,15 @@ export function usePageHeader(title: string, heading: ElementRef, { tools = fals
     observer.observe(element);
   }
   onMounted(() => {
-    pageHeader.title = title;
     pageHeader.tools = tools;
     pageHeader.condensed = false;
   });
-  watch(heading, observe, { flush: "post" });
+  if (typeof window !== "undefined") {
+    watch(() => toValue(title), (value) => {
+      pageHeader.title = value;
+    }, { immediate: true });
+    watch(heading, observe, { flush: "post" });
+  }
   if (focusTarget) {
     // Moving a focused input to another parent drops its focus.
     watch(

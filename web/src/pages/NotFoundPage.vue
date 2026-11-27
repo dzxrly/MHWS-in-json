@@ -1,9 +1,19 @@
 <script setup lang="ts">
+import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
+import { useSeoMeta } from "../composables/seo";
+import { SITE_TITLE } from "../seo/config";
 
 // A Cloudflare-style error page, as on eggtargaryen.com.
 const route = useRoute();
-const time = new Date().toISOString().replace("T", " ").slice(0, 19) + " UTC";
+useSeoMeta({
+  description: "请求的页面不存在或链接已过期。",
+  breadcrumbs: [],
+});
+const time = ref("");
+onMounted(() => {
+  time.value = new Date().toISOString().replace("T", " ").slice(0, 19) + " UTC";
+});
 const columns = [
   { icon: "browser", status: "error", name: "404", title: "Website", state: "Not Found" },
   { icon: "cloud", status: "ok", name: "Somewhere", title: "Cloud", state: "Working" },
@@ -43,7 +53,7 @@ const columns = [
     <p class="cf-footer">
       <span>Ray ID: <strong>114514</strong></span>
       <span class="separator">&bull;</span>
-      <span>Performance &amp; security by <RouterLink to="/">MHWS 数据站</RouterLink></span>
+      <span>Performance &amp; security by <RouterLink to="/">{{ SITE_TITLE }}</RouterLink></span>
     </p>
   </div>
 </template>
