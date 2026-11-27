@@ -27,7 +27,6 @@ useSeoMeta({
 
 <template>
   <div class="page hub">
-    <h1 class="hero">{{ SITE_TITLE }}</h1>
     <ul class="site-grid">
       <li v-for="site in sites" :key="site.id">
         <SiteCard class="site-card" :to="site.path">
@@ -55,16 +54,6 @@ useSeoMeta({
 </template>
 
 <style scoped>
-.hub {
-  padding-top: 24px;
-}
-.hero {
-  margin: 0 8px 32px;
-  font-size: clamp(30px, 4.5vw, 44px);
-  font-weight: 750;
-  letter-spacing: -1.2px;
-  line-height: 1.25;
-}
 .site-grid {
   list-style: none;
   margin: 0;
@@ -119,12 +108,6 @@ useSeoMeta({
   border-radius: 20px;
 }
 @media (max-width: 479px) {
-  .hub {
-    padding-top: 8px;
-  }
-  .hero {
-    margin: 0 4px 24px;
-  }
   .site-grid {
     grid-template-columns: 1fr;
     gap: 12px;

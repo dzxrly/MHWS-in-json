@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed } from "vue";
+import { useRoute } from "vue-router";
 import Icon from "./Icon.vue";
 import { isDark, toggleTheme } from "../composables/theme";
 import { pageHeader } from "../composables/page_header";
@@ -6,13 +8,15 @@ import { SITE_TITLE } from "../seo/config";
 
 // The information sites are reached from the home page, not from the header.
 defineProps({ wide: Boolean });
+const route = useRoute();
+const isHome = computed(() => route.path === "/");
 </script>
 
 <template>
   <header class="site-header" :class="{ wide, condensed: pageHeader.condensed, tools: pageHeader.tools }">
     <div class="header-inner">
       <RouterLink class="site-brand" to="/" :aria-label="`${SITE_TITLE}，首页`">
-        <span class="brand-name">{{ SITE_TITLE }}</span>
+        <component :is="isHome ? 'h1' : 'span'" class="brand-name">{{ SITE_TITLE }}</component>
       </RouterLink>
       <div class="header-center">
         <span class="header-title" :aria-hidden="!pageHeader.condensed">{{ pageHeader.title }}</span>
