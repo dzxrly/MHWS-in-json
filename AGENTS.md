@@ -102,7 +102,7 @@
 - 全站小数在最终展示时四舍五入保留三位，例如 `1.38996` 显示为 `1.390`。整数照常显示。计算、筛选、档位合并和范围比较使用原始精度。
 - 武器动作值沿用工作簿的武器分组、动作顺序和判定行。一个动作可对应多个命中判定，同一判定也可被多个动作引用。保留这些关系，用中文说明适用条件，数值和长文本分列展示。玩家页面与技术原始数据面向不同读者。
 - 全站统一名称为 `怪物猎人：荒野数据站`（取自 `web/src/seo/config.ts` 的 `SITE_TITLE`，不加空格），域名统一通过构建期 `SITE_ORIGIN` 注入，默认分享图 `web/public/og-image.png` 不写死域名。各子站保持独立：内容区不跨模块互相依赖数据或硬链，跨栏导航统一由首页与页脚提供。
-- 网站采用构建期预渲染（`web/src/entry-server.ts` + `web/scripts/prerender.mjs`），同步产出 `sitemap.xml`、`robots.txt`、`_redirects`、`_headers` 与根目录 `404.html`。新增含详情页的子站时，在各自 `index.ts` 的命名路由 `meta.staticParams` 声明参数枚举，页面通过 `useSeoMeta` 按实际字段输出标题、描述与 `indexable` 标记；组件保持 SSR 安全、不泄漏模块级状态，并使用 `onServerPrefetch` 与轻量数据切片避免把大体积 JSON 内联到 HTML。
+- 网站采用构建期预渲染（`web/src/entry-server.ts` + `web/scripts/prerender.ts`），同步产出 `sitemap.xml`、`robots.txt`、`_redirects`、`_headers` 与根目录 `404.html`。新增含详情页的子站时，在各自 `index.ts` 的命名路由 `meta.staticParams` 声明参数枚举，页面通过 `useSeoMeta` 按实际字段输出标题、描述与 `indexable` 标记；组件保持 SSR 安全、不泄漏模块级状态，并使用 `onServerPrefetch` 与轻量数据切片避免把大体积 JSON 内联到 HTML。
 
 ## 游戏更新后的核对方法
 
