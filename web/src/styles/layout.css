@@ -186,6 +186,9 @@ pre,
 }
 @supports (animation-timeline: scroll()) {
   .site-header {
+    /* A page that fits the viewport has no active scroll timeline. */
+    background-color: transparent;
+    border-bottom-color: transparent;
     animation: app-bar-elevate linear both;
     animation-timeline: scroll(root block);
     animation-range: 0 72px;
